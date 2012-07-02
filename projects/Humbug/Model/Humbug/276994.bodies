@@ -1,0 +1,3 @@
+class LogHelper
+!!!320002.cpp!!!	dbg() : logstream
+return LogStat::getDebugStream();

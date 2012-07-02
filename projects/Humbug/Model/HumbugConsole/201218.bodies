@@ -1,0 +1,5 @@
+class TmUpperCase
+!!!438658.cpp!!!	transform(inout rInput : string) : string
+return boost::to_upper_copy(rInput);
+!!!243842.cpp!!!	getToken() : string
+return msToken;

@@ -1,0 +1,696 @@
+class CrIODevice
+!!!240770.cpp!!!	CrIODevice()
+    d_ptr->q_ptr = this;
+
+#if defined CRIODEVICE_DEBUG
+    QFile *file = qobject_cast<QFile *>(this);
+    printf("%p CrIODevice::CrIODevice(\"%s\") %s\n", this, metaObject()->className(),
+           qPrintable(file ? file->fileName() : QString()));
+#endif
+!!!235906.cpp!!!	~CrIODevice()
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::~CrIODevice()\n", this);
+#endif
+!!!236034.cpp!!!	openMode() : CrIODevice::OpenMode
+
+    return d_func()->openMode;
+!!!236162.cpp!!!	setTextModeEnabled(in enabled : bool) : void
+
+    CR_D(CrIODevice);
+    if (enabled)
+        d->openMode |= Text;
+    else
+        d->openMode &= ~Text;
+!!!236290.cpp!!!	isTextModeEnabled() : bool
+
+    return d_func()->openMode & Text;
+!!!236418.cpp!!!	isOpen() : bool
+
+    return d_func()->openMode != NotOpen;
+!!!236546.cpp!!!	isReadable() : bool
+
+    return (openMode() & ReadOnly) != 0;
+!!!236674.cpp!!!	isWritable() : bool
+
+    return (openMode() & WriteOnly) != 0;
+!!!236802.cpp!!!	isSequential() : bool
+
+    return false;
+!!!236930.cpp!!!	open(in mode : OpenMode) : bool
+
+    CR_D(CrIODevice);
+    d->openMode = mode;
+    d->pos = (mode & Append) ? size() : int64_t(0);
+    d->buffer.clear();
+    d->accessMode = CrIODevicePrivate::Unset;
+    d->firstRead = true;
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::open(0x%x)\n", this, quint32(mode));
+#endif
+    return true;
+!!!237058.cpp!!!	close() : void
+
+    CR_D(CrIODevice);
+    if (d->openMode == NotOpen)
+        return;
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::close()\n", this);
+#endif
+
+    //emit aboutToClose();
+    d->openMode = NotOpen;
+    d->errorString.clear();
+    d->pos = 0;
+    d->buffer.clear();
+    d->firstRead = true;
+!!!237186.cpp!!!	pos() : int64_t
+
+    CR_D(const CrIODevice);
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::pos() == %d\n", this, int(d->pos));
+#endif
+    return d->pos;
+!!!237314.cpp!!!	size() : int64_t
+
+    return d_func()->isSequential() ?  bytesAvailable() : int64_t(0);
+!!!237442.cpp!!!	seek(in pos : int64_t) : bool
+
+    CR_D(CrIODevice);
+    if (d->openMode == NotOpen) {
+        qWarning("CrIODevice::seek: The device is not open");
+        return false;
+    }
+    if (pos < 0) {
+        qWarning("CrIODevice::seek: Invalid pos: %d", int(pos));
+        return false;
+    }
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::seek(%d), before: d->pos = %d, d->buffer.size() = %d\n",
+           this, int(pos), int(d->pos), d->buffer.size());
+#endif
+
+    int64_t offset = pos - d->pos;
+    if (!d->isSequential()) {
+        d->pos = pos;
+        d->devicePos = pos;
+    }
+
+    if (offset < 0
+            || offset >= int64_t(d->buffer.size()))
+        // When seeking backwards, an operation that is only allowed for
+        // random-access devices, the buffer is cleared. The next read
+        // operation will then refill the buffer. We can optimize this, if we
+        // find that seeking backwards becomes a significant performance hit.
+        d->buffer.clear();
+    else if (!d->buffer.isEmpty())
+        d->buffer.skip(int(offset));
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p \tafter: d->pos == %d, d->buffer.size() == %d\n", this, int(d->pos),
+           d->buffer.size());
+#endif
+    return true;
+!!!237570.cpp!!!	atEnd() : bool
+
+    CR_D(const CrIODevice);
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::atEnd() returns %s, d->openMode == %d, d->pos == %d\n", this, (d->openMode == NotOpen || d->pos == size()) ? "true" : "false",
+           int(d->openMode), int(d->pos));
+#endif
+    return d->openMode == NotOpen || (d->buffer.isEmpty() && bytesAvailable() == 0);
+!!!237698.cpp!!!	reset() : bool
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::reset()\n", this);
+#endif
+    return seek(0);
+!!!237826.cpp!!!	bytesAvailable() : int64_t
+
+    CR_D(const CrIODevice);
+    if (!d->isSequential())
+        return qMax(size() - d->pos, int64_t(0));
+    return d->buffer.size();
+!!!237954.cpp!!!	bytesToWrite() : int64_t
+
+    return int64_t(0);
+!!!238338.cpp!!!	readAll() : std::vector<char>
+
+    CR_D(CrIODevice);
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::readAll(), d->pos = %d, d->buffer.size() = %d\n",
+           this, int(d->pos), int(d->buffer.size()));
+#endif
+
+    std::vector<char> result;
+    int64_t readBytes = 0;
+
+    // flush internal read buffer
+    if (!(d->openMode & Text) && !d->buffer.isEmpty()) {
+        result = d->buffer.readAll();
+        readBytes = result.size();
+        d->pos += readBytes;
+    }
+
+    int64_t theSize;
+    if (d->isSequential() || (theSize = size()) == 0) {
+        // Size is unknown, read incrementally.
+        int64_t readResult;
+        do {
+            result.resize(result.size() + CRIODEVICE_BUFFERSIZE);
+            readResult = read(result.data() + readBytes, result.size() - readBytes);
+            if (readResult > 0 || readBytes == 0)
+                readBytes += readResult;
+        } while (readResult > 0);
+    } else {
+        // Read it all in one go.
+        // If resize fails, don't read anything.
+        result.resize(int(readBytes + theSize - d->pos));
+        readBytes += read(result.data() + readBytes, result.size() - readBytes);
+    }
+
+    if (readBytes <= 0)
+        result.clear();
+    else
+        result.resize(int(readBytes));
+
+    return result;
+!!!238722.cpp!!!	canReadLine() : bool
+
+    return d_func()->buffer.canReadLine();
+!!!238978.cpp!!!	write(in data : char) : int64_t
+
+    return write(data, strlen(data));
+!!!239490.cpp!!!	waitForReadyRead(in msecs : int) : bool
+
+    CR_UNUSED(msecs);
+    return false;
+!!!239618.cpp!!!	waitForBytesWritten(in msecs : int) : bool
+
+    CR_UNUSED(msecs);
+    return false;
+!!!239746.cpp!!!	ungetChar(in c : char) : void
+
+    CR_D(CrIODevice);
+    CHECK_READABLE(read, Q_VOID);
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::ungetChar(0x%hhx '%c')\n", this, c, isprint(c) ? c : '?');
+#endif
+
+    d->buffer.ungetChar(c);
+    if (!d->isSequential())
+        --d->pos;
+!!!239874.cpp!!!	putChar(in c : char) : bool
+
+    return d_func()->putCharHelper(c);
+!!!240002.cpp!!!	getChar(inout c : char) : bool
+
+    // readability checked in read()
+    char ch;
+    return (1 == read(c ? c : &ch, 1));
+!!!240130.cpp!!!	errorString() : string
+
+    CR_D(const CrIODevice);
+    if (d->errorString.empty()) {
+//#ifdef QT_NO_QOBJECT
+//        return QLatin1String(QT_TRANSLATE_NOOP(CrIODevice, "Unknown error"));
+//#else
+//        return tr("Unknown error");
+        return "Unknown error"; 
+//#endif
+    }
+    return d->errorString;
+!!!258818.cpp!!!	CrIODevice(inout dd : CrIODevicePrivate)
+
+    d_ptr->q_ptr = this;
+!!!241282.cpp!!!	setOpenMode(in openMode : OpenMode) : void
+
+    CR_D(CrIODevice);
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::setOpenMode(0x%x)\n", this, int(openMode));
+#endif
+    d->openMode = openMode;
+    d->accessMode = CrIODevicePrivate::Unset;
+    d->firstRead = true;
+    if (!isReadable())
+        d->buffer.clear();
+!!!241026.cpp!!!	readLineData(inout data : char, in maxSize : int64_t) : int64_t
+
+    CR_D(CrIODevice);
+    int64_t readSoFar = 0;
+    char c;
+    int lastReadReturn = 0;
+    d->baseReadLineDataCalled = true;
+
+    while (readSoFar < maxSize && (lastReadReturn = read(&c, 1)) == 1) {
+        *data++ = c;
+        ++readSoFar;
+        if (c == '\n')
+            break;
+    }
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::readLineData(%p, %d), d->pos = %d, d->buffer.size() = %d, returns %d\n",
+           this, data, int(maxSize), int(d->pos), int(d->buffer.size()), int(readSoFar));
+#endif
+    if (lastReadReturn != 1 && readSoFar == 0)
+        return isSequential() ? lastReadReturn : -1;
+    return readSoFar;
+!!!241410.cpp!!!	setErrorString(in str : string) : void
+
+    d_func()->errorString = str;
+!!!241794.cpp!!!	state() : int
+
+    return isOpen() ? 0x1000 : 0;
+!!!238082.cpp!!!	read(inout data : char, in maxSize : int64_t) : int64_t
+
+    CR_D(CrIODevice);
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::read(%p, %d), d->pos = %d, d->buffer.size() = %d\n",
+           this, data, int(maxSize), int(d->pos), int(d->buffer.size()));
+#endif
+
+    // Short circuit for getChar()
+    if (maxSize == 1) {
+        int chint;
+        while ((chint = d->buffer.getChar()) != -1) {
+            ++(*d->pPos);
+
+            char c = char(unsigned char(chint));
+            if (c == '\r' && (d->openMode & Text))
+                continue;
+            *data = c;
+#if defined CRIODEVICE_DEBUG
+            printf("%p \tread 0x%hhx (%c) returning 1 (shortcut)\n", this,
+                   int(c), isprint(c) ? c : '?');
+#endif
+            return int64_t(1);
+        }
+    }
+
+    CHECK_MAXLEN(read, int64_t(-1));
+    int64_t readSoFar = 0;
+    bool moreToRead = true;
+    do {
+        // Try reading from the buffer.
+        int lastReadChunkSize = d->buffer.read(data, maxSize);
+        if (lastReadChunkSize > 0) {
+            *d->pPos += lastReadChunkSize;
+            readSoFar += lastReadChunkSize;
+            // fast exit when satisfied by buffer
+            if (lastReadChunkSize == maxSize && !(d->openMode & Text))
+                return readSoFar;
+
+            data += lastReadChunkSize;
+            maxSize -= lastReadChunkSize;
+#if defined CRIODEVICE_DEBUG
+            printf("%p \treading %d bytes from buffer into position %d\n", this, lastReadChunkSize,
+                   int(readSoFar) - lastReadChunkSize);
+#endif
+        } else {
+            if (d->firstRead) {
+                // this is the first time the file has been read, check it's valid and set up pos pointers
+                // for fast pos updates.
+                CHECK_READABLE(read, int64_t(-1));
+                d->firstRead = false;
+                if (d->isSequential()) {
+                    d->pPos = &d->seqDumpPos;
+                    d->pDevicePos = &d->seqDumpPos;
+                }
+            }
+
+            if (!maxSize)
+                return readSoFar;
+
+            if ((d->openMode & Unbuffered) == 0 && maxSize < CRIODEVICE_BUFFERSIZE) {
+                // In buffered mode, we try to fill up the CrIODevice buffer before
+                // we do anything else.
+                // buffer is empty at this point, try to fill it
+                int bytesToBuffer = CRIODEVICE_BUFFERSIZE;
+                char *writePointer = d->buffer.reserve(bytesToBuffer);
+
+                // Make sure the device is positioned correctly.
+                if (d->pos != d->devicePos && !d->isSequential() && !seek(d->pos))
+                    return readSoFar ? readSoFar : int64_t(-1);
+                int64_t readFromDevice = readData(writePointer, bytesToBuffer);
+                d->buffer.chop(bytesToBuffer - (readFromDevice < 0 ? 0 : int(readFromDevice)));
+
+                if (readFromDevice > 0) {
+                    *d->pDevicePos += readFromDevice;
+#if defined CRIODEVICE_DEBUG
+                    printf("%p \treading %d from device into buffer\n", this, int(readFromDevice));
+#endif
+
+                    if (!d->buffer.isEmpty()) {
+                        lastReadChunkSize = d->buffer.read(data, maxSize);
+                        readSoFar += lastReadChunkSize;
+                        data += lastReadChunkSize;
+                        maxSize -= lastReadChunkSize;
+                        *d->pPos += lastReadChunkSize;
+#if defined CRIODEVICE_DEBUG
+                        printf("%p \treading %d bytes from buffer at position %d\n", this,
+                               lastReadChunkSize, int(readSoFar));
+#endif
+                    }
+                }
+            }
+        }
+
+        // If we need more, try reading from the device.
+        if (maxSize > 0) {
+            // Make sure the device is positioned correctly.
+            if (d->pos != d->devicePos && !d->isSequential() && !seek(d->pos))
+                return readSoFar ? readSoFar : int64_t(-1);
+            int64_t readFromDevice = readData(data, maxSize);
+#if defined CRIODEVICE_DEBUG
+            printf("%p \treading %d bytes from device (total %d)\n", this, int(readFromDevice), int(readSoFar));
+#endif
+            if (readFromDevice == -1 && readSoFar == 0) {
+                // error and we haven't read anything: return immediately
+                return -1;
+            }
+            if (readFromDevice > 0) {
+                lastReadChunkSize += int(readFromDevice);
+                readSoFar += readFromDevice;
+                data += readFromDevice;
+                maxSize -= readFromDevice;
+                *d->pPos += readFromDevice;
+                *d->pDevicePos += readFromDevice;
+            }
+        }
+        // Best attempt has been made to read data, don't try again except for text mode adjustment below
+        moreToRead = false;
+
+        if (readSoFar && d->openMode & Text) {
+            char *readPtr = data - lastReadChunkSize;
+            const char *endPtr = data;
+
+            if (readPtr < endPtr) {
+                // optimization to avoid initial self-assignment
+                while (*readPtr != '\r') {
+                    if (++readPtr == endPtr)
+                        return readSoFar;
+                }
+
+                char *writePtr = readPtr;
+
+                while (readPtr < endPtr) {
+                    char ch = *readPtr++;
+                    if (ch != '\r')
+                        *writePtr++ = ch;
+                    else {
+                        --readSoFar;
+                        --data;
+                        ++maxSize;
+                    }
+                }
+
+                // Make sure we get more data if there is room for more. This
+                // is very important for when someone seeks to the start of a
+                // '\r\n' and reads one character - they should get the '\n'.
+                moreToRead = (readPtr != writePtr);
+            }
+        }
+    } while (moreToRead);
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p \treturning %d, d->pos == %d, d->buffer.size() == %d\n", this,
+           int(readSoFar), int(d->pos), d->buffer.size());
+    debugBinaryString(data - readSoFar, readSoFar);
+#endif
+    return readSoFar;
+!!!238210.cpp!!!	read(in maxSize : int64_t) : std::vector<char>
+
+    CR_D(CrIODevice);
+    std::vector<char> result;
+
+    CHECK_MAXLEN(read, result);
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::read(%d), d->pos = %d, d->buffer.size() = %d\n",
+           this, int(maxSize), int(d->pos), int(d->buffer.size()));
+#else
+    CR_UNUSED(d);
+#endif
+
+    if (maxSize != int64_t(int(maxSize))) {
+        qWarning("CrIODevice::read: maxSize argument exceeds QByteArray size limit");
+        maxSize = INT_MAX;
+    }
+
+    int64_t readBytes = 0;
+    if (maxSize) {
+        result.resize(int(maxSize));
+        if (!result.size()) {
+            // If resize fails, read incrementally.
+            int64_t readResult;
+            do {
+                result.resize(int(qMin(maxSize, result.size() + CRIODEVICE_BUFFERSIZE)));
+                readResult = read(result.data() + readBytes, result.size() - readBytes);
+                if (readResult > 0 || readBytes == 0)
+                    readBytes += readResult;
+            } while (readResult == CRIODEVICE_BUFFERSIZE);
+        } else {
+            readBytes = read(result.data(), result.size());
+        }
+    }
+
+    if (readBytes <= 0)
+        result.clear();
+    else
+        result.resize(int(readBytes));
+
+    return result;
+!!!238466.cpp!!!	readLine(inout data : char, in maxSize : int64_t) : int64_t
+
+    CR_D(CrIODevice);
+    if (maxSize < 2) {
+        qWarning("CrIODevice::readLine: Called with maxSize < 2");
+        return int64_t(-1);
+    }
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::readLine(%p, %d), d->pos = %d, d->buffer.size() = %d\n",
+           this, data, int(maxSize), int(d->pos), int(d->buffer.size()));
+#endif
+
+    // Leave room for a '\0'
+    --maxSize;
+
+    const bool sequential = d->isSequential();
+
+    int64_t readSoFar = 0;
+    if (!d->buffer.isEmpty()) {
+        readSoFar = d->buffer.readLine(data, maxSize);
+        if (!sequential)
+            d->pos += readSoFar;
+#if defined CRIODEVICE_DEBUG
+        printf("%p \tread from buffer: %d bytes, last character read: %hhx\n", this,
+               int(readSoFar), data[int(readSoFar) - 1]);
+        if (readSoFar)
+            debugBinaryString(data, int(readSoFar));
+#endif
+#if defined(Q_OS_SYMBIAN)
+        // Open C fgets strips '\r' but readSoFar gets returned as if it was still there
+        if ((d->openMode & Text) &&
+            readSoFar > 1 &&
+            data[readSoFar - 1] == '\0' &&
+            data[readSoFar - 2] == '\n') {
+            --readSoFar;
+        }
+#endif
+        if (readSoFar && data[readSoFar - 1] == '\n') {
+            if (d->openMode & Text) {
+                // QRingBuffer::readLine() isn't Text aware.
+                if (readSoFar > 1 && data[readSoFar - 2] == '\r') {
+                    --readSoFar;
+                    data[readSoFar - 1] = '\n';
+                }
+            }
+            data[readSoFar] = '\0';
+            return readSoFar;
+        }
+    }
+
+    if (d->pos != d->devicePos && !sequential && !seek(d->pos))
+        return int64_t(-1);
+    d->baseReadLineDataCalled = false;
+    int64_t readBytes = readLineData(data + readSoFar, maxSize - readSoFar);
+#if defined CRIODEVICE_DEBUG
+    printf("%p \tread from readLineData: %d bytes, readSoFar = %d bytes\n", this,
+           int(readBytes), int(readSoFar));
+    if (readBytes > 0) {
+        debugBinaryString(data, int(readSoFar + readBytes));
+    }
+#endif
+    if (readBytes < 0) {
+        data[readSoFar] = '\0';
+        return readSoFar ? readSoFar : -1;
+    }
+    readSoFar += readBytes;
+    if (!d->baseReadLineDataCalled && !sequential) {
+        d->pos += readBytes;
+        // If the base implementation was not called, then we must
+        // assume the device position is invalid and force a seek.
+        d->devicePos = int64_t(-1);
+    }
+    data[readSoFar] = '\0';
+
+    if (d->openMode & Text) {
+#if defined(Q_OS_SYMBIAN)
+        // Open C fgets strips '\r' but readSoFar gets returned as if it was still there
+        if (readSoFar > 1 && data[readSoFar - 1] == '\0' && data[readSoFar - 2] == '\n') {
+            --readSoFar;
+        }
+#endif
+        if (readSoFar > 1 && data[readSoFar - 1] == '\n' && data[readSoFar - 2] == '\r') {
+            data[readSoFar - 2] = '\n';
+            data[readSoFar - 1] = '\0';
+            --readSoFar;
+        }
+    }
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p \treturning %d, d->pos = %d, d->buffer.size() = %d, size() = %d\n",
+           this, int(readSoFar), int(d->pos), d->buffer.size(), int(size()));
+    debugBinaryString(data, int(readSoFar));
+#endif
+    return readSoFar;
+!!!238594.cpp!!!	readLine(in maxSize : int64_t = 0) : std::vector<char>
+
+    CR_D(CrIODevice);
+    std::vector<char> result;
+
+    CHECK_MAXLEN(readLine, result);
+
+#if defined CRIODEVICE_DEBUG
+    printf("%p CrIODevice::readLine(%d), d->pos = %d, d->buffer.size() = %d\n",
+           this, int(maxSize), int(d->pos), int(d->buffer.size()));
+#else
+    CR_UNUSED(d);
+#endif
+
+    if (maxSize > INT_MAX) {
+        qWarning("CrIODevice::read: maxSize argument exceeds QByteArray size limit");
+        maxSize = INT_MAX;
+    }
+
+    result.resize(int(maxSize));
+    int64_t readBytes = 0;
+    if (!result.size()) {
+        // If resize fails or maxSize == 0, read incrementally
+        if (maxSize == 0)
+            maxSize = INT_MAX;
+
+        // The first iteration needs to leave an extra byte for the terminating null
+        result.resize(1);
+
+        int64_t readResult;
+        do {
+            result.resize(int(qMin(maxSize, result.size() + CRIODEVICE_BUFFERSIZE)));
+            readResult = readLine(result.data() + readBytes, result.size() - readBytes);
+            if (readResult > 0 || readBytes == 0)
+                readBytes += readResult;
+        } while (readResult == CRIODEVICE_BUFFERSIZE
+                && result[int(readBytes - 1)] != '\n');
+    } else
+        readBytes = readLine(result.data(), result.size());
+
+    if (readBytes <= 0)
+        result.clear();
+    else
+        result.resize(readBytes);
+
+    return result;
+!!!238850.cpp!!!	write(in data : char, in maxSize : int64_t) : int64_t
+
+    CR_D(CrIODevice);
+    CHECK_WRITABLE(write, int64_t(-1));
+    CHECK_MAXLEN(write, int64_t(-1));
+
+    const bool sequential = d->isSequential();
+    // Make sure the device is positioned correctly.
+    if (d->pos != d->devicePos && !sequential && !seek(d->pos))
+        return int64_t(-1);
+
+#ifdef Q_OS_WIN
+    if (d->openMode & Text) {
+        const char *endOfData = data + maxSize;
+        const char *startOfBlock = data;
+
+        int64_t writtenSoFar = 0;
+
+        forever {
+            const char *endOfBlock = startOfBlock;
+            while (endOfBlock < endOfData && *endOfBlock != '\n')
+                ++endOfBlock;
+
+            int64_t blockSize = endOfBlock - startOfBlock;
+            if (blockSize > 0) {
+                int64_t ret = writeData(startOfBlock, blockSize);
+                if (ret <= 0) {
+                    if (writtenSoFar && !sequential)
+                        d->buffer.skip(writtenSoFar);
+                    return writtenSoFar ? writtenSoFar : ret;
+                }
+                if (!sequential) {
+                    d->pos += ret;
+                    d->devicePos += ret;
+                }
+                writtenSoFar += ret;
+            }
+
+            if (endOfBlock == endOfData)
+                break;
+
+            int64_t ret = writeData("\r\n", 2);
+            if (ret <= 0) {
+                if (writtenSoFar && !sequential)
+                    d->buffer.skip(writtenSoFar);
+                return writtenSoFar ? writtenSoFar : ret;
+            }
+            if (!sequential) {
+                d->pos += ret;
+                d->devicePos += ret;
+            }
+            ++writtenSoFar;
+
+            startOfBlock = endOfBlock + 1;
+        }
+
+        if (writtenSoFar && !sequential)
+            d->buffer.skip(writtenSoFar);
+        return writtenSoFar;
+    }
+#endif
+
+    int64_t written = writeData(data, maxSize);
+    if (written > 0) {
+        if (!sequential) {
+            d->pos += written;
+            d->devicePos += written;
+        }
+        if (!d->buffer.isEmpty() && !sequential)
+            d->buffer.skip(written);
+    }
+    return written;
+!!!239234.cpp!!!	peek(inout data : char, in maxSize : int64_t) : int64_t
+
+    return d_func()->peek(data, maxSize);
+!!!239362.cpp!!!	peek(in maxSize : int64_t) : std::vector<char>
+
+    return d_func()->peek(maxSize);
+!!!243074.cpp!!!	resetStatus() : void
+
+#if !defined(QT_NO_QOBJECT)
+    // QFile *f = qobject_cast<QFile *>(this);
+    // if (f) f->unsetError();
+#endif
+!!!259714.cpp!!!	d_func() : CrIODevicePrivate
+return reinterpret_cast<CrIODevicePrivate *>(d_ptr.get());
+!!!259842.cpp!!!	d_func() : CrIODevicePrivate
+return reinterpret_cast<const CrIODevicePrivate *>(d_ptr.get());

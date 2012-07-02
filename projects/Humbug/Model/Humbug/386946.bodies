@@ -1,0 +1,5 @@
+class ProcessProjectPrivate
+!!!396674.cpp!!!	ProcessProjectPrivate(in parent : ProcessProject)
+m_LookupPaths.push_back(GB::getProjectDirectory());
+m_LookupPaths.push_back(GB::getTemplateDirectory());
+//m_LookupPaths.push_back(GB::getWorkDirectory());

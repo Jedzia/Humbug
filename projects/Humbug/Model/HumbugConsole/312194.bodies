@@ -1,0 +1,236 @@
+class CrRar
+!!!297090.cpp!!!	CrRar(inout ioDevice : CrIODevice)
+    throw "CrZipBase::CrZipBase(QIODevice * ioDevice) Is Not Implemented";
+!!!297218.cpp!!!	~CrRar()
+  // if(isOpen())
+   // close();
+  // delete p;
+!!!297346.cpp!!!	open(in mode : CrZipBase::Mode, inout ioApi_ : void = NULL) : bool
+  zlib_filefunc_def * ioApi = static_cast<zlib_filefunc_def *>(ioApi_);
+  p->zipError=UNZ_OK;
+  if(isOpen()) {
+    qWarning("CrZipBase::open(): ZIP already opened");
+    return false;
+  }
+  /*QIODevice *ioDevice = p->ioDevice;
+  if (ioDevice == NULL) {
+    if (p->zipName.empty()) {
+      qWarning("CrZipBase::open(): set either ZIP file name or IO device first");
+      return false;
+    } else {
+      //ioDevice = new QFile(p->zipName);
+    }
+  }*/
+  switch(mode) {
+    case CrZipBase::mdUnzip:
+      p->unzFile_f=unzOpen2(p->zipName.c_str(), ioApi);
+      //p->unzFile_f=unzOpen2(ioDevice, ioApi);
+      if(p->unzFile_f!=NULL) {
+        p->mode=mode;
+        //p->ioDevice = ioDevice;
+        return true;
+      } else {
+        p->zipError=UNZ_OPENERROR;
+        //if (!p->zipName.empty())
+          //delete ioDevice;
+        return false;
+      }
+    case CrZipBase::mdCreate:
+    case CrZipBase::mdAppend:
+    case CrZipBase::mdAdd:
+      p->zipFile_f=zipOpen2(p->zipName.c_str(),
+          mode==CrZipBase::mdCreate?APPEND_STATUS_CREATE:
+          mode==CrZipBase::mdAppend?APPEND_STATUS_CREATEAFTER:
+          APPEND_STATUS_ADDINZIP,
+          NULL,
+          ioApi);
+      if(p->zipFile_f!=NULL) {
+        p->mode=mode;
+        //p->ioDevice = ioDevice;
+        return true;
+      } else {
+        p->zipError=UNZ_OPENERROR;
+        //if (!p->zipName.empty())
+          //delete ioDevice;
+        return false;
+      }
+    default:
+      std::cout << "CrZipBase::open(): unknown mode: " << (int)mode << std::endl;
+      //if (!p->zipName.empty())
+        //delete ioDevice;
+      return false;
+      break;
+  }
+!!!297474.cpp!!!	close() : void
+  qWarning("CrZip::close()");
+  p->zipError=UNZ_OK;
+  switch(p->mode) {
+    case CrZipBase::mdNotOpen:
+      qWarning("CrZipBase::close(): ZIP is not open");
+      return;
+    case CrZipBase::mdUnzip:
+      p->zipError=unzClose(p->unzFile_f);
+      break;
+    case CrZipBase::mdCreate:
+    case CrZipBase::mdAppend:
+    case CrZipBase::mdAdd:
+      //p->zipError=zipClose(p->zipFile_f, p->commentCodec->fromUnicode(p->comment).constData());
+      p->zipError=zipClose(p->zipFile_f, p->comment.c_str());
+      break;
+    default:
+      std::cout << "CrZipBase::close(): unknown mode: " << (int)p->mode << std::endl;
+      return;
+  }
+  // opened by name, need to delete the internal IO device
+  //if (!p->zipName.empty())
+    //delete p->ioDevice;
+  if(p->zipError==UNZ_OK)
+    p->mode=CrZipBase::mdNotOpen;
+!!!297602.cpp!!!	getEntriesCount() : int
+  CrRar *fakeThis=(CrRar*)this; // non-const
+  fakeThis->p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::getEntriesCount(): ZIP is not open in mdUnzip mode");
+    return -1;
+  }
+  unz_global_info globalInfo;
+  if((fakeThis->p->zipError=unzGetGlobalInfo(p->unzFile_f, &globalInfo))!=UNZ_OK)
+    return p->zipError;
+  return (int)globalInfo.number_entry;
+!!!297730.cpp!!!	getComment() : string
+  CrRar *fakeThis=(CrRar*)this; // non-const
+  fakeThis->p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::getComment(): ZIP is not open in mdUnzip mode");
+    return "";
+  }
+  unz_global_info globalInfo;
+  if((fakeThis->p->zipError=unzGetGlobalInfo(p->unzFile_f, &globalInfo))!=UNZ_OK)
+    return "";
+  std::vector<char> comment;
+  comment.resize(globalInfo.size_comment);
+  //QByteArray comment;
+  comment.resize(globalInfo.size_comment);
+  if((fakeThis->p->zipError=unzGetGlobalComment(p->unzFile_f, comment.data(), comment.size())) < 0)
+    return "";
+  fakeThis->p->zipError = UNZ_OK;
+  return std::string(comment.data());
+  //return p->commentCodec->toUnicode(comment);
+  //return "Bla";
+!!!297858.cpp!!!	goToFirstFile() : bool
+  p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::goToFirstFile(): ZIP is not open in CrZipBase::mdUnzip mode");
+    return false;
+  }
+  p->zipError=unzGoToFirstFile(p->unzFile_f);
+  p->hasCurrentFile_f=p->zipError==UNZ_OK;
+  return p->hasCurrentFile_f;
+!!!297986.cpp!!!	goToNextFile() : bool
+  p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::goToFirstFile(): ZIP is not open in mdUnzip mode");
+    return false;
+  }
+  p->zipError=unzGoToNextFile(p->unzFile_f);
+  p->hasCurrentFile_f=p->zipError==UNZ_OK;
+  if(p->zipError==UNZ_END_OF_LIST_OF_FILE)
+    p->zipError=UNZ_OK;
+  return p->hasCurrentFile_f;
+!!!298114.cpp!!!	setCurrentFile(in fileName : string, in cs : CrZipBase::CaseSensitivity) : bool
+  p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::setCurrentFile(): ZIP is not open in mdUnzip mode");
+    return false;
+  }
+  if(fileName.empty()) {
+    p->hasCurrentFile_f=false;
+    return true;
+  }
+  // Unicode-aware reimplementation of the unzLocateFile function
+  if(p->unzFile_f==NULL) {
+    p->zipError=UNZ_PARAMERROR;
+    return false;
+  }
+  if(fileName.length()>CrZipBase::MAX_FILE_NAME_LENGTH) {
+    p->zipError=UNZ_PARAMERROR;
+    return false;
+  }
+  bool sens;
+  if(cs==CrZipBase::csDefault) {
+#ifdef WIN32
+    sens=false;
+#else
+    sens=true;
+#endif
+  } else sens=cs==CrZipBase::csSensitive;
+  std::string lower, current;
+  if(!sens) lower= Txt::lowerCase(fileName);
+  p->hasCurrentFile_f=false;
+  for(bool more=goToFirstFile(); more; more=goToNextFile()) {
+    current=getCurrentFileName();
+    if(current.empty()) return false;
+    if(sens) {
+      if(current==fileName) break;
+    } else {
+      if(Txt::lowerCase(current)==lower) break;
+    }
+  }
+  return p->hasCurrentFile_f;
+!!!298242.cpp!!!	getCurrentFileInfo(inout info : CrZipFileInfo) : bool
+  CrRar *fakeThis=(CrRar*)this; // non-const
+  fakeThis->p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::getCurrentFileInfo(): ZIP is not open in mdUnzip mode");
+    return false;
+  }
+  unz_file_info info_z;
+  std::vector<char> fileName;
+  std::vector<unsigned char> extra;
+  std::vector<char> comment;
+  if(info==NULL) return false;
+  if(!isOpen()||!hasCurrentFile()) return false;
+  if((fakeThis->p->zipError=unzGetCurrentFileInfo(p->unzFile_f, &info_z, NULL, 0, NULL, 0, NULL, 0))!=UNZ_OK)
+    return false;
+  fileName.resize(info_z.size_filename + 1);
+  extra.resize(info_z.size_file_extra + 1);
+  comment.resize(info_z.size_file_comment + 1);
+  if((fakeThis->p->zipError=unzGetCurrentFileInfo(p->unzFile_f, &info_z,
+      fileName.data(), fileName.size(),
+      extra.data(), extra.size(),
+      comment.data(), comment.size()))!=UNZ_OK)
+    return false;
+  info->versionCreated= static_cast<uint16_t>(info_z.version);
+  info->versionNeeded= static_cast<uint16_t>(info_z.version_needed);
+  info->flags= static_cast<uint16_t>(info_z.flag);
+  info->method= static_cast<uint16_t>(info_z.compression_method);
+  info->crc=info_z.crc;
+  info->compressedSize=info_z.compressed_size;
+  info->uncompressedSize=info_z.uncompressed_size;
+  info->diskNumberStart= static_cast<uint16_t>(info_z.disk_num_start);
+  info->internalAttr= static_cast<uint16_t>(info_z.internal_fa);
+  info->externalAttr=info_z.external_fa;
+  //info->name=p->fileNameCodec->toUnicode(fileName);
+  //info->comment=p->commentCodec->toUnicode(comment);
+  info->name=std::string(fileName.data());
+  info->comment=std::string(comment.data());
+  info->extra=extra;
+  /*info->dateTime=QDateTime(
+      QDate(info_z.tmu_date.tm_year, info_z.tmu_date.tm_mon+1, info_z.tmu_date.tm_mday),
+      QTime(info_z.tmu_date.tm_hour, info_z.tmu_date.tm_min, info_z.tmu_date.tm_sec));*/
+  //info->dateTime=info_z.tmu_date;
+  return true;
+!!!298370.cpp!!!	getCurrentFileName() : string
+  CrRar *fakeThis=(CrRar*)this; // non-const
+  fakeThis->p->zipError=UNZ_OK;
+  if(p->mode!=CrZipBase::mdUnzip) {
+    qWarning("CrZipBase::getCurrentFileName(): ZIP is not open in mdUnzip mode");
+    return "";
+  }
+  if(!isOpen()||!hasCurrentFile()) return "";
+  unz_file_info info_z;
+  std::vector<char> fileName(CrZipBase::MAX_FILE_NAME_LENGTH + 1, 0);
+  if((fakeThis->p->zipError=unzGetCurrentFileInfo(p->unzFile_f, &info_z, fileName.data(), fileName.size(),
+      NULL, 0, NULL, 0))!=UNZ_OK)
+    return "";
+  return std::string(fileName.data());

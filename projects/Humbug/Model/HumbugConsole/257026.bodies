@@ -1,0 +1,9 @@
+class CrZipFilePrivate
+!!!211458.cpp!!!	setZipError(in zipError : int) : void
+  CrZipFilePrivate *fakeThis = const_cast<CrZipFilePrivate*>(this); // non-const
+  fakeThis->zipError=zipError;
+  if(zipError==UNZ_OK)
+    q->setErrorString("");
+  else
+    // q->setErrorString(q->tr("ZIP/UNZIP API error %1").arg(zipError));
+    q->setErrorString(std::string("ZIP/UNZIP API error %1") /*+ std::string(zipError)*/);

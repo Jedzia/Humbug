@@ -1,0 +1,28 @@
+class HashHelper
+!!!364674.cpp!!!	getHashCode(in object : string) : int
+// As an alternative from boost:
+// #include <boost/functional/hash.hpp>
+// boost::hash<std::string> string_hash;
+// std::size_t h = string_hash("Hash me");
+// see http://stackoverflow.com/questions/114085/what-is-a-performant-string-hashing-function-that-results-in-a-32-bit-integer-wit
+
+const char* str = object.data();
+{
+    const char* chPtr = str;
+    int num = 0x15051505;
+    int num2 = num;
+    int* numPtr = (int *) chPtr;
+
+    for (int i = object.length(); i > 0; i -= 4)
+    {
+        num = ( ( (num << 5) + num ) + (num >> 0x1b) ) ^ numPtr[0];
+
+        if (i <= 2) {
+            break;
+        }
+
+        num2 = ( ( (num2 << 5) + num2 ) + (num2 >> 0x1b) ) ^ numPtr[1];
+        numPtr += 2;
+    }
+    return ( num + (num2 * 0x5d588b65) );
+}

@@ -1,0 +1,16 @@
+class RootLogger
+!!!335874.cpp!!!	RootLogger(in pool : Pool, in level1 : LevelPtr)
+setLevel(level1);
+!!!336514.cpp!!!	getEffectiveLevel() : LevelPtr
+return level;
+!!!337538.cpp!!!	setLevel(in level1 : LevelPtr) : void
+if(level1 == 0)
+{
+   // LogLog::error(LOG4CXX_STR("You have tried to set a null level to root."));
+   std::cout << "You have tried to set a null level to root." << std::endl;
+}
+else
+{
+
+   this->level = level1;
+}

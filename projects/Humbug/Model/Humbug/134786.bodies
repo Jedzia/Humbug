@@ -1,0 +1,90 @@
+class TextDocument
+!!!351234.cpp!!!	TextDocument()
+//    _DEBUG_CTORDTOR("++CONSTRUCT++");
+LOG_DEBUG("++CONSTRUCT IOSTREAM++");
+//init();
+
+!!!154882.cpp!!!	TextDocument(in content : string, in delimiter : char = '$')
+//    _DEBUG_CTORDTOR("++CONSTRUCT++");
+    LOG_DEBUG("++CONSTRUCT++");
+	init();
+
+!!!155010.cpp!!!	~TextDocument()
+//	_DEBUG_CTORDTOR("--DESTRUCT--");
+    LOG_DEBUG("--DESTRUCT--");
+!!!141570.cpp!!!	loadTemplates(inout filename : char, in delimiter : char = '$') : void
+char buf[1024*64];
+mDelimiter = delimiter;
+std::ifstream input(filename, std::ios::in);
+if(!input.is_open() || !input.seekg(0, std::ios_base::beg).good())
+{
+    // error, file is not open/not at start postition.
+    return;
+}
+mFilename = std::string(filename);
+
+minTemplate = false;
+mlinenr = 1;
+mposition = 0;
+mtemp.clear();
+
+while(!input.eof())
+{
+    input.read(buf, sizeof(buf));
+    std::streamsize size = input.gcount();
+    calcPositions(buf, size);
+    //std::cout << "Size read:" << size << std::endl;
+}
+//std::cout << this->mstartlinenr << std::endl;
+//input.read(buf, sizeof(buf));
+//size = input.gcount();
+!!!148354.cpp!!!	init() : void
+calcPositions(content.data(), content.size());
+!!!351362.cpp!!!	calcPositions(in buf : char, in size : std::streamsize) : void
+for( std::streamsize i = 0; i < size; i++ ) {
+    char c = buf[i];
+    mposition++;
+
+    //std::cout << "Element " << i << " is " << c << std::endl;
+    if( c == '\n') {
+        // Reset on newline.
+        minTemplate = false;
+        mlinenr++;
+        mposition = 0;
+        mtemp.clear();
+        continue;
+    }
+
+    if( minTemplate && c != mDelimiter) {
+        mtemp += c;
+    }
+
+    if( c == mDelimiter && !minTemplate) {
+        // Template starts here.
+        mtextposition = i;
+        minTemplate = true;
+        mstartposition = mposition;
+        mstartlinenr = mlinenr;
+        continue;
+    }
+
+    if( c == mDelimiter && minTemplate) {
+        // Check for $$
+        if( !(mstartposition == i - 1) ) {
+            // Template ends here.
+            std::cout << "Template [" << mstartlinenr <<
+            "," << mstartposition <<
+            "] " << mtemp << std::endl;
+            TextPosition p(mtemp, mtextposition, mstartlinenr, mstartposition);
+            mTemplPositions.push_back( p );
+            mtemp.clear();
+        }
+        else {
+            std::cout << "Reset inTemplate at " << i << " is " <<
+            c << std::endl;
+        }
+
+        minTemplate = false;
+        continue;
+    }
+}

@@ -1,0 +1,22 @@
+// "a type" "needed cpp_includes"
+"std::vector" "#include <vector>"
+
+"std::list" "#include <list>"
+
+"map" "#include <map>
+using namespace std;"
+
+"std::string" "#include <string>"
+
+"std::auto_ptr" "#include <memory>"
+
+"int64_t" "#ifdef USE_CSTDINT
+#  include <cstdint>
+#endif
+"
+
+"uint32_t" "#ifdef USE_CSTDINT
+#  include <cstdint>
+#endif
+"
+

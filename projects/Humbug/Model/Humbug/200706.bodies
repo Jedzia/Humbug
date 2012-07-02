@@ -1,0 +1,3 @@
+class TextModifier
+!!!371714.cpp!!!	getHashCode() : int
+return (int)((void*)this);

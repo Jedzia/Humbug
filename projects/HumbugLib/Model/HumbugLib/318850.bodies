@@ -1,0 +1,8 @@
+class FileHelper
+!!!305154.cpp!!!	extension(in fullpath : string) : string
+std::string name(fullpath);
+if (name == dot_path || name == dot_dot_path) return std::string("");
+std::string::size_type pos(name.rfind(dot));
+return pos == std::string::npos
+  ? std::string("")
+  : std::string(name.c_str() + pos);

@@ -1,0 +1,23 @@
+class TextPosition
+!!!161538.cpp!!!	TextPosition(in text : string, in position : int, in linenr : int, in column : int, in delimiter : char = ':')
+    _DEBUG_CTORDTOR("++CONSTRUCT++");
+!!!161666.cpp!!!	~TextPosition()
+	_DEBUG_CTORDTOR("--DESTRUCT--");
+!!!264706.cpp!!!	hasModifier() : bool
+return !modifier().empty();
+!!!265090.cpp!!!	name() : string
+std::string::size_type modpos = text.find_first_of( delimiter );
+if(modpos != std::string::npos)
+{
+    std::string result(text, 0, modpos);
+    return result;
+}
+return text;
+!!!264578.cpp!!!	modifier() : string
+std::string::size_type modpos = text.find_first_of( delimiter );
+if(modpos != std::string::npos && (modpos-text.length()) > 0 )
+{
+    std::string result(text, modpos + 1, text.length());
+    return result;
+}
+return std::string();

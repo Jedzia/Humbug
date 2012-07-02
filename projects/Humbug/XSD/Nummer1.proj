@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by Venom (ICO) -->
+<project name="Pumpernickel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///D:/E/Projects/C++/Humbug/projects/Humbug/XSD/project.xsd">
+	<folder name="Zutaten" type="Standard">
+		<file name="Teig"/>
+		<file name="Ratte"/>
+		<folder name="Sub" type="Standard"><file name="Atsch"/><file name="Heheeee"/></folder>
+		<file name="OlderDepp"/>
+	</folder>
+</project>

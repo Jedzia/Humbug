@@ -1,0 +1,37 @@
+class logstream
+!!!463234.cpp!!!	refresh_stream_state() : void
+if (stream != 0) {
+   int fillchar;
+   if(logstream_base::set_stream_state(*stream, fillchar)) {
+      stream->fill(fillchar);
+   }
+}
+!!!463362.cpp!!!	operator std::basic_ostream<Ch>&()
+if (stream == 0) {
+    stream = new std::basic_stringstream<Ch>();
+    refresh_stream_state();
+}
+return *stream;
+!!!305154.cpp!!!	operator<<(inout manip : logstream_manipulator) : logstream
+(*manip)(*this);
+return *this;
+!!!463490.cpp!!!	operator<<(inout val : V) : logstream
+if (LOGGER_UNLIKELY(isEnabled())) {
+     ((std::basic_ostream<char>&) *this) << val;
+}
+return *this;
+!!!305410.cpp!!!	operator<<(inout newlocation : LocationInfo) : logstream
+setLocation(newlocation);
+return *this;
+!!!463618.cpp!!!	erase() : void
+if (stream != 0) {
+    std::basic_string<Ch> emptyStr;
+    stream->str(emptyStr);
+}
+!!!463746.cpp!!!	log(in logger : LoggerPtr, in level : LevelPtr, in location : LocationInfo) : void
+if (stream != 0) {
+    std::basic_string<Ch> msg = stream->str();
+    if (!msg.empty()) {
+        logger->log(level, msg, location);
+    }
+}

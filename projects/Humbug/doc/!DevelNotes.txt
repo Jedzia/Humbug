@@ -1,0 +1,4 @@
+Check for boost usage:
+
+root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
+$ grep -li -R boost * | grep -v \.svn

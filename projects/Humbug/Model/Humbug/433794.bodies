@@ -1,0 +1,16 @@
+class logstream_ios_base
+!!!462850.cpp!!!	logstream_ios_base(in initval : std::ios_base::fmtflags, in initsize : int)
+#if defined(_MSC_VER)
+#define LOGGER_MEMSET_IOS_BASE 1
+#else
+#endif
+#if LOGGER_MEMSET_IOS_BASE
+   //
+   //    the destructor for std::ios_base in the MSVC STL
+   //        releases a pointer that was not initialized in the constructor.
+   //
+    memset(this, 0, sizeof(*this));
+#endif
+    flags(initval);
+    precision(initsize);
+    width(initsize);

@@ -1,0 +1,3 @@
+class tmp
+!!!460290.cpp!!!	operator<<(inout os : ostream, in x : CharMessageBuffer) : ostream
+return os;

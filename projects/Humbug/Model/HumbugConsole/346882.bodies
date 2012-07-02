@@ -1,0 +1,13 @@
+class ProjectNode
+!!!332674.cpp!!!	ProjectNode(in type : Type, in str : string = "")
+
+	this->type = type;
+	this->str = str;
+	parent = 0;
+	//nodecount++;
+	//dbgOut(__FUNCTION__ << " [" << nodecount << "]" << std::endl);
+!!!332802.cpp!!!	~ProjectNode()
+
+	//dbgOut(__FUNCTION__ << " [" << nodecount << "]" << std::endl);
+	//nodecount--;
+	qDeleteAll(children);

@@ -1,0 +1,5 @@
+class Options
+!!!445826.cpp!!!	Options()
+LOG_DEBUG("++CONSTRUCT++");
+!!!445954.cpp!!!	~Options()
+LOG_DEBUG("--DESTRUCT--");

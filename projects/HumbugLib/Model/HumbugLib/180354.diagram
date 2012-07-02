@@ -1,0 +1,52 @@
+format 76
+
+classcanvas 128258 class_ref 257026 // CrZipFilePrivate
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 578 42 2000
+end
+classcanvas 128386 class_ref 256770 // CrZipFile
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 345 53 3005
+end
+classcanvas 129666 class_ref 278274 // CrIODevice
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 14 14 3011
+end
+classcanvas 130050 class_ref 292226 // CrZipNewInfo
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 580 386 2000
+end
+relationcanvas 128514 relation_ref 189826 // <dependency>
+  decenter_begin 266
+  decenter_end 497
+  from ref 128386 z 3006 stereotype "<<friend>>" xyz 507 207.5 3006 to ref 128258
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128642 relation_ref 189954 // <unidirectional association>
+  decenter_begin 172
+  decenter_end 324
+  from ref 128386 z 3006 to ref 128258
+  role_a_pos 559 129 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128770 relation_ref 190082 // <dependency>
+  decenter_end 337
+  from ref 128258 z 3006 stereotype "<<friend>>" xyz 508 251 3006 to ref 128386
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128898 relation_ref 190210 // <unidirectional association>
+  decenter_begin 819
+  decenter_end 437
+  from ref 128258 z 3006 to ref 128386
+  role_a_pos 505 291 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129922 relation_ref 230018 // <generalisation>
+  decenter_end 319
+  from ref 128386 z 3012 to ref 129666
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+end

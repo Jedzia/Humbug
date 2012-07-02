@@ -1,0 +1,69 @@
+class ProcessTemplateFilePrivate
+!!!421250.cpp!!!	runTextProject(inout projectPath : string) : void
+    _DEBUG_COUT("-------------------------------------");
+    _DEBUG_COUT("PRIVATE: Running ftText");
+
+    ProjectNode* prjRoot = NULL;
+    {
+        ProjectParser pp;
+        prjRoot = pp.parse(projectPath);
+        //prjRoot->children.sort();
+        //std::sort( prjRoot->children.begin(), prjRoot->children.end(), ::cmp );            
+
+
+    _DEBUG_COUT("----------processNode(prjRoot)----------");
+        processNode(prjRoot);
+
+
+    }
+
+    if(prjRoot)
+        delete prjRoot; 
+!!!421378.cpp!!!	evaluateFile(inout projectPath : string) : void
+    _DEBUG_COUT("-------------------------------------");
+    _DEBUG_COUT("PRIVATE: Running ftText");
+
+    ProjectNode* prjRoot = NULL;
+    {
+        ProjectParser pp;
+        prjRoot = pp.parse(projectPath);
+        //prjRoot->children.sort();
+        //std::sort( prjRoot->children.begin(), prjRoot->children.end(), ::cmp );            
+
+
+    _DEBUG_COUT("----------processNode(prjRoot)----------");
+        processNode(prjRoot);
+
+
+    }
+
+    if(prjRoot)
+        delete prjRoot; 
+!!!421506.cpp!!!	processNode(in node : ProjectNode, in depth : int = 0) : void
+    // sort the nodes.
+    std::sort( node->children.begin(), node->children.end(), ::cmp );            
+
+    // store the end iterator, which doesn't change
+    ProjectNode::child_const_iterator childs_end = node->children.end();
+
+    // display each element followed by the element separator
+    for( ProjectNode::child_const_iterator i = node->children.begin();
+        i != childs_end; ++i )
+    {
+        ProjectNode *curnode = *i;
+        fs::path nodepath(curnode->str);
+        if(curnode->type == ProjectNode::Type::File)
+        {
+            printSpaces(depth);
+            std::cout << "FileNode: " << curnode->str << std::endl;
+        }
+        else if(curnode->type == ProjectNode::Type::Folder)
+        {
+            printSpaces(depth);
+            std::cout << "FolderNode: " << curnode->str << std::endl;
+            processNode(curnode, depth + 2);
+        }
+    }
+!!!421634.cpp!!!	printSpaces(in amount : int) : void
+    while(--amount > 0)
+        std::cout << " ";

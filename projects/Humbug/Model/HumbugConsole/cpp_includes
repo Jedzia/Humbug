@@ -1,0 +1,20 @@
+// "a type" "needed cpp_includes"
+"std::vector" "#include <vector>"
+
+"std::list" "#include <list>"
+
+"map" "#include <map>
+using namespace std;"
+
+"std::string" "#include <string>"
+
+"std::auto_ptr" "#include <memory>"
+
+"int64_t" "#include <cstdint>"
+
+"QString" "#include <QString>"
+
+"QList" "#include <QList>"
+
+"boost::scoped_ptr" "#include <boost/scoped_ptr.hpp>"
+

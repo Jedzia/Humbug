@@ -1,0 +1,34 @@
+class CrZipNewInfo
+!!!279810.cpp!!!	CrZipNewInfo()
+    dateTime.tm_hour = 0;
+    dateTime.tm_mday = 0;
+    dateTime.tm_min = 0;
+    dateTime.tm_mon = 0;
+    dateTime.tm_sec = 0;
+    dateTime.tm_year = 0;
+!!!272898.cpp!!!	CrZipNewInfo(in name : string)
+    dateTime.tm_hour = 0;
+    dateTime.tm_mday = 0;
+    dateTime.tm_min = 0;
+    dateTime.tm_mon = 0;
+    dateTime.tm_sec = 0;
+    dateTime.tm_year = 0;
+!!!273026.cpp!!!	CrZipNewInfo(in name : string, in file : string)
+  /*QFileInfo info(file);
+  QDateTime lm = info.lastModified();
+  if (!info.exists())
+    dateTime = QDateTime::currentDateTime();
+  else
+    dateTime = lm;*/
+
+    dateTime.tm_hour = 0;
+    dateTime.tm_mday = 0;
+    dateTime.tm_min = 0;
+    dateTime.tm_mon = 0;
+    dateTime.tm_sec = 0;
+    dateTime.tm_year = 0;
+!!!273154.cpp!!!	setFileDateTime(in file : string) : void
+  /*QFileInfo info(file);
+  QDateTime lm = info.lastModified();
+  if (info.exists())
+    dateTime = lm;*/

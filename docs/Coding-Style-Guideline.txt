@@ -1,0 +1,86 @@
+
+The libraries uses the 
+> cry::test::TestClass 
+namespace:subnamespace::ClassName (like the STL) naming schema. Source files
+use the .cpp and header files the .h extension. The file name follows the
+class name or the name of the most important class, purpose or content in it
+and is therefore named in PascalNamingStyle.
+
+Classnames start with a upercase letter, namespaces are completely written in lowercase. The 
+folder structure follows the namespace naming.
+Functions and member variables start with a lowercase. It is better to prefix the latter 
+with m_ like in m_currentDate.
+
+Todo: Look if we should completely follow the ITK coding style guideline 
+from "http://www.vtk.org/Wiki/ITK_Coding_Style_Guide". They name functions with a starting
+uppercase letter. -> use function lowercase like described upper.
+
+See C++ C:\Documents and Settings\root\My Documents\Coding Standard.pdf
+
+Classes that use the STL algorithms or have to be STL compatible, use the STL naming conventions.
+Template definitions use the .hxx file extension with a possible .txx template file referenced
+in it. The file name should be completely in lowercase for these STL-like classes.
+An example is a user defined iterator or a templated predicate class. They should use functions 
+like do_something_with(...) or copy_if(). Instead of the STL naming conventions the class name
+should be named with a trailing uppercase.
+For classes that are derived from STL base classes (see 1.1) the first letter should also 
+uppercased.
+
+1.1) A class derived from a STL class:
+	template<class T, class Iterator, class BaseType = std::multimap<T, K >>
+	class AdvMap : public BaseType {
+	public:
+	...
+	};
+
+Funktor objects should be named in lowercase (see 1.2).
+
+1.2) Funktor object class.
+	class  join  { // binäre Operation als Funktor
+		public:
+			std::string  operator()(const  std::string&  a,
+									const  std::string&  b)  {
+				return  a  +  "  and  "  +  b;
+			}
+	};	
+
+----------
+
+
+  path path::extension() const
+  {
+    path name(filename());
+    if (name == dot_path || name == dot_dot_path) return path();
+    size_type pos(name.m_pathname.rfind(dot));
+    return pos == string_type::npos
+      ? path()
+      : path(name.m_pathname.c_str() + pos);
+  }
+
+
++++++
+
+Creation Methods
+
+Creation or Factory methods (see 2.1) are named in Pascal-style like constructors.
+
+2.1) Factory Method:
+	//! Abstract base class for Product creator.
+	class Creator {
+	  public:
+		//! Creates a new instance of a Product.
+		/// \abstract Overwrite this method in new Product implementations. 
+		virtual Product * FactoryMethod() = 0;
+
+		void anOperation();
+
+	};
+	//! Creates objects of the Product type.
+	class ConcreteCreator : public Creator {
+	  public:
+		//! Creates a new instance of a Product.
+		/// \overridden In this implementation this function returns only ConcreteProduct's.
+		virtual Product * FactoryMethod();
+
+	};
+

@@ -1,0 +1,114 @@
+class ProjectProcessor
+!!!340610.cpp!!!	~ProjectProcessor()
+
+!!!340738.cpp!!!	run(inout root : ProjectNode = NULL) : ProjectNode
+templates();
+
+if (root == NULL) {
+    root = new ProjectNode(ProjectNode::Root, "Root");
+
+    //root->children += new ProjectNode(ProjectNode::File, "Moese");
+}
+
+Project::Folder_sequence& folders = tmplProject->Folder();
+Project::File_sequence& files = tmplProject->File();
+processFolder(folders, root);
+processFile(files, root);
+return root;
+!!!431746.cpp!!!	templates() : void
+int tmplsetcount = 1;
+Project::TemplateSet_sequence& tmplSetSequ = tmplProject->TemplateSet();
+
+for( Project::TemplateSet_const_iterator tmplset_it( tmplSetSequ.begin() ),
+     tmplset_end = tmplSetSequ.end();
+     tmplset_it != tmplset_end;
+     ++tmplset_it )
+{
+    const TemplateSet::name_type& name = tmplset_it->name();
+    std::cout << "TemplateSet[" << tmplsetcount << "] (" << name << ")" << std::endl;
+    const TemplateSet& tmplset = (*tmplset_it);
+    const TemplateSet::Literal_sequence& litsequ = tmplset.Literal();
+
+    int litcount = 1;
+
+    for( TemplateSet::Literal_const_iterator lit_it( litsequ.begin() ),
+         lit_end = litsequ.end();
+         lit_it != lit_end;
+         ++lit_it )
+    {
+        const Literal& lit = (*lit_it);
+
+        //const Literal::template_optional& litTemplate = lit.template_();
+        const Literal::translation_optional& lit_translation = lit.translation();
+
+        //bool haslitTemplate = litTemplate.present();
+        bool haslitTranslation = lit_translation.present();
+
+        if (haslitTranslation) {
+            std::cout << "  Literal[" << litcount << "] {" << lit.template_() << "} -> " <<
+            lit_translation << std::endl;
+        }
+        else {
+            std::cout << "  Literal[" << litcount << "] {" << lit.template_() << "} " <<
+            "NEEDS INPUT" << std::endl;
+        }
+
+        litcount++;
+    }
+    tmplsetcount++;
+}
+!!!340866.cpp!!!	test(inout root : ProjectNode = NULL) : ProjectNode
+if (root == NULL) {
+    root = new ProjectNode(ProjectNode::Root, "Root");
+}
+
+addChild( root, new ProjectNode(ProjectNode::File, "Moese") );
+ProjectNode* subfolder = new ProjectNode(ProjectNode::Folder, "SubFolder");
+addChild(root, subfolder);
+addChild( subfolder, new ProjectNode(ProjectNode::File, "SubFolder.file") );
+addChild( subfolder, new ProjectNode(ProjectNode::File, "SubFolder.file2") );
+
+subfolder = new ProjectNode(ProjectNode::Folder, "OtherSubFolder");
+addChild(root, subfolder);
+addChild( subfolder, new ProjectNode(ProjectNode::File, "OtherSubFolder.file") );
+addChild( subfolder, new ProjectNode(ProjectNode::File, "OtherSubFolder.file2") );
+
+return root;
+!!!340994.cpp!!!	processFile(in files : FolderType::File_sequence, inout parrent : ProjectNode, in level : int = 0) : void
+for( FolderType::File_const_iterator i( files.begin() );
+     i != files.end();
+     ++i )
+{
+    // Element "greeting" und Element "name" ausgeben
+    indent(level);
+    dbgOut("folderType File: [" << level << "] " << i->name() << std::endl);
+    ProjectNode* curFile = new ProjectNode( ProjectNode::File, i->name() );
+    addChild(parrent, curFile);
+}
+!!!341122.cpp!!!	processFolder(in folders : FolderType::Folder_sequence, inout parrent : ProjectNode, in level : int = 0) : void
+FolderType::Folder_const_iterator i( folders.begin() );
+
+for(; i != folders.end(); ++i )
+{
+    //dbgOut(std::cout << "folderType Folder: [" << level << "] " << i->name() << std::endl);
+    indent(level);
+    dbgOut("folderType Folder: [" << level << "] " << i->name() << std::endl);
+    ProjectNode* curFolder = new ProjectNode( ProjectNode::Folder, i->name() );
+    addChild(parrent, curFolder);
+    processFolder(i->Folder(), curFolder, level + 1);
+    processFile(i->File(), curFolder, level);
+
+    //ProcessFile(static_cast<const project::file_sequence>(i->file()));
+}
+!!!341250.cpp!!!	indent(in level : int) : void
+for (int i = 0; i < level; i++) {
+    dbgOut("\t");
+}
+!!!341378.cpp!!!	addChild(inout parent : ProjectNode, inout child : ProjectNode) : void
+if (child) {
+    parent->children.push_back(child);
+
+    //parent->str += child->str;
+    child->parent = parent;
+    child->toolTip = "toolTipText: " + child->str;
+}

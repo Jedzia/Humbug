@@ -1,0 +1,211 @@
+class ProgOptions
+!!!362498.cpp!!!	ProgOptions(in ac : int, inout av : char)
+dbgOut(__FUNCTION__ << std::endl);
+m_poptions->processingMode = ProcessProject::pmUnknown;
+//(m_poptions.optionList).reset(new ConfigOptionList());
+m_poptions->optionList = new ConfigOptionList;
+//m_poptions->optionList->addOption(new ConfigString("Code", "MyCodeTempl", "Templates"));
+m_result = prepare(m_ac, m_av, *m_poptions);
+!!!362626.cpp!!!	~ProgOptions()
+delete(m_poptions->optionList);
+m_poptions->optionList = NULL;
+delete(m_poptions);
+dbgOut(__FUNCTION__ << std::endl);
+!!!362754.cpp!!!	language(in x : int) : char
+    return "AsciiDoc";
+!!!459138.cpp!!!	initGeneral(inout optionGroup : boost::program_options::options_description) : void
+optionGroup.add_options()
+    ("help,h", "produce a help message")
+
+//("help-module", value<string>()->implicit(),
+    //("help-module", po::wvalue<wstring>(),
+    ("help-module", po::value<string>()->implicit_value(string("list")),
+    "produce a help for a given module")
+    ("version", "output the version number")
+
+//("vfatal", "verbosity level: display only fatal errors.")
+    ("verror", "verbosity level: display errors.")
+    ("vwarn", "verbosity level: display warn messages.")
+    ("vinfo", "verbosity level: display info messages.")
+    ("vdebug,v", "verbosity level: display debug messages.")
+    ("vtrace", "verbosity level: display trace messages.")
+    ("input-file", po::value< vector<string> >(), "input file")
+    ("project-file", po::value< string >(), "project file")
+    ("subst", po::value< vector<string> >(), "template substitution. "
+    "Example: \n--subst \"TEMPLATE=This is my replacement text\"")
+;
+!!!466306.cpp!!!	initInput(inout optionGroup : boost::program_options::options_description) : void
+optionGroup.add_options()
+    ("input-xxx", po::value< vector<string> >(), "input xxx ")
+;
+!!!459266.cpp!!!	initOutput(inout optionGroup : boost::program_options::options_description) : void
+optionGroup.add_options()
+    ("display", po::wvalue<wstring>(), "display to use")
+    ("outfile,o", po::value<string>(), "Filename for the output")
+;
+!!!459394.cpp!!!	initBackend(inout optionGroup : boost::program_options::options_description) : void
+optionGroup.add_options()
+    ("num-threads", po::wvalue<int>(), "the initial number of threads")
+;
+!!!459650.cpp!!!	prepareInputFiles(inout m_p : ProcessProject::Options, in vm : boost::program_options::variables_map) : ProgOptions::Result
+if ( vm.count("project-file") && vm.count("input-file")) {
+    return rsProgOptionsError;
+}
+
+if ( vm.count("input-file") ) {
+    m_p.inputfiles = vm["input-file"].as< vector<string> >();
+    csz::dbg << _T("Input files are: ") <<
+    m_p.inputfiles << LOGGER_ENDMSG;
+    m_p.processingMode = ProcessProject::pmFiles;
+}
+
+if ( vm.count("project-file") ) {
+    m_p.projectfile = vm["project-file"].as<string>();
+    m_p.processingMode = ProcessProject::pmProject;
+}
+
+if (m_p.processingMode == ProcessProject::pmUnknown) {
+    return rsNoInputFiles;
+}
+return rsOk;
+!!!459778.cpp!!!	prepareTemplates(inout m_p : ProcessProject::Options, in vm : boost::program_options::variables_map) : ProgOptions::Result
+if ( !vm.count("subst") ) {
+    return rsNoInputFiles;
+}
+
+const vector<string>& templates = vm["subst"].as< vector<string> >();
+int cnt = 1;
+
+for( vector<string>::const_iterator i = templates.begin(),
+     end = templates.end();
+     i != end; ++i )
+{
+    const std::string& item = (*i);
+    string::size_type tpos = item.find_first_of(SUBST_DELIM);
+    string templateStr(item, 0, tpos);
+    string substituteStr(item, tpos + 1, item.length());
+    ConfigString* s = new ConfigString(templateStr, substituteStr, "Templates");
+    m_p.optionList->addOption(s);
+    cnt++;
+}
+return rsOk;
+!!!363138.cpp!!!	prepare(in ac : int, inout av : char, inout m_p : ProcessProject::Options) : ProgOptions::Result
+try {
+    csz::dbg << "Static debug message, Prepare Options " << LOGGER_ENDMSG;
+
+    // Declare three groups of options.
+    po::options_description general(DESCR_GENERAL);
+    initGeneral(general);
+    po::options_description output(DESCR_OUTPUT);
+    initOutput(output);
+    po::options_description backend("Backend options");
+    initBackend(backend);
+
+    // Declare an options description instance which will include
+    // all the options
+    po::options_description all(DESCR_ALL);
+    all.add(general).add(output).add(backend);
+
+    // Declare an options description instance which will be shown
+    // to the user
+    po::options_description visible(DESCR_ALL);
+    visible.add(general).add(output);
+    po::positional_options_description p;
+    p.add("input-file", -1);
+
+    // Process input data.
+    //store(parse_command_line(ac, av, all), vm);
+    po::variables_map vm;
+    po::store(po::command_line_parser(ac, av).
+        options(all).positional(p).run(), vm);
+    po::notify(vm);
+
+    // debugging level and display detail.
+    if ( vm.count("vdebug") ) {
+        cout << "Juhu, vdebug gewaehlt" << std::endl;
+        mDebug = true;
+        mDebugLevel = 5;
+    }
+    else if ( vm.count("vtrace") )   {
+        cout << "Juhu, vtrace gewaehlt" << std::endl;
+        mDebug = true;
+        mDebugLevel = 6;
+    }
+
+    // help options
+    if ( vm.count("help") ) {
+        cout << visible;
+        return rsHelpRequested;
+    }
+
+    // detailed help display
+    if ( vm.count("help-module") ) {
+        const string& s = vm["help-module"].as<string>();
+
+        //if ( s == _T("output") ) {
+        if ( s == "list" ) {
+            cout << "List of help-modules: output backend" << endl;
+        }
+        else if ( s == "output" ) {
+            cout << output;
+        }
+        else if ( s == "backend" )   {
+            cout << backend;
+        }
+        else {
+            cout << "Unknown module '" <<
+            s << "' in the --help-module option\n";
+            return rsProgOptionsError;
+        }
+
+        return rsHelpRequested;
+    }
+
+    if ( vm.count("num-threads") ) {
+        wcout << _T("The 'num-threads' options was set to ") <<
+        vm["num-threads"].as<int>() << "\n";
+    }
+
+    if ( vm.count("num-threads") ) {
+        wcout << _T("The 'num-threads' options was set to ") <<
+        vm["num-threads"].as<int>() << "\n";
+    }
+
+    if ( vm.count("display") ) {
+        //wcout << L"The 'display' option was set to "
+        wcout << _T("The 'display' option was set to ") <<
+        vm["display"].as<wstring>() << "\n";
+    }
+
+    // Prepare input parameters
+    Result inResult = prepareInputFiles(m_p, vm);
+    if ( inResult != rsOk) {
+        cout << visible;
+        cout << endl;
+        cout << "You have to specify a project-file OR input-file(s) on the command line." <<
+        endl;
+        return inResult;
+    }
+
+    // Prepare output parameters
+    if ( vm.count("outfile") ) {
+        //wcout << L"The 'display' option was set to "
+        cout << "The 'outfile' option was set to " <<
+        vm["outfile"].as<string>() << "\n";
+        m_p.outfile = vm["outfile"].as<string>();
+        m_p.optionList->addOption( new ConfigString("OutFile", m_p.outfile, "Templates") );
+    }
+
+   // check for valid output parameters.
+   if ( m_p.processingMode == ProcessProject::pmFiles && m_p.outfile.empty())
+   {
+       return rsNoOutputFiles;
+   }
+
+    inResult = prepareTemplates(m_p, vm);
+}
+catch (std::exception& e) {
+    cout << ">> " << e.what() << " <<\n";
+    return rsFatalError;
+}
+return rsOk;

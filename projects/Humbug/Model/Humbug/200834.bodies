@@ -1,0 +1,4 @@
+class xxTmCamelCase
+!!!438786.cpp!!!	transform(inout value : string) : string
+//isupper(rInput[0]);
+return value;

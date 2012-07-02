@@ -1,0 +1,3 @@
+class xxTmProjectName
+!!!217090.cpp!!!	transform(inout value : string) : string
+return value;

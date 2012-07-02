@@ -1,0 +1,42 @@
+class LocationInfo
+!!!290434.cpp!!!	operator=(in src : LocationInfo) : LocationInfo
+fileName = src.fileName;
+methodName = src.methodName;
+lineNumber = src.lineNumber;
+return * this;
+!!!312706.cpp!!!	clear() : void
+fileName = NA;
+methodName = NA_METHOD;
+lineNumber = -1;
+!!!312066.cpp!!!	getLocationUnavailable() : LocationInfo
+static const LocationInfo unavailable;
+return unavailable;
+!!!313090.cpp!!!	getClassName() : const std::string
+std::string tmp(methodName);
+size_t colonPos = tmp.find("::");
+if (colonPos != std::string::npos) {
+   tmp.erase(colonPos);
+   size_t spacePos = tmp.find_last_of(' ');
+   if (spacePos != std::string::npos) {
+       tmp.erase(0, spacePos + 1);
+   }
+   return tmp;
+}
+tmp.erase(0, tmp.length() );
+return tmp;
+!!!312962.cpp!!!	getMethodName() : const std::string
+std::string tmp(methodName);
+size_t colonPos = tmp.find("::");
+if (colonPos != std::string::npos) {
+  tmp.erase(0, colonPos + 2);
+} else {
+  size_t spacePos = tmp.find(' ');
+  if (spacePos != std::string::npos) {
+    tmp.erase(0, spacePos + 1);
+  }
+}
+size_t parenPos = tmp.find('(');
+if (parenPos != std::string::npos) {
+  tmp.erase(parenPos);
+}
+return tmp;

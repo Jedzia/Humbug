@@ -1,0 +1,4 @@
+
+
+V001	Grundlegendes buildsystem mit boost und QT4. Eine sub lib CppStructz
+	mit PIMPL Beispiel-Pattern.

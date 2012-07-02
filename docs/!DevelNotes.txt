@@ -1,0 +1,105 @@
+-X-X-X-X- Mittwoch, 28. September 2011 -----------------------------------------------------------------------------
+
+CMake Variable Mappings
+
+As example, if the iconv library is found, ${HAVE_ICONV}
+is set to true and in the corresponding config.h
+  #define HAVE_ICONV 1
+ist set available as defined like above.
+
+If there is a CMake User Option like USE_NLS (For enabling
+native language support in your program), that enables a project
+or library controlling CMake Variable like ${YourProgram_NLS}
+  #ifdef Humbug_NLS
+  #  define ENABLE_NLS 1
+  ... other NLS related options ...
+  #endif
+a config.h define with ENABLE_NLS should signal that. It is better
+to wrap that Humbug_NLS define with ENABLE_NLS for later 
+changes.
+
+As a summary:
+
+      Type       |  CMake    maps to |   config.h
+========================================================
+configure Option | HAVE_ICONV        |  HAVE_ICONV
+CMake Option     | YourProgram_NLS   |  YourProgram_NLS
+Global Option    | USE_NLS           |  ENABLE_NLS
+
+----------------------------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 28 Jul 2011 14:55:31 -----------------------------------------------------------
+
+Coding Style
+http://www.vtk.org/Wiki/ITK_Coding_Style_Guide
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 23 Jul 2011 04:13:56 -----------------------------------------------------------
+
+- Xerxes für vc100 einstellen.
+- NLS Problem. Wenn NLS ausgeschaltet ist zeigt CMake einen Fehler an.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 21 Jul 2011 05:33:42 -----------------------------------------------------------
+
+- Eine ZipLib bauen, die auf miniunz und minizip basiert 
+  (c:\devel\zlib-1.2.5\contrib\minizip\miniunz.c).
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 11 Jun 2011 08:34:25 -----------------------------------------------------------
+
+global.h 
+========
+Muss in jede Interface-Header-Datei, also die .h Dateien, die der Benutzer 
+einbindet, als Erste #include eingetragen werden.
+global.h definiert den Haupt-Namespace, einfache warning Macros und legt die Grobstruktur
+fest, wie "build/cmake/include/platform.h" die Sichtbarkeit der Bibliotheksfunktionen
+definiert.
+EXPLICITELY_USE_PLATFORM_VARS	Es werden die nachfolgenden Variablen in der globalen 
+								PLATFORM-Form genutzt. 
+								* PLATFORM_ALL_DYN_LINK
+								* PLATFORM_SOURCE
+								* PLATFORM_ALL_STATIC_LINK
+								
+CppStructz_ALL_DYN_LINK			Interface als DLL Export oder Import Funktionen
+								bereitstellen. Im Code 
+									class PLATFORM_DECL TestClass { ... };
+								benutzen. Todo: Vielleicht hier CSZ_EXPORT benutzen.
+								
+CppStructz_SOURCE				Zur Erstellung einer DLL setzen. Funktionen sind dann
+								dllspec(dllexport) unter Windows.
+								
+CppStructz_ALL_STATIC_LINK		Alles statisch linken, keine DLL-Erzeugung.
+
+Korrespondierend dazu ist im Macro ADD_LIBRARY_X aus library.cmake der zweite Parameter
+SHARED oder STATIC zu setzen. Dieser definiert automatisch die benötigten Preprocessor-
+Parameter. Dieses Macro setzt z.B. ADD_DEFINITIONS("-D${PROJECT_NAME}_SOURCE") und
+ADD_DEFINITIONS("-DPLATFORM_SOURCE").
+Die CMake eigene Variable {Projektname}_EXPORTS (z.B. CppStructz_EXPORTS), die eine
+DLL Erstellung anzeigt, wird nicht benötigt. Die ${PROJECT_NAME}_SOURCE Definitionen
+sind vorzuziehen.
+
+stdafx.h 
+========
+Muss als Pre-Compiled-Header in jede cpp source Datei. In stdafx.h wird auch 
+global.h und danach dann 
+	#ifdef HAVE_CONFIG_H
+	#	include <config.h>
+	#endif
+eingebunden. Damit ist die config für den Bibliotheks-Benutzer nicht sichtbar.
+-----------------------------------------------------------------------------------------------
+
+
+
+
+Check for boost usage:
+
+root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
+$ grep -li -R boost * | grep -v \.svn
+
+-X-X-X-X- Mo, 13 Jun 2011 01:16:26 -----------------------------------------------------------
+
+Generate a project skeleton
+D:\E\Projects\C++\Humbug\projects\QBounce>
+..\build\scripts\createskeleton.bat QBounce
+-----------------------------------------------------------------------------------------------
