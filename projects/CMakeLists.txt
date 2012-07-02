@@ -43,7 +43,7 @@ ADD_SUBDIRECTORY(HumbugLib)
 
 #ADD_SUBDIRECTORY(QBounce)
 ADD_SUBDIRECTORY(Humbug )
-#ADD_SUBDIRECTORY(Playground)
+ADD_SUBDIRECTORY(Playground)
 #ADD_SUBDIRECTORY(build/Templates/src/Templates)
 
 # Spit out a configuration summary. 

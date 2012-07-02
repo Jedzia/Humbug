@@ -39,7 +39,7 @@ SET(USE_LIB_QSCINTILLA TRUE)
 
 #SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.
-SET(USE_LIB_XSD TRUE)
+#SET(USE_LIB_XSD TRUE)
 
 SET(USE_LIB_ZLIB TRUE)
 
@@ -60,11 +60,11 @@ SET(Playground_sources
         error/error.cpp 
 )
 
-IF(WIN32)
+IF(WIN32 and NOT CYGWIN)
 SET(Playground_XSD_sources 
 #Todo: LINUX xsdcxx xerces build isn't working correct.        
 )
-ENDIF(WIN32)
+ENDIF()
 
 SET(Playground_mocfiles 
 )
@@ -84,7 +84,7 @@ QT4_WRAP_UI( ui_outfiles  ${Playground_uifiles} )
 MESSAGE(STATUS "ui_outfiles: ${ui_outfiles} ")
 
 INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
-INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
+#INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
 
 IF(LINUX)
@@ -185,16 +185,16 @@ SET_PROPERTY(TARGET throw_error PROPERTY FOLDER "Playground")
 
 # csz_textdocument example
 #TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} ${QSCINTILLA2_LIB} CppStructz)
-TARGET_LINK_LIBRARIES(csz_textdocument CppStructz)
-TargetLinkBoost(csz_textdocument "filesystem;system;regex")
-Copy_DLL_To_Target(csz_textdocument CppStructz)
-Copy_ReleaseDLL_To_Target(csz_textdocument ICU)
+#TARGET_LINK_LIBRARIES(csz_textdocument CppStructz)
+#TargetLinkBoost(csz_textdocument "filesystem;system;regex")
+#Copy_DLL_To_Target(csz_textdocument CppStructz)
+#Copy_ReleaseDLL_To_Target(csz_textdocument ICU)
 
 # unicode/ICU example
-TARGET_LINK_LIBRARIES(unicode ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} ${QSCINTILLA2_LIB} CppStructz)
-TargetLinkBoost(unicode "filesystem;system;regex")
-Copy_DLL_To_Target(unicode CppStructz)
-Copy_ReleaseDLL_To_Target(unicode ICU)
+#TARGET_LINK_LIBRARIES(unicode ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} ${QSCINTILLA2_LIB} CppStructz)
+#TargetLinkBoost(unicode "filesystem;system;regex")
+#Copy_DLL_To_Target(unicode CppStructz)
+#Copy_ReleaseDLL_To_Target(unicode ICU)
 
 # intl example
 IF(USE_NLS)
@@ -223,7 +223,7 @@ ENDIF(USE_NLS)
 
 
 # loki example
-TARGET_LINK_LIBRARIES(loki1 CppStructz)
+#TARGET_LINK_LIBRARIES(loki1 CppStructz)
 
 # Zlib test example
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
@@ -233,21 +233,3 @@ IF(WIN32)
 ELSE(WIN32)
   TARGET_LINK_LIBRARIES(zlibtest ${ZLIB_LIBRARY})
 ENDIF(WIN32)
-
-
-# Precompiled headers test
-INCLUDE (PCHSupport)
-SET(precompiledtest_sources
-  precompiled/precompiledtest.cpp
-)  
-ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" precompiledtest_sources)
-ADD_EXECUTABLE(precompiledtest ${precompiledtest_sources})
-TargetLinkBoost(precompiledtest "filesystem;system")
-SET_PROPERTY(TARGET precompiledtest PROPERTY FOLDER "Playground/PCH")
-ADD_PRECOMPILED_HEADER( precompiledtest
-  ${CMAKE_CURRENT_SOURCE_DIR}/precompiled/stdafx.cpp 
-  ${CMAKE_CURRENT_BINARY_DIR}/precompiled/stdafx.h.gch 
-)
-SET_TARGET_PROPERTIES(precompiledtest PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-
-
