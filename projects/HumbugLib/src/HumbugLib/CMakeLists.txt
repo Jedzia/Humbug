@@ -26,6 +26,9 @@ INCLUDE (library)
 
 # Check for wchar_t
 #SET(CHECK_STRINGS TRUE)
+
+#SET(USE_SDL TRUE)
+#SET(USE_LUA TRUE)
 # apply the local project settings
 INCLUDE (bindings)
 

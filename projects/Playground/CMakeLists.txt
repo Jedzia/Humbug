@@ -32,16 +32,17 @@ SET(USE_LIB_BOOST TRUE)
 
 #SET(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
 # Use QT4 libraries for this project.
-SET(USE_LIB_QT4 TRUE)
+#SET(USE_LIB_QT4 TRUE)
 
 # Use QSCINTILLA libraries for this project.
-SET(USE_LIB_QSCINTILLA TRUE)
+#SET(USE_LIB_QSCINTILLA TRUE)
 
 #SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.
 #SET(USE_LIB_XSD TRUE)
 
-SET(USE_LIB_ZLIB TRUE)
+SET(USE_SDL TRUE)
+#SET(USE_LUA TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -60,7 +61,7 @@ SET(Playground_sources
         error/error.cpp 
 )
 
-IF(WIN32 and NOT CYGWIN)
+IF(WIN32 AND NOT CYGWIN)
 SET(Playground_XSD_sources 
 #Todo: LINUX xsdcxx xerces build isn't working correct.        
 )
@@ -175,7 +176,6 @@ FOREACH(f ${playground_sources})
 ENDFOREACH()
 
 
-
 #add an extra target.
 ADD_EXECUTABLE(throw_error error/error.cpp)
 TargetLinkBoost(throw_error "filesystem;system")
@@ -226,10 +226,43 @@ ENDIF(USE_NLS)
 #TARGET_LINK_LIBRARIES(loki1 CppStructz)
 
 # Zlib test example
-INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
+#SET(USE_LIB_ZLIB TRUE)
+
+#INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 #TARGET_LINK_LIBRARIES(zlibtest ${ZLIB_LIBRARY})
-IF(WIN32)
-  TARGET_LINK_LIBRARIES(zlibtest "C:/gnuwin32/lib/zdll.lib")
-ELSE(WIN32)
-  TARGET_LINK_LIBRARIES(zlibtest ${ZLIB_LIBRARY})
-ENDIF(WIN32)
+#IF(WIN32)
+#  TARGET_LINK_LIBRARIES(zlibtest "C:/gnuwin32/lib/zdll.lib")
+#ELSE(WIN32)
+#  TARGET_LINK_LIBRARIES(zlibtest ${ZLIB_LIBRARY})
+#ENDIF(WIN32)
+
+
+# ----- SDL Part -----
+
+INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+
+FILE(GLOB playground_SDL_sources ${PROJECT_SOURCE_DIR}/SDL/${PLAYGROUND_CPP_FILES})
+FILE(GLOB playground_SDL_headers ${PROJECT_SOURCE_DIR}/SDL/${PLAYGROUND_HPP_FILES})
+
+FOREACH(f ${playground_SDL_sources})
+	GET_FILENAME_COMPONENT(_target_name  ${f} NAME_WE)
+	IF(${_target_name} STREQUAL "stdafx")
+	ELSE(${_target_name} STREQUAL "stdafx")
+		SET(_target_name "SDL_${_target_name}")
+		ADD_EXECUTABLE(${_target_name} ${f})
+#		TargetLinkBoost(${_target_name} "filesystem;system")
+		TARGET_LINK_LIBRARIES(${_target_name} ${SDL_LIBRARY})
+
+		SET_PROPERTY(TARGET ${_target_name} PROPERTY FOLDER "Playground/SDL")
+		SET_TARGET_PROPERTIES(${_target_name}
+		PROPERTIES
+		EXCLUDE_FROM_ALL_BUILD
+		TRUE)
+		MESSAGE(STATUS "[GLOB EXAMPLE] Adding Example Project: ${_target_name}")
+		Copy_DLL_To_Target(${_target_name} SDL_LIBRARY)
+	ENDIF(${_target_name} STREQUAL "stdafx")
+ENDFOREACH()
+
+
+
+

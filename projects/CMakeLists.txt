@@ -15,7 +15,9 @@
 ## CMake Useful Variables: http://cmake.org/Wiki/CMake_Useful_Variables
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
-set(CMAKE_LEGACY_CYGWIN_WIN32 1)
+if ( CYGWIN )
+  set(CMAKE_LEGACY_CYGWIN_WIN32 1)
+endif( CYGWIN )
 
 PROJECT( Humbug )
 SET(CMAKE_BUILD_TYPE Release)
@@ -31,7 +33,6 @@ INCLUDE (debug)
 #SET(BUILD_SHARED_LIBS ON)
 # Do not use the CorePlug dependency for CppStructz
 SET(CppStructz_No_CorePlug 1)
-
 
 
 
@@ -81,4 +82,7 @@ if(${${_prj_name}_NLS})
 	message(STATUS "     - library: ${ZLIB_LIBRARY}")
 	message(STATUS)
 endif()
+MESSAGE(STATUS "SDL_LIBRARY_BLA is ${SDL_LIBRARY_BLA}")
+MESSAGE(STATUS "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
+MESSAGE(STATUS "SDL_LIBRARY is ${SDL_LIBRARY}")
 message(STATUS "================================================================================")
