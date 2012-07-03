@@ -240,8 +240,9 @@ ENDIF(USE_NLS)
 # ----- SDL Part -----
 
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+ADD_DEFINITIONS("-DHAVE_OPENGL")
 
-FILE(GLOB playground_SDL_sources ${PROJECT_SOURCE_DIR}/SDL/${PLAYGROUND_CPP_FILES})
+FILE(GLOB playground_SDL_sources ${PROJECT_SOURCE_DIR}/SDL/*.c;${PROJECT_SOURCE_DIR}/SDL/*.cpp)
 FILE(GLOB playground_SDL_headers ${PROJECT_SOURCE_DIR}/SDL/${PLAYGROUND_HPP_FILES})
 
 FOREACH(f ${playground_SDL_sources})
@@ -263,6 +264,8 @@ FOREACH(f ${playground_SDL_sources})
 	ENDIF(${_target_name} STREQUAL "stdafx")
 ENDFOREACH()
 
+Copy_File_To_Target(SDL_testsprite "${PROJECT_SOURCE_DIR}/SDL/icon.bmp")
+Copy_File_To_Target(SDL_testblitspeed "${PROJECT_SOURCE_DIR}/SDL/sample.bmp")
 
 
 

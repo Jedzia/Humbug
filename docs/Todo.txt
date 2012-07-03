@@ -1,0 +1,10 @@
+-X-X-X-X- Dienstag, 3. Juli 2012 -----------------------------------------------------------------------------
+
+-- SDL_LIBRARY_BLA is
+-- SDL_LIBRARY_TEMP is /usr/lib/libSDLmain.a;/usr/lib/libSDLmain.a;/usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a;-lpthread
+;-lpthread;-lpthread
+-- SDL_LIBRARY is /usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a;-lpthread
+-- ================================================================================
+
+Better front info for options used in bindings.cmake -> macro.
+----------------------------------------------------------------------------------------------------------------
