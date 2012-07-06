@@ -49,11 +49,12 @@
 
 //CPPSTRUCTZ_USE_NAMESPACE
 
-int main(int argc, char *argv[])
+int bmain(int argc, char *argv[])
 {
 
     _CRT_DEBUG_BLOCK
 
+    //int *depp2 = new int(4);
 //    QApplication app(argc, argv);
 //	QString plugpath(QString::fromStdString(CszGlobals::Instance().getInstallPath() + "/plugins"));
 //	QStringList plugpaths(plugpath);
@@ -79,6 +80,8 @@ int main(int argc, char *argv[])
 //    int ff = app.exec();
     int ff = 0;
     std::cout << std::endl << "This is Humbug" << std::endl;
+
+    //int *depp = new int(4);
 
     //freopen( "c:\\log2.txt", "w", stderr);
     //freopen( "log2.txt", "w", stderr);

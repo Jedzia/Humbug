@@ -1,14 +1,15 @@
 @echo off
+
+@set TMPDIR=DEPS
 @set CURDIR=%CD%
 @set SCRDIR=%~dp0
 REM echo The LIB: %LIB%
-REM goto ende
 
 REM set PINCLUDE=$(DXSDK_DIR)Include;$(VCInstallDir)include;$(WindowsSdkDir)\include;$(FrameworkSDKDir)include;%INCLUDE%
 set PINCLUDE=%INCLUDE%;..\..\SDL-1.2.15\include
 REM set PLIB=$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(WindowsSdkDir)\lib;$(FrameworkSDKDir)lib;$(VSInstallDir)lib;%LIB%
 set PLIB=%LIB%
-goto SDL_gfx
+REM goto SDL_gfx
  
 call fetchdependency http://www.libsdl.org/release/ SDL-1.2.15.tar.gz
 if %ERRORLEVEL% NEQ 0 goto error
@@ -56,10 +57,10 @@ REM if %ERRORLEVEL% NEQ 0 goto error
 REM call builddependency SDL_gfx-2.0.23/VisualC SDL_gfx.sln SDL_gfx SDL-1.2.15\VisualC\SDL
 set PINCLUDE=%INCLUDE%;..\SDL-1.2.15\include;..\
 call builddependency SDL_gfx-2.0.23 SDL_gfx_VS2008.sln SDL_gfx SDL-1.2.15\VisualC\SDL
-copy tmp\SDL_gfx-2.0.23\Release\SDL_gfx.lib tmp\SDL_gfx-2.0.23\Test\
-del tmp\SDL_gfx-2.0.23\Test\Debug
-call builddependency SDL_gfx-2.0.23 SDL_gfx_VS2008.sln ALL SDL-1.2.15\VisualC\SDL
-if %ERRORLEVEL% NEQ 0 goto error
+REM copy %TMPDIR%\SDL_gfx-2.0.23\Release\SDL_gfx.lib %TMPDIR%\SDL_gfx-2.0.23\Test\
+REM del %TMPDIR%\SDL_gfx-2.0.23\Test\Debug
+REM call builddependency SDL_gfx-2.0.23 SDL_gfx_VS2008.sln ALL SDL-1.2.15\VisualC\SDL
+REM if %ERRORLEVEL% NEQ 0 goto error
 
 
 

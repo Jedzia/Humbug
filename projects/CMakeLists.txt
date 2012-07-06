@@ -20,7 +20,7 @@ if ( CYGWIN )
 endif( CYGWIN )
 
 PROJECT( Humbug )
-SET(CMAKE_BUILD_TYPE Release)
+SET(CMAKE_BUILD_TYPE Debug)
 
 SET(P_BUILD_PATH "${CMAKE_SOURCE_DIR}/build")
 SET(P_MODULE_PATH "${P_BUILD_PATH}/cmake/Modules")

@@ -39,6 +39,7 @@ SET(USE_LIB_BOOST TRUE)
 #SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.
 #SET(USE_LIB_XSD TRUE)
+SET(USE_SDL TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -50,10 +51,28 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
 
+SET(Humbug_GUI_sources 
+		GUI/Visual/Application.cpp
+		GUI/Visual/EventHandler.cpp
+		GUI/Visual/MessageHandler.cpp
+		GUI/Visual/Thread.cpp
+		GUI/Visual/Timer.cpp
+
+		GUI/TestEventHandler.cpp
+		GUI/TestThread.cpp
+		GUI/TestTimer.cpp
+)
 
 SET(Humbug_headers 
-#        SelectionMarker.h
-#        Selection.h
+		GUI/Visual/Application.h
+		GUI/Visual/EventHandler.h
+		GUI/Visual/MessageHandler.h
+		GUI/Visual/Thread.h
+		GUI/Visual/Timer.h
+
+		GUI/TestEventHandler.h
+		GUI/TestThread.h
+		GUI/TestTimer.h
 #        Customlexer.h
 #        qpid/InlineAllocator.h
 #        qpid/InlineVector.h
@@ -63,6 +82,7 @@ SET(Humbug_headers
 
 
 SET(Humbug_sources 
+		${Humbug_GUI_sources}
         main.cpp 
 #        calculatorform.cpp
 #        mainwindow.cpp
@@ -114,6 +134,8 @@ SET(Humbug_resfiles
 #INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
 #INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
+#ADD_DEFINITIONS("-DHAVE_OPENGL")
+INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR})
 
 IF(LINUX)
@@ -146,14 +168,19 @@ ADD_EXECUTABLE(Humbug #WIN32
 
         ${Humbug_sources} 
         ${Humbug_headers}
-        ${Humbug_XSD_sources}
-        ${Humbug_mocfiles} 
+#        ${Humbug_XSD_sources}
+#        ${Humbug_mocfiles} 
         ${res_outfiles} 
         ${moc_outfiles} 
         ${ui_outfiles}
 )
 
-#copy_resources_to_build_tree(Humbug)
+
+#set_target_properties(Humbug 
+#                        PROPERTIES RESOURCE icons/blue.png
+##                        prop2 value2 ...
+#)
+Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
 
 # Copy linked dll to the executables bin dir
 # We need to check if shared or static .... and put this into a macro.
@@ -181,6 +208,7 @@ ADD_EXECUTABLE(Humbug #WIN32
 #Copy_DLL_To_Target(Humbug XSD)
 #Copy_DLL_To_Target(Humbug QSCINTILLA)
 ##Copy_DLL_To_Target(Humbug HumbugShared)
+Copy_DLL_To_Target(Humbug SDL_LIBRARY)
 #Copy_ReleaseDLL_To_Target(Humbug ICU)
 ##SET(XSDE_LIB "${XSDE_LIBRARY_DIR}/vc-8.0/xerces-c_3.lib")
 ##SET(QSCINTILLA2_LIB "optimized;${QT_LIBRARY_DIR}/qscintilla2.lib;debug;${QT_LIBRARY_DIR}/qscintilla2d.lib")
@@ -190,6 +218,7 @@ ADD_EXECUTABLE(Humbug #WIN32
 #                        ${QSCINTILLA2_LIB} CppStructz )
 TargetLinkBoost(Humbug "filesystem;system;regex")
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
+TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 
 
 #ADD_DEPENDENCIES(Humbug CppStructz)
@@ -201,6 +230,9 @@ TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 #SET_SOURCE_FILES_PROPERTIES( ${Humbug_sources} #main.cpp
 #       PROPERTIES OBJECT_DEPENDS "d:/Eigene Dateien/Projects/C++/Humbug/src/CppStructz/TestClass.cpp"
 #)
+#copy_resources_to_build_tree(Humbug)
+
+# ===========================  HumbugConsole Executable  ===========================
 
 SET(HumbugConsole_headers 
 #        HumbugConsole/GB.h

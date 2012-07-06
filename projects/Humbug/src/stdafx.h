@@ -7,6 +7,8 @@
 # define dbgOut(x)
 #endif // _DEBUG
 
+#include "SDL.h"
+
 #include <wchar.h>
 
 #ifdef USE_QT
