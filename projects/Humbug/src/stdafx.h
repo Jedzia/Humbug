@@ -4,16 +4,19 @@
 #ifdef _DEBUG
 # define dbgOut(x) std::cout << x
 #else
-# define dbgOut(x) 
+# define dbgOut(x)
 #endif // _DEBUG
 
 #include <wchar.h>
-#include <QApplication>
-#include <QtCore>
-#include <QtGui>
-#include <QMainWindow>
-#include <QDomDocument>
-#include <Qsci/qscilexercpp.h>
+
+#ifdef USE_QT
+#  include <QApplication>
+#  include <QtCore>
+#  include <QtGui>
+#  include <QMainWindow>
+#  include <QDomDocument>
+#  include <Qsci/qscilexercpp.h>
+#endif // USE_QT
 
 
 #if defined(USE_LIB_BOOST)
@@ -29,7 +32,6 @@
 
 #include <iostream>
 #include <memory>   // std::auto_ptr
-#include <project.hxx>
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;

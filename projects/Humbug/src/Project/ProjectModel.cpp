@@ -1,8 +1,8 @@
 
 #include "../stdafx.h"
-#include "src/Project/ProjectModel.h"
+#include "ProjectModel.h"
 
-ProjectModel::ProjectModel(QObject * parent)
+/*ProjectModel::ProjectModel(QObject * parent)
 : QAbstractItemModel(parent)
 {
 
@@ -22,7 +22,7 @@ ProjectModel::~ProjectModel(){
 void ProjectModel::setRootNode(ProjectNode * node) {
 
     if(rootNode != NULL)
-        delete rootNode; 
+        delete rootNode;
     rootNode = node;
     reset();
 }
@@ -36,10 +36,10 @@ QModelIndex ProjectModel::index(int row, int column, const QModelIndex & parent)
 //	if (!childNode)
 //		return QModelIndex();
 //	return createIndex(row, column, childNode);
-}
+}*/
 
-QModelIndex ProjectModel::parent(const QModelIndex & child) const {
-  
+//QModelIndex ProjectModel::parent(const QModelIndex & child) const {
+
 /*  ProjectNode *node = nodeFromIndex(child);
   if (!node)
   	return QModelIndex();
@@ -49,14 +49,14 @@ QModelIndex ProjectModel::parent(const QModelIndex & child) const {
   ProjectNode *grandparentNode = parentNode->parent;
   if (!grandparentNode)
   	return QModelIndex();
-  
+
   int row = indexOfNode(grandparentNode, parentNode);
   return createIndex(row, 0, parentNode);
   */
-  	return QModelIndex();
-}
+//  	return QModelIndex();
+//}
 
-int ProjectModel::rowCount(const QModelIndex & parent) const {
+//int ProjectModel::rowCount(const QModelIndex & parent) const {
 /*
 	if (parent.column() > 0)
 		return 0;
@@ -65,15 +65,15 @@ int ProjectModel::rowCount(const QModelIndex & parent) const {
 		return 0;
 	return parentNode->children.size();
     */
-    return 1;
-}
+//    return 1;
+//}
 
-int ProjectModel::columnCount(const QModelIndex & parent) const {
+//int ProjectModel::columnCount(const QModelIndex & parent) const {
+//
+//	return 2;
+//}
 
-	return 2;
-}
-
-QVariant ProjectModel::data(const QModelIndex & index, int role) const {
+//QVariant ProjectModel::data(const QModelIndex & index, int role) const {
 
 /*
 	//	if (role == Qt::ToolTipRole)
@@ -107,10 +107,10 @@ QVariant ProjectModel::data(const QModelIndex & index, int role) const {
 		return getDisplayRole(index, node);
 	}
     */
-	return QVariant();
-}
+//	return QVariant();
+//}
 
-QVariant ProjectModel::headerData(int section, Qt::Orientation orientation, int role) const {
+/*QVariant ProjectModel::headerData(int section, Qt::Orientation orientation, int role) const {
 
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
 		if (section == 0) {
@@ -120,9 +120,9 @@ QVariant ProjectModel::headerData(int section, Qt::Orientation orientation, int 
 		}
 	}
 	return QVariant();
-}
+}*/
 
-QVariant ProjectModel::getIcon(ProjectNode * node) const {
+//QVariant ProjectModel::getIcon(ProjectNode * node) const {
 /*
 	//dbgOut("------------->FileIconRole called");
 	switch (node->type)
@@ -145,19 +145,19 @@ QVariant ProjectModel::getIcon(ProjectNode * node) const {
 		return QVariant();
 	}
     */
-		return QVariant();
-}
+//		return QVariant();
+//}
 
-ProjectNode * ProjectModel::nodeFromIndex(const QModelIndex & index) const {
+/*ProjectNode * ProjectModel::nodeFromIndex(const QModelIndex & index) const {
 
 	if (index.isValid()) {
 		return static_cast<ProjectNode *>(index.internalPointer());
 	} else {
 		return rootNode;
 	}
-}
+}*/
 
-QVariant ProjectModel::getDisplayRole(const QModelIndex & index, ProjectNode * node) const {
+//QVariant ProjectModel::getDisplayRole(const QModelIndex & index, ProjectNode * node) const {
 
     /*
 	if (index.column() == 0)
@@ -191,8 +191,8 @@ QVariant ProjectModel::getDisplayRole(const QModelIndex & index, ProjectNode * n
 		return QString::fromStdString(node->str);
 	}
     */
-	return QVariant();
-}
+//	return QVariant();
+//}
 /*
 QVariant ProjectModel::getTooltipRole(ProjectNode * node) const {
 
@@ -212,7 +212,7 @@ int ProjectModel::indexOfNode(const ProjectNode * parentNode, const ProjectNode 
         }
         if(row > static_cast<int>(parentNode->children.size()))
             row = -1;
-    
+
         return row;
 }
 */

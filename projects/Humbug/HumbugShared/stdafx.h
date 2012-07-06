@@ -21,12 +21,16 @@
 #else
   #  define dbgOut(x)
 #endif // _DEBUG
-#include <QApplication>
-#include <QDomDocument>
-#include <QMainWindow>
-#include <Qsci/qscilexercpp.h>
-#include <QtCore>
-#include <QtGui>
+
+#ifdef USE_QT
+#  include <QApplication>
+#  include <QDomDocument>
+#  include <QMainWindow>
+#  include <Qsci/qscilexercpp.h>
+#  include <QtCore>
+#  include <QtGui>
+#endif // USE_QT
+
 #include <iostream>
 #include <memory>   // std::auto_ptr
 #include <wchar.h>
@@ -40,16 +44,20 @@
   #  include <boost/progress.hpp>
   #  include <boost/smart_ptr.hpp>
 #endif //USE_LIB_BOOST
-#include <xsd/cxx/pre.hxx>
-#include <xsd/cxx/xml/dom/parsing-source.hxx>
-#include <xsd/cxx/xml/string.hxx>
+
+#ifdef USE_XSD
+#  include <xsd/cxx/pre.hxx>
+#  include <xsd/cxx/xml/dom/parsing-source.hxx>
+#  include <xsd/cxx/xml/string.hxx>
+#endif // USE_XSD
+
 #ifdef WIN32
 
 // \todo: Under linux, the pch generator does not include the correct
 // dependency to the xsd generator target.
-  #  include <project.hxx>
+//  #  include <project.hxx>
 #endif
-#include <CppStructz/log/LogHelper.h>
+//#include <CppStructz/log/LogHelper.h>
 //#include <Crunchy/global.h>
 
 //#include "TestClass.h"

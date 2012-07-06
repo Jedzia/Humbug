@@ -42,32 +42,32 @@
 #include <build/cmake/include/debug.h>
 
 //#include <QApplication>
-#include "calculatorform.h"
-#include "mainwindow.h"
-#include <CppStructz/TestClass.h>
-#include "CppStructz/filesystem/CszGlobals.h"
+//#include "calculatorform.h"
+//#include "mainwindow.h"
+//#include <CppStructz/TestClass.h>
+//#include "CppStructz/filesystem/CszGlobals.h"
 
-CPPSTRUCTZ_USE_NAMESPACE
+//CPPSTRUCTZ_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
 
     _CRT_DEBUG_BLOCK
 
-    QApplication app(argc, argv);
-	QString plugpath(QString::fromStdString(CszGlobals::Instance().getInstallPath() + "/plugins"));
-	QStringList plugpaths(plugpath);
-	//app.addLibraryPath(plugpath);
-	app.setLibraryPaths(plugpaths);
-	//app.addLibraryPath("D:\\E\\Projects\\C++\\Humbug\\build\\Humbug\\Debug\\plugins\\");
-	//app.addLibraryPath("D:/E/Projects/C++/Humbug/build/Humbug/Debug/plugins");
-	//app.addLibraryPath("D:/E/Projects/C++/Humbug/build/Humbug/Debug/plugins/");
-    //CalculatorForm calculator;
-    //calculator.show();
- 
-    MainWindow mainwindow;
-    mainwindow.resize(1024, 768);
-    mainwindow.show();
+//    QApplication app(argc, argv);
+//	QString plugpath(QString::fromStdString(CszGlobals::Instance().getInstallPath() + "/plugins"));
+//	QStringList plugpaths(plugpath);
+//	//app.addLibraryPath(plugpath);
+//	app.setLibraryPaths(plugpaths);
+//	//app.addLibraryPath("D:\\E\\Projects\\C++\\Humbug\\build\\Humbug\\Debug\\plugins\\");
+//	//app.addLibraryPath("D:/E/Projects/C++/Humbug/build/Humbug/Debug/plugins");
+//	//app.addLibraryPath("D:/E/Projects/C++/Humbug/build/Humbug/Debug/plugins/");
+//    //CalculatorForm calculator;
+//    //calculator.show();
+
+//    MainWindow mainwindow;
+//    mainwindow.resize(1024, 768);
+//    mainwindow.show();
     //int *moppen = new int(55);
     //std::string *oukk = new std::string("Olde Nase");
     //TestClass *xxx = new TestClass();
@@ -76,8 +76,9 @@ int main(int argc, char *argv[])
     //yyy.getSelectedText();
     }
     //delete oukk;
-    int ff = app.exec();
- 
+//    int ff = app.exec();
+    int ff = 0;
+
     //freopen( "c:\\log2.txt", "w", stderr);
     //freopen( "log2.txt", "w", stderr);
     return ff;

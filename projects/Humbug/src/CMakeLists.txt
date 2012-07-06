@@ -52,27 +52,27 @@ INCLUDE (bindings)
 
 
 SET(Humbug_headers 
-        SelectionMarker.h
-        Selection.h
-        Customlexer.h
-        qpid/InlineAllocator.h
-        qpid/InlineVector.h
-        qpid/RangeSet.h
+#        SelectionMarker.h
+#        Selection.h
+#        Customlexer.h
+#        qpid/InlineAllocator.h
+#        qpid/InlineVector.h
+#        qpid/RangeSet.h
         Project/ProjectModel.h
 )
 
 
 SET(Humbug_sources 
         main.cpp 
-        calculatorform.cpp
-        mainwindow.cpp
-        SelectionMarker.cpp
-        Selection.cpp
-        SelectionDialog.cpp
-        Customlexer.cpp
-        lexerdsl.cpp
-        CodeEditor.cpp
-        XCodeEditor.cpp
+#        calculatorform.cpp
+#        mainwindow.cpp
+#        SelectionMarker.cpp
+#        Selection.cpp
+#        SelectionDialog.cpp
+#        Customlexer.cpp
+#        lexerdsl.cpp
+#        CodeEditor.cpp
+#        XCodeEditor.cpp
         Project/ProjectModel.cpp
 )
 
@@ -85,44 +85,35 @@ SET(Humbug_sources
 #MESSAGE(STATUS "Humbug_XSDS_sources: ${Humbug_XSDS_sources} ")
 #MESSAGE(STATUS "Humbug_XSDS_INCLUDE: ${Humbug_XSDS_INCLUDE} ")
 
-IF(WIN32)
-SET(Humbug_XSD_sources 
-#Todo: LINUX xsdcxx xerces build isn't working correct.        
-        ${Humbug_XSDS_sources}
-        AssetList.hxx
-        AssetList.cxx
-)
-ENDIF(WIN32)
-
 SET(Humbug_mocfiles 
-        SelectionDialog.h
-        calculatorform.h
-        mainwindow.h
-        lexerdsl.h
-        CodeEditor.h
-        XCodeEditor.h
+#        SelectionDialog.h
+#        calculatorform.h
+#        mainwindow.h
+#        lexerdsl.h
+#        CodeEditor.h
+#        XCodeEditor.h
 )
 
 SET(Humbug_uifiles 
-  calculatorform.ui
-  mainwindow.ui
-  SelectionDialog.ui
+#  calculatorform.ui
+#  mainwindow.ui
+#  SelectionDialog.ui
 )
 
 SET(Humbug_resfiles 
-  mainwindow.qrc
+#  mainwindow.qrc
 )
 
 #SET(CMAKE_BUILD_TYPE DEBUG)
 
-QT4_WRAP_CPP( moc_outfiles  ${Humbug_mocfiles} )
-MESSAGE(STATUS "moc_outfiles: ${moc_outfiles} ")
-QT4_WRAP_UI( ui_outfiles  ${Humbug_uifiles} )
-MESSAGE(STATUS "ui_outfiles: ${ui_outfiles} ")
+#QT4_WRAP_CPP( moc_outfiles  ${Humbug_mocfiles} )
+#MESSAGE(STATUS "moc_outfiles: ${moc_outfiles} ")
+#QT4_WRAP_UI( ui_outfiles  ${Humbug_uifiles} )
+#MESSAGE(STATUS "ui_outfiles: ${ui_outfiles} ")
 
-INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
-INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
-INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
+#INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
+#INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
+#INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR})
 
 IF(LINUX)
@@ -130,9 +121,9 @@ IF(LINUX)
 ENDIF(LINUX)
 
 
-ADD_DEFINITIONS(${QT_DEFINITIONS})
-ADD_DEFINITIONS("-DQSCINTILLA_DLL")
-ADD_DEFINITIONS(${CppStructz_DEFINITIONS})
+#ADD_DEFINITIONS(${QT_DEFINITIONS})
+#ADD_DEFINITIONS("-DQSCINTILLA_DLL")
+#ADD_DEFINITIONS(${CppStructz_DEFINITIONS})
 IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
@@ -141,26 +132,26 @@ ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
 QT4_ADD_RESOURCES(res_outfiles ${Humbug_resfiles} )
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Xsd FILES ${Humbug_XSD_sources} )
+#SOURCE_GROUP(Xsd FILES ${Humbug_XSD_sources} )
 SOURCE_GROUP(Resources FILES ${Humbug_resfiles})
 SOURCE_GROUP(GUI FILES ${Humbug_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
 
-#ADD_EXECUTABLE(Humbug #WIN32
-#        stdafx.h
-#        ${DEBUG_DEFINITION_INCLUDES}
-#        defs.h 
-#
-#        ${Humbug_sources} 
-#        ${Humbug_headers}
-#        ${Humbug_XSD_sources}
-#        ${Humbug_mocfiles} 
-#        ${res_outfiles} 
-#        ${moc_outfiles} 
-#        ${ui_outfiles}
-#)
+ADD_EXECUTABLE(Humbug #WIN32
+        stdafx.h
+        ${DEBUG_DEFINITION_INCLUDES}
+        defs.h 
+
+        ${Humbug_sources} 
+        ${Humbug_headers}
+        ${Humbug_XSD_sources}
+        ${Humbug_mocfiles} 
+        ${res_outfiles} 
+        ${moc_outfiles} 
+        ${ui_outfiles}
+)
 
 #copy_resources_to_build_tree(Humbug)
 
@@ -197,8 +188,8 @@ SOURCE_GROUP(TSources FILES ${Humbug_sources})
 
 #TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
 #                        ${QSCINTILLA2_LIB} CppStructz )
-#TargetLinkBoost(Humbug "filesystem;system;regex")
-#TARGET_LINK_LIBRARIES(Humbug HumbugShared)
+TargetLinkBoost(Humbug "filesystem;system;regex")
+TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 
 
 #ADD_DEPENDENCIES(Humbug CppStructz)
@@ -248,7 +239,7 @@ ADD_EXECUTABLE(HumbugConsole #WIN32
 TargetLinkBoost(HumbugConsole "program_options")
 TargetLinkBoost(HumbugConsole "filesystem;system;regex")
 #TARGET_LINK_LIBRARIES(HumbugConsole CppStructz)
-#TARGET_LINK_LIBRARIES(HumbugConsole HumbugShared)
+TARGET_LINK_LIBRARIES(HumbugConsole HumbugShared)
 #TARGET_LINK_LIBRARIES(HumbugConsole ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
 #                        ${QSCINTILLA2_LIB} CppStructz )
 #Copy_DLL_To_Target(HumbugConsole CppStructz)
