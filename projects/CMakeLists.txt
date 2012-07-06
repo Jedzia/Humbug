@@ -60,6 +60,14 @@ message(STATUS)
 PRJ_OPTION_LIST_ALL(used)
 
 message(STATUS)
+message(STATUS "       ========== Module Information for ${_prj_name} ==========           ")
+#MODUSE_OPTION_LIST_ALL(help)
+MODUSE_OPTION_LIST_ALL(used)
+#message(STATUS "MODUSE_OPTIONS LIST = ${MODUSE_OPTIONS}")
+message(STATUS "================================================================================")
+
+
+message(STATUS)
 message(STATUS "${_prj_name}_ABS_TOP_SRCDIR=${${_prj_name}_ABS_TOP_SRCDIR}")
 message(STATUS "${_prj_name}_ABS_INSTALLED_DATADIR=${${_prj_name}_ABS_INSTALLED_DATADIR}")
 message(STATUS "${_prj_name}_DATA_SUBDIR=${${_prj_name}_DATA_SUBDIR}")

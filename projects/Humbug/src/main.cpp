@@ -78,6 +78,7 @@ int main(int argc, char *argv[])
     //delete oukk;
 //    int ff = app.exec();
     int ff = 0;
+    std::cout << std::endl << "This is Humbug" << std::endl;
 
     //freopen( "c:\\log2.txt", "w", stderr);
     //freopen( "log2.txt", "w", stderr);
