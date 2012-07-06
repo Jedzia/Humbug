@@ -40,6 +40,7 @@ SET(USE_LIB_BOOST TRUE)
 # Use XSD xerces libraries for this project.
 #SET(USE_LIB_XSD TRUE)
 SET(USE_SDL TRUE)
+SET(USE_SDL_IMAGE TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -136,6 +137,7 @@ SET(Humbug_resfiles
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
 #ADD_DEFINITIONS("-DHAVE_OPENGL")
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
 INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR})
 
 IF(LINUX)
@@ -181,6 +183,7 @@ ADD_EXECUTABLE(Humbug #WIN32
 ##                        prop2 value2 ...
 #)
 Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
+Copy_File_To_Target(Humbug ${P_ROOT_PATH}/Artwork/footer.png)
 
 # Copy linked dll to the executables bin dir
 # We need to check if shared or static .... and put this into a macro.
@@ -209,6 +212,8 @@ Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
 #Copy_DLL_To_Target(Humbug QSCINTILLA)
 ##Copy_DLL_To_Target(Humbug HumbugShared)
 Copy_DLL_To_Target(Humbug SDL_LIBRARY)
+Copy_DLL_To_Target(Humbug SDLIMAGE_LIBRARY)
+Copy_Files_To_Target(Humbug "${SDLIMAGE_LIBRARY_DLLS_EXT}")
 #Copy_ReleaseDLL_To_Target(Humbug ICU)
 ##SET(XSDE_LIB "${XSDE_LIBRARY_DIR}/vc-8.0/xerces-c_3.lib")
 ##SET(QSCINTILLA2_LIB "optimized;${QT_LIBRARY_DIR}/qscintilla2.lib;debug;${QT_LIBRARY_DIR}/qscintilla2d.lib")
@@ -219,6 +224,7 @@ Copy_DLL_To_Target(Humbug SDL_LIBRARY)
 TargetLinkBoost(Humbug "filesystem;system;regex")
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
+TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 
 
 #ADD_DEPENDENCIES(Humbug CppStructz)

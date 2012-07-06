@@ -39,25 +39,35 @@ void DrawImage(SDL_Surface *srcimg, int sx, int sy, int sw, int sh, SDL_Surface 
 //initialization
 bool CTestEventHandler::OnInit(int argc,char* argv[])
 {
-	//initialize parent class
-	CEventHandler::OnInit(argc,argv);
+    //initialize parent class
+    CEventHandler::OnInit(argc,argv);
 
-	//create display surface
-	m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,SDL_ANYFORMAT);
+    //create display surface
+    m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,SDL_ANYFORMAT);
 
-	//create timer
-	m_pTestTimer=new CTestTimer(this);
+    //create timer
+    m_pTestTimer=new CTestTimer(this);
 
-	//create thread
-	m_pTestThread=new CTestThread(this);
+    //create thread
+    m_pTestThread=new CTestThread(this);
 
-	SDL_Surface *tux;
-	tux = SDL_LoadBMP("blue.bmp");
-	DrawImage(tux, 0,0, tux->w, tux->h, m_pDisplaySurface, 10, 10, 128);
-	SDL_Flip(m_pDisplaySurface); //Refresh the screen
-	
-	//success
-	return(true);
+    //char *file = "blue.bmp";
+    char *file = "footer.png";
+    //char *file = "blue.png";
+
+    SDL_Surface *img;
+    img = IMG_Load(file);
+    if (!img) {
+        fprintf(stderr, "Error: '%s' could not be opened: %s\n", file, IMG_GetError());
+        // exitstate = false;
+        // return NULL;
+    } else {
+        DrawImage(img, 0,0, img->w, img->h, m_pDisplaySurface, 10, 10, 128);
+        SDL_Flip(m_pDisplaySurface); //Refresh the screen
+    }
+
+    //success
+    return(true);
 }
 
 //left button down
