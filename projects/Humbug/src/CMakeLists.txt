@@ -163,7 +163,12 @@ SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
 
-ADD_EXECUTABLE(Humbug #WIN32
+
+SET(_GUI_DEP )
+IF(WIN32)
+  SET(_GUI_DEP WIN32)
+ENDIF(WIN32)
+ADD_EXECUTABLE(Humbug ${_GUI_DEP}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h 

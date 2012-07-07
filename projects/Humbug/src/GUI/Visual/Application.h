@@ -34,6 +34,9 @@ public:
 	//idle behavior
 	virtual void OnIdle();
 
+   	//update loop
+	virtual void Update();
+
 	//cleanup
 	virtual void OnExit();
 

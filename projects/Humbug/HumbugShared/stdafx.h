@@ -31,9 +31,22 @@
 #  include <QtGui>
 #endif // USE_QT
 
+// Standard headers
 #include <iostream>
 #include <memory>   // std::auto_ptr
 #include <wchar.h>
+// Standard headers VFS
+#include <algorithm>
+#include <cassert>
+#include <fstream>
+#include <iomanip>
+#include <map>
+#include <string>
+#include <vector>
+
+#include "VFS/stdint.h"
+
+
 #if defined(USE_LIB_BOOST)
 
 // You MUST use FS Version 3 ! <- is obsolete.

@@ -18,6 +18,14 @@ private:
 	CTestTimer* m_pTestTimer;
 	//test thread
 	CTestThread* m_pTestThread;
+    //last ticks
+    Uint32 m_pLastTicks;
+    Uint32 m_pLastTicks2;
+protected:
+    //idle behavior
+	virtual void OnIdle();
+    //update loop
+	virtual void Update();
 public:
 	//constructor
 	CTestEventHandler();
@@ -34,6 +42,7 @@ public:
 	//message handler
 	bool OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4);
 	//message ids
+	static MSGID MSGID_QuitApp;//no parms
 	static MSGID MSGID_ClearScreen;//no parms
 	static MSGID MSGID_DrawPixel;//parm1=x,parm2=y
 };

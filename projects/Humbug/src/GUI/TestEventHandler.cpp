@@ -5,12 +5,42 @@
 #include "../stdafx.h"
 #include "TestEventHandler.h"
 
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        // protected override void Draw(GameTime gameTime)
+
+        /// <summary>
+        /// Handles input for quitting the game.
+        /// </summary>
+        // private void HandleInput(GameTime gameTime)
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        //protected override void Update(GameTime gameTime)
+        //{
+        //    this.HandleInput(gameTime);
+        //
+        //    //this.pilleanim.Update(gameTime.ElapsedGameTime, Matrix.Identity);
+        //    animationController.Update(gameTime.ElapsedGameTime, Matrix.Identity);
+        //    // TODO: Add your update logic here
+        //
+        //    base.Update(gameTime);
+        //}
+
+
 //message ids
+MSGID CTestEventHandler::MSGID_QuitApp=CMessageHandler::GetNextMSGID();//no parms
 MSGID CTestEventHandler::MSGID_ClearScreen=CMessageHandler::GetNextMSGID();//no parms
 MSGID CTestEventHandler::MSGID_DrawPixel=CMessageHandler::GetNextMSGID();//parm1=x,parm2=y
 
 //constructor
 CTestEventHandler::CTestEventHandler()
+: m_pLastTicks(0), m_pLastTicks2(0)
 {
 }
 
@@ -43,7 +73,15 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
     CEventHandler::OnInit(argc,argv);
 
     //create display surface
-    m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,SDL_ANYFORMAT);
+    Uint32 video_flags;
+    //video_flags = SDL_OPENGL;
+    video_flags = SDL_ANYFORMAT;
+    m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,video_flags);
+	if ( m_pDisplaySurface == NULL ) {
+		fprintf(stderr, "Couldn't set GL mode: %s\n", SDL_GetError());
+		SDL_Quit();
+		exit(1);
+	}
 
     //create timer
     m_pTestTimer=new CTestTimer(this);
@@ -52,9 +90,10 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
     m_pTestThread=new CTestThread(this);
 
     //char *file = "blue.bmp";
-    char *file = "footer.png";
+    char *file = "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/footer.png";
     //char *file = "blue.png";
 
+    // move this to a HUD class with Draw()
     SDL_Surface *img;
     img = IMG_Load(file);
     if (!img) {
@@ -62,12 +101,45 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
         // exitstate = false;
         // return NULL;
     } else {
-        DrawImage(img, 0,0, img->w, img->h, m_pDisplaySurface, 10, 10, 128);
+        //DrawImage(img, 1024 - img->w, 768 - img->h, img->w, img->h, m_pDisplaySurface, 10, 10, 128);
+        DrawImage(img, 0, 0, img->w, img->h, m_pDisplaySurface, 0, 768 - img->h, 128);
         SDL_Flip(m_pDisplaySurface); //Refresh the screen
     }
 
     //success
     return(true);
+}
+
+//idle behavior
+void CTestEventHandler::OnIdle()
+{
+   	Uint32 now, diff;
+    now = SDL_GetTicks();
+    diff = now - m_pLastTicks;
+    if(diff > 10)
+    {
+        fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
+        m_pLastTicks = now;
+    }
+
+	// call base method.
+    CApplication::OnIdle();
+}
+
+//update loop
+void CTestEventHandler::Update()
+{
+   	Uint32 now, diff;
+    now = SDL_GetTicks();
+    diff = now - m_pLastTicks2;
+    if(diff > 100)
+    {
+        fprintf(stdout, "UPD-Ticks: '%d' (%d diff)\n", now, diff);
+        m_pLastTicks2 = now;
+    }
+
+	// call base method.
+    CApplication::OnIdle();
 }
 
 //left button down
@@ -91,15 +163,31 @@ void CTestEventHandler::OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bo
 //key press
 void CTestEventHandler::OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode)
 {
-	//send clear screen message
-	SendMessage(MSGID_ClearScreen);
+    if( sym == SDLK_ESCAPE )
+    {
+	    //send clear screen message
+	    SendMessage(MSGID_QuitApp);
+    }
+    else        
+    {
+	    //send clear screen message
+	    SendMessage(MSGID_ClearScreen);
+    }
 }
 
 //message handler
 bool CTestEventHandler::OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4)
 {
+	// quit application
+	if(MsgID==MSGID_QuitApp)
+	{
+        SDL_Event quit;
+        quit.type = SDL_QUIT;
+        SDL_PushEvent(&quit);
+		return(true);
+    }
 	//clear screen
-	if(MsgID==MSGID_ClearScreen)
+	else if(MsgID==MSGID_ClearScreen)
 	{
 		//set up rectangle
 		SDL_Rect rcFill;

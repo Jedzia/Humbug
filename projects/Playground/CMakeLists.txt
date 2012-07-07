@@ -183,6 +183,10 @@ TargetLinkBoost(throw_error "filesystem;system")
 SET_PROPERTY(TARGET throw_error PROPERTY FOLDER "Playground")
 
 
+# zfs example
+INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR} ${ZLIB_INCLUDE_DIR} )
+TARGET_LINK_LIBRARIES(zfs HumbugShared)
+
 # csz_textdocument example
 #TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} ${QSCINTILLA2_LIB} CppStructz)
 #TARGET_LINK_LIBRARIES(csz_textdocument CppStructz)

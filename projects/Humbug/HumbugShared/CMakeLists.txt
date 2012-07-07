@@ -17,6 +17,8 @@
 cmake_minimum_required(VERSION 2.8)
 
 PROJECT( HumbugShared )
+#SET(LIBRARY_TYPE SHARED)
+SET(LIBRARY_TYPE STATIC)
 
 MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
 INCLUDE (BoostExtensions)
@@ -29,6 +31,7 @@ SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
 SET(USE_LIB_BOOST TRUE)
+SET(USE_LIB_ZLIB TRUE)
 
 #SET(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
 # Use QT4 libraries for this project.
@@ -54,6 +57,15 @@ INCLUDE (bindings)
 
 SET(HumbugShared_headers 
 	GB.h
+	
+	VFS/fileio.h
+	VFS/static_assert.h
+#	VFS/stdafx.h
+#	VFS/stdint.h
+	VFS/zfsystem.h
+	VFS/ziphdr.h
+	VFS/zstream.h
+	VFS/zstream_zlib.h
 #	Project/ProcessProject.h
 #	Project/ProcessProjectPrivate.h
 )
@@ -61,11 +73,15 @@ SET(HumbugShared_headers
 
 SET(HumbugShared_sources 
 	GB.cpp
+
+	VFS/zfsystem.cpp
+	VFS/ziphdr.cpp
+	VFS/zstream.cpp
 #	Project/ProcessProject.cpp
 #	Project/ProcessProjectPrivate.cpp
 )
 
-SET(HumbugShared_INCLUDE_DIR ${HumbugShared_IncludePath} CACHE PATH "HumbugShared include directory." FORCE)
+#SET(HumbugShared_INCLUDE_DIR ${HumbugShared_IncludePath} CACHE PATH "HumbugShared include directory." FORCE)
 
 
 SET(HumbugShared_mocfiles 
@@ -91,6 +107,7 @@ SET(HumbugShared_resfiles
 
 
 INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
+INCLUDE_DIRECTORIES( ${ZLIB_INCLUDE_DIR} )
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
 
 IF(LINUX)
@@ -111,9 +128,6 @@ SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${HumbugShared_headers})
 SOURCE_GROUP(TSources FILES ${HumbugShared_sources})
 
-#SET(LIBRARY_TYPE SHARED)
-SET(LIBRARY_TYPE STATIC)
-
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugShared_sources)
 #ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
 ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
@@ -128,8 +142,7 @@ ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
         ${ui_outfiles}
 )
 
-#TARGET_LINK_LIBRARIES(HumbugShared ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
-#						${QSCINTILLA2_LIB} )
+TARGET_LINK_LIBRARIES(HumbugShared ${ZLIB_LIBRARY} )
 TargetLinkBoost(HumbugShared "filesystem;system;regex")
 #ADD_DEPENDENCIES(HumbugShared CppStructz)
 ADD_PRECOMPILED_HEADER(HumbugShared stdafx.h stdafx.h.gch)

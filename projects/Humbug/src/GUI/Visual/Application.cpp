@@ -65,6 +65,12 @@ void CApplication::OnIdle()
 	//by default, do nothing
 }
 
+//update loop
+void CApplication::Update()
+{
+	//by default, do nothing
+}
+
 //cleanup
 void CApplication::OnExit()
 {
@@ -108,6 +114,7 @@ int CApplication::Execute(int argc,char* argv[])
 			//no event, so idle
 			GetApplication()->OnIdle();
 		}
+		GetApplication()->Update();
 	}
 	//clean up
 	GetApplication()->OnExit();
