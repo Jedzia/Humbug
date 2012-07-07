@@ -101,6 +101,7 @@ public:
 
 	void MakeDefault() const;
 	void Open(izfstream & File, const char * Filename) const;
+	int FileSize(const char * Filename) const;
 
 	friend std::ostream & operator << (std::ostream & Out, const filesystem & FS);
 

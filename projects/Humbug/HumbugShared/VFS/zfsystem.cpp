@@ -127,6 +127,16 @@ void filesystem::Open(izfstream & File, const char * Filename) const
 	}
 }
 
+int filesystem::FileSize(const char * Filename) const
+{
+	filemap_const_iterator It = m_Files.find(Filename);
+
+	if (It == m_Files.end())
+		return -1;	// File not found
+
+	const file_info& finfo = (* It).second;
+    return finfo.m_Size;
+}
 
 
 //////////////////////////////////////////////////////////////////////

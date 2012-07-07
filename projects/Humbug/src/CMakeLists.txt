@@ -23,6 +23,7 @@ INCLUDE (BoostExtensions)
 INCLUDE (PCHSupport_MSVC)
 INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
+INCLUDE (ZipPackage)
 
 SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
@@ -64,7 +65,7 @@ SET(Humbug_GUI_sources
 		GUI/TestTimer.cpp
 )
 
-SET(Humbug_headers 
+SET(Humbug_GUI_headers 
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
 		GUI/Visual/MessageHandler.h
@@ -74,7 +75,11 @@ SET(Humbug_headers
 		GUI/TestEventHandler.h
 		GUI/TestThread.h
 		GUI/TestTimer.h
-#        Customlexer.h
+)
+
+SET(Humbug_headers 
+		${Humbug_GUI_headers}
+		fs/FileLoader.h
 #        qpid/InlineAllocator.h
 #        qpid/InlineVector.h
 #        qpid/RangeSet.h
@@ -84,16 +89,9 @@ SET(Humbug_headers
 
 SET(Humbug_sources 
 		${Humbug_GUI_sources}
+		fs/FileLoader.cpp
+
         main.cpp 
-#        calculatorform.cpp
-#        mainwindow.cpp
-#        SelectionMarker.cpp
-#        Selection.cpp
-#        SelectionDialog.cpp
-#        Customlexer.cpp
-#        lexerdsl.cpp
-#        CodeEditor.cpp
-#        XCodeEditor.cpp
         Project/ProjectModel.cpp
 )
 
@@ -138,7 +136,8 @@ SET(Humbug_resfiles
 #ADD_DEFINITIONS("-DHAVE_OPENGL")
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
-INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 
 IF(LINUX)
   INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
@@ -147,7 +146,7 @@ ENDIF(LINUX)
 
 #ADD_DEFINITIONS(${QT_DEFINITIONS})
 #ADD_DEFINITIONS("-DQSCINTILLA_DLL")
-#ADD_DEFINITIONS(${CppStructz_DEFINITIONS})
+ADD_DEFINITIONS(${HumbugShared_DEFINITIONS})
 IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
@@ -200,15 +199,36 @@ Copy_File_To_Target(Humbug ${P_ROOT_PATH}/Artwork/footer.png)
 #           COMMENT "source copy dlls and essential files"
 #   )
 
-    # POST_BUILD TARGET Copy XSD DLL. 
-#   ADD_CUSTOM_COMMAND(
-    #OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG}
-#   TARGET Humbug 
-#   POST_BUILD
-#   COMMAND ${CMAKE_COMMAND} --debug-output -Dconfig=${CMAKE_CFG_INTDIR} -Dtgt="${PROJECT_BINARY_DIR}/" -Dreleasesrc="${XSD_DLL_RELEASE}" -Ddebugsrc="${XSD_DLL_DEBUG}" -P "${P_MODULE_PATH}/copy.cmake"
-#   DEPENDS Humbug
-#   COMMENT "Copy XSD DLL." 
-#   )
+SET(VFS_PACKAGE_SOURCE_FILES 
+		${PROJECT_SOURCE_DIR}/icons/blue.png
+	    ${P_ROOT_PATH}/Artwork/footer.png
+)
+#string(REGEX MATCHALL "[a-zA-Z]+\ |[a-zA-Z]+$" VFS_PACKAGE_SOURCE_FILES "${VFS_PACKAGE_SOURCE_FILES}")
+#string(REPLACE " " ";" VFS_PACKAGE_SOURCE_FILES ${VFS_PACKAGE_SOURCE_FILES})
+separate_arguments(VFS_PACKAGE_SOURCE_FILES WINDOWS_COMMAND "${VFS_PACKAGE_SOURCE_FILES}")
+
+
+SET(VFS_PACKAGE_DIR ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/base_data )
+SET(VFS_PACKAGE_FILE ${VFS_PACKAGE_DIR}/dingens.zip )
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${VFS_PACKAGE_DIR})
+
+string(REPLACE "@<FILELIST>" "${VFS_PACKAGE_SOURCE_FILES}" ZIPPCKG_ARGUMENTS ${ZIPPCKG_ZIP_COMMAND})
+string(REPLACE "<ARCHIVE>" "${VFS_PACKAGE_FILE}" ZIPPCKG_ARGUMENTS ${ZIPPCKG_ARGUMENTS})
+message(STATUS "ZIPPCKG_ARGUMENTS = ${ZIPPCKG_ARGUMENTS}")
+separate_arguments(ZIPPCKG_ARGUMENTS_LIST WINDOWS_COMMAND "${ZIPPCKG_ARGUMENTS}")
+message(STATUS "ZIPPCKG_ARGUMENTS_LIST = ${ZIPPCKG_ARGUMENTS_LIST}")
+
+# POST_BUILD TARGET Build packaged files. 
+	ADD_CUSTOM_TARGET(MakeVFS ALL DEPENDS ${VFS_PACKAGE_SOURCE_FILES})
+	ADD_CUSTOM_COMMAND(
+	#OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG}
+	TARGET MakeVFS 
+	POST_BUILD
+	COMMAND ${ZIPPCKG_EXECUTABLE} ${ZIPPCKG_ARGUMENTS}
+	# DEPENDS Humbug
+	COMMENT "Build packaged files." 
+	)
+ADD_DEPENDENCIES(Humbug MakeVFS)
 #ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 
 #Copy_File_To_Target(Humbug "${PROJECT_SOURCE_DIR}/mainwindow.cpp")
@@ -232,7 +252,6 @@ TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 
 
-#ADD_DEPENDENCIES(Humbug CppStructz)
 
 #SET_SOURCE_FILES_PROPERTIES( main.cpp
 #       PROPERTIES OBJECT_DEPENDS ${CppStructz_DLL_DEBUG}

@@ -2,7 +2,6 @@
 //
 
 #include <iostream>
-#include <HumbugShared/VFS/stdint.h>
 
 // ZFS headers
 #include <HumbugShared/VFS/zfsystem.h>

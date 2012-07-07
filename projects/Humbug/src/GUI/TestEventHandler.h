@@ -21,6 +21,8 @@ private:
     //last ticks
     Uint32 m_pLastTicks;
     Uint32 m_pLastTicks2;
+    // footer image
+    SDL_Surface *m_pImgFooter;
 protected:
     //idle behavior
 	virtual void OnIdle();

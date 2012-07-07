@@ -34,7 +34,7 @@
 //          from the PKZip Website on July 13, 1998.
 //          New implementations of the ZIP file format might not work
 //          correctly (ZIP64 ?).
-// 
+//
 // History: - 1.00 BETA 2 (01/09/2003) - Use stdint.h sized types
 //          - 1.00 BETA 1 (12/06/2002) - First public release
 //
@@ -43,6 +43,7 @@
 #pragma once
 
 
+#include "stdint.h"
 
 // Zip File System Namespace
 namespace zip_file_system {
@@ -53,8 +54,8 @@ namespace zip_file_system {
 // Zip file headers
 enum headerid {	LOCALFILE	= 0x04034b50,
 				FILE		= 0x02014b50,
-				ENDOFDIR	= 0x06054b50, 
-				UNKNOWN, 
+				ENDOFDIR	= 0x06054b50,
+				UNKNOWN,
 				READERROR
 };
 

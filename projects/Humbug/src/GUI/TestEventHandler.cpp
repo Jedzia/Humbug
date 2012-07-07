@@ -4,6 +4,7 @@
 
 #include "../stdafx.h"
 #include "TestEventHandler.h"
+#include "fs/FileLoader.h"
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -40,7 +41,7 @@ MSGID CTestEventHandler::MSGID_DrawPixel=CMessageHandler::GetNextMSGID();//parm1
 
 //constructor
 CTestEventHandler::CTestEventHandler()
-: m_pLastTicks(0), m_pLastTicks2(0)
+: m_pLastTicks(0), m_pLastTicks2(0), m_pImgFooter(NULL)
 {
 }
 
@@ -94,8 +95,14 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
     //char *file = "blue.png";
 
     // move this to a HUD class with Draw()
-    SDL_Surface *img;
-    img = IMG_Load(file);
+
+    FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    //fl.Load("testfile.txt");
+    //fl.Load("libxml2_a_dll.lib");
+
+    //m_pImgFooter = IMG_Load(file);
+    m_pImgFooter = fl.LoadImg("footer.png");
+    SDL_Surface *img = m_pImgFooter;
     if (!img) {
         fprintf(stderr, "Error: '%s' could not be opened: %s\n", file, IMG_GetError());
         // exitstate = false;
@@ -189,6 +196,7 @@ bool CTestEventHandler::OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPAR
 	//clear screen
 	else if(MsgID==MSGID_ClearScreen)
 	{
+        SDL_FreeSurface(m_pImgFooter);
 		//set up rectangle
 		SDL_Rect rcFill;
 		rcFill.x=rcFill.y=0;
