@@ -1,3 +1,26 @@
 This is Humbug
 2011 (c) Jedzia
 -------------------
+
+
+
+
+Build-Dependencies:
+=======================
+
+- SDL 1.2.15	
+http://www.libsdl.org/ and http://www.libsdl.org/libraries.php
+Windows: Start the build environment (devel2008.bat or devel2010.bat) and call ../BuildDependencies.bat to
+invoke the automatic build of the necessary SDL Libraries.
+Humbug is using these SDL libraries:
+	SDL-1.2.15
+	SDL_gfx-2.0.23
+	SDL_image-1.2.12
+	SDL_mixer-1.2.12
+	SDL_net-1.2.8
+	SDL_ttf-2.0.11
+	oglconsole-0.2
+
+- ImageMagick-6.7.8-2-Q16-windows-dll.exe		
+http://www.imagemagick.org/download/binaries/ImageMagick-6.7.8-2-Q16-windows-dll.exe
+For the creation of images, etc.

@@ -210,7 +210,7 @@ IF(USE_SDL)
 	IF( NOT SDL_FOUND )
 		MESSAGE(FATAL_ERROR "SDL Library not found!")
 	ENDIF( NOT SDL_FOUND )
-	MODUSE_OPTION(SDL               "SDL has ${SDL_LIBRARY}" ON MSVC)
+	MODUSE_SUMMARY(SDL               "SDL has ${SDL_LIBRARY}" ON MSVC)
 ENDIF(USE_SDL)
 
 IF(USE_SDL_IMAGE)
@@ -218,7 +218,7 @@ IF(USE_SDL_IMAGE)
 	IF( NOT SDLIMAGE_FOUND )
 		MESSAGE(FATAL_ERROR "SDL_image Library not found!")
 	ENDIF( NOT SDLIMAGE_FOUND )
-	MODUSE_OPTION(SDL_IMAGE               "SDL has ${SDLIMAGE_LIBRARY}" ON MSVC)
+	MODUSE_SUMMARY(SDL_IMAGE               "SDL has ${SDLIMAGE_LIBRARY}" ON MSVC)
 ENDIF(USE_SDL_IMAGE)
 
 
@@ -278,3 +278,12 @@ ENDIF(CHECK_STRINGS)
 #SET(CHECK_STRINGS )
 # Besser wird es sein den PROJECT_NAME Ansatz zu nehmen, da die Variablen sonnst
 # für den Aufrufer verloren sind.
+
+IF(USE_MAGICK)
+	FIND_PACKAGE(ImageMagick)
+	IF( NOT ImageMagick_FOUND )
+#		MESSAGE(FATAL_ERROR "SDL_image Library not found!")
+	ENDIF( NOT ImageMagick_FOUND )
+	MODUSE_SUMMARY(ImageMagick_EXE               "at ${ImageMagick_EXECUTABLE_DIR}" USE ALL)
+ENDIF(USE_MAGICK)
+

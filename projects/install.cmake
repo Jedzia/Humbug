@@ -1,5 +1,6 @@
 INCLUDE(InstallRequiredSystemLibraries)
 
+# See http://www.cmake.org/Wiki/CMake:Component_Install_With_CPack
 # Components
 set(CPACK_COMPONENTS_ALL Application Boost Libraries Resources)
 set(CPACK_COMPONENT_APPLICATION_REQUIRED TRUE)

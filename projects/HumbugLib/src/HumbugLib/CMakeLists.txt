@@ -11,14 +11,12 @@
 ##---------------------------------------------------
 ## 
 ##--------------------------------------------------- 
-## \TODO: Usage of external zlib, 7z-lzma, etc. ( as dll )
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 PROJECT( HumbugLib )
 SET(PACKAGE ${PROJECT_NAME})
 
-MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
 INCLUDE (BoostExtensions)
 INCLUDE (PCHSupport)
 INCLUDE (library)

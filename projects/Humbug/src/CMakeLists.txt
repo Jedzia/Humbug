@@ -23,7 +23,7 @@ INCLUDE (BoostExtensions)
 INCLUDE (PCHSupport_MSVC)
 INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
-INCLUDE (ZipPackage)
+INCLUDE (PackageCreate)
 
 SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
@@ -187,7 +187,7 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 ##                        prop2 value2 ...
 #)
 Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
-Copy_File_To_Target(Humbug ${P_ROOT_PATH}/Artwork/footer.png)
+Copy_File_To_Target(Humbug ${Humbug_Artwork_DIR}/footer.png)
 
 # Copy linked dll to the executables bin dir
 # We need to check if shared or static .... and put this into a macro.
@@ -202,12 +202,13 @@ Copy_File_To_Target(Humbug ${P_ROOT_PATH}/Artwork/footer.png)
 SET(Pak01_PACKAGE_SOURCE_FILES 
 		${PROJECT_SOURCE_DIR}/icons/
 		#${PROJECT_SOURCE_DIR}/icons/blue.png
-	    ${P_ROOT_PATH}/Artwork/footer.png
+	    #${P_ROOT_PATH}/Artwork/footer.png
+	    ${Humbug_Artwork_DIR}/footer.png
 )
 CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
 
 SET(Pak02_PACKAGE_SOURCE_FILES 
-	    ${P_ROOT_PATH}/Artwork/footer.psd
+	    ${Humbug_Artwork_DIR}/footer.psd
 )
 CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 

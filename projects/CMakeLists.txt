@@ -63,9 +63,9 @@ PRJ_OPTION_LIST_ALL(used)
 
 message(STATUS)
 message(STATUS "       ========== Module Information for ${_prj_name} ==========           ")
-#MODUSE_OPTION_LIST_ALL(help)
-MODUSE_OPTION_LIST_ALL(used)
-#message(STATUS "MODUSE_OPTIONS LIST = ${MODUSE_OPTIONS}")
+#MODUSE_SUMMARY_LIST_ALL(help)
+MODUSE_SUMMARY_LIST_ALL(used)
+#message(STATUS "MODUSE_SUMMARYS LIST = ${MODUSE_SUMMARYS}")
 message(STATUS "================================================================================")
 
 
