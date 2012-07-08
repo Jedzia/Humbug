@@ -52,33 +52,55 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
-
+# User-Interface skeleton
 SET(Humbug_GUI_sources 
 		GUI/Visual/Application.cpp
 		GUI/Visual/EventHandler.cpp
 		GUI/Visual/MessageHandler.cpp
 		GUI/Visual/Thread.cpp
 		GUI/Visual/Timer.cpp
-
-		GUI/TestEventHandler.cpp
-		GUI/TestThread.cpp
-		GUI/TestTimer.cpp
 )
-
 SET(Humbug_GUI_headers 
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
 		GUI/Visual/MessageHandler.h
 		GUI/Visual/Thread.h
 		GUI/Visual/Timer.h
+)
 
+# Component set (Canvas, Controls, etc.)
+SET(Humbug_Components_sources 
+		GUI/Components/Point.cpp
+		GUI/Components/Rectangle.cpp
+		GUI/Components/Color.cpp
+		GUI/Components/Canvas.cpp
+		GUI/Components/MainCanvas.cpp
+)
+SET(Humbug_Components_headers 
+		GUI/Components/Point.h
+		GUI/Components/Rectangle.h
+		GUI/Components/Color.h
+		GUI/Components/Canvas.h
+		GUI/Components/MainCanvas.h
+)
+
+# GUI implementation
+SET(Humbug_MyGUI_sources 
+		GUI/TestEventHandler.cpp
+		GUI/TestThread.cpp
+		GUI/TestTimer.cpp
+)
+SET(Humbug_MyGUI_headers 
 		GUI/TestEventHandler.h
 		GUI/TestThread.h
 		GUI/TestTimer.h
 )
 
+# putting the sources together
 SET(Humbug_headers 
 		${Humbug_GUI_headers}
+		${Humbug_MyGUI_headers}
+		${Humbug_Components_headers}
 		fs/FileLoader.h
 #        qpid/InlineAllocator.h
 #        qpid/InlineVector.h
@@ -86,9 +108,10 @@ SET(Humbug_headers
         Project/ProjectModel.h
 )
 
-
 SET(Humbug_sources 
 		${Humbug_GUI_sources}
+		${Humbug_MyGUI_sources}
+		${Humbug_Components_sources}
 		fs/FileLoader.cpp
 
         main.cpp 
@@ -205,12 +228,12 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    ${Humbug_Artwork_DIR}/footer.png
 )
-CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
+#CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
 
 SET(Pak02_PACKAGE_SOURCE_FILES 
 	    ${Humbug_Artwork_DIR}/footer.psd
 )
-CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
+#CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 
 #ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 

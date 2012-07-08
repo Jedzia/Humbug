@@ -2,6 +2,7 @@
 #define __TESTEVENTHANDLER_H__
 
 #include "Visual/EventHandler.h"
+#include "Components/MainCanvas.h"
 #include "TestTimer.h"
 #include "TestThread.h"
 
@@ -13,7 +14,9 @@ class CTestEventHandler : public CEventHandler
 {
 private:
 	//main display surface
-	SDL_Surface* m_pDisplaySurface;
+	CMainCanvas* m_pMainCanvas;
+	//main display surface
+	//SDL_Surface* m_pDisplaySurface;
 	//test timer
 	CTestTimer* m_pTestTimer;
 	//test thread

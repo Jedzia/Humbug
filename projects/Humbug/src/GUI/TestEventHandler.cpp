@@ -5,6 +5,7 @@
 #include "../stdafx.h"
 #include "TestEventHandler.h"
 #include "fs/FileLoader.h"
+#include "Components/Color.h"
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -48,11 +49,11 @@ CTestEventHandler::CTestEventHandler()
 //destructor
 CTestEventHandler::~CTestEventHandler()
 {
-	//destroy timer
-	delete m_pTestTimer;
+    //destroy timer
+    delete m_pTestTimer;
 
-	//destroy thread
-	delete m_pTestThread;
+    //destroy thread
+    delete m_pTestThread;
 }
 
 void DrawImage(SDL_Surface *srcimg, int sx, int sy, int sw, int sh, SDL_Surface *dstimg, int dx, int dy, int alpha = 255) {
@@ -73,16 +74,21 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
     //initialize parent class
     CEventHandler::OnInit(argc,argv);
 
+
     //create display surface
     Uint32 video_flags;
     //video_flags = SDL_OPENGL;
     video_flags = SDL_ANYFORMAT;
-    m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,video_flags);
-	if ( m_pDisplaySurface == NULL ) {
-		fprintf(stderr, "Couldn't set GL mode: %s\n", SDL_GetError());
-		SDL_Quit();
-		exit(1);
-	}
+	
+	//construct main canvas
+	m_pMainCanvas=new CMainCanvas(1024,768,0,video_flags);
+	//m_pDisplaySurface=m_pMainCanvas->GetSurface ( );
+    //m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,video_flags);
+    /*if ( m_pDisplaySurface == NULL ) {
+        fprintf(stderr, "Couldn't set GL mode: %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(1);
+    }*/
 
     //create timer
     m_pTestTimer=new CTestTimer(this);
@@ -109,8 +115,8 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
         // return NULL;
     } else {
         //DrawImage(img, 1024 - img->w, 768 - img->h, img->w, img->h, m_pDisplaySurface, 10, 10, 128);
-        DrawImage(img, 0, 0, img->w, img->h, m_pDisplaySurface, 0, 768 - img->h, 128);
-        SDL_Flip(m_pDisplaySurface); //Refresh the screen
+        DrawImage(img, 0, 0, img->w, img->h, m_pMainCanvas->GetSurface( ), 0, 768 - img->h, 128);
+        SDL_Flip(m_pMainCanvas->GetSurface( )); //Refresh the screen
     }
 
     //success
@@ -120,7 +126,7 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
 //idle behavior
 void CTestEventHandler::OnIdle()
 {
-   	Uint32 now, diff;
+    Uint32 now, diff;
     now = SDL_GetTicks();
     diff = now - m_pLastTicks;
     if(diff > 10)
@@ -129,14 +135,15 @@ void CTestEventHandler::OnIdle()
         m_pLastTicks = now;
     }
 
-	// call base method.
+    m_pMainCanvas->Flip();
+    // call base method.
     CApplication::OnIdle();
 }
 
 //update loop
 void CTestEventHandler::Update()
 {
-   	Uint32 now, diff;
+    Uint32 now, diff;
     now = SDL_GetTicks();
     diff = now - m_pLastTicks2;
     if(diff > 100)
@@ -145,26 +152,26 @@ void CTestEventHandler::Update()
         m_pLastTicks2 = now;
     }
 
-	// call base method.
-    CApplication::OnIdle();
+    // call base method.
+    CApplication::Update();
 }
 
 //left button down
 void CTestEventHandler::OnLButtonDown(Uint16 x,Uint16 y)
 {
-	//draw a pixel
-	SendMessage(MSGID_DrawPixel,(MSGPARM)x,(MSGPARM)y);
+    //draw a pixel
+    SendMessage(MSGID_DrawPixel,(MSGPARM)x,(MSGPARM)y);
 }
 
 //mouse move
 void CTestEventHandler::OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle)
 {
-	//if left button is down
-	if(bLeft)
-	{
-		//draw a pixel
-		SendMessage(MSGID_DrawPixel,(MSGPARM)x,(MSGPARM)y);
-	}
+    //if left button is down
+    if(bLeft)
+    {
+        //draw a pixel
+        SendMessage(MSGID_DrawPixel,(MSGPARM)x,(MSGPARM)y);
+    }
 }
 
 //key press
@@ -172,61 +179,57 @@ void CTestEventHandler::OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode)
 {
     if( sym == SDLK_ESCAPE )
     {
-	    //send clear screen message
-	    SendMessage(MSGID_QuitApp);
+        //send clear screen message
+        SendMessage(MSGID_QuitApp);
     }
     else        
     {
-	    //send clear screen message
-	    SendMessage(MSGID_ClearScreen);
+        //send clear screen message
+        SendMessage(MSGID_ClearScreen);
     }
 }
 
 //message handler
 bool CTestEventHandler::OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4)
 {
-	// quit application
-	if(MsgID==MSGID_QuitApp)
-	{
+    // quit application
+    if(MsgID==MSGID_QuitApp)
+    {
         SDL_Event quit;
         quit.type = SDL_QUIT;
         SDL_PushEvent(&quit);
-		return(true);
+        return(true);
     }
-	//clear screen
-	else if(MsgID==MSGID_ClearScreen)
-	{
+    //clear screen
+    else if(MsgID==MSGID_ClearScreen)
+    {
         SDL_FreeSurface(m_pImgFooter);
-		//set up rectangle
-		SDL_Rect rcFill;
-		rcFill.x=rcFill.y=0;
-		rcFill.w=m_pDisplaySurface->w;
-		rcFill.h=m_pDisplaySurface->h;
-		//fill the rectangle black
-		SDL_FillRect(m_pDisplaySurface,&rcFill,0);
+		m_pMainCanvas->Clear(CColor(0,0,0));
 		//update the screen
-		SDL_UpdateRect(m_pDisplaySurface,0,0,0,0);
-		//success
-		return(true);
-	}
-	//draw pixel
-	else if(MsgID==MSGID_DrawPixel)
-	{
-		//set up rectangle
-		SDL_Rect rcFill;
-		rcFill.x=(Sint16)Parm1;
-		rcFill.y=(Sint16)Parm2;
-		rcFill.w=1;
-		rcFill.h=1;
-		//fill the rectangle black
-		SDL_FillRect(m_pDisplaySurface,&rcFill,SDL_MapRGB(m_pDisplaySurface->format,255,255,255));
-		//update the screen
-		SDL_UpdateRect(m_pDisplaySurface,0,0,0,0);
-		//success
-		return(true);
-	}
-	//other message
-	else return(CEventHandler::OnMessage(MsgID,Parm1,Parm2,Parm3,Parm4));
+		m_pMainCanvas->Flip();
+        return(true);
+    }
+    //draw pixel
+    else if(MsgID==MSGID_DrawPixel)
+    {
+        /*//set up rectangle
+        SDL_Rect rcFill;
+        rcFill.x=(Sint16)Parm1;
+        rcFill.y=(Sint16)Parm2;
+        rcFill.w=1;
+        rcFill.h=1;
+        //fill the rectangle black
+        SDL_FillRect(m_pMainCanvas->GetSurface( ),&rcFill,SDL_MapRGB(m_pMainCanvas->GetSurface( )->format,255,255,255));
+        //update the screen
+        SDL_UpdateRect(m_pMainCanvas->GetSurface( ),0,0,0,0);
+        //success*/
+		
+		m_pMainCanvas->SetPixel((Sint16)Parm1, (Sint16)Parm2, CColor(255,255,255));
+	    //m_pMainCanvas->Flip();
+        return(true);
+    }
+    //other message
+    else return(CEventHandler::OnMessage(MsgID,Parm1,Parm2,Parm3,Parm4));
 }
 
 //declare application variable
