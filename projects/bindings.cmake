@@ -287,3 +287,24 @@ IF(USE_MAGICK)
 	MODUSE_SUMMARY(ImageMagick_EXE               "at ${ImageMagick_EXECUTABLE_DIR}" USE ALL)
 ENDIF(USE_MAGICK)
 
+IF(USE_INKSCAPE)
+	FIND_PROGRAM(INKSCAPE_EXECUTABLE
+	  NAMES inkscape.exe inkscape
+	  PATHS
+#		"[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\doxygen_is1;Inno Setup: App Path]/bin"
+        "$ENV{ProgramFiles}/Inkscape"
+        "C:/Program Files/Inkscape"
+#		/Applications/Doxygen.app/Contents/Resources
+#		/Applications/Doxygen.app/Contents/MacOS
+	  DOC "Inkscape .... (http://www.inkscape.org)"
+	)
+	IF( INKSCAPE_EXECUTABLE )
+#		MESSAGE(FATAL_ERROR "SDL_image Library not found!")
+		MESSAGE(STATUS "Inkscape_executable found: ${INKSCAPE_EXECUTABLE}")
+		SET(INKSCAPE_EXECUTABLE_FOUND TRUE)
+	ELSE()
+		MESSAGE(WARNING "Inkscape executable not found.")
+	ENDIF()
+	MODUSE_SUMMARY(Inkscape_EXE               "at ${INKSCAPE_EXECUTABLE}" USE ALL)
+ENDIF(USE_INKSCAPE)
+
