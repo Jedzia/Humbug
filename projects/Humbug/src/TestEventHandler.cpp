@@ -2,10 +2,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "TestEventHandler.h"
 #include "fs/FileLoader.h"
-#include "Components/Color.h"
+#include "GUI/Components/Color.h"
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -60,7 +60,7 @@ void DrawImage(SDL_Surface *srcimg, int sx, int sy, int sw, int sh, SDL_Surface 
 
  if ((srcimg == NULL) || (alpha == 0)) return; //If theres no image, or its 100% transparent.
  SDL_Rect src, dst;
- 
+
  src.x = sx;  src.y = sy;  src.w = sw;  src.h = sh;
  dst.x = dx;  dst.y = dy;  dst.w = src.w;  dst.h = src.h;
  if (alpha != 255) SDL_SetAlpha(srcimg, SDL_SRCALPHA, alpha);
@@ -79,7 +79,7 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
     Uint32 video_flags;
     //video_flags = SDL_OPENGL;
     video_flags = SDL_ANYFORMAT;
-	
+
 	//construct main canvas
 	m_pMainCanvas=new CMainCanvas(1024,768,0,video_flags);
 	//m_pDisplaySurface=m_pMainCanvas->GetSurface ( );
@@ -182,7 +182,7 @@ void CTestEventHandler::OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode)
         //send clear screen message
         SendMessage(MSGID_QuitApp);
     }
-    else        
+    else
     {
         //send clear screen message
         SendMessage(MSGID_ClearScreen);
@@ -223,7 +223,7 @@ bool CTestEventHandler::OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPAR
         //update the screen
         SDL_UpdateRect(m_pMainCanvas->GetSurface( ),0,0,0,0);
         //success*/
-		
+
 		m_pMainCanvas->SetPixel((Sint16)Parm1, (Sint16)Parm2, CColor(255,255,255));
 	    //m_pMainCanvas->Flip();
         return(true);

@@ -86,14 +86,14 @@ SET(Humbug_Components_headers
 
 # GUI implementation
 SET(Humbug_MyGUI_sources 
-		GUI/TestEventHandler.cpp
-		GUI/TestThread.cpp
-		GUI/TestTimer.cpp
+		TestEventHandler.cpp
+		TestThread.cpp
+		TestTimer.cpp
 )
 SET(Humbug_MyGUI_headers 
-		GUI/TestEventHandler.h
-		GUI/TestThread.h
-		GUI/TestTimer.h
+		TestEventHandler.h
+		TestThread.h
+		TestTimer.h
 )
 
 # putting the sources together

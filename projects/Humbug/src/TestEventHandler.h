@@ -1,8 +1,8 @@
 #ifndef __TESTEVENTHANDLER_H__
 #define __TESTEVENTHANDLER_H__
 
-#include "Visual/EventHandler.h"
-#include "Components/MainCanvas.h"
+#include "GUI/Visual/EventHandler.h"
+#include "GUI/Components/MainCanvas.h"
 #include "TestTimer.h"
 #include "TestThread.h"
 

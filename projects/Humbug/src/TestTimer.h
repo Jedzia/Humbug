@@ -1,7 +1,7 @@
 #ifndef __TESTTIMER_H__
 #define __TESTTIMER_H__
 
-#include "Visual/Timer.h"
+#include "GUI/Visual/Timer.h"
 /*
 	==CTestTimer==
 	Test case for CTimer

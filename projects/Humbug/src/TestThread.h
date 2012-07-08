@@ -1,7 +1,7 @@
 #ifndef __TESTTHREAD_H__
 #define __TESTTHREAD_H__
 
-#include "Visual/Thread.h"
+#include "GUI/Visual/Thread.h"
 
 /*
 	==CTestThread==
