@@ -43,6 +43,7 @@ private:
     HudBackground* m_pBackground;
 	// CCanvas* footer;
 	CImage* footerImage;
+    bool oldstate;
 };
 
 #endif // GUI_HUD_H

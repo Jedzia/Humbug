@@ -33,6 +33,8 @@ private:
 	static CControl* s_pMouseFocus;
 	//mouse hovering
 	static CControl* s_pMouseHover;
+protected:
+    bool m_ptIsDirty;
 public:
 	//master control constructor
 	CControl(CCanvas* pCanvas);

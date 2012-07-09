@@ -22,7 +22,7 @@ CControl* CControl::s_pMouseHover=NULL;
 CControl::CControl(CCanvas* pCanvas):
 m_lstChildren(0),
 m_ID(0),
-m_pParent(NULL)
+m_pParent(NULL), m_ptIsDirty(false)
 {
     dbgOut(__FUNCTION__ << std::endl);
 	//set the canvas
@@ -37,7 +37,7 @@ m_pParent(NULL)
 CControl::CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id):
 m_lstChildren(0),
 m_ID(id),
-m_pParent(NULL)
+m_pParent(NULL), m_ptIsDirty(false)
 {
 	//set parent
 	SetParent(pParent);
@@ -195,7 +195,10 @@ void CControl::Draw()
 		rcSrc.SetX(0);
 		rcSrc.SetY(0);
 		//blit
-		pParent->GetCanvas()->Blit(rcDst,*GetCanvas(),rcSrc);
+        if(m_ptIsDirty){
+		    pParent->GetCanvas()->Blit(rcDst,*GetCanvas(),rcSrc);
+            m_ptIsDirty = false;
+        }
 	}
 }
 

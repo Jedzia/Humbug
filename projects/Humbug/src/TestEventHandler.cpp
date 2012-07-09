@@ -71,7 +71,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     Uint32 video_flags;
 
     //video_flags = SDL_OPENGL;
-    video_flags = SDL_ANYFORMAT;
+    //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
+    video_flags = SDL_ANYFORMAT ;
 
     //construct main canvas
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
@@ -128,21 +129,37 @@ void CTestEventHandler::OnIdle(){
        }*/
 
     //update controls
-    if(m_pHud != NULL && m_pHud->HasMouseHover())
+    CControl::Redraw();
+    if(m_pHud /*!= NULL && m_pHud->HasMouseHover()*/)
     {
         int zz = 3;
         zz = 5;
+        // CRectangle rmf(m_pHud->GetLeft(), m_pHud->GetTop(),m_pHud->GetRight(),m_pHud->GetBottom());
+        //CRectangle rmf(m_pHud->GetLeft(), m_pHud->GetTop(),m_pHud->GetRight(),m_pHud->GetBottom());
+        CRectangle rmfull(0,0,1024,768);
+        CRectangle rmf(0,0,1024,768 - m_pHud->GetHeight());
+        //m_pMainCanvas->AddUpdateRect(rmfull);
     }
 
-    CControl::Redraw();
 
     static int x = 0;
-    //m_pMainCanvas->FillRect(CRectangle(x,x,x+5,x+5), CColor::Red());
+    static int y = 25;
+    if(x<768)
+    {
+        CRectangle frect(x,x,y,y);
+        //m_pMainCanvas->FillRect(frect, CColor::Red());
+        //m_pMainCanvas->AddUpdateRect(frect);
+    }
+    else
+    {
+        x = 0;
+        y += 25;
+    }
     x++;
     //m_pHud->Draw();
-    m_pMainCanvas->Flip();
+    //m_pMainCanvas->Flip();
 
-    //m_pMainCanvas->UpdateRects ( );
+    m_pMainCanvas->UpdateRects ( );
     // call base method.
     CApplication::OnIdle();
 }
@@ -211,6 +228,7 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
         }
 
         m_pMainCanvas->Clear( CColor(0, 0, 0) );
+        m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
 
         //update the screen
         //m_pMainCanvas->Flip();
@@ -234,6 +252,9 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
             //successful lock
             //set pixel
             m_pMainCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
+            CRectangle frect((Sint16)Parm1,(Sint16)Parm2,1,1);
+            //m_pMainCanvas->FillRect(frect, CColor::Red());
+            m_pMainCanvas->AddUpdateRect(frect);
 
             //m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1,
             // (Sint16)Parm2+1));
