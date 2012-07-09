@@ -138,6 +138,8 @@ bool slurp4(std::vector<char>& data, const filesystem& fsys, const std::string& 
     return true;
 }
 
+#   define FILELOADER_ERRNO    errno 
+
 SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
 {
     int fsize = fsys.FileSize(filename.c_str());
@@ -148,6 +150,11 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
 	if (! file)
     {
         std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
+        HUMBUG_FILELOADER_THROW(
+            FileLoaderException("boost::filesystem::directory_iterator::operator++", 
+            boost::system::error_code(FILELOADER_ERRNO, boost::system::system_category())
+            )
+        );
         return NULL;
     }
     else
