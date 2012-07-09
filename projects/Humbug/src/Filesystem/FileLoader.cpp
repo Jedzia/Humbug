@@ -169,7 +169,7 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
     return sdlsurface;
 }
 
-void FileLoader::Load(const std::string & filename)
+void FileLoader::Load(const std::string & filename) const
 {
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
 	std::cout << fsys << std::endl;
@@ -194,7 +194,7 @@ void FileLoader::Load(const std::string & filename)
 
 
 
-SDL_Surface* FileLoader::LoadImg(const std::string & filename)
+SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
 {
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
 	std::cout << fsys << std::endl;

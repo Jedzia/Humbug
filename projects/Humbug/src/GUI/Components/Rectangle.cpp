@@ -17,9 +17,10 @@ CRectangle::CRectangle ( SDL_Rect* prc )
 	Set ( prc->x , prc->y , prc->w , prc->h ) ;
 }
 
-CRectangle::CRectangle ( CRectangle& rc ) 
+CRectangle::CRectangle ( const CRectangle& rc ) 
 {
-	( *this ) = rc ;
+	Set ( rc.GetX() , rc.GetY() , rc.GetW() , rc.GetH() ) ;
+	//( *this ) = rc ;
 }
 
 CRectangle::~CRectangle ( ) 
@@ -345,5 +346,11 @@ CPoint CRectangle::Wrap ( CPoint pt )
 	while ( pt.X ( ) >= X ( ) + W ( ) ) pt.X ( ) -= W ( ) ;
 	while ( pt.Y ( ) >= Y ( ) + H ( ) ) pt.Y ( ) -= H ( ) ;
 	return ( pt ) ;
+}
+
+std::ostream& operator<<(std::ostream& o, const CRectangle& r) {
+    return o << "CRectangle[ X=" << r.GetX() << ", Y=" << r.GetY() 
+		<< ", W=" << r.GetW() << ", H=" << r.GetH() 
+		<< " ]";
 }
 

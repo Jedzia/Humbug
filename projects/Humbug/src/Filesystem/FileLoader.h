@@ -10,8 +10,8 @@ public:
     ~FileLoader();
 
     const char *language(int x) const;
-    void Load(const std::string & filename);
-    SDL_Surface* LoadImg(const std::string & filename);
+    void Load(const std::string & filename) const;
+    SDL_Surface* LoadImg(const std::string & filename) const;
 
 private:
 	std::string m_pBasepath;

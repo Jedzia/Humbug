@@ -74,6 +74,7 @@ SET(Humbug_Components_sources
 		GUI/Components/Rectangle.cpp
 		GUI/Components/Color.cpp
 		GUI/Components/Canvas.cpp
+		GUI/Components/Image.cpp
 		GUI/Components/MainCanvas.cpp
 )
 SET(Humbug_Components_headers 
@@ -81,6 +82,7 @@ SET(Humbug_Components_headers
 		GUI/Components/Rectangle.h
 		GUI/Components/Color.h
 		GUI/Components/Canvas.h
+		GUI/Components/Image.h
 		GUI/Components/MainCanvas.h
 )
 

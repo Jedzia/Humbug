@@ -44,6 +44,8 @@ public:
 	//width and height retrieval
 	int GetWidth ( ) ;
 	int GetHeight ( ) ;
+	//get the clipping rectangle
+	CRectangle GetDimension ( ) ;
 
 	//add an update rectangle
 	void AddUpdateRect ( CRectangle& pUpdateRect ) ;

@@ -1,8 +1,9 @@
-#ifndef __RECTANGLE_H__
-#define __RECTANGLE_H__
+#ifndef __GUI_COMPONENTS_RECTANGLE_H__
+#define __GUI_COMPONENTS_RECTANGLE_H__
 
 #include "sdl.h"
 #include "point.h"
+#include <iostream>
 
 //CRectangle--abstract an SDL_Rect
 class CRectangle  
@@ -18,7 +19,7 @@ public:
 	//copy from SDL_Rect*
 	CRectangle ( SDL_Rect* prc ) ;
 	//copy from another CRectangle
-	CRectangle ( CRectangle& rc ) ;
+	CRectangle ( const CRectangle& rc ) ;
 	virtual ~CRectangle ( ) ;
 
 	//accessors for x, y, h, and w
@@ -94,10 +95,15 @@ public:
 	//clip or wrap points
 	CPoint Clip ( CPoint pt ) ;
 	CPoint Wrap ( CPoint pt ) ;
+	
+    friend std::ostream& operator<<(std::ostream& o, const CRectangle& r);
 };
 
 //add/subtract point and rectangle
 CRectangle operator + ( CPoint& pt , CRectangle& rc ) ;
 CRectangle operator - ( CPoint& pt , CRectangle& rc ) ;
+
+
+std::ostream& operator<<(std::ostream& o, const CRectangle& r);
 
 #endif

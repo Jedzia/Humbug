@@ -1,6 +1,6 @@
 //sentinel
-#ifndef __POINT_H__
-#define __POINT_H__
+#ifndef __GUI_COMPONENTS_POINT_H__
+#define __GUI_COMPONENTS_POINT_H__
 
 //point class
 class CPoint  
