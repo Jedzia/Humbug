@@ -47,6 +47,8 @@ public:
 	void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
 	//message handler
 	bool OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4);
+   	//event filtering
+	bool FilterEvent(SDL_Event* pEvent);
 	//message ids
 	static MSGID MSGID_QuitApp;//no parms
 	static MSGID MSGID_ClearScreen;//no parms

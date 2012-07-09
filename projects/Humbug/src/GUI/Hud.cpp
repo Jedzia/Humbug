@@ -47,6 +47,7 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
     CPoint dst( 0, pParent->GetCanvas()->GetHeight( ) - footer->GetHeight( ) );
     CControl::SetPosition(dst);
     // BringToFront();
+        //SetMouseHover(this);
 }
 
 Hud::~Hud(void){
@@ -74,6 +75,26 @@ void Hud::OnDraw(){
        std::cout << "The rect: |" << footer.GetDimension() << "|ends" << std::endl;
        CImage footerImage( &footer ) ;*/
         //footerImage->Put( GetCanvas(), dst );
+            if(HasMouseHover())
+	{
         footerImage->Put( GetCanvas(), CPoint(0,0) );
+            }
+            else
+	{
+		//clear to light gray
+		GetCanvas()->FillRect(CRectangle(0,0,GetWidth(),GetHeight()),CColor(155,255,155));
+    }
 }
 
+bool Hud::OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle)
+{
+    bool res = CControl::OnMouseMove( x, y, relx, rely, bLeft, bRight, bMiddle);
+    //if(GetMouseHover()==NULL) SetMouseHover(this);
+
+    /*if(HasMouseHover())
+	{
+		//clear to light gray
+		GetCanvas()->FillRect(CRectangle(0,0,GetWidth(),GetHeight()),CColor(155,255,155));
+    }*/
+    return res;
+}

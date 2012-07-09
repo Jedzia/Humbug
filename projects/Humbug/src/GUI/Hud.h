@@ -30,6 +30,7 @@ public:
 
     //void Draw();
 	void OnDraw();
+	virtual bool OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
 
 private:
 	void Init(CControl* pParent);

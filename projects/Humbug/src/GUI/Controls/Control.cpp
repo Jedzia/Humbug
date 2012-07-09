@@ -296,7 +296,10 @@ bool CControl::OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,
 	//range check
 	if(x>=GetLeft() && x<GetRight() && y>=GetTop() && y<GetBottom())
 	{
-		if(GetMouseHover()==NULL) SetMouseHover(this);
+		if(GetMouseHover()==NULL) 
+        {
+            SetMouseHover(this);
+        }
 		return(true);
 	}
 	return(false);

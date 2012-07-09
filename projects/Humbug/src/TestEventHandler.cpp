@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////////
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
-#include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Image.h"
+#include "GUI/Components/Rectangle.h"
 #include "GUI/Hud.h"
 #include "TestEventHandler.h"
 #include "stdafx.h"
@@ -42,17 +42,18 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 CTestEventHandler::CTestEventHandler() :
     m_pLastTicks(0),
     m_pLastTicks2(0),
-    m_pHud(NULL)
-{    
+    m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
-	
-    if(m_pHud)
+    if(m_pHud) {
         delete m_pHud;
+    }
+
     delete CControl::GetMainControl();
+
     //destroy timer
     delete m_pTestTimer;
 
@@ -91,17 +92,26 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //char *file = "blue.bmp";
 //    char* file = "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/footer.png";
+    //create main control
+    CControl* mainControl = new CControl(m_pMainCanvas);
 
-	//create main control
-	CControl* mainControl = new CControl(m_pMainCanvas);
-	//CControl mainControl(m_pMainCanvas);
-
+    //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
     FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-	m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer2.png"), 0);
-	// m_pHud = new Hud(fl, m_pMainCanvas);
-	//m_pHud->Draw();
-	
+    try
+    {
+        m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer.png"), 0);
+        //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
+    }
+    catch (FileLoaderException ex)
+    {
+        std::cout << ex.what() << std::endl;
+
+        //m_imp_ptr.reset();
+    }
+
+    // m_pHud = new Hud(fl, m_pMainCanvas);
+    //m_pHud->Draw();
     //SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
     //success
     return(true);
@@ -117,10 +127,19 @@ void CTestEventHandler::OnIdle(){
         m_pLastTicks = now;
        }*/
 
-   //update controls
-	CControl::Redraw();
-	//m_pHud->Draw();
+    //update controls
+    if(m_pHud != NULL && m_pHud->HasMouseHover())
+    {
+        int zz = 3;
+        zz = 5;
+    }
 
+    CControl::Redraw();
+
+    static int x = 0;
+    //m_pMainCanvas->FillRect(CRectangle(x,x,x+5,x+5), CColor::Red());
+    x++;
+    //m_pHud->Draw();
     m_pMainCanvas->Flip();
 
     //m_pMainCanvas->UpdateRects ( );
@@ -178,7 +197,6 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
     if(MsgID==MSGID_QuitApp) {
         //m_pHud->Close();
         //m_pHud->Update();
-
         SDL_Event quit;
         quit.type = SDL_QUIT;
         SDL_PushEvent(&quit);
@@ -187,11 +205,11 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
     //clear screen
     else if(MsgID==MSGID_ClearScreen) {
         //SDL_FreeSurface(m_pImgFooter);
-        if(m_pHud)
-        {
+        if(m_pHud) {
             m_pHud->Close();
             m_pHud = NULL;
         }
+
         m_pMainCanvas->Clear( CColor(0, 0, 0) );
 
         //update the screen
@@ -228,7 +246,16 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
         return(true);
     }
     //other message
-    else {return( CEventHandler::OnMessage(MsgID, Parm1, Parm2, Parm3, Parm4) ); }} // OnMessage
+    else {return( CEventHandler::OnMessage(MsgID, Parm1, Parm2, Parm3, Parm4) ); 
+    }
+} // OnMessage
+
+//event filtering
+bool CTestEventHandler::FilterEvent(SDL_Event* pEvent)
+{
+	return(CControl::FilterEvent(pEvent));
+}
+
 
 //declare application variable
 CTestEventHandler TheApp;

@@ -149,12 +149,10 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
 
 	if (! file)
     {
-        std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
+        //std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
         HUMBUG_FILELOADER_THROW(
-            FileLoaderException("boost::filesystem::directory_iterator::operator++", 
-            boost::system::error_code(FILELOADER_ERRNO, boost::system::system_category())
-            )
-        );
+            FileLoaderException("[FileLoader::LoadImg-slurp5]", filename,
+            boost::system::error_code(FILELOADER_ERRNO, boost::system::system_category())));
         return NULL;
     }
     else
@@ -167,8 +165,11 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
         SDL_RWops* imgmem = SDL_RWFromMem(&data[0], fsize);
         sdlsurface = IMG_Load_RW(imgmem, 1);
 		if (!sdlsurface) {
-			fprintf(stderr, "Error: '%s' could not be opened: %s\n", file, IMG_GetError());
+			fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
 			// load a internal error image.
+            HUMBUG_FILELOADER_THROW(
+                FileLoaderException(std::string("[FileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
+        // generic_category
 		}
     }
 
