@@ -7,6 +7,11 @@ CRectangle::CRectangle ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
 	Set ( x , y , w , h ) ;
 }
 
+CRectangle::CRectangle ( CPoint xy , CPoint wh ) 
+{
+    Set ( xy.GetX() , xy.GetY() , wh.GetX() , wh.GetY() ) ;
+}
+
 CRectangle::CRectangle ( SDL_Rect rc ) 
 {
 	Set ( rc.x , rc.y , rc.w , rc.h ) ;

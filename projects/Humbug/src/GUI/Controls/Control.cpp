@@ -202,6 +202,13 @@ void CControl::Draw()
 	}
 }
 
+//invalidate control
+void CControl::Invalidate()
+{
+    // Todo: for all children
+    m_ptIsDirty = true;
+}
+
 //customize redrawing
 void CControl::OnDraw()
 {

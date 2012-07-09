@@ -14,6 +14,7 @@ private:
 public:
 	//constructors--direct member assignment
 	CRectangle ( Sint16 x = 0 , Sint16 y = 0 , Uint16 w = 0 , Uint16 h = 0 ) ;
+	CRectangle ( CPoint xy , CPoint wh ) ;
 	//copy from SDL_Rect
 	CRectangle ( SDL_Rect rc ) ;
 	//copy from SDL_Rect*

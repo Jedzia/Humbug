@@ -165,7 +165,7 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
         SDL_RWops* imgmem = SDL_RWFromMem(&data[0], fsize);
         sdlsurface = IMG_Load_RW(imgmem, 1);
 		if (!sdlsurface) {
-			fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
+			//fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
 			// load a internal error image.
             HUMBUG_FILELOADER_THROW(
                 FileLoaderException(std::string("[FileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));

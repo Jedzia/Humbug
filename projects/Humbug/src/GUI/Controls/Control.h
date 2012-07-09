@@ -70,6 +70,7 @@ public:
 	static void Redraw();
 	//draw control
 	void Draw();
+	void Invalidate();
 	//customize redrawing
 	virtual void OnDraw();
 	//event handling

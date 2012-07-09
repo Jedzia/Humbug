@@ -7,7 +7,7 @@
 #include "TestThread.h"
 
 class HUD;
-
+class CImage;
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
@@ -17,6 +17,7 @@ class CTestEventHandler : public CEventHandler
 private:
 	//main display surface
 	CMainCanvas* m_pMainCanvas;
+    CImage* m_pBlue;
 	Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;
@@ -27,6 +28,9 @@ private:
     //last ticks
     Uint32 m_pLastTicks;
     Uint32 m_pLastTicks2;
+    void PutBlue();
+    int pfx;
+    int pfy;
 protected:
     //idle behavior
 	virtual void OnIdle();
