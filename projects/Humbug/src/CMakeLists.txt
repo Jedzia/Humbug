@@ -86,11 +86,15 @@ SET(Humbug_Components_headers
 
 # GUI implementation
 SET(Humbug_MyGUI_sources 
+		GUI/Hud.cpp
+
 		TestEventHandler.cpp
 		TestThread.cpp
 		TestTimer.cpp
 )
 SET(Humbug_MyGUI_headers 
+		GUI/Hud.h
+
 		TestEventHandler.h
 		TestThread.h
 		TestTimer.h
@@ -101,7 +105,7 @@ SET(Humbug_headers
 		${Humbug_GUI_headers}
 		${Humbug_MyGUI_headers}
 		${Humbug_Components_headers}
-		fs/FileLoader.h
+		Filesystem/FileLoader.h
 #        qpid/InlineAllocator.h
 #        qpid/InlineVector.h
 #        qpid/RangeSet.h
@@ -112,7 +116,7 @@ SET(Humbug_sources
 		${Humbug_GUI_sources}
 		${Humbug_MyGUI_sources}
 		${Humbug_Components_sources}
-		fs/FileLoader.cpp
+		Filesystem/FileLoader.cpp
 
         main.cpp 
         Project/ProjectModel.cpp

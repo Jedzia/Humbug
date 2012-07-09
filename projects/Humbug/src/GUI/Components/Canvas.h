@@ -7,14 +7,13 @@
 #include "Rectangle.h"
 #include <list>
 #include <string>
-using namespace std;
 
 //CCanvas class
 class CCanvas
 {
 private:
 	//a list of update rectangles
-	list < SDL_Rect* > m_lstUpdateRects ;
+	std::list < SDL_Rect* > m_lstUpdateRects ;
 
 protected:
 	//pointer to an SDL_Surface
@@ -89,9 +88,10 @@ public:
 	static CCanvas* CreateRGBCompatible ( Uint32 flags , int width , int height ) ;
 
 	//load a bitmap
-	static CCanvas* LoadBMP ( string sFileName ) ;
+	static CCanvas* LoadBMP ( std::string sFileName ) ;
 	//load a bitmap, convert it to the display format
-	static CCanvas* LoadBMPCompatible ( string sFileName ) ;
+	static CCanvas* LoadBMPCompatible ( std::string sFileName ) ;
+
 } ;
 
 #endif

@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "TestEventHandler.h"
-#include "fs/FileLoader.h"
+#include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
 
         /// <summary>
@@ -109,15 +109,11 @@ bool CTestEventHandler::OnInit(int argc,char* argv[])
     //m_pImgFooter = IMG_Load(file);
     m_pImgFooter = fl.LoadImg("footer.png");
     SDL_Surface *img = m_pImgFooter;
-    if (!img) {
-        fprintf(stderr, "Error: '%s' could not be opened: %s\n", file, IMG_GetError());
-        // exitstate = false;
-        // return NULL;
-    } else {
-        //DrawImage(img, 1024 - img->w, 768 - img->h, img->w, img->h, m_pDisplaySurface, 10, 10, 128);
-        DrawImage(img, 0, 0, img->w, img->h, m_pMainCanvas->GetSurface( ), 0, 768 - img->h, 128);
-        SDL_Flip(m_pMainCanvas->GetSurface( )); //Refresh the screen
-    }
+	CCanvas footer(m_pImgFooter);
+	m_pMainCanvas->Blit(CRectangle(0 , 768 - img->h, img->w, img->h), footer, CRectangle(0, 0,img->w, img->h));
+	//DrawImage(img, 1024 - img->w, 768 - img->h, img->w, img->h, m_pDisplaySurface, 10, 10, 128);
+	//DrawImage(img, 0, 0, img->w, img->h, m_pMainCanvas->GetSurface( ), 0, 768 - img->h, 128);
+	SDL_Flip(m_pMainCanvas->GetSurface( )); //Refresh the screen
 
     //success
     return(true);
@@ -136,6 +132,7 @@ void CTestEventHandler::OnIdle()
     }
 
     m_pMainCanvas->Flip();
+	//m_pMainCanvas->UpdateRects ( );
     // call base method.
     CApplication::OnIdle();
 }
@@ -206,7 +203,7 @@ bool CTestEventHandler::OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPAR
         SDL_FreeSurface(m_pImgFooter);
 		m_pMainCanvas->Clear(CColor(0,0,0));
 		//update the screen
-		m_pMainCanvas->Flip();
+		//m_pMainCanvas->Flip();
         return(true);
     }
     //draw pixel
@@ -223,8 +220,15 @@ bool CTestEventHandler::OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPAR
         //update the screen
         SDL_UpdateRect(m_pMainCanvas->GetSurface( ),0,0,0,0);
         //success*/
-
-		m_pMainCanvas->SetPixel((Sint16)Parm1, (Sint16)Parm2, CColor(255,255,255));
+		if(m_pMainCanvas->Lock())
+		{
+			//successful lock
+			//set pixel
+			m_pMainCanvas->SetPixel((Sint16)Parm1, (Sint16)Parm2, CColor(255,255,255));
+			//m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1, (Sint16)Parm2+1));
+		}
+		//unlock
+		m_pMainCanvas->Unlock();
 	    //m_pMainCanvas->Flip();
         return(true);
     }

@@ -2,6 +2,8 @@
 #include "Canvas.h"
 #include <memory.h>
 
+using namespace std;
+
 CCanvas::CCanvas ( SDL_Surface* pSurface ) 
 {
 	SetSurface ( pSurface ) ;
