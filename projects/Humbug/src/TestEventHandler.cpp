@@ -41,18 +41,24 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 //constructor
 CTestEventHandler::CTestEventHandler() :
     m_pLastTicks(0),
-    m_pLastTicks2(0)
-{}
+    m_pLastTicks2(0),
+    m_pHud(NULL)
+{    
+    //dbgOut(__FUNCTION__ << std::endl);
+}
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
 	
-	delete m_pHud;
+    if(m_pHud)
+        delete m_pHud;
+    delete CControl::GetMainControl();
     //destroy timer
     delete m_pTestTimer;
 
     //destroy thread
     delete m_pTestThread;
+    dbgOut(__FUNCTION__ << std::endl);
 }
 
 //initialization
@@ -86,9 +92,14 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //char *file = "blue.bmp";
 //    char* file = "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/footer.png";
 
+	//create main control
+	CControl* mainControl = new CControl(m_pMainCanvas);
+	//CControl mainControl(m_pMainCanvas);
+
     //char *file = "blue.png";
     FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-	m_pHud = new Hud(fl, m_pMainCanvas);
+	m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer2.png"), 0);
+	// m_pHud = new Hud(fl, m_pMainCanvas);
 	//m_pHud->Draw();
 	
     //SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
@@ -105,7 +116,11 @@ void CTestEventHandler::OnIdle(){
         fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks = now;
        }*/
-	m_pHud->Draw();
+
+   //update controls
+	CControl::Redraw();
+	//m_pHud->Draw();
+
     m_pMainCanvas->Flip();
 
     //m_pMainCanvas->UpdateRects ( );
@@ -161,6 +176,9 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
         MSGPARM Parm4){
     // quit application
     if(MsgID==MSGID_QuitApp) {
+        //m_pHud->Close();
+        //m_pHud->Update();
+
         SDL_Event quit;
         quit.type = SDL_QUIT;
         SDL_PushEvent(&quit);
@@ -169,6 +187,11 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
     //clear screen
     else if(MsgID==MSGID_ClearScreen) {
         //SDL_FreeSurface(m_pImgFooter);
+        if(m_pHud)
+        {
+            m_pHud->Close();
+            m_pHud = NULL;
+        }
         m_pMainCanvas->Clear( CColor(0, 0, 0) );
 
         //update the screen

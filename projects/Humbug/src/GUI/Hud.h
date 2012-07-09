@@ -1,26 +1,46 @@
 #ifndef GUI_HUD_H
 #define GUI_HUD_H
 
-//#include "GUI/Controls/Control.h"
+#include "GUI/Controls/Control.h"
 #include "GUI/Components/Canvas.h"
 
 class FileLoader;
 class CImage;
 
-class Hud /*: CControl*/ {
+class HudBackground  {
 public:
 
-    Hud(const FileLoader& loader, CCanvas* pCanvas);
-    ~Hud();
+    // Hud(const FileLoader& loader, CCanvas* pCanvas);
+    HudBackground(const FileLoader& loader, std::string filename);
+    ~HudBackground();
 
-    void Draw();
+    //void Draw();
+	CCanvas* GetCanvas();
 
 private:
+	CCanvas* m_pFooter;
+};
+
+class Hud : public CControl {
+public:
+
+    // Hud(const FileLoader& loader, CCanvas* pCanvas);
+    Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32 id);
+    ~Hud();
+
+    //void Draw();
+	void OnDraw();
+
+private:
+	void Init(CControl* pParent);
+    CRectangle InitRect(const FileLoader& loader);
+
 	//canvas used by window
 	const FileLoader& m_pLoader;
-	CCanvas* m_pCanvas;
-	CPoint dst;
-	CCanvas* footer;
+	//CCanvas* m_pCanvas;
+	//CPoint dst;
+    HudBackground* m_pBackground;
+	// CCanvas* footer;
 	CImage* footerImage;
 };
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <list>
 #include "boost/filesystem.hpp"
 #include <boost/cstdint.hpp>
 
@@ -39,4 +40,17 @@ int main(int argc, char *argv[])
     {
         std::cout << "exception is: " << e.what() << std::endl;
     }
+
+
+    MyClass a,b,c;
+
+    std::list<MyClass*> s_lstUpdate(0);
+    s_lstUpdate.push_back(&a);
+    s_lstUpdate.remove(&a);
+
+    s_lstUpdate.remove(&b);
+    s_lstUpdate.push_back(&b);
+    s_lstUpdate.remove(&b);
+
+
 }

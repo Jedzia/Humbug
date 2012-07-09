@@ -147,7 +147,7 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
 
 	if (! file)
     {
-        std::cout << "ERROR: Cannot open file!" << std::endl;
+        std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
         return NULL;
     }
     else

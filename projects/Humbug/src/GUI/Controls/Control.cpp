@@ -24,6 +24,7 @@ m_lstChildren(0),
 m_ID(0),
 m_pParent(NULL)
 {
+    dbgOut(__FUNCTION__ << std::endl);
 	//set the canvas
 	m_pCanvas=pCanvas;
 	//this is the main control
@@ -45,15 +46,26 @@ m_pParent(NULL)
 	//set position
 	m_ptPosition.SetX(rcDimensions.GetX());
 	m_ptPosition.SetY(rcDimensions.GetY());
+    dbgOut(__FUNCTION__ << std::endl);
 }
 
 //destructor
 CControl::~CControl()
 {
-	//remove from update list
-	s_lstUpdate.remove(this);
-	//remove from close list
-	s_lstClose.remove(this);
+    dbgOut(__FUNCTION__ << std::endl);
+	
+    //remove from update list
+    if(!s_lstUpdate.empty() && !IsMainControl())
+    { 
+        s_lstUpdate.remove(this);
+    }
+	
+    //remove from close list
+    if(!s_lstClose.empty() && !IsMainControl())
+    {
+        s_lstClose.remove(this);
+    }
+
 	//set parent to NULL
 	SetParent(NULL);
 	//if has mouse focus, remove it
