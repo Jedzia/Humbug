@@ -6,6 +6,8 @@
 #include "TestTimer.h"
 #include "TestThread.h"
 
+class HUD;
+
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
@@ -15,6 +17,7 @@ class CTestEventHandler : public CEventHandler
 private:
 	//main display surface
 	CMainCanvas* m_pMainCanvas;
+	Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;
 	//test timer

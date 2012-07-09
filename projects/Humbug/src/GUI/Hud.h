@@ -1,12 +1,13 @@
 #ifndef GUI_HUD_H
 #define GUI_HUD_H
 
+//#include "GUI/Controls/Control.h"
 #include "GUI/Components/Canvas.h"
 
 class FileLoader;
 class CImage;
 
-class Hud {
+class Hud /*: CControl*/ {
 public:
 
     Hud(const FileLoader& loader, CCanvas* pCanvas);

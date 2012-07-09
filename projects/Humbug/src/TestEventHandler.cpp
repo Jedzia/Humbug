@@ -46,6 +46,8 @@ CTestEventHandler::CTestEventHandler() :
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
+	
+	delete m_pHud;
     //destroy timer
     delete m_pTestTimer;
 
@@ -85,36 +87,11 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 //    char* file = "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/footer.png";
 
     //char *file = "blue.png";
-    // move this to a HUD class with Draw()
     FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-
-    //fl.Load("testfile.txt");
-    //fl.Load("libxml2_a_dll.lib");
-    //m_pImgFooter = IMG_Load(file);
-//    CCanvas footer( fl.LoadImg("footer.png") );
-	//CRectangle blah(0,0,100,100);
-	//CRectangle& blah = footer.GetDimension();
-	//CRectangle kack((CRectangle&)footer.GetDimension());
-	//CRectangle kack(footer.GetDimension());
-//	std::cout << "The rect: |" << footer.GetDimension() << "|ends" << std::endl;
-	//CImage footerImage( &footer , footer.GetDimension() , CPoint(0,0) ) ;
-//	CImage footerImage( &footer ) ;
-	//CImage footerImage( &footer , blah , CPoint(0,0) ) ;
-    /*int imgh = footer.GetHeight( );
-    int imgw = footer.GetWidth( );
-
-    //m_pMainCanvas->Blit( CRectangle(0, m_pMainCanvas->GetHeight( ) - imgh, imgw,
-    //              imgh), footer, footer.GetDimension() );
-    CRectangle& dest( m_pMainCanvas->GetDimension( ) );
-    dest.Offset( 0, m_pMainCanvas->GetHeight( ) - footer.GetHeight( ) );
-    m_pMainCanvas->Blit( dest, footer, footer.GetDimension() );*/
+	m_pHud = new Hud(fl, m_pMainCanvas);
+	//m_pHud->Draw();
 	
-//	footerImage.Put ( m_pMainCanvas , CPoint(0, m_pMainCanvas->GetHeight( ) - footer.GetHeight( )) ) ;
-
-	Hud hud(fl, m_pMainCanvas);
-	hud.Draw();
-	
-    SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
+    //SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
     //success
     return(true);
 } // OnInit
@@ -128,6 +105,7 @@ void CTestEventHandler::OnIdle(){
         fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks = now;
        }*/
+	m_pHud->Draw();
     m_pMainCanvas->Flip();
 
     //m_pMainCanvas->UpdateRects ( );

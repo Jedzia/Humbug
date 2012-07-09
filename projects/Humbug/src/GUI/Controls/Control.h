@@ -1,0 +1,123 @@
+#ifndef CONTROL_H__
+#define CONTROL_H__
+
+#include "../Visual/MessageHandler.h"
+#include "../Visual/Application.h"
+#include "../Components/Canvas.h"
+#include <list>
+
+//CControl class
+//abstracts a user interface control
+class CControl 
+{
+private:
+	//parent
+	CControl* m_pParent;
+	//list of child controls
+	std::list<CControl*> m_lstChildren;
+	//list of windows to bring to front
+	static std::list<CControl*> s_lstUpdate;
+	//list of windows to close
+	static std::list<CControl*> s_lstClose;
+	//canvas used by window
+	CCanvas* m_pCanvas;
+	//position
+	CPoint m_ptPosition;
+	//id
+	Uint32 m_ID;
+	//static pointer to main control
+	static CControl* s_pMainControl;
+	//keyboard focus
+	static CControl* s_pKeyboardFocus;
+	//mouse focus
+	static CControl* s_pMouseFocus;
+	//mouse hovering
+	static CControl* s_pMouseHover;
+public:
+	//master control constructor
+	CControl(CCanvas* pCanvas);
+	//child control constructor
+	CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id);
+	//destructor
+	virtual ~CControl();
+	//set parent
+	void SetParent(CControl* pmhNewParent);
+	//get parent
+	CControl* GetParent();
+	//has parent?
+	bool HasParent();
+	//set ID
+	void SetID(Uint32 id);
+	//get id
+	Uint32 GetID();
+	//send message
+	bool SendMessage(MSGID MsgID,MSGPARM Parm1=NULL,MSGPARM Parm2=NULL,MSGPARM Parm3=NULL,MSGPARM Parm4=NULL);
+	//process message(virtual)
+	virtual bool OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4);
+	//add child handler
+	void AddChild(CControl* pControl);
+	//remove child handler
+	void RemoveChild(CControl* pControl);
+	//bring to front
+	void BringToFront();
+	//close
+	void Close();
+	//update all
+	static void Update();
+	//redraw entire system
+	static void Redraw();
+	//draw control
+	void Draw();
+	//customize redrawing
+	virtual void OnDraw();
+	//event handling
+	virtual bool OnEvent(SDL_Event* pEvent);
+	//keyboard events
+	virtual bool OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
+	virtual bool OnKeyUp(SDLKey sym,SDLMod mod,Uint16 unicode);
+	//mouse events
+	virtual bool OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
+	virtual bool OnLButtonDown(Uint16 x,Uint16 y);
+	virtual bool OnLButtonUp(Uint16 x,Uint16 y);
+	virtual bool OnRButtonDown(Uint16 x,Uint16 y);
+	virtual bool OnRButtonUp(Uint16 x,Uint16 y);
+	virtual bool OnMButtonDown(Uint16 x,Uint16 y);
+	virtual bool OnMButtonUp(Uint16 x,Uint16 y);
+	//static event filter
+	static bool FilterEvent(SDL_Event* pEvent);
+	//get position
+	CPoint GetPosition();
+	//get width and height
+	Uint16 GetWidth();
+	Uint16 GetHeight();
+	//get edges in global coords
+	Uint16 GetLeft();
+	Uint16 GetRight();
+	Uint16 GetTop();
+	Uint16 GetBottom();
+	//set position
+	void SetPosition(CPoint ptPosition);
+	//get canvas
+	CCanvas* GetCanvas();
+	//get main control
+	static CControl* GetMainControl();
+	//get keyboard focus control
+	static CControl* GetKeyboardFocus();
+	//set keyboard focus control
+	static void SetKeyboardFocus(CControl* pControl);
+	//get mouse focus control
+	static CControl* GetMouseFocus();
+	//set mouse focus control
+	static void SetMouseFocus(CControl* pControl);
+	//get mouse hover control
+	static CControl* GetMouseHover();
+	//set mouse focus control
+	static void SetMouseHover(CControl* pControl);
+	//check for focuses
+	bool IsMainControl();
+	bool HasKeyboardFocus();
+	bool HasMouseFocus();
+	bool HasMouseHover();
+};
+
+#endif //

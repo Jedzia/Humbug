@@ -76,6 +76,8 @@ SET(Humbug_Components_sources
 		GUI/Components/Canvas.cpp
 		GUI/Components/Image.cpp
 		GUI/Components/MainCanvas.cpp
+
+		GUI/Controls/Control.cpp
 )
 SET(Humbug_Components_headers 
 		GUI/Components/Point.h
@@ -84,6 +86,8 @@ SET(Humbug_Components_headers
 		GUI/Components/Canvas.h
 		GUI/Components/Image.h
 		GUI/Components/MainCanvas.h
+
+		GUI/Controls/Control.h
 )
 
 # GUI implementation
