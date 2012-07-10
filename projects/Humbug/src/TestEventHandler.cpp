@@ -143,7 +143,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
     //success
 
-    m_pKeyHandler = new PlayerKeys();
+    m_pKeyHandler = new PlayerKeys(200,200);
     return(true);
 } // OnInit
 
@@ -165,10 +165,10 @@ void CTestEventHandler::PutBlue(){
     static int x = 0;
     static int y = 25;
     {
-        static CPoint bluePointOld(pfx,pfy);
-        CPoint bluePoint(pfx,pfy);
-        //static CPoint bluePointOld(charx,chary);
-        //CPoint bluePoint(charx,chary);
+        //static CPoint bluePointOld(pfx,pfy);
+        //CPoint bluePoint(pfx,pfy);
+        static CPoint bluePointOld(m_pKeyHandler->Char());
+        CPoint bluePoint(m_pKeyHandler->Char());
         CRectangle bluerect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
         //CRectangle bluerectOld(bluePointOld, CPoint(74,74));
 
