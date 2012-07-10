@@ -247,7 +247,7 @@ void CTestEventHandler::OnIdle(){
     //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
     m_pMainCanvas->Blit(screenWithoutHud, *m_pBackground, screenWithoutHud);
     
-    m_pHud->Invalidate();
+    //m_pHud->Invalidate();
     CControl::Redraw();
     //m_pHud->Draw();
     //PutBlue();

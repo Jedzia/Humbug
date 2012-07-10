@@ -55,6 +55,7 @@ private:
 	CImage* footerImage;
     bool oldstate;
     CCanvas* tmpcanvas;
+    bool flank;
 };
 
 #endif // GUI_HUD_H
