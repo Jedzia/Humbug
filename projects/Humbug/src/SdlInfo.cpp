@@ -14,35 +14,40 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#include "SdlInfo.h"
 #include "stdafx.h"
 
+//
+#include "SDL.h"
+#include "SdlInfo.h"
+#include <sstream>
+
 //#include <build/cmake/include/debug.h>
-SdlInfo::SdlInfo(SDL_Surface* screen){
+SdlInfo::SdlInfo(SDL_Surface* surface){
     dbgOut(__FUNCTION__ << std::endl);
     FillHwInfo();
+    FillGeneralInfo(surface);
+    FillSurfaceInfo(surface);
 }
 
 SdlInfo::~SdlInfo(void){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
+const SdlInfoGeneral& SdlInfo::GetGeneralInfo() const {
+    return m_stGeneralInfo;
+}
+
 const SdlInfoHw&  SdlInfo::GetHwInfo() const {
     return m_hwInfo;
 }
 
-void SdlInfo::FillHwInfo(){
-    if ( true ) {
-        printf("RDTSC %s\n", SDL_HasRDTSC() ? "detected" : "not detected");
-        printf("MMX %s\n", SDL_HasMMX() ? "detected" : "not detected");
-        printf("MMX Ext %s\n", SDL_HasMMXExt() ? "detected" : "not detected");
-        printf("3DNow %s\n", SDL_Has3DNow() ? "detected" : "not detected");
-        printf("3DNow Ext %s\n", SDL_Has3DNowExt() ? "detected" : "not detected");
-        printf("SSE %s\n", SDL_HasSSE() ? "detected" : "not detected");
-        printf("SSE2 %s\n", SDL_HasSSE2() ? "detected" : "not detected");
-        printf("AltiVec %s\n", SDL_HasAltiVec() ? "detected" : "not detected");
-    }
+void SdlInfo::FillGeneralInfo(SDL_Surface* surface){
+    SDL_Surface* videosurface = SDL_GetVideoSurface();
+    m_stGeneralInfo.IsVideoSurface = videosurface == surface;
+    const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
+}
 
+void SdlInfo::FillHwInfo(){
     m_hwInfo.HasRDTSC = CastSDLBool( SDL_HasRDTSC() );
     m_hwInfo.HasMMX = CastSDLBool( SDL_HasMMX() );
     m_hwInfo.HasMMXExt = CastSDLBool( SDL_HasMMXExt() );
@@ -53,8 +58,11 @@ void SdlInfo::FillHwInfo(){
     m_hwInfo.HasAltiVec = CastSDLBool( SDL_HasAltiVec() );
 } // FillHwInfo
 
-bool SdlInfo::CastSDLBool( SDL_bool v ){
-    if (v = SDL_TRUE) {
+void SdlInfo::FillSurfaceInfo( SDL_Surface* surface )
+{}
+
+bool SdlInfo::CastSDLBool( SDL_bool v ) const {
+    if (v == SDL_TRUE) {
         return true;
     }
 
@@ -69,9 +77,32 @@ bool SdlInfo::CastSDLBool( SDL_bool v ){
     return false;
 }
 
+std::string SdlInfo::PrintHwInfo() const {
+    const char* indent = "    ";
+    std::ostringstream result;
+    result.str("");
+    result << indent << "HasRDTSC \t" << PrintBool(m_hwInfo.HasRDTSC) << std::endl;
+    result << indent << "HasMMX \t" << PrintBool(m_hwInfo.HasMMX) << std::endl;
+    result << indent << "HasMMXExt \t" << PrintBool(m_hwInfo.HasMMXExt) << std::endl;
+    result << indent << "Has3DNow \t" << PrintBool(m_hwInfo.Has3DNow) << std::endl;
+    result << indent << "Has3DNowExt\t" << PrintBool(m_hwInfo.Has3DNowExt) << std::endl;
+    result << indent << "HasSSE \t" << PrintBool(m_hwInfo.HasSSE) << std::endl;
+    result << indent << "HasSSE2 \t" << PrintBool(m_hwInfo.HasSSE2) << std::endl;
+    result << indent << "HasAltiVec \t" << PrintBool(m_hwInfo.HasAltiVec) << std::endl;
+    return result.str();
+}
+
+std::string SdlInfo::PrintBool( bool v ) const {
+    return v ? "detected" : "not detected";
+}
+
 std::ostream& operator<<(std::ostream& o, const SdlInfo& r) {
-    return o << "SdlInfo[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
-                                 << ", W=" << r.GetW() << ", H=" << r.GetH()
-                                 <<*/" ]";
+    o << "SDL-Info [ " <<
+    (r.GetGeneralInfo().IsVideoSurface ? "from the main video surface." : "") <<
+    " ]" << std::endl;
+    o << "---------------------------------------------------" << std::endl;
+    o << "Hardware Info:" << std::endl;
+    o << r.PrintHwInfo();
+    return o;
 }
 
