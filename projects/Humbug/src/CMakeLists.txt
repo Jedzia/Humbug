@@ -78,6 +78,8 @@ SET(Humbug_Components_headers
 		GUI/Components/MainCanvas.h
 
 		GUI/Controls/Control.h
+
+		GUI/Sprite/Sprite.h
 )
 SET(Humbug_Components_sources 
 		GUI/Components/Point.cpp
@@ -88,6 +90,8 @@ SET(Humbug_Components_sources
 		GUI/Components/MainCanvas.cpp
 
 		GUI/Controls/Control.cpp
+		
+		GUI/Sprite/Sprite.cpp
 )
 
 # GUI implementation

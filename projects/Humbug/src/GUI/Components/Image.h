@@ -28,7 +28,7 @@ public:
 	//access destination rectangle
 	CRectangle& DstRect ( ) ;
 	//blit image onto a canvas
-	void Put ( CCanvas* pcnvDest , CPoint ptDst ) ;
+	void Put ( CCanvas* pcnvDest , const CPoint& ptDst ) ;
 };
 
 #endif

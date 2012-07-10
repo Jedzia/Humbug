@@ -15,7 +15,8 @@
 HudBackground::HudBackground(const FileLoader& loader, std::string filename) :
     m_pFooter(NULL){
     dbgOut(__FUNCTION__ << std::endl);
-    m_pFooter = new CCanvas( loader.LoadImg( filename.c_str() ) );
+    //m_pFooter = new CCanvas( loader.LoadImg( filename.c_str() ) );
+    m_pFooter = new CCanvas( SDL_DisplayFormatAlpha(loader.LoadImg( filename.c_str() )) );
 }
 
 HudBackground::~HudBackground(void){
@@ -44,6 +45,9 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
     oldstate = !HasMouseHover();
     // BringToFront();
     //SetMouseHover(this);
+    tmpcanvas = GetCanvas()->CreateRGBCompatible(NULL, GetWidth(), GetHeight());
+    SDL_SetAlpha(tmpcanvas->GetSurface(), SDL_SRCALPHA, 122);
+
         footerImage->Put( GetCanvas(), CPoint(0, 0) );
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         Invalidate();
@@ -52,6 +56,7 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
 Hud::~Hud(void){
     delete footerImage;
     delete m_pBackground;
+    delete tmpcanvas;
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -72,20 +77,27 @@ void Hud::OnDraw(){
        CCanvas footer( fl.LoadImg("footer.png") );
        std::cout << "The rect: |" << footer.GetDimension() << "|ends" << std::endl;
        CImage footerImage( &footer ) ;*/
-
+    bool flank = true;
+    bool checkSwitch = HasMouseHover() ^ flank;
     //footerImage->Put( GetCanvas(), dst );
-    /*if( HasMouseHover() &&  oldstate == false) {
+    if( checkSwitch &&  oldstate == flank) {
         //clear to light gray
-        GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155) );
+        CRectangle& ownDimensions = GetCanvas()->GetDimension();
+        GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
+        
+        //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155) );
+        //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 122);
+        //footerImage->Put( GetCanvas(), CPoint(0, 0) );
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         m_ptIsDirty = true;
     }
-    else if(!HasMouseHover() &&  oldstate == true) {
+    else if(!checkSwitch &&  oldstate == flank) {
+        //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
         footerImage->Put( GetCanvas(), CPoint(0, 0) );
         //GetParent()->Update();
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         m_ptIsDirty = true;
-    }*/
+    }
     static bool xset = false;
     if(!xset) {
         xset = true;
@@ -99,7 +111,7 @@ void Hud::OnDraw(){
 
     }
 
-    oldstate = HasMouseHover();
+    oldstate = checkSwitch;
     CControl::OnDraw();
 }
 

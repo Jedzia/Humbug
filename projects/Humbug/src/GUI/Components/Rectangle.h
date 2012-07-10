@@ -76,16 +76,17 @@ public:
 	bool Contains ( Sint16 x , Sint16 y ) ;
 	bool Contains ( CPoint& pt ) ;
 
+    // Todo: all to const refs
 	//assignment operators
 	CRectangle& operator = ( CRectangle& rc ) ;
-	CRectangle& operator += ( CPoint& pt ) ;
-	CRectangle& operator -= ( CPoint& pt ) ;
+	CRectangle& operator += ( const CPoint& pt ) ;
+	CRectangle& operator -= ( const CPoint& pt ) ;
 	CRectangle& operator += ( CRectangle& rc ) ;
 	CRectangle& operator -= ( CRectangle& rc ) ;
 
 	//arithmetic operators
-	CRectangle operator + ( CPoint& pt ) ;
-	CRectangle operator - ( CPoint& pt ) ;
+	CRectangle operator + ( const CPoint& pt ) ;
+	CRectangle operator - ( const CPoint& pt ) ;
 	CRectangle operator + ( CRectangle& rc ) ;
 	CRectangle operator - ( CRectangle& rc ) ;
 

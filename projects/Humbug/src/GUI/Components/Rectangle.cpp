@@ -196,17 +196,17 @@ CRectangle& CRectangle::operator = ( CRectangle& rc )
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::operator += ( CPoint& pt ) 
+CRectangle& CRectangle::operator += ( const CPoint& pt ) 
 {
-	X ( ) += pt.X ( ) ;
-	Y ( ) += pt.Y ( ) ;
+	X ( ) += pt.GetX() ;
+	Y ( ) += pt.GetY() ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::operator -= ( CPoint& pt ) 
+CRectangle& CRectangle::operator -= ( const CPoint& pt ) 
 {
-	X ( ) -= pt.X ( ) ;
-	Y ( ) -= pt.Y ( ) ;
+	X ( ) -= pt.GetX() ;
+	Y ( ) -= pt.GetY() ;
 	return ( *this ) ;
 }
 
@@ -222,14 +222,14 @@ CRectangle& CRectangle::operator -= ( CRectangle& rc )
 	return ( *this ) ;
 }
 
-CRectangle CRectangle::operator + ( CPoint& pt ) 
+CRectangle CRectangle::operator + ( const CPoint& pt ) 
 {
 	CRectangle result = ( *this ) ;
 	result += pt ;
 	return ( result ) ;
 }
 
-CRectangle CRectangle::operator - ( CPoint& pt ) 
+CRectangle CRectangle::operator - ( const CPoint& pt ) 
 {
 	CRectangle result = ( *this ) ;
 	result -= pt ;

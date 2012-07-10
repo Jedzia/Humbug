@@ -21,6 +21,16 @@ private:
 	CCanvas* m_pFooter;
 };
 
+struct HudImages
+{
+    char* Meter;
+    char* Lamp;
+    char* Switch;
+    char* Nothing;
+    //int rotz :1;
+
+};
+
 class Hud : public CControl {
 public:
 
@@ -44,6 +54,7 @@ private:
 	// CCanvas* footer;
 	CImage* footerImage;
     bool oldstate;
+    CCanvas* tmpcanvas;
 };
 
 #endif // GUI_HUD_H

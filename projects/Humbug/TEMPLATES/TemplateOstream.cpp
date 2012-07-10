@@ -1,4 +1,6 @@
+//
 #include "stdafx.h"
+//
 #include "Template.h"
 
 //#include <build/cmake/include/debug.h>

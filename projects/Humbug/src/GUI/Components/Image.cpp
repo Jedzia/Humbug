@@ -31,7 +31,7 @@ CRectangle& CImage::DstRect ( ){
     return ( m_rcDst );
 }
 
-void CImage::Put ( CCanvas* pcnvDest, CPoint ptDst ){
+void CImage::Put ( CCanvas* pcnvDest, const CPoint& ptDst ){
     DstRect ( ) += ptDst;
     pcnvDest->Blit ( DstRect ( ), *GetCanvas ( ), SrcRect ( ) );
     DstRect ( ) -= ptDst;

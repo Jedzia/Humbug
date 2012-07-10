@@ -6,6 +6,7 @@
 
 class HUD;
 class CImage;
+class CSprite;
 class CTestThread;
 class CTestTimer;
 class PlayerKeys;
@@ -21,6 +22,7 @@ private:
     CCanvas* m_pBackground;
     CCanvas* m_pDrawCanvas;
     CImage* m_pBlue;
+    CSprite* m_pSprite;
 	Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;

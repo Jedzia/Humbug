@@ -7,6 +7,7 @@
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
+#include "GUI/Sprite/Sprite.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Hud.h"
 #include "PlayerKeys.h"
@@ -45,13 +46,14 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 //constructor
 CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
-    m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL),
+    m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pSprite(NULL),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
+    std::cout << ">>>>>>>>>>>>> Killing the ~CTestEventHandler" << std::endl;
     if(m_pHud) {
         delete m_pHud;
     }
@@ -64,7 +66,11 @@ CTestEventHandler::~CTestEventHandler(){
     //destroy thread
     delete m_pTestThread;
     delete m_pKeyHandler;
-
+    
+    delete m_pSprite;
+    delete m_pBackground;
+    delete m_pBlue;
+    delete m_pMainCanvas;
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -88,9 +94,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //construct main canvas
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
     //m_pDrawCanvas = m_pMainCanvas;
-    m_pDrawCanvas = m_pBackground;
 
     // move this to the application class
     m_uiStartTime  = SDL_GetTicks();
@@ -120,13 +124,24 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
    try
     {
+
+        //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
+        SDL_Surface* tmpsurf;
         m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer.png"), 0);
+        // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
+        tmpsurf = fl.LoadImg("Moo.png");
+        m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
+        //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
 
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
         SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl.LoadImg("icons/blue.png"));
         //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ) );
+        //m_pSprite = new CSprite(m_pMainCanvas, m_pBlue);
+        m_pSprite = new CSprite(m_pMainCanvas, 
+            new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) ) ),
+            m_pBackground);
         //SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
     }
@@ -136,6 +151,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
         //m_imp_ptr.reset();
     }
+
+    m_pDrawCanvas = m_pBackground;
 
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
@@ -190,38 +207,11 @@ void CTestEventHandler::PutBlue(){
         m_pMainCanvas->AddUpdateRect(bluerectOld);
         bluePointOld = bluePoint;
     }
-    if(false && x<768) {
-        CRectangle frect(x + y, x, 15, 15);
-        CPoint bluePointOld(x-30,y);
-        CPoint bluePoint(x,y);
-
-        CRectangle cliprect(m_pBlue->GetCanvas()->GetDimension() + bluePointOld);
-        CRectangle bluerect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
-        //m_pMainCanvas->SetClipRect( &cliprect);
-        m_pMainCanvas->FillRect(cliprect, CColor(0, 0, 0) );
-        //m_pMainCanvas->SetClipRect( NULL );
-
-        m_pBlue->Put(m_pMainCanvas, bluePoint);
-
-        //CImage bla;
-        //bla.
-
-        /*if(m_pHud) {
-            m_pHud->Invalidate();
-            m_pHud->Draw();
-        }*/
-        //m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
-
-        //m_pMainCanvas->AddUpdateRect(CRectangle(bluePoint, CPoint(10,10)));
-        m_pMainCanvas->AddUpdateRect(m_pBlue->GetCanvas()->GetDimension() + bluePointOld);
-        m_pMainCanvas->AddUpdateRect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
-        //m_pMainCanvas->FillRect( frect, CColor::Red() );
-        //m_pMainCanvas->AddUpdateRect(frect);
-    }
-    else {
+    
+    /*else {
         x = 0;
         y += 25;
-    }
+    }*/
 
     x+=1;
 
@@ -243,33 +233,34 @@ void CTestEventHandler::OnIdle(){
         m_uiLastTicks = now;
        }
 
+    //m_pMainCanvas->Lock();
+
     //update controls
     CRectangle& screenrect = m_pMainCanvas->GetDimension();
     //m_pBackground->Blit(screenrect, m_pMainCanvas, screenrect);
-    m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
-    CControl::Redraw();
+    //m_pBackground->UpdateRects();
+    //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Intersect( m_pHud->GetCanvas()->GetDimension());
+    //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Union( m_pHud->GetCanvas()->GetDimension());
+    CRectangle screenWithoutHud(0,0, m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH()
+        -  m_pHud->GetCanvas()->GetDimension().GetH());
+    //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
+    //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+    m_pMainCanvas->Blit(screenWithoutHud, *m_pBackground, screenWithoutHud);
+    
     m_pHud->Invalidate();
-    m_pHud->Draw();
-    PutBlue();
+    CControl::Redraw();
+    //m_pHud->Draw();
+    //PutBlue();
+    //for (int i = 0; i < 50 ; i++)
+    {
+        m_pSprite->Draw();
+    }
 
-    /*float fps = ( m_uiNumFrames/(float)(now - m_uiStartTime) )*1000;
-    if(diff > 100) {
-        fprintf(stdout, "IDL-FPS: '%f' (%d diff)\n", fps, diff);
-        m_uiLastTicks = now;
-       }*/
     //m_pHud->Draw();
     //m_pMainCanvas->Flip();
     m_pMainCanvas->UpdateRects ( );
 
-    /*m_uiNumFrames++; 
-    if((now - m_uiLastTicks) >= 1000)
-    {
-        fprintf(stdout, "IDL-FPS: '%d'\n", m_uiNumFrames);
-
-        m_uiNumFrames = 0;
-        m_uiLastTicks = SDL_GetTicks();
-    }*/
-
+    //m_pMainCanvas->Unlock();
     // call base method.
     CApplication::OnIdle();
 } // OnIdle
@@ -283,7 +274,7 @@ void CTestEventHandler::Update(){
         fprintf(stdout, "UPD-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks2 = now;
        }*/
-
+    m_pSprite->SetPos(m_pKeyHandler->Char()/* + CPoint(50,50)*/);
     // call base method.
     CApplication::Update();
 }
@@ -343,6 +334,11 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor(255,255,255) );
         m_pMainCanvas->AddUpdateRect(frect);
+    }
+    else if( sym == SDLK_b ) {
+        //
+        m_pBackground->Clear( CColor(0, 0, 0) );
+        m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
     }
     else {
         //send clear screen message
