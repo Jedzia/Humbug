@@ -8,6 +8,7 @@ class HUD;
 class CImage;
 class CTestThread;
 class CTestTimer;
+class PlayerKeys;
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
@@ -21,6 +22,8 @@ private:
 	Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;
+    // Player movement;
+    PlayerKeys* m_pKeyHandler;
 	//test timer
 	CTestTimer* m_pTestTimer;
 	//test thread
@@ -45,6 +48,8 @@ public:
 	virtual ~CTestEventHandler();
 	//initialization
 	bool OnInit(int argc,char* argv[]);
+    //event handling
+    void OnEvent(SDL_Event* pEvent);
 	//left button down
 	void OnLButtonDown(Uint16 x,Uint16 y);
 	//mouse move

@@ -113,6 +113,7 @@ SET(Humbug_headers
 		${Humbug_Components_headers}
 
 		Filesystem/FileLoader.h
+		PlayerKeys.h
 		SdlInfo.h
 
 #        qpid/InlineAllocator.h
@@ -127,6 +128,7 @@ SET(Humbug_sources
 		${Humbug_Components_sources}
 
 		Filesystem/FileLoader.cpp
+		PlayerKeys.cpp
 		SdlInfo.cpp
 
 	        main.cpp 

@@ -9,6 +9,7 @@
 #include "GUI/Components/Image.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Hud.h"
+#include "PlayerKeys.h"
 #include "TestEventHandler.h"
 #include "TestTimer.h"
 #include "TestThread.h"
@@ -44,7 +45,7 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 //constructor
 CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
-    m_uiLastTicks2(0),pfx(100), pfy(100), m_uiNumFrames(0),
+    m_uiLastTicks2(0),pfx(100), pfy(100), m_uiNumFrames(0), m_pKeyHandler(NULL),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
 }
@@ -62,6 +63,8 @@ CTestEventHandler::~CTestEventHandler(){
 
     //destroy thread
     delete m_pTestThread;
+    delete m_pKeyHandler;
+
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -80,7 +83,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
 
     //SDL_EnableKeyRepeat(100, 1);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL/2);
+    //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL/2);
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
 
     //construct main canvas
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
@@ -138,6 +142,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //m_pHud->Draw();
     //SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
     //success
+
+    m_pKeyHandler = new PlayerKeys();
     return(true);
 } // OnInit
 
@@ -161,6 +167,8 @@ void CTestEventHandler::PutBlue(){
     {
         static CPoint bluePointOld(pfx,pfy);
         CPoint bluePoint(pfx,pfy);
+        //static CPoint bluePointOld(charx,chary);
+        //CPoint bluePoint(charx,chary);
         CRectangle bluerect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
         //CRectangle bluerectOld(bluePointOld, CPoint(74,74));
 
@@ -271,6 +279,14 @@ void CTestEventHandler::Update(){
     // call base method.
     CApplication::Update();
 }
+
+//event handling
+void CTestEventHandler::OnEvent(SDL_Event* pEvent)
+{
+    CEventHandler::OnEvent(pEvent);
+    m_pKeyHandler->HookEventloop(pEvent);
+}
+
 
 //left button down
 void CTestEventHandler::OnLButtonDown(Uint16 x, Uint16 y){
