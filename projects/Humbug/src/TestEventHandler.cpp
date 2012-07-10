@@ -2,13 +2,16 @@
 
 //
 //////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
+//
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Hud.h"
 #include "TestEventHandler.h"
-#include "stdafx.h"
+#include "TestTimer.h"
+#include "TestThread.h"
 
 /// <summary>
 /// This is called when the game should draw itself.
@@ -40,8 +43,8 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    m_pLastTicks(0),
-    m_pLastTicks2(0),pfx(100), pfy(100),
+    m_uiLastTicks(0),
+    m_uiLastTicks2(0),pfx(100), pfy(100), m_uiNumFrames(0),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
 }
@@ -72,10 +75,18 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //video_flags = SDL_OPENGL;
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
-    video_flags = SDL_ANYFORMAT;
+    //video_flags = SDL_ANYFORMAT;
+    //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
+    video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF;
+
+    //SDL_EnableKeyRepeat(100, 1);
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL/2);
 
     //construct main canvas
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
+
+    // move this to the application class
+    m_uiStartTime  = SDL_GetTicks();
 
     //m_pDisplaySurface=m_pMainCanvas->GetSurface ( );
     //m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,video_flags);
@@ -103,7 +114,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
    try
     {
         m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer.png"), 0);
-        m_pBlue = new CImage( new CCanvas( fl.LoadImg("icons/blue.png") ) );
+
+        //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
+        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl.LoadImg("icons/blue.png"));
+        //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
+        //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
+        m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ) );
         //SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
     }
@@ -113,7 +129,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
         //m_imp_ptr.reset();
     }
-    SDL_EnableKeyRepeat(100, 1);
+
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );
@@ -147,9 +163,20 @@ void CTestEventHandler::PutBlue(){
         CPoint bluePoint(pfx,pfy);
         CRectangle bluerect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
         //CRectangle bluerectOld(bluePointOld, CPoint(74,74));
+
+        //SDL_SetColorKey(m_pBlue->GetCanvas()->GetSurface(),SDL_SRCCOLORKEY, 0xAAAAAA);
+        //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA /*| SDL_RLEACCEL*/, 44);
+
+        //int res = SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 255);
+        //int res = SDL_SetAlpha(m_pHud->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
         CRectangle bluerectOld(m_pBlue->GetCanvas()->GetDimension() + bluePointOld);
-        m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
+		m_pMainCanvas->Lock();
+        //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
+            m_pHud->Invalidate();
+            //m_pHud->Draw();
         m_pBlue->Put(m_pMainCanvas, bluePoint);
+		m_pMainCanvas->Unlock();
+
         m_pMainCanvas->AddUpdateRect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
         m_pMainCanvas->AddUpdateRect(bluerectOld);
         bluePointOld = bluePoint;
@@ -200,20 +227,33 @@ void CTestEventHandler::PutBlue(){
 void CTestEventHandler::OnIdle(){
     Uint32 now, diff;
     now = SDL_GetTicks();
-    diff = now - m_pLastTicks;
+    diff = now - m_uiLastTicks;
     /*if(diff > 100) {
         fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
-        m_pLastTicks = now;
+        m_uiLastTicks = now;
        }*/
 
     //update controls
     CControl::Redraw();
     PutBlue();
 
+    /*float fps = ( m_uiNumFrames/(float)(now - m_uiStartTime) )*1000;
+    if(diff > 100) {
+        fprintf(stdout, "IDL-FPS: '%f' (%d diff)\n", fps, diff);
+        m_uiLastTicks = now;
+       }*/
     //m_pHud->Draw();
     //m_pMainCanvas->Flip();
     m_pMainCanvas->UpdateRects ( );
 
+    /*m_uiNumFrames++; 
+    if((now - m_uiLastTicks) >= 1000)
+    {
+        fprintf(stdout, "IDL-FPS: '%d'\n", m_uiNumFrames);
+
+        m_uiNumFrames = 0;
+        m_uiLastTicks = SDL_GetTicks();
+    }*/
     // call base method.
     CApplication::OnIdle();
 } // OnIdle
@@ -222,7 +262,7 @@ void CTestEventHandler::OnIdle(){
 void CTestEventHandler::Update(){
     Uint32 now, diff;
     now = SDL_GetTicks();
-    diff = now - m_pLastTicks2;
+    diff = now - m_uiLastTicks2;
     /*if(diff > 100) {
         fprintf(stdout, "UPD-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks2 = now;
@@ -251,6 +291,7 @@ void CTestEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely
 
 //key press
 void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
+    const int step = 6;
     if( sym == SDLK_ESCAPE ) {
         //send clear screen message
         SendMessage(MSGID_QuitApp);
@@ -260,29 +301,29 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor::Green() );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfx--;
-    }  
+        pfx-=step;
+    }
     else if( sym == SDLK_RIGHT ) {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor::Blue() );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfx++;
-    }  
+        pfx+=step;
+    }
     else if( sym == SDLK_UP ) {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor(255,255,0) );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfy--;
-    }  
+        pfy-=step;
+    }
     else if( sym == SDLK_DOWN ) {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor(255,255,255) );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfy++;
-    }  
+        pfy+=step;
+    }
     else {
         //send clear screen message
         SendMessage(MSGID_ClearScreen);

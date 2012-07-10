@@ -3,11 +3,11 @@
 
 #include "GUI/Visual/EventHandler.h"
 #include "GUI/Components/MainCanvas.h"
-#include "TestTimer.h"
-#include "TestThread.h"
 
 class HUD;
 class CImage;
+class CTestThread;
+class CTestTimer;
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
@@ -26,11 +26,13 @@ private:
 	//test thread
 	CTestThread* m_pTestThread;
     //last ticks
-    Uint32 m_pLastTicks;
-    Uint32 m_pLastTicks2;
+    Uint32 m_uiLastTicks;
+    Uint32 m_uiLastTicks2;
+    Uint32 m_uiStartTime;
     void PutBlue();
     int pfx;
     int pfy;
+    unsigned int m_uiNumFrames; 
 protected:
     //idle behavior
 	virtual void OnIdle();

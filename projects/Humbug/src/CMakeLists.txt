@@ -53,13 +53,6 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
 # User-Interface skeleton
-SET(Humbug_GUI_sources 
-		GUI/Visual/Application.cpp
-		GUI/Visual/EventHandler.cpp
-		GUI/Visual/MessageHandler.cpp
-		GUI/Visual/Thread.cpp
-		GUI/Visual/Timer.cpp
-)
 SET(Humbug_GUI_headers 
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
@@ -67,18 +60,15 @@ SET(Humbug_GUI_headers
 		GUI/Visual/Thread.h
 		GUI/Visual/Timer.h
 )
+SET(Humbug_GUI_sources 
+		GUI/Visual/Application.cpp
+		GUI/Visual/EventHandler.cpp
+		GUI/Visual/MessageHandler.cpp
+		GUI/Visual/Thread.cpp
+		GUI/Visual/Timer.cpp
+)
 
 # Component set (Canvas, Controls, etc.)
-SET(Humbug_Components_sources 
-		GUI/Components/Point.cpp
-		GUI/Components/Rectangle.cpp
-		GUI/Components/Color.cpp
-		GUI/Components/Canvas.cpp
-		GUI/Components/Image.cpp
-		GUI/Components/MainCanvas.cpp
-
-		GUI/Controls/Control.cpp
-)
 SET(Humbug_Components_headers 
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
@@ -89,15 +79,18 @@ SET(Humbug_Components_headers
 
 		GUI/Controls/Control.h
 )
+SET(Humbug_Components_sources 
+		GUI/Components/Point.cpp
+		GUI/Components/Rectangle.cpp
+		GUI/Components/Color.cpp
+		GUI/Components/Canvas.cpp
+		GUI/Components/Image.cpp
+		GUI/Components/MainCanvas.cpp
+
+		GUI/Controls/Control.cpp
+)
 
 # GUI implementation
-SET(Humbug_MyGUI_sources 
-		GUI/Hud.cpp
-
-		TestEventHandler.cpp
-		TestThread.cpp
-		TestTimer.cpp
-)
 SET(Humbug_MyGUI_headers 
 		GUI/Hud.h
 
@@ -105,27 +98,39 @@ SET(Humbug_MyGUI_headers
 		TestThread.h
 		TestTimer.h
 )
+SET(Humbug_MyGUI_sources 
+		GUI/Hud.cpp
+
+		TestEventHandler.cpp
+		TestThread.cpp
+		TestTimer.cpp
+)
 
 # putting the sources together
 SET(Humbug_headers 
 		${Humbug_GUI_headers}
 		${Humbug_MyGUI_headers}
 		${Humbug_Components_headers}
+
 		Filesystem/FileLoader.h
+		SdlInfo.h
+
 #        qpid/InlineAllocator.h
 #        qpid/InlineVector.h
 #        qpid/RangeSet.h
-        Project/ProjectModel.h
+	        Project/ProjectModel.h
 )
 
 SET(Humbug_sources 
 		${Humbug_GUI_sources}
 		${Humbug_MyGUI_sources}
 		${Humbug_Components_sources}
-		Filesystem/FileLoader.cpp
 
-        main.cpp 
-        Project/ProjectModel.cpp
+		Filesystem/FileLoader.cpp
+		SdlInfo.cpp
+
+	        main.cpp 
+	        Project/ProjectModel.cpp
 )
 
 #WRAP_XSD(Humbug_XSDS_sources Humbug_XSDS_INCLUDE

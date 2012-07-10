@@ -15,6 +15,8 @@ class CApplication : public CMessageHandler
 private:
 	//singleton pointer
 	static CApplication* s_pTheApplication;
+    //last ticks
+    static Uint32 m_uiFPSLastTime;
 
 	//set singleton pointer
 	static void SetApplication(CApplication* pTheApp);

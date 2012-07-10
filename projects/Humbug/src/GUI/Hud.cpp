@@ -44,6 +44,9 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
     oldstate = !HasMouseHover();
     // BringToFront();
     //SetMouseHover(this);
+        footerImage->Put( GetCanvas(), CPoint(0, 0) );
+        CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
+        Invalidate();
 }
 
 Hud::~Hud(void){
@@ -71,19 +74,26 @@ void Hud::OnDraw(){
        CImage footerImage( &footer ) ;*/
 
     //footerImage->Put( GetCanvas(), dst );
-    if( HasMouseHover() &&  oldstate == false) {
+    /*if( HasMouseHover() &&  oldstate == false) {
         //clear to light gray
         GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155) );
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         m_ptIsDirty = true;
     }
-    else if( !HasMouseHover() &&  oldstate == true) {
+    else if(!HasMouseHover() &&  oldstate == true) {
         footerImage->Put( GetCanvas(), CPoint(0, 0) );
         //GetParent()->Update();
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         m_ptIsDirty = true;
+    }*/
+    static bool xset = false;
+    if(!xset) {
+        xset = true;
     }
+
+
     oldstate = HasMouseHover();
+    CControl::OnDraw();
 }
 
 bool Hud::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,

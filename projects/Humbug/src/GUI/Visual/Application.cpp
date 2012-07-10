@@ -2,11 +2,14 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "Application.h"
 #include <stdlib.h>
+#include "Application.h"
+#include "SdlInfo.h"
+
 
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
+Uint32 CApplication::m_uiFPSLastTime=0;
 
 //set singleton pointer
 void CApplication::SetApplication(CApplication* pTheApp)
@@ -96,9 +99,19 @@ int CApplication::Execute(int argc,char* argv[])
 		//return
 		return(-1);
 	}
+
+    {
+        // Get SDL Info
+        SdlInfo sdlInfo(SDL_GetVideoSurface());
+        std::cout << sdlInfo << std::endl;
+    }
+
+
 	//event structure
 	SDL_Event event;
 	//forever
+
+    Uint32 shownFrames = 0, loopFrames = 0;
 	for(;;)
 	{
 		//poll for an event
@@ -113,8 +126,22 @@ int CApplication::Execute(int argc,char* argv[])
 		{
 			//no event, so idle
 			GetApplication()->OnIdle();
-		}
+            shownFrames++;
+        }
 		GetApplication()->Update();
+
+        loopFrames++;
+        if((SDL_GetTicks() - m_uiFPSLastTime) >= 1000)
+        {
+            //ostringstream FPS;
+            //FPS.str("");
+            //FPS << ShownFrames;
+            fprintf(stdout, "FPS: '%d', Loop: '%d'\n", shownFrames, loopFrames);
+
+            shownFrames = 0;
+            loopFrames = 0;
+            m_uiFPSLastTime = SDL_GetTicks();
+        }
 	}
 	//clean up
 	GetApplication()->OnExit();
