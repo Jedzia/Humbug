@@ -75,12 +75,9 @@ CRectangle Hud::InitRect(const FileLoader& loader){
 }
 
 void Hud::OnDraw(){
-    /*FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
 
-       CCanvas footer( fl.LoadImg("footer.png") );
-       std::cout << "The rect: |" << footer.GetDimension() << "|ends" << std::endl;
-       CImage footerImage( &footer ) ;*/
-   flank = true;
+    flank = true;
 
     bool checkSwitch = HasMouseHover() ^ flank;
     //footerImage->Put( GetCanvas(), dst );
@@ -90,14 +87,16 @@ void Hud::OnDraw(){
         GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
         
         //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155) );
-        CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
+        CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
         m_ptIsDirty = true;
     }
     else if(!checkSwitch &&  oldstate == true) {
         //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
         footerImage->Put( GetCanvas(), CPoint(0, 0) );
         //GetParent()->Update();
-        CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
+        int dreck = this->GetWidth();
+        //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
+        CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
         m_ptIsDirty = true;
     }
     static bool xset = false;
