@@ -21,6 +21,7 @@
 #include "SdlInfo.h"
 #include <sstream>
 
+const char* SdlInfo::indent = "    ";
 //#include <build/cmake/include/debug.h>
 SdlInfo::SdlInfo(SDL_Surface* surface){
     dbgOut(__FUNCTION__ << std::endl);
@@ -45,6 +46,21 @@ void SdlInfo::FillGeneralInfo(SDL_Surface* surface){
     SDL_Surface* videosurface = SDL_GetVideoSurface();
     m_stGeneralInfo.IsVideoSurface = videosurface == surface;
     const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
+
+    //m_stGeneralInfo.VideoMemorySize = vidinfo->blit_fill;
+    m_stGeneralInfo.HasAccColorfill = vidinfo->blit_fill == 1;
+    m_stGeneralInfo.HasAccHwToHwBlit = vidinfo->blit_hw == 1;
+    m_stGeneralInfo.HasAccHwAlphaBlit = vidinfo->blit_hw_A == 1;
+    m_stGeneralInfo.HasAccHwColorkeyBlit = vidinfo->blit_hw_CC == 1;
+    m_stGeneralInfo.HasAccSwToHwBlit = vidinfo->blit_sw == 1;
+    m_stGeneralInfo.HasAccSwAlphaBlit = vidinfo->blit_sw_A == 1;
+    m_stGeneralInfo.HasAccSwColorkeyBlit = vidinfo->blit_sw_CC;
+    m_stGeneralInfo.VideomodeHeight = vidinfo->current_h;
+    m_stGeneralInfo.VideomodeWidth = vidinfo->current_w;
+    m_stGeneralInfo.HasHardwareSurfaces = vidinfo->hw_available;
+    m_stGeneralInfo.VideoMemorySize = vidinfo->video_mem;
+    m_stGeneralInfo.HasWindowManager = vidinfo->wm_available;
+    //m_stGeneralInfo.VideoMemorySize = vidinfo->video_mem;
 }
 
 void SdlInfo::FillHwInfo(){
@@ -78,7 +94,6 @@ bool SdlInfo::CastSDLBool( SDL_bool v ) const {
 }
 
 std::string SdlInfo::PrintHwInfo() const {
-    const char* indent = "    ";
     std::ostringstream result;
     result.str("");
     result << indent << "HasRDTSC \t" << PrintBool(m_hwInfo.HasRDTSC) << std::endl;
@@ -92,17 +107,31 @@ std::string SdlInfo::PrintHwInfo() const {
     return result.str();
 }
 
+std::string SdlInfo::PrintGeneralInfo() const {
+    std::ostringstream result;
+    result.str("");
+    result << indent << "Video memory of \t" << m_stGeneralInfo.VideoMemorySize << "k." << std::endl;
+    result << indent << "HasRDTSC \t" << PrintBool(m_hwInfo.HasRDTSC) << std::endl;
+    return result.str();
+}
+
 std::string SdlInfo::PrintBool( bool v ) const {
     return v ? "detected" : "not detected";
 }
 
 std::ostream& operator<<(std::ostream& o, const SdlInfo& r) {
+    const char* separator = "---------------------------------------------------";
+
+    o << separator << std::endl;
     o << "SDL-Info [ " <<
     (r.GetGeneralInfo().IsVideoSurface ? "from the main video surface." : "") <<
     " ]" << std::endl;
-    o << "---------------------------------------------------" << std::endl;
+    o << separator << std::endl;
     o << "Hardware Info:" << std::endl;
     o << r.PrintHwInfo();
+    o << separator << std::endl;
+    o << "General Info:" << std::endl;
+    o << r.PrintGeneralInfo();
     return o;
 }
 
