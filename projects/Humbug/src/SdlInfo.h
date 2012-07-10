@@ -5,7 +5,8 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the SdlInfo.h class.
+ *             the SdlInfo.h class, a decoupled
+ *             SDL-Info provider with iostream support.
  * \folder     $(folder)
  * \file       SdlInfo.h
  * \date       2012-07-10
