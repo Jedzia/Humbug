@@ -31,6 +31,8 @@ public:
 
     void HookKeyUp(SDLKey sym);
 
+    void HookIdle();
+
     inline CPoint Char() const { return CPoint(charx, chary); }
 
     inline int CharX() const { return charx; }

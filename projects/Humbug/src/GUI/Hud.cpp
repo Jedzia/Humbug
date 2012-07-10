@@ -90,7 +90,14 @@ void Hud::OnDraw(){
     if(!xset) {
         xset = true;
     }
+    if(m_ptIsDirty)
+    {
+        int abc = 123;
+        //footerImage->Put( GetCanvas(), CPoint(0, 0) );
+        //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
+        //m_ptIsDirty = false;
 
+    }
 
     oldstate = HasMouseHover();
     CControl::OnDraw();

@@ -45,7 +45,7 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 //constructor
 CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
-    m_uiLastTicks2(0),pfx(100), pfy(100), m_uiNumFrames(0), m_pKeyHandler(NULL),
+    m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
 }
@@ -84,10 +84,13 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //SDL_EnableKeyRepeat(100, 1);
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL/2);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
+    //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
 
     //construct main canvas
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
+    m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
+    //m_pDrawCanvas = m_pMainCanvas;
+    m_pDrawCanvas = m_pBackground;
 
     // move this to the application class
     m_uiStartTime  = SDL_GetTicks();
@@ -180,8 +183,6 @@ void CTestEventHandler::PutBlue(){
         CRectangle bluerectOld(m_pBlue->GetCanvas()->GetDimension() + bluePointOld);
 		m_pMainCanvas->Lock();
         //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
-            m_pHud->Invalidate();
-            //m_pHud->Draw();
         m_pBlue->Put(m_pMainCanvas, bluePoint);
 		m_pMainCanvas->Unlock();
 
@@ -236,13 +237,19 @@ void CTestEventHandler::OnIdle(){
     Uint32 now, diff;
     now = SDL_GetTicks();
     diff = now - m_uiLastTicks;
-    /*if(diff > 100) {
-        fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
+    if(diff > 20) {
+    m_pKeyHandler->HookIdle();
+        //fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
         m_uiLastTicks = now;
-       }*/
+       }
 
     //update controls
+    CRectangle& screenrect = m_pMainCanvas->GetDimension();
+    //m_pBackground->Blit(screenrect, m_pMainCanvas, screenrect);
+    m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
     CControl::Redraw();
+    m_pHud->Invalidate();
+    m_pHud->Draw();
     PutBlue();
 
     /*float fps = ( m_uiNumFrames/(float)(now - m_uiStartTime) )*1000;
@@ -262,6 +269,7 @@ void CTestEventHandler::OnIdle(){
         m_uiNumFrames = 0;
         m_uiLastTicks = SDL_GetTicks();
     }*/
+
     // call base method.
     CApplication::OnIdle();
 } // OnIdle
@@ -317,28 +325,24 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor::Green() );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfx-=step;
     }
     else if( sym == SDLK_RIGHT ) {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor::Blue() );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfx+=step;
     }
     else if( sym == SDLK_UP ) {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor(255,255,0) );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfy-=step;
     }
     else if( sym == SDLK_DOWN ) {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor(255,255,255) );
         m_pMainCanvas->AddUpdateRect(frect);
-        pfy+=step;
     }
     else {
         //send clear screen message
@@ -394,12 +398,12 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
         if( m_pMainCanvas->Lock() ) {
             //successful lock
             //set pixel
-            m_pMainCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
+            m_pDrawCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
             CRectangle frect( (Sint16)Parm1, (Sint16)Parm2, 1, 1 );
             //m_pMainCanvas->FillRect(frect, CColor::Red());
-            m_pMainCanvas->AddUpdateRect(frect);
+            m_pDrawCanvas->AddUpdateRect(frect);
 
-            m_pBlue->Put(m_pMainCanvas, CPoint((Sint16)Parm1, (Sint16)Parm2));
+            m_pBlue->Put(m_pDrawCanvas, CPoint((Sint16)Parm1, (Sint16)Parm2));
             m_pMainCanvas->AddUpdateRect(CRectangle( (Sint16)Parm1, (Sint16)Parm2
                 , m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ));
 

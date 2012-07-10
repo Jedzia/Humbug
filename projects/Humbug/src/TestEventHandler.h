@@ -18,6 +18,8 @@ class CTestEventHandler : public CEventHandler
 private:
 	//main display surface
 	CMainCanvas* m_pMainCanvas;
+    CCanvas* m_pBackground;
+    CCanvas* m_pDrawCanvas;
     CImage* m_pBlue;
 	Hud* m_pHud;
 	//main display surface
@@ -33,8 +35,6 @@ private:
     Uint32 m_uiLastTicks2;
     Uint32 m_uiStartTime;
     void PutBlue();
-    int pfx;
-    int pfy;
     unsigned int m_uiNumFrames; 
 protected:
     //idle behavior

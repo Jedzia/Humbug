@@ -94,11 +94,13 @@ void PlayerKeys::HookEventloop( SDL_Event* keyevent ){
         HookKeyUp(keyevent->key.keysym.sym);
     }
 
+    HookIdle();
+} // HookEventloop
+
+void PlayerKeys::HookIdle(){
     //These continue to accelerate the character if the user is holding
     // down a button.
-    if (!upup) {
-        charyvel -= 1;
-    }
+    if (!upup) {        charyvel -= 1;    }
 
     if (!downup) {charyvel += 1; }
 
@@ -108,7 +110,25 @@ void PlayerKeys::HookEventloop( SDL_Event* keyevent ){
 
     charx += charxvel;
     chary += charyvel;
-} // HookEventloop
+
+    if (charx < 0)
+    {
+        charx = 0;
+    } 
+    else if (charx > 1024)
+    {
+        charx = 1024;
+    }
+
+    if (chary < 0)
+    {
+        chary = 0;
+    } 
+    else if (chary > 768)
+    {
+        chary = 768;
+    }
+}
 
 std::ostream& operator<<(std::ostream& o, const PlayerKeys& r) {
     return o << "PlayerKeys[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
