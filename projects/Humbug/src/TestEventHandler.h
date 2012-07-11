@@ -23,11 +23,13 @@ private:
     CCanvas* m_pDrawCanvas;
     CImage* m_pBlue;
     CSprite* m_pSprite;
+    CSprite* m_pSprite2;
 	Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;
     // Player movement;
     PlayerKeys* m_pKeyHandler;
+    PlayerKeys* m_pKeyHandler2;
 	//test timer
 	CTestTimer* m_pTestTimer;
 	//test thread
@@ -38,6 +40,7 @@ private:
     Uint32 m_uiStartTime;
     void PutBlue();
     unsigned int m_uiNumFrames; 
+    int m_inActiveSprite;
 protected:
     //idle behavior
 	virtual void OnIdle();

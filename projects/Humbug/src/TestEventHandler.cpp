@@ -46,8 +46,8 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    m_uiLastTicks(0),
-    m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pSprite(NULL),
+    m_uiLastTicks(0), m_inActiveSprite(0),
+    m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pKeyHandler2(NULL), m_pSprite(NULL), m_pSprite2(NULL),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
 }
@@ -66,13 +66,10 @@ CTestEventHandler::~CTestEventHandler(){
 
     //destroy thread
     delete m_pTestThread;
-    delete m_pKeyHandler;
     
-    delete m_pSprite;
-    delete m_pBackground;
-    delete m_pBlue;
     //delete m_pMainCanvas;
     dbgOut(__FUNCTION__ << std::endl);
+
 }
 
 //on cleanup
@@ -89,6 +86,14 @@ void CTestEventHandler::OnExit()
 
 	//delete main control
 	delete CControl::GetMainControl();
+
+    delete m_pSprite;
+    delete m_pSprite2;
+    delete m_pBackground;
+    delete m_pBlue;
+
+    delete m_pKeyHandler;
+    delete m_pKeyHandler2;
 }
 
 //initialization
@@ -169,6 +174,13 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         m_pSprite = new CSprite(m_pMainCanvas, 
             new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) ) ),
             m_pBackground);
+
+        CRectangle spr2Dim(0,0,32,32);
+        m_pSprite2 = new CSprite(m_pMainCanvas, 
+            new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
+            m_pBackground, spr2Dim, CPoint(32,0));
+        
+        //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
         //SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
     }
@@ -191,6 +203,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //success
 
     m_pKeyHandler = new PlayerKeys(200,200);
+    m_pKeyHandler2 = new PlayerKeys(400,200);
     return(true);
 } // OnInit
 
@@ -256,6 +269,7 @@ void CTestEventHandler::OnIdle(){
     diff = now - m_uiLastTicks;
     if(diff > 20) {
     m_pKeyHandler->HookIdle();
+    m_pKeyHandler2->HookIdle();
         //fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
         m_uiLastTicks = now;
        }
@@ -281,6 +295,7 @@ void CTestEventHandler::OnIdle(){
     //for (int i = 0; i < 50 ; i++)
     {
         m_pSprite->Draw();
+        m_pSprite2->Draw();
     }
 
     //m_pHud->Draw();
@@ -302,6 +317,16 @@ void CTestEventHandler::Update(){
         m_pLastTicks2 = now;
        }*/
     m_pSprite->SetPos(m_pKeyHandler->Char()/* + CPoint(50,50)*/);
+    m_pSprite2->SetPos(m_pKeyHandler2->Char());
+
+    static int spr2pic = 0;
+    m_pSprite2->SprOffset(spr2pic);
+    spr2pic++;
+    if (spr2pic == 16)
+    {
+        spr2pic = 0;
+    }
+
     // call base method.
     CApplication::Update();
 }
@@ -310,7 +335,14 @@ void CTestEventHandler::Update(){
 void CTestEventHandler::OnEvent(SDL_Event* pEvent)
 {
     CEventHandler::OnEvent(pEvent);
-    m_pKeyHandler->HookEventloop(pEvent);
+    if (m_inActiveSprite == 0)
+    {
+        m_pKeyHandler->HookEventloop(pEvent);
+    }
+    else if (m_inActiveSprite == 1)
+    {
+        m_pKeyHandler2->HookEventloop(pEvent);
+    }
 }
 
 
@@ -366,6 +398,10 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         //
         m_pBackground->Clear( CColor(0, 0, 0) );
         m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
+    }
+    else if( sym == SDLK_F1 ) {
+        //
+        m_inActiveSprite ^= 1;
     }
     else {
         //send clear screen message
