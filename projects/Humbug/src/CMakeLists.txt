@@ -235,8 +235,8 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 #                        PROPERTIES RESOURCE icons/blue.png
 ##                        prop2 value2 ...
 #)
-Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
-Copy_File_To_Target(Humbug ${Humbug_Artwork_DIR}/footer.png)
+#Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
+#Copy_File_To_Target(Humbug ${Humbug_Artwork_DIR}/footer.png)
 
 # Copy linked dll to the executables bin dir
 # We need to check if shared or static .... and put this into a macro.
@@ -254,12 +254,13 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    ${Humbug_Artwork_DIR}/footer.png
 )
-#CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
+CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
+#ADD_DEPENDENCIES(MakeVFS Artwork)
 
 SET(Pak02_PACKAGE_SOURCE_FILES 
 	    ${Humbug_Artwork_DIR}/footer.psd
 )
-#CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
+CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 
 #ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 

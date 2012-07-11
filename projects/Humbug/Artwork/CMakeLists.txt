@@ -28,24 +28,13 @@ INCLUDE (bindings)
 
 IF( ImageMagick_FOUND OR INKSCAPE_EXECUTABLE_FOUND )
 
-#ADD_CUSTOM_TARGET(BI ALL DEPENDS ${IMAGES_SOURCE_FILES})
-#SET_TARGET_PROPERTIES(BI
-#	PROPERTIES
-#	EXCLUDE_FROM_DEFAULT_BUILD
-#	#EXCLUDE_FROM_ALL_BUILD
-#	TRUE
-#)
-
-ADD_CUSTOM_TARGET(Artwork ALL)
-
-SET(ADDITIONAL_IMAGES_SOURCE_FILES 
-	    ${CMAKE_CURRENT_SOURCE_DIR}/footer.psd
-)
-
 
 IF(NOT IMGCONVERSION_CMAKE_DEBUG)
 	SET(IMGCONVERSION_CMAKE_DEBUG ON)
 ENDIF()
+
+set(IMGCONVERSION_TARGETS)
+
 
 FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _image_source_file _format)
 
@@ -59,8 +48,9 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _image_source_file _format)
 	#SET(_file_fullpath "${_file_path}/${_file_name}.png")
 	#MESSAGE(STATUS "[IMGCONV] ${_file_fullpath}")
 	#SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_file_name}.${_format}")
-	SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${_file_name}.${_format}")
-	MESSAGE(STATUS "[IMGCONV] output ${_out_file_fullpath}")
+	#SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${_file_name}.${_format}")
+	SET(_out_file_fullpath  "${PROJECT_SOURCE_DIR}/Work/${_file_name}.${_format}")
+#	MESSAGE(STATUS "[IMGCONV] output ${_out_file_fullpath}")
 
 
 	SET(_inkscape_exts ".svg")
@@ -72,28 +62,30 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _image_source_file _format)
 		
 		SET(Build_Image_CMD ${INKSCAPE_EXECUTABLE})
 		SET(Build_Image_OPTIONS --without-gui)
-		SET(Build_Image_ARGUMENTS --file=\"${_image_source_file}\" --export-png=\"${_file_name}.${_format}\")
+		#SET(Build_Image_ARGUMENTS --file=\"${_image_source_file}\" --export-png=\"${_file_name}.${_format}\")
+		SET(Build_Image_ARGUMENTS --file=\"${_image_source_file}\" --export-png=\"${_out_file_fullpath}\")
 	ELSE()
 		# ImageMagick part
 		# convert -layers merge infile.psd outfile.png
 		SET(Build_Image_CMD ${IMAGEMAGICK_CONVERT_EXECUTABLE})
 		SET(Build_Image_OPTIONS -layers merge)
-		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
+		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
+		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_file_fullpath}\"")
 		#SET(Build_Image_ARGUMENTS "${_image_source_file}")
 	ENDIF()
 
 	#SEPARATE_ARGUMENTS(Build_Image_ARGUMENTS_LIST WINDOWS_COMMAND "${Build_Image_ARGUMENTS}")
 #	ADD_CUSTOM_COMMAND(
-#		# OUTPUT ${_out_file_fullpath}
-#		TARGET ${_targetname}
-#		POST_BUILD
+#		TARGET ${_targetname}${_file_namef}
+#		PRE_BUILD
 #		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}
-#		# DEPENDS Humbug
-#		COMMENT "Convert Image." 
+#		DEPENDS "${_image_source_file}"
+#		COMMENT "Convert ${_file_namef} Image to ${_file_name}.${_format}." 
 #	)
+#	ADD_DEPENDENCIES(${_targetname} "${_targetname}${_file_namef}")
 
-	MESSAGE(STATUS "[IMGCONV-X] DEPENDS ${_image_source_file}")
-	MESSAGE(STATUS "[IMGCONV-X] OUTPUT ${_out_file_fullpath}")
+#	MESSAGE(STATUS "[IMGCONV-X] DEPENDS ${_image_source_file}")
+#	MESSAGE(STATUS "[IMGCONV-X] OUTPUT ${_out_file_fullpath}")
 	
 	ADD_CUSTOM_COMMAND(
 		OUTPUT "${_out_file_fullpath}"
@@ -101,31 +93,62 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _image_source_file _format)
 		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}
 		#MAIN_DEPENDENCY Artwork${_file_namef}
 		DEPENDS "${_image_source_file}"
-		COMMENT "Convert ${_file_name} Image to ${_file_name}.${_format}." 
+		COMMENT "Convert ${_file_namef} Image to ${_file_name}.${_format}." 
 	)
-	ADD_CUSTOM_TARGET(Artwork${_file_namef} ALL DEPENDS "${_out_file_fullpath}")
-	ADD_DEPENDENCIES(Artwork Artwork${_file_namef})
+	list(APPEND IMGCONVERSION_TARGETS "${_out_file_fullpath}")
+	SET(IMGCONVERSION_TARGETS ${IMGCONVERSION_TARGETS} PARENT_SCOPE)
+	#ADD_CUSTOM_TARGET(Artwork${_file_namef} ALL DEPENDS "${_out_file_fullpath}")
+	SET_SOURCE_FILES_PROPERTIES("${_out_file_fullpath}" PROPERTIES GENERATED 1)
+	#ADD_CUSTOM_TARGET(ArtworkX ALL DEPENDS "${_out_file_fullpath}")
+	#ADD_DEPENDENCIES(Artwork Artwork${_file_namef})
+	#ADD_DEPENDENCIES(${_targetname} "${_out_file_fullpath}")
+	#ADD_DEPENDENCIES(${_targetname} ALL "${_out_file_fullpath}")
+#	ADD_DEPENDENCIES(Artwork ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS})
 
 	IF(IMGCONVERSION_CMAKE_DEBUG)
 		MESSAGE(STATUS "[IMGCONV] ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}")
 	ENDIF()
-	#ADD_DEPENDENCIES(BI BI_CV)
+	#ADD_DEPENDENCIES(${_targetname} "${_out_file_fullpath}")
 ENDFUNCTION()
 
 #ADD_IMGCONVERSION_TARGET(BI ${CMAKE_CURRENT_SOURCE_DIR}/footer.psd)
 
 FILE(GLOB IMAGES_SOURCE_FILES ${PROJECT_SOURCE_DIR}/*.psd;${PROJECT_SOURCE_DIR}/*.svg)
+
+#ADD_CUSTOM_TARGET(Artwork ALL DEPENDS ${IMAGES_SOURCE_FILES})
+#ADD_CUSTOM_TARGET(BI ALL DEPENDS ${IMAGES_SOURCE_FILES})
+
+#ADD_CUSTOM_TARGET(Artwork ALL)
+
+SET(ADDITIONAL_IMAGES_SOURCE_FILES 
+	    ${CMAKE_CURRENT_SOURCE_DIR}/footer.psd
+)
+#ADD_CUSTOM_TARGET(Artwork ALL DEPENDS "${PROJECT_BINARY_DIR}/footer.png" "${PROJECT_BINARY_DIR}/footer2.png")
+
 FOREACH(f ${IMAGES_SOURCE_FILES})
 #		GET_FILENAME_COMPONENT(_file_name  ${f} NAME_WE)
 #		GET_FILENAME_COMPONENT(_file_path  ${f} PATH)
 #		SET(_file_fullpath "${_file_path}/${_file_name}.png")
-		ADD_IMGCONVERSION_TARGET(BI ${f} png)
+		ADD_IMGCONVERSION_TARGET(Artwork ${f} png)
 #		MESSAGE(STATUS "IMG: ${f}")
 		#ADD_EXECUTABLE(${_file_fullpath} ${f})
 		#TARGET_LINK_LIBRARIES(${_file_fullpath} ${SDL_LIBRARY})
 ENDFOREACH()
 
 # ${IMAGEMAGICK_CONVERT_EXECUTABLE}
+ADD_CUSTOM_TARGET(Artwork ALL DEPENDS ${IMGCONVERSION_TARGETS})
+SET_TARGET_PROPERTIES(Artwork
+	PROPERTIES
+	EXCLUDE_FROM_DEFAULT_BUILD
+	#EXCLUDE_FROM_ALL_BUILD
+	TRUE
+)
+
+#ADD_CUSTOM_TARGET(Artwork ALL DEPENDS "${PROJECT_BINARY_DIR}/footer.png" "${PROJECT_BINARY_DIR}/footer2.png")
+#ADD_CUSTOM_TARGET(Artwork ALL DEPENDS "${PROJECT_BINARY_DIR}/footer.png" )
+#MESSAGE(STATUS "[IMGCONV-AAAA] IMGCONVERSION_TARGETS: ${IMGCONVERSION_TARGETS}")
+#ADD_CUSTOM_TARGET(Artwork ALL DEPENDS "${PROJECT_BINARY_DIR}/footer.png" )
+#ADD_DEPENDENCIES(Artwork ${PROJECT_BINARY_DIR}/footer2.png)
 
 
 
