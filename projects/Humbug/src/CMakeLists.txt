@@ -263,7 +263,7 @@ CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip
 #ADD_DEPENDENCIES(MakeVFS Artwork)
 
 SET(Pak02_PACKAGE_SOURCE_FILES 
-	    ${Humbug_Artwork_DIR}/footer.psd
+	    ${Humbug_Artwork_DIR}/Hud/footer.psd
 )
 CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 
