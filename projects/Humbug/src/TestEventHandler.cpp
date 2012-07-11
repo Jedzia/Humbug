@@ -155,7 +155,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
         SDL_Surface* tmpsurf;
-        m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer.png"), 0);
+        m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "Hud/footer.png"), 0);
         //create a button
         new CButton(m_pHud,CRectangle(100,100,150,25),1,"Come on, Press me!");
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
@@ -180,7 +180,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
         //    m_pBackground, spr2Dim, CPoint(32,0));
 
-        m_pSprite2 = new CSprite(fl, "Voiture.bmp", m_pMainCanvas, 
+        m_pSprite2 = new CSprite(fl, "Sprites/Voiture.bmp", m_pMainCanvas, 
                          CRectangle(0,0,32,32), CPoint(32,0));
 
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
