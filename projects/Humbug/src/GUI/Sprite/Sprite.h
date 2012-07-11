@@ -1,14 +1,18 @@
 #ifndef HUMBUG_GUI_SPRITE_CSPRITE_H
 #define HUMBUG_GUI_SPRITE_CSPRITE_H
 #include "..\Components\Point.h"
+#include <string>
 
 class CCanvas;
 class CImage;
+class FileLoader;
 
 class CSprite {
 public:
 
     CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background = NULL ,CRectangle spriteDimension = CRectangle(0,0,0,0)
+        , CPoint spriteMove = CPoint(0,0) );
+    CSprite(const FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle spriteDimension = CRectangle(0,0,0,0)
         , CPoint spriteMove = CPoint(0,0) );
     ~CSprite();
 

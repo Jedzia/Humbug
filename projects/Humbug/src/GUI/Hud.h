@@ -3,6 +3,7 @@
 
 #include "GUI/Controls/Control.h"
 #include "GUI/Components/Canvas.h"
+#include <string>
 
 class FileLoader;
 class CImage;

@@ -175,11 +175,14 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) ) ),
             m_pBackground);
 
-        CRectangle spr2Dim(0,0,32,32);
-        m_pSprite2 = new CSprite(m_pMainCanvas, 
-            new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
-            m_pBackground, spr2Dim, CPoint(32,0));
-        
+        //CRectangle spr2Dim(0,0,32,32);
+        //m_pSprite2 = new CSprite(m_pMainCanvas, 
+        //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
+        //    m_pBackground, spr2Dim, CPoint(32,0));
+
+        m_pSprite2 = new CSprite(fl, "Voiture.bmp", m_pMainCanvas, 
+                         CRectangle(0,0,32,32), CPoint(32,0));
+
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
         //SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);

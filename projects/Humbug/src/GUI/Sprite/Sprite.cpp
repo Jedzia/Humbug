@@ -4,6 +4,7 @@
 //
 #include "../Components/Canvas.h"
 #include "../Components/Image.h"
+#include "Filesystem/FileLoader.h"
 #include "SDL.h"
 #include "Sprite.h"
 
@@ -22,6 +23,26 @@ CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,CRec
     //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
     //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
 }
+
+    CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle spriteDimension /*= CRectangle(0,0,0,0) */, CPoint spriteMove /*= CPoint(0,0) */ )
+        :    m_pMainCanvas(mainCanvas),
+        m_pBackground(NULL),
+        m_cpPos(0, 0),
+        m_cpOldPos(0, 0),
+        m_cpSprMove(spriteMove), m_crSprDim(spriteDimension)
+
+    {
+        // m_pSprImage(sprImage),
+        if (spriteDimension == CRectangle(0,0,0,0))
+        {
+            m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(filename)) ) );
+        } 
+        else
+        {
+            m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(filename)) ), spriteDimension );
+        }
+
+    }
 
 CSprite::~CSprite(void){
     dbgOut(__FUNCTION__ << std::endl);
