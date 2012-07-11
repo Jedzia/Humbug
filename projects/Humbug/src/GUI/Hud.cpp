@@ -69,7 +69,7 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
     CRectangle& ownDimensions = GetCanvas()->GetDimension();
     GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
     CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
-    Invalidate();
+    //Invalidate();
 }
 
 Hud::~Hud(void){
@@ -91,7 +91,8 @@ CRectangle Hud::InitRect(const FileLoader& loader){
 }
 
 void Hud::OnDraw(){
-    /*CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
+    /*
+    CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
     flank = true;
     bool checkSwitch = HasMouseHover() ^ flank;
 
@@ -104,7 +105,8 @@ void Hud::OnDraw(){
         //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155)
         // );
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
-        m_ptIsDirty = true;
+        Invalidate();
+        //m_ptIsDirty = true;
     }
     else if(!checkSwitch &&  oldstate == true)   {
         //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
@@ -115,7 +117,8 @@ void Hud::OnDraw(){
 
         //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
-        m_ptIsDirty = true;
+        Invalidate();
+        //m_ptIsDirty = true;
     }
 
     static bool xset = false;

@@ -21,7 +21,7 @@ m_bPressed(false)
 	m_colText=colText;
 	m_colHilite=colHilite;
 	m_colShadow=colShadow;
-    Invalidate();
+    // Invalidate();
 }
 
 //destruction

@@ -35,11 +35,12 @@ m_pParent(NULL), m_ptIsDirty(false)
 }
 
 //child control constructor
-CControl::CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id):
+CControl::CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id, bool invalidate):
 m_lstChildren(0),
 m_ID(id),
-m_pParent(NULL), m_ptIsDirty(false)
+m_pParent(NULL), m_ptIsDirty(invalidate)
 {
+    dbgOut(__FUNCTION__ << std::endl);
 	//set parent
 	SetParent(pParent);
 	//create an rgb compatible surface
@@ -47,7 +48,7 @@ m_pParent(NULL), m_ptIsDirty(false)
 	//set position
 	m_ptPosition.SetX(rcDimensions.GetX());
 	m_ptPosition.SetY(rcDimensions.GetY());
-    dbgOut(__FUNCTION__ << std::endl);
+    //Invalidate();
 }
 
 //destructor

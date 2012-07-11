@@ -39,7 +39,7 @@ public:
 	//master control constructor
 	CControl(CCanvas* pCanvas);
 	//child control constructor
-	CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id);
+	CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id, bool invalidate = true);
 	//destructor
 	virtual ~CControl();
 	//set parent

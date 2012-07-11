@@ -152,7 +152,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         SDL_Surface* tmpsurf;
         m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer.png"), 0);
         //create a button
-        new CButton(m_pHud,CRectangle(100,100,50,25),1,"Test");
+        new CButton(m_pHud,CRectangle(100,100,150,25),1,"Come on, Press me!");
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
 
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
