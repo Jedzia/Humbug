@@ -1,3 +1,19 @@
+/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the strangest game ever.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2012, EvePanix. All rights reserved.
+ *
+ * \brief      This file contains the definition of
+ *             the Hud.cpp class.
+ * \folder     $(folder)
+ * \file       Hud.cpp
+ * \date       2012-07-10
+ * \author     Jedzia.
+ *
+ * modified    2012-07-10, Jedzia
+ */
+/*---------------------------------------------------------*/
 #include "../stdafx.h"
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Image.h"
@@ -15,8 +31,9 @@
 HudBackground::HudBackground(const FileLoader& loader, std::string filename) :
     m_pFooter(NULL){
     dbgOut(__FUNCTION__ << std::endl);
+
     //m_pFooter = new CCanvas( loader.LoadImg( filename.c_str() ) );
-    m_pFooter = new CCanvas( SDL_DisplayFormatAlpha(loader.LoadImg( filename.c_str() )) );
+    m_pFooter = new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg( filename.c_str() ) ) );
 }
 
 HudBackground::~HudBackground(void){
@@ -43,17 +60,16 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
     CPoint dst( 0, pParent->GetCanvas()->GetHeight( ) - footer->GetHeight( ) );
     CControl::SetPosition(dst);
     oldstate = !HasMouseHover();
+
     // BringToFront();
     //SetMouseHover(this);
-    tmpcanvas = GetCanvas()->CreateRGBCompatible(NULL, GetWidth(), GetHeight());
+    tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, GetWidth(), GetHeight() );
     SDL_SetAlpha(tmpcanvas->GetSurface(), SDL_SRCALPHA, 122);
-
-        footerImage->Put( GetCanvas(), CPoint(0, 0) );
-        CRectangle& ownDimensions = GetCanvas()->GetDimension();
-        GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
-
-        CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
-        Invalidate();
+    footerImage->Put( GetCanvas(), CPoint(0, 0) );
+    CRectangle& ownDimensions = GetCanvas()->GetDimension();
+    GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
+    CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
+    Invalidate();
 }
 
 Hud::~Hud(void){
@@ -75,46 +91,50 @@ CRectangle Hud::InitRect(const FileLoader& loader){
 }
 
 void Hud::OnDraw(){
-    CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
-
+    /*CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
     flank = true;
-
     bool checkSwitch = HasMouseHover() ^ flank;
+
     //footerImage->Put( GetCanvas(), dst );
     if( checkSwitch &&  oldstate == false) {
         //clear to light gray
         CRectangle& ownDimensions = GetCanvas()->GetDimension();
         GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
-        
-        //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155) );
+
+        //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255, 155)
+        // );
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
         m_ptIsDirty = true;
     }
-    else if(!checkSwitch &&  oldstate == true) {
+    else if(!checkSwitch &&  oldstate == true)   {
         //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
         footerImage->Put( GetCanvas(), CPoint(0, 0) );
+
         //GetParent()->Update();
         int dreck = this->GetWidth();
+
         //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
         m_ptIsDirty = true;
     }
+
     static bool xset = false;
+
     if(!xset) {
         xset = true;
     }
-    if(m_ptIsDirty)
-    {
+
+    if(m_ptIsDirty) {
         int abc = 123;
+
         //footerImage->Put( GetCanvas(), CPoint(0, 0) );
         //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
         //m_ptIsDirty = false;
-
     }
 
-    oldstate = checkSwitch;
+    oldstate = checkSwitch;*/
     CControl::OnDraw();
-}
+} // OnDraw
 
 bool Hud::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
         bool bMiddle){

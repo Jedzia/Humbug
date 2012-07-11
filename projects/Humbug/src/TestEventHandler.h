@@ -50,6 +50,8 @@ public:
 	virtual ~CTestEventHandler();
 	//initialization
 	bool OnInit(int argc,char* argv[]);
+	//cleanup
+	void OnExit();
     //event handling
     void OnEvent(SDL_Event* pEvent);
 	//left button down

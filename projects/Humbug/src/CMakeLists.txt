@@ -42,6 +42,7 @@ SET(USE_LIB_BOOST TRUE)
 #SET(USE_LIB_XSD TRUE)
 SET(USE_SDL TRUE)
 SET(USE_SDL_IMAGE TRUE)
+SET(USE_SDL_TTF TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -78,6 +79,7 @@ SET(Humbug_Components_headers
 		GUI/Components/MainCanvas.h
 
 		GUI/Controls/Control.h
+		GUI/Controls/Button.h
 
 		GUI/Sprite/Sprite.h
 )
@@ -90,6 +92,7 @@ SET(Humbug_Components_sources
 		GUI/Components/MainCanvas.cpp
 
 		GUI/Controls/Control.cpp
+		GUI/Controls/Button.cpp
 		
 		GUI/Sprite/Sprite.cpp
 )
@@ -180,6 +183,7 @@ SET(Humbug_resfiles
 #ADD_DEFINITIONS("-DHAVE_OPENGL")
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 
@@ -266,6 +270,7 @@ SET(Pak02_PACKAGE_SOURCE_FILES
 Copy_DLL_To_Target(Humbug SDL_LIBRARY)
 Copy_DLL_To_Target(Humbug SDLIMAGE_LIBRARY)
 Copy_Files_To_Target(Humbug "${SDLIMAGE_LIBRARY_DLLS_EXT}")
+Copy_DLL_To_Target(Humbug SDLTTF_LIBRARY)
 #Copy_ReleaseDLL_To_Target(Humbug ICU)
 ##SET(XSDE_LIB "${XSDE_LIBRARY_DIR}/vc-8.0/xerces-c_3.lib")
 ##SET(QSCINTILLA2_LIB "optimized;${QT_LIBRARY_DIR}/qscintilla2.lib;debug;${QT_LIBRARY_DIR}/qscintilla2d.lib")
@@ -277,6 +282,7 @@ TargetLinkBoost(Humbug "filesystem;system;regex")
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
+TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
 
 
 
@@ -299,6 +305,7 @@ INSTALL(FILES
 		${SDL_LIBRARY_DLL_RELEASE} 
 		${SDLIMAGE_LIBRARY_DLL_RELEASE} 
 		${SDLIMAGE_LIBRARY_DLLS_EXT} 
+		${SDLTTF_LIBRARY_DLL_RELEASE} 
 	DESTINATION bin
 	COMPONENT Libraries
 )

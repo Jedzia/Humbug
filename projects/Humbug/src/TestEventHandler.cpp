@@ -9,6 +9,7 @@
 #include "GUI/Components/Image.h"
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Components/Rectangle.h"
+#include "GUI/Controls/Button.h"
 #include "GUI/Hud.h"
 #include "PlayerKeys.h"
 #include "TestEventHandler.h"
@@ -54,11 +55,11 @@ CTestEventHandler::CTestEventHandler() :
 //destructor
 CTestEventHandler::~CTestEventHandler(){
     std::cout << ">>>>>>>>>>>>> Killing the ~CTestEventHandler" << std::endl;
-    if(m_pHud) {
-        delete m_pHud;
-    }
+    //if(m_pHud) {
+    //    delete m_pHud;
+    //}
 
-    delete CControl::GetMainControl();
+    //delete CControl::GetMainControl();
 
     //destroy timer
     delete m_pTestTimer;
@@ -70,8 +71,24 @@ CTestEventHandler::~CTestEventHandler(){
     delete m_pSprite;
     delete m_pBackground;
     delete m_pBlue;
-    delete m_pMainCanvas;
+    //delete m_pMainCanvas;
     dbgOut(__FUNCTION__ << std::endl);
+}
+
+//on cleanup
+void CTestEventHandler::OnExit()
+{
+	//destroy font
+	TTF_CloseFont(CButton::GetButtonFont());
+
+	//shut down font system
+	TTF_Quit();
+
+	//delete main canvas
+	delete m_pMainCanvas;
+
+	//delete main control
+	delete CControl::GetMainControl();
 }
 
 //initialization
@@ -118,6 +135,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //create main control
     CControl* mainControl = new CControl(m_pMainCanvas);
 
+	//initialize sdl_ttf
+	TTF_Init();
+
+	//load in button font. Todo: Error Checking
+	CButton::SetButtonFont(TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf",15));
+
     //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
     FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
@@ -128,6 +151,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
         SDL_Surface* tmpsurf;
         m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "footer.png"), 0);
+        //create a button
+        new CButton(m_pHud,CRectangle(100,100,50,25),1,"Test");
+        //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
+
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
         tmpsurf = fl.LoadImg("Moo.png");
         m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));

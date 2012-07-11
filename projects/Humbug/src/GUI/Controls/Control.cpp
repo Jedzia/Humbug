@@ -31,6 +31,7 @@ m_pParent(NULL), m_ptIsDirty(false)
 	s_pMainControl=this;
 	//set position
 	SetPosition(CPoint(0,0));
+    Invalidate();
 }
 
 //child control constructor
@@ -205,8 +206,14 @@ void CControl::Draw()
 //invalidate control
 void CControl::Invalidate()
 {
+    CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
+    GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
     // Todo: for all children
     m_ptIsDirty = true;
+    if (GetParent())
+    {
+        GetParent()->Invalidate();
+    }
 }
 
 //customize redrawing
