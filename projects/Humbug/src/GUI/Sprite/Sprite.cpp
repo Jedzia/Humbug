@@ -9,40 +9,40 @@
 #include "Sprite.h"
 
 //#include <build/cmake/include/debug.h>
-CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,CRectangle spriteDimension,
+CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,
+        CRectangle spriteDimension,
         CPoint spriteMove) :
     m_pMainCanvas(mainCanvas),
     m_pSprImage(sprImage),
     m_pBackground(background),
     m_cpPos(0, 0),
     m_cpOldPos(0, 0),
-    m_cpSprMove(spriteMove), m_crSprDim(spriteDimension)
-    {
+    m_cpSprMove(spriteMove),
+    m_crSprDim(spriteDimension){
     dbgOut(__FUNCTION__ << std::endl);
 
     //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
     //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
 }
 
-    CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle spriteDimension /*= CRectangle(0,0,0,0) */, CPoint spriteMove /*= CPoint(0,0) */ )
-        :    m_pMainCanvas(mainCanvas),
-        m_pBackground(NULL),
-        m_cpPos(0, 0),
-        m_cpOldPos(0, 0),
-        m_cpSprMove(spriteMove), m_crSprDim(spriteDimension)
-
-    {
-        // m_pSprImage(sprImage),
-        if (spriteDimension == CRectangle(0,0,0,0))
-        {
-            m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(filename)) ) );
-        } 
-        else
-        {
-            m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(filename)) ), spriteDimension );
-        }
-
+CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainCanvas,
+        CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
+        CPoint spriteMove /*= CPoint(0,0) */ ) :
+    m_pMainCanvas(mainCanvas),
+    m_pBackground(NULL),
+    m_cpPos(0, 0),
+    m_cpOldPos(0, 0),
+    m_cpSprMove(spriteMove),
+    m_crSprDim(spriteDimension){
+    // m_pSprImage(sprImage),
+    if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
+        m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(filename) ) ) );
     }
+    else {
+        m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(
+                                        filename) ) ), spriteDimension );
+    }
+}
 
 CSprite::~CSprite(void){
     dbgOut(__FUNCTION__ << std::endl);
@@ -82,9 +82,8 @@ void CSprite::SetPos( CPoint& position ){
     m_cpPos = position;
 }
 
-void CSprite::SprOffset( int offset )
-{
-    m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove*offset);
+void CSprite::SprOffset( int offset ){
+    m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
 }
 
 std::ostream& operator<<(std::ostream& o, const CSprite& r) {

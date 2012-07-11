@@ -28,7 +28,15 @@ INCLUDE (bindings)
 
 IF( ImageMagick_FOUND OR INKSCAPE_EXECUTABLE_FOUND )
 
-ADD_CUSTOM_TARGET(BI ALL DEPENDS ${IMAGES_SOURCE_FILES})
+#ADD_CUSTOM_TARGET(BI ALL DEPENDS ${IMAGES_SOURCE_FILES})
+#SET_TARGET_PROPERTIES(BI
+#	PROPERTIES
+#	EXCLUDE_FROM_DEFAULT_BUILD
+#	#EXCLUDE_FROM_ALL_BUILD
+#	TRUE
+#)
+
+ADD_CUSTOM_TARGET(Artwork ALL)
 
 SET(ADDITIONAL_IMAGES_SOURCE_FILES 
 	    ${CMAKE_CURRENT_SOURCE_DIR}/footer.psd
@@ -50,6 +58,9 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _image_source_file _format)
 	ENDIF()
 	#SET(_file_fullpath "${_file_path}/${_file_name}.png")
 	#MESSAGE(STATUS "[IMGCONV] ${_file_fullpath}")
+	#SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_file_name}.${_format}")
+	SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${_file_name}.${_format}")
+	MESSAGE(STATUS "[IMGCONV] output ${_out_file_fullpath}")
 
 
 	SET(_inkscape_exts ".svg")
@@ -72,14 +83,29 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _image_source_file _format)
 	ENDIF()
 
 	#SEPARATE_ARGUMENTS(Build_Image_ARGUMENTS_LIST WINDOWS_COMMAND "${Build_Image_ARGUMENTS}")
+#	ADD_CUSTOM_COMMAND(
+#		# OUTPUT ${_out_file_fullpath}
+#		TARGET ${_targetname}
+#		POST_BUILD
+#		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}
+#		# DEPENDS Humbug
+#		COMMENT "Convert Image." 
+#	)
+
+	MESSAGE(STATUS "[IMGCONV-X] DEPENDS ${_image_source_file}")
+	MESSAGE(STATUS "[IMGCONV-X] OUTPUT ${_out_file_fullpath}")
+	
 	ADD_CUSTOM_COMMAND(
-		#OUTPUT ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG}
-		TARGET ${_targetname}
+		OUTPUT "${_out_file_fullpath}"
 		POST_BUILD
 		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}
-		# DEPENDS Humbug
-		COMMENT "Convert Image." 
+		#MAIN_DEPENDENCY Artwork${_file_namef}
+		DEPENDS "${_image_source_file}"
+		COMMENT "Convert ${_file_name} Image to ${_file_name}.${_format}." 
 	)
+	ADD_CUSTOM_TARGET(Artwork${_file_namef} ALL DEPENDS "${_out_file_fullpath}")
+	ADD_DEPENDENCIES(Artwork Artwork${_file_namef})
+
 	IF(IMGCONVERSION_CMAKE_DEBUG)
 		MESSAGE(STATUS "[IMGCONV] ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}")
 	ENDIF()
@@ -100,9 +126,6 @@ FOREACH(f ${IMAGES_SOURCE_FILES})
 ENDFOREACH()
 
 # ${IMAGEMAGICK_CONVERT_EXECUTABLE}
-
-
-
 
 
 

@@ -1,7 +1,7 @@
 
 SET(PACKAGE Humbug)
 
-#ADD_SUBDIRECTORY( Artwork )
+ADD_SUBDIRECTORY( Artwork )
 ADD_SUBDIRECTORY( HumbugShared )
 ADD_SUBDIRECTORY( src )
 
