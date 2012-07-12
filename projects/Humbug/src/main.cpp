@@ -49,7 +49,7 @@
 
 //CPPSTRUCTZ_USE_NAMESPACE
 //static std::ofstream& xout;
-std::ofstream xout = std::ofstream("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
+//std::ofstream xout = std::ofstream("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
 //std::ofstream xout = std::cout;
 
 int bmain(int argc, char *argv[])

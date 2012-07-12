@@ -16,9 +16,9 @@
 
 }*/
 //# define dbgOut(x) std::cout.flush(); std::cout << x
-//# define dbgOut(x) std::cout << x
-extern std::ofstream xout;
-# define dbgOut(x) xout << x
+# define dbgOut(x) std::cout << x
+//extern std::ofstream xout;
+//# define dbgOut(x) xout << x
 #else
 # define dbgOut(x)
 #endif // _DEBUG

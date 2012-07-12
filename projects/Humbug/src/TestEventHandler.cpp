@@ -5,6 +5,7 @@
 #include "stdafx.h"
 //
 #include "Filesystem/FileLoader.h"
+#include "GUI/Visual/Console.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
 #include "GUI/Sprite/Sprite.h"
@@ -46,7 +47,7 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    m_uiLastTicks(0), m_inActiveSprite(0),
+    m_pConsole(NULL), m_uiLastTicks(0), m_inActiveSprite(0),
     m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pKeyHandler2(NULL), m_pSprite(NULL), m_pSprite2(NULL),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
@@ -94,6 +95,7 @@ void CTestEventHandler::OnExit()
 
     delete m_pKeyHandler;
     delete m_pKeyHandler2;
+    delete m_pConsole;
 }
 
 //initialization
@@ -213,6 +215,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     new TestHookable();
     new TestHookable();
     //Hookable::Close();
+    m_pConsole = new CConsole("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp", 
+        m_pMainCanvas, 100, CRectangle(0,0,0,300));
     return(true);
 } // OnInit
 
@@ -306,6 +310,7 @@ void CTestEventHandler::OnIdle(){
         m_pSprite->Draw();
         m_pSprite2->Draw();
     }
+    m_pConsole->Draw();
 
     //m_pHud->Draw();
     //m_pMainCanvas->Flip();
@@ -343,6 +348,10 @@ void CTestEventHandler::Update(){
 //event handling
 void CTestEventHandler::OnEvent(SDL_Event* pEvent)
 {
+    if(m_pConsole->OnEvent(pEvent))
+    {
+        return;
+    }
     CEventHandler::OnEvent(pEvent);
     if (m_inActiveSprite == 0)
     {
@@ -411,6 +420,10 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     else if( sym == SDLK_F1 ) {
         //
         m_inActiveSprite ^= 1;
+    }
+    else if( mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE ) {
+        // toggle console
+        m_pConsole->Toggle();
     }
     else {
         //send clear screen message
@@ -492,6 +505,10 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
 
 //event filtering
 bool CTestEventHandler::FilterEvent(SDL_Event* pEvent){
+    /*if(m_pConsole->OnEvent(pEvent))
+    {
+        return true;
+    }*/
     return( CControl::FilterEvent(pEvent) );
 }
 

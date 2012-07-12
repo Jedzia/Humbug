@@ -2,7 +2,7 @@
 #ifndef __CANVAS_H__
 #define __CANVAS_H__
 
-#include "sdl.h"
+#include "SDL.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include <list>

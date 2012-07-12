@@ -5,6 +5,7 @@
 #include "GUI/Components/MainCanvas.h"
 
 class HUD;
+class CConsole;
 class CImage;
 class CSprite;
 class CTestThread;
@@ -17,6 +18,8 @@ class PlayerKeys;
 class CTestEventHandler : public CEventHandler
 {
 private:
+    //main display surface
+    CConsole* m_pConsole;
 	//main display surface
 	CMainCanvas* m_pMainCanvas;
     CCanvas* m_pBackground;

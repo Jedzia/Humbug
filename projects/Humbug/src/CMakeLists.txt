@@ -63,6 +63,7 @@ SET(Humbug_GUI_headers
 		GUI/Visual/Timer.h
 		GUI/Visual/Hookable.h
 		GUI/Visual/SdlInfo.h
+		GUI/Visual/Console.h
 )
 SET(Humbug_GUI_sources 
 		GUI/Visual/Application.cpp
@@ -72,6 +73,7 @@ SET(Humbug_GUI_sources
 		GUI/Visual/Timer.cpp
 		GUI/Visual/Hookable.cpp
 		GUI/Visual/SdlInfo.cpp
+		GUI/Visual/Console.cpp
 )
 
 # Component set (Canvas, Controls, etc.)
@@ -210,6 +212,10 @@ ENDIF(LINUX)
 #ADD_DEFINITIONS(${QT_DEFINITIONS})
 #ADD_DEFINITIONS("-DQSCINTILLA_DLL")
 ADD_DEFINITIONS(${HumbugShared_DEFINITIONS})
+IF(SDLIMAGE_FOUND)
+  ADD_DEFINITIONS("-DHAVE_SDLIMAGE")
+ENDIF(SDLIMAGE_FOUND)
+
 IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
