@@ -1,8 +1,24 @@
 #ifndef STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
 #define STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
 
+#include <iostream>
+
 #ifdef _DEBUG
-# define dbgOut(x) std::cout << x
+/*inline void _moo_bugzor(const char* ff)
+{
+    std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
+    if (myfile.is_open())
+    {
+        myfile << ff << std::endl;
+        //myfile << "Guess what, this is another line.\n";
+        myfile.close();
+    }
+
+}*/
+//# define dbgOut(x) std::cout.flush(); std::cout << x
+//# define dbgOut(x) std::cout << x
+extern std::ofstream xout;
+# define dbgOut(x) xout << x
 #else
 # define dbgOut(x)
 #endif // _DEBUG
@@ -34,7 +50,6 @@
 
 #endif //USE_LIB_BOOST
 
-#include <iostream>
 #include <memory>   // std::auto_ptr
 
 //#include "TestClass.h"

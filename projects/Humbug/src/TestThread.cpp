@@ -25,7 +25,7 @@ CTestThread::~CTestThread()
 int CTestThread::OnExecute()
 {
 	//print to stdout
-	fprintf(stdout,"Test Thread Executing!\n");
+    std::cout << "Test Thread Executing!" << std::endl;
 	//return
 	return(0);
 }

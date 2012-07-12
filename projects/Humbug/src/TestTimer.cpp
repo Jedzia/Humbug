@@ -23,6 +23,6 @@ CTestTimer::~CTestTimer()
 void CTestTimer::OnTimer()
 {
 	//print to stdout
-	fprintf(stdout,"Timer pulse!\n");
+    std::cout << "Timer pulse!" << std::endl;
 }
 

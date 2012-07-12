@@ -54,19 +54,13 @@ CTestEventHandler::CTestEventHandler() :
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
-    std::cout << ">>>>>>>>>>>>> Killing the ~CTestEventHandler" << std::endl;
+    std::cout << "Killing the ~CTestEventHandler" << std::endl;
     //if(m_pHud) {
     //    delete m_pHud;
     //}
 
     //delete CControl::GetMainControl();
 
-    //destroy timer
-    delete m_pTestTimer;
-
-    //destroy thread
-    delete m_pTestThread;
-    
     //delete m_pMainCanvas;
     dbgOut(__FUNCTION__ << std::endl);
 
@@ -75,7 +69,13 @@ CTestEventHandler::~CTestEventHandler(){
 //on cleanup
 void CTestEventHandler::OnExit()
 {
-	//destroy font
+    //destroy timer
+    delete m_pTestTimer;
+
+    //destroy thread
+    delete m_pTestThread;
+
+    //destroy font
 	TTF_CloseFont(CButton::GetButtonFont());
 
 	//shut down font system
@@ -207,6 +207,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     m_pKeyHandler = new PlayerKeys(200,200);
     m_pKeyHandler2 = new PlayerKeys(400,200);
+
+    new TestHookable();
+    new TestHookable();
+    new TestHookable();
+    new TestHookable();
+    //Hookable::Close();
     return(true);
 } // OnInit
 
@@ -265,7 +271,7 @@ void CTestEventHandler::PutBlue(){
     }
 }
 
-//idle behavior
+//idle behavior - Draw the stuff
 void CTestEventHandler::OnIdle(){
     Uint32 now, diff;
     now = SDL_GetTicks();

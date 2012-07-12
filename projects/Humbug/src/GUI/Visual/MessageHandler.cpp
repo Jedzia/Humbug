@@ -1,3 +1,6 @@
+#include "../../stdafx.h"
+
+//
 #include "MessageHandler.h"
 
 //static member initialization

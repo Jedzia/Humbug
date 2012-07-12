@@ -2,6 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+#include "../../stdafx.h"
 #include <stdlib.h>
 #include "Application.h"
 #include "SdlInfo.h"
@@ -41,12 +42,13 @@ CMessageHandler(NULL)
 		exit(1);
 	}
 	//set up SDL_Quit to be called during exit
-	atexit(SDL_Quit);
+	//atexit(SDL_Quit);
 }
 
 //destructor
 CApplication::~CApplication()
 {
+    dbgOut(__FUNCTION__ << std::endl);
 }
 
 //initialization
@@ -78,6 +80,7 @@ void CApplication::Update()
 void CApplication::OnExit()
 {
 	//by default, do nothing
+    SDL_Quit();
 }
 
 //execution of application

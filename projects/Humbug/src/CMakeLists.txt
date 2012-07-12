@@ -61,6 +61,8 @@ SET(Humbug_GUI_headers
 		GUI/Visual/MessageHandler.h
 		GUI/Visual/Thread.h
 		GUI/Visual/Timer.h
+		GUI/Visual/Hookable.h
+		GUI/Visual/SdlInfo.h
 )
 SET(Humbug_GUI_sources 
 		GUI/Visual/Application.cpp
@@ -68,6 +70,8 @@ SET(Humbug_GUI_sources
 		GUI/Visual/MessageHandler.cpp
 		GUI/Visual/Thread.cpp
 		GUI/Visual/Timer.cpp
+		GUI/Visual/Hookable.cpp
+		GUI/Visual/SdlInfo.cpp
 )
 
 # Component set (Canvas, Controls, etc.)
@@ -97,6 +101,17 @@ SET(Humbug_Components_sources
 		
 		GUI/Sprite/Sprite.cpp
 )
+# Console stuff
+SET(Humbug_GuiConsole_headers 
+		GUI/Visual/DT_drawtext.h
+		GUI/Visual/internal.h
+		GUI/Visual/SDL_console.h
+)
+SET(Humbug_GuiConsole_sources 
+		GUI/Visual/DT_drawtext.c
+		GUI/Visual/internal.c
+		GUI/Visual/SDL_console.c
+)
 
 # GUI implementation
 SET(Humbug_MyGUI_headers 
@@ -122,7 +137,6 @@ SET(Humbug_headers
 
 		Filesystem/FileLoader.h
 		PlayerKeys.h
-		SdlInfo.h
 
 #        qpid/InlineAllocator.h
 #        qpid/InlineVector.h
@@ -137,7 +151,6 @@ SET(Humbug_sources
 
 		Filesystem/FileLoader.cpp
 		PlayerKeys.cpp
-		SdlInfo.cpp
 
 	        main.cpp 
 	        Project/ProjectModel.cpp
@@ -222,8 +235,10 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h 
 
-        ${Humbug_sources} 
         ${Humbug_headers}
+        ${Humbug_sources} 
+		${Humbug_GuiConsole_headers}
+		${Humbug_GuiConsole_sources}
 #        ${Humbug_XSD_sources}
 #        ${Humbug_mocfiles} 
         ${res_outfiles} 

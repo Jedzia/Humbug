@@ -54,7 +54,6 @@ m_pParent(NULL), m_ptIsDirty(invalidate)
 //destructor
 CControl::~CControl()
 {
-    dbgOut(__FUNCTION__ << std::endl);
 	
     //remove from update list
     if(!s_lstUpdate.empty() && !IsMainControl())
@@ -96,6 +95,7 @@ CControl::~CControl()
 	{
 		delete m_pCanvas;
 	}
+    dbgOut(__FUNCTION__ << " The base Control" << std::endl);
 }
 
 //add child handler

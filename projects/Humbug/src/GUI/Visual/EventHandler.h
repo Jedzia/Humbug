@@ -2,6 +2,7 @@
 #define __EVENTHANDLER_H__
 
 #include "Application.h"
+#include "Hookable.h"
 
 /*
 	==CEventHandler==
@@ -9,6 +10,8 @@
 */
 class CEventHandler : public CApplication  
 {
+private:
+	Hookable m_Hooks;
 public:
 	//constructor
 	CEventHandler();

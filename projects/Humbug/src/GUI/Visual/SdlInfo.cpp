@@ -14,7 +14,7 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#include "stdafx.h"
+#include "../../stdafx.h"
 
 //
 #include "SDL.h"

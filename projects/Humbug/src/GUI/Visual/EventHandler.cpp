@@ -2,10 +2,14 @@
 
 //
 //////////////////////////////////////////////////////////////////////
+#include "../../stdafx.h"
+
+//
 #include "EventHandler.h"
 
 //constructor
 CEventHandler::CEventHandler()
+:m_Hooks(this)
 {
     //do nothing
 }

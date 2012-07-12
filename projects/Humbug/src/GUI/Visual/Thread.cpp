@@ -2,6 +2,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+#include "../../stdafx.h"
+
+//
 #include "Thread.h"
 
 //start the thread(should be called by derived classes constructor)

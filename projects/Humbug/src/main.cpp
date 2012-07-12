@@ -48,11 +48,17 @@
 //#include "CppStructz/filesystem/CszGlobals.h"
 
 //CPPSTRUCTZ_USE_NAMESPACE
+//static std::ofstream& xout;
+std::ofstream xout = std::ofstream("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
+//std::ofstream xout = std::cout;
 
 int bmain(int argc, char *argv[])
 {
 
-    _CRT_DEBUG_BLOCK
+    //_CRT_DEBUG_BLOCK
+
+    //std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
+    //xout = myfile;
 
     //int *depp2 = new int(4);
 //    QApplication app(argc, argv);
