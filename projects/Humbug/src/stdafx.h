@@ -47,10 +47,17 @@
 
     #include <boost/progress.hpp>
     #include <boost/smart_ptr.hpp>
+    #include <boost/bind.hpp> 
+    #include "boost/bind/mem_fn.hpp"
+    #include "boost/function.hpp"
 
 #endif //USE_LIB_BOOST
 
 #include <memory>   // std::auto_ptr
+#include <vector>
+#include <map>
+#include <functional> 
+#include <algorithm> 
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;
