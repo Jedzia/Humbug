@@ -42,7 +42,6 @@
 //    base.Update(gameTime);
 //}
 //message ids
-MSGID CTestEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //no parms
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
@@ -215,7 +214,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     new TestHookable();
     new TestHookable();
     //Hookable::Close();
-    m_pConsole = new CConsole("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp", 
+    m_pConsole = new CConsole(this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp", 
         m_pMainCanvas, 100, CRectangle(0,0,0,300));
     return(true);
 } // OnInit

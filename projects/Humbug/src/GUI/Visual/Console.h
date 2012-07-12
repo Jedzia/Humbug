@@ -6,17 +6,19 @@
 #include "../Components/Rectangle.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+class CEventHandler;
 
 class CConsole {
 public:
 
-    CConsole(const std::string& fontName, CCanvas* displayScreen, int lines, CRectangle rect);
+    CConsole(CEventHandler* parent, const std::string& fontName, CCanvas* displayScreen, int lines, CRectangle rect);
     ~CConsole();
 
     void Draw(void) const;
     void Toggle(void);
     bool OnEvent(SDL_Event* pEvent);
 
+    void DoSomething(void);
     //friend std::ostream& operator<<(std::ostream& o, const CConsole& r);
 
 private:

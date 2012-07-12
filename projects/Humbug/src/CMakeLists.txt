@@ -108,11 +108,13 @@ SET(Humbug_GuiConsole_headers
 		GUI/Visual/DT_drawtext.h
 		GUI/Visual/internal.h
 		GUI/Visual/SDL_console.h
+		GUI/Visual/split.h
 )
 SET(Humbug_GuiConsole_sources 
 		GUI/Visual/DT_drawtext.c
 		GUI/Visual/internal.c
 		GUI/Visual/SDL_console.c
+		GUI/Visual/split.c
 )
 
 # GUI implementation

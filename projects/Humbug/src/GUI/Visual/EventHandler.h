@@ -13,7 +13,9 @@ class CEventHandler : public CApplication
 private:
 	Hookable m_Hooks;
 public:
-	//constructor
+    static MSGID MSGID_QuitApp;//no parms
+    
+    //constructor
 	CEventHandler();
 	//destructor
 	virtual ~CEventHandler();

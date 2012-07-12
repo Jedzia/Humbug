@@ -71,7 +71,6 @@ public:
    	//event filtering
 	bool FilterEvent(SDL_Event* pEvent);
 	//message ids
-	static MSGID MSGID_QuitApp;//no parms
 	static MSGID MSGID_ClearScreen;//no parms
 	static MSGID MSGID_DrawPixel;//parm1=x,parm2=y
 };
