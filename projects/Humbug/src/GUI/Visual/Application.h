@@ -13,6 +13,8 @@
 class CApplication : public CMessageHandler  
 {
 private:
+    // Frames per second 
+    static int m_iFramesCap;
 	//singleton pointer
 	static CApplication* s_pTheApplication;
     //last ticks

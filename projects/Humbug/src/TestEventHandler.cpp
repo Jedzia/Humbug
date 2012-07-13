@@ -124,6 +124,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
     //m_pDrawCanvas = m_pMainCanvas;
 
+    //CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
+    //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
+    //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
+    //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
+    //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
+
     // move this to the application class
     m_uiStartTime  = SDL_GetTicks();
 
@@ -225,9 +231,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     m_pTileEngine = new CTileEngine(m_pMainCanvas, m_pBackground);
     m_pTileEngine->AddTileSet(tileSet);
     
-    const std::string& tilename = std::string("Tiles1");
     CTileEngine& eng = (*m_pTileEngine);
-
     (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles(m_pBackground);
     CTile tile = eng["Tiles1"]->CreateTile(1);
     tile.Draw(m_pBackground, CPoint(200,300));
@@ -351,6 +355,15 @@ void CTestEventHandler::OnIdle(){
     m_pMainCanvas->UpdateRects ( );
 
     //m_pMainCanvas->Unlock();
+
+    static int spr2pic = 0;
+    m_pSprite2->SprOffset(spr2pic);
+    spr2pic++;
+    if (spr2pic == 16)
+    {
+        spr2pic = 0;
+    }
+
     // call base method.
     CApplication::OnIdle();
 } // OnIdle
@@ -366,14 +379,6 @@ void CTestEventHandler::Update(){
        }*/
     m_pSprite->SetPos(m_pKeyHandler->Char()/* + CPoint(50,50)*/);
     m_pSprite2->SetPos(m_pKeyHandler2->Char());
-
-    static int spr2pic = 0;
-    m_pSprite2->SprOffset(spr2pic);
-    spr2pic++;
-    if (spr2pic == 16)
-    {
-        spr2pic = 0;
-    }
 
     // call base method.
     CApplication::Update();

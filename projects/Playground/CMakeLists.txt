@@ -42,6 +42,7 @@ SET(USE_LIB_BOOST TRUE)
 #SET(USE_LIB_XSD TRUE)
 
 SET(USE_SDL TRUE)
+SET(USE_SDL_IMAGE TRUE)
 #SET(USE_LUA TRUE)
 
 # local project settings
@@ -244,6 +245,7 @@ ENDIF(USE_NLS)
 # ----- SDL Part -----
 
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
 ADD_DEFINITIONS("-DHAVE_OPENGL")
 
 FILE(GLOB playground_SDL_sources ${PROJECT_SOURCE_DIR}/SDL/*.c;${PROJECT_SOURCE_DIR}/SDL/*.cpp)
@@ -256,7 +258,7 @@ FOREACH(f ${playground_SDL_sources})
 		SET(_target_name "SDL_${_target_name}")
 		ADD_EXECUTABLE(${_target_name} ${f})
 #		TargetLinkBoost(${_target_name} "filesystem;system")
-		TARGET_LINK_LIBRARIES(${_target_name} ${SDL_LIBRARY})
+		TARGET_LINK_LIBRARIES(${_target_name} ${SDL_LIBRARY} )
 
 		SET_PROPERTY(TARGET ${_target_name} PROPERTY FOLDER "Playground/SDL")
 		SET_TARGET_PROPERTIES(${_target_name}
@@ -271,5 +273,10 @@ ENDFOREACH()
 Copy_File_To_Target(SDL_testsprite "${PROJECT_SOURCE_DIR}/SDL/icon.bmp")
 Copy_File_To_Target(SDL_testblitspeed "${PROJECT_SOURCE_DIR}/SDL/sample.bmp")
 
+TARGET_LINK_LIBRARIES(SDL_lesson21 ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY})
+Copy_File_To_Target(SDL_lesson21 "${PROJECT_SOURCE_DIR}/SDL/bg.png")
+Copy_File_To_Target(SDL_lesson21 "${PROJECT_SOURCE_DIR}/SDL/dot.bmp")
+Copy_DLL_To_Target(SDL_lesson21 SDLIMAGE_LIBRARY)
+Copy_Files_To_Target(SDL_lesson21 "${SDLIMAGE_LIBRARY_DLLS_EXT}")
 
 
