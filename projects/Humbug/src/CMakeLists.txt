@@ -93,6 +93,7 @@ SET(Humbug_Components_headers
 		GUI/TileEngine/Tile.h
 		GUI/TileEngine/TileImage.h
 		GUI/TileEngine/TileSet.h
+		GUI/TileEngine/TileEngine.h
 )
 SET(Humbug_Components_sources 
 		GUI/Components/Point.cpp
@@ -110,6 +111,7 @@ SET(Humbug_Components_sources
 		GUI/TileEngine/Tile.cpp
 		GUI/TileEngine/TileImage.cpp
 		GUI/TileEngine/TileSet.cpp
+		GUI/TileEngine/TileEngine.cpp
 )
 # Console stuff
 SET(Humbug_GuiConsole_headers 

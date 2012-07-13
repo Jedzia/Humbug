@@ -57,10 +57,10 @@ class CTileImage : CCanvas {
 public:
 
     CTileImage( const FileLoader& loader, std::string filename, CTileImageSetup configuration );
-    ~CTileImage();
-    bool ShowTiles( CCanvas * destination, const CPoint& destPosition = CPoint(0, 0) );
+    virtual ~CTileImage();
+    bool ShowTiles( CCanvas * destination, const CPoint& destPosition = CPoint(0, 0) ) const ;
 
-    bool Draw(const CTile& tile, CCanvas * destination, const CPoint& destPosition);
+    bool Draw(const CTile& tile, CCanvas * destination, const CPoint& destPosition) const ;
 
     const CTileImageInfo& GetConfig() const { return m_tiConfig; }
     friend std::ostream& operator<<(std::ostream& o, const CTileImage& r);

@@ -11,6 +11,7 @@ class CSprite;
 class CTestThread;
 class CTestTimer;
 class PlayerKeys;
+class CTileEngine;
 class CTileSet;
 /*
 	==CTestEventHandler==
@@ -28,7 +29,8 @@ private:
     CImage* m_pBlue;
     CSprite* m_pSprite;
     CSprite* m_pSprite2;
-    CTileSet* m_pTileSet;
+    CTileEngine* m_pTileEngine;
+    //CTileSet* m_pTileSet;
 	Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;

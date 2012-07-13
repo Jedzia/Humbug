@@ -27,12 +27,12 @@ public:
 	virtual ~CCanvas ( ) ;
 
 	//getter/setter for the SDL_Surface*
-	SDL_Surface* GetSurface ( ) ;
+	SDL_Surface* GetSurface ( ) const;
 	void SetSurface ( SDL_Surface* pSurface ) ;
 
 	//lock and unlock ( for direct pixel access )
-	bool Lock ( ) ;
-	void Unlock ( ) ;
+	bool Lock ( ) const ;
+	void Unlock ( ) const ;
 
 	//get/set pixel (canvas should be locked)
 	CColor GetPixel ( int x , int y ) ;
@@ -42,10 +42,10 @@ public:
 	CColor MatchColor ( CColor color ) ;
 
 	//width and height retrieval
-	int GetWidth ( ) ;
-	int GetHeight ( ) ;
+	int GetWidth ( ) const;
+	int GetHeight ( ) const;
 	//get the clipping rectangle
-	CRectangle GetDimension ( ) ;
+	CRectangle GetDimension ( ) const;
 
 	//add an update rectangle
 	void AddUpdateRect ( const CRectangle& pUpdateRect ) ;
@@ -81,7 +81,7 @@ public:
 	bool Clear ( CColor& color ) ;
 
 	//blit to this surface from another surface
-	bool Blit ( CRectangle& rectDst , CCanvas& cnvSrc , CRectangle& rectSrc ) ;
+	bool Blit ( CRectangle& rectDst , const CCanvas& cnvSrc , CRectangle& rectSrc ) const;
 
 	//factory methods
 	//create an rgb surface of a particular format

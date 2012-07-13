@@ -10,7 +10,7 @@
 #include "TileImage.h"
 
 
-CTile::CTile(  CTileImage* tileImage, int index   )
+CTile::CTile(  const CTileImage& tileImage, int index   )
 :  m_ctiTileImage(tileImage), m_iIndex(index){
     dbgOut(__FUNCTION__ << std::endl);
 }
@@ -20,9 +20,9 @@ CTile::~CTile(void){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CTile::Draw(CCanvas* background, const CPoint& position){
+void CTile::Draw(CCanvas* background, const CPoint& position) const {
     if (background) {
-        m_ctiTileImage->Draw(*this, background, position);
+        m_ctiTileImage.Draw(*this, background, position);
     }
 
 } // Draw

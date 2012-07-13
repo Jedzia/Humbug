@@ -27,9 +27,9 @@ class CCanvas;
 class CTile {
 public:
 
-    CTile( CTileImage* tileImage, int index );
+    CTile( const CTileImage& tileImage, int index );
     ~CTile();
-    void Draw(CCanvas* background, const CPoint& position);
+    void Draw(CCanvas* background, const CPoint& position) const;
 
     int Index() const { return m_iIndex; }
     //void Index(int val) { m_iIndex = val; }
@@ -39,7 +39,7 @@ private:
 
    int m_iIndex;
    //CCanvas* m_pBackground;
-   /*const*/ CTileImage* m_ctiTileImage;
+   const CTileImage& m_ctiTileImage;
 };
 std::ostream& operator<<(std::ostream& o, const CTile& r);
 

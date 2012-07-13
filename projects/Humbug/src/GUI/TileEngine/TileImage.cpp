@@ -11,6 +11,7 @@
 CTileImage::CTileImage( const FileLoader& loader, std::string filename,
         CTileImageSetup configuration ) :
     CCanvas(){
+    dbgOut(__FUNCTION__ << std::endl);
     SetSurface( SDL_DisplayFormatAlpha( loader.LoadImg(filename) ) );
     m_tiConfig.BitmapHeight = GetHeight();
     m_tiConfig.BitmapWidth = GetWidth();
@@ -28,7 +29,7 @@ CTileImage::~CTileImage(void){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-bool CTileImage::ShowTiles( CCanvas* destination, const CPoint& destPosition ){
+bool CTileImage::ShowTiles( CCanvas* destination, const CPoint& destPosition ) const {
     destination->Lock();
     CRectangle rectDst = destination->GetDimension() + destPosition;
     CRectangle rectSrc = GetDimension();
@@ -40,7 +41,7 @@ bool CTileImage::ShowTiles( CCanvas* destination, const CPoint& destPosition ){
     return result;
 }
 
-bool CTileImage::Draw( const CTile& tile, CCanvas* destination, const CPoint& destPosition ){
+bool CTileImage::Draw( const CTile& tile, CCanvas* destination, const CPoint& destPosition ) const {
     destination->Lock();
     CRectangle rectDst = destination->GetDimension() + destPosition;
     CPoint tileDimension(m_tiConfig.TileWidth, m_tiConfig.TileHeight);

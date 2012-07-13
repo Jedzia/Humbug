@@ -17,7 +17,7 @@ CCanvas::~CCanvas ( ){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-SDL_Surface * CCanvas::GetSurface ( ){
+SDL_Surface * CCanvas::GetSurface ( ) const {
     return ( m_pSurface );
 }
 
@@ -25,7 +25,7 @@ void CCanvas::SetSurface ( SDL_Surface* pSurface ){
     m_pSurface = pSurface;
 }
 
-bool CCanvas::Lock ( ){
+bool CCanvas::Lock ( ) const {
     if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
         if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
             return ( true );
@@ -38,7 +38,7 @@ bool CCanvas::Lock ( ){
     return ( true );
 }
 
-void CCanvas::Unlock ( ){
+void CCanvas::Unlock ( ) const {
     if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
         SDL_UnlockSurface ( GetSurface ( ) );
     }
@@ -63,15 +63,15 @@ void CCanvas::SetPixel ( int x, int y, CColor& color ){
     memcpy ( buffer, &col, GetSurface ( )->format->BytesPerPixel );
 }
 
-int CCanvas::GetWidth ( ){
+int CCanvas::GetWidth ( ) const{
     return ( GetSurface ( )->w );
 }
 
-int CCanvas::GetHeight ( ){
+int CCanvas::GetHeight ( ) const{
     return ( GetSurface ( )->h );
 }
 
-CRectangle CCanvas::GetDimension ( ){
+CRectangle CCanvas::GetDimension ( ) const {
     CRectangle rect( 0, 0, GetWidth( ), GetHeight( ) );
     return rect;
 }
@@ -162,7 +162,7 @@ bool CCanvas::Clear ( CColor& color ){
     return ( SDL_FillRect ( GetSurface ( ), NULL, col ) == 0 );
 }
 
-bool CCanvas::Blit ( CRectangle& rectDst, CCanvas& cnvSrc, CRectangle& rectSrc ){
+bool CCanvas::Blit ( CRectangle& rectDst, const CCanvas& cnvSrc, CRectangle& rectSrc ) const {
     CRectangle rectDst2 = rectDst;
     return ( SDL_BlitSurface ( cnvSrc.GetSurface ( ), rectSrc, GetSurface ( ), rectDst2 ) == 0 );
 }

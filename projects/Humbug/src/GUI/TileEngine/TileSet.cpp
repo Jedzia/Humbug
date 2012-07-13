@@ -8,34 +8,19 @@
 #include "SDL.h"
 #include "TileSet.h"
 
-//#include <build/cmake/include/debug.h>
-/*CTileSet::CTileSet(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,
-        CRectangle spriteDimension,
-        CPoint spriteMove) :
-    m_pMainCanvas(mainCanvas),
-    m_pSprImage(sprImage),
-    m_pBackground(background),
-    m_cpPos(0, 0),
-    m_cpOldPos(0, 0),
-    m_cpSprMove(spriteMove),
-    m_crSprDim(spriteDimension){
-    dbgOut(__FUNCTION__ << std::endl);
-
-    //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
-    //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
-}*/
-
-CTileSet::CTileSet( CCanvas * mainCanvas, /*const*/ CTileImage* tileImage, CCanvas * background, CRectangle screen )
+CTileSet::CTileSet( const CCanvas * mainCanvas, CTileImage* tileImage, const CCanvas * background, CRectangle screen )
 :  m_pMainCanvas(mainCanvas),
 m_ctiTileImage(tileImage),
     m_pBackground(background),
     m_crScreen(screen){
-    // m_pSprImage(sprImage),
+   dbgOut(__FUNCTION__ << std::endl);
+   // m_pSprImage(sprImage),
 }
 
 
 CTileSet::~CTileSet(void){
     delete m_ctiTileImage;
+    m_ctiTileImage = NULL;
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -71,9 +56,9 @@ void CTileSet::Draw(const CTile& tile){
     //m_cpOldPos = m_cpPos;
 } // Draw
 
-CTile CTileSet::CreateTile( int index )
+CTile CTileSet::CreateTile( int index ) const
 {
-    return CTile(m_ctiTileImage ,index);
+    return CTile(*m_ctiTileImage ,index);
 }
 
 std::ostream& operator<<(std::ostream& o, const CTileSet& r) {
