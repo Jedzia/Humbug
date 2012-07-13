@@ -184,7 +184,8 @@ void CConsole::Draw( void ) const {
 }
 
 void CConsole::Toggle( void ){
-    m_bIsVisible = !m_bIsVisible;
+    //m_bIsVisible = !m_bIsVisible;
+    m_bIsVisible = !(CON_isVisible(pimpl_->m_pConsole) != 0);
 
     if (m_bIsVisible) {
         CON_Show(pimpl_->m_pConsole);

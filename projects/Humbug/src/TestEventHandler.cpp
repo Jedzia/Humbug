@@ -214,7 +214,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     m_pDrawCanvas = m_pBackground;
 
-    m_pTileSet->Draw();
+    //CTile tile(0);
+    //m_pTileSet->Draw(tile);
+    CTile tile = m_pTileSet->CreateTile(1);
+    //m_pTileSet->GetTileImage()->ShowTiles(m_pBackground);
+    //tile.Draw(m_pBackground, CPoint(200,300));
+
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );
@@ -367,6 +372,8 @@ void CTestEventHandler::OnEvent(SDL_Event* pEvent)
 {
     if(m_pConsole->OnEvent(pEvent))
     {
+        //SendMessage(MSGID_ClearScreen);
+        //OnIdle();
         return;
     }
     CEventHandler::OnEvent(pEvent);

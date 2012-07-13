@@ -25,7 +25,7 @@ private:
     struct CConsoleImpl;
     boost::scoped_ptr<CConsoleImpl> pimpl_;
     CCanvas* m_pScreen;
-    CRectangle& m_crDimensions;
+    CRectangle m_crDimensions;
     bool m_bIsVisible;
 };
 
