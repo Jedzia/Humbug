@@ -289,6 +289,7 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    #${Humbug_Artwork_WORKDIR}/footer.png
 	    ${Humbug_Artwork_DIR}/Sprites/
 	    ${Humbug_Artwork_DIR}/Moo.png
+	    ${Humbug_Artwork_DIR}/Tiles/gfx/Tiles1.bmp
 )
 CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
 #ADD_DEPENDENCIES(MakeVFS Artwork)

@@ -17,7 +17,7 @@
 #ifndef HUMBUG_GUI_TILEENGINE_CTILE_H
 #define HUMBUG_GUI_TILEENGINE_CTILE_H
 #include "../Components/Point.h"
-#include "../Components/Rectangle.h"
+//#include "../Components/Rectangle.h"
 #include <string>
 
 class CTileImage;

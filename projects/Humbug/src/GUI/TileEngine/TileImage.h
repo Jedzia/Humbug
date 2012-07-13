@@ -16,15 +16,14 @@
 /*---------------------------------------------------------*/
 #ifndef HUMBUG_GUI_TILEENGINE_CTILEIMAGE_H
 #define HUMBUG_GUI_TILEENGINE_CTILEIMAGE_H
-#include "../Components/Point.h"
 #include "../Components/Canvas.h"
+#include "../Components/Point.h"
 #include "Tile.h"
-
 #include <string>
 class CImage;
 class FileLoader;
 
-
+// configuration of a tile image.
 struct CTileImageSetup
 {
     std::string BitmapIdentifier;
@@ -35,41 +34,37 @@ struct CTileImageSetup
     int TransparentX;
     int TransparentY;
     int Sequences;
+
 //    int ** SequenceData;
 //    int * SequenceLength;
 //    int * SequencePosition;
 //    int * SequenceCounter;
-
 };
 
+// info about the tile image.
 struct CTileImageInfo : CTileImageSetup
 {
     /*CTileImageInfo()
-    {
+       {
 
-    }*/
-
+       }*/
     int BitmapWidth;
     int BitmapHeight;
 };
 
-
-
+// The image, that holds the elements of a tile-set.
 class CTileImage : CCanvas {
 public:
 
-    /*CTileImage( CCanvas * mainCanvas, CImage * sprImage, CCanvas * background = NULL,
-            CRectangle spriteDimension = CRectangle(0, 0, 0,
-                    0),
-            CPoint spriteMove = CPoint(0, 0) );*/
-    CTileImage( const FileLoader& loader, std::string filename,
-            CTileImageSetup configuration );
+    CTileImage( const FileLoader& loader, std::string filename, CTileImageSetup configuration );
     ~CTileImage();
+    bool ShowTiles( CCanvas * destination, const CPoint& destPosition = CPoint(0, 0) );
 
-    bool ShowTiles( CCanvas* destination, const CPoint& destPosition = CPoint(0,0) );
-    bool Draw(const CTile& tile, CCanvas* destination, const CPoint& destPosition);
+    bool Draw(const CTile& tile, CCanvas * destination, const CPoint& destPosition);
 
+    const CTileImageInfo& GetConfig() const { return m_tiConfig; }
     friend std::ostream& operator<<(std::ostream& o, const CTileImage& r);
+
 private:
 
     CTileImageInfo m_tiConfig;

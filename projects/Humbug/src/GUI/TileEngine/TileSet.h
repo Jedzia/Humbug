@@ -18,6 +18,7 @@
 #define HUMBUG_GUI_TILEENGINE_CTILESET_H
 #include "../Components/Point.h"
 #include "../Components/Rectangle.h"
+#include "Tile.h"
 #include "TileImage.h"
 #include <string>
 class CCanvas;

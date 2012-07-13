@@ -214,11 +214,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     m_pDrawCanvas = m_pBackground;
 
-    //CTile tile(0);
     //m_pTileSet->Draw(tile);
-    CTile tile = m_pTileSet->CreateTile(1);
     //m_pTileSet->GetTileImage()->ShowTiles(m_pBackground);
-    //tile.Draw(m_pBackground, CPoint(200,300));
+    CTile tile = m_pTileSet->CreateTile(1);
+    tile.Draw(m_pBackground, CPoint(200,300));
 
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
