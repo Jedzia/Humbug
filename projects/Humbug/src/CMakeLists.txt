@@ -89,6 +89,10 @@ SET(Humbug_Components_headers
 		GUI/Controls/Button.h
 
 		GUI/Sprite/Sprite.h
+		
+		GUI/TileEngine/Tile.h
+		GUI/TileEngine/TileImage.h
+		GUI/TileEngine/TileSet.h
 )
 SET(Humbug_Components_sources 
 		GUI/Components/Point.cpp
@@ -102,6 +106,10 @@ SET(Humbug_Components_sources
 		GUI/Controls/Button.cpp
 		
 		GUI/Sprite/Sprite.cpp
+		
+		GUI/TileEngine/Tile.cpp
+		GUI/TileEngine/TileImage.cpp
+		GUI/TileEngine/TileSet.cpp
 )
 # Console stuff
 SET(Humbug_GuiConsole_headers 

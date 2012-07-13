@@ -16,6 +16,7 @@
 #include "TestEventHandler.h"
 #include "TestTimer.h"
 #include "TestThread.h"
+#include "GUI/TileEngine/TileSet.h"
 
 /// <summary>
 /// This is called when the game should draw itself.
@@ -46,7 +47,7 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    m_pConsole(NULL), m_uiLastTicks(0), m_inActiveSprite(0),
+    m_pConsole(NULL), m_uiLastTicks(0), m_inActiveSprite(0), m_pTileSet(NULL),
     m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pKeyHandler2(NULL), m_pSprite(NULL), m_pSprite2(NULL),
     m_pHud(NULL){
     //dbgOut(__FUNCTION__ << std::endl);
@@ -91,6 +92,8 @@ void CTestEventHandler::OnExit()
     delete m_pSprite2;
     delete m_pBackground;
     delete m_pBlue;
+
+    delete m_pTileSet;
 
     delete m_pKeyHandler;
     delete m_pKeyHandler2;
@@ -187,7 +190,21 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
         //SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
-    }
+
+        CTileImageSetup tilesetup;
+        tilesetup.BitmapIdentifier = "Tiles1";
+        tilesetup.TileWidth = 64;
+        tilesetup.TileHeight = 64;
+        tilesetup.TileCountX = 4;
+        tilesetup.TileCountY = 1;
+        tilesetup.TransparentX = 0;
+        tilesetup.TransparentY = 0;
+        tilesetup.Sequences = 0;
+
+        m_pTileSet = new CTileSet(m_pMainCanvas, new CTileImage(fl, "Tiles1.bmp", tilesetup), m_pBackground, CRectangle(0,0,1024, 768 - 320) );
+
+   
+   }
     catch (FileLoaderException ex)
     {
         std::cout << ex.what() << std::endl;
@@ -197,6 +214,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     m_pDrawCanvas = m_pBackground;
 
+    m_pTileSet->Draw();
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );

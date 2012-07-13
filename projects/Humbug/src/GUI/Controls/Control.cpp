@@ -95,7 +95,7 @@ CControl::~CControl()
 	{
 		delete m_pCanvas;
 	}
-    dbgOut(__FUNCTION__ << " The base Control" << std::endl);
+    dbgOut(__FUNCTION__ << " (" << m_ID << ")"  << std::endl);
 }
 
 //add child handler
