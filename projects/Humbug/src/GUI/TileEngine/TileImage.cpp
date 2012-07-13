@@ -12,7 +12,13 @@ CTileImage::CTileImage( const FileLoader& loader, std::string filename,
         CTileImageSetup configuration ) :
     CCanvas(){
     dbgOut(__FUNCTION__ << std::endl);
-    SetSurface( SDL_DisplayFormatAlpha( loader.LoadImg(filename) ) );
+    SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.LoadImg(filename) );
+    SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
+    //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
+    SDL_SetAlpha(bitmap, 0, 128);
+    //SDL_SetAlpha(bitmap, 0, 0);
+    //SDL_SetAlpha(bitmap, 0, 255);
+    SetSurface( bitmap );
     m_tiConfig.BitmapHeight = GetHeight();
     m_tiConfig.BitmapWidth = GetWidth();
     m_tiConfig.BitmapIdentifier = configuration.BitmapIdentifier;
