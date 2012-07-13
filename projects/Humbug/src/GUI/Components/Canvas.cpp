@@ -76,13 +76,13 @@ CRectangle CCanvas::GetDimension ( ){
     return rect;
 }
 
-void CCanvas::AddUpdateRect ( CRectangle& UpdateRect ){
+void CCanvas::AddUpdateRect ( const CRectangle& UpdateRect ){
     SDL_Rect* pRect = NULL;
     pRect = new SDL_Rect;
-    pRect->x = UpdateRect.X ( );
-    pRect->y = UpdateRect.Y ( );
-    pRect->w = UpdateRect.W ( );
-    pRect->h = UpdateRect.H ( );
+    pRect->x = UpdateRect.GetX();
+    pRect->y = UpdateRect.GetY ( );
+    pRect->w = UpdateRect.GetW ( );
+    pRect->h = UpdateRect.GetH ( );
     m_lstUpdateRects.push_back ( pRect );
 }
 

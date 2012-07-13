@@ -53,20 +53,32 @@ CTileImage::~CTileImage(void){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CTileImage::SetPos( CPoint& position ){
-}
-
-void CTileImage::SprOffset( int offset ){
-    // m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
-}
-
-bool CTileImage::Draw( CCanvas* destination )
+bool CTileImage::ShowTiles( CCanvas* destination, const CPoint& destPosition )
 {
-    CRectangle rectDst2 = destination->GetDimension();
+    destination->Lock();
+    CRectangle rectDst = destination->GetDimension() + destPosition;
     CRectangle rectSrc = GetDimension();
 
-    return ( SDL_BlitSurface ( GetSurface ( ), rectSrc, destination->GetSurface ( ), rectDst2 ) == 0 );
+    //bool result = ( SDL_BlitSurface ( GetSurface ( ), rectSrc, destination->GetSurface ( ), rectDst ) == 0 );
+    bool result = destination->Blit(rectDst, *this, rectSrc);
+    destination->Unlock();
+    return result;
+}
 
+
+bool CTileImage::Draw( const CTile& tile, CCanvas* destination, const CPoint& destPosition )
+{
+    destination->Lock();
+    CRectangle rectDst = destination->GetDimension() + destPosition;
+    CPoint tileDimension(m_tiConfig.TileWidth, m_tiConfig.TileHeight);
+    CPoint tileIndex(m_tiConfig.TileWidth, 0);
+    CPoint tilePosition = tileIndex * tile.Index();
+    CRectangle rectSrc(tilePosition, tileDimension);
+
+    //bool result = ( SDL_BlitSurface ( GetSurface ( ), rectSrc, destination->GetSurface ( ), rectDst ) == 0 );
+    bool result = destination->Blit(rectDst, *this, rectSrc);
+    destination->Unlock();
+    return result;
 }
 
 std::ostream& operator<<(std::ostream& o, const CTileImage& r) {

@@ -48,7 +48,7 @@ public:
 	CRectangle GetDimension ( ) ;
 
 	//add an update rectangle
-	void AddUpdateRect ( CRectangle& pUpdateRect ) ;
+	void AddUpdateRect ( const CRectangle& pUpdateRect ) ;
 
 	//clear all update rectangles
 	void ClearUpdateRects ( ) ;

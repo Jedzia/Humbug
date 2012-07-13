@@ -7,10 +7,11 @@
 #include "Filesystem/FileLoader.h"
 #include "SDL.h"
 #include "Tile.h"
+#include "TileImage.h"
 
 
-CTile::CTile( int index  )
-:  m_iIndex(index){
+CTile::CTile(  CTileImage* tileImage, int index   )
+:  m_ctiTileImage(tileImage), m_iIndex(index){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -19,17 +20,12 @@ CTile::~CTile(void){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CTile::Draw(){
+void CTile::Draw(CCanvas* background, const CPoint& position){
+    if (background) {
+        m_ctiTileImage->Draw(*this, background, position);
+    }
 
 } // Draw
-
-void CTile::SetPos( CPoint& position ){
-    //m_cpPos = position;
-}
-
-void CTile::SprOffset( int offset ){
-    //m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
-}
 
 std::ostream& operator<<(std::ostream& o, const CTile& r) {
     return o << "CTile[ X=" /*<< r.GetX() << ", Y=" << r.GetY()

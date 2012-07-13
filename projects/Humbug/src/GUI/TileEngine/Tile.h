@@ -20,23 +20,26 @@
 #include "../Components/Rectangle.h"
 #include <string>
 
+class CTileImage;
+class CCanvas;
+
 
 class CTile {
 public:
 
-    CTile( int index );
+    CTile( CTileImage* tileImage, int index );
     ~CTile();
-    void Draw();
+    void Draw(CCanvas* background, const CPoint& position);
 
-    void SetPos(CPoint& pos);
-
-    void SprOffset(int offset);
-
+    int Index() const { return m_iIndex; }
+    //void Index(int val) { m_iIndex = val; }
     friend std::ostream& operator<<(std::ostream& o, const CTile& r);
 
 private:
 
    int m_iIndex;
+   //CCanvas* m_pBackground;
+   /*const*/ CTileImage* m_ctiTileImage;
 };
 std::ostream& operator<<(std::ostream& o, const CTile& r);
 

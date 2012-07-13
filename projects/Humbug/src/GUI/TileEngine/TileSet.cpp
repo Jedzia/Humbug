@@ -39,7 +39,7 @@ CTileSet::~CTileSet(void){
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CTileSet::Draw(){
+void CTileSet::Draw(const CTile& tile){
 
     if (m_pBackground) {
         m_pBackground->Lock();
@@ -55,7 +55,7 @@ void CTileSet::Draw(){
         //m_pBackground->AddUpdateRect(m_pSprImage->GetCanvas()->GetDimension() + m_cpOldPos);
         //m_pBackground->AddUpdateRect(m_pSprImage->GetCanvas()->GetDimension() + m_cpPos);
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), m_ctiTileImage, m_ctiTileImage->GetDimension());
-        m_ctiTileImage->Draw(m_pBackground);
+        // m_ctiTileImage->Draw(m_pBackground);
         m_pBackground->Unlock();
     }
 
@@ -71,12 +71,9 @@ void CTileSet::Draw(){
     //m_cpOldPos = m_cpPos;
 } // Draw
 
-void CTileSet::SetPos( CPoint& position ){
-    //m_cpPos = position;
-}
-
-void CTileSet::SprOffset( int offset ){
-    //m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
+CTile CTileSet::CreateTile( int index )
+{
+    return CTile(m_ctiTileImage ,index);
 }
 
 std::ostream& operator<<(std::ostream& o, const CTileSet& r) {

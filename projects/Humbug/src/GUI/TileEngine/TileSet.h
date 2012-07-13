@@ -32,14 +32,15 @@ public:
             CPoint spriteMove = CPoint(0, 0) );*/
     CTileSet( CCanvas * mainCanvas, /*const*/ CTileImage* tileImage, CCanvas * background, CRectangle screen);
     ~CTileSet();
-    void Draw();
+    CTile CreateTile(int index);
 
-    void SetPos(CPoint& pos);
-
-    void SprOffset(int offset);
+    inline CTileImage* GetTileImage() const { return m_ctiTileImage; }
 
     friend std::ostream& operator<<(std::ostream& o, const CTileSet& r);
 
+protected:
+    // Todo: DeleteME
+    void Draw(const CTile& tile);
 private:
 
    /*const*/ CTileImage* m_ctiTileImage;

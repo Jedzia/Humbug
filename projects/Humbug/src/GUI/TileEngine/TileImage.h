@@ -66,13 +66,10 @@ public:
             CTileImageSetup configuration );
     ~CTileImage();
 
-    void SetPos(CPoint& pos);
-    bool Draw(CCanvas* destination);
-
-    void SprOffset(int offset);
+    bool ShowTiles( CCanvas* destination, const CPoint& destPosition = CPoint(0,0) );
+    bool Draw(const CTile& tile, CCanvas* destination, const CPoint& destPosition);
 
     friend std::ostream& operator<<(std::ostream& o, const CTileImage& r);
-
 private:
 
     CTileImageInfo m_tiConfig;
