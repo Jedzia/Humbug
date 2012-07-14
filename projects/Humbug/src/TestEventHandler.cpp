@@ -50,7 +50,8 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 CTestEventHandler::CTestEventHandler() :
     m_pConsole(NULL), m_uiLastTicks(0), m_inActiveSprite(0), /*m_pTileSet(NULL),*/
     m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pKeyHandler2(NULL), m_pSprite(NULL), m_pSprite2(NULL),
-    m_pHud(NULL){
+    m_pHud(NULL),m_inScreenDelta(0)
+    {
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -174,8 +175,13 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
 
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
-        tmpsurf = fl.LoadImg("Moo.png");
-        m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
+        tmpsurf = SDL_DisplayFormatAlpha( fl.LoadImg("Moo.png"));
+        CCanvas tmpCanvas(tmpsurf);
+        CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768-320);
+        testCanvas->Blit(tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
+
+        //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
+        m_pBackground = testCanvas;
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
 
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
@@ -233,9 +239,19 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     
     CTileEngine& eng = (*m_pTileEngine);
     (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles(m_pBackground);
-    CTile tile = eng["Tiles1"]->CreateTile(1);
-    tile.Draw(m_pBackground, CPoint(200,300));
-    
+    CTile tile1 = eng["Tiles1"]->CreateTile(0);
+    CTile tile2 = eng["Tiles1"]->CreateTile(1);
+    CTile tile3 = eng["Tiles1"]->CreateTile(2);
+    CTile tile4 = eng["Tiles1"]->CreateTile(3);
+    for (int i = 0; i < 20 ; i+=4)
+    {
+        const int xdiff = 300;
+        tile1.Draw(m_pBackground, CPoint(xdiff *i,300));
+        tile2.Draw(m_pBackground, CPoint(xdiff *(i+1),300));
+        tile3.Draw(m_pBackground, CPoint(xdiff *(i+2),300));
+        tile4.Draw(m_pBackground, CPoint(xdiff *(i+3),300));
+    }
+
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );
@@ -325,7 +341,7 @@ void CTestEventHandler::OnIdle(){
         m_uiLastTicks = now;
        }
 
-    //m_pMainCanvas->Lock();
+    m_pMainCanvas->Lock();
 
     //update controls
     CRectangle& screenrect = m_pMainCanvas->GetDimension();
@@ -337,7 +353,9 @@ void CTestEventHandler::OnIdle(){
         -  m_pHud->GetCanvas()->GetDimension().GetH());
     //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
     //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
-    m_pMainCanvas->Blit(screenWithoutHud, *m_pBackground, screenWithoutHud);
+    static int scrdel = 0;
+    scrdel+=m_inScreenDelta;
+    m_pMainCanvas->Blit(screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel,0) );
     
     //m_pHud->Invalidate();
     CControl::Redraw();
@@ -352,9 +370,12 @@ void CTestEventHandler::OnIdle(){
 
     //m_pHud->Draw();
     //m_pMainCanvas->Flip();
+    // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
+    //m_pMainCanvas->ClearUpdateRects();
+    m_pMainCanvas->AddUpdateRect(CRectangle(0,0,m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight()- m_pHud->GetHeight()));
     m_pMainCanvas->UpdateRects ( );
 
-    //m_pMainCanvas->Unlock();
+    m_pMainCanvas->Unlock();
 
     static int spr2pic = 0;
     m_pSprite2->SprOffset(spr2pic);
@@ -466,7 +487,15 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         // toggle console
         m_pConsole->Toggle();
     }
-    else {
+    else if( sym == SDLK_a ) {
+        // toggle console
+        m_inScreenDelta++;
+    }
+    else if( sym == SDLK_d ) {
+        // toggle console
+        m_inScreenDelta--;
+    }
+    else if( sym == SDLK_c ) {
         //send clear screen message
         SendMessage(MSGID_ClearScreen);
     }

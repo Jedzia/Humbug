@@ -48,6 +48,7 @@ private:
     void PutBlue();
     unsigned int m_uiNumFrames; 
     int m_inActiveSprite;
+    int m_inScreenDelta;
 protected:
     //idle behavior
 	virtual void OnIdle();

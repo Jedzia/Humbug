@@ -236,6 +236,7 @@ int CApplication::Execute(int argc,char* argv[])
 
     //The frame rate regulator
     Timer fps;
+    Uint32 curdelay = 0;
 
 
 	//event structure
@@ -265,7 +266,8 @@ int CApplication::Execute(int argc,char* argv[])
             //Cap the frame rate
             if( fps.get_ticks() < 1000 / m_iFramesCap )
             {
-                SDL_Delay( ( 1000 / m_iFramesCap ) - fps.get_ticks() );
+                curdelay = ( 1000 / m_iFramesCap ) - fps.get_ticks();
+                SDL_Delay( curdelay );
             }
         }
 		GetApplication()->Update();
@@ -277,7 +279,7 @@ int CApplication::Execute(int argc,char* argv[])
             //FPS.str("");
             //FPS << ShownFrames;
             int delay = shownFrames - m_iFramesCap;
-            fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", shownFrames, loopFrames, delay);
+            fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", shownFrames, loopFrames, curdelay);
 
 
             shownFrames = 0;
