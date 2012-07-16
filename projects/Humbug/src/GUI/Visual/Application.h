@@ -10,10 +10,10 @@
 	Singleton.
 	Base class for all other application classes.
 */
-class CApplication : public CMessageHandler  
+class CApplication : public CMessageHandler
 {
 private:
-    // Frames per second 
+    // Frames per second
     static int m_iFramesCap;
 	//singleton pointer
 	static CApplication* s_pTheApplication;
@@ -48,7 +48,7 @@ public:
 	static int Execute(int argc,char* argv[]);
 
 	//get singleton
-	static CApplication* GetApplication();	
+	static CApplication* GetApplication();
 };
 
 #endif //#ifndef __APPLICATION_H__

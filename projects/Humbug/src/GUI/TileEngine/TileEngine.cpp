@@ -1,22 +1,27 @@
 //
 #include "stdafx.h"
+//#include <build/cmake/include/debug.h>
 //
 #include "TileEngine.h"
 #include "../../Filesystem/FileLoader.h"
 
-//#include <build/cmake/include/debug.h>
 
 
 CTileEngine::CTileEngine(const CCanvas * mainCanvas, const CCanvas * background)
 : m_pMainCanvas(mainCanvas), m_pBackground(background)
 {
          dbgOut(__FUNCTION__ << std::endl);
+//	_CRT_DEBUG_BLOCK
 }
 
 CTileEngine::~CTileEngine(void)
 {
          m_pvTileSets.release();
          dbgOut(__FUNCTION__ << std::endl);
+//    const char* explanation = "XXXXXX THIS IS ~CTileEngine.CPP";
+//_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
+//************************************\n", explanation );
+//    _CrtDumpMemoryLeaks( );
 }
 
 void CTileEngine::AddTileSet(CTileSet * tileset)
@@ -33,7 +38,7 @@ void CTileEngine::AddTileSet(const FileLoader& loader, const CTileImageSetup& co
 {
     std::string fname(config.BitmapIdentifier);
     fname = "Tiles/" + fname + ".bmp";
-    CTileSet* tileSet = new CTileSet(m_pMainCanvas, new CTileImage(loader, fname, config), 
+    CTileSet* tileSet = new CTileSet(m_pMainCanvas, new CTileImage(loader, fname, config),
         m_pBackground, screen );
     AddTileSet(tileSet);
 }
@@ -60,7 +65,7 @@ CTileSet * CTileEngine::operator[]( const std::string& tileSetName )
             result = &current;
     	}
     }
-    
+
     dbgOut(__FUNCTION__ << " Found CTileSet: (" << result << ")" << std::endl);
     return result;
 }

@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "../../stdafx.h"
+#include <build/cmake/include/debug.h>
 #include <stdlib.h>
 #include "Application.h"
 #include "SdlInfo.h"
@@ -156,6 +157,8 @@ void CApplication::SetApplication(CApplication* pTheApp)
 CApplication::CApplication():
 CMessageHandler(NULL)
 {
+    dbgOut(__FUNCTION__ << std::endl);
+	_CRT_DEBUG_BLOCK
 	//set the application
 	SetApplication(this);
 	//initialize SDL
@@ -168,11 +171,16 @@ CMessageHandler(NULL)
 	}
 	//set up SDL_Quit to be called during exit
 	//atexit(SDL_Quit);
+	new std::string("MAUL!");
 }
 
 //destructor
 CApplication::~CApplication()
 {
+    const char* explanation = "XXXXXX THIS IS ~CApplication.CPP";
+_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
+************************************\n", explanation );
+    _CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__ << std::endl);
 }
 

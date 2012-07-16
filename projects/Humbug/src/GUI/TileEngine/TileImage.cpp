@@ -29,10 +29,12 @@ CTileImage::CTileImage( const FileLoader& loader, std::string filename,
     m_tiConfig.TransparentX = configuration.TransparentX;
     m_tiConfig.TransparentY = configuration.TransparentY;
     m_tiConfig.Sequences = configuration.Sequences;
+    // delete here ?
 }
 
 CTileImage::~CTileImage(void){
     dbgOut(__FUNCTION__ << std::endl);
+    // Todo: delete the bitmap. here or above.
 }
 
 bool CTileImage::ShowTiles( CCanvas* destination, const CPoint& destPosition ) const {

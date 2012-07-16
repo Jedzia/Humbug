@@ -3,6 +3,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
+//#include "windows.h"
+//#include <build/cmake/include/debug.h>
 //
 #include "Filesystem/FileLoader.h"
 #include "GUI/Visual/Console.h"
@@ -53,6 +55,8 @@ CTestEventHandler::CTestEventHandler() :
     m_pHud(NULL),m_inScreenDelta(0)
     {
     //dbgOut(__FUNCTION__ << std::endl);
+//	_CRT_DEBUG_BLOCK
+
 }
 
 //destructor
@@ -66,7 +70,10 @@ CTestEventHandler::~CTestEventHandler(){
 
     //delete m_pMainCanvas;
     dbgOut(__FUNCTION__ << std::endl);
-
+//    const char* explanation = "XXXXXX THIS IS TESTEVENTHANDLER.CPP";
+//_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
+//************************************\n", explanation );
+//    _CrtDumpMemoryLeaks( );
 }
 
 //on cleanup
@@ -105,6 +112,7 @@ void CTestEventHandler::OnExit()
 
 //initialization
 bool CTestEventHandler::OnInit(int argc, char* argv[]){
+
     //initialize parent class
     CEventHandler::OnInit(argc, argv);
 
@@ -168,38 +176,47 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     {
 
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
-        SDL_Surface* tmpsurf;
         m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "Hud/footer.png"), 0);
         //create a button
         new CButton(m_pHud,CRectangle(100,100,150,25),1,"Come on, Press me!");
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
 
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
-        tmpsurf = SDL_DisplayFormatAlpha( fl.LoadImg("Moo.png"));
-        CCanvas tmpCanvas(tmpsurf);
-        CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768-320);
-        testCanvas->Blit(tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
 
+		{
+	        SDL_Surface* tmpsurf;
+	        SDL_Surface* loadsurf;
+			//tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
+			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
+			// delete loadsurf;
+			CCanvas tmpCanvas(tmpsurf);
+			CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768-320);
+			testCanvas->Blit(tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
+	        m_pBackground = testCanvas;
+	        //delete tmpsurf;
+			SDL_FreeSurface( loadsurf );
+			//SDL_FreeSurface( tmpsurf );
+		}
         //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
-        m_pBackground = testCanvas;
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
 
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
         SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl.LoadImg("icons/blue.png"));
+        //SDL_FreeSurface( loadsurf );
         //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ) );
         //m_pSprite = new CSprite(m_pMainCanvas, m_pBlue);
-        m_pSprite = new CSprite(m_pMainCanvas, 
+        m_pSprite = new CSprite(m_pMainCanvas,
             new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) ) ),
             m_pBackground);
 
         //CRectangle spr2Dim(0,0,32,32);
-        //m_pSprite2 = new CSprite(m_pMainCanvas, 
+        //m_pSprite2 = new CSprite(m_pMainCanvas,
         //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
         //    m_pBackground, spr2Dim, CPoint(32,0));
 
-        m_pSprite2 = new CSprite(fl, "Sprites/Voiture.bmp", m_pMainCanvas, 
+        m_pSprite2 = new CSprite(fl, "Sprites/Voiture.bmp", m_pMainCanvas,
                          CRectangle(0,0,32,32), CPoint(32,0));
 
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
@@ -216,10 +233,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         tilesetup.TransparentY = 0;
         tilesetup.Sequences = 0;
 
-        tileSet = new CTileSet(m_pMainCanvas, new CTileImage(fl, "Tiles1.bmp", tilesetup), 
+        tileSet = new CTileSet(m_pMainCanvas, new CTileImage(fl, "Tiles1.bmp", tilesetup),
             m_pBackground, CRectangle(0,0,1024, 768 - 320) );
 
-   
+
    }
     catch (FileLoaderException ex)
     {
@@ -236,7 +253,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     m_pTileEngine = new CTileEngine(m_pMainCanvas, m_pBackground);
     m_pTileEngine->AddTileSet(tileSet);
-    
+
     CTileEngine& eng = (*m_pTileEngine);
     (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles(m_pBackground);
     CTile tile1 = eng["Tiles1"]->CreateTile(0);
@@ -269,7 +286,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     new TestHookable();
     new TestHookable();
     //Hookable::Close();
-    m_pConsole = new CConsole(this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp", 
+    m_pConsole = new CConsole(this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp",
         m_pMainCanvas, 100, CRectangle(0,0,0,300));
     return(true);
 } // OnInit
@@ -314,7 +331,7 @@ void CTestEventHandler::PutBlue(){
         m_pMainCanvas->AddUpdateRect(bluerectOld);
         bluePointOld = bluePoint;
     }
-    
+
     /*else {
         x = 0;
         y += 25;
@@ -356,7 +373,7 @@ void CTestEventHandler::OnIdle(){
     static int scrdel = 0;
     scrdel+=m_inScreenDelta;
     m_pMainCanvas->Blit(screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel,0) );
-    
+
     //m_pHud->Invalidate();
     CControl::Redraw();
     //m_pHud->Draw();
@@ -425,7 +442,7 @@ void CTestEventHandler::OnEvent(SDL_Event* pEvent)
     }
 }
 
-
+//#undef SendMessage(x,y,z)
 //left button down
 void CTestEventHandler::OnLButtonDown(Uint16 x, Uint16 y){
     //draw a pixel

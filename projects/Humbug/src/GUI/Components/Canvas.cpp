@@ -1,3 +1,4 @@
+#include <build/cmake/include/debug.h>
 #include "../../stdafx.h"
 #include "Canvas.h"
 #include <memory.h>
@@ -9,6 +10,7 @@ CCanvas::CCanvas ( SDL_Surface* pSurface ){
 }
 
 CCanvas::~CCanvas ( ){
+	ClearUpdateRects ( );
     if ( GetSurface ( ) ) {
         SDL_FreeSurface ( GetSurface ( ) );
         SetSurface ( NULL );

@@ -1,11 +1,10 @@
+#include <build/cmake/include/debug.h>
 #include "../stdafx.h"
 #include "FileLoader.h"
 #include <HumbugShared/VFS/zfsystem.h>
 
 using zip_file_system::filesystem;
 using zip_file_system::izfstream;
-
-//#include <build/cmake/include/debug.h>
 
 
 FileLoader::FileLoader(const std::string & basepath)
@@ -37,7 +36,7 @@ void slurp(std::string& data, const std::string& filename, bool is_binary = fals
     else
     {
 
-        std::string contents((std::istreambuf_iterator<char>(file)), 
+        std::string contents((std::istreambuf_iterator<char>(file)),
              std::istreambuf_iterator<char>());
         data = contents;
     }
@@ -61,7 +60,7 @@ void slurp2(std::string& data, const std::string& filename, bool is_binary = fal
         data.clear();
         data.reserve(file.tellg());
         file.seekg(0, std::ios::beg);
-        data.append(std::istreambuf_iterator<char>(file.rdbuf()), 
+        data.append(std::istreambuf_iterator<char>(file.rdbuf()),
                     std::istreambuf_iterator<char>());
     }
 
@@ -76,7 +75,7 @@ void slurp3(std::string& data, const filesystem& fsys, const std::string& filena
     //ifstream file(filename.c_str(), openmode);
     int fsize = fsys.FileSize(filename.c_str());
     izfstream file(filename.c_str());
-    
+
 
 	if (! file)
 		std::cout << "ERROR: Cannot open file!" << std::endl;
@@ -85,7 +84,7 @@ void slurp3(std::string& data, const filesystem& fsys, const std::string& filena
 
         data.clear();
         data.reserve(fsize);
-        data.append(std::istreambuf_iterator<char>(file.rdbuf()), 
+        data.append(std::istreambuf_iterator<char>(file.rdbuf()),
                     std::istreambuf_iterator<char>());
 
         std::vector<char> contents((std::istreambuf_iterator<char>(file)),
@@ -106,7 +105,7 @@ void slurp3(std::string& data, const filesystem& fsys, const std::string& filena
   		std::cout << "file " << filename << " has a size of " << sz << " bytes." << std::endl;
 
         file.seekg(0, std::ios::beg);
-        //data.append(std::istreambuf_iterator<char>(file.rdbuf()), 
+        //data.append(std::istreambuf_iterator<char>(file.rdbuf()),
         //            std::istreambuf_iterator<char>());*/
     }
 
@@ -138,7 +137,7 @@ bool slurp4(std::vector<char>& data, const filesystem& fsys, const std::string& 
     return true;
 }
 
-#   define FILELOADER_ERRNO    errno 
+#   define FILELOADER_ERRNO    errno
 
 SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
 {
@@ -164,6 +163,7 @@ SDL_Surface* slurp5(const filesystem& fsys, const std::string& filename)
 
         SDL_RWops* imgmem = SDL_RWFromMem(&data[0], fsize);
         sdlsurface = IMG_Load_RW(imgmem, 1);
+        delete[] data;
 		if (!sdlsurface) {
 			//fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
 			// load a internal error image.
@@ -193,7 +193,7 @@ void FileLoader::Load(const std::string & filename) const
     //slurp(contents, filename);
     slurp4(vcontents, fsys, filename);
 
-    //std::string contents((std::istreambuf_iterator<char>(infile)), 
+    //std::string contents((std::istreambuf_iterator<char>(infile)),
       //  std::istreambuf_iterator<char>());
 
     //std::string tmp;
@@ -220,7 +220,7 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
     SDL_Surface* sdlsurface = slurp5(fsys, filename);
     return sdlsurface;
 
-    //std::string contents((std::istreambuf_iterator<char>(infile)), 
+    //std::string contents((std::istreambuf_iterator<char>(infile)),
       //  std::istreambuf_iterator<char>());
 
     //std::string tmp;

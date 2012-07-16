@@ -1,5 +1,6 @@
 #ifndef HUMBUG_FS_FILELOADER_H
 #define HUMBUG_FS_FILELOADER_H
+#include <build/cmake/include/debug.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
