@@ -56,7 +56,7 @@ struct CTileImageInfo : CTileImageSetup
 class CTileImage : CCanvas {
 public:
 
-    CTileImage( const FileLoader& loader, std::string filename, CTileImageSetup configuration );
+    CTileImage( FileLoader& loader, std::string filename, CTileImageSetup configuration );
     virtual ~CTileImage();
     bool ShowTiles( CCanvas * destination, const CPoint& destPosition = CPoint(0, 0) ) const ;
 

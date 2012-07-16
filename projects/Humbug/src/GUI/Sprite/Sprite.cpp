@@ -9,12 +9,13 @@
 #include "Sprite.h"
 
 //#include <build/cmake/include/debug.h>
-CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,
+
+// freeSrc: Take ownership of 'sprImage' and delete it on destruction.
+CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
         CRectangle spriteDimension,
         CPoint spriteMove) :
-    m_bOwner(false),
+    m_bOwner(freeSrc),
     m_pMainCanvas(mainCanvas),
-    m_pCanvas(NULL),
     m_pSprImage(sprImage),
     m_pBackground(background),
     m_cpPos(0, 0),
@@ -27,7 +28,7 @@ CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,
     //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
 }
 
-CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainCanvas,
+CSprite::CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
         CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
         CPoint spriteMove /*= CPoint(0,0) */ ) :
     m_bOwner(true),
@@ -39,18 +40,14 @@ CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainC
     m_crSprDim(spriteDimension){
     // m_pSprImage(sprImage),
 
-	SDL_Surface* loadsurf = loader.LoadImg(filename);
-	SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loadsurf  );
-    SDL_FreeSurface(loadsurf);
-	m_pCanvas = new CCanvas( alphasurf );
-
+	SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loader.LoadImg(filename)  );
+    // free the loaded surface.
+    loader.FreeLast();
     if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
-        m_pSprImage = new CImage( m_pCanvas );
+        m_pSprImage = new CImage( new CCanvas( alphasurf ), true );
     }
     else {
-        m_pSprImage = new CImage( m_pCanvas, spriteDimension );
-		//SDL_FreeSurface( loadsurf );
-		//delete loadsurf;
+        m_pSprImage = new CImage( new CCanvas( alphasurf ), spriteDimension, true );
     }
 }
 
@@ -58,8 +55,6 @@ CSprite::~CSprite(void){
 	if(m_bOwner)
 	{
 		delete m_pSprImage;
-		//if(m_pCanvas)
-		delete m_pCanvas;
 	}
     dbgOut(__FUNCTION__ << std::endl);
 }

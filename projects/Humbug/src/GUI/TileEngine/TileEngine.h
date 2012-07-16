@@ -12,7 +12,7 @@ public:
     ~CTileEngine();
 
     void AddTileSet(CTileSet * tileset);
-    void AddTileSet(const FileLoader& loader, const CTileImageSetup& config, const CRectangle& screen);
+    void AddTileSet(FileLoader& loader, const CTileImageSetup& config, const CRectangle& screen);
 
 
     CTileSet * operator[]( const std::string& tileSetName );

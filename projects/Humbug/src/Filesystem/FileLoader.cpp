@@ -6,18 +6,32 @@ using zip_file_system::filesystem;
 using zip_file_system::izfstream;
 
 
-SDL_Surface* FileLoader::m_pLastSurface = NULL;
+// FileLoadingInfo
 
+FileLoadingInfo::FileLoadingInfo(const std::string name, SDL_Surface* surface)
+: m_strName(name), m_pSurface(surface)
+{
+
+}
+
+FileLoadingInfo::~FileLoadingInfo()
+{
+    if(m_pSurface)
+        SDL_FreeSurface(m_pSurface);
+}
+
+// FileLoader
 
 FileLoader::FileLoader(const std::string & basepath)
-: m_pBasepath(basepath)/*, m_pLastSurface(NULL)*/
+: m_pBasepath(basepath), m_pLastSurface(NULL)
 {
          dbgOut(__FUNCTION__ << std::endl);
 }
 
 FileLoader::~FileLoader(void)
 {
-         dbgOut(__FUNCTION__ << std::endl);
+    m_pvSurfaces.release();
+    dbgOut(__FUNCTION__ << std::endl);
 }
 
 const char* FileLoader::language(int x) const
@@ -204,7 +218,7 @@ void FileLoader::Load(const std::string & filename) const
 
 
 
-SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
+SDL_Surface* FileLoader::LoadImg(const std::string & filename) 
 {
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
 	std::cout << fsys << std::endl;
@@ -220,7 +234,7 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
     //slurp(contents, filename);
     //slurp4(vcontents, fsys, filename);
     m_pLastSurface = slurp5(fsys, filename);
-    //m_pvSurfaces.push_back(new FileLoadingInfo);
+    m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
     return m_pLastSurface;
 
     //std::string contents((std::istreambuf_iterator<char>(infile)),
@@ -232,11 +246,32 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
 
 void FileLoader::FreeLast()
 {
-    m_pvSurfaces.pop_back();
+    boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
+    std::cout << "FileLoader freeing '" << current->Name() << "'" << std::endl;
+    //std::string nase = f->Name();
+    
     /*if (m_pLastSurface)
     {
         SDL_FreeSurface(m_pLastSurface);
     }*/
+}
+
+void FileLoader::Free( const std::string& name )
+{
+
+    surfacevector::pointer result = NULL;
+    surfacevector::iterator end = m_pvSurfaces.end();
+    for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+    {
+        FileLoadingInfo& current = (*it);
+        if (current.Name().compare(name))
+        {
+            std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
+            //m_pvSurfaces.erase(it);
+            //result = &current;
+        }
+    }
+    // std::cout << result->Name() << std::endl;
 }
 
 
@@ -320,14 +355,3 @@ boost::system::system_error(ec, what_arg)
     }
 }
 
-FileLoadingInfo::~FileLoadingInfo()
-{
-    if(m_pSurface)
-        SDL_FreeSurface(m_pSurface);
-}
-
-FileLoadingInfo::FileLoadingInfo(SDL_Surface* surface)
-: m_pSurface(surface)
-{
-
-}

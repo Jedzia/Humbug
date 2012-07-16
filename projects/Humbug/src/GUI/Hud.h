@@ -12,7 +12,7 @@ class HudBackground  {
 public:
 
     // Hud(const FileLoader& loader, CCanvas* pCanvas);
-    HudBackground(const FileLoader& loader, std::string filename);
+    HudBackground(FileLoader& loader, std::string filename);
     ~HudBackground();
 
     //void Draw();

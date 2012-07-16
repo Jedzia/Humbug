@@ -2,12 +2,14 @@
 #include "Image.h"
 CImage::CImage ( CCanvas* pcnvSource, bool freeSrc )
 : m_bFreeSrc(freeSrc){
+    dbgOut(__FUNCTION__ << std::endl);
     SetCanvas ( pcnvSource );
     m_rcSrc = m_rcDst = pcnvSource->GetDimension();
 }
 
-CImage::CImage ( CCanvas* pcnvSource, CRectangle rcSource, CPoint ptOffset, bool freeSrc )
+CImage::CImage ( CCanvas* pcnvSource, CRectangle rcSource, bool freeSrc, CPoint ptOffset )
 : m_bFreeSrc(freeSrc){
+    dbgOut(__FUNCTION__ << std::endl);
     SetCanvas ( pcnvSource );
     SrcRect ( ) = rcSource;
     DstRect ( ) = rcSource;
@@ -20,6 +22,7 @@ CImage::~CImage ( )
     {
         delete m_pcnvSrc;
     }
+    dbgOut(__FUNCTION__ << std::endl);
 }
 
 CCanvas * CImage::GetCanvas ( ){

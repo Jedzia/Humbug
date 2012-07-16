@@ -34,7 +34,7 @@ void CTileEngine::AddTileSet(CTileSet * tileset)
     CTileImageSetup
 }*/
 
-void CTileEngine::AddTileSet(const FileLoader& loader, const CTileImageSetup& config, const CRectangle& screen)
+void CTileEngine::AddTileSet(FileLoader& loader, const CTileImageSetup& config, const CRectangle& screen)
 {
     std::string fname(config.BitmapIdentifier);
     fname = "Tiles/" + fname + ".bmp";

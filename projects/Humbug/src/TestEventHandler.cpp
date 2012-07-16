@@ -108,6 +108,7 @@ void CTestEventHandler::OnExit()
     delete m_pKeyHandler;
     delete m_pKeyHandler2;
     delete m_pConsole;
+    delete fl;
 }
 
 //initialization
@@ -169,14 +170,16 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
-    FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    fl = new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     CTileSet* tileSet = NULL;
    try
     {
 
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
-        m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "Hud/footer.png"), 0);
+        m_pHud = new Hud(*fl, mainControl, new HudBackground(*fl, "Hud/footer.png"), 0);
         //create a button
         new CButton(m_pHud,CRectangle(100,100,150,25),1,"Come on, Press me!");
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
@@ -184,10 +187,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
 
 		{
-	        SDL_Surface* tmpsurf;
-	        SDL_Surface* loadsurf;
+            SDL_Surface *loadsurf;
+	        SDL_Surface *tmpsurf;
 			//tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
-			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
+			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->LoadImg("Moo.png") );
 			// delete loadsurf;
 			CCanvas tmpCanvas(tmpsurf);
 			CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768-320);
@@ -195,24 +198,25 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	        m_pBackground = testCanvas;
 	        //delete tmpsurf;
 			//SDL_FreeSurface( loadsurf );
-            //fl.FreeLast();
+            fl->FreeLast();
 			//SDL_FreeSurface( tmpsurf );
 		}
         //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
 
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
-        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl.LoadImg("icons/blue.png"));
-        //fl.FreeLast();
+        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->LoadImg("icons/blue.png"));
+        fl->FreeLast();
         //SDL_FreeSurface( loadsurf );
         //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ), true );
         //m_pSprite = new CSprite(m_pMainCanvas, m_pBlue);
         {
-            CCanvas* tmpCanvas = new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) );
-            m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas, true ), m_pBackground);
-            //fl.FreeLast();
+            SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( fl->LoadImg("icons/red.png"));
+            CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
+            fl->FreeLast();
+            m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas, true ), m_pBackground, true);
         }
 
         //CRectangle spr2Dim(0,0,32,32);
@@ -220,7 +224,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
         //    m_pBackground, spr2Dim, CPoint(32,0));
 
-        m_pSprite2 = new CSprite(fl, "Sprites/Voiture.bmp", m_pMainCanvas,
+        m_pSprite2 = new CSprite(*fl, "Sprites/Voiture.bmp", m_pMainCanvas,
                          CRectangle(0,0,32,32), CPoint(32,0));
 
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
@@ -237,8 +241,9 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         tilesetup.TransparentY = 0;
         tilesetup.Sequences = 0;
 
-        tileSet = new CTileSet(m_pMainCanvas, new CTileImage(fl, "Tiles1.bmp", tilesetup),
+        tileSet = new CTileSet(m_pMainCanvas, new CTileImage(*fl, "Tiles1.bmp", tilesetup),
             m_pBackground, CRectangle(0,0,1024, 768 - 320) );
+        // fl->Free("Tiles1.bmp");
 
 
    }
@@ -393,7 +398,8 @@ void CTestEventHandler::OnIdle(){
     //m_pMainCanvas->Flip();
     // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
     //m_pMainCanvas->ClearUpdateRects();
-    m_pMainCanvas->AddUpdateRect(CRectangle(0,0,m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight()- m_pHud->GetHeight()));
+    if(m_inScreenDelta != 0)
+        m_pMainCanvas->AddUpdateRect(CRectangle(0,0,m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight()- m_pHud->GetHeight()));
     m_pMainCanvas->UpdateRects ( );
 
     m_pMainCanvas->Unlock();
@@ -570,21 +576,23 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
         if( m_pMainCanvas->Lock() ) {
             //successful lock
             //set pixel
-            m_pDrawCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
+            //m_pDrawCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
             CRectangle frect( (Sint16)Parm1, (Sint16)Parm2, 1, 1 );
             //m_pMainCanvas->FillRect(frect, CColor::Red());
-            m_pDrawCanvas->AddUpdateRect(frect);
+            //m_pDrawCanvas->AddUpdateRect(frect);
 
             m_pBlue->Put(m_pDrawCanvas, CPoint((Sint16)Parm1, (Sint16)Parm2));
-            m_pMainCanvas->AddUpdateRect(CRectangle( (Sint16)Parm1, (Sint16)Parm2
-                , m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ));
+            for (int i = 0; i < 50 ; i++)
+            {
+	            m_pMainCanvas->AddUpdateRect(CRectangle( (Sint16)Parm1, (Sint16)Parm2
+	                , m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ));
+            }
 
-            //m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1,
-            // (Sint16)Parm2+1));
+//            m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1,
+//             (Sint16)Parm2+1));
             //unlock
+            m_pMainCanvas->Unlock();
         }
-
-        m_pMainCanvas->Unlock();
 
         //m_pMainCanvas->Flip();
         return(true);

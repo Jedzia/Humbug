@@ -9,9 +9,13 @@
 class FileLoadingInfo 
 {
 public:
-    FileLoadingInfo(SDL_Surface* surface);
+    FileLoadingInfo(const std::string name, SDL_Surface* surface);
     ~FileLoadingInfo();
+
+    std::string Name() const { return m_strName; }
+    void Name(std::string val) { m_strName = val; }
 private:
+    std::string m_strName;
     SDL_Surface* m_pSurface;
 };
 
@@ -27,16 +31,20 @@ public:
 
     // Loads a image from the package or filesystem.
     // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
-    SDL_Surface* LoadImg(const std::string & filename) const;
+    SDL_Surface* LoadImg(const std::string & filename) ;
+    void Free(const std::string& name);
     void FreeLast();
 
 private:
 
     std::string m_pBasepath;
-    static SDL_Surface* m_pLastSurface;
-    boost::ptr_vector<FileLoadingInfo> m_pvSurfaces;
+    SDL_Surface* m_pLastSurface;
+    typedef boost::ptr_vector<FileLoadingInfo> surfacevector;
+    surfacevector m_pvSurfaces;
 
 };
+
+// File loader exceptions
 #define HUMBUG_FILELOADER_THROW(EX) \
     throw EX
 class FileLoaderException : public boost::system::system_error {

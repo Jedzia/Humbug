@@ -24,11 +24,11 @@ class FileLoader;
 class CSprite {
 public:
 
-    CSprite( CCanvas * mainCanvas, CImage * sprImage, CCanvas * background = NULL,
+    CSprite( CCanvas * mainCanvas, CImage * sprImage, CCanvas * background = NULL, bool freeSrc = false,
             CRectangle spriteDimension = CRectangle(0, 0, 0,
                     0),
             CPoint spriteMove = CPoint(0, 0) );
-    CSprite( const FileLoader& loader, std::string filename, CCanvas * mainCanvas,
+    CSprite( FileLoader& loader, std::string filename, CCanvas * mainCanvas,
             CRectangle spriteDimension = CRectangle(0, 0, 0,
                     0),
             CPoint spriteMove = CPoint(0, 0) );
@@ -47,7 +47,6 @@ private:
 
     CCanvas* m_pMainCanvas;
     CCanvas* m_pBackground;
-    CCanvas* m_pCanvas;
     CPoint m_cpPos;
     CPoint m_cpOldPos;
     CPoint m_cpSprMove;

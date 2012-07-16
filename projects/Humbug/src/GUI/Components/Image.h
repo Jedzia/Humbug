@@ -17,7 +17,7 @@ private:
 public:
 	//construct from source canvas, source rectangle,and offset point
 	CImage ( CCanvas* pcnvSource, bool freeSrc = false ) ;
-	CImage ( CCanvas* pcnvSource , CRectangle rcSource , CPoint ptOffset = CPoint(0 ,0), bool freeSrc = false ) ;
+	CImage ( CCanvas* pcnvSource , CRectangle rcSource, bool freeSrc = false, CPoint ptOffset = CPoint(0 ,0) ) ;
 	//destroy image
 	virtual ~CImage ( ) ;
 	//retrieve pointer to canvas

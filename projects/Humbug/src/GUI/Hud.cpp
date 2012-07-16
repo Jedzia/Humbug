@@ -28,7 +28,7 @@
 
         Init();
    }*/
-HudBackground::HudBackground(const FileLoader& loader, std::string filename) :
+HudBackground::HudBackground(FileLoader& loader, std::string filename) :
     m_pFooter(NULL){
     dbgOut(__FUNCTION__ << std::endl);
 

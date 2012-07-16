@@ -2,6 +2,11 @@
 #define STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
 
 #include <iostream>
+#include <memory>   // std::auto_ptr
+#include <vector>
+#include <map>
+#include <functional>
+#include <algorithm>
 
 #ifdef _DEBUG
 /*inline void _moo_bugzor(const char* ff)
@@ -49,11 +54,6 @@
 
 #endif //USE_LIB_BOOST
 
-#include <memory>   // std::auto_ptr
-#include <vector>
-#include <map>
-#include <functional>
-#include <algorithm>
 
 #include <build/cmake/include/debug.h>
 

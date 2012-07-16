@@ -20,6 +20,7 @@ class CTileSet;
 class CTestEventHandler : public CEventHandler
 {
 private:
+    FileLoader* fl;
     //main display surface
     CConsole* m_pConsole;
 	//main display surface
