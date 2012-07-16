@@ -1,4 +1,3 @@
-#include <build/cmake/include/debug.h>
 #include "../stdafx.h"
 #include "FileLoader.h"
 #include <HumbugShared/VFS/zfsystem.h>
@@ -7,8 +6,11 @@ using zip_file_system::filesystem;
 using zip_file_system::izfstream;
 
 
+SDL_Surface* FileLoader::m_pLastSurface = NULL;
+
+
 FileLoader::FileLoader(const std::string & basepath)
-: m_pBasepath(basepath)
+: m_pBasepath(basepath)/*, m_pLastSurface(NULL)*/
 {
          dbgOut(__FUNCTION__ << std::endl);
 }
@@ -217,8 +219,9 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
     // slurp(contents, filename, false);
     //slurp(contents, filename);
     //slurp4(vcontents, fsys, filename);
-    SDL_Surface* sdlsurface = slurp5(fsys, filename);
-    return sdlsurface;
+    m_pLastSurface = slurp5(fsys, filename);
+    //m_pvSurfaces.push_back(new FileLoadingInfo);
+    return m_pLastSurface;
 
     //std::string contents((std::istreambuf_iterator<char>(infile)),
       //  std::istreambuf_iterator<char>());
@@ -227,3 +230,104 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename) const
 
 }
 
+void FileLoader::FreeLast()
+{
+    m_pvSurfaces.pop_back();
+    /*if (m_pLastSurface)
+    {
+        SDL_FreeSurface(m_pLastSurface);
+    }*/
+}
+
+
+const char * FileLoaderException::what() const throw()
+{
+    if ( !m_imp_ptr.get() ) {
+        return boost::system::system_error::what();
+    }
+
+    try
+    {
+        if ( m_imp_ptr->m_what.empty() ) {
+            m_imp_ptr->m_what = boost::system::system_error::what();
+
+            if ( !m_imp_ptr->m_path1.empty() ) {
+                m_imp_ptr->m_what += ": \"";
+                m_imp_ptr->m_what += m_imp_ptr->m_path1;
+                m_imp_ptr->m_what += "\"";
+            }
+
+            if ( !m_imp_ptr->m_path2.empty() ) {
+                m_imp_ptr->m_what += ", \"";
+                m_imp_ptr->m_what += m_imp_ptr->m_path2;
+                m_imp_ptr->m_what += "\"";
+            }
+        }
+
+        return m_imp_ptr->m_what.c_str();
+    }
+    catch (...)
+    {
+        return boost::system::system_error::what();
+    }
+}
+
+FileLoaderException::FileLoaderException( const std::string & what_arg, int ec ) :
+boost::system::system_error(boost::system::error_code(ec, boost::system::system_category()), "")
+{
+    try
+    {
+        m_imp_ptr.reset(new m_imp);
+        m_imp_ptr->m_what = what_arg;
+        //m_imp_ptr->m_path1 = path1_arg;
+        //m_imp_ptr->m_path2 = path2_arg;
+    }
+    catch (...) { m_imp_ptr.reset(); }
+}
+
+FileLoaderException::FileLoaderException( const std::string & what_arg, const std::string& path1_arg, const std::string& path2_arg, boost::system::error_code ec ) :
+boost::system::system_error(ec, what_arg)
+{
+    try
+    {
+        m_imp_ptr.reset(new m_imp);
+        m_imp_ptr->m_path1 = path1_arg;
+        m_imp_ptr->m_path2 = path2_arg;
+    }
+    catch (...) { m_imp_ptr.reset(); }
+}
+
+FileLoaderException::FileLoaderException( const std::string & what_arg, const std::string& path1_arg, boost::system::error_code ec ) :
+boost::system::system_error(ec, what_arg)
+{
+    try
+    {
+        m_imp_ptr.reset(new m_imp);
+        m_imp_ptr->m_path1 = path1_arg;
+    }
+    catch (...) { m_imp_ptr.reset();
+    }
+}
+
+FileLoaderException::FileLoaderException( const std::string & what_arg, boost::system::error_code ec ) :
+boost::system::system_error(ec, what_arg)
+{
+    try
+    {
+        m_imp_ptr.reset(new m_imp);
+    }
+    catch (...) { m_imp_ptr.reset();
+    }
+}
+
+FileLoadingInfo::~FileLoadingInfo()
+{
+    if(m_pSurface)
+        SDL_FreeSurface(m_pSurface);
+}
+
+FileLoadingInfo::FileLoadingInfo(SDL_Surface* surface)
+: m_pSurface(surface)
+{
+
+}

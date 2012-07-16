@@ -35,7 +35,7 @@ void CMessageHandler::SetParent(CMessageHandler* pmhNewParent)
 	if(HasParent())
 	{
 		//tell parent we are being removed
-		SendMessage(MSGID_RemoveChild,(MSGPARM)GetParent(),(MSGPARM)this);
+		SendMessageQ(MSGID_RemoveChild,(MSGPARM)GetParent(),(MSGPARM)this);
 	}
 
 	//set new parent
@@ -45,7 +45,7 @@ void CMessageHandler::SetParent(CMessageHandler* pmhNewParent)
 	if(HasParent())
 	{
 		//tell parent we are being added
-		SendMessage(MSGID_AddChild,(MSGPARM)GetParent(),(MSGPARM)this);
+		SendMessageQ(MSGID_AddChild,(MSGPARM)GetParent(),(MSGPARM)this);
 	}
 }
 
@@ -64,7 +64,7 @@ bool CMessageHandler::HasParent()
 }
 
 //send message
-bool CMessageHandler::SendMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4)
+bool CMessageHandler::SendMessageQ(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4)
 {
 	//attempt to process message
 	if(OnMessage(MsgID,Parm1,Parm2,Parm3,Parm4))
@@ -79,7 +79,7 @@ bool CMessageHandler::SendMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPAR
 		if(HasParent())
 		{
 			//parent exists, send message to parent
-			return(GetParent()->SendMessage(MsgID,Parm1,Parm2,Parm3,Parm4));
+			return(GetParent()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4));
 		}
 		else
 		{

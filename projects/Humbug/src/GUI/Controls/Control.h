@@ -53,7 +53,7 @@ public:
 	//get id
 	Uint32 GetID();
 	//send message
-	bool SendMessage(MSGID MsgID,MSGPARM Parm1=NULL,MSGPARM Parm2=NULL,MSGPARM Parm3=NULL,MSGPARM Parm4=NULL);
+	bool SendMessageQ(MSGID MsgID,MSGPARM Parm1=NULL,MSGPARM Parm2=NULL,MSGPARM Parm3=NULL,MSGPARM Parm4=NULL);
 	//process message(virtual)
 	virtual bool OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4);
 	//add child handler

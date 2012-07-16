@@ -194,7 +194,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 			testCanvas->Blit(tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
 	        m_pBackground = testCanvas;
 	        //delete tmpsurf;
-			SDL_FreeSurface( loadsurf );
+			//SDL_FreeSurface( loadsurf );
+            //fl.FreeLast();
 			//SDL_FreeSurface( tmpsurf );
 		}
         //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
@@ -202,14 +203,17 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
         SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl.LoadImg("icons/blue.png"));
+        //fl.FreeLast();
         //SDL_FreeSurface( loadsurf );
         //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
-        m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ) );
+        m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ), true );
         //m_pSprite = new CSprite(m_pMainCanvas, m_pBlue);
-        m_pSprite = new CSprite(m_pMainCanvas,
-            new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) ) ),
-            m_pBackground);
+        {
+            CCanvas* tmpCanvas = new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("icons/red.png")) );
+            m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas, true ), m_pBackground);
+            //fl.FreeLast();
+        }
 
         //CRectangle spr2Dim(0,0,32,32);
         //m_pSprite2 = new CSprite(m_pMainCanvas,
@@ -342,7 +346,7 @@ void CTestEventHandler::PutBlue(){
     if(y>1024) {
         y = 0;
         x = 0;
-        //SendMessage(MSGID_ClearScreen);
+        //SendMessageQ(MSGID_ClearScreen);
     }
 }
 
@@ -427,7 +431,7 @@ void CTestEventHandler::OnEvent(SDL_Event* pEvent)
 {
     if(m_pConsole->OnEvent(pEvent))
     {
-        //SendMessage(MSGID_ClearScreen);
+        //SendMessageQ(MSGID_ClearScreen);
         //OnIdle();
         return;
     }
@@ -442,11 +446,11 @@ void CTestEventHandler::OnEvent(SDL_Event* pEvent)
     }
 }
 
-//#undef SendMessage(x,y,z)
+//#undef SendMessageQ(x,y,z)
 //left button down
 void CTestEventHandler::OnLButtonDown(Uint16 x, Uint16 y){
     //draw a pixel
-    SendMessage(MSGID_DrawPixel, (MSGPARM)x, (MSGPARM)y);
+    SendMessageQ(MSGID_DrawPixel, (MSGPARM)x, (MSGPARM)y);
 }
 
 //mouse move
@@ -456,7 +460,7 @@ void CTestEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely
     //if left button is down
     if(bLeft) {
         //draw a pixel
-        SendMessage(MSGID_DrawPixel, (MSGPARM)x, (MSGPARM)y);
+        SendMessageQ(MSGID_DrawPixel, (MSGPARM)x, (MSGPARM)y);
     }
 }
 
@@ -465,7 +469,7 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     const int step = 6;
     if( sym == SDLK_ESCAPE ) {
         //send clear screen message
-        SendMessage(MSGID_QuitApp);
+        SendMessageQ(MSGID_QuitApp);
     }
     else if( sym == SDLK_LEFT ) {
         //
@@ -514,7 +518,7 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     }
     else if( sym == SDLK_c ) {
         //send clear screen message
-        SendMessage(MSGID_ClearScreen);
+        SendMessageQ(MSGID_ClearScreen);
     }
 }
 

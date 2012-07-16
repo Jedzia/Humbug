@@ -13,10 +13,11 @@ private:
 	CRectangle m_rcSrc ;
 	//destination rectangle
 	CRectangle m_rcDst ;
+    bool m_bFreeSrc;
 public:
 	//construct from source canvas, source rectangle,and offset point
-	CImage ( CCanvas* pcnvSource ) ;
-	CImage ( CCanvas* pcnvSource , CRectangle rcSource , CPoint ptOffset = CPoint(0 ,0) ) ;
+	CImage ( CCanvas* pcnvSource, bool freeSrc = false ) ;
+	CImage ( CCanvas* pcnvSource , CRectangle rcSource , CPoint ptOffset = CPoint(0 ,0), bool freeSrc = false ) ;
 	//destroy image
 	virtual ~CImage ( ) ;
 	//retrieve pointer to canvas

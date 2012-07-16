@@ -648,7 +648,7 @@ bool CControl::HasParent()
 }
 
 //send message
-bool CControl::SendMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4)
+bool CControl::SendMessageQ(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4)
 {
 	//attempt to handle message
 	if(OnMessage(MsgID,Parm1,Parm2,Parm3,Parm4)) return(true);
@@ -656,12 +656,12 @@ bool CControl::SendMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3
 	if(HasParent())
 	{
 		//send to parent
-		return(GetParent()->SendMessage(MsgID,Parm1,Parm2,Parm3,Parm4));
+		return(GetParent()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4));
 	}
 	else
 	{
 		//send to application
-		return(CApplication::GetApplication()->SendMessage(MsgID,Parm1,Parm2,Parm3,Parm4));
+		return(CApplication::GetApplication()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4));
 	}
 }
 

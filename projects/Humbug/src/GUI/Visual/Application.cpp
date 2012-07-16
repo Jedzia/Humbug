@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "../../stdafx.h"
-#include <build/cmake/include/debug.h>
 #include <stdlib.h>
 #include "Application.h"
 #include "SdlInfo.h"
@@ -157,7 +156,7 @@ void CApplication::SetApplication(CApplication* pTheApp)
 CApplication::CApplication():
 CMessageHandler(NULL)
 {
-    dbgOut(__FUNCTION__ << std::endl);
+    //dbgOut(__FUNCTION__ << std::endl);
 	_CRT_DEBUG_BLOCK
 	//set the application
 	SetApplication(this);

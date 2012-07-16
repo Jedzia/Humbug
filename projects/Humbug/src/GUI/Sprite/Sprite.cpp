@@ -12,7 +12,9 @@
 CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,
         CRectangle spriteDimension,
         CPoint spriteMove) :
+    m_bOwner(false),
     m_pMainCanvas(mainCanvas),
+    m_pCanvas(NULL),
     m_pSprImage(sprImage),
     m_pBackground(background),
     m_cpPos(0, 0),
@@ -28,6 +30,7 @@ CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background,
 CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainCanvas,
         CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
         CPoint spriteMove /*= CPoint(0,0) */ ) :
+    m_bOwner(true),
     m_pMainCanvas(mainCanvas),
     m_pBackground(NULL),
     m_cpPos(0, 0),
@@ -35,16 +38,29 @@ CSprite::CSprite( const FileLoader& loader, std::string filename, CCanvas* mainC
     m_cpSprMove(spriteMove),
     m_crSprDim(spriteDimension){
     // m_pSprImage(sprImage),
+
+	SDL_Surface* loadsurf = loader.LoadImg(filename);
+	SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loadsurf  );
+    SDL_FreeSurface(loadsurf);
+	m_pCanvas = new CCanvas( alphasurf );
+
     if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
-        m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(filename) ) ) );
+        m_pSprImage = new CImage( m_pCanvas );
     }
     else {
-        m_pSprImage = new CImage( new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg(
-                                        filename) ) ), spriteDimension );
+        m_pSprImage = new CImage( m_pCanvas, spriteDimension );
+		//SDL_FreeSurface( loadsurf );
+		//delete loadsurf;
     }
 }
 
 CSprite::~CSprite(void){
+	if(m_bOwner)
+	{
+		delete m_pSprImage;
+		//if(m_pCanvas)
+		delete m_pCanvas;
+	}
     dbgOut(__FUNCTION__ << std::endl);
 }
 

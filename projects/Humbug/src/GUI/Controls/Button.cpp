@@ -103,7 +103,7 @@ bool CButton::OnLButtonUp(Uint16 x,Uint16 y)
 		if(HasMouseHover())
 		{
 			//trigger message
-			SendMessage(MSGID_ButtonClick,(MSGPARM)GetID());
+			SendMessageQ(MSGID_ButtonClick,(MSGPARM)GetID());
 			//set pressed state to false
             Invalidate();
             m_bPressed=false;

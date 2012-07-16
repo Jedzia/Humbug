@@ -47,10 +47,12 @@ private:
 
     CCanvas* m_pMainCanvas;
     CCanvas* m_pBackground;
+    CCanvas* m_pCanvas;
     CPoint m_cpPos;
     CPoint m_cpOldPos;
     CPoint m_cpSprMove;
     CRectangle m_crSprDim;
+    bool m_bOwner;
 };
 std::ostream& operator<<(std::ostream& o, const CSprite& r);
 

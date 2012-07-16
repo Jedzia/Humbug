@@ -1,4 +1,3 @@
-#include <build/cmake/include/debug.h>
 #include "../../stdafx.h"
 #include "Canvas.h"
 #include <memory.h>

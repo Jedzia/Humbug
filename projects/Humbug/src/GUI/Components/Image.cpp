@@ -1,11 +1,13 @@
 #include "../../stdafx.h"
 #include "Image.h"
-CImage::CImage ( CCanvas* pcnvSource ){
+CImage::CImage ( CCanvas* pcnvSource, bool freeSrc )
+: m_bFreeSrc(freeSrc){
     SetCanvas ( pcnvSource );
     m_rcSrc = m_rcDst = pcnvSource->GetDimension();
 }
 
-CImage::CImage ( CCanvas* pcnvSource, CRectangle rcSource, CPoint ptOffset ){
+CImage::CImage ( CCanvas* pcnvSource, CRectangle rcSource, CPoint ptOffset, bool freeSrc )
+: m_bFreeSrc(freeSrc){
     SetCanvas ( pcnvSource );
     SrcRect ( ) = rcSource;
     DstRect ( ) = rcSource;
@@ -13,7 +15,12 @@ CImage::CImage ( CCanvas* pcnvSource, CRectangle rcSource, CPoint ptOffset ){
 }
 
 CImage::~CImage ( )
-{}
+{
+    if (m_bFreeSrc)
+    {
+        delete m_pcnvSrc;
+    }
+}
 
 CCanvas * CImage::GetCanvas ( ){
     return ( m_pcnvSrc );

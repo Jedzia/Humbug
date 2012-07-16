@@ -23,10 +23,6 @@
 # define dbgOut(x)
 #endif // _DEBUG
 
-#include "SDL.h"
-#include "SDL_image.h" 
-#include "SDL_ttf.h"
-
 #include <wchar.h>
 
 #ifdef USE_QT
@@ -47,7 +43,7 @@
 
     #include <boost/progress.hpp>
     #include <boost/smart_ptr.hpp>
-    #include <boost/bind.hpp> 
+    #include <boost/bind.hpp>
     #include "boost/bind/mem_fn.hpp"
     #include "boost/function.hpp"
 
@@ -56,8 +52,15 @@
 #include <memory>   // std::auto_ptr
 #include <vector>
 #include <map>
-#include <functional> 
-#include <algorithm> 
+#include <functional>
+#include <algorithm>
+
+#include <build/cmake/include/debug.h>
+
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
+
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;

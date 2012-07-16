@@ -1,24 +1,41 @@
 #ifndef HUMBUG_FS_FILELOADER_H
 #define HUMBUG_FS_FILELOADER_H
-#include <build/cmake/include/debug.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
+#include <boost/ptr_container/ptr_vector.hpp>
 #include <string>
+
+class FileLoadingInfo 
+{
+public:
+    FileLoadingInfo(SDL_Surface* surface);
+    ~FileLoadingInfo();
+private:
+    SDL_Surface* m_pSurface;
+};
+
 class FileLoader {
 public:
 
     FileLoader(const std::string & basepath);
     ~FileLoader();
-    const char * language(int x) const;
+    const char* language(int x) const;
 
+    // Placeholder
     void Load(const std::string & filename) const;
 
-    SDL_Surface * LoadImg(const std::string & filename) const;
+    // Loads a image from the package or filesystem.
+    // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
+    SDL_Surface* LoadImg(const std::string & filename) const;
+    void FreeLast();
 
 private:
 
     std::string m_pBasepath;
+    static SDL_Surface* m_pLastSurface;
+    boost::ptr_vector<FileLoadingInfo> m_pvSurfaces;
+
 };
 #define HUMBUG_FILELOADER_THROW(EX) \
     throw EX
@@ -29,54 +46,17 @@ class FileLoaderException : public boost::system::system_error {
 public:
 
     // compiler generates copy constructor and copy assignment
-    FileLoaderException(
-            const std::string & what_arg, boost::system::error_code ec) :
-        boost::system::system_error(ec, what_arg){
-        try
-        {
-            m_imp_ptr.reset(new m_imp);
-        }
-        catch (...) { m_imp_ptr.reset();
-        }
-    }
+    FileLoaderException(            const std::string & what_arg, boost::system::error_code ec);
 
     FileLoaderException(
             const std::string & what_arg, const std::string& path1_arg,
-            boost::system::error_code ec) :
-        boost::system::system_error(ec, what_arg){
-        try
-        {
-            m_imp_ptr.reset(new m_imp);
-            m_imp_ptr->m_path1 = path1_arg;
-        }
-        catch (...) { m_imp_ptr.reset();
-        }
-    }
+            boost::system::error_code ec);
 
     FileLoaderException(
             const std::string & what_arg, const std::string& path1_arg,
-            const std::string& path2_arg, boost::system::error_code ec) :
-        boost::system::system_error(ec, what_arg){
-        try
-        {
-            m_imp_ptr.reset(new m_imp);
-            m_imp_ptr->m_path1 = path1_arg;
-            m_imp_ptr->m_path2 = path2_arg;
-        }
-        catch (...) { m_imp_ptr.reset(); }
-    }
+            const std::string& path2_arg, boost::system::error_code ec);
 
-    FileLoaderException(            const std::string & what_arg, int ec) :
-        boost::system::system_error(boost::system::error_code(ec, boost::system::system_category()), ""){
-        try
-        {
-            m_imp_ptr.reset(new m_imp);
-            m_imp_ptr->m_what = what_arg;
-            //m_imp_ptr->m_path1 = path1_arg;
-            //m_imp_ptr->m_path2 = path2_arg;
-        }
-        catch (...) { m_imp_ptr.reset(); }
-    }
+    FileLoaderException(            const std::string & what_arg, int ec);
 
     ~FileLoaderException()
     throw() {}
@@ -92,36 +72,7 @@ public:
     }
 
     const char * what() const
-    throw(){
-        if ( !m_imp_ptr.get() ) {
-            return boost::system::system_error::what();
-        }
-
-        try
-        {
-            if ( m_imp_ptr->m_what.empty() ) {
-                m_imp_ptr->m_what = boost::system::system_error::what();
-
-                if ( !m_imp_ptr->m_path1.empty() ) {
-                    m_imp_ptr->m_what += ": \"";
-                    m_imp_ptr->m_what += m_imp_ptr->m_path1;
-                    m_imp_ptr->m_what += "\"";
-                }
-
-                if ( !m_imp_ptr->m_path2.empty() ) {
-                    m_imp_ptr->m_what += ", \"";
-                    m_imp_ptr->m_what += m_imp_ptr->m_path2;
-                    m_imp_ptr->m_what += "\"";
-                }
-            }
-
-            return m_imp_ptr->m_what.c_str();
-        }
-        catch (...)
-        {
-            return boost::system::system_error::what();
-        }
-    } // what
+    throw(); // what
 
 private:
 

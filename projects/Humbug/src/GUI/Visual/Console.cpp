@@ -90,7 +90,7 @@ struct CConsole::CConsoleImpl {
 
    void KillProgram()
    {
-       m_ceParent->SendMessage(CEventHandler::MSGID_QuitApp);
+       m_ceParent->SendMessageQ(CEventHandler::MSGID_QuitApp);
    }
 
     void ListCommands(ConsoleInformation* console) {

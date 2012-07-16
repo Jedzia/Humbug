@@ -21,13 +21,17 @@ protected:
 
 public:
 	//constructor
+    // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
 	CCanvas ( SDL_Surface* pSurface = NULL ) ;
 
 	//destructor
 	virtual ~CCanvas ( ) ;
 
-	//getter/setter for the SDL_Surface*
+	// getter for the SDL_Surface*
 	SDL_Surface* GetSurface ( ) const;
+
+    // setter for the SDL_Surface*
+    // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
 	void SetSurface ( SDL_Surface* pSurface ) ;
 
 	//lock and unlock ( for direct pixel access )

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 //
-#include <build/cmake/include/debug.h>
+//#include <build/cmake/include/debug.h>
 
 
 int bmain(int argc, char *argv[])
