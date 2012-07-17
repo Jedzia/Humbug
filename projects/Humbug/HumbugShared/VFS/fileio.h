@@ -1,3 +1,5 @@
+#ifndef HUMBUGSHARED_VFS_FILEIO_H
+#define HUMBUGSHARED_VFS_FILEIO_H
 // bfileio.h: interface for the binary file i/o.
 //
 //////////////////////////////////////////////////////////////////////
@@ -42,9 +44,6 @@
 //          - 1.00 BETA 1 (06/09/2002) - First public release
 //
 //////////////////////////////////////////////////////////////////////
-
-#pragma once 
-
 
 
 #if defined WIN32
@@ -249,3 +248,4 @@ inline std::string search_iterator::Name() const {
 } // namespace io_facilities
 
 
+#endif // HUMBUGSHARED_VFS_FILEIO_H guard

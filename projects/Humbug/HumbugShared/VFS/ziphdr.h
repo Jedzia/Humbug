@@ -1,3 +1,5 @@
+#ifndef HUMBUGSHARED_VFS_ZIPHDR_H
+#define HUMBUGSHARED_VFS_ZIPHDR_H
 // zfsystem.h: interface for the zip header classes.
 //
 //////////////////////////////////////////////////////////////////////
@@ -39,8 +41,6 @@
 //          - 1.00 BETA 1 (12/06/2002) - First public release
 //
 //////////////////////////////////////////////////////////////////////
-
-#pragma once
 
 
 #include "stdint.h"
@@ -142,3 +142,4 @@ struct eofcd_header
 
 } // namespace zip_file_system
 
+#endif // HUMBUGSHARED_VFS_ZIPHDR_H guard

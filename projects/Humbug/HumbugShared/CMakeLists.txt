@@ -119,6 +119,9 @@ ENDIF(LINUX)
 IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
+IF(MSYS)
+  ADD_DEFINITIONS("-DUNIX")
+ENDIF(MSYS)
 
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )

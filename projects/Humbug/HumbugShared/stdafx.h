@@ -22,15 +22,6 @@
   #  define dbgOut(x)
 #endif // _DEBUG
 
-#ifdef USE_QT
-#  include <QApplication>
-#  include <QDomDocument>
-#  include <QMainWindow>
-#  include <Qsci/qscilexercpp.h>
-#  include <QtCore>
-#  include <QtGui>
-#endif // USE_QT
-
 // Standard headers
 #include <iostream>
 #include <memory>   // std::auto_ptr

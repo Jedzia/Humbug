@@ -1,3 +1,6 @@
+#ifndef HUMBUGSHARED_VFS_ZSTREAM_H
+#define HUMBUGSHARED_VFS_ZSTREAM_H
+
 // zstream.h: interface for the zstream classes.
 //
 //////////////////////////////////////////////////////////////////////
@@ -44,8 +47,6 @@
 //          - 1.00 BETA 1 (29/05/2002) - First public release
 //
 //////////////////////////////////////////////////////////////////////
-
-#pragma once
 
 
 
@@ -171,3 +172,4 @@ protected:
 
 } // namespace zip_file_system;
 
+#endif // HUMBUGSHARED_VFS_ZSTREAM_H guard

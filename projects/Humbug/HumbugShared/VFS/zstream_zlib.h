@@ -1,3 +1,6 @@
+#ifndef HUMBUGSHARED_VFS_ZSTREAMZLIB_H
+#define HUMBUGSHARED_VFS_ZSTREAMZLIB_H
+
 //////////////////////////////////////////////////////////////////////
 //
 //                        !!! IMPORTANT !!!
@@ -6,8 +9,6 @@
 // correctly link with ZLib.
 //
 //////////////////////////////////////////////////////////////////////
-
-#pragma once
 
 
 
@@ -24,4 +25,5 @@
 //	#endif
 //#endif
 
+#endif // HUMBUGSHARED_VFS_ZSTREAMZLIB_H guard
 

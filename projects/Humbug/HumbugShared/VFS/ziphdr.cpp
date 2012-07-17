@@ -27,7 +27,7 @@ bool local_file_header::ReadHeader(std::istream & File)
 	using io_facilities::readvar;
 
 	// quick check about char size
-	static_assert(CHAR_BIT == 8);
+	static_assert_l(CHAR_BIT == 8);
 
 	if (! readvar(File, m_Signature, 4)) return false;
 	if (! readvar(File, m_VersionExtract, 2)) return false;

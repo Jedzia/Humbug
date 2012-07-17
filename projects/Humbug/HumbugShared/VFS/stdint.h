@@ -1,5 +1,5 @@
-
-#pragma once
+#ifndef HUMBUGSHARED_VFS_STDINT_H
+#define HUMBUGSHARED_VFS_STDINT_H
 
 
 
@@ -57,24 +57,25 @@ typedef unsigned long long	uint_least64_t;
 inline void __CheckSizedTypes()
 {
 	// one byte must be exactly 8 bits
-	static_assert(CHAR_BIT == 8);
+	static_assert_l(CHAR_BIT == 8);
 
-	static_assert(sizeof(int8_t) == 1);
-	static_assert(sizeof(uint8_t) == 1);
-	static_assert(sizeof(int16_t) == 2);
-	static_assert(sizeof(uint16_t) == 2);
-	static_assert(sizeof(int32_t) == 4);
-	static_assert(sizeof(uint32_t) == 4);
-	static_assert(sizeof(int64_t) == 8);
-	static_assert(sizeof(uint64_t) == 8);
+	static_assert_l(sizeof(int8_t) == 1);
+	static_assert_l(sizeof(uint8_t) == 1);
+	static_assert_l(sizeof(int16_t) == 2);
+	static_assert_l(sizeof(uint16_t) == 2);
+	static_assert_l(sizeof(int32_t) == 4);
+	static_assert_l(sizeof(uint32_t) == 4);
+	static_assert_l(sizeof(int64_t) == 8);
+	static_assert_l(sizeof(uint64_t) == 8);
 
-	static_assert(sizeof(int_least8_t) >= 1);
-	static_assert(sizeof(uint_least8_t) >= 1);
-	static_assert(sizeof(int_least16_t) >= 2);
-	static_assert(sizeof(uint_least16_t) >= 2);
-	static_assert(sizeof(int_least32_t) >= 4);
-	static_assert(sizeof(uint_least32_t) >= 4);
-	static_assert(sizeof(int_least64_t) >= 8);
-	static_assert(sizeof(uint_least64_t) >= 8);
+	static_assert_l(sizeof(int_least8_t) >= 1);
+	static_assert_l(sizeof(uint_least8_t) >= 1);
+	static_assert_l(sizeof(int_least16_t) >= 2);
+	static_assert_l(sizeof(uint_least16_t) >= 2);
+	static_assert_l(sizeof(int_least32_t) >= 4);
+	static_assert_l(sizeof(uint_least32_t) >= 4);
+	static_assert_l(sizeof(int_least64_t) >= 8);
+	static_assert_l(sizeof(uint_least64_t) >= 8);
 }
 
+#endif // HUMBUGSHARED_VFS_STDINT_H guard
