@@ -63,10 +63,11 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
 
     // BringToFront();
     //SetMouseHover(this);
+	
     tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, GetWidth(), GetHeight() );
     SDL_SetAlpha(tmpcanvas->GetSurface(), SDL_SRCALPHA, 122);
     footerImage->Put( GetCanvas(), CPoint(0, 0) );
-    CRectangle& ownDimensions = GetCanvas()->GetDimension();
+    const CRectangle& ownDimensions = GetCanvas()->GetDimension();
     GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
     CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
     //Invalidate();

@@ -153,19 +153,20 @@ CRectangle CCanvas::GetClipRect ( ){
     return ( rect );
 }
 
-bool CCanvas::FillRect ( CRectangle& rect, CColor& color ){
-    Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.R ( ), color.G ( ), color.B ( ) );
+bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ){
+    Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
     return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
 }
 
-bool CCanvas::Clear ( CColor& color ){
-    Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.R ( ), color.G ( ), color.B ( ) );
+bool CCanvas::Clear ( const CColor& color ){
+    Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
     return ( SDL_FillRect ( GetSurface ( ), NULL, col ) == 0 );
 }
 
-bool CCanvas::Blit ( CRectangle& rectDst, const CCanvas& cnvSrc, CRectangle& rectSrc ) const {
+bool CCanvas::Blit ( const CRectangle& rectDst, const CCanvas& cnvSrc, const CRectangle& rectSrc ) const {
     CRectangle rectDst2 = rectDst;
-    return ( SDL_BlitSurface ( cnvSrc.GetSurface ( ), rectSrc, GetSurface ( ), rectDst2 ) == 0 );
+    CRectangle rectSrc2 = rectSrc;
+    return ( SDL_BlitSurface ( cnvSrc.GetSurface ( ), rectSrc2, GetSurface ( ), rectDst2 ) == 0 );
 }
 
 CCanvas * CCanvas::CreateRGB ( Uint32 flags, int width, int height, int depth, Uint32 Rmask,

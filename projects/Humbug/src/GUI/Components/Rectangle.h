@@ -65,7 +65,7 @@ public:
 
 	//move to a position, either coordinates or point
 	CRectangle& Move ( Sint16 x , Sint16 y ) ;
-	CRectangle& Move ( CPoint& pt ) ;
+	CRectangle& Move ( const CPoint& pt ) ;
 
 	//intersect with another rectangle
 	CRectangle& Intersect ( CRectangle& rc ) ;
@@ -79,6 +79,7 @@ public:
     // Todo: all to const refs
 	//assignment operators
 	CRectangle& operator = ( CRectangle& rc ) ;
+	CRectangle& operator = ( const CRectangle& rc ) ;
 	CRectangle& operator += ( const CPoint& pt ) ;
 	CRectangle& operator -= ( const CPoint& pt ) ;
 	CRectangle& operator += ( CRectangle& rc ) ;

@@ -12,7 +12,7 @@ private:
 public:
 	//constructor
 	CPoint ( int x = 0 , int y  = 0 ) ;
-	CPoint ( CPoint& pt ) ;
+	CPoint ( const CPoint& pt ) ;
 
 	//destructor
 	virtual ~CPoint ( ) ;

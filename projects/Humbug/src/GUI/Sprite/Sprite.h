@@ -35,7 +35,7 @@ public:
     ~CSprite();
     void Draw();
 
-    void SetPos(CPoint& pos);
+    void SetPos(CPoint pos);
 
     void SprOffset(int offset);
 

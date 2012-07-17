@@ -157,9 +157,9 @@ CRectangle& CRectangle::Move ( Sint16 x , Sint16 y )
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Move ( CPoint& pt ) 
+CRectangle& CRectangle::Move ( const CPoint& pt ) 
 {
-	Move ( pt.X ( ) , pt.Y ( ) ) ;
+	Move ( pt.GetX ( ) , pt.GetY ( ) ) ;
 	return ( *this ) ;
 }
 
@@ -184,15 +184,24 @@ bool CRectangle::Contains ( Sint16 x , Sint16 y )
 
 bool CRectangle::Contains ( CPoint& pt ) 
 {
-	return ( Contains ( pt.X ( ) , pt.Y ( ) ) ) ;
+	return ( Contains ( pt.GetX ( ) , pt.GetY ( ) ) ) ;
 }
 
 CRectangle& CRectangle::operator = ( CRectangle& rc ) 
 {
-	X ( ) = rc.X ( ) ;
-	Y ( ) = rc.Y ( ) ;
-	W ( ) = rc.W ( ) ;
-	H ( ) = rc.H ( ) ;
+	X ( ) = rc.GetX ( ) ;
+	Y ( ) = rc.GetY ( ) ;
+	W ( ) = rc.GetW ( ) ;
+	H ( ) = rc.GetH ( ) ;
+	return ( *this ) ;
+}
+
+CRectangle& CRectangle::operator = ( const CRectangle& rc ) 
+{
+	X ( ) = rc.GetX ( ) ;
+	Y ( ) = rc.GetY ( ) ;
+	W ( ) = rc.GetW ( ) ;
+	H ( ) = rc.GetH ( ) ;
 	return ( *this ) ;
 }
 
@@ -212,13 +221,17 @@ CRectangle& CRectangle::operator -= ( const CPoint& pt )
 
 CRectangle& CRectangle::operator += ( CRectangle& rc ) 
 {
-	( *this ) = ( *this ) + rc ;
+	//( *this ) = ( *this ) + rc ;
+	CRectangle tmp = ( *this ) + rc ;
+	Copy(tmp);
 	return ( *this ) ;
 }
 
 CRectangle& CRectangle::operator -= ( CRectangle& rc ) 
 {
-	( *this ) = ( *this ) - rc ;
+	//( *this ) = ( *this ) - rc ;
+	CRectangle tmp = ( *this ) - rc ;
+	Copy(tmp);
 	return ( *this ) ;
 }
 

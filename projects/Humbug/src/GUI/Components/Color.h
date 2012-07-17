@@ -40,7 +40,7 @@ public:
 	operator SDL_Color*();
 
 	//assignment operators
-	CColor& operator=(CColor& Color);
+	CColor& operator=(const CColor& Color);
 	CColor& operator+=(CColor& Color);
 	CColor& operator-=(CColor& Color);
 	CColor& operator*=(CColor& Color);
@@ -91,7 +91,7 @@ CColor operator*(CColor& Color,int Multiplier);
 CColor operator/(CColor& Color,int Divisor);
 
 //bitwise operators
-CColor operator|(CColor& Color1,CColor& Color2);
+CColor operator|(const CColor& Color1, const CColor& Color2);
 CColor operator&(CColor& Color1,CColor& Color2);
 CColor operator^(CColor& Color1,CColor& Color2);
 CColor operator~(CColor& Color);

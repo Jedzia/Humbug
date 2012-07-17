@@ -12,7 +12,12 @@ echo The CURDIR: ${CURDIR}
 echo The SCRDIR: ${SCRDIR}
 echo The PATH: ${PATH}
 
-BuildPrefix="--prefix=/usr"
+BuildRoot="/usr"
+BuildPrefix="--prefix=${BuildRoot}"
+
+ADD_CPPFLAGS="-I${BuildRoot}/include"
+ADD_LDFLAGS="-L${BuildRoot}/lib"
+ADDITIONAL="CPPFLAGS=${ADD_CPPFLAGS} LDFLAGS=${ADD_LDFLAGS}"
 
 
 # Printing a long string crashes Solaris 7 /usr/bin/printf.
@@ -106,6 +111,7 @@ func_fetchdependency ()
       if test ! -f "$2.extracted"; then
 	  	 wget -c "$1$2"
 		 tar xfz "$2"
+		 if [ $? -ne 0 ]; then  echo "!!!error";	exit 1;	fi
 		 echo > "$2.extracted"
 	  fi 
 
@@ -122,6 +128,7 @@ func_confdependency ()
 
       if test ! -f "$1.configured"; then
 	  	 ./configure $2 $3 $4 $5 $6 $7 $8 $9
+		 if [ $? -ne 0 ]; then  echo "!!!error";	exit 1;	fi
 		 echo > "$1.configured"
 	  fi 
 	popd
@@ -135,6 +142,7 @@ func_makedependency ()
 
       if test ! -f "$1.built"; then
 		 make
+		 if [ $? -ne 0 ]; then  echo "!!!error";	exit 1;	fi
 		 echo > "$1.built"
 	  fi 
 	popd
@@ -148,6 +156,7 @@ func_makeinstall ()
 
       if test ! -f "$1.installed"; then
 		 make install
+		 if [ $? -ne 0 ]; then  echo "!!!error";	exit 1;	fi
 		 echo > "$1.installed"
 	  fi 
 	popd
@@ -160,7 +169,7 @@ func_build_project ()
 	_cur_prj=$1
 	if test ! -f "$TMPDIR/${1}.done"; then
 		func_fetchdependency $2 $3
-		func_confdependency $1 ${BuildPrefix}
+		func_confdependency $1 ${BuildPrefix} $4 $5 $6 $7
 		func_makedependency $1
 		func_makeinstall $1
 		echo > "$TMPDIR/${1}.done"
@@ -174,42 +183,89 @@ func_do_sdlimage_pre ()
 {
 
 	$ECHO "$progname: 		++++ SDL-Image dependencies ++++"
-	if test ! -f "$TMPDIR/sdl_image_deps.downloaded"; then
-		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libjpeg/6b-1/libjpeg-6b-1.zip/download
-		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libpng-bin/1.0.6-20000724/libpng-1.0.6-20000724.zip/download
-		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libpng-devel/1.0.6-20000724/libpng-devel-1.0.6-20000724.zip/download
-		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libtiff-bin/3.4-1/libtiff-3.4-1.zip/download
-		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libtiff-devel/3.4-1/libtiff-devel-3.4-1.zip/download
-		func_fetchdependencyWA https://webp.googlecode.com/files/ libwebp-0.1.3.tar.gz
-		echo > "$TMPDIR/sdl_image_deps.downloaded"
-	fi
+#	if test ! -f "$TMPDIR/sdl_image_deps.downloaded"; then
+#		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libjpeg/6b-1/libjpeg-6b-1.zip/download
+#		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libpng-bin/1.0.6-20000724/libpng-1.0.6-20000724.zip/download
+#		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libpng-devel/1.0.6-20000724/libpng-devel-1.0.6-20000724.zip/download
+#		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libtiff-bin/3.4-1/libtiff-3.4-1.zip/download
+#		func_fetchdependencyonly http://sourceforge.net/projects/mingwrep/files/libtiff-devel/3.4-1/libtiff-devel-3.4-1.zip/download
+#		func_fetchdependencyWA https://webp.googlecode.com/files/ libwebp-0.1.3.tar.gz
+#		echo > "$TMPDIR/sdl_image_deps.downloaded"
+#	fi
 
 	#pushd $TMPDIR
 	#unlzma libjpeg-6b-1.zip
 	#popd
 
+	#http://sourceforge.net/projects/libpng/files/libpng15/1.5.12/libpng-1.5.12.tar.gz/download
 	SDLImage_Deps_FOUND=1
 
-	if test -f /include/jpeglib.h; then
-		SDLImage_LIBJPEG_FOUND=1
-	else
-		SDLImage_Deps_FOUND=0
-		SDLImage_NEEDED="${SDLImage_NEEDED}, libjpeg-6b-1"
-	fi 
+	# *** LIBPNG ***
+	SDLImage_LIBPNG_FOUND=0
+	func_fetchdependency http://sourceforge.net/projects/libpng/files/libpng15/1.5.12/ libpng-1.5.12.tar.gz
+	func_confdependency libpng-1.5.12 ${BuildPrefix} 
+	func_makedependency libpng-1.5.12
+	func_makeinstall libpng-1.5.12
 
 	if test -f /include/png.h; then
 		SDLImage_LIBPNG_FOUND=1
 	else
 		SDLImage_Deps_FOUND=0
-		SDLImage_NEEDED="${SDLImage_NEEDED}, libpng-1.0.6-20000724, libpng-devel-1.0.6-20000724"
+		SDLImage_NEEDED="${SDLImage_NEEDED}, libpng-1.5.12"
 	fi 
 
-	if test -f /include/tiff.h; then
+	if test $SDLImage_LIBPNG_FOUND -eq 0; then
+		curd=`pwd`
+		$ECHO "$progname: 		"
+		$ECHO "$progname: 		Got problems installing libpng-1.5.12."
+		$ECHO "$progname: 		Please install manually."
+		exit 1
+	fi
+
+
+	# *** LIBJPEG ***
+	SDLImage_LIBJPEG_FOUND=0
+	func_fetchdependency http://sourceforge.net/projects/libjpeg/files/libjpeg/6b/ jpegsrc.v6b.tar.gz
+	func_confdependency jpeg-6b ${BuildPrefix} 
+	func_makedependency jpeg-6b
+	func_makeinstall jpeg-6b
+
+	if test -f /usr/include/png.h; then
+		SDLImage_LIBJPEG_FOUND=1
+	else
+		SDLImage_Deps_FOUND=0
+		SDLImage_NEEDED="${SDLImage_NEEDED}, jpeg-6b"
+	fi 
+
+	if test $SDLImage_LIBJPEG_FOUND -eq 0; then
+		curd=`pwd`
+		$ECHO "$progname: 		"
+		$ECHO "$progname: 		Got problems installing jpegsrc.v6b."
+		$ECHO "$progname: 		Please install manually."
+		exit 1
+	fi
+
+	# *** LIBTIFF ***
+	SDLImage_LIBTIFF_FOUND=0
+	func_fetchdependency ftp://ftp.remotesensing.org/pub/libtiff/ tiff-3.9.6.tar.gz
+	func_confdependency tiff-3.9.6 ${BuildPrefix} 
+	func_makedependency tiff-3.9.6
+	func_makeinstall tiff-3.9.6
+
+	if test -f /usr/include/tiff.h; then
 		SDLImage_LIBTIFF_FOUND=1
 	else
 		SDLImage_Deps_FOUND=0
-		SDLImage_NEEDED="${SDLImage_NEEDED}, libtiff-3.4-1, libtiff-devel-3.4-1"
+		SDLImage_NEEDED="${SDLImage_NEEDED}, tiff-3.9.6"
 	fi 
+
+	if test $SDLImage_LIBTIFF_FOUND -eq 0; then
+		curd=`pwd`
+		$ECHO "$progname: 		"
+		$ECHO "$progname: 		Got problems installing tiff-3.9.6."
+		$ECHO "$progname: 		Please install manually."
+		exit 1
+	fi
 
 
 	
@@ -222,7 +278,8 @@ func_do_sdlimage_pre ()
 		exit 1
 	fi
 	
-	func_confdependency libwebp-0.1.3 ${BuildPrefix} --enable-experimental 
+	#$ ./configure --enable-experimental  --prefix=/usr --with-pngincludedir=/usr/include --with-pnglibdir=/usr/lib --with-jpegincludedir=/usr/include --with-jpeglibdir=/usr/lib
+	func_confdependency libwebp-0.1.3 ${BuildPrefix} --enable-experimental --with-pngincludedir=/usr/include --with-pnglibdir=/usr/lib --with-jpegincludedir=/usr/include --with-jpeglibdir=/usr/lib
 	#func_confdependency libwebp-0.1.3 --prefix= --enable-experimental 
 	#SUBDIRS = src examples man
 	#SUBDIRS = src man
@@ -307,7 +364,7 @@ if test $MSYSTEM == "MINGW32"; then
 else
 	$ECHO "Not MSYSTEM."
 fi 
-func_build_project SDL_image-1.2.12 http://www.libsdl.org/projects/SDL_image/release/ SDL_image-1.2.12.tar.gz
+func_build_project SDL_image-1.2.12 http://www.libsdl.org/projects/SDL_image/release/ SDL_image-1.2.12.tar.gz ${ADDITIONAL}
 
 # **** SDL_net Library ****
 func_build_project SDL_net-1.2.8 http://www.libsdl.org/projects/SDL_net/release/ SDL_net-1.2.8.tar.gz

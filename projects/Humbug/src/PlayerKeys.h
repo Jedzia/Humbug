@@ -33,15 +33,15 @@ public:
 
     void HookIdle();
 
-    inline CPoint Char() const { return CPoint(charx, chary); }
+    CPoint Char() const { return CPoint(charx, chary); }
 
-    inline int CharX() const { return charx; }
+    int CharX() const { return charx; }
 
-    inline void CharX(int val) { charx = val; }
+    void CharX(int val) { charx = val; }
 
-    inline int CharY() const { return chary; }
+    int CharY() const { return chary; }
 
-    inline void CharY(int val) { chary = val; }
+    void CharY(int val) { chary = val; }
 
     friend std::ostream& operator<<(std::ostream& o, const PlayerKeys& r);
 

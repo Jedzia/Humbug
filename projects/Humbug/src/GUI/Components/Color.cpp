@@ -107,7 +107,7 @@ CColor::operator SDL_Color*()
 }
 
 //assignment operators
-CColor& CColor::operator=(CColor& Color)
+CColor& CColor::operator=(const CColor& Color)
 {
 	//set red
 	SetR(Color.GetR());
@@ -191,7 +191,10 @@ CColor& CColor::operator*=(int Multiplier)
 	if(Multiplier<=0)
 	{
 		//make color black
-		(*this)=CColor(0,0,0);
+		//(*this)=CColor(0,0,0);
+		SetR(0);
+		SetG(0);
+		SetB(0);
 	}
 	else
 	{
@@ -218,7 +221,10 @@ CColor& CColor::operator/=(int Divisor)
 	if(Divisor<=0)
 	{
 		//make color black
-		(*this)=CColor(0,0,0);
+		//(*this)=CColor(0,0,0);
+		SetR(0);
+		SetG(0);
+		SetB(0);
 	}
 	else
 	{
@@ -298,7 +304,12 @@ CColor CColor::Blue(Uint8 shade)
 CColor CColor::Yellow(Uint8 shade)
 {
 	//make color
+	//CColor a = Red(shade);
+	//CColor b = Green(shade);
+	//CColor result = a | b;
+	//CColor result = (((CColor)Red(shade)) | ((CColor)Green(shade)));
 	return(Red(shade)|Green(shade));
+	//return(result);
 }
 
 CColor CColor::Cyan(Uint8 shade)
@@ -474,14 +485,15 @@ CColor operator/(CColor& Color,int Divisor)
 }
 
 //bitwise operators
-CColor operator|(CColor& Color1,CColor& Color2)
+CColor operator|(const CColor& Color1,const CColor& Color2)
 {
 	//temp color
 	CColor Color3;
 	//assign color1
 	Color3=Color1;
 	//do operator with color2
-	Color1|=Color2;
+	// FUCK
+	//Color1|=Color2;
 	//return color
 	return(Color3);
 }
@@ -517,7 +529,8 @@ CColor operator~(CColor& Color)
 	//assign
 	Color3=Color;
 	//do operator
-	Color^=CColor(255,255,255);
+	// FUCKING SHIT, 
+	//Color^=CColor(255,255,255);
 	//return color
 	return(Color3);
 }

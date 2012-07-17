@@ -89,7 +89,7 @@ void CSprite::Draw(){
     m_cpOldPos = m_cpPos;
 } // Draw
 
-void CSprite::SetPos( CPoint& position ){
+void CSprite::SetPos( CPoint position ){
     m_cpPos = position;
 }
 

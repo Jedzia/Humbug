@@ -5,6 +5,7 @@
 #include "Console.h"
 #include "SDL.h"
 #include "../Visual/EventHandler.h"
+#include <string.h>
 
 //
 #include "DT_drawtext.h"
@@ -22,18 +23,22 @@
 //#include <vector>
 #include <map>
 
+#ifdef MSYS
+	//_CRTIMP char* __cdecl __MINGW_NOTHROW	strdup (const char*) __MINGW_ATTRIB_MALLOC;
+#endif
+
 //#include <build/cmake/include/debug.h>
 struct CConsole::CConsoleImpl {
    void Command_Handler(ConsoleInformation* console, char* command) {
         int argc;
            char* argv[128];
-           char* linecopy;
-        linecopy = strdup(command);
-           argc = splitline(argv, (sizeof argv)/(sizeof argv[0]), linecopy);
-           if(!argc) {
-                free(linecopy);
-                return;
-           }
+        //   char* linecopy;
+        //linecopy = strdup(command);
+       //    argc = splitline(argv, (sizeof argv)/(sizeof argv[0]), linecopy);
+       //    if(!argc) {
+       //         free(linecopy);
+      //          return;
+       //    }
         /*	This command handler is very stupid. Normally you would save your commands
                 using an array of char* and pointers to functions. You will need something like this
                 anyway if you want to make use of the tabfunction because you will have

@@ -79,13 +79,13 @@ public:
 	CRectangle GetClipRect ( ) ;
 
 	//solid color fill fill a rectangle
-	bool FillRect ( CRectangle& rect , CColor& color ) ;
+	bool FillRect ( CRectangle& rect , const CColor& color ) ;
 
 	//clear entire surface to a color
-	bool Clear ( CColor& color ) ;
+	bool Clear ( const CColor& color ) ;
 
 	//blit to this surface from another surface
-	bool Blit ( CRectangle& rectDst , const CCanvas& cnvSrc , CRectangle& rectSrc ) const;
+	bool Blit ( const CRectangle& rectDst , const CCanvas& cnvSrc , const CRectangle& rectSrc ) const;
 
 	//factory methods
 	//create an rgb surface of a particular format

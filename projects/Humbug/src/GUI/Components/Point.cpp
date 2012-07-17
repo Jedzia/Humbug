@@ -9,7 +9,7 @@ CPoint::CPoint ( int x , int y )
 	Set ( x , y ) ;
 }
 
-CPoint::CPoint ( CPoint& pt ) 
+CPoint::CPoint ( const CPoint& pt ) 
 {
 	//set x and y of the point
 	SetX ( pt.GetX ( ) ) ;
