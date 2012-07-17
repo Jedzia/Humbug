@@ -3,24 +3,25 @@
 //
 //////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
+
 //#include "windows.h"
 //#include <build/cmake/include/debug.h>
 //
 #include "Filesystem/FileLoader.h"
-#include "GUI/Visual/Console.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
-#include "GUI/Sprite/Sprite.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Controls/Button.h"
 #include "GUI/Hud.h"
+#include "GUI/Sprite/Sprite.h"
+#include "GUI/TileEngine/TileEngine.h"
+#include "GUI/Visual/Console.h"
 #include "PlayerKeys.h"
 #include "TestEventHandler.h"
-#include "TestTimer.h"
 #include "TestThread.h"
-#include "GUI/TileEngine/TileEngine.h"
-//#include "GUI/TileEngine/TileSet.h"
+#include "TestTimer.h"
 
+//#include "GUI/TileEngine/TileSet.h"
 /// <summary>
 /// This is called when the game should draw itself.
 /// </summary>
@@ -50,35 +51,41 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    m_pConsole(NULL), m_uiLastTicks(0), m_inActiveSprite(0), /*m_pTileSet(NULL),*/
-    m_uiLastTicks2(0), m_uiNumFrames(0), m_pKeyHandler(NULL), m_pKeyHandler2(NULL), m_pSprite(NULL), m_pSprite2(NULL),
-    m_pHud(NULL),m_inScreenDelta(0)
-    {
+    m_pConsole(NULL),
+    m_uiLastTicks(0),
+    m_inActiveSprite(0),
+    /*m_pTileSet(NULL),*/
+    m_uiLastTicks2(0),
+    m_uiNumFrames(0),
+    m_pKeyHandler(NULL),
+    m_pKeyHandler2(NULL),
+    m_pSprite(NULL),
+    m_pSprite2(NULL),
+    m_pHud(NULL),
+    m_inScreenDelta(0){
     //dbgOut(__FUNCTION__ << std::endl);
 //	_CRT_DEBUG_BLOCK
-
 }
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
     std::cout << "Killing the ~CTestEventHandler" << std::endl;
+
     //if(m_pHud) {
     //    delete m_pHud;
     //}
-
     //delete CControl::GetMainControl();
-
     //delete m_pMainCanvas;
     dbgOut(__FUNCTION__ << std::endl);
+
 //    const char* explanation = "XXXXXX THIS IS TESTEVENTHANDLER.CPP";
 //_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
-//************************************\n", explanation );
+// //************************************\n", explanation );
 //    _CrtDumpMemoryLeaks( );
 }
 
 //on cleanup
-void CTestEventHandler::OnExit()
-{
+void CTestEventHandler::OnExit(){
     //destroy timer
     delete m_pTestTimer;
 
@@ -86,17 +93,16 @@ void CTestEventHandler::OnExit()
     delete m_pTestThread;
 
     //destroy font
-	TTF_CloseFont(CButton::GetButtonFont());
+    TTF_CloseFont( CButton::GetButtonFont() );
 
-	//shut down font system
-	TTF_Quit();
+    //shut down font system
+    TTF_Quit();
 
-	//delete main canvas
-	delete m_pMainCanvas;
+    //delete main canvas
+    delete m_pMainCanvas;
 
-	//delete main control
-	delete CControl::GetMainControl();
-
+    //delete main control
+    delete CControl::GetMainControl();
     delete m_pSprite;
     delete m_pSprite2;
     delete m_pBackground;
@@ -104,16 +110,14 @@ void CTestEventHandler::OnExit()
 
     //delete m_pTileSet;
     delete m_pTileEngine;
-
     delete m_pKeyHandler;
     delete m_pKeyHandler2;
     delete m_pConsole;
     delete fl;
-}
+} // OnExit
 
 //initialization
 bool CTestEventHandler::OnInit(int argc, char* argv[]){
-
     //initialize parent class
     CEventHandler::OnInit(argc, argv);
 
@@ -123,25 +127,23 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //video_flags = SDL_OPENGL;
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
     //video_flags = SDL_ANYFORMAT;
-    video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF;
-    //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
+    video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 
+    //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
     //SDL_EnableKeyRepeat(100, 1);
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL/2);
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
-
     //construct main canvas
     m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    //m_pDrawCanvas = m_pMainCanvas;
 
+    //m_pDrawCanvas = m_pMainCanvas;
     //CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
     //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
     //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
     //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
     //CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
-
     // move this to the application class
-    m_uiStartTime  = SDL_GetTicks();
+    m_uiStartTime = SDL_GetTicks();
 
     //m_pDisplaySurface=m_pMainCanvas->GetSurface ( );
     //m_pDisplaySurface=SDL_SetVideoMode(1024,768,0,video_flags);
@@ -162,11 +164,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //create main control
     CControl* mainControl = new CControl(m_pMainCanvas);
 
-	//initialize sdl_ttf
-	TTF_Init();
+    //initialize sdl_ttf
+    TTF_Init();
 
-	//load in button font. Todo: Error Checking
-	CButton::SetButtonFont(TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf",15));
+    //load in button font. Todo: Error Checking
+    CButton::SetButtonFont( TTF_OpenFont(
+                    "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 15) );
 
     //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
@@ -175,62 +178,67 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     CTileSet* tileSet = NULL;
-   try
+    try
     {
-
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
         m_pHud = new Hud(*fl, mainControl, new HudBackground(*fl, "Hud/footer.png"), 0);
+
         //create a button
-        new CButton(m_pHud,CRectangle(100,100,150,25),1,"Come on, Press me!");
+        new CButton(m_pHud, CRectangle(100, 100, 150, 25), 1, "Come on, Press me!");
+
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
-
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
+        {
+            SDL_Surface* loadsurf;
+            SDL_Surface* tmpsurf;
 
-		{
-            SDL_Surface *loadsurf;
-	        SDL_Surface *tmpsurf;
-			//tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
-			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->LoadImg("Moo.png") );
-			// delete loadsurf;
-			CCanvas tmpCanvas(tmpsurf);
-			CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768-320);
-			testCanvas->Blit(tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-	        m_pBackground = testCanvas;
-	        //delete tmpsurf;
-			//SDL_FreeSurface( loadsurf );
+            //tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
+            tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->LoadImg("Moo.png") );
+
+            // delete loadsurf;
+            CCanvas tmpCanvas(tmpsurf);
+            CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+            testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
+            m_pBackground = testCanvas;
+
+            //delete tmpsurf;
+            //SDL_FreeSurface( loadsurf );
             fl->FreeLast();
-			//SDL_FreeSurface( tmpsurf );
-		}
+
+            //SDL_FreeSurface( tmpsurf );
+        }
+
         //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
-
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
-        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->LoadImg("icons/blue.png"));
+        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->LoadImg("icons/blue.png") );
         fl->FreeLast();
+
         //SDL_FreeSurface( loadsurf );
         //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ), true );
+
         //m_pSprite = new CSprite(m_pMainCanvas, m_pBlue);
         {
-            SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( fl->LoadImg("icons/red.png"));
+            SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( fl->LoadImg("icons/red.png") );
             CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
             fl->FreeLast();
-            m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas, true ), m_pBackground, true);
+            m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
+                            true ), m_pBackground, true);
         }
 
         //CRectangle spr2Dim(0,0,32,32);
         //m_pSprite2 = new CSprite(m_pMainCanvas,
-        //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim ),
+        //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim
+        // ),
         //    m_pBackground, spr2Dim, CPoint(32,0));
-
-        m_pSprite2 = new CSprite(*fl, "Sprites/Voiture.bmp", m_pMainCanvas,
-                         CRectangle(0,0,32,32), CPoint(32,0));
+        m_pSprite2 = new CSprite( *fl, "Sprites/Voiture.bmp", m_pMainCanvas,
+                CRectangle(0, 0, 32, 32), CPoint(32, 0) );
 
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);
         //SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
-
         CTileImageSetup tilesetup;
         tilesetup.BitmapIdentifier = "Tiles1";
         tilesetup.TileWidth = 64;
@@ -240,68 +248,64 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         tilesetup.TransparentX = 0;
         tilesetup.TransparentY = 0;
         tilesetup.Sequences = 0;
+        tileSet = new CTileSet( m_pMainCanvas, new CTileImage(*fl, "Tiles1.bmp", tilesetup),
+                m_pBackground, CRectangle(0, 0, 1024, 768 - 320) );
 
-        tileSet = new CTileSet(m_pMainCanvas, new CTileImage(*fl, "Tiles1.bmp", tilesetup),
-            m_pBackground, CRectangle(0,0,1024, 768 - 320) );
         // fl->Free("Tiles1.bmp");
-
-
-   }
+    }
     catch (FileLoaderException ex)
     {
         std::cout << ex.what() << std::endl;
 
         //m_imp_ptr.reset();
     }
-
     m_pDrawCanvas = m_pBackground;
 
     //m_pTileSet->GetTileImage()->ShowTiles(m_pBackground);
     //CTile tile = m_pTileSet->CreateTile(1);
     //tile.Draw(m_pBackground, CPoint(200,300));
-
     m_pTileEngine = new CTileEngine(m_pMainCanvas, m_pBackground);
     m_pTileEngine->AddTileSet(tileSet);
-
     CTileEngine& eng = (*m_pTileEngine);
     (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles(m_pBackground);
     CTile tile1 = eng["Tiles1"]->CreateTile(0);
     CTile tile2 = eng["Tiles1"]->CreateTile(1);
     CTile tile3 = eng["Tiles1"]->CreateTile(2);
     CTile tile4 = eng["Tiles1"]->CreateTile(3);
-    for (int i = 0; i < 20 ; i+=4)
+
+    for (int i = 0; i < 20; i += 4)
     {
         const int xdiff = 300;
-        tile1.Draw(m_pBackground, CPoint(xdiff *i,300));
-        tile2.Draw(m_pBackground, CPoint(xdiff *(i+1),300));
-        tile3.Draw(m_pBackground, CPoint(xdiff *(i+2),300));
-        tile4.Draw(m_pBackground, CPoint(xdiff *(i+3),300));
+        tile1.Draw( m_pBackground, CPoint(xdiff * i, 300) );
+        tile2.Draw( m_pBackground, CPoint(xdiff * (i + 1), 300) );
+        tile3.Draw( m_pBackground, CPoint(xdiff * (i + 2), 300) );
+        tile4.Draw( m_pBackground, CPoint(xdiff * (i + 3), 300) );
     }
-
     //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
-    //SDL_Surface* ddd = IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
+    //SDL_Surface* ddd =
+    // IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );
     //m_pBlue = new CImage( new CCanvas( ddd ) );
     // m_pHud = new Hud(fl, m_pMainCanvas);
     //m_pHud->Draw();
     //SDL_Flip( m_pMainCanvas->GetSurface( ) );   //Refresh the screen
     //success
+    m_pKeyHandler = new PlayerKeys(200, 200);
+    m_pKeyHandler2 = new PlayerKeys(400, 200);
+    new TestHookable();
+    new TestHookable();
+    new TestHookable();
+    new TestHookable();
 
-    m_pKeyHandler = new PlayerKeys(200,200);
-    m_pKeyHandler2 = new PlayerKeys(400,200);
-
-    new TestHookable();
-    new TestHookable();
-    new TestHookable();
-    new TestHookable();
     //Hookable::Close();
-    m_pConsole = new CConsole(this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp",
-        m_pMainCanvas, 100, CRectangle(0,0,0,300));
+    m_pConsole =
+        new CConsole( this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp",
+                m_pMainCanvas, 100, CRectangle(0, 0, 0,
+                        300) );
     return(true);
 } // OnInit
 
 void CTestEventHandler::PutBlue(){
-
     if(m_pHud /*!= NULL && m_pHud->HasMouseHover()*/) {
         int zz = 3;
         zz = 5;
@@ -315,76 +319,83 @@ void CTestEventHandler::PutBlue(){
 
         //m_pMainCanvas->AddUpdateRect(rmfull);
     }
+
     static int x = 0;
     static int y = 25;
     {
         //static CPoint bluePointOld(pfx,pfy);
         //CPoint bluePoint(pfx,pfy);
-        static CPoint bluePointOld(m_pKeyHandler->Char());
-        CPoint bluePoint(m_pKeyHandler->Char());
+        static CPoint bluePointOld( m_pKeyHandler->Char() );
+        CPoint bluePoint( m_pKeyHandler->Char() );
         CRectangle bluerect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
-        //CRectangle bluerectOld(bluePointOld, CPoint(74,74));
 
+        //CRectangle bluerectOld(bluePointOld, CPoint(74,74));
         //SDL_SetColorKey(m_pBlue->GetCanvas()->GetSurface(),SDL_SRCCOLORKEY, 0xAAAAAA);
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA /*| SDL_RLEACCEL*/, 44);
-
         //int res = SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 255);
         //int res = SDL_SetAlpha(m_pHud->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
         CRectangle bluerectOld(m_pBlue->GetCanvas()->GetDimension() + bluePointOld);
-		m_pMainCanvas->Lock();
+        m_pMainCanvas->Lock();
+
         //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
         m_pBlue->Put(m_pMainCanvas, bluePoint);
-		m_pMainCanvas->Unlock();
-
+        m_pMainCanvas->Unlock();
         m_pMainCanvas->AddUpdateRect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
         m_pMainCanvas->AddUpdateRect(bluerectOld);
         bluePointOld = bluePoint;
     }
-
     /*else {
         x = 0;
         y += 25;
-    }*/
-
-    x+=1;
+       }*/
+    x += 1;
 
     if(y>1024) {
         y = 0;
         x = 0;
+
         //SendMessageQ(MSGID_ClearScreen);
     }
-}
+} // PutBlue
 
 //idle behavior - Draw the stuff
 void CTestEventHandler::OnIdle(){
     Uint32 now, diff;
     now = SDL_GetTicks();
     diff = now - m_uiLastTicks;
+
     if(diff > 20) {
-    m_pKeyHandler->HookIdle();
-    m_pKeyHandler2->HookIdle();
+        m_pKeyHandler->HookIdle();
+        m_pKeyHandler2->HookIdle();
+
         //fprintf(stdout, "IDL-Ticks: '%d' (%d diff)\n", now, diff);
         m_uiLastTicks = now;
-       }
+    }
 
     m_pMainCanvas->Lock();
 
     //update controls
     CRectangle& screenrect = m_pMainCanvas->GetDimension();
+
     //m_pBackground->Blit(screenrect, m_pMainCanvas, screenrect);
     //m_pBackground->UpdateRects();
-    //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Intersect( m_pHud->GetCanvas()->GetDimension());
-    //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Union( m_pHud->GetCanvas()->GetDimension());
-    CRectangle screenWithoutHud(0,0, m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH()
-        -  m_pHud->GetCanvas()->GetDimension().GetH());
+    //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Intersect(
+    // m_pHud->GetCanvas()->GetDimension());
+    //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Union(
+    // m_pHud->GetCanvas()->GetDimension());
+    CRectangle screenWithoutHud( 0, 0,
+            m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH() -
+            m_pHud->GetCanvas()->GetDimension().GetH() );
+
     //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
     //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
     static int scrdel = 0;
-    scrdel+=m_inScreenDelta;
-    m_pMainCanvas->Blit(screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel,0) );
+    scrdel += m_inScreenDelta;
+    m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0) );
 
     //m_pHud->Invalidate();
     CControl::Redraw();
+
     //m_pHud->Draw();
     //PutBlue();
     //for (int i = 0; i < 50 ; i++)
@@ -398,17 +409,18 @@ void CTestEventHandler::OnIdle(){
     //m_pMainCanvas->Flip();
     // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
     //m_pMainCanvas->ClearUpdateRects();
-    if(m_inScreenDelta != 0)
-        m_pMainCanvas->AddUpdateRect(CRectangle(0,0,m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight()- m_pHud->GetHeight()));
+    if(m_inScreenDelta != 0) {
+        m_pMainCanvas->AddUpdateRect( CRectangle( 0, 0, m_pMainCanvas->GetWidth(),
+                        m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
+    }
+
     m_pMainCanvas->UpdateRects ( );
-
     m_pMainCanvas->Unlock();
-
     static int spr2pic = 0;
     m_pSprite2->SprOffset(spr2pic);
     spr2pic++;
-    if (spr2pic == 16)
-    {
+
+    if (spr2pic == 16) {
         spr2pic = 0;
     }
 
@@ -425,29 +437,27 @@ void CTestEventHandler::Update(){
         fprintf(stdout, "UPD-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks2 = now;
        }*/
-    m_pSprite->SetPos(m_pKeyHandler->Char()/* + CPoint(50,50)*/);
-    m_pSprite2->SetPos(m_pKeyHandler2->Char());
+    m_pSprite->SetPos(m_pKeyHandler->Char() /* + CPoint(50,50)*/);
+    m_pSprite2->SetPos( m_pKeyHandler2->Char() );
 
     // call base method.
     CApplication::Update();
 }
 
 //event handling
-void CTestEventHandler::OnEvent(SDL_Event* pEvent)
-{
-    if(m_pConsole->OnEvent(pEvent))
-    {
+void CTestEventHandler::OnEvent(SDL_Event* pEvent){
+    if( m_pConsole->OnEvent(pEvent) ) {
         //SendMessageQ(MSGID_ClearScreen);
         //OnIdle();
         return;
     }
+
     CEventHandler::OnEvent(pEvent);
-    if (m_inActiveSprite == 0)
-    {
+
+    if (m_inActiveSprite == 0) {
         m_pKeyHandler->HookEventloop(pEvent);
     }
-    else if (m_inActiveSprite == 1)
-    {
+    else if (m_inActiveSprite == 1)   {
         m_pKeyHandler2->HookEventloop(pEvent);
     }
 }
@@ -473,60 +483,61 @@ void CTestEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely
 //key press
 void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     const int step = 6;
+
     if( sym == SDLK_ESCAPE ) {
         //send clear screen message
         SendMessageQ(MSGID_QuitApp);
     }
-    else if( sym == SDLK_LEFT ) {
+    else if( sym == SDLK_LEFT )   {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor::Green() );
         m_pMainCanvas->AddUpdateRect(frect);
     }
-    else if( sym == SDLK_RIGHT ) {
+    else if( sym == SDLK_RIGHT )   {
         //
         CRectangle frect(100, 200, 45, 45);
         m_pMainCanvas->FillRect( frect, CColor::Blue() );
         m_pMainCanvas->AddUpdateRect(frect);
     }
-    else if( sym == SDLK_UP ) {
+    else if( sym == SDLK_UP )   {
         //
         CRectangle frect(100, 200, 45, 45);
-        m_pMainCanvas->FillRect( frect, CColor(255,255,0) );
+        m_pMainCanvas->FillRect( frect, CColor(255, 255, 0) );
         m_pMainCanvas->AddUpdateRect(frect);
     }
-    else if( sym == SDLK_DOWN ) {
+    else if( sym == SDLK_DOWN )   {
         //
         CRectangle frect(100, 200, 45, 45);
-        m_pMainCanvas->FillRect( frect, CColor(255,255,255) );
+        m_pMainCanvas->FillRect( frect, CColor(255, 255, 255) );
         m_pMainCanvas->AddUpdateRect(frect);
     }
-    else if( sym == SDLK_b ) {
+    else if( sym == SDLK_b )   {
         //
         m_pBackground->Clear( CColor(0, 0, 0) );
-        m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
+        m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
     }
-    else if( sym == SDLK_F1 ) {
+    else if( sym == SDLK_F1 )   {
         //
         m_inActiveSprite ^= 1;
     }
-    else if( mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE ) {
+    else if( mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE )   {
         // toggle console
         m_pConsole->Toggle();
     }
-    else if( sym == SDLK_a ) {
+    else if( sym == SDLK_a )   {
         // toggle console
         m_inScreenDelta++;
     }
-    else if( sym == SDLK_d ) {
+    else if( sym == SDLK_d )   {
         // toggle console
         m_inScreenDelta--;
     }
-    else if( sym == SDLK_c ) {
+    else if( sym == SDLK_c )   {
         //send clear screen message
         SendMessageQ(MSGID_ClearScreen);
     }
-}
+} // OnKeyDown
 
 //message handler
 bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSGPARM Parm3,
@@ -549,10 +560,12 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
         }
 
         m_pMainCanvas->Clear( CColor(0, 0, 0) );
+
         if(m_pHud) {
             m_pHud->Invalidate();
             m_pHud->Draw();
         }
+
         m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
 
         //update the screen
@@ -578,16 +591,15 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
             //set pixel
             //m_pDrawCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
             CRectangle frect( (Sint16)Parm1, (Sint16)Parm2, 1, 1 );
+
             //m_pMainCanvas->FillRect(frect, CColor::Red());
             //m_pDrawCanvas->AddUpdateRect(frect);
+            m_pBlue->Put( m_pDrawCanvas, CPoint( (Sint16)Parm1, (Sint16)Parm2 ) );
 
-            m_pBlue->Put(m_pDrawCanvas, CPoint((Sint16)Parm1, (Sint16)Parm2));
-            for (int i = 0; i < 50 ; i++)
-            {
-	            m_pMainCanvas->AddUpdateRect(CRectangle( (Sint16)Parm1, (Sint16)Parm2
-	                , m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ));
+            for (int i = 0; i < 50; i++) {
+                m_pMainCanvas->AddUpdateRect( CRectangle( (Sint16)Parm1, (Sint16)Parm2,
+                                m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ) );
             }
-
 //            m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1,
 //             (Sint16)Parm2+1));
             //unlock
@@ -605,9 +617,9 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
 //event filtering
 bool CTestEventHandler::FilterEvent(SDL_Event* pEvent){
     /*if(m_pConsole->OnEvent(pEvent))
-    {
+       {
         return true;
-    }*/
+       }*/
     return( CControl::FilterEvent(pEvent) );
 }
 
