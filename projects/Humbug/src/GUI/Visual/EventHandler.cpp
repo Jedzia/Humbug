@@ -11,7 +11,6 @@ MSGID CEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 
 //constructor
 CEventHandler::CEventHandler()
-:m_Hooks(this)
 {
     //do nothing
 }

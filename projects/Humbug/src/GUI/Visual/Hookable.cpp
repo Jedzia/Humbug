@@ -13,6 +13,7 @@ boost::ptr_vector<Hookable> Hookable::m_pvHooks;
 
 Hookable::Hookable(CEventHandler* master)
 {
+    dbgOut(__FUNCTION__ << " Hookable master ctor"<< std::endl);
     //dbgOut("Hookable master ctor" << std::endl);
     //std::cout.flush();
     //std::cerr << "Hookable master ctor" << std::endl;
@@ -31,16 +32,17 @@ Hookable::Hookable(CEventHandler* master)
 
 Hookable::Hookable(Hookable* hook)
 {
+    dbgOut(__FUNCTION__ << " Hookable child ctor " << this << std::endl);
     //std::cout << "Hookable child ctor" << std::endl;
          m_pvHooks.push_back(hook);
 }
 
 Hookable::~Hookable(void)
 {
-    dbgOut(__FUNCTION__ << " Hookable dtor"<< std::endl);
+    dbgOut(__FUNCTION__ << " Hookable dtor " << this << std::endl);
          if (IsMaster())
          {
-             dbgOut(__FUNCTION__ << " Hookable dtor master kill" << std::endl);
+             dbgOut(__FUNCTION__ << " Hookable dtor master kill " << this << std::endl);
             m_pvHooks.release();
          }
 }
@@ -53,7 +55,7 @@ bool Hookable::IsMaster() const
 
 void Hookable::Close()
 {
-    std::cout << "Releasing Hookable children." << std::endl;
+    std::cout << "Releasing Hookable children. size=" << m_pvHooks.size() << std::endl;
     m_pvHooks.release();
 }
 

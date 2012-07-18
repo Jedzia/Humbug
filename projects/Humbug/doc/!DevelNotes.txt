@@ -2,3 +2,127 @@ Check for boost usage:
 
 root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
 $ grep -li -R boost * | grep -v \.svn
+
+
+-X-X-X-X- Mi, 18 Jul 2012 03:37:39 -----------------------------------------------------------
+MinGW, Debugging:
+
+$ gdb Humbug.exe
+GNU gdb (GDB) 7.2
+Copyright (C) 2010 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "mingw32".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from d:\E\Projects\C++\Humbug\msysbuild\Humbug\src/Humbug.exe...done.
+(gdb) r
+Starting program: d:\E\Projects\C++\Humbug\msysbuild\Humbug\src/Humbug.exe
+[New Thread 1608.0xa64]
+[New Thread 1608.0x860]
+[New Thread 1608.0x518]
+[New Thread 1608.0xc28]
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0042045f in boost::checked_delete<Hookable const> (x=0xfeeefeee)
+    at d:/boost/boost-1.50.0/boost/checked_delete.hpp:34
+34          delete x;
+(gdb) h
+List of classes of commands:
+
+aliases -- Aliases of other commands
+breakpoints -- Making program stop at certain points
+data -- Examining data
+files -- Specifying and examining files
+internals -- Maintenance commands
+obscure -- Obscure features
+running -- Running the program
+stack -- Examining the stack
+status -- Status inquiries
+support -- Support facilities
+tracepoints -- Tracing of program execution without stopping the program
+user-defined -- User-defined commands
+
+Type "help" followed by a class name for a list of commands in that class.
+Type "help all" for the list of all commands.
+Type "help" followed by command name for full documentation.
+Type "apropos word" to search for commands related to "word".
+Command name abbreviations are allowed if unambiguous.
+(gdb) stack
+Undefined command: "stack".  Try "help".
+(gdb) h stack
+Examining the stack.
+The stack is made up of stack frames.  Gdb assigns numbers to stack frames
+counting from zero for the innermost (currently executing) frame.
+
+At any time gdb identifies one frame as the "selected" frame.
+Variable lookups are done with respect to the selected frame.
+When the program being debugged stops, gdb selects the innermost frame.
+The commands below can be used to select other frames by number or address.
+
+List of commands:
+
+backtrace -- Print backtrace of all stack frames
+bt -- Print backtrace of all stack frames
+down -- Select and print stack frame called by this one
+frame -- Select and print a stack frame
+return -- Make selected stack frame return to its caller
+select-frame -- Select a stack frame without printing anything
+up -- Select and print stack frame that called this one
+
+Type "help" followed by command name for full documentation.
+Type "apropos word" to search for commands related to "word".
+Command name abbreviations are allowed if unambiguous.
+(gdb) backtrace
+#0  0x0042045f in boost::checked_delete<Hookable const> (x=0xfeeefeee)
+    at d:/boost/boost-1.50.0/boost/checked_delete.hpp:34
+#1  0x004203f5 in boost::delete_clone<Hookable> (r=0xfeeefeee)
+    at d:/boost/boost-1.50.0/boost/ptr_container/clone_allocator.hpp:56
+#2  0x0042068d in boost::heap_clone_allocator::deallocate_clone<Hookable> (r=0xfeeefeee)
+    at d:/boost/boost-1.50.0/boost/ptr_container/clone_allocator.hpp:74
+#3  0x00420db1 in boost::ptr_container_detail::reversible_ptr_container<boost::ptr_container_detail::sequence_config<Hoo
+kable, std::vector<void*, std::allocator<void*> > >, boost::heap_clone_allocator>::null_clone_allocator<false>::dealloca
+te_clone (x=0xfeeefeee) at d:/boost/boost-1.50.0/boost/ptr_container/detail/reversible_ptr_container.hpp:126
+#4  0x00420dc5 in boost::ptr_container_detail::reversible_ptr_container<boost::ptr_container_detail::sequence_config<Hoo
+kable, std::vector<void*, std::allocator<void*> > >, boost::heap_clone_allocator>::null_policy_deallocate_clone (
+    x=0xfeeefeee) at d:/boost/boost-1.50.0/boost/ptr_container/detail/reversible_ptr_container.hpp:276
+#5  0x00420e55 in boost::ptr_container_detail::reversible_ptr_container<boost::ptr_container_detail::sequence_config<Hoo
+kable, std::vector<void*, std::allocator<void*> > >, boost::heap_clone_allocator>::remove<boost::void_ptr_iterator<__gnu
+_cxx::__normal_iterator<void**, std::vector<void*, std::allocator<void*> > >, Hookable> > (this=0xd4ffe0, i=...)
+    at d:/boost/boost-1.50.0/boost/ptr_container/detail/reversible_ptr_container.hpp:250
+#6  0x00420e72 in boost::ptr_container_detail::reversible_ptr_container<boost::ptr_container_detail::sequence_config<Hoo
+kable, std::vector<void*, std::allocator<void*> > >, boost::heap_clone_allocator>::remove<boost::void_ptr_iterator<__gnu
+_cxx::__normal_iterator<void**, std::vector<void*, std::allocator<void*> > >, Hookable> > (this=0xd4ffe0,
+    first=..., last=...) at d:/boost/boost-1.50.0/boost/ptr_container/detail/reversible_ptr_container.hpp:257
+#7  0x00420d4e in boost::ptr_container_detail::reversible_ptr_container<boost::ptr_container_detail::sequence_config<Hoo
+kable, std::vector<void*, std::allocator<void*> > >, boost::heap_clone_allocator>::remove_all (this=0xd4ffe0)
+    at d:/boost/boost-1.50.0/boost/ptr_container/detail/reversible_ptr_container.hpp:218
+#8  0x00420ebe in boost::ptr_container_detail::reversible_ptr_container<boost::ptr_container_detail::sequence_config<Hoo
+kable, std::vector<void*, std::allocator<void*> > >, boost::heap_clone_allocator>::~reversible_ptr_container (
+    this=0xd4ffe0, __in_chrg=<value optimized out>)
+    at d:/boost/boost-1.50.0/boost/ptr_container/detail/reversible_ptr_container.hpp:465
+#9  0x004211c9 in boost::ptr_sequence_adapter<Hookable, std::vector<void*, std::allocator<void*> >, boost::heap_clone_al
+locator>::~ptr_sequence_adapter (this=0xd4ffe0, __in_chrg=<value optimized out>)
+    at d:/boost/boost-1.50.0/boost/ptr_container/ptr_sequence_adapter.hpp:132
+#10 0x00420175 in boost::ptr_vector<Hookable, boost::heap_clone_allocator, std::allocator<void*> >::~ptr_vector (
+    this=0xd4ffe0, __in_chrg=<value optimized out>) at d:/boost/boost-1.50.0/boost/ptr_container/ptr_vector.hpp:35
+#11 0x00428c34 in std::auto_ptr<boost::ptr_vector<Hookable, boost::heap_clone_allocator, std::allocator<void*> > >::~aut
+o_ptr (this=0x22fdcc, __in_chrg=<value optimized out>)
+    at c:/mingw/bin/../lib/gcc/i686-pc-mingw32/4.5.4/include/c++/backward/auto_ptr.h:168
+#12 0x00402dc6 in _fu3___ZSt4cout (this=0x43b288, __in_chrg=<value optimized out>)
+    at d:/E/Projects/C++/Humbug/projects/Humbug/src/GUI/Visual/Hookable.cpp:44
+#13 0x00401afe in CEventHandler::~CEventHandler (this=0x43b280, __in_chrg=<value optimized out>)
+    at d:/E/Projects/C++/Humbug/projects/Humbug/src/GUI/Visual/EventHandler.cpp:20
+#14 0x00404a09 in _fu17___ZSt4cout (this=0x43b280, __in_chrg=<value optimized out>)
+    at d:/E/Projects/C++/Humbug/projects/Humbug/src/TestEventHandler.cpp:71
+#15 0x004074b7 in __tcf_6 () at d:/E/Projects/C++/Humbug/projects/Humbug/src/TestEventHandler.cpp:627
+#16 0x77c39e24 in msvcrt!_initterm () from C:\WINDOWS\system32\msvcrt.dll
+#17 0x77c39e90 in msvcrt!exit () from C:\WINDOWS\system32\msvcrt.dll
+#18 0x00419ba0 in console_main (argc=1, argv=0xd47a08) at ./src/main/win32/SDL_win32_main.c:318
+#19 0x00419c48 in WinMain (hInst=0x400000, hPrev=0x0, szCmdLine=0x241f19 "", sw=10)
+    at ./src/main/win32/SDL_win32_main.c:398
+#20 0x00419286 in main ()
+(gdb)
+-----------------------------------------------------------------------------------------------

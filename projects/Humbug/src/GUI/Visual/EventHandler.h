@@ -11,7 +11,6 @@
 class CEventHandler : public CApplication  
 {
 private:
-	Hookable m_Hooks;
 public:
     static MSGID MSGID_QuitApp;//no parms
     

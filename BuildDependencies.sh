@@ -16,7 +16,7 @@ BuildRoot="/usr"
 BuildPrefix="--prefix=${BuildRoot}"
 
 ADD_CPPFLAGS="-I${BuildRoot}/include"
-ADD_LDFLAGS="-L${BuildRoot}/lib"
+ADD_LDFLAGS="-L${BuildRoot}/lib --subsystem,windows"
 ADDITIONAL="CPPFLAGS=${ADD_CPPFLAGS} LDFLAGS=${ADD_LDFLAGS}"
 
 
@@ -326,8 +326,8 @@ func_do_sdlttf_pre ()
 		func_confdependency freetype-2.4.10 ${BuildPrefix}
 		func_makedependency freetype-2.4.10
 		func_makeinstall freetype-2.4.10
-		cp $TMPDIR/freetype-2.4.10/devel/ft2build.h  $TMPDIR/$1
-		cp $TMPDIR/freetype-2.4.10/devel/ftoption.h  $TMPDIR/$1
+		cp $TMPDIR/freetype-2.4.10/devel/ft2build.h  $TMPDIR/$1/
+		cp $TMPDIR/freetype-2.4.10/devel/ftoption.h  $TMPDIR/$1/
 		SDLTTF_Deps_FOUND=1
 	fi	
 
@@ -370,6 +370,7 @@ func_build_project SDL_image-1.2.12 http://www.libsdl.org/projects/SDL_image/rel
 func_build_project SDL_net-1.2.8 http://www.libsdl.org/projects/SDL_net/release/ SDL_net-1.2.8.tar.gz
 
 # **** SDL_mixer Library ****
+#all: $(srcdir)/configure Makefile $(objects) $(objects)/$(TARGET) $(objects)/playwave$(EXE) $(objects)/playmus$(EXE)
 #if test $MSYSTEM == "MINGW32"; then
 #	func_do_sdlmixer_pre
 #fi 

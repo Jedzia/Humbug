@@ -51,6 +51,7 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
+	m_Hooks(this),
     m_pConsole(NULL),
     m_uiLastTicks(0),
     m_inActiveSprite(0),
@@ -86,6 +87,9 @@ CTestEventHandler::~CTestEventHandler(){
 
 //on cleanup
 void CTestEventHandler::OnExit(){
+
+    Hookable::Close();
+
     //destroy timer
     delete m_pTestTimer;
 
@@ -297,7 +301,6 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     new TestHookable();
     new TestHookable();
 
-    //Hookable::Close();
     m_pConsole =
         new CConsole( this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp",
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
