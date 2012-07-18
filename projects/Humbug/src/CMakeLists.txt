@@ -331,8 +331,10 @@ TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLGFX_LIBRARY})
 
-# Problems here, the c part of the project does not compile with gch
-#ADD_PRECOMPILED_HEADER(Humbug stdafx.h stdafx.h.gch)
+# A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
+# B) individual sources specified: target, header-file, precompiled header, 
+#    warn on invalid header(-Winvalid-pch), source files with header
+ADD_PRECOMPILED_HEADER(Humbug stdafx.h stdafx.h.gch TRUE "${Humbug_sources}")
 
 #SET_SOURCE_FILES_PROPERTIES( main.cpp
 #       PROPERTIES OBJECT_DEPENDS ${CppStructz_DLL_DEBUG}

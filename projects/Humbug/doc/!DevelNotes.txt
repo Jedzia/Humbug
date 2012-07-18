@@ -4,6 +4,28 @@ root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
 $ grep -li -R boost * | grep -v \.svn
 
 
+
+-X-X-X-X- Mi, 18 Jul 2012 18:06:30 -----------------------------------------------------------
+Humbug, MinGW-pch benchmark:
+
+root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+$ time (make clean && make Humbug)
+
+without pch:
+	real    3m10.703s
+	user    0m8.034s
+	sys     0m6.295s
+
+with pch:
+	real    1m46.875s
+	user    0m8.281s
+	sys     0m6.167s
+
+  IF(PCHSUPPORT_CMAKE_DEBUG)
+
+  ENDIF()
+	
+-----------------------------------------------------------------------------------------------
 -X-X-X-X- Mi, 18 Jul 2012 06:04:29 -----------------------------------------------------------
 MinGW, pch:
 
