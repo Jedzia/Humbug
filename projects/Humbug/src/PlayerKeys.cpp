@@ -21,6 +21,10 @@
 
 //#include <build/cmake/include/debug.h>
 PlayerKeys::PlayerKeys(int x, int y) :
+	upup(false),
+	downup(false),
+	leftup(false),
+	rightup(false),
     charx(x),
     chary(y),
     charxvel(0),

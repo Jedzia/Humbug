@@ -20,7 +20,8 @@ if ( CYGWIN )
 endif( CYGWIN )
 
 PROJECT( Humbug )
-SET(CMAKE_BUILD_TYPE Debug)
+#SET(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_BUILD_TYPE "Debug"  CACHE STRING "CMake Build Type")
 
 SET(P_ROOT_PATH "${CMAKE_SOURCE_DIR}/../")
 SET(P_BUILD_PATH "${CMAKE_SOURCE_DIR}/build")
@@ -96,3 +97,5 @@ MESSAGE(STATUS "SDL_LIBRARY_BLA is ${SDL_LIBRARY_BLA}")
 MESSAGE(STATUS "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
 MESSAGE(STATUS "SDL_LIBRARY is ${SDL_LIBRARY}")
 message(STATUS "================================================================================")
+
+#MESSAGE(STATUS "CMAKE_CFG_INTDIR is ${CMAKE_CFG_INTDIR}")
