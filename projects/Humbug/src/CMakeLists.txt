@@ -20,7 +20,8 @@ PROJECT( Humbug )
 
 MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
 INCLUDE (BoostExtensions)
-INCLUDE (PCHSupport_MSVC)
+#INCLUDE (PCHSupport_MSVC)
+INCLUDE (PCHSupport)
 INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
 INCLUDE (PackageCreate)
@@ -216,6 +217,7 @@ INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 
+# Move to bindings
 IF(LINUX)
   INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
 ENDIF(LINUX)
@@ -228,12 +230,13 @@ IF(SDLIMAGE_FOUND)
   ADD_DEFINITIONS("-DHAVE_SDLIMAGE")
 ENDIF(SDLIMAGE_FOUND)
 
+# Move to bindings
 IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
-QT4_ADD_RESOURCES(res_outfiles ${Humbug_resfiles} )
+#QT4_ADD_RESOURCES(res_outfiles ${Humbug_resfiles} )
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
 #SOURCE_GROUP(Xsd FILES ${Humbug_XSD_sources} )
@@ -244,8 +247,10 @@ SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
 
 
+# Move to bindings
 SET(_GUI_DEP )
 IF(WIN32)
+  # Maybe here is the point for a Humbug_WINDOWS_CONSOLE subsystem switch.
   SET(_GUI_DEP WIN32)
 ENDIF(WIN32)
 ADD_EXECUTABLE(Humbug ${_GUI_DEP}
@@ -326,7 +331,8 @@ TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLGFX_LIBRARY})
 
-
+# Problems here, the c part of the project does not compile with gch
+#ADD_PRECOMPILED_HEADER(Humbug stdafx.h stdafx.h.gch)
 
 #SET_SOURCE_FILES_PROPERTIES( main.cpp
 #       PROPERTIES OBJECT_DEPENDS ${CppStructz_DLL_DEBUG}

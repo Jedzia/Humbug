@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 
-#include "VFS/stdint.h"
+#include "HumbugShared/VFS/stdint.h"
 
 
 #if defined(USE_LIB_BOOST)

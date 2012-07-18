@@ -4,6 +4,32 @@ root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
 $ grep -li -R boost * | grep -v \.svn
 
 
+-X-X-X-X- Mi, 18 Jul 2012 06:04:29 -----------------------------------------------------------
+MinGW, pch:
+
+[  4%] Generating stdafx.h.gch/Humbug_Debug.h++.gch
+cd /D/E/Projects/C++/Humbug/msysbuild/Humbug/src && /C/MinGW/bin/g++.exe -Wall -Wunused-parameter -fno-strict-aliasing -
+O0 -g -D_DEBUG d:/E/Projects/C++/Humbug/projects C:/MinGW/msys/1.0/include/SDL D:/E/Projects/C++/Humbug/msysbuild/DEPS/S
+DL_image-1.2.12 D:/E/Projects/C++/Humbug/msysbuild/DEPS/SDL_ttf-2.0.11 D:/E/Projects/C++/Humbug/msysbuild/DEPS/SDL_gfx-2
+.0.23 d:/E/Projects/C++/Humbug/projects/Humbug/HumbugShared/.. C:/gnuwin32/include d:/boost/boost-1.50.0 d:/E/Projects/C
+++/Humbug/projects/Humbug/src d:/E/Projects/C++/Humbug/projects/Humbug/HumbugShared/.. d:/boost/boost-1.50.0 d:/boost/bo
+ost-1.50.0 -DMSYS -std=c++0x -DWINVER=0x0500 -DBOOST_LIB_DIAGNOSTIC -DUSE_LIB_BOOST -DBOOST_ALL_DYN_LINK -DHumbugShared_
+ALL_STATIC_LINK -DHAVE_SDLIMAGE -DUNICODE -D_UNICODE -Wall -Wunused-parameter -fno-strict-aliasing -x c++-header -o D:/E
+/Projects/C++/Humbug/msysbuild/Humbug/src/stdafx.h.gch/Humbug_Debug.h++.gch D:/E/Projects/C++/Humbug/msysbuild/Humbug/sr
+c/stdafx.h.gch/Humbug_Debug.h++
+D:/E/Projects/C++/Humbug/msysbuild/Humbug/src/stdafx.h.gch/Humbug_Debug.h++:47:36: fatal error: boost/filesystem.hpp: No
+ such file or directory
+compilation terminated.
+make[3]: *** [Humbug/src/stdafx.h.gch/Humbug_Debug.h++.gch] Error 1
+make[3]: Leaving directory `/d/E/Projects/C++/Humbug/msysbuild'
+make[2]: *** [Humbug/src/CMakeFiles/pch_Generate_Humbug.dir/all] Error 2
+make[2]: Leaving directory `/d/E/Projects/C++/Humbug/msysbuild'
+make[1]: *** [Humbug/src/CMakeFiles/Humbug.dir/rule] Error 2
+make[1]: Leaving directory `/d/E/Projects/C++/Humbug/msysbuild'
+make: *** [Humbug] Error 2
+-----------------------------------------------------------------------------------------------
+
+
 -X-X-X-X- Mi, 18 Jul 2012 03:37:39 -----------------------------------------------------------
 MinGW, Debugging:
 
