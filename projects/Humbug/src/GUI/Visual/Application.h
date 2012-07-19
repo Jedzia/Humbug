@@ -4,6 +4,7 @@
 
 //include message handler(base class)
 #include "MessageHandler.h"
+class Hookable;
 
 /*
 	==CApplication==
@@ -22,6 +23,11 @@ private:
 
 	//set singleton pointer
 	static void SetApplication(CApplication* pTheApp);
+protected:
+    //initialization
+    virtual bool OnPreInit(int argc,char* argv[]) = 0;
+    virtual bool AfterInit(int argc,char* argv[]) = 0;
+
 public:
 	//constructor
 	CApplication();
@@ -42,6 +48,7 @@ public:
 	virtual void Update();
 
 	//cleanup
+    virtual void OnExiting() = 0;
 	virtual void OnExit();
 
 	//execution of application

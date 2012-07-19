@@ -6,6 +6,8 @@
 
 //
 #include "EventHandler.h"
+#include "Hookable.h"
+
 
 MSGID CEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 
@@ -283,5 +285,49 @@ void CEventHandler::OnExpose(){
 //user event
 void CEventHandler::OnUser(Uint8 type, int code, void* data1, void* data2){
     //do nothing
+}
+
+bool CEventHandler::OnPreInit( int argc,char* argv[] )
+{
+    m_Hooks = new Hookable(this);
+
+    return true;
+}
+
+void CEventHandler::OnExiting()
+{
+    Hookable::Close();
+    delete m_Hooks;
+    //throw std::exception("The method or operation is not implemented.");
+}
+
+bool CEventHandler::OnInit( int argc,char* argv[] )
+{
+    bool result = CApplication::OnInit(argc, argv);
+
+    //boost::signal<void (int&)> sig;
+    //sig.connect(double_slot());
+    //sig.connect(plus_slot());
+
+    //sig.connect(plus_slot());
+
+    //int resultX=12;
+    //sig(resultX);
+    //std::cout << "The result is: " << resultX << '\n';
+
+    //signal_type_init2 fuck;
+    //boost::signal<void (int&)> fuck;
+    //fuck(resultX);
+    //bool sigresult = fuck(argc, argv);
+
+    //bool sigresult = m_sigOnInit(argc, argv);
+
+    return result;
+}
+
+bool CEventHandler::AfterInit( int argc,char* argv[] )
+{
+    m_sigOnInit(argc, argv);
+    return true;
 }
 

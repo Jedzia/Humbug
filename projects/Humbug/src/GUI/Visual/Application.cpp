@@ -3,10 +3,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "../../stdafx.h"
+//
 #include <stdlib.h>
 #include "Application.h"
 #include "SdlInfo.h"
-
+#include "Hookable.h"
 
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
@@ -183,7 +184,6 @@ _RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
     dbgOut(__FUNCTION__ << std::endl);
 }
 
-//initialization
 bool CApplication::OnInit(int argc,char* argv[])
 {
 	//by default, simply return true
@@ -208,6 +208,7 @@ void CApplication::Update()
 	//by default, do nothing
 }
 
+
 //cleanup
 void CApplication::OnExit()
 {
@@ -227,6 +228,13 @@ int CApplication::Execute(int argc,char* argv[])
 		return(-1);
 	}
 	//attempt to initialize application
+    if(!GetApplication()->OnPreInit(argc,argv))
+    {
+        //could not initialize
+        fprintf(stderr,"Could not pre-initialize application!\n");
+        //return
+        return(-1);
+    }
 	if(!GetApplication()->OnInit(argc,argv))
 	{
 		//could not initialize
@@ -234,6 +242,13 @@ int CApplication::Execute(int argc,char* argv[])
 		//return
 		return(-1);
 	}
+    if(!GetApplication()->AfterInit(argc,argv))
+    {
+        //could not initialize
+        fprintf(stderr,"Could not initialize application!\n");
+        //return
+        return(-1);
+    }
 
     {
         // Get SDL Info
@@ -296,6 +311,7 @@ int CApplication::Execute(int argc,char* argv[])
 
 	}
 	//clean up
+    GetApplication()->OnExiting();
 	GetApplication()->OnExit();
 	//return
 	return(0);

@@ -51,6 +51,7 @@
     #include <boost/bind.hpp>
     #include "boost/bind/mem_fn.hpp"
     #include "boost/function.hpp"
+    #include "boost/signals.hpp"
 
 #endif //USE_LIB_BOOST
 

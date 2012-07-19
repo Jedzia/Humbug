@@ -20,6 +20,7 @@
 #include "TestEventHandler.h"
 #include "TestThread.h"
 #include "TestTimer.h"
+#include "StartScreen.h"
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -51,7 +52,6 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-	m_Hooks(this),
     m_pConsole(NULL),
     m_uiLastTicks(0),
     m_inActiveSprite(0),
@@ -87,8 +87,6 @@ CTestEventHandler::~CTestEventHandler(){
 
 //on cleanup
 void CTestEventHandler::OnExit(){
-
-    Hookable::Close();
 
     //destroy timer
     delete m_pTestTimer;
@@ -296,8 +294,14 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //success
     m_pKeyHandler = new PlayerKeys(200, 200);
     m_pKeyHandler2 = new PlayerKeys(400, 200);
+
+    // Maybe we do not need the backing variables, since a Hookable is destroyed individually
+    //m_Hooks = new Hookable(this);
+
+
     new TestHookable();
     new TestHookable();
+    m_scrStart = new StartScreen();
     new TestHookable();
     new TestHookable();
 

@@ -3,6 +3,7 @@
 
 #include "GUI/Visual/EventHandler.h"
 #include "GUI/Components/MainCanvas.h"
+#include <boost/ptr_container/ptr_vector.hpp>
 
 class HUD;
 class CConsole;
@@ -13,6 +14,8 @@ class CTestTimer;
 class PlayerKeys;
 class CTileEngine;
 class CTileSet;
+class Hookable;
+class Screen;
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
@@ -20,7 +23,6 @@ class CTileSet;
 class CTestEventHandler : public CEventHandler
 {
 private:
-	Hookable m_Hooks;
     FileLoader* fl;
     //main display surface
     CConsole* m_pConsole;
@@ -51,6 +53,8 @@ private:
     unsigned int m_uiNumFrames; 
     int m_inActiveSprite;
     int m_inScreenDelta;
+
+    Screen* m_scrStart;
 protected:
     //idle behavior
 	virtual void OnIdle();

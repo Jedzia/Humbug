@@ -30,8 +30,9 @@
 //#include <build/cmake/include/debug.h>
 struct CConsole::CConsoleImpl {
    void Command_Handler(ConsoleInformation* console, char* command) {
-        int argc;
-           char* argv[128];
+       return;
+//        int argc;
+//           char* argv[128];
         //   char* linecopy;
         //linecopy = strdup(command);
        //    argc = splitline(argv, (sizeof argv)/(sizeof argv[0]), linecopy);
@@ -72,8 +73,8 @@ struct CConsole::CConsoleImpl {
                 etc..
 
          */
-        if(!strcmp(argv[0], "quit"))
-                KillProgram();
+//        if(!strcmp(argv[0], "quit"))
+//                KillProgram();
            //else if(!strcmp(argv[0], "echo"))
              //   Echo(console, argc, argv);
            //else if(!strcmp(argv[0], "drawtextdemo"))
@@ -86,8 +87,8 @@ struct CConsole::CConsoleImpl {
              //   Move(console, argc, argv);
            //else if(!strcmp(argv[0], "resize"))
              //   Resize(console, argc, argv);
-           else if(!strcmp(argv[0], "listcommands"))
-                ListCommands(console);
+//           else if(!strcmp(argv[0], "listcommands"))
+//                ListCommands(console);
            //else if(!strcmp(argv[0], "prompt"))
              //   SetPrompt(console, argc, argv);*/
 

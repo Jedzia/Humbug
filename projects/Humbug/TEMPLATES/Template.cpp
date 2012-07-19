@@ -1,33 +1,31 @@
-$START$
-
 #include "stdafx.h"
 #include <QDebug>
 #include <QColor>
 #include <QFont>
 #include "Qsci/qsciscintilla.h"
 #include "Qsci/qscistyle.h"
-#include "$Filename$.h"
+#include "Template.h"
 
 #include <build/cmake/include/debug.h>
 
 
-$Filename$::$Filename$(QObject *parent)
+Template::Template(QObject *parent)
 : QsciLexerCustom(parent)
 {
          dbgOut(__FUNCTION__ << std::endl);
 }
 
-$Filename$::~$Filename$(void)
+Template::~Template(void)
 {
          dbgOut(__FUNCTION__ << std::endl);
 }
 
-const char* $Filename$::language() const
+const char* Template::language() const
 {
     return "AsciiDoc";
 }
 
-QString $Filename$::description(int style) const
+QString Template::description(int style) const
 {
     switch(style){
         case Default:
@@ -40,7 +38,7 @@ QString $Filename$::description(int style) const
 }
 
 
-void $Filename$::styleText(int start, int end)
+void Template::styleText(int start, int end)
 {
     QString source;
     int i;
@@ -116,7 +114,7 @@ void $Filename$::styleText(int start, int end)
 }
 
 
-QColor $Filename$::defaultColor(int style)
+QColor Template::defaultColor(int style)
 {
 switch(style){
         case Default:
@@ -127,7 +125,7 @@ switch(style){
     return QsciLexer::defaultColor(style);
 }
 
-QFont  $Filename$::defaultFont(int style)
+QFont  Template::defaultFont(int style)
 {
     /*switch(style){
         case Default:
@@ -138,14 +136,14 @@ QFont  $Filename$::defaultFont(int style)
     return QFont("Courier New", 10);
 }
 
-QColor $Filename$::defaultPaper(int style)
+QColor Template::defaultPaper(int style)
 {
     return QsciLexer::defaultPaper(style);
 }
 
 
 
-QsciStyle $Filename$::getStyle(int style)
+QsciStyle Template::getStyle(int style)
 {
             return QsciStyle(style);
 
@@ -156,4 +154,3 @@ QsciStyle $Filename$::getStyle(int style)
         return QsciStyle(style);
     }
 }
-$END$

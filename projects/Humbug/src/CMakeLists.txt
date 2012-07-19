@@ -86,6 +86,8 @@ SET(Humbug_Components_headers
 		GUI/Components/Image.h
 		GUI/Components/MainCanvas.h
 
+		GUI/Components/Screen.h
+
 		GUI/Controls/Control.h
 		GUI/Controls/Button.h
 
@@ -103,6 +105,8 @@ SET(Humbug_Components_sources
 		GUI/Components/Canvas.cpp
 		GUI/Components/Image.cpp
 		GUI/Components/MainCanvas.cpp
+
+		GUI/Components/Screen.cpp
 
 		GUI/Controls/Control.cpp
 		GUI/Controls/Button.cpp
@@ -135,6 +139,8 @@ SET(Humbug_MyGUI_headers
 		TestEventHandler.h
 		TestThread.h
 		TestTimer.h
+
+		StartScreen.h
 )
 SET(Humbug_MyGUI_sources 
 		GUI/Hud.cpp
@@ -142,6 +148,8 @@ SET(Humbug_MyGUI_sources
 		TestEventHandler.cpp
 		TestThread.cpp
 		TestTimer.cpp
+
+		StartScreen.cpp
 )
 
 # putting the sources together
@@ -324,7 +332,7 @@ Copy_DLL_To_Target(Humbug SDLTTF_LIBRARY)
 
 #TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
 #                        ${QSCINTILLA2_LIB} CppStructz )
-TargetLinkBoost(Humbug "filesystem;system;regex")
+TargetLinkBoost(Humbug "filesystem;system;regex;signals")
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
