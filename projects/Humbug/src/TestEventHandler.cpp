@@ -116,6 +116,7 @@ void CTestEventHandler::OnExit(){
     delete m_pKeyHandler2;
     delete m_pConsole;
     delete fl;
+    CEventHandler::OnExit();
 } // OnExit
 
 //initialization
@@ -301,11 +302,11 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //m_Hooks = new Hookable(this);
 
 
-    new TestHookable();
-    new TestHookable();
-    m_scrStart = new StartScreen(m_pMainCanvas);
-    new TestHookable();
-    new TestHookable();
+    //new TestHookable();
+    //new TestHookable();
+    m_scrStart = new StartScreen(*fl, m_pMainCanvas);
+    //new TestHookable();
+    //new TestHookable();
 
     m_pConsole =
         new CConsole( this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp",
@@ -322,6 +323,8 @@ void CTestEventHandler::PutBlue(){
 
 //idle behavior - Draw the stuff
 void CTestEventHandler::OnIdle(){
+    //CApplication::OnIdle(); return;
+
     Uint32 now, diff;
     now = SDL_GetTicks();
     diff = now - m_uiLastTicks;
@@ -335,7 +338,7 @@ void CTestEventHandler::OnIdle(){
     }
 
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
-    m_pMainCanvas->Lock();
+    //m_pMainCanvas->Lock();
 
     //update controls
     CRectangle screenrect = m_pMainCanvas->GetDimension();

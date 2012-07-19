@@ -29,7 +29,7 @@ int bmain(int argc, char *argv[])
 //    mainwindow.resize(1024, 768);
 //    mainwindow.show();
 //    int *moppen = new int(55);
-    std::string *oukk = new std::string("Olde Nase");
+    //std::string *oukk = new std::string("Olde Nase");
     //TestClass *xxx = new TestClass();
     {
     //TestClass yyy(3);

@@ -2,10 +2,12 @@
 #define STARTSCREEN_H
 #include "GUI/Components/Screen.h"
 
+class FileLoader;
+
 class StartScreen : public Screen {
 public:
 
-    StartScreen(CCanvas *background);
+    StartScreen(FileLoader& loader, CCanvas *background);
     ~StartScreen();
 
     const char *language(int x) const;
@@ -20,6 +22,7 @@ public:
     virtual void OnUpdate();
 
 private:
+    FileLoader& m_Loader;
 	Uint8 x;
     CColor mcol;
 };

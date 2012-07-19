@@ -159,8 +159,7 @@ void CApplication::SetApplication(CApplication* pTheApp)
 CApplication::CApplication():
     CMessageHandler(NULL), m_pMainCanvas(NULL)
 {
-    //dbgOut(__FUNCTION__ << std::endl);
-	_CRT_DEBUG_BLOCK
+    _CRT_DEBUG_BLOCK
 	//set the application
 	SetApplication(this);
 	//initialize SDL
@@ -173,15 +172,15 @@ CApplication::CApplication():
 	}
 	//set up SDL_Quit to be called during exit
 	//atexit(SDL_Quit);
-	new std::string("MAUL!");
+	//new std::string("MAUL!");
 }
 
 //destructor
 CApplication::~CApplication()
 {
     const char* explanation = "XXXXXX THIS IS ~CApplication.CPP";
-_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
-************************************\n", explanation );
+    _RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
+                      ************************************\n", explanation );
     _CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__ << std::endl);
 }
@@ -217,6 +216,9 @@ void CApplication::Update()
 //cleanup
 void CApplication::OnExit()
 {
+    m_sigOnDraw.disconnect_all_slots();
+    m_sigOnIdle.disconnect_all_slots();
+    m_sigOnUpdate.disconnect_all_slots();
     //delete main canvas
     delete m_pMainCanvas;
 
@@ -361,7 +363,21 @@ extern int bmain(int argc,char* argv[]);
 //main function
 int main(int argc,char* argv[])
 {
-	bmain(argc,argv);
+    //dbgOut(__FUNCTION__ << std::endl);
+    _CRT_DEBUG_BLOCK
+
+    bmain(argc,argv);
 	//run the application
-	return(CApplication::Execute(argc,argv));
+    int result = CApplication::Execute(argc,argv);
+
+/*
+    const char* explanation = "XXXXXX THIS IS ~CApplication.CPP";
+    _RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
+                      ************************************\n", explanation );
+    _CrtDumpMemoryLeaks( );
+    dbgOut(__FUNCTION__ << std::endl);
+*/
+
+    new std::string("Maul !");
+	return(result);
 }

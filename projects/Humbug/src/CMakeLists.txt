@@ -301,6 +301,7 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 		${PROJECT_SOURCE_DIR}/icons/
 		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
+	    ${Humbug_Artwork_WORKDIR}/Intro/
 		#${PROJECT_SOURCE_DIR}/icons/blue.png
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    #${Humbug_Artwork_WORKDIR}/footer.png

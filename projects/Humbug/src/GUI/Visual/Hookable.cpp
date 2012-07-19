@@ -37,7 +37,12 @@ struct Hookable::HookableImpl {
     HookableImpl(Hookable *host)
         : m_pHost(host)
     {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
+    }
 
+    ~HookableImpl()
+    {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
     }
 
     bool OnInit(int argc,char* argv[])

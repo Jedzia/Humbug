@@ -3,11 +3,12 @@
 #include "GUI/Visual/EventHandler.h"
 //#include <build/cmake/include/debug.h>
 #include "GUI/Components/Rectangle.h"
+#include "Filesystem/FileLoader.h"
 #include <cstdlib>
 
 
-StartScreen::StartScreen(CCanvas *background)
-: Screen(background)
+StartScreen::StartScreen( FileLoader& loader, CCanvas *background)
+: Screen(background), m_Loader(loader)
 {
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
@@ -33,6 +34,15 @@ bool StartScreen::OnInit( int argc,char* argv[] )
 {
    // Master()->GetMainCanvas();
     mcol = CColor::Green();
+
+    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/Intro.png") );
+    //CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
+    CCanvas tmpCanvas( tmpfsurf );
+    m_Loader.FreeLast();
+    CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+    m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
+
+    //int *test = new int(5);
     return Screen::OnInit(argc, argv);
     //return true;
 }

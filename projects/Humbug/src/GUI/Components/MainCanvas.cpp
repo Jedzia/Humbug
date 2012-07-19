@@ -9,5 +9,6 @@ CCanvas ( SDL_SetVideoMode ( width , height , bpp, flags ) )
 
 CMainCanvas::~CMainCanvas()
 {
-	SetSurface ( NULL ) ;
+    // SDL_FreeSurface ( GetSurface ( ) );
+    SetSurface ( NULL ) ;
 }
