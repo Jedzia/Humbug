@@ -101,7 +101,7 @@ void CTestEventHandler::OnExit(){
     TTF_Quit();
 
     //delete main canvas
-    delete m_pMainCanvas;
+    //delete m_pMainCanvas;
 
     //delete main control
     delete CControl::GetMainControl();
@@ -136,7 +136,9 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL/2);
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
     //construct main canvas
-    m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
+    //m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
+    CMainCanvas* m_pMainCanvas= new CMainCanvas(1024, 768, 0, video_flags);
+    SetMainCanvas( m_pMainCanvas );
 
     //m_pDrawCanvas = m_pMainCanvas;
     //CCanvas *testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 10, 768-320);
@@ -301,7 +303,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     new TestHookable();
     new TestHookable();
-    m_scrStart = new StartScreen();
+    m_scrStart = new StartScreen(m_pMainCanvas);
     new TestHookable();
     new TestHookable();
 
@@ -314,54 +316,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
 void CTestEventHandler::PutBlue(){
     if(m_pHud /*!= NULL && m_pHud->HasMouseHover()*/) {
-        int zz = 3;
-        zz = 5;
 
-        // CRectangle rmf(m_pHud->GetLeft(),
-        // m_pHud->GetTop(),m_pHud->GetRight(),m_pHud->GetBottom());
-        //CRectangle rmf(m_pHud->GetLeft(),
-        // m_pHud->GetTop(),m_pHud->GetRight(),m_pHud->GetBottom());
-        CRectangle rmfull(0, 0, 1024, 768);
-        CRectangle rmf( 0, 0, 1024, 768 - m_pHud->GetHeight() );
-
-        //m_pMainCanvas->AddUpdateRect(rmfull);
-    }
-
-    static int x = 0;
-    static int y = 25;
-    {
-        //static CPoint bluePointOld(pfx,pfy);
-        //CPoint bluePoint(pfx,pfy);
-        static CPoint bluePointOld( m_pKeyHandler->Char() );
-        CPoint bluePoint( m_pKeyHandler->Char() );
-        CRectangle bluerect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
-
-        //CRectangle bluerectOld(bluePointOld, CPoint(74,74));
-        //SDL_SetColorKey(m_pBlue->GetCanvas()->GetSurface(),SDL_SRCCOLORKEY, 0xAAAAAA);
-        //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA /*| SDL_RLEACCEL*/, 44);
-        //int res = SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 255);
-        //int res = SDL_SetAlpha(m_pHud->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
-        CRectangle bluerectOld(m_pBlue->GetCanvas()->GetDimension() + bluePointOld);
-        m_pMainCanvas->Lock();
-
-        //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
-        m_pBlue->Put(m_pMainCanvas, bluePoint);
-        m_pMainCanvas->Unlock();
-        m_pMainCanvas->AddUpdateRect(m_pBlue->GetCanvas()->GetDimension() + bluePoint);
-        m_pMainCanvas->AddUpdateRect(bluerectOld);
-        bluePointOld = bluePoint;
-    }
-    /*else {
-        x = 0;
-        y += 25;
-       }*/
-    x += 1;
-
-    if(y>1024) {
-        y = 0;
-        x = 0;
-
-        //SendMessageQ(MSGID_ClearScreen);
     }
 } // PutBlue
 
@@ -379,6 +334,7 @@ void CTestEventHandler::OnIdle(){
         m_uiLastTicks = now;
     }
 
+    CMainCanvas* m_pMainCanvas = GetMainCanvas();
     m_pMainCanvas->Lock();
 
     //update controls
@@ -421,8 +377,11 @@ void CTestEventHandler::OnIdle(){
                         m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
     }
 
-    m_pMainCanvas->UpdateRects ( );
-    m_pMainCanvas->Unlock();
+    //m_pMainCanvas->UpdateRects ( );
+    
+    //m_pMainCanvas->Unlock();
+
+
     static int spr2pic = 0;
     m_pSprite2->SprOffset(spr2pic);
     spr2pic++;
@@ -490,6 +449,7 @@ void CTestEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely
 //key press
 void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     const int step = 6;
+    CMainCanvas* m_pMainCanvas = GetMainCanvas();
 
     if( sym == SDLK_ESCAPE ) {
         //send clear screen message
@@ -549,6 +509,7 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
 //message handler
 bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSGPARM Parm3,
         MSGPARM Parm4){
+            CMainCanvas* m_pMainCanvas = GetMainCanvas();
     // quit application
     if(MsgID==MSGID_QuitApp) {
         //m_pHud->Close();

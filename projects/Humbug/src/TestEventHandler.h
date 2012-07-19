@@ -26,8 +26,7 @@ private:
     FileLoader* fl;
     //main display surface
     CConsole* m_pConsole;
-	//main display surface
-	CMainCanvas* m_pMainCanvas;
+
     CCanvas* m_pBackground;
     CCanvas* m_pDrawCanvas;
     CImage* m_pBlue;
@@ -65,7 +64,8 @@ public:
 	CTestEventHandler();
 	//destructor
 	virtual ~CTestEventHandler();
-	//initialization
+
+    //initialization
 	bool OnInit(int argc,char* argv[]);
 	//cleanup
 	void OnExit();

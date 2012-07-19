@@ -63,6 +63,7 @@ SET(Humbug_GUI_headers
 		GUI/Visual/Thread.h
 		GUI/Visual/Timer.h
 		GUI/Visual/Hookable.h
+		GUI/Visual/HookableManager.h
 		GUI/Visual/SdlInfo.h
 		GUI/Visual/Console.h
 )
@@ -73,6 +74,7 @@ SET(Humbug_GUI_sources
 		GUI/Visual/Thread.cpp
 		GUI/Visual/Timer.cpp
 		GUI/Visual/Hookable.cpp
+		GUI/Visual/HookableManager.cpp
 		GUI/Visual/SdlInfo.cpp
 		GUI/Visual/Console.cpp
 )

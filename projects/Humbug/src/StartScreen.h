@@ -5,15 +5,23 @@
 class StartScreen : public Screen {
 public:
 
-    StartScreen();
+    StartScreen(CCanvas *background);
     ~StartScreen();
 
     const char *language(int x) const;
 
-    virtual GroupId GetGroupID();
+    //virtual GroupId GetGroupID();
+
+    virtual bool OnInit( int argc,char* argv[] );
+    virtual void OnIdle();
+
+    virtual void OnDraw();
+
+    virtual void OnUpdate();
 
 private:
-	int i;
+	Uint8 x;
+    CColor mcol;
 };
 
 #endif // STARTSCREEN_H

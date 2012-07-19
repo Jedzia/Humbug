@@ -4,7 +4,10 @@
 
 //include message handler(base class)
 #include "MessageHandler.h"
+#include "boost/signals.hpp"
+
 class Hookable;
+class CMainCanvas;
 
 /*
 	==CApplication==
@@ -13,27 +16,26 @@ class Hookable;
 */
 class CApplication : public CMessageHandler
 {
-private:
-    // Frames per second
-    static int m_iFramesCap;
-	//singleton pointer
-	static CApplication* s_pTheApplication;
-    //last ticks
-    static Uint32 m_uiFPSLastTime;
-
-	//set singleton pointer
-	static void SetApplication(CApplication* pTheApp);
-protected:
-    //initialization
-    virtual bool OnPreInit(int argc,char* argv[]) = 0;
-    virtual bool AfterInit(int argc,char* argv[]) = 0;
-
 public:
+
+    // signal types 
+    typedef boost::signal<void ()> signal_type_event;
+    typedef signal_type_event::slot_type slot_type_event;
+    typedef boost::signal<void (int, char**)> signal_type_init;
+    typedef signal_type_init::slot_type slot_type_init;
+
 	//constructor
 	CApplication();
 
 	//destructor
 	virtual ~CApplication();
+
+    CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
+
+    // Signal handling
+    void ConnectOnIdle(const slot_type_event& s);
+    void ConnectOnDraw(const slot_type_event& s);
+    void ConnectOnUpdate(const slot_type_event& s);
 
 	//initialization
 	virtual bool OnInit(int argc,char* argv[]);
@@ -56,6 +58,28 @@ public:
 
 	//get singleton
 	static CApplication* GetApplication();
+
+private:
+    // Frames per second
+    static int m_iFramesCap;
+    //singleton pointer
+    static CApplication* s_pTheApplication;
+    //last ticks
+    static Uint32 m_uiFPSLastTime;
+
+    signal_type_event m_sigOnUpdate;
+    signal_type_event m_sigOnIdle;
+    signal_type_event m_sigOnDraw;
+
+    //set singleton pointer
+    static void SetApplication(CApplication* pTheApp);
+    CMainCanvas* m_pMainCanvas;
+protected:
+    //initialization
+    virtual bool OnPreInit(int argc,char* argv[]) = 0;
+    virtual bool OnPostInit(int argc,char* argv[]) = 0;
+    //main display surface
+    void SetMainCanvas(CMainCanvas* val) { m_pMainCanvas = val; }
 };
 
 #endif //#ifndef __APPLICATION_H__

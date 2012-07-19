@@ -5,9 +5,11 @@
 #include "../../stdafx.h"
 //
 #include <stdlib.h>
+#include <exception>
 #include "Application.h"
 #include "SdlInfo.h"
 #include "Hookable.h"
+#include "../Components/MainCanvas.h"
 
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
@@ -155,7 +157,7 @@ void CApplication::SetApplication(CApplication* pTheApp)
 
 //constructor
 CApplication::CApplication():
-CMessageHandler(NULL)
+    CMessageHandler(NULL), m_pMainCanvas(NULL)
 {
     //dbgOut(__FUNCTION__ << std::endl);
 	_CRT_DEBUG_BLOCK
@@ -200,19 +202,24 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 void CApplication::OnIdle()
 {
 	//by default, do nothing
+    m_sigOnIdle();
+    m_sigOnDraw();
+    m_pMainCanvas->UpdateRects ( );
 }
 
 //update loop
 void CApplication::Update()
 {
-	//by default, do nothing
+    m_sigOnUpdate();
 }
 
 
 //cleanup
 void CApplication::OnExit()
 {
-	//by default, do nothing
+    //delete main canvas
+    delete m_pMainCanvas;
+
     SDL_Quit();
 }
 
@@ -242,12 +249,22 @@ int CApplication::Execute(int argc,char* argv[])
 		//return
 		return(-1);
 	}
-    if(!GetApplication()->AfterInit(argc,argv))
+    if(!GetApplication()->OnPostInit(argc,argv))
     {
         //could not initialize
         fprintf(stderr,"Could not initialize application!\n");
         //return
         return(-1);
+    }
+
+
+    if (!GetApplication()->GetMainCanvas())
+    {
+        //throw std::exception("No MainCanvas set!");
+        //more than one application!
+        fprintf(stderr,"No MainCanvas set!\n");
+        //exit
+        exit(1);
     }
 
     {
@@ -292,7 +309,7 @@ int CApplication::Execute(int argc,char* argv[])
                 SDL_Delay( curdelay );
             }
         }
-		GetApplication()->Update();
+        GetApplication()->Update();
 
         loopFrames++;
         if((SDL_GetTicks() - m_uiFPSLastTime) >= 1000)
@@ -322,6 +339,21 @@ CApplication* CApplication::GetApplication()
 {
 	//return static pointer to application
 	return(s_pTheApplication);
+}
+
+void CApplication::ConnectOnIdle( const slot_type_event& s )
+{
+    m_sigOnIdle.connect( s );
+}
+
+void CApplication::ConnectOnDraw( const slot_type_event& s )
+{
+    m_sigOnDraw.connect( s );
+}
+
+void CApplication::ConnectOnUpdate( const slot_type_event& s )
+{
+    m_sigOnUpdate.connect( s );
 }
 
 extern int bmain(int argc,char* argv[]);

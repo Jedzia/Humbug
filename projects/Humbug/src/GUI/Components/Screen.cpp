@@ -3,10 +3,17 @@
 
 //
 #include "Screen.h"
+#include "MainCanvas.h"
+#include "GUI/Visual/Application.h"
+#include "GUI/Visual/EventHandler.h"
+#include "boost/signals.hpp"
+#include "boost/bind.hpp"
 
 //#include <build/cmake/include/debug.h>
-Screen::Screen() :
-    Hookable(this){
+Screen::Screen( CCanvas *background )
+    : Hookable(true)//, CMessageHandler()
+   // , m_pMainScreen(mainScreen)
+    {
 
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
@@ -23,4 +30,29 @@ GroupId Screen::GetGroupID(){
 
     //throw std::exception("The method or operation is not implemented.");
 }
+
+bool Screen::OnInit( int argc,char* argv[] )
+{
+
+    //Screen *screen = static_cast<Screen *>(hook);
+    bool result = Hookable::OnInit(argc, argv);
+    //Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*hook)));
+    //Master()->ConnectOnDraw((const CApplication::slot_type_event&)boost::bind(&Screen::OnIdle, boost::ref(*hook)));
+    //Master()->ConnectOnDraw((const CApplication::slot_type_event&)boost::bind(&Screen::OnDraw, boost::ref(*screen)));
+    Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
+    Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
+    return result;
+}
+
+void Screen::OnUpdate()
+{
+
+}
+
+/*bool Screen::OnInit( int argc,char* argv[] )
+{
+    return Hookable::OnInit(argc, argv);
+    //throw std::exception("The method or operation is not implemented.");
+    //return true;
+}*/
 

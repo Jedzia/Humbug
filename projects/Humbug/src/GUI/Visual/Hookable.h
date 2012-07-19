@@ -23,15 +23,18 @@ public:
     //initialization
     virtual bool OnInit(int argc,char* argv[]);
 
+    virtual void OnIdle();
+
 
 protected:
     static GroupId s_GrpID;
 
     // add child hook
-    Hookable(Hookable* hook);
+    Hookable(bool hook);
     virtual GroupId GetGroupID();
 
     static GroupId CreateNextGroupID();
+    CEventHandler* Master() const { return m_pMaster; }
 
 private:
     void Init(Hookable* hook);

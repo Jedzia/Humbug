@@ -2,23 +2,8 @@
 #define __EVENTHANDLER_H__
 
 #include "Application.h"
-#include "boost/signals.hpp"
 class Hookable;
 
-
-class double_slot {
-public:
-    void operator()(int& i) const {
-        i*=2;
-    }
-};
-
-class plus_slot {
-public:
-    void operator()(int& i) const {
-        i+=3;
-    }
-};
 
 /*
 	==CEventHandler==
@@ -27,10 +12,6 @@ public:
 class CEventHandler : public CApplication  
 {
 public:
-    typedef boost::signal<void (int, char**)> signal_type_init;
-    typedef boost::signal<bool (int&)> signal_type_init2;
-    typedef signal_type_init::slot_type slot_type_init;
-
 
     static MSGID MSGID_QuitApp;//no parms
     
@@ -88,11 +69,9 @@ public:
         //return m_sigOnInit.connect(s);
     //}
 
-    virtual bool OnInit( int argc,char* argv[] );
-
 protected:
     bool OnPreInit( int argc,char* argv[] );
-    bool AfterInit( int argc,char* argv[] );
+    bool OnPostInit( int argc,char* argv[] );
 
     Hookable* m_Hooks;
 
