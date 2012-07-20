@@ -323,7 +323,7 @@ void CTestEventHandler::PutBlue(){
 
 //idle behavior - Draw the stuff
 void CTestEventHandler::OnIdle(){
-    //CApplication::OnIdle(); return;
+    CApplication::OnIdle(); return;
 
     Uint32 now, diff;
     now = SDL_GetTicks();

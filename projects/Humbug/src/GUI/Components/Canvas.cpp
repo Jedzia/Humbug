@@ -3,7 +3,7 @@
 #include <memory.h>
 using namespace std;
 CCanvas::CCanvas ( SDL_Surface* pSurface ){
-    dbgOut(__FUNCTION__ << std::endl);
+    //dbgOut(__FUNCTION__ << std::endl);
     SetSurface ( pSurface );
     m_lstUpdateRects.clear ( );
 }
@@ -15,7 +15,7 @@ CCanvas::~CCanvas ( ){
         SetSurface ( NULL );
     }
 
-    dbgOut(__FUNCTION__ << std::endl);
+    //dbgOut(__FUNCTION__ << std::endl);
 }
 
 SDL_Surface * CCanvas::GetSurface ( ) const {

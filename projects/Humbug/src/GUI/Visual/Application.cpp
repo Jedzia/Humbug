@@ -15,6 +15,8 @@
 CApplication* CApplication::s_pTheApplication=NULL;
 Uint32 CApplication::m_uiFPSLastTime=0;
 int CApplication::m_iFramesCap = 25;
+Uint32 CApplication::m_iShownFrames = 0;
+
 
 //The timer
 class Timer
@@ -210,6 +212,8 @@ void CApplication::OnIdle()
 void CApplication::Update()
 {
     m_sigOnUpdate();
+    //SDL_Delay( 1 );
+
 }
 
 
@@ -277,7 +281,8 @@ int CApplication::Execute(int argc,char* argv[])
 
     //The frame rate regulator
     Timer fps;
-    Uint32 curdelay = 0;
+    //Uint32 curdelay = 0;
+    int curdelay = 0;
 
 
 	//event structure
@@ -287,6 +292,7 @@ int CApplication::Execute(int argc,char* argv[])
     Uint32 shownFrames = 0, loopFrames = 0;
 	for(;;)
 	{
+        int delaynumber = 0;
         //Start the frame timer
         fps.start();
 
@@ -303,15 +309,33 @@ int CApplication::Execute(int argc,char* argv[])
 			//no event, so idle
 			GetApplication()->OnIdle();
             shownFrames++;
+            GetApplication()->Update();
 
             //Cap the frame rate
-            if( fps.get_ticks() < 1000 / m_iFramesCap )
+            int framecap = 1000 / m_iFramesCap;
+            if( fps.get_ticks() <  framecap)
             {
-                curdelay = ( 1000 / m_iFramesCap ) - fps.get_ticks();
+                const int capfactor = 1;
+                curdelay = framecap  - fps.get_ticks();
+                //delaynumber++;
+                //fprintf(stdout, "Curdelay: '%d', %d \n", curdelay, delaynumber);
                 SDL_Delay( curdelay );
+                /*while (curdelay > 0)
+                {
+                    SDL_Delay( capfactor );
+                    curdelay -= capfactor*2;
+                    GetApplication()->Update();
+                    loopFrames++;
+                    //fprintf(stdout, "UPS: '%d'\n", framecap  - fps.get_ticks());
+                }*/
+
             }
         }
-        GetApplication()->Update();
+
+        //for (int ii = 0; ii < 50 ; ii++)
+        {
+            GetApplication()->Update();
+        }
 
         loopFrames++;
         if((SDL_GetTicks() - m_uiFPSLastTime) >= 1000)
@@ -319,9 +343,9 @@ int CApplication::Execute(int argc,char* argv[])
             //ostringstream FPS;
             //FPS.str("");
             //FPS << ShownFrames;
-            int delay = shownFrames - m_iFramesCap;
-            fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", shownFrames, loopFrames, curdelay);
-
+            int delay = m_iShownFrames - m_iFramesCap;
+            fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", m_iShownFrames, loopFrames, curdelay);
+            m_iShownFrames = shownFrames;
 
             shownFrames = 0;
             loopFrames = 0;

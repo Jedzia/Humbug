@@ -488,14 +488,12 @@ CColor operator/(CColor& Color,int Divisor)
 CColor operator|(const CColor& Color1,const CColor& Color2)
 {
 	//temp color
-	CColor Color3;
-	//assign color1
-	Color3=Color1;
-	//do operator with color2
-	// FUCK
-	//Color1|=Color2;
+    CColor tmp(Color1);
+    CColor tmp2(Color2);
+	//do operator with color2 Todo: operator, second const
+    tmp |= tmp2;
 	//return color
-	return(Color3);
+	return(tmp);
 }
 
 CColor operator&(CColor& Color1,CColor& Color2)

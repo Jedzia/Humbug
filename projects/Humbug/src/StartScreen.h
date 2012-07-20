@@ -3,6 +3,7 @@
 #include "GUI/Components/Screen.h"
 
 class FileLoader;
+class CCanvas;
 
 class StartScreen : public Screen {
 public:
@@ -24,7 +25,10 @@ public:
 private:
     FileLoader& m_Loader;
 	Uint8 x;
+    int m_iUpdateTimes;
     CColor mcol;
+    TTF_Font *m_pArialfont;
+    CCanvas* m_pBackground;
 };
 
 #endif // STARTSCREEN_H

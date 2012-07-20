@@ -58,10 +58,12 @@ public:
 
 	//get singleton
 	static CApplication* GetApplication();
+    static Uint32 ShownFrames() { return m_iShownFrames; }
 
 private:
     // Frames per second
     static int m_iFramesCap;
+    static Uint32 m_iShownFrames;
     //singleton pointer
     static CApplication* s_pTheApplication;
     //last ticks
