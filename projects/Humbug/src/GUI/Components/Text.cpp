@@ -36,6 +36,10 @@ CText::~CText(void){
 }
 
 void CText::Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect  ) const {
+
+    m_pText->Lock();
+    m_pText->Unlock();
+
     canvas->Blit(dstRect , *m_pText, srcRect );
     canvas->AddUpdateRect(dstRect);
 }

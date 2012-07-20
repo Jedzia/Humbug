@@ -22,7 +22,6 @@ public:
     virtual void OnIdle();
 
     virtual void OnDraw();
-    virtual void OnDrawOld();
 
     virtual void OnUpdate();
 
