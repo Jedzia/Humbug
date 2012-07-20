@@ -36,7 +36,7 @@ bool StartScreen::OnInit( int argc,char* argv[] )
     mcol = CColor::Green();
 
     SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/Intro.png") );
-    //CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
+    //CCanvas* tmpCanvas2 = new CCanvas( tmpfsurf );
     CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();

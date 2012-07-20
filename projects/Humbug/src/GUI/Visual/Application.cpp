@@ -159,7 +159,8 @@ void CApplication::SetApplication(CApplication* pTheApp)
 CApplication::CApplication():
     CMessageHandler(NULL), m_pMainCanvas(NULL)
 {
-    _CRT_DEBUG_BLOCK
+    //_CRT_DEBUG_BLOCK
+    //_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//set the application
 	SetApplication(this);
 	//initialize SDL
@@ -178,10 +179,9 @@ CApplication::CApplication():
 //destructor
 CApplication::~CApplication()
 {
-    const char* explanation = "XXXXXX THIS IS ~CApplication.CPP";
-    _RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
-                      ************************************\n", explanation );
-    _CrtDumpMemoryLeaks( );
+    const char* explanation = "THIS IS ~CApplication.CPP Destructing.";
+    _RPT1( _CRT_WARN, "\n\n%s:\n**************************************************************************\n", explanation );
+    //_CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -216,9 +216,9 @@ void CApplication::Update()
 //cleanup
 void CApplication::OnExit()
 {
-    m_sigOnDraw.disconnect_all_slots();
-    m_sigOnIdle.disconnect_all_slots();
-    m_sigOnUpdate.disconnect_all_slots();
+    //m_sigOnDraw.disconnect_all_slots();
+    //m_sigOnIdle.disconnect_all_slots();
+    //m_sigOnUpdate.disconnect_all_slots();
     //delete main canvas
     delete m_pMainCanvas;
 
@@ -378,6 +378,6 @@ int main(int argc,char* argv[])
     dbgOut(__FUNCTION__ << std::endl);
 */
 
-    new std::string("Maul !");
+    //new std::string("Maul !");
 	return(result);
 }

@@ -1,5 +1,12 @@
 //
 #include "stdafx.h"
+#include <malloc.h>
+#include <stdio.h>
+
+/*void dumpMallinfo(void) {
+    struct mallinfo m = mallinfo();
+    printf("uordblks = %d\nfordblks = %d\n", m.uordblks, m.fordblks);
+}*/
 
 //
 //#include <build/cmake/include/debug.h>

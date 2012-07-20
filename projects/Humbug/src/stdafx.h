@@ -55,7 +55,7 @@
 
 #endif //USE_LIB_BOOST
 
-
+#define DEBUG_MEMORY_SUMMARY_ON_EXIT 1
 #include <build/cmake/include/debug.h>
 
 #include "SDL.h"

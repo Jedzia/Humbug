@@ -138,7 +138,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
     //construct main canvas
     //m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    CMainCanvas* m_pMainCanvas= new CMainCanvas(1024, 768, 0, video_flags);
+    CMainCanvas* m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
     SetMainCanvas( m_pMainCanvas );
 
     //m_pDrawCanvas = m_pMainCanvas;
