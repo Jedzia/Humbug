@@ -1,6 +1,7 @@
 #ifndef STARTSCREEN_H
 #define STARTSCREEN_H
 #include "GUI/Components/Screen.h"
+#include "boost/smart_ptr/scoped_ptr.hpp"
 
 class FileLoader;
 class CCanvas;
@@ -19,6 +20,7 @@ public:
     virtual void OnIdle();
 
     virtual void OnDraw();
+    virtual void OnDrawOld();
 
     virtual void OnUpdate();
 
@@ -29,6 +31,9 @@ private:
     CColor mcol;
     TTF_Font *m_pArialfont;
     CCanvas* m_pBackground;
+    CCanvas *m_pScrollText;
+    //boost::scoped_ptr<CCanvas> m_pScrollText;
+
 };
 
 #endif // STARTSCREEN_H
