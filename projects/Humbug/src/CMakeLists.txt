@@ -88,6 +88,9 @@ SET(Humbug_Components_headers
 		GUI/Components/Image.h
 		GUI/Components/MainCanvas.h
 
+		GUI/Components/Text.h
+		GUI/Components/TextScroller.h
+		
 		GUI/Components/Screen.h
 
 		GUI/Controls/Control.h
@@ -108,6 +111,9 @@ SET(Humbug_Components_sources
 		GUI/Components/Image.cpp
 		GUI/Components/MainCanvas.cpp
 
+		GUI/Components/Text.cpp
+		GUI/Components/TextScroller.cpp
+		
 		GUI/Components/Screen.cpp
 
 		GUI/Controls/Control.cpp

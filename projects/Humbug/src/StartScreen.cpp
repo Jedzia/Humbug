@@ -3,13 +3,15 @@
 #include "GUI/Visual/EventHandler.h"
 //#include <build/cmake/include/debug.h>
 #include "GUI/Components/Rectangle.h"
+#include "GUI/Components/Text.h"
+#include "GUI/Components/TextScroller.h"
 #include "Filesystem/FileLoader.h"
 #include <cstdlib>
 #include "SDL_ttf.h"
 
 
 StartScreen::StartScreen( FileLoader& loader, CCanvas *background)
-: Screen(background), m_Loader(loader), m_pArialfont(NULL), m_iUpdateTimes(0), m_pScrollText(NULL)
+: Screen(background), m_Loader(loader), m_pArialfont(NULL), m_iUpdateTimes(0), m_pScrollText(NULL), m_pScroller(NULL)
 {
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
@@ -21,6 +23,7 @@ StartScreen::~StartScreen(void)
         TTF_CloseFont(m_pArialfont);
     }
     delete m_pScrollText;
+    delete m_pScroller;
     delete m_pBackground;
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
@@ -77,8 +80,9 @@ bool StartScreen::OnInit( int argc,char* argv[] )
         "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" << "\t" << "48" << "\t" << "Humbug" << "\r\n" <<
         "";
     //m_pScrollText.reset(new CCanvas(TTF_RenderText_Solid(m_pArialfont, outstring.str().c_str(), m_colText)));
-    m_pScrollText = new CCanvas(TTF_RenderText_Solid(m_pArialfont, outstring.str().c_str(), m_colText));
-
+    //m_pScrollText = new CCanvas(TTF_RenderText_Solid(m_pArialfont, outstring.str().c_str(), m_colText));
+    m_pScrollText = new CText(m_pArialfont, outstring.str(), m_colText);
+    m_pScroller = new CTextScroller(m_pMainCanvas, *m_pScrollText, CPoint(50, 100), 400);
     //int *test = new int(5);
     return Screen::OnInit(argc, argv);
     //return true;
@@ -104,7 +108,7 @@ void StartScreen::OnDraw()
     //mcol.SetB(x);
     //CCanvas* background = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
     int textwidth = 800;
-    int textheigth = m_pScrollText->GetHeight();
+    int textheigth = m_pScrollText->GetCanvas()->GetHeight();
     int textposX = 100;
     int textposY = 600;
     //int fontheigth = TTF_FontHeight(m_pArialfont);
@@ -138,18 +142,19 @@ void StartScreen::OnDraw()
     CPoint fpstextloc(150+xdelta1,600);
     static CRectangle oldtextloc(dstDims);
 
-    m_pMainCanvas->Blit(dstDims , *m_pScrollText, textDims );
+    m_pScrollText->Put(m_pMainCanvas,dstDims, textDims );
+    //m_pMainCanvas->Blit(dstDims , *m_pScrollText, textDims );
     //m_pMainCanvas->AddUpdateRect(textDims + CRectangle(0,0,0,0) + oldfpstextloc);
     //m_pMainCanvas->AddUpdateRect(textDims + CRectangle(0,0,0,0) + fpstextloc);
     textDims.SetW(500);
 
     //CRectangle updaRect(dstDims);
     //updaRect.SetW(m_pMainCanvas->GetWidth());
-    //m_pMainCanvas->AddUpdateRect(dstDims);
-    m_pMainCanvas->AddUpdateRect(showline);
+    m_pMainCanvas->AddUpdateRect(dstDims);
+    //m_pMainCanvas->AddUpdateRect(showline);
 
     xdelta1 +=4;
-    if (xdelta1 >= m_pScrollText->GetWidth())
+    if (xdelta1 >= m_pScrollText->GetCanvas()->GetWidth())
     {
         xdelta1 = 0;
     }
@@ -165,6 +170,12 @@ void StartScreen::OnDraw()
     }
     oldtextloc = dstDims;
     m_iUpdateTimes = 0;
+
+
+    m_pScroller->Scroll(6);
+    m_pScroller->Draw();
+
+
     m_pMainCanvas->Unlock();
 }
 

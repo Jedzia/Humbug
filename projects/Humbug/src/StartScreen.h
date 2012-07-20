@@ -5,6 +5,8 @@
 
 class FileLoader;
 class CCanvas;
+class CText;
+class CTextScroller;
 
 class StartScreen : public Screen {
 public:
@@ -31,7 +33,8 @@ private:
     CColor mcol;
     TTF_Font *m_pArialfont;
     CCanvas* m_pBackground;
-    CCanvas *m_pScrollText;
+    CText *m_pScrollText;
+    CTextScroller *m_pScroller;
     //boost::scoped_ptr<CCanvas> m_pScrollText;
 
 };
