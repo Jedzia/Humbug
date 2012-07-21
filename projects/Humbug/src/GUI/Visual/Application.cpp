@@ -185,6 +185,8 @@ CApplication::~CApplication()
     _RPT1( _CRT_WARN, "\n\n%s:\n**************************************************************************\n", explanation );
     //_CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__ << std::endl);
+    std::cout.flush();
+
 }
 
 bool CApplication::OnInit(int argc,char* argv[])
@@ -226,6 +228,7 @@ void CApplication::OnExit()
     //delete main canvas
     delete m_pMainCanvas;
 
+    //atexit(SDL_Quit);
     SDL_Quit();
 }
 
@@ -383,7 +386,10 @@ void CApplication::ConnectOnUpdate( const slot_type_event& s )
 }
 
 extern int bmain(int argc,char* argv[]);
-
+void doExit()
+{
+    _CrtDumpMemoryLeaks( );
+}
 //main function
 int main(int argc,char* argv[])
 {
@@ -401,7 +407,8 @@ int main(int argc,char* argv[])
     _CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__ << std::endl);
 */
-
+    //_CrtDumpMemoryLeaks( );
+    //atexit(doExit);
     //new std::string("Maul !");
 	return(result);
 }

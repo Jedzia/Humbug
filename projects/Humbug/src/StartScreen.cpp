@@ -8,6 +8,7 @@
 #include "Filesystem/FileLoader.h"
 #include <cstdlib>
 #include "SDL_ttf.h"
+#include "GUI/Data/ColorData.h"
 
 
 StartScreen::StartScreen( FileLoader& loader, CCanvas *background)
@@ -96,13 +97,21 @@ void StartScreen::OnIdle()
 
 void StartScreen::OnDraw()
 {
+    static int xdelta = 0;
+    static int xdelta1 = 0;
+    static int coldelta = 0;
+
     static std::string subtext("A");
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     m_pMainCanvas->Lock();
     m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
 
     CRectangle frect(400, 300, 85, 85);
-    m_pMainCanvas->FillRect( frect, mcol );
+    SDL_Color *wavemap = ColorData::Instance()->Wavemap();
+    int index = (coldelta*2 & 63);
+    //m_pMainCanvas->FillRect( frect, mcol );
+    SDL_Color& fcol = wavemap[index];
+    m_pMainCanvas->FillRect( frect, CColor(fcol.r, fcol.g, fcol.b)  );
     m_pMainCanvas->AddUpdateRect(frect);
     //mcol.SetR(x);
     //mcol.SetG(x/2);
@@ -114,8 +123,6 @@ void StartScreen::OnDraw()
     int textposY = 600;
     //int fontheigth = TTF_FontHeight(m_pArialfont);
 
-    static int xdelta = 0;
-    static int xdelta1 = 0;
     CColor m_colText = CColor::White();
     CColor m_colText2 = CColor::LightYellow();
     CColor m_colTextBg = CColor::Green();
@@ -162,6 +169,13 @@ void StartScreen::OnDraw()
         //xdelta1 +=2;
         xdelta = textwidth;
     }
+
+    coldelta++;
+    if (coldelta > 64)
+    {
+        coldelta = 0;
+    }
+
     if (xdelta % 6 == 0)
     {
         //subtext += "B";

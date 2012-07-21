@@ -56,6 +56,13 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
 # User-Interface skeleton
+SET(Humbug_GUI_Data_headers 
+		GUI/Data/ColorData.h
+)
+SET(Humbug_GUI_Data_sources 
+		GUI/Data/ColorData.cpp
+)
+
 SET(Humbug_GUI_headers 
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
@@ -80,7 +87,7 @@ SET(Humbug_GUI_sources
 )
 
 # Component set (Canvas, Controls, etc.)
-SET(Humbug_Components_headers 
+SET(Humbug_Component_headers 
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
 		GUI/Components/Color.h
@@ -103,7 +110,7 @@ SET(Humbug_Components_headers
 		GUI/TileEngine/TileSet.h
 		GUI/TileEngine/TileEngine.h
 )
-SET(Humbug_Components_sources 
+SET(Humbug_Component_sources 
 		GUI/Components/Point.cpp
 		GUI/Components/Rectangle.cpp
 		GUI/Components/Color.cpp
@@ -162,9 +169,10 @@ SET(Humbug_MyGUI_sources
 
 # putting the sources together
 SET(Humbug_headers 
+		${Humbug_GUI_Data_headers}
 		${Humbug_GUI_headers}
 		${Humbug_MyGUI_headers}
-		${Humbug_Components_headers}
+		${Humbug_Component_headers}
 
 		Filesystem/FileLoader.h
 		PlayerKeys.h
@@ -176,9 +184,10 @@ SET(Humbug_headers
 )
 
 SET(Humbug_sources 
+		${Humbug_GUI_Data_sources}
 		${Humbug_GUI_sources}
 		${Humbug_MyGUI_sources}
-		${Humbug_Components_sources}
+		${Humbug_Component_sources}
 
 		Filesystem/FileLoader.cpp
 		PlayerKeys.cpp
@@ -261,6 +270,10 @@ SOURCE_GROUP(GUI FILES ${Humbug_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
+SOURCE_GROUP(GuiHeaders FILES ${Humbug_GUI_headers})
+SOURCE_GROUP(GuiSources FILES ${Humbug_GUI_sources})
+SOURCE_GROUP(CompHeaders FILES ${Humbug_Component_headers})
+SOURCE_GROUP(CompSources FILES ${Humbug_Component_sources})
 
 
 # Move to bindings
