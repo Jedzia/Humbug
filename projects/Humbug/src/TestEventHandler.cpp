@@ -94,11 +94,7 @@ void CTestEventHandler::OnExit(){
     //destroy thread
     delete m_pTestThread;
 
-    //destroy font
-    TTF_CloseFont( CButton::GetButtonFont() );
 
-    //shut down font system
-    TTF_Quit();
 
     //delete main canvas
     //delete m_pMainCanvas;
@@ -116,6 +112,10 @@ void CTestEventHandler::OnExit(){
     delete m_pKeyHandler2;
     delete m_pConsole;
     delete fl;
+    //destroy font
+    //TTF_CloseFont( CButton::GetButtonFont() );
+    //shut down font system
+    TTF_Quit();
     CEventHandler::OnExit();
 } // OnExit
 
@@ -172,9 +172,6 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //initialize sdl_ttf
     TTF_Init();
 
-    //load in button font. Todo: Error Checking
-    CButton::SetButtonFont( TTF_OpenFont(
-                    "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 15) );
 
     //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
@@ -185,6 +182,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     CTileSet* tileSet = NULL;
     try
     {
+        //load in button font. Todo: Error Checking
+        //TTF_OpenFont(
+          //  "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 15)
+        TTF_Font *arial = fl->LoadFont("Fonts/ARIAL.TTF", 15);
+        CButton::SetButtonFont( arial );
+
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
         m_pHud = new Hud(*fl, mainControl, new HudBackground(*fl, "Hud/footer.png"), 0);
 

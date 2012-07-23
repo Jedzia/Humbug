@@ -6,17 +6,26 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <string>
 
+struct SDL_Surface;
+struct _TTF_Font;
+typedef struct _TTF_Font TTF_Font;
+
 class FileLoadingInfo 
 {
 public:
     FileLoadingInfo(const std::string name, SDL_Surface* surface);
+    FileLoadingInfo(const std::string name, TTF_Font* font, SDL_RWops* area, char *data);
     ~FileLoadingInfo();
 
     std::string Name() const { return m_strName; }
     void Name(std::string val) { m_strName = val; }
+    TTF_Font* Font() const { return m_pFont; }
 private:
     std::string m_strName;
     SDL_Surface* m_pSurface;
+    TTF_Font* m_pFont;
+    SDL_RWops* m_pArea;
+    char *m_pData;
 };
 
 class FileLoader {
@@ -32,6 +41,7 @@ public:
     // Loads a image from the package or filesystem.
     // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
     SDL_Surface* LoadImg(const std::string & filename) ;
+    TTF_Font* LoadFont(const std::string & filename, int ptsize ) ;
     void Free(const std::string& name);
     void FreeLast();
 
@@ -42,6 +52,8 @@ private:
     typedef boost::ptr_vector<FileLoadingInfo> surfacevector;
     surfacevector m_pvSurfaces;
 
+    struct FileLoaderImpl;
+    boost::scoped_ptr<FileLoaderImpl> pimpl_;
 };
 
 // File loader exceptions
