@@ -168,7 +168,7 @@ void Hookable::Init(Hookable* hook)
     //sig2(1,2);
 
     m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*hook), _1, _2));
-    m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*hook)));
+    m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*hook), _1));
     //m_pMaster->ConnectOnDraw(boost::bind(&Hookable::OnIdle, boost::ref(*hook)));
     //m_pMaster->ConnectOnInit(boost::bind(&Hookable::HookableImpl::OnInit, *pimpl_, _1, _2));
     m_bIsInitialized = true;
@@ -183,7 +183,7 @@ bool Hookable::OnInit( int argc,char* argv[] )
     //return Setup();
 }
 
-void Hookable::OnIdle()
+void Hookable::OnIdle(int frameNumber)
 {
 
 }

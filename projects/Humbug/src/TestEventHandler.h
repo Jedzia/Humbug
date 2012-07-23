@@ -56,7 +56,7 @@ private:
     Screen* m_scrStart;
 protected:
     //idle behavior
-	virtual void OnIdle();
+	virtual void OnIdle(int frameNumber);
     //update loop
 	virtual void Update();
 public:

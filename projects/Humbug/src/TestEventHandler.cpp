@@ -325,8 +325,8 @@ void CTestEventHandler::PutBlue(){
 } // PutBlue
 
 //idle behavior - Draw the stuff
-void CTestEventHandler::OnIdle(){
-    CApplication::OnIdle(); return;
+void CTestEventHandler::OnIdle(int frameNumber){
+    CApplication::OnIdle(frameNumber); return;
 
     Uint32 now, diff;
     now = SDL_GetTicks();
@@ -397,7 +397,7 @@ void CTestEventHandler::OnIdle(){
     }
 
     // call base method.
-    CApplication::OnIdle();
+    CApplication::OnIdle(frameNumber);
 } // OnIdle
 
 //update loop

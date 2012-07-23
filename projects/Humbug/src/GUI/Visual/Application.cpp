@@ -202,10 +202,10 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 }
 
 //idle behavior
-void CApplication::OnIdle()
+void CApplication::OnIdle(int frameNumber)
 {
 	//by default, do nothing
-    m_sigOnIdle();
+    m_sigOnIdle(frameNumber);
     m_sigOnDraw();
     m_pMainCanvas->UpdateRects ( );
 }
@@ -286,6 +286,7 @@ int CApplication::Execute(int argc,char* argv[])
     Timer fps;
     //Uint32 curdelay = 0;
     int curdelay = 0;
+    int frameNumber = 1;
 
 
 	//event structure
@@ -310,7 +311,7 @@ int CApplication::Execute(int argc,char* argv[])
 		else
 		{
 			//no event, so idle
-			GetApplication()->OnIdle();
+			GetApplication()->OnIdle(frameNumber);
             shownFrames++;
             GetApplication()->Update();
 
@@ -354,7 +355,7 @@ int CApplication::Execute(int argc,char* argv[])
             loopFrames = 0;
             m_uiFPSLastTime = SDL_GetTicks();
         }
-
+		frameNumber++;
 	}
 	//clean up
     GetApplication()->OnExiting();
@@ -370,7 +371,7 @@ CApplication* CApplication::GetApplication()
 	return(s_pTheApplication);
 }
 
-void CApplication::ConnectOnIdle( const slot_type_event& s )
+void CApplication::ConnectOnIdle( const slot_type_idle& s )
 {
     m_sigOnIdle.connect( s );
 }

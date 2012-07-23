@@ -1,3 +1,136 @@
+
+-X-X-X-X- Montag, 16. Juli 2012 -----------------------------------------------------------------------------
+
+D:\E\Projects\C++\Humbug\build\Humbug\src\Debug>
+Humbug.exe > leaks.txt 2>&1
+
+gdb:
+break Application.cpp:381
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Sa, 07 Jul 2012 19:12:37 -----------------------------------------------------------
+Humbug, CMD:
+
+cpack -G NSIS
+msbuild Humbug.sln /v:n /p:Configuration=Debug /t:MakeVFS
+msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug
+msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Playground\zfs
+
+msbuild Humbug.sln /v:n /p:Configuration=Release /t:Humbug
+
+-----------------------------------------------------------------------------------------------
+-X-X-X-X- Donnerstag, 5. Juli 2012 -----------------------------------------------------------------------------
+ 
+..\SDL-1.2.15\VisualC\SDL\Debug\SDL.lib
+
+root@Pubsi /d/E/Projects/C++/Humbug/msysbuild/oglconsole/examples/SDL
+$ gcc -I../../ -DOGLCONSOLE_USE_SDL `sdl-config --cflags --libs` -o example example.c ../../oglconsole-sdl.o -lopengl32 -lglu32 -lSDL -lSDLmain
+ 
+ 
+D:\E\Projects\C++\Humbug\build>
+msbuild Humbug.sln /v:d /p:Configuration=Debug /t:Playground\SDL\SDL_hardlines
+
+
+Image wandeln
+root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/Artwork
+$ convert -layers merge footer2.psd footer2.bmp
+
+"C:\Program Files\ImageMagick-6.7.8-Q16\convert.exe" -layers merge D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/footer.psd
+
+
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Montag, 2. Juli 2012 -----------------------------------------------------------------------------
+
+IMMER DIE PLATTFORMEIGENEN CMAKE's NEHMEN !!!
+
+boost build cygwin:
+
+root@Pubsi /cygdrive/d/boost/boost-1.50.0
+$ ./bootstrap.sh
+$ ./b2 --build-type=minimal --build-dir="D:\boost\build"
+
+beim cmake usen: 
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
+set(CMAKE_LEGACY_CYGWIN_WIN32 1)
+
+PROJECT( Humbug )
+SET(CMAKE_BUILD_TYPE Release)
+
+
+also legacy und build type setzen
+
+boost build MinGW:
+root@Pubsi /d/boost/boost-1.50.0
+$ ./bootstrap.sh --with-toolset=mingw
+
+in der project-config.jam die mingw nach gcc fixen
+
+root@Pubsi /d/boost/boost-1.50.0
+$ ./b2 --build-type=complete --build-dir="D:\boost\build" --without-python --without-mpi link=shared
+
+
+
+PRJ BUILD:
+(cmake mit ./configure bauen)
+cmake ../projects/ -G"MSYS Makefiles"
+
+root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/c/Program Files/CMake-2.8.5/bin:/d/boost/boost-1.50.0"
+export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/d/boost/boost-1.50.0"
+
+root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+$ export QTDIR=/c/QtSDK/Desktop/Qt/4.7.2/mingw
+===========
+
+Create class from template:
+D:\E\Projects\C++\Humbug\projects\Humbug\src\GUI>
+template TemplateOstream MyClass
+
+SDL:
+===========
+
+set SDL_VIDEODRIVER=directx
+
+
+Humbug, msys, MinGW
+---------------
+export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/d/boost/boost-1.50.0"
+export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/c/Program Files/CMake-2.8.5/bin:/d/boost/boost-1.50.0"
+
+root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+$ cmake ../projects/ -G"MSYS Makefiles"
+$ make SDL_fosdl3_8
+
+root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+$ /c/WINDOWS/system32/WindowsPowerShell/v1.0/powershell_ise.exe &
+$ "/c/Program Files/CMake-2.8.5/bin/cmake-gui" ../projects/
+cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugShared_ENABLED=FALSE
+cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugShared_ENABLED=FALSE -DCMAKE_BUILD_TYPE=Debug
+cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugShared_ENABLED=TRUE -DPCH_HumbugShared_ENABLED:BOOL=TRUE -DCMAKE_BUILD_TYPE=Debug
+
+Humbug_PCH_DEBUG:BOOL=ON
+
+
+Humbug, cygwin
+---------------
+root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/cygbuild
+$ cd "D:\E\Projects\C++\Humbug\cygbuild"
+
+
+SDL_ttf
+===========
+
+Due to changes in the FreeType renderer, you may want to adjust the font
+hinting to get the best quality for your fonts, e.g.
+    TTF_SetFontHinting(font, TTF_HINTING_LIGHT);
+
+----------------------------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 23 Jul 2012 13:58:14 -----------------------------------------------------------
+Topic, Purpose:
+
+
+-----------------------------------------------------------------------------------------------
 Check for boost usage:
 
 root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz

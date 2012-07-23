@@ -324,7 +324,7 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 		#${PROJECT_SOURCE_DIR}/icons/blue.png
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    #${Humbug_Artwork_WORKDIR}/footer.png
-	    ${Humbug_Artwork_DIR}/Sprites/
+	    ${Humbug_Artwork_DIR}/Sprites/Sprites/
 	    ${Humbug_Artwork_DIR}/Moo.png
 	    ${Humbug_Artwork_DIR}/Tiles/gfx/Tiles1.bmp
 )

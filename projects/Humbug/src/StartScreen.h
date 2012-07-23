@@ -7,6 +7,7 @@ class FileLoader;
 class CCanvas;
 class CText;
 class CTextScroller;
+class CSprite;
 
 class StartScreen : public Screen {
 public:
@@ -19,7 +20,7 @@ public:
     //virtual GroupId GetGroupID();
 
     virtual bool OnInit( int argc,char* argv[] );
-    virtual void OnIdle();
+    virtual void OnIdle(int frameNumber);
 
     virtual void OnDraw();
 
@@ -35,6 +36,8 @@ private:
     CText *m_pScrollText;
     CTextScroller *m_pScroller;
     //boost::scoped_ptr<CCanvas> m_pScrollText;
+    CSprite* m_pSprEye;
+
 
 };
 

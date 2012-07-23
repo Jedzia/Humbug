@@ -20,6 +20,7 @@ ECHO "C:\Program Files\CMake-2.8.5\bin\cmake-gui" ..\projects
 ECHO .
 ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:ALL_BUILD:Rebuild
 ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug:Rebuild
+ECHO "msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug && Humbug\src\Debug\Humbug.exe"
 ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:HumbugConsole:Rebuild
 ECHO msbuild Humbug.sln /t:Rebuild /v:diag /p:Configuration=Debug
 ECHO msbuild Humbug.sln /v:d /p:Configuration=Debug

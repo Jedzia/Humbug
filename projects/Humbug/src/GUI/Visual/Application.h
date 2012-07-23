@@ -21,7 +21,10 @@ public:
     // signal types 
     typedef boost::signal<void ()> signal_type_event;
     typedef signal_type_event::slot_type slot_type_event;
-    typedef boost::signal<void (int, char**)> signal_type_init;
+    typedef boost::signal<void (int)> signal_type_idle;
+    typedef signal_type_idle::slot_type slot_type_idle;
+    
+	typedef boost::signal<void (int, char**)> signal_type_init;
     typedef signal_type_init::slot_type slot_type_init;
 
 	//constructor
@@ -33,7 +36,7 @@ public:
     CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
 
     // Signal handling
-    void ConnectOnIdle(const slot_type_event& s);
+    void ConnectOnIdle(const slot_type_idle& s);
     void ConnectOnDraw(const slot_type_event& s);
     void ConnectOnUpdate(const slot_type_event& s);
 
@@ -44,7 +47,7 @@ public:
 	virtual void OnEvent(SDL_Event* pEvent);
 
 	//idle behavior
-	virtual void OnIdle();
+	virtual void OnIdle(int frameNumber);
 
    	//update loop
 	virtual void Update();
@@ -70,7 +73,7 @@ private:
     static Uint32 m_uiFPSLastTime;
 
     signal_type_event m_sigOnUpdate;
-    signal_type_event m_sigOnIdle;
+    signal_type_idle m_sigOnIdle;
     signal_type_event m_sigOnDraw;
 
     //set singleton pointer

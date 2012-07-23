@@ -23,7 +23,7 @@ public:
     //initialization
     virtual bool OnInit(int argc,char* argv[]);
 
-    virtual void OnIdle();
+    virtual void OnIdle(int frameNumber);
 
 
 protected:
