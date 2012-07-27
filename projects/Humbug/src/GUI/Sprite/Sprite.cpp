@@ -97,6 +97,13 @@ void CSprite::SprOffset( int offset ){
     m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
 }
 
+void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha )
+{
+    SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
+    SDL_SetColorKey(alphasurf, SDL_SRCCOLORKEY, key);
+    SDL_SetAlpha(alphasurf, 0, alpha);
+}
+
 std::ostream& operator<<(std::ostream& o, const CSprite& r) {
     return o << "CSprite[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                  << ", W=" << r.GetW() << ", H=" << r.GetH()

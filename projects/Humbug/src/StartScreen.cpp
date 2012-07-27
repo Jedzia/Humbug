@@ -99,9 +99,11 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     m_pScroller = new CTextScroller(m_pMainCanvas, *m_pScrollText, CPoint(100, 600), 800);
 	
 	// ### Sprites ###
-	m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
-			CRectangle(0, 0, 64, 64), CPoint(64, 0) );
-
+	//m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+	//		CRectangle(0, 0, 64, 64), CPoint(64, 0) );
+	m_pSprEye = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
+			CRectangle(0, 0, 256, 64), CPoint(0, 64) );
+    m_pSprEye->SetColorAndAlpha(0xff00ff, 128);
     //int *test = new int(5);
     return Screen::OnInit(argc, argv);
 
@@ -113,7 +115,7 @@ void StartScreen::OnIdle(int frameNumber){
     m_pScroller->Scroll(4);
 
     m_pSprEye->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 420));
-	m_pSprEye->SprOffset(frameNumber % 8);
+	m_pSprEye->SprOffset(frameNumber % 40);
 }
 
 void StartScreen::OnDraw(){

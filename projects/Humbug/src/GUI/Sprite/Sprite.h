@@ -39,12 +39,15 @@ public:
 
     void SprOffset(int offset);
 
+    CImage* SprImage() const { return m_pSprImage; }
+    void SetColorAndAlpha(Uint32 key, Uint8 alpha);
+
     friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
 
-    CImage* m_pSprImage;
 
 private:
 
+    CImage* m_pSprImage;
     CCanvas* m_pMainCanvas;
     CCanvas* m_pBackground;
     CPoint m_cpPos;
