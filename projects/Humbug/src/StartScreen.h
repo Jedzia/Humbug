@@ -16,10 +16,6 @@ public:
     StartScreen(FileLoader& loader, CCanvas *background);
     ~StartScreen();
 
-    const char *language(int x) const;
-
-    //virtual GroupId GetGroupID();
-
     virtual bool OnInit( int argc,char* argv[] );
     virtual void OnIdle(int frameNumber);
 
@@ -33,9 +29,12 @@ private:
     //int m_iUpdateTimes;
     CColor mcol;
     TTF_Font *m_pArialfont;
-    CCanvas* m_pBackground;
-    CText *m_pScrollText;
-    CTextScroller *m_pScroller;
+    //CCanvas* m_pBackground;
+    boost::shared_ptr<CCanvas> m_pBackground;
+    //CText *m_pScrollText;
+    boost::scoped_ptr<CText> m_pScrollText;
+    boost::scoped_ptr<CTextScroller> m_pScroller;
+    //CTextScroller *m_pScroller;
     //boost::scoped_ptr<CCanvas> m_pScrollText;
     boost::scoped_ptr<CSpriteManager> m_pSprMgr;
     //boost::scoped_ptr<CSprite> m_pSprEye;

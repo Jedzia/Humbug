@@ -8,16 +8,21 @@
 typedef boost::shared_ptr<CSprite> SpriteShrp;
 
 class CSpriteHook {
+    //CSprite *m_pSprite;
+    SpriteShrp m_pSprite;
+    const boost::function<void(CSprite*, int)> m_fncUpdate;
 public:
 
-    CSpriteHook::CSpriteHook( CSprite *sprite, boost::function<void(CSprite*, int)> updfunc = NULL )
+    CSpriteHook::CSpriteHook( CSprite *sprite, const boost::function<void(CSprite*, int)> updfunc = NULL )
         :m_pSprite(sprite), m_fncUpdate(updfunc)
     {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
         //m_pSprite.reset(sprite);
     }
 
     CSpriteHook::~CSpriteHook()
     {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
 
     }
 
@@ -34,11 +39,6 @@ public:
     }
     //CSprite * Sprite() const { return m_pSprite; }
     SpriteShrp Sprite() const { return m_pSprite; }
-
-private:
-    //CSprite *m_pSprite;
-    SpriteShrp m_pSprite;
-    boost::function<void(CSprite*, int)> m_fncUpdate;
 };
 
 
@@ -54,9 +54,10 @@ CSpriteManager::~CSpriteManager(void)
          dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CSpriteManager::AddSprite(CSprite *sprite, boost::function<void(CSprite*, int)> updfunc)
+void CSpriteManager::AddSprite(CSprite *sprite, const boost::function<void(CSprite*, int)>& updfunc)
 {
     m_pvSprites.push_back(new CSpriteHook( sprite, updfunc));
+    //m_pvSprites.push_back(new CSpriteHook( sprite));
 }
 
 void CSpriteManager::OnDraw()
@@ -77,17 +78,11 @@ void CSpriteManager::OnIdle( int frameNumber )
     {
         //SpriteShrp sprite = it->Sprite();
         //dbgOut(__FUNCTION__ << " " << &it << std::endl);
-        it->DoIdle(frameNumber);
+        (*it).DoIdle(frameNumber);
     }
 
 
 }
-
-void CSpriteManager::AddSpriteX( CSprite *sprite, boost::shared_ptr<boost::function<void(CSprite*, int)>> updfunc )
-{
-
-}
-
 
 std::ostream& operator<<(std::ostream& o, const CSpriteManager& r) {
     return o << "CSpriteManager[ X=" /*<< r.GetX() << ", Y=" << r.GetY()

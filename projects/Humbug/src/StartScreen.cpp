@@ -33,37 +33,27 @@ StartScreen::~StartScreen(void){
         TTF_CloseFont(m_pArialfont);
     }
 
-    delete m_pScrollText;
-    delete m_pScroller;
-    delete m_pBackground;
+    //delete m_pScrollText;
+    //delete m_pScroller;
+    //delete m_pBackground;
     //delete m_pSprWormler;
     //delete m_pSprEye;
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
 
-const char * StartScreen::language(int x) const {
-    return "AsciiDoc";
-}
-void Fresse(int x)
-{
-
-}
-
 class EyeMover {
+    int h_;
+    bool toggle_;
+    int deltaY_;
+    static int created;
+
 public:
-    EyeMover() 
+    EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false) 
     {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
-        static int created = 0;
+        dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
+        //static int created = 0;
         created++;
     }
-
-//     EyeMover(const EyeMover& copy) 
-//     {
-//         dbgOut(__FUNCTION__ << " " << this << std::endl);
-//         static int copied = 0;
-//         copied++;
-//     }
 
     ~EyeMover()
     {
@@ -71,11 +61,31 @@ public:
     }
 
     void operator()(CSprite* sprite, int frameNumber) {
-        sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460));
+        sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_));
         sprite->SprOffset(frameNumber % 8);
+
+        if (h_ >= 100)
+        {
+            toggle_ = false;
+        }
+        else if (h_ <= 0)
+        {
+            toggle_ = true;
+        }
+
+        if (toggle_)
+        {
+            h_++;
+        } 
+        else
+        {
+            h_--;
+        }
     }
 
 };
+
+int EyeMover::created = 0;
 
 class WormMover {
 public:
@@ -106,7 +116,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
     //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-    m_pBackground = new CCanvas( tmpfsurf );
+    m_pBackground.reset(new CCanvas( tmpfsurf ));
 
     //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
@@ -143,18 +153,26 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     // m_colText)));
     //m_pScrollText = new CCanvas(TTF_RenderText_Solid(m_pArialfont, outstring.str().c_str(),
     // m_colText));
-    m_pScrollText = new CText(m_pArialfont, outstring.str(), m_colText);
-    m_pScroller = new CTextScroller(m_pMainCanvas, *m_pScrollText, CPoint(100, 600), 800);
+    m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
+    m_pScroller.reset(new CTextScroller(m_pMainCanvas, *m_pScrollText, CPoint(100, 600), 800));
 	
 	// ### Sprites ###
     CSprite *m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
         CRectangle(0, 0, 64, 64), CPoint(64, 0) );
-    EyeMover k1;
-    m_pSprMgr->AddSprite(m_pSprEye, boost::ref( k1 ));
+    //EyeMover *eymover = new EyeMover;
+    //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( *eymover ));
+    EyeMover eymover;
+    m_pSprMgr->AddSprite(m_pSprEye, eymover );
+
+    /*CSprite *m_pSprEye2 = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+        CRectangle(0, 0, 64, 64), CPoint(64, 0) );
+    EyeMover eymover2(55);
+    m_pSprMgr->AddSprite(m_pSprEye2, eymover2 );*/
 
     CSprite *m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
         CRectangle(0, 0, 256, 64), CPoint(0, 64) );
     WormMover k2;
+    //WormMover *k2 = new WormMover;
     m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
     m_pSprMgr->AddSprite(m_pSprWormler, boost::ref( k2 ));
 
