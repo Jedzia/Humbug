@@ -14,16 +14,16 @@ class Hookable : boost::noncopyable {
 public:
 
 	// initialize master set
-    Hookable(CEventHandler* master);
+    //Hookable(CEventHandler* master);
     virtual ~Hookable();
 
-    static void Close();
-    bool IsMaster() const;
+    //static void Close();
+    //bool IsMaster() const;
 
     //initialization
     virtual bool OnInit(int argc,char* argv[]);
 
-    virtual void OnIdle(int frameNumber);
+    virtual void OnIdle(int frameNumber) = 0;
     friend class HookableManager;
 
 protected:
@@ -39,13 +39,11 @@ protected:
 private:
     void Init(CEventHandler* Master, Hookable* controller);
 
-	static boost::ptr_vector<Hookable> m_pvHooks;
-    static Hookable* m_pController;
-    static CEventHandler* m_pMaster;
+	//static boost::ptr_vector<Hookable> m_pvHooks;
+    //static Hookable* m_pController;
+    CEventHandler* m_pMaster;
     static GroupId s_NextGrpID;
 
-    struct HookableImpl;
-    boost::scoped_ptr<HookableImpl> pimpl_;
     GroupId m_grpID;
     bool m_bIsInitialized;
 };
@@ -56,6 +54,7 @@ public:
     TestHookable();
     virtual ~TestHookable();
 
+    void OnIdle(int frameNumber);
     virtual GroupId GetGroupID();
 
 protected:

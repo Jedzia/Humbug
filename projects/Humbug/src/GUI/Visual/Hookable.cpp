@@ -9,9 +9,9 @@
 //#include <build/cmake/include/debug.h>
 
 
-Hookable* Hookable::m_pController = NULL;
-CEventHandler* Hookable::m_pMaster = NULL;
-boost::ptr_vector<Hookable> Hookable::m_pvHooks;
+//Hookable* Hookable::m_pController = NULL;
+//CEventHandler* Hookable::m_pMaster = NULL;
+//boost::ptr_vector<Hookable> Hookable::m_pvHooks;
 GroupId Hookable::s_NextGrpID = 0;
 GroupId Hookable::s_GrpID = -1;
 
@@ -30,53 +30,7 @@ public:
 };
 
 
-struct Hookable::HookableImpl {
-
-    Hookable *m_pHost;
-
-    HookableImpl(Hookable *host)
-        : m_pHost(host)
-    {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
-    }
-
-    ~HookableImpl()
-    {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
-    }
-
-    bool OnInit(int argc,char* argv[])
-    {
-        //return m_pHost->OnInit(argc, argv);
-        return true;
-    }
-
-    void BlaFoo()
-    {
-
-        //boost::signal<void (int&)> sig;
-        //sig.connect(double_slot());
-        //sig.connect(plus_slot());
-
-        //sig.connect(plus_slot());
-
-        //int resultX=12;
-        //sig(resultX);
-        //std::cout << "The result is: " << resultX << '\n';
-
-        //signal_type_init2 fuck;
-        //boost::signal<void (int&)> fuck;
-        //fuck(resultX);
-        //bool sigresult = fuck(argc, argv);
-
-        //bool sigresult = m_sigOnInit(argc, argv);
-
-
-    }
-};
-
-
-Hookable::Hookable(CEventHandler* master)
+/*Hookable::Hookable(CEventHandler* master)
     : m_bIsInitialized(false)
 {
     dbgOut(__FUNCTION__ << " Hookable master ctor"<< std::endl);
@@ -84,13 +38,13 @@ Hookable::Hookable(CEventHandler* master)
     //std::cout.flush();
     //std::cerr << "Hookable master ctor" << std::endl;
 
-    /*std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
-    if (myfile.is_open())
-    {
-        myfile << "This outputting a line.\n";
-        myfile << "Guess what, this is another line.\n";
-        myfile.close();
-    }*/
+    //std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
+    //if (myfile.is_open())
+    //{
+    //    myfile << "This outputting a line.\n";
+    //    myfile << "Guess what, this is another line.\n";
+    //    myfile.close();
+    //}
 
         m_grpID = GetGroupID();
         if (m_grpID != 0)
@@ -98,40 +52,33 @@ Hookable::Hookable(CEventHandler* master)
             throw "The base Hookable::Hookable(CEventHandler* master) must be the first in line.";
         }
 
-         m_pController = this;
-         m_pMaster = master;
-}
+         //m_pController = this;
+}*/
 
 Hookable::Hookable(bool hook)
-: pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false)
+: m_bIsInitialized(false)
 {
     dbgOut(__FUNCTION__ << " Hookable child ctor " << this << std::endl);
     //std::cout << "Hookable child ctor" << std::endl;
-    m_pvHooks.push_back(this);
+    //m_pvHooks.push_back(this);
     //Init(m_pMaster, this);
 }
 
 Hookable::~Hookable(void)
 {
     dbgOut(__FUNCTION__ << " Hookable dtor " << this << std::endl);
-         if (IsMaster())
+         //if (IsMaster())
          {
-             dbgOut(__FUNCTION__ << " Hookable dtor master kill " << this << std::endl);
-            m_pvHooks.release();
+             //dbgOut(__FUNCTION__ << " Hookable dtor master kill " << this << std::endl);
+            //m_pvHooks.release();
          }
 }
 
-bool Hookable::IsMaster() const
+/*void Hookable::Close()
 {
-    //return(this==GetMainControl());
-    return(this == m_pController);
-}
-
-void Hookable::Close()
-{
-    std::cout << "Releasing Hookable children. size=" << m_pvHooks.size() << std::endl;
-    m_pvHooks.release();
-}
+    //std::cout << "Releasing Hookable children. size=" << m_pvHooks.size() << std::endl;
+    //m_pvHooks.release();
+}*/
 
 GroupId Hookable::CreateNextGroupID()
 {
@@ -152,6 +99,7 @@ void Hookable::Init(CEventHandler* master, Hookable* controller)
     {
         return;
     }
+    m_pMaster = master;
 
     //boost::signal<void (int&)> sig;
     //sig.connect(double_slot());
@@ -183,11 +131,6 @@ bool Hookable::OnInit( int argc,char* argv[] )
     //return Setup();
 }
 
-void Hookable::OnIdle(int frameNumber)
-{
-
-}
-
 TestHookable::TestHookable()
 : Hookable(true)
 {
@@ -198,6 +141,11 @@ TestHookable::TestHookable()
 TestHookable::~TestHookable()
 {
     dbgOut(__FUNCTION__ << std::endl);
+
+}
+
+void TestHookable::OnIdle(int frameNumber)
+{
 
 }
 

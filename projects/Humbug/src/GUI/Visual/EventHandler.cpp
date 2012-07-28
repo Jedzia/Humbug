@@ -6,7 +6,7 @@
 
 //
 #include "EventHandler.h"
-#include "Hookable.h"
+//#include "Hookable.h"
 #include "HookableManager.h"
 
 
@@ -291,15 +291,16 @@ void CEventHandler::OnUser(Uint8 type, int code, void* data1, void* data2){
 
 bool CEventHandler::OnPreInit( int argc,char* argv[] )
 {
-    m_Hooks = new Hookable(this);
+    //m_Hooks = new Hookable(this);
 
     return true;
 }
 
 void CEventHandler::OnExiting()
 {
-    Hookable::Close();
-    delete m_Hooks;
+    //Hookable::Close();
+    m_HookMgr->Close();
+    //delete m_Hooks;
     //throw std::exception("The method or operation is not implemented.");
 }
 

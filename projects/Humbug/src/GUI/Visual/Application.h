@@ -7,7 +7,6 @@
 #include "boost/signals.hpp"
 #include "boost/signals/connection.hpp"
 
-class Hookable;
 class CMainCanvas;
 
 /*

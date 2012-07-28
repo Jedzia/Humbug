@@ -90,7 +90,7 @@ int EyeMover::created = 0;
 class WormMover {
 public:
     void operator()(CSprite* sprite, int frameNumber) {
-        sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 8), 420));
+        sprite->SetPos(CPoint(100 + ((frameNumber % 32) * 16), 420));
         sprite->SprOffset(frameNumber % 40);
      }
 };

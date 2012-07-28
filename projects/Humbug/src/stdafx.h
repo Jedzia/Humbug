@@ -7,6 +7,7 @@
 #include <map>
 #include <functional>
 #include <algorithm>
+#include <stdexcept>
 
 #ifdef _DEBUG
 /*inline void _moo_bugzor(const char* ff)
@@ -50,10 +51,12 @@
     #include <boost/system/system_error.hpp>
 
     #include <boost/progress.hpp>
+    
     #include <boost/scoped_ptr.hpp>
     #include <boost/smart_ptr.hpp>
     #include <boost/ptr_container/ptr_vector.hpp>
-    
+    #include <boost/ptr_container/ptr_map.hpp>
+   
     #include <boost/bind.hpp>
     #include "boost/bind/mem_fn.hpp"
     #include "boost/function.hpp"

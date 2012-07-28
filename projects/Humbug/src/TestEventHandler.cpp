@@ -54,6 +54,7 @@ MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //pa
 //constructor
 CTestEventHandler::CTestEventHandler() :
     m_pConsole(NULL),
+    //fl(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data")),
     m_uiLastTicks(0),
     m_inActiveSprite(0),
     /*m_pTileSet(NULL),*/
@@ -112,7 +113,7 @@ void CTestEventHandler::OnExit(){
     delete m_pKeyHandler;
     delete m_pKeyHandler2;
     delete m_pConsole;
-    delete fl;
+    fl.reset();
     //destroy font
     //TTF_CloseFont( CButton::GetButtonFont() );
     //shut down font system
@@ -177,7 +178,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
     //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-    fl = new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    //fl = new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    fl.reset(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     CTileSet* tileSet = NULL;

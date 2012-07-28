@@ -8,8 +8,9 @@
 #include <exception>
 #include "Application.h"
 #include "SdlInfo.h"
-#include "Hookable.h"
+//#include "Hookable.h"
 #include "../Components/MainCanvas.h"
+#include <stdexcept>
 
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
@@ -399,7 +400,26 @@ int main(int argc,char* argv[])
 
     bmain(argc,argv);
 	//run the application
-    int result = CApplication::Execute(argc,argv);
+    int result = -1;
+
+    try
+    {
+        result = CApplication::Execute(argc,argv);
+    }
+    catch (std::runtime_error ex)
+    {
+        std::cout << std::endl;
+        std::cout << "========================= APPLICATION ERROR !!! =========================" << std::endl;
+        std::cout << ex.what() << std::endl;
+        std::cout << "=========================================================================" << std::endl;
+        std::cout << std::endl;
+    }
+    /*catch (CFileException* e)
+    {
+    }
+    catch (CException* e)
+    {
+    }*/
 
 /*
     const char* explanation = "XXXXXX THIS IS ~CApplication.CPP";

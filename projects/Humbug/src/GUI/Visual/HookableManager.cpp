@@ -24,24 +24,26 @@ HookableManager::~HookableManager(void)
 void HookableManager::Close()
 {
     dbgOut(__FUNCTION__ << std::endl);
-
+    m_mapHooks.release();
 }
 
-void HookableManager::AddHookable(const std::string& key, Hookable *item )
+void HookableManager::AddHookable(std::string key, Hookable *item )
 {
     dbgOut(__FUNCTION__ << " Adding Hook " << key << "(" << item << ")" << std::endl);
     if ( m_mapHooks.find(key) == m_mapHooks.end() )
     {
-        m_mapHooks.insert( std::make_pair(key, item) );
+        //m_mapHooks.insert( std::make_pair(key, item) );
+        // http://www.boost.org/doc/libs/1_50_0/libs/ptr_container/doc/tutorial.html
+        m_mapHooks.insert( key, item );
         item->Init(m_pMaster, item);
     }
     else
     {
-        throw std::runtime_error("Creator method already specified for index"); // interface requirement
+        throw std::runtime_error("Creator method already specified for index=" + key); // interface requirement
     }
 }
 
-Hookable* HookableManager::RemoveHookable( const std::string& key )
+Hookable* HookableManager::GetHookable( const std::string& key )
 {
     dbgOut(__FUNCTION__ << " Removing Hook " << key << std::endl);
 
@@ -52,5 +54,10 @@ Hookable* HookableManager::RemoveHookable( const std::string& key )
     }
 
     return found->second;
+}
+
+void HookableManager::RemoveHookable( const std::string& key )
+{
+    //m_mapHooks.release(key);
 }
 

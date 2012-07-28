@@ -4,7 +4,6 @@
 #include "Application.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
-class Hookable;
 class HookableManager;
 
 
@@ -77,7 +76,7 @@ protected:
     bool OnPostInit( int argc,char* argv[] );
     HookableManager* HookMgr() const { return m_HookMgr.get(); }
 
-    Hookable* m_Hooks;
+    //Hookable* m_Hooks;
 private:
     boost::scoped_ptr<HookableManager> m_HookMgr;
     signal_type_init m_sigOnInit;

@@ -4,6 +4,7 @@
 #include "GUI/Visual/EventHandler.h"
 #include "GUI/Components/MainCanvas.h"
 #include <boost/ptr_container/ptr_vector.hpp>
+#include "boost/smart_ptr/scoped_ptr.hpp"
 
 class HUD;
 class CConsole;
@@ -23,7 +24,8 @@ class Screen;
 class CTestEventHandler : public CEventHandler
 {
 private:
-    FileLoader* fl;
+    boost::scoped_ptr<FileLoader> fl;
+    //FileLoader* fl;
     //main display surface
     CConsole* m_pConsole;
 
