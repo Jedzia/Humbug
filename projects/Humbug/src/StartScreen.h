@@ -30,7 +30,7 @@ public:
 private:
     FileLoader& m_Loader;
 	Uint8 x;
-    int m_iUpdateTimes;
+    //int m_iUpdateTimes;
     CColor mcol;
     TTF_Font *m_pArialfont;
     CCanvas* m_pBackground;
@@ -40,8 +40,8 @@ private:
     boost::scoped_ptr<CSpriteManager> m_pSprMgr;
     //boost::scoped_ptr<CSprite> m_pSprEye;
     //boost::scoped_ptr<CSprite> m_pSprWormler;
-    CSprite *m_pSprEye;
-    CSprite *m_pSprWormler;
+    //CSprite *m_pSprEye;
+    //CSprite *m_pSprWormler;
 
 };
 

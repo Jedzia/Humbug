@@ -76,9 +76,15 @@ void CSpriteManager::OnIdle( int frameNumber )
     for (SprStorage::iterator it = m_pvSprites.begin(); it < end ; it++)
     {
         //SpriteShrp sprite = it->Sprite();
+        //dbgOut(__FUNCTION__ << " " << &it << std::endl);
         it->DoIdle(frameNumber);
     }
 
+
+}
+
+void CSpriteManager::AddSpriteX( CSprite *sprite, boost::shared_ptr<boost::function<void(CSprite*, int)>> updfunc )
+{
 
 }
 

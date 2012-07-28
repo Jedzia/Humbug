@@ -13,6 +13,7 @@ public:
     ~CSpriteManager();
 
     void AddSprite(CSprite *sprite, boost::function<void(CSprite*, int)> updfunc = NULL);
+    void AddSpriteX(CSprite *sprite, boost::shared_ptr<boost::function<void(CSprite*, int)>> updfunc);
     void OnDraw();
     void OnIdle(int frameNumber);
 
