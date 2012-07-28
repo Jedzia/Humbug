@@ -104,6 +104,7 @@ SET(Humbug_Component_headers
 		GUI/Controls/Button.h
 
 		GUI/Sprite/Sprite.h
+		GUI/Sprite/SpriteManager.h
 		
 		GUI/TileEngine/Tile.h
 		GUI/TileEngine/TileImage.h
@@ -127,6 +128,7 @@ SET(Humbug_Component_sources
 		GUI/Controls/Button.cpp
 		
 		GUI/Sprite/Sprite.cpp
+		GUI/Sprite/SpriteManager.cpp
 		
 		GUI/TileEngine/Tile.cpp
 		GUI/TileEngine/TileImage.cpp

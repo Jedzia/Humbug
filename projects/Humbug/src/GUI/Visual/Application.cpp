@@ -314,6 +314,7 @@ int CApplication::Execute(int argc,char* argv[])
 			GetApplication()->OnIdle(frameNumber);
             shownFrames++;
             GetApplication()->Update();
+            frameNumber++;
 
             //Cap the frame rate
             int framecap = 1000 / m_iFramesCap;
@@ -338,7 +339,7 @@ int CApplication::Execute(int argc,char* argv[])
 
         //for (int ii = 0; ii < 50 ; ii++)
         {
-            GetApplication()->Update();
+            //GetApplication()->Update();
         }
 
         loopFrames++;
@@ -355,7 +356,6 @@ int CApplication::Execute(int argc,char* argv[])
             loopFrames = 0;
             m_uiFPSLastTime = SDL_GetTicks();
         }
-		frameNumber++;
 	}
 	//clean up
     GetApplication()->OnExiting();

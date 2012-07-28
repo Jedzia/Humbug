@@ -2,6 +2,8 @@
 #include "StartScreen.h"
 
 //#include <build/cmake/include/debug.h>
+#include "boost/lambda/lambda.hpp"
+#include "boost/function.hpp"
 //
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Rectangle.h"
@@ -9,6 +11,7 @@
 #include "GUI/Components/TextScroller.h"
 #include "GUI/Data/ColorData.h"
 #include "GUI/Sprite/Sprite.h"
+#include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
 StartScreen::StartScreen( FileLoader& loader, CCanvas* background) :
@@ -18,7 +21,9 @@ StartScreen::StartScreen( FileLoader& loader, CCanvas* background) :
     m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL),
-    m_pSprEye(NULL){
+    m_pSprMgr(new CSpriteManager),
+    m_pSprEye(NULL),
+    m_pSprWormler(NULL){
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
 
@@ -30,13 +35,30 @@ StartScreen::~StartScreen(void){
     delete m_pScrollText;
     delete m_pScroller;
     delete m_pBackground;
-    delete m_pSprEye;
+    //delete m_pSprWormler;
+    //delete m_pSprEye;
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
 
 const char * StartScreen::language(int x) const {
     return "AsciiDoc";
 }
+void Fresse(int x)
+{
+
+}
+
+class EyeMover {
+public:
+    EyeMover() {}
+
+    void operator()(CSprite* sprite, int frameNumber) {
+        sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460));
+        sprite->SprOffset(frameNumber % 8);
+    }
+
+};
+
 
 /*GroupId StartScreen::GetGroupID()
    {
@@ -99,11 +121,49 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     m_pScroller = new CTextScroller(m_pMainCanvas, *m_pScrollText, CPoint(100, 600), 800);
 	
 	// ### Sprites ###
-	//m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
-	//		CRectangle(0, 0, 64, 64), CPoint(64, 0) );
-	m_pSprEye = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
-			CRectangle(0, 0, 256, 64), CPoint(0, 64) );
-    m_pSprEye->SetColorAndAlpha(0xff00ff, 128);
+    //m_pSprEye.reset( new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+    //    CRectangle(0, 0, 64, 64), CPoint(64, 0) ));
+    m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+        CRectangle(0, 0, 64, 64), CPoint(64, 0) );
+    EyeMover k1;
+    boost::function<void(CSprite*, int)> f3=
+        k1;
+
+    //f3(m_pSprEye, frameNumber);
+
+    m_pSprMgr->AddSprite(m_pSprEye, k1);
+    
+    
+    
+    //m_pSprWormler.reset( new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
+    //    CRectangle(0, 0, 256, 64), CPoint(0, 64) ));
+    m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
+        CRectangle(0, 0, 256, 64), CPoint(0, 64) );
+    m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
+    m_pSprMgr->AddSprite(m_pSprWormler);
+
+    using namespace boost::lambda;
+
+    boost::function<void(int,int,int)> f=
+        std::cout << boost::lambda::_1 << "*" << boost::lambda::_2 << "+" << boost::lambda::_3
+        << "=" <<boost::lambda::_1*boost::lambda::_2+boost::lambda::_3 << "\n";
+
+    boost::function<void(int)> f2=
+        std::cout << boost::lambda::_1 << "\n";
+
+
+   // boost::function<void(int)> f3=
+     //   (m_pSprEye->SetPos(CPoint(100 + ((boost::lambda::_1 % 128) * 6), 460)));
+    //boost::function<void(int)> f3=
+    //    (m_pSprEye->SprOffset(boost::lambda::_1));
+    //boost::function<void(CSprite&)> f3=
+    //    bind(&CSprite::SprOffset, boost::lambda::_1, 4);
+
+    //boost::function<void(int)> f3=
+    //    boost::bind(&Fresse, boost::lambda::_1);
+
+    //f(1,2,3);
+    //f2(5);
     //int *test = new int(5);
     return Screen::OnInit(argc, argv);
 
@@ -112,10 +172,30 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 
 void StartScreen::OnIdle(int frameNumber){
     //x+= std::random()*5;
+    //static int frameNumber = 0;
     m_pScroller->Scroll(4);
 
-    m_pSprEye->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 420));
-	m_pSprEye->SprOffset(frameNumber % 40);
+    //m_pSprEye->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460));
+    //m_pSprEye->SprOffset(frameNumber % 8);
+    int kack = frameNumber % 4;
+    //boost::function<void(int)> f3=
+    //    boost::bind(&CSprite::SprOffset,m_pSprEye, boost::lambda::_1 %= boost::lambda::constant(8) );
+    //boost::function<void(int)> f3=
+    //    boost::lambda::constant(boost::bind(&CSprite::SprOffset,m_pSprEye, (boost::lambda::_1 %= boost::lambda::constant(8)) ));
+    //boost::function<void(int)> f3=
+    //    boost::lambda::var(boost::bind(&CSprite::SprOffset,m_pSprEye, ( boost::lambda::_1 % boost::lambda::constant(8)) ));
+    //int fm = 8;
+    //boost::function<void(int)> f3=
+    //    boost::bind(&CSprite::SprOffset,m_pSprEye, (boost::lambda::_1 % fm)(frameNumber));
+    
+    //f3(frameNumber);
+
+
+    //m_pSprWormler->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 420));
+	//m_pSprWormler->SprOffset(frameNumber % 40);
+    //frameNumber++;
+
+    m_pSprMgr->OnIdle(frameNumber);
 }
 
 void StartScreen::OnDraw(){
@@ -202,7 +282,9 @@ void StartScreen::OnDraw(){
 
     //m_pScroller->Scroll(6);
     m_pScroller->Draw();
-    m_pSprEye->Draw();
+    //m_pSprEye->Draw();
+    //m_pSprWormler->Draw();
+    m_pSprMgr->OnDraw();
 
     m_pMainCanvas->Unlock();
 } // OnDraw

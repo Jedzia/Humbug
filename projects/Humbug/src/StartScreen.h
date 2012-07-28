@@ -8,6 +8,7 @@ class CCanvas;
 class CText;
 class CTextScroller;
 class CSprite;
+class CSpriteManager;
 
 class StartScreen : public Screen {
 public:
@@ -36,8 +37,11 @@ private:
     CText *m_pScrollText;
     CTextScroller *m_pScroller;
     //boost::scoped_ptr<CCanvas> m_pScrollText;
-    CSprite* m_pSprEye;
-
+    boost::scoped_ptr<CSpriteManager> m_pSprMgr;
+    //boost::scoped_ptr<CSprite> m_pSprEye;
+    //boost::scoped_ptr<CSprite> m_pSprWormler;
+    CSprite *m_pSprEye;
+    CSprite *m_pSprWormler;
 
 };
 
