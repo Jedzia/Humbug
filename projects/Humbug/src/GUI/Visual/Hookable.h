@@ -24,7 +24,7 @@ public:
     virtual bool OnInit(int argc,char* argv[]);
 
     virtual void OnIdle(int frameNumber);
-
+    friend class HookableManager;
 
 protected:
     static GroupId s_GrpID;
@@ -37,7 +37,7 @@ protected:
     CEventHandler* Master() const { return m_pMaster; }
 
 private:
-    void Init(Hookable* hook);
+    void Init(CEventHandler* Master, Hookable* controller);
 
 	static boost::ptr_vector<Hookable> m_pvHooks;
     static Hookable* m_pController;

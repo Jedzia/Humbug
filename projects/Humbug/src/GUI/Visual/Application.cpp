@@ -371,19 +371,19 @@ CApplication* CApplication::GetApplication()
 	return(s_pTheApplication);
 }
 
-void CApplication::ConnectOnIdle( const slot_type_idle& s )
+boost::signals::connection CApplication::ConnectOnIdle( const slot_type_idle& s )
 {
-    m_sigOnIdle.connect( s );
+    return m_sigOnIdle.connect( s );
 }
 
-void CApplication::ConnectOnDraw( const slot_type_event& s )
+boost::signals::connection CApplication::ConnectOnDraw( const slot_type_event& s )
 {
-    m_sigOnDraw.connect( s );
+    return m_sigOnDraw.connect( s );
 }
 
-void CApplication::ConnectOnUpdate( const slot_type_event& s )
+boost::signals::connection CApplication::ConnectOnUpdate( const slot_type_event& s )
 {
-    m_sigOnUpdate.connect( s );
+    return m_sigOnUpdate.connect( s );
 }
 
 extern int bmain(int argc,char* argv[]);

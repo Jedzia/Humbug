@@ -7,12 +7,14 @@
 //
 #include "EventHandler.h"
 #include "Hookable.h"
+#include "HookableManager.h"
 
 
 MSGID CEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 
 //constructor
 CEventHandler::CEventHandler()
+: m_HookMgr(new HookableManager(this))
 {
     //do nothing
 }

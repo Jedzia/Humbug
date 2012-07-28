@@ -46,12 +46,20 @@
 //#define BOOST_FILESYSTEM_VERSION 3
     #include <boost/filesystem.hpp>
 
+    #include <boost/system/error_code.hpp>
+    #include <boost/system/system_error.hpp>
+
     #include <boost/progress.hpp>
+    #include <boost/scoped_ptr.hpp>
     #include <boost/smart_ptr.hpp>
+    #include <boost/ptr_container/ptr_vector.hpp>
+    
     #include <boost/bind.hpp>
     #include "boost/bind/mem_fn.hpp"
     #include "boost/function.hpp"
+    
     #include "boost/signals.hpp"
+    #include "boost/signals/connection.hpp"
 
 #endif //USE_LIB_BOOST
 

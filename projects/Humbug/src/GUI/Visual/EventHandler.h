@@ -2,7 +2,10 @@
 #define __EVENTHANDLER_H__
 
 #include "Application.h"
+#include "boost/smart_ptr/scoped_ptr.hpp"
+
 class Hookable;
+class HookableManager;
 
 
 /*
@@ -59,8 +62,8 @@ public:
 
     virtual void OnExiting();
 
-    void ConnectOnInit(const slot_type_init& s) {
-        m_sigOnInit.connect( s );
+    boost::signals::connection ConnectOnInit(const slot_type_init& s) {
+         return m_sigOnInit.connect( s );
     }
     //boost::signals::connection ConnectOnInit(const slot_type_init& s) {
     //        return m_sigOnInit.connect(s);
@@ -72,10 +75,11 @@ public:
 protected:
     bool OnPreInit( int argc,char* argv[] );
     bool OnPostInit( int argc,char* argv[] );
+    HookableManager* HookMgr() const { return m_HookMgr.get(); }
 
     Hookable* m_Hooks;
-
 private:
+    boost::scoped_ptr<HookableManager> m_HookMgr;
     signal_type_init m_sigOnInit;
     //slot_type_init m_slotOnInit;
 

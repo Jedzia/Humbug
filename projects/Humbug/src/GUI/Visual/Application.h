@@ -5,6 +5,7 @@
 //include message handler(base class)
 #include "MessageHandler.h"
 #include "boost/signals.hpp"
+#include "boost/signals/connection.hpp"
 
 class Hookable;
 class CMainCanvas;
@@ -36,9 +37,9 @@ public:
     CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
 
     // Signal handling
-    void ConnectOnIdle(const slot_type_idle& s);
-    void ConnectOnDraw(const slot_type_event& s);
-    void ConnectOnUpdate(const slot_type_event& s);
+    boost::signals::connection ConnectOnIdle(const slot_type_idle& s);
+    boost::signals::connection ConnectOnDraw(const slot_type_event& s);
+    boost::signals::connection ConnectOnUpdate(const slot_type_event& s);
 
 	//initialization
 	virtual bool OnInit(int argc,char* argv[]);

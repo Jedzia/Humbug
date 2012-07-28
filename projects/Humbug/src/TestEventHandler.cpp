@@ -21,6 +21,7 @@
 #include "TestThread.h"
 #include "TestTimer.h"
 #include "StartScreen.h"
+#include "GUI/Visual/HookableManager.h"
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -308,6 +309,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //new TestHookable();
     //new TestHookable();
     m_scrStart = new StartScreen(*fl, m_pMainCanvas);
+    HookMgr()->AddHookable("StartScreen", m_scrStart);
     //new TestHookable();
     //new TestHookable();
 

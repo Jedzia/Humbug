@@ -108,7 +108,7 @@ Hookable::Hookable(bool hook)
     dbgOut(__FUNCTION__ << " Hookable child ctor " << this << std::endl);
     //std::cout << "Hookable child ctor" << std::endl;
     m_pvHooks.push_back(this);
-    Init(this);
+    //Init(m_pMaster, this);
 }
 
 Hookable::~Hookable(void)
@@ -145,7 +145,7 @@ GroupId Hookable::GetGroupID()
     return grpID;
 }
 
-void Hookable::Init(Hookable* hook)
+void Hookable::Init(CEventHandler* master, Hookable* controller)
 {
 
     if (m_bIsInitialized)
@@ -167,8 +167,8 @@ void Hookable::Init(Hookable* hook)
     //sig2.connect(boost::bind(&CEventHandler::OnPreInit, *this, _1, _2));
     //sig2(1,2);
 
-    m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*hook), _1, _2));
-    m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*hook), _1));
+    master->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
+    master->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
     //m_pMaster->ConnectOnDraw(boost::bind(&Hookable::OnIdle, boost::ref(*hook)));
     //m_pMaster->ConnectOnInit(boost::bind(&Hookable::HookableImpl::OnInit, *pimpl_, _1, _2));
     m_bIsInitialized = true;
