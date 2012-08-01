@@ -41,6 +41,8 @@ private:
 
 	//static boost::ptr_vector<Hookable> m_pvHooks;
     //static Hookable* m_pController;
+    struct HookableImpl;
+    boost::scoped_ptr<HookableImpl> pimpl_;
     CEventHandler* m_pMaster;
     static GroupId s_NextGrpID;
 

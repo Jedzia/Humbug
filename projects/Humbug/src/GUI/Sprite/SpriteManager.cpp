@@ -13,14 +13,14 @@ class CSpriteHook {
     const boost::function<void(CSprite*, int)> m_fncUpdate;
 public:
 
-    CSpriteHook::CSpriteHook( CSprite *sprite, const boost::function<void(CSprite*, int)> updfunc = NULL )
+    CSpriteHook( CSprite *sprite, const boost::function<void(CSprite*, int)> updfunc = NULL )
         :m_pSprite(sprite), m_fncUpdate(updfunc)
     {
         dbgOut(__FUNCTION__ << " " << this << std::endl);
         //m_pSprite.reset(sprite);
     }
 
-    CSpriteHook::~CSpriteHook()
+    ~CSpriteHook()
     {
         dbgOut(__FUNCTION__ << " " << this << std::endl);
 

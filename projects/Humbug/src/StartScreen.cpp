@@ -14,6 +14,87 @@
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
+
+namespace prv
+{
+    class EyeMover {
+        int h_;
+        bool toggle_;
+        int deltaY_;
+        static int created;
+
+    public:
+        EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false) 
+        {
+            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
+            //static int created = 0;
+            created++;
+        }
+
+        ~EyeMover()
+        {
+            dbgOut(__FUNCTION__ << " " << this << std::endl);
+        }
+
+        void operator()(CSprite* sprite, int frameNumber) {
+            sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_));
+            sprite->SprOffset(frameNumber % 8);
+
+            if (h_ >= 100)
+            {
+                toggle_ = false;
+            }
+            else if (h_ <= 0)
+            {
+                toggle_ = true;
+            }
+
+            if (toggle_)
+            {
+                h_++;
+            } 
+            else
+            {
+                h_--;
+            }
+        }
+
+    };
+
+    int EyeMover::created = 0;
+
+    class WormMover {
+        int add_;
+    public:
+        WormMover() : add_(0) {}
+
+        void operator()(CSprite* sprite, int frameNumber) {
+            //sprite->SetPos(CPoint(100 + ((frameNumber % 32) * 16), 420));
+            const int sprMaxFrames = 40;
+            int frame = (frameNumber % sprMaxFrames);
+            int div = (frameNumber % (sprMaxFrames*4)) / sprMaxFrames;
+            //int movdelta = div * 40;
+            int movdelta = 0;
+
+            int deltaX = static_cast<int>( ((frameNumber % (sprMaxFrames*4))*4.3) );
+            sprite->SetPos(CPoint(10 + deltaX + movdelta, 420));
+            int sprframe;
+            if (frame < (sprMaxFrames/2))
+            {
+                sprframe = frame;
+            } 
+            else
+            {
+                sprframe = sprMaxFrames - frame;
+            }
+            sprite->SprOffset(sprframe);
+        }
+    };
+
+
+
+}
+
 StartScreen::StartScreen( FileLoader& loader, CCanvas* background) :
     Screen(background),
     m_Loader(loader),
@@ -40,61 +121,6 @@ StartScreen::~StartScreen(void){
     //delete m_pSprEye;
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
-
-class EyeMover {
-    int h_;
-    bool toggle_;
-    int deltaY_;
-    static int created;
-
-public:
-    EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false) 
-    {
-        dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
-        //static int created = 0;
-        created++;
-    }
-
-    ~EyeMover()
-    {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
-    }
-
-    void operator()(CSprite* sprite, int frameNumber) {
-        sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_));
-        sprite->SprOffset(frameNumber % 8);
-
-        if (h_ >= 100)
-        {
-            toggle_ = false;
-        }
-        else if (h_ <= 0)
-        {
-            toggle_ = true;
-        }
-
-        if (toggle_)
-        {
-            h_++;
-        } 
-        else
-        {
-            h_--;
-        }
-    }
-
-};
-
-int EyeMover::created = 0;
-
-class WormMover {
-public:
-    void operator()(CSprite* sprite, int frameNumber) {
-        sprite->SetPos(CPoint(100 + ((frameNumber % 32) * 16), 420));
-        sprite->SprOffset(frameNumber % 40);
-     }
-};
-
 
 /*GroupId StartScreen::GetGroupID()
    {
@@ -162,7 +188,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
         CRectangle(0, 0, 64, 64), CPoint(64, 0) );
     //EyeMover *eymover = new EyeMover;
     //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( *eymover ));
-    EyeMover eymover;
+    prv::EyeMover eymover;
     m_pSprMgr->AddSprite(m_pSprEye, eymover );
 
     /*CSprite *m_pSprEye2 = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
@@ -172,7 +198,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 
     CSprite *m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
         CRectangle(0, 0, 256, 64), CPoint(0, 64) );
-    WormMover k2;
+    prv::WormMover k2;
     //WormMover *k2 = new WormMover;
     m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
     m_pSprMgr->AddSprite(m_pSprWormler, boost::ref( k2 ));

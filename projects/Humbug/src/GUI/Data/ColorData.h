@@ -3,7 +3,7 @@
 
 #include "SDL.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
-#include "boost/pool/detail/singleton.hpp"
+//#include "boost/pool/detail/singleton.hpp"
 
 class ColorData {
 public:

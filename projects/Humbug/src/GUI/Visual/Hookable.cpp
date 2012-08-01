@@ -29,6 +29,54 @@ public:
     }
 };
 
+struct Hookable::HookableImpl {
+
+    boost::signals::connection m_conInit;
+    boost::signals::connection m_conIdle;
+    
+    Hookable *m_pHost;
+
+    HookableImpl(Hookable *host)
+        : m_pHost(host)
+    {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
+    }
+
+    ~HookableImpl()
+    {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
+    }
+
+    bool OnInit(int argc,char* argv[])
+    {
+        //return m_pHost->OnInit(argc, argv);
+        return true;
+    }
+
+    void BlaFoo()
+    {
+
+        //boost::signal<void (int&)> sig;
+        //sig.connect(double_slot());
+        //sig.connect(plus_slot());
+
+        //sig.connect(plus_slot());
+
+        //int resultX=12;
+        //sig(resultX);
+        //std::cout << "The result is: " << resultX << '\n';
+
+        //signal_type_init2 fuck;
+        //boost::signal<void (int&)> fuck;
+        //fuck(resultX);
+        //bool sigresult = fuck(argc, argv);
+
+        //bool sigresult = m_sigOnInit(argc, argv);
+
+
+    }
+};
+
 
 /*Hookable::Hookable(CEventHandler* master)
     : m_bIsInitialized(false)
@@ -56,7 +104,7 @@ public:
 }*/
 
 Hookable::Hookable(bool hook)
-: m_bIsInitialized(false)
+: pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false)
 {
     dbgOut(__FUNCTION__ << " Hookable child ctor " << this << std::endl);
     //std::cout << "Hookable child ctor" << std::endl;
@@ -115,8 +163,8 @@ void Hookable::Init(CEventHandler* master, Hookable* controller)
     //sig2.connect(boost::bind(&CEventHandler::OnPreInit, *this, _1, _2));
     //sig2(1,2);
 
-    master->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
-    master->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
+    pimpl_->m_conInit = master->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
+    pimpl_->m_conIdle = master->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
     //m_pMaster->ConnectOnDraw(boost::bind(&Hookable::OnIdle, boost::ref(*hook)));
     //m_pMaster->ConnectOnInit(boost::bind(&Hookable::HookableImpl::OnInit, *pimpl_, _1, _2));
     m_bIsInitialized = true;
