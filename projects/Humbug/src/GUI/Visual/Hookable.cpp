@@ -104,7 +104,7 @@ struct Hookable::HookableImpl {
 }*/
 
 Hookable::Hookable(bool hook)
-: pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false)
+: pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false), m_pMaster(NULL), m_pController(NULL)
 {
     dbgOut(__FUNCTION__ << " Hookable child ctor " << this << std::endl);
     //std::cout << "Hookable child ctor" << std::endl;
@@ -148,7 +148,7 @@ void Hookable::Init(CEventHandler* master, Hookable* controller)
         return;
     }
     m_pMaster = master;
-
+    m_pController = controller;
     //boost::signal<void (int&)> sig;
     //sig.connect(double_slot());
     //sig.connect(plus_slot());
@@ -163,11 +163,25 @@ void Hookable::Init(CEventHandler* master, Hookable* controller)
     //sig2.connect(boost::bind(&CEventHandler::OnPreInit, *this, _1, _2));
     //sig2(1,2);
 
-    pimpl_->m_conInit = master->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
-    pimpl_->m_conIdle = master->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
+//    pimpl_->m_conInit = master->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*m_pController), _1, _2));
+//    pimpl_->m_conIdle = master->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*m_pController), _1));
     //m_pMaster->ConnectOnDraw(boost::bind(&Hookable::OnIdle, boost::ref(*hook)));
     //m_pMaster->ConnectOnInit(boost::bind(&Hookable::HookableImpl::OnInit, *pimpl_, _1, _2));
     m_bIsInitialized = true;
+}
+
+void Hookable::Connect(/*Hookable* controller*/)
+{
+    //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
+    //pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
+    pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*m_pController), _1, _2));
+    pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*m_pController), _1));
+}
+
+void Hookable::Disconnect()
+{
+    pimpl_->m_conInit.disconnect();
+    pimpl_->m_conIdle.disconnect();
 }
 
 bool Hookable::OnInit( int argc,char* argv[] )

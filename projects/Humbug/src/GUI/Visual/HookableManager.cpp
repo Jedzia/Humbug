@@ -5,7 +5,13 @@
 
 //#include <build/cmake/include/debug.h>
 
-
+class HookBinder
+{
+public:
+	HookBinder();
+	~HookBinder();
+};
+ 
 HookableManager::HookableManager(CEventHandler* master)
 : m_pMaster(master)
 {
@@ -36,6 +42,7 @@ void HookableManager::AddHookable(std::string key, Hookable *item )
         // http://www.boost.org/doc/libs/1_50_0/libs/ptr_container/doc/tutorial.html
         m_mapHooks.insert( key, item );
         item->Init(m_pMaster, item);
+        item->Connect();
     }
     else
     {
@@ -45,7 +52,7 @@ void HookableManager::AddHookable(std::string key, Hookable *item )
 
 Hookable* HookableManager::GetHookable( const std::string& key )
 {
-    dbgOut(__FUNCTION__ << " Removing Hook " << key << std::endl);
+    dbgOut(__FUNCTION__ << " Searching Hook '" << key << "'" << std::endl);
 
     HookDictionary::iterator found =  m_mapHooks.find(key);
     if ( m_mapHooks.find(key) == m_mapHooks.end() )
@@ -58,6 +65,27 @@ Hookable* HookableManager::GetHookable( const std::string& key )
 
 void HookableManager::RemoveHookable( const std::string& key )
 {
+    dbgOut(__FUNCTION__ << " Removing Hook " << key << std::endl);
+    // disconnect and release
     //m_mapHooks.release(key);
+}
+
+void HookableManager::Test1()
+{
+    dbgOut(__FUNCTION__ << " Disconnecting the StartScreen Hook " << std::endl);
+
+    //const Hookable& hookable = m_mapHooks["StartScreen"];
+    Hookable* hookable = GetHookable("StartScreen");
+    //m_mapHooks["StartScreen"].Disconnect();
+    hookable->Disconnect();
+    //throw std::runtime_error("Bla bla, error in 'void HookableManager::Test1()'."); // interface requirement
+}
+
+void HookableManager::Test2()
+{
+    dbgOut(__FUNCTION__ << " Connecting the StartScreen Hook " << std::endl);
+    Hookable* hookable = GetHookable("StartScreen");
+    //hookable->Connect(hookable);
+    hookable->Connect();
 }
 

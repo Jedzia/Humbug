@@ -35,15 +35,18 @@ protected:
 
     static GroupId CreateNextGroupID();
     CEventHandler* Master() const { return m_pMaster; }
+    virtual void Connect(/*Hookable* controller*/);
+    virtual void Disconnect();
 
 private:
-    void Init(CEventHandler* Master, Hookable* controller);
+    void Init(CEventHandler *Master, Hookable *controller);
 
 	//static boost::ptr_vector<Hookable> m_pvHooks;
     //static Hookable* m_pController;
     struct HookableImpl;
     boost::scoped_ptr<HookableImpl> pimpl_;
-    CEventHandler* m_pMaster;
+    CEventHandler *m_pMaster;
+    Hookable *m_pController;
     static GroupId s_NextGrpID;
 
     GroupId m_grpID;

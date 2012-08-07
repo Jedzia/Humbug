@@ -514,6 +514,15 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         //send clear screen message
         SendMessageQ(MSGID_ClearScreen);
     }
+    else if( sym == SDLK_1 )   {
+        //
+        HookMgr()->Test1();
+    }
+    else if( sym == SDLK_2 )   {
+        //
+        HookMgr()->Test2();
+    }
+
 } // OnKeyDown
 
 //message handler

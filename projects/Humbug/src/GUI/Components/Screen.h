@@ -3,6 +3,7 @@
 #include "../Visual/Hookable.h"
 #include "../Visual/MessageHandler.h"
 #include "GUI/Components/MainCanvas.h"
+#include "boost/signals.hpp"
 
 //class CMainCanvas;
 //class CCanvas;
@@ -22,8 +23,15 @@ protected:
 private:
     GroupId GetGroupID();
 
+    virtual void OnIdle( int frameNumber );
+
+    virtual void Connect();
+    virtual void Disconnect();
 
     CMainCanvas *m_pMainScreen;
+
+    boost::signals::connection m_conDraw;
+    boost::signals::connection m_conUpdate;
 	int i;
 };
 

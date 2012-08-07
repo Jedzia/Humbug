@@ -39,14 +39,34 @@ bool Screen::OnInit( int argc,char* argv[] )
     //Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*hook)));
     //Master()->ConnectOnDraw((const CApplication::slot_type_event&)boost::bind(&Screen::OnIdle, boost::ref(*hook)));
     //Master()->ConnectOnDraw((const CApplication::slot_type_event&)boost::bind(&Screen::OnDraw, boost::ref(*screen)));
-    Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
-    Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
+    
+    //m_conDraw = Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
+    //m_conUpdate = Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
     return result;
 }
 
 void Screen::OnUpdate()
 {
 
+}
+
+void Screen::OnIdle( int frameNumber )
+{
+    throw std::exception("The method or operation is not implemented.");
+}
+
+void Screen::Connect()
+{
+    Hookable::Connect();
+    m_conDraw = Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
+    m_conUpdate = Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
+}
+
+void Screen::Disconnect()
+{
+    Hookable::Disconnect();
+    m_conDraw.disconnect();
+    m_conUpdate.disconnect();
 }
 
 /*bool Screen::OnInit( int argc,char* argv[] )

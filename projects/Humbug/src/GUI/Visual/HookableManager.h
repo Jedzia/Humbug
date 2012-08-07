@@ -18,6 +18,8 @@ public:
     void RemoveHookable(const std::string& key);
 
     void Close();
+    void Test1();
+    void Test2();
 
 private:
     CEventHandler* m_pMaster;
