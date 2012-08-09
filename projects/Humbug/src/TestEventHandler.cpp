@@ -310,10 +310,25 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //new TestHookable();
     //new TestHookable();
-    m_scrStart = new StartScreen(*fl, m_pMainCanvas);
-    HookMgr()->AddHookable("StartScreen", m_scrStart, true);
+    //m_scrStart = new StartScreen(*fl, m_pMainCanvas);
+    //HookMgr()->AddHookable("StartScreen", m_scrStart, true);
     //HookMgr()->EnableHookable("StartScreen");
     HookMgr()->AddHookable("Test1", new TestHookable());
+
+    //Hookable *nn = HookCreator<StartScreen>::Create();
+    //Hookable *nn = HookCreator<StartScreen>::Create();
+    //StartScreenCreator<StartScreen> eee(*fl, m_pMainCanvas);
+    //Hookable *nn = ScreenCreator<StartScreen>(*fl, m_pMainCanvas).Create();
+
+    //boost::shared_ptr<HookCreator> nn(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas));
+    //HookMgr()->RegisterHookable("XXXX", nn);
+    
+    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->EnableHookable("StartScreen");
+    //std::vector<boost::shared_ptr<HookCreator>> xx;
+    //xx.push_back(nn);
+    //std::map<std::string, boost::shared_ptr<HookCreator>> xx;
+    //xx.insert(std::make_pair("XXXX", nn));
 
     //new TestHookable();
     //new TestHookable();
@@ -520,7 +535,8 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     else if( sym == SDLK_1 )   {
         //
         //HookMgr()->Test1();
-        HookMgr()->DisableHookable("StartScreen");
+        //HookMgr()->DisableHookable("StartScreen");
+        HookMgr()->EnableHookable("Test1");
     }
     else if( sym == SDLK_2 )   {
         //

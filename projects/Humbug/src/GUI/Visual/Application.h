@@ -6,8 +6,9 @@
 #include "MessageHandler.h"
 #include "boost/signals.hpp"
 #include "boost/signals/connection.hpp"
+#include "../Components/MainCanvas.h"
 
-class CMainCanvas;
+//class CMainCanvas;
 
 /*
 	==CApplication==

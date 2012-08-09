@@ -20,6 +20,8 @@ HookableManager::HookableManager(CEventHandler* master)
          {
              throw std::runtime_error("You have to specify a valid master event handler.");
          }
+         
+         //TestHookable *nn = HookCreator<TestHookable>::Create();
 }
 
 HookableManager::~HookableManager(void)
@@ -31,6 +33,7 @@ void HookableManager::Close()
 {
     dbgOut(__FUNCTION__ << std::endl);
     m_mapHooks.release();
+    m_mapRegistry.clear();
 }
 
 void HookableManager::AddHookable(std::string key, Hookable *item, bool connectMe )
@@ -50,18 +53,31 @@ void HookableManager::AddHookable(std::string key, Hookable *item, bool connectM
     }
     else
     {
-        throw std::runtime_error("Creator method already specified for index=" + key); // interface requirement
+        throw std::runtime_error("AddHookable-Creator method already specified for index=" + key); // interface requirement
     }
 }
 
 Hookable* HookableManager::GetHookable( const std::string& key )
 {
-    dbgOut(__FUNCTION__ << " Searching Hook '" << key << "'" << std::endl);
+    dbgOut(__FUNCTION__ << " Searching Hook '" << key << "'." << std::endl);
 
     HookDictionary::iterator found =  m_mapHooks.find(key);
-    if ( m_mapHooks.find(key) == m_mapHooks.end() )
+    if ( found == m_mapHooks.end() )
     {
-        throw std::runtime_error("RemoveHookable found nothing to remove."); // interface requirement
+        HookRegistryDictionary::iterator regfound =  m_mapRegistry.find(key);
+        if ( regfound == m_mapRegistry.end() )
+        {
+            std::string msg = "GetHookable found no matching key ";
+            msg += "'" + key + "'.";
+            throw std::runtime_error(msg); 
+        }
+        else
+        {
+            dbgOut(__FUNCTION__ << " Creating Hook '" << key << "' from factory." << std::endl);
+            Hookable* hookable = regfound->second->Create();
+            AddHookable(key, hookable);
+            return hookable;
+        }
     }
 
     return found->second;
@@ -115,5 +131,15 @@ void HookableManager::DisableHookable( const std::string& key )
     {
         m_pActiveHook = NULL;
     }
+}
+
+void HookableManager::RegisterHookable( std::string key, HookCreatorPtr generator )
+{
+    m_mapRegistry.insert(std::make_pair(key, generator));
+}
+
+void HookableManager::UnregisterHookable( std::string key )
+{
+
 }
 
