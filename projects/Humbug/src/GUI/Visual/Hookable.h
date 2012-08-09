@@ -35,8 +35,11 @@ protected:
 
     static GroupId CreateNextGroupID();
     CEventHandler* Master() const { return m_pMaster; }
-    virtual void Connect(/*Hookable* controller*/);
-    virtual void Disconnect();
+    void Connect(/*Hookable* controller*/);
+    void Disconnect();
+
+    virtual void OnConnect(/*Hookable* controller*/) = 0;
+    virtual void OnDisconnect() = 0;
 
 private:
     void Init(CEventHandler *Master, Hookable *controller);
@@ -53,7 +56,7 @@ private:
     bool m_bIsInitialized;
 };
 
-class TestHookable : Hookable
+class TestHookable : public Hookable
 {
 public:
     TestHookable();
@@ -61,6 +64,10 @@ public:
 
     void OnIdle(int frameNumber);
     virtual GroupId GetGroupID();
+
+    virtual void OnConnect();
+
+    virtual void OnDisconnect();
 
 protected:
 private:

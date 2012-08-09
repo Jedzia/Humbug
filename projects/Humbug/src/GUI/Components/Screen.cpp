@@ -52,19 +52,19 @@ void Screen::OnUpdate()
 
 void Screen::OnIdle( int frameNumber )
 {
-    throw std::exception("The method or operation is not implemented.");
+    //throw std::exception("The method or operation is not implemented.");
 }
 
-void Screen::Connect()
+void Screen::OnConnect()
 {
-    Hookable::Connect();
+    //Hookable::Connect();
     m_conDraw = Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
     m_conUpdate = Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
 }
 
-void Screen::Disconnect()
+void Screen::OnDisconnect()
 {
-    Hookable::Disconnect();
+    //Hookable::Disconnect();
     m_conDraw.disconnect();
     m_conUpdate.disconnect();
 }

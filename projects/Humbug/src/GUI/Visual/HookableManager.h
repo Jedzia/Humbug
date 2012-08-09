@@ -13,9 +13,12 @@ public:
     HookableManager(CEventHandler* master);
     ~HookableManager();
 
-    void AddHookable(std::string key, Hookable *item);
+    void AddHookable(std::string key, Hookable *item, bool connectMe = false);
     Hookable* GetHookable(const std::string& key);
     void RemoveHookable(const std::string& key);
+    
+    void EnableHookable(const std::string& key);
+    void DisableHookable(const std::string& key);
 
     void Close();
     void Test1();
@@ -27,6 +30,8 @@ private:
     typedef boost::ptr_map<std::string, Hookable> HookDictionary;
     HookDictionary m_mapHooks;
     boost::ptr_vector<Hookable> m_pvHooks;
+
+    Hookable *m_pActiveHook;
 };
 
 #endif // HOOKABLEMANAGER_H

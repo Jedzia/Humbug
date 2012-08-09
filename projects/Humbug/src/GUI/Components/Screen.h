@@ -25,8 +25,8 @@ private:
 
     virtual void OnIdle( int frameNumber );
 
-    virtual void Connect();
-    virtual void Disconnect();
+    virtual void OnConnect();
+    virtual void OnDisconnect();
 
     CMainCanvas *m_pMainScreen;
 

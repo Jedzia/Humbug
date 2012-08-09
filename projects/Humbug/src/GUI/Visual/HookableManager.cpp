@@ -13,7 +13,7 @@ public:
 };
  
 HookableManager::HookableManager(CEventHandler* master)
-: m_pMaster(master)
+: m_pMaster(master), m_pActiveHook(NULL)
 {
          //dbgOut(__FUNCTION__ << std::endl);
          if ( !master )
@@ -33,7 +33,7 @@ void HookableManager::Close()
     m_mapHooks.release();
 }
 
-void HookableManager::AddHookable(std::string key, Hookable *item )
+void HookableManager::AddHookable(std::string key, Hookable *item, bool connectMe )
 {
     dbgOut(__FUNCTION__ << " Adding Hook " << key << "(" << item << ")" << std::endl);
     if ( m_mapHooks.find(key) == m_mapHooks.end() )
@@ -42,7 +42,11 @@ void HookableManager::AddHookable(std::string key, Hookable *item )
         // http://www.boost.org/doc/libs/1_50_0/libs/ptr_container/doc/tutorial.html
         m_mapHooks.insert( key, item );
         item->Init(m_pMaster, item);
-        item->Connect();
+        if (connectMe)
+        {
+            //item->Connect();
+            EnableHookable(key);
+        }
     }
     else
     {
@@ -79,6 +83,7 @@ void HookableManager::Test1()
     //m_mapHooks["StartScreen"].Disconnect();
     hookable->Disconnect();
     //throw std::runtime_error("Bla bla, error in 'void HookableManager::Test1()'."); // interface requirement
+    // Todo: Switch on off by name.
 }
 
 void HookableManager::Test2()
@@ -87,5 +92,28 @@ void HookableManager::Test2()
     Hookable* hookable = GetHookable("StartScreen");
     //hookable->Connect(hookable);
     hookable->Connect();
+}
+
+void HookableManager::EnableHookable( const std::string& key )
+{
+    if (m_pActiveHook)
+    {
+        m_pActiveHook->Disconnect();
+        m_pActiveHook = NULL;
+    }
+
+    Hookable* hookable = GetHookable(key);
+    hookable->Connect();
+    m_pActiveHook = hookable;
+}
+
+void HookableManager::DisableHookable( const std::string& key )
+{
+    Hookable* hookable = GetHookable(key);
+    hookable->Disconnect();
+    if (hookable == m_pActiveHook)
+    {
+        m_pActiveHook = NULL;
+    }
 }
 

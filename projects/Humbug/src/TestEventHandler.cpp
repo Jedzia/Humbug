@@ -311,7 +311,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //new TestHookable();
     //new TestHookable();
     m_scrStart = new StartScreen(*fl, m_pMainCanvas);
-    HookMgr()->AddHookable("StartScreen", m_scrStart);
+    HookMgr()->AddHookable("StartScreen", m_scrStart, true);
+    //HookMgr()->EnableHookable("StartScreen");
+    HookMgr()->AddHookable("Test1", new TestHookable());
+
     //new TestHookable();
     //new TestHookable();
 
@@ -516,11 +519,13 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     }
     else if( sym == SDLK_1 )   {
         //
-        HookMgr()->Test1();
+        //HookMgr()->Test1();
+        HookMgr()->DisableHookable("StartScreen");
     }
     else if( sym == SDLK_2 )   {
         //
-        HookMgr()->Test2();
+        //HookMgr()->Test2();
+        HookMgr()->EnableHookable("StartScreen");
     }
 
 } // OnKeyDown
