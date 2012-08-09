@@ -37,7 +37,10 @@ namespace prv
         }
 
         void operator()(CSprite* sprite, int frameNumber) {
-            sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_));
+            double ss = std::sin(static_cast<double>(frameNumber) / 12);
+            int ssin = static_cast<int>(ss * 155);
+
+            sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_ + ssin));
             sprite->SprOffset(frameNumber % 8);
 
             if (h_ >= 100)
@@ -65,8 +68,16 @@ namespace prv
 
     class WormMover {
         int add_;
+        static int created;
     public:
-        WormMover() : add_(0) {}
+        WormMover() : add_(0) {
+            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
+            created++;
+        }
+        ~WormMover()
+        {
+            dbgOut(__FUNCTION__ << " " << this << std::endl);
+        }
 
         void operator()(CSprite* sprite, int frameNumber) {
             //sprite->SetPos(CPoint(100 + ((frameNumber % 32) * 16), 420));
@@ -91,11 +102,20 @@ namespace prv
         }
     };
 
+    int WormMover::created;
+
 
 
 }
 
+
+struct StartScreen::StartScreenImpl {
+    prv::EyeMover eyemover;
+    prv::WormMover wormmover;
+};
+
 StartScreen::StartScreen( FileLoader& loader, CCanvas* background) :
+ pimpl_(new StartScreen::StartScreenImpl() ),
     Screen(background),
     m_Loader(loader),
     m_pArialfont(NULL),
@@ -187,9 +207,9 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     CSprite *m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
         CRectangle(0, 0, 64, 64), CPoint(64, 0) );
     //EyeMover *eymover = new EyeMover;
-    //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( *eymover ));
-    prv::EyeMover eymover;
-    m_pSprMgr->AddSprite(m_pSprEye, eymover );
+    //prv::EyeMover eyemover;
+    //m_pSprMgr->AddSprite(m_pSprEye, eyemover );
+    m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
 
     /*CSprite *m_pSprEye2 = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
         CRectangle(0, 0, 64, 64), CPoint(64, 0) );
@@ -198,10 +218,10 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 
     CSprite *m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
         CRectangle(0, 0, 256, 64), CPoint(0, 64) );
-    prv::WormMover k2;
-    //WormMover *k2 = new WormMover;
+    //prv::WormMover wormmover;
+    //WormMover *wormmover = new WormMover;
     m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
-    m_pSprMgr->AddSprite(m_pSprWormler, boost::ref( k2 ));
+    m_pSprMgr->AddSprite(m_pSprWormler, boost::ref( pimpl_->wormmover ));
 
 
     return Screen::OnInit(argc, argv);

@@ -26,7 +26,29 @@
 
 class HookCreator {
 public:
+    /*HookCreator() 
+    {
+        dbgOut(__FUNCTION__ << " [" << typeid( *this ).name() << "] (" << this << ")" << std::endl);
+    };*/
     virtual Hookable* Create()= 0;
+
+protected:
+    virtual ~HookCreator() 
+    {
+        dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
+    };
+};
+
+template <typename T>
+class DefaultHookCreator : public HookCreator {
+public:
+    /*DefaultHookCreator() 
+    {
+        dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
+    };*/
+   Hookable* Create(){
+        return new T;
+    }
 };
 
 typedef boost::shared_ptr<HookCreator> HookCreatorPtr;
@@ -37,16 +59,24 @@ public:
     HookableManager(CEventHandler* master);
     ~HookableManager();
 
+    // Register a factory hook-type creator.
     void RegisterHookable(std::string key, HookCreatorPtr generator);
+    // Unregister it.
     void UnregisterHookable(std::string key);
 
+    // Add an existing hook instance.
     void AddHookable(std::string key, Hookable* item, bool connectMe = false);
+    // Request the instance by its key name. Todo: to private and for the public return a shared_ptr/protected ctor for Hookables.
     Hookable * GetHookable(const std::string& key);
+    // Remove an existing hook instance. This deletes the instance.
     void RemoveHookable(const std::string& key);
 
+    // Switch the Hookable with the given key to status event-processing ON.
     void EnableHookable(const std::string& key);
+    // Switch the Hookable with the given key to status event-processing OFF.
     void DisableHookable(const std::string& key);
 
+    // Cleanup all registered and instantiated Hookables. 
     void Close();
 
     void Test1();

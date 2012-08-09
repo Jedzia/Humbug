@@ -24,6 +24,9 @@ public:
     virtual void OnUpdate();
 
 private:
+    struct StartScreenImpl;
+    boost::scoped_ptr<StartScreenImpl> pimpl_;
+
     FileLoader& m_Loader;
 	Uint8 x;
     CColor mcol;

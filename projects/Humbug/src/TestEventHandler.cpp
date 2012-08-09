@@ -323,6 +323,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //boost::shared_ptr<HookCreator> nn(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas));
     //HookMgr()->RegisterHookable("XXXX", nn);
     
+    HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
     HookMgr()->EnableHookable("StartScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
