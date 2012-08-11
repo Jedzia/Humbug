@@ -2,6 +2,7 @@
 #include "HookableManager.h"
 #include <stdexcept>
 #include <utility>
+#include "EventHandler.h"
 
 //#include <build/cmake/include/debug.h>
 
@@ -45,6 +46,7 @@ void HookableManager::AddHookable(std::string key, Hookable *item, bool connectM
         // http://www.boost.org/doc/libs/1_50_0/libs/ptr_container/doc/tutorial.html
         m_mapHooks.insert( key, item );
         item->Init(m_pMaster, item);
+        item->OnInit(NULL,NULL);
         if (connectMe)
         {
             //item->Connect();
@@ -117,6 +119,7 @@ void HookableManager::EnableHookable( const std::string& key )
     {
         m_pActiveHook->Disconnect();
         m_pActiveHook = NULL;
+        m_pMaster->GetMainCanvas()->AddUpdateRect(m_pMaster->GetMainCanvas()->GetDimension());
     }
 
     Hookable* hookable = GetHookable(key);

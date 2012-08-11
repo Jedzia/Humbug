@@ -158,6 +158,7 @@ SET(Humbug_MyGUI_headers
 		TestTimer.h
 
 		StartScreen.h
+		TestScreen.h
 )
 SET(Humbug_MyGUI_sources 
 		GUI/Hud.cpp
@@ -167,6 +168,14 @@ SET(Humbug_MyGUI_sources
 		TestTimer.cpp
 
 		StartScreen.cpp
+		TestScreen.cpp
+)
+
+SET(Humbug_Level_headers 
+		Levels/TestLevel.h
+)
+SET(Humbug_Level_sources 
+		Levels/TestLevel.cpp
 )
 
 # putting the sources together
@@ -175,6 +184,7 @@ SET(Humbug_headers
 		${Humbug_GUI_headers}
 		${Humbug_MyGUI_headers}
 		${Humbug_Component_headers}
+		${Humbug_Level_headers}
 
 		Filesystem/FileLoader.h
 		PlayerKeys.h
@@ -190,6 +200,7 @@ SET(Humbug_sources
 		${Humbug_GUI_sources}
 		${Humbug_MyGUI_sources}
 		${Humbug_Component_sources}
+		${Humbug_Level_sources}
 
 		Filesystem/FileLoader.cpp
 		PlayerKeys.cpp

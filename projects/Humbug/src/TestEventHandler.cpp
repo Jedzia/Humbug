@@ -22,6 +22,7 @@
 #include "TestTimer.h"
 #include "StartScreen.h"
 #include "GUI/Visual/HookableManager.h"
+#include "TestScreen.h"
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -313,7 +314,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //m_scrStart = new StartScreen(*fl, m_pMainCanvas);
     //HookMgr()->AddHookable("StartScreen", m_scrStart, true);
     //HookMgr()->EnableHookable("StartScreen");
-    HookMgr()->AddHookable("Test1", new TestHookable());
+    //HookMgr()->AddHookable("Test1", new TestHookable());
 
     //Hookable *nn = HookCreator<StartScreen>::Create();
     //Hookable *nn = HookCreator<StartScreen>::Create();
@@ -323,8 +324,9 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //boost::shared_ptr<HookCreator> nn(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas));
     //HookMgr()->RegisterHookable("XXXX", nn);
     
-    HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
+    //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->EnableHookable("StartScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);

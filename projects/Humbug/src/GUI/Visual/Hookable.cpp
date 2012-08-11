@@ -174,14 +174,16 @@ void Hookable::Connect(/*Hookable* controller*/)
 {
     //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
     //pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
-    pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*m_pController), _1, _2));
+    
+    // do not use the main Init event. the manager has to pre init them
+    //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*m_pController), _1, _2));
     pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*m_pController), _1));
     OnConnect();
 }
 
 void Hookable::Disconnect()
 {
-    pimpl_->m_conInit.disconnect();
+    //pimpl_->m_conInit.disconnect();
     pimpl_->m_conIdle.disconnect();
     OnDisconnect();
 }

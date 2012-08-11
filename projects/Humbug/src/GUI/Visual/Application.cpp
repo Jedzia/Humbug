@@ -406,6 +406,10 @@ int main(int argc,char* argv[])
     {
         result = CApplication::Execute(argc,argv);
     }
+//    catch (std::exception const& ex) {
+//        std::cerr << "Exception: " << ex.what() << std::endl;
+//        return EXIT_FAILURE;  // exit program with ERROR status
+//    }
     catch (std::runtime_error ex)
     {
         std::cout << std::endl;
