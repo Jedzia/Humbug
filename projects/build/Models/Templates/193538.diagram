@@ -1,0 +1,65 @@
+format 76
+
+classcanvas 128002 class_ref 236034 // CrZipPrivate
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 357 23 2000
+end
+classcanvas 128130 class_ref 236930 // Mode
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 375 340 3005
+end
+classcanvas 128386 class_ref 236674 // CrZip
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 602 160 3005
+end
+classcanvas 128770 class_ref 298754 // CrZipBase
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 20 9 3011
+end
+relationcanvas 128258 relation_ref 176514 // <directional composition>
+  from ref 128002 z 3006 to ref 128130
+  role_a_pos 432 318 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128514 relation_ref 169858 // <dependency>
+  decenter_begin 90
+  decenter_end 550
+  from ref 128386 z 3006 stereotype "<<friend>>" xyz 511 176 3006 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128642 relation_ref 189570 // <dependency>
+  decenter_begin 736
+  decenter_end 231
+  from ref 128002 z 3006 stereotype "<<friend>>" xyz 510 223 3006 to ref 128386
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128898 relation_ref 236546 // <dependency>
+  decenter_begin 224
+  decenter_end 481
+  from ref 128770 z 3012 stereotype "<<friend>>" xyz 235 148 3012 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+line 129026 ---+ decenter_end 652
+  from ref 128130 z 3012 to ref 128770
+relationcanvas 129154 relation_ref 236674 // <directional aggregation>
+  decenter_begin 331
+  decenter_end 717
+  from ref 128770 z 3012 to ref 128002
+  role_a_pos 338 190 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129282 relation_ref 243458 // <generalisation>
+  from ref 128386 z 3012 to ref 128770
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129410 relation_ref 236802 // <dependency>
+  decenter_end 282
+  from ref 128002 z 3012 stereotype "<<friend>>" xyz 235 182 3012 to ref 128770
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+end

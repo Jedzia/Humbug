@@ -1,0 +1,44 @@
+// This file defines the messages into categories
+// The messages will be displayed, under the category they
+// are listed under here. The categories will be listed in
+// the order they first appear in
+//
+// For legacy projects, I recommend running PC-LINT on the 
+// entire project, then moving each message from the generated 
+// "OTHER" category to a specific category, until there are no 
+// messages in the "OTHER" category.
+
+// New categories can easily be created simply by listing them
+// here, starting with a "$$" in column 1, followed by the
+// category name 
+
+// Any messages not defined here, will appear
+// in the output under the category "Other"
+
+$$OTHER - Messages that haven't been defined in a category 
+// all undefined messages will appear under this section
+// This section will automatically be defined, if it isn't
+// defined here. 
+
+$$Critical Errors // These messages clearly indicate a bug, should be fixed
+    // Some examples of critical error messages
+	// sprintf related messages
+	557   unrecognized format  -- The format string supplied to
+	558   number of arguments inconsistent with format 
+	559   size of argument number Integer inconsistent with format
+	560   argument no. Integer should be a pointer 
+	561   (arg. no. Integer) indirect object inconsistent with format
+	566   Inconsistent or redundant format char 'Char'  
+	567   Expected a numeric field before char 'Char'  
+	626   argument no. Integer inconsistent with format
+	627   (arg. no. Integer) indirect object inconsistent with format
+	642   Format char 'xxx' not supported by wsprintf  
+
+	603   Symbol 'xxx' (line nnn) not initialized
+	740   Unusual pointer cast (incompatible indirect types)
+	826   Suspicious pointer-to-pointer conversion (area too small)
+
+$$Less Critical Errors // These messages indicate a possible bug, schedule for code clean-up
+
+$$Noise Messages // These messages have been looked at and are low-priority fixups
+

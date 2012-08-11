@@ -1,0 +1,10 @@
+class AnyState
+!!!477442.cpp!!!	weiter(inout stm : SetupProcess) : void
+  AnyState * st = _upper(stm);
+
+  if (st != 0)
+    st->weiter(stm);
+#ifdef VERBOSE_STATE_MACHINE
+  else
+    puts("DEBUG : transition weiter not expected");
+#endif

@@ -1,0 +1,4 @@
+class ConcreteStrategyAdd
+!!!498434.cpp!!!	execute(in a : int, in b : int) : int
+std::cout << "Called ConcreteStrategyAdd's execute()" << std::endl;
+return a + b;  // Do an addition with a and b

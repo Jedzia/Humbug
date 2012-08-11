@@ -1,0 +1,3 @@
+class CloseCommand
+!!!398594.cpp!!!	execute() : void
+client->closeAll();

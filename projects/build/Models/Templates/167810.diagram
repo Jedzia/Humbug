@@ -1,0 +1,61 @@
+format 76
+
+statecanvas 128002 state_ref 134530 // Document
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  show_decomp_icon xyzwh 108 64 2000 713 403
+end
+statecanvas 128258 state_ref 134786 // Closed
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 152 163 2005 69 37
+end
+statecanvas 128386 state_ref 134914 // Deleted
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 290 163 2010 75 37
+end
+statecanvas 128514 state_ref 134658 // Open
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 127 323 2015 113 65
+end
+pseudostatecanvas 128642 pseudostate_ref 134530 // initial
+   xyz 177 112 2005
+end
+pseudostatecanvas 128770 pseudostate_ref 134658 // final
+   xyz 314 264 2005
+end
+iconcanvas 129666 classdiagram_ref 161282 // test
+  xyz 129 397 2000
+pseudostatecanvas 129794 pseudostate_ref 141186 // shallow_history
+   xyz 203 350 2020
+end
+transitioncanvas 128898 transition_ref 134530 // fdeleted
+  
+  from ref 128386 z 2011 label "fdeleted" xyz 302 223 2011 to ref 128770
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129026 transition_ref 134658 // delete
+  
+  from ref 128258 z 2011 label "delete" xyz 235 173 2011 to ref 128386
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129154 transition_ref 134786 // close
+  decenter_begin 736
+  decenter_end 637
+  
+  from ref 128514 z 2016 label "close" xyz 185.5 299 2016 to point 193 293
+  line 130050 z 2016 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129282 transition_ref 134914 // open
+  decenter_begin 202
+  decenter_end 209
+  
+  from ref 128258 z 2016 label "open" xyz 149.5 237.5 2016 to point 162 293
+  line 129922 z 2016 to ref 128514
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129410 transition_ref 135042 // start
+  
+  from ref 128642 z 2006 label "start" xyz 173 137 2006 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+end

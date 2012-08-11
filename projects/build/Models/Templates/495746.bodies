@@ -1,0 +1,9 @@
+class CountVisitor
+!!!519810.cpp!!!	CountVisitor()
+m_num_red = m_num_blu = 0;
+!!!512130.cpp!!!	visit(in element : RedColor) : void
+++m_num_red;
+!!!512258.cpp!!!	visit(in element : BlueColor) : void
+++m_num_blu;
+!!!519938.cpp!!!	report() : void
+std::cout << "Reds " << m_num_red << ", Blus " << m_num_blu << '\n';

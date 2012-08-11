@@ -1,0 +1,269 @@
+//  Microsoft Visual C++ 2008, -si4 -sp4, lib-atl.lnt lib-gtk.lnt lib-mfc.lnt lib-stl.lnt lib-w32.lnt lib-wnt.lnt
+//  Standard lint options
+
+au-sm123.lnt
+co-msc90.lnt
+lib-atl.lnt lib-gtk.lnt lib-mfc.lnt lib-stl.lnt lib-w32.lnt lib-wnt.lnt
+options.lnt  -si4 -sp4
+//-i"C:\Program Files\Microsoft Visual Studio 9.0\VC\include"
+//-i"C:\Program Files\Microsoft SDKs\Windows\v6.0A\Include"
+
+//    LintCPP.lnt
+//
+//    This file contains options to allow PC-lint to process source
+//    files for your compiler.  
+//
+
+
+//------------------------------------------------------------------
+//- This file is divided into the following logical sections:
+//-
+//-     1) specify how the PC-LINT output messages are formated
+//-     2) setup for devStudio and MFC
+//-     3) configuration block specific to your specific project
+//-     4) some usefull settings that are used infrequently
+//------------------------------------------------------------------
+
+//-----------------------------------
+//-  This section controls how the
+//-  messages are displayed. Its important
+//-  to set this correctly so that devStudio
+//-  can "understand" the format (ie clicking
+//-  on the message will navigate to the source
+//-  code line
+//-----------------------------------
+-frl  // supress the reference line 
+-b    // suppress banner line
+-u    // suppress banner module line
+-t4   // set tab at 4 spaces
++ffn  // display full file name paths in messages
+-width(1024,4) // make sure line width is long enough so each message is on its own line
+-"format=%f%((%l) : %) %t %n: %m" // how to format the messages (so can integrate into devStudio)
+//-----------------------------------
+
+
+//-----------------------------------
+//- This section sets up PC-LINT for
+//- Microsoft devStudio...
+//-----------------------------------
+
+-cmsc // microsoft compiler
+-ffb // ms c++ doesn't use the "for loop creates seperate block" ie "for (int i = 0; i > 10; ++)"
+
+
+            // while processing compiler (library) header files ...
+//-wlib(1)  // sets the warning level within library headers to 1
+	    // (no warnings, just syntax errors).  Comment out if you
+	    // are actually linting library headers.  This
+	    // option makes obsolete options of the form -elib(axxx) where
+	    // xxx >= 400 which may be retained for historical reasons.
+//-elib(652)  // suppress message about #define of earlier declared symbols
+//-elib(762)  // suppress message about multiple identical declarations and
+//-elib(760)  // suppress message about multiple identical macro defs
+//-elib(553)  // undefined pre-processor variables are regarded as
+            // 0 without complaint
+
++d"_MSC_VER=1500"
++d"_WIN32=1"
++d"__cplusplus=1"
+-d__FLAT__
+-d_WIN32
++d"_M_IX86=1"
++d"_stdcall="
++d"SSC_CPP=1"
++d"IN_PCLINT_RUN"
+
+// standard variable format routines
+-printf(1, CString::Format)
+-printf(1, csFMT)
+-printf(1, TRACE) 
+
+// setup for ASSERT macro
+-function(__assert, ASSERT)
+-header(PC-LINT Header.h)
+
+// The return values of these routines are commonly ignored
+-esym(534,close,creat,fclose,fprintf,fputc) 
+-esym(534,fputs,fscanf,fseek,fwrite,lseek,memcpy,memmove,memset)
+-esym(534,printf,puts,scanf,sprintf,sscanf,strcat,strcpy)
+-esym(534,strncat,strncpy,unlink,write)
+-esym(1512, CThreadLocalObject, CProcessLocalObject) // Warning 1512: destructor for base class 'xxx' (<source location>) is not virtual
+-e1702 // operator 'operator+' is both an ordinary function 'operator+(const CString &, const CString &)' and a member function 'COleDateTime::operator+(const COleDateTimeSpan &) const'
+
+// setup for standard MFC include files...
+//+libclass() // include files are NOT considered library files
+-i"C:\Program Files\Microsoft Visual Studio 9.0\VC\include\"
+-i"C:\Program Files\Microsoft Visual Studio 9.0\VC\atlmfc\include\"
+-i"C:\Program Files\Microsoft SDKs\Windows\v6.0A\Include\"
+//-----------------------------------
+
+-emacro(648, UDN_DELTAPOS) // Warning 648: Overflow in computing constant for operation: 'unsigned sub.'
+-emacro(506, TRACE) // Warning 506: Constant value Boolean
+
+//-----------------------------------
+//- This section contains usefull
+//- analysis settings, that are
+//- usually turned off
+//-----------------------------------
+// -vc   // list specific calls
+// -vw   // list specific walks
+// -vf   // print out the names of files 
+//-----------------------------------
+
+
+//-sd4  // treat double as float 
+-e726 // Extraneous comma ignored
+-e537 // Repeated include file
+-e641 // Converting enum to int
+//-e831 // Reference cited in prior message
+
+
+-e641 // Converting enum to int
+-e783 // Line does not end with new-line
+-e744 // switch statement has no default
+-e766 // Header file not used
+-e830 // Location cited in prior message
+
+-e529 // Symbol not subsequently referenced
+-e550 // Symbol not accessed
+-e750 // local macro not referenced
+-e714 // Symbol not referenced
+-e754 // local structure member not referenced
+-e715 // Symbol not referenced
+
+-e539 // Did not expect positive indentation
+-e525 // Negative indentation
+-e725 // Expected positive indentation
+-e616 // control flows into case/default (covered by 825: control flows into case/default without -fallthrough comment)
+-e747 // Significant prototype coercion (arg. no. 9) int to double
+-e751 // local typedef not referenced
+-e749 // local enumeration constant not referenced
+-e551 // Symbol not accessed
+-e818 // Pointer parameter could be declared as pointing to const
+-e716 // while(1) ... 
+
+
+// These should eventually be turned back on
+-e19   // Useless Declaration
+-e46   // field type should be int
+-e129  // declaration expected, identifier ignored
+-e553  // Undefined preprocessor variable
+-e569  // Loss of information (initialization) (32 bits to 31 bits)
+-e578  // Declaration of symbol hides symbol
+-e620  // Suspicious constant (L or one?)
+-e652  // #define of symbol declared previously
+-e683  // function #define'd, semantics may be lost
+-e730  // Boolean argument to function
+-e760  // Redundant macro defined identically at same file location
+-e761  // Redundant typedef previously declared
+-e762  // Redundantly declared symbol previously declared
+-e763  // Redundant declaration for symbol
+-e773  // Expression-like macro not parenthesized
+-e788  // enum constant not used within defaulted switch
+-e828  // Semantics of function 'setjmp' copied to function '_setjmp'
+
+-e1065 // Symbol not declared as "C" conflicts with line
+-e1411 // Member with different signature hides virtual member 
+-e1504 // useless struct declaration
+-e1509 // base class destructor for class is not virtual
+-e1511 // Member hides non-virtual member 
+-e1516 // Data member hides inherited member 
+-e1707 // static assumed for operator new
+-e1709 // typedef declared as conflicts with
+-e1712 // default constructor not defined for class
+-e1717 // empty prototype for function declaration, assumed '(void)'
+-e1721 // operator =() for class is not assignment operator
+-e1735 // Virtual function has default parameter
+-e1736 // Redundant access specifier (public)
+-e1762 // Member function could be made const
+-e1768 // Virtual function has an access (protected) different from the access (public) in the base class (CDialog)
+-e1774 // Could use dynamic_cast to downcast polymorphic type
+
++fll   // enable long long constants
+-e427  // Warning 427: // comment terminates in \
+-e1725 // info 1725: class member 'xxx' is a reference (example: "CDNMCompute &m_Compute;")
+-e1746 // Info 1746: parameter 'xxx' in function 'xxxx' could be made const reference
+
+-e1752 // Info 1752: catch parameter 1 is not a reference
+-e1775 // Info 1775: catch block does not catch any declared exception
+-e1549 // Warning 1549: exception '' not in throw-list of function ''
+-e834  // Info 834: Operator '-' followed by operator '-' is confusing.  Use parentheses.
+-e778  // Info 778: Constant expression evaluates to 0 in operation ''
+-e655  // Warning 655: bit-wise operation uses (compatible) enum's
+-e1764 // Info 1764: Reference parameter '' (line nnnn) could be declared const ref
+-e732 // Info 732: Loss of sign (assignment) (char to unsigned short)
+
+-elib(544) // Warning 544: endif or else not followed by EOL
+-elib(808) // Info 808: No explicit type given symbol 'LPFONTEVENTS', int assumed
+
+//-w0 // TURN OFF ALL MESSAGES EXCEPT THOSE THAT FOLLOW
+
+//******** GOLD **********
++e412 // Ambiguous format specifier '%X'
++e557 // unrecognized format
++e558 // number of arguments inconsistent with format
++e559 // size of argument number Integer inconsistent with format
++e560 // argument no. Integer should be a pointer
++e561 // (arg. no. Integer) indirect object inconsistent with
++e566 // Inconsistent or redundant format char 'Char'
++e567 // Expected a numeric field before char 'Char'
++e622 // Size of argument no. Integer inconsistent with format
++e626 // argument no. xx inconsistent with format
++e627 // indirect object inconsistent with format
++e642 // format char not supported by wsprintf
++e719 // Too many arguments for format
++e816 // non Ascii format specification
+
+-elib(1727) // inline 'CObject::Serialize(CArchive &)' not previously defined inline
+-elib(1739) // Binary operator should be non-member function
+-elib(1725,806, 1501, 723, 1505, 1510, 1722, 723, 1704, 579, 1737, 1706, 745, 602, 123, 1512, 547)
+-elib(1538) // ignore warning from MFC  header file from "CGopherLocator::CGopherLocator"
+
+-esym(534, CWnd::PostMessageA) // ok to ignore its returned value
+-esym(534, CWinThread::PostMessageA) // ok to ignore its returned value
+-esym(534, CWnd::EnableWindow)// ok to ignore its returned value
+
+-e19   // usless declaration (ie "};") MFC has too many of these
+-e534  // Ignoring return value of function 
+-e613  // Possible use of null pointer
+-e1502 // defined object has no nonstatic data members
+-e1705 // static class members may be accessed by the scoping operator
+-e1719 // assignment operator for class has non-reference parameter
+-e1720 // assignment operator for class has non-const parameter
+-e1724 // Argument to copy constructor for class should be a const reference
+-e1773 // Attempt to cast away const (or volatile)
+-e1776 // Converting a string literal to char * is not const safe (initialization)
+-e1501 // data member has zero size
+-e1550 //  exception 'std::bad_alloc' thrown by function is not on throw-list
+
+// HOWTO: To tell PC-LINT that a routine doesn't return...
+// paste this into the appropiate .h file,
+// (make sure to use the correct routine name!)
+//	/*lint -sem(CDNMCompute::ProcessError, s3) */ // doesn't return, throws exception,
+
+// HOWTO: TO tell PC-LINT that we want to fall-though
+// on a case statement to the next case statement 
+// paste this into the code...
+//	/*lint -e825*/ // allow case fall-thru without warning
+
+// torture test!!!
+//+fsc	// assume string constants are "const char *" (for string literals)
+//-passes(6)
+//-w4 // set warnings to the max
+
+// This MUST be placed on the command-line, not here in the file...
+//+b    // banner line
+
+-e651  // Warning 651: Potentially confusing initializer. MFC macros "BEGIN_EVENTSINK_MAP" "ON_EVENT" generate this
+-e1551 // Warning 1551: Function may throw exception '...' in destructor '' (any use of collection classes will cause this)
+-esym(1512, COleDispatchDriver) // Warning 1512: destructor for base class 'COleDispatchDriver' (line 493, file C:\Program Files\Microsoft Visual Studio\VC98\MFC\INCLUDE\afxdisp.h) is not virtual
+
+
+// HOWTO: to get rid of missing operator (copy, assigment)
+// This error could have bad consequences if there is a bug in the code that
+// inadvertently does an assignment/copy constructor...
+// C:\Projects\WinDNM\JEPro.cpp(133) :  Info 1732: new in constructor for class 'CJEPro' which has no assignment operator
+//protected:
+//	// protect against these being accidently used...
+//  virtual const CJEPro& operator=(const CJEPro& src){ return src;};
+//	CJEPro(const CJEPro& src){};

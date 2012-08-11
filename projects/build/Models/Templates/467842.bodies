@@ -1,0 +1,16 @@
+class SetupProcess
+!!!472962.cpp!!!	SetupProcess()
+  _current_state = 0;
+!!!473346.cpp!!!	create() : bool
+if (_current_state == 0)
+(_current_state = &(*this)._setupprocess_state)->create(*this);
+return (_current_state != 0);
+!!!474882.cpp!!!	doActivity() : void
+  _current_state->_do(*this);
+!!!475010.cpp!!!	_set_currentState(inout st : SetupProcess::AnyState) : void
+  _current_state = &st;
+!!!475138.cpp!!!	_final() : void
+  _current_state = 0;
+#ifdef VERBOSE_STATE_MACHINE
+  puts("DEBUG : final state reached");
+#endif

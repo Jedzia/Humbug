@@ -1,0 +1,11 @@
+class Open_State
+!!!420098.cpp!!!	_upper(inout stm : Document) : Document::AnyState
+  return &stm._document_state;
+!!!422658.cpp!!!	clostDocument(inout stm : Document) : void
+  {
+    stm._set_currentState(stm._document_state._closed_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Document.Closed");
+#endif
+    stm._document_state._closed_state.create(stm);
+  }

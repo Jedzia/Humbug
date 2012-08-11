@@ -1,0 +1,14 @@
+class Deleted_State
+!!!420610.cpp!!!	_completion(inout stm : Document) : bool
+  {
+    stm._set_currentState(stm._document_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Document");
+#endif
+    stm._final();
+    return (bool) 1;
+  }
+!!!420738.cpp!!!	create(inout stm : Document) : void
+	_completion(stm);
+!!!420866.cpp!!!	_upper(inout stm : Document) : Document::AnyState
+  return &stm._document_state;

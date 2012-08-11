@@ -1,0 +1,78 @@
+format 76
+
+statecanvas 128002 state_ref 141442 // Telephone
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 78 65 2000 579 293
+end
+pseudostatecanvas 128130 pseudostate_ref 141570 // initial
+   xyz 165 127 2005
+end
+statecanvas 128258 state_ref 141570 // Idle
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 152 217 2005 47 37
+end
+statecanvas 128386 state_ref 141698 // Active
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 379 215 2005 63 37
+end
+pseudostatecanvas 129794 pseudostate_ref 148098 // junction
+   xyz 509 227 2005
+end
+statecanvas 129922 state_ref 148226 // Dump
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 484 142 2005 61 37
+end
+statecanvas 130050 state_ref 148354 // Cool
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 493 293 2005 53 37
+end
+stateactioncanvas 130562 stateaction_ref 134530
+  xyzwh 394 127 2005 32 32
+end
+transitioncanvas 128514 transition_ref 141570 // off hook
+  decenter_begin 458
+  decenter_end 513
+  
+  from ref 128258 z 2006 label "off hook" xyz 265 212 2006 to ref 128386
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129282 transition_ref 141826 // on hook
+  
+  from ref 128386 z 2006 label "on hook" xyz 385 261 2006 to point 407 285
+  line 129410 z 2006 to point 172 285
+  line 129538 z 2006 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129666 transition_ref 141954 // init
+  
+  from ref 128130 z 2006 label "init" xyz 166 172 2006 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 130178 transition_ref 148482 // junky
+  
+  from ref 128386 z 2006 label "junky" xyz 458 225 3000 to ref 129794
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 130306 transition_ref 148610 // dumpIt
+  
+  from ref 129794 z 2006 label "dumpIt" xyz 494 194 3000 to ref 129922
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 130434 transition_ref 148738 // coolIt
+  
+  from ref 129794 z 2006 label "coolIt" xyz 500 258 3000 to ref 130050
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 130946 transition_ref 148994 // receive
+  
+  from ref 130562 z 2006 label "receive" xyz 387 178 3000 to ref 128386
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 131074 transition_ref 149122 // coolDown
+  decenter_end 233
+  
+  from ref 130050 z 2006 label "coolDown" xyz 297 303 3000 to point 160 309
+  line 131202 z 2006 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+end

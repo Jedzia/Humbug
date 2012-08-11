@@ -1,0 +1,1 @@
+#define ASSERT(v) {if (!(v)) exit(-1);}

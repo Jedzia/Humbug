@@ -1,0 +1,5 @@
+class CallVisitor
+!!!512386.cpp!!!	visit(in element : RedColor) : void
+element->eye();
+!!!512514.cpp!!!	visit(in element : BlueColor) : void
+element->sky();

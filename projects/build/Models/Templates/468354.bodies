@@ -1,0 +1,14 @@
+class Cleanup_State
+!!!473858.cpp!!!	_completion(inout stm : SetupProcess) : bool
+  {
+    stm._set_currentState(stm._setupprocess_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess");
+#endif
+    stm._final();
+    return (bool) 1;
+  }
+!!!473986.cpp!!!	create(inout stm : SetupProcess) : void
+	_completion(stm);
+!!!474114.cpp!!!	_upper(inout stm : SetupProcess) : SetupProcess::AnyState
+  return &stm._setupprocess_state;

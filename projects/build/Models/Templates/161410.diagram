@@ -1,0 +1,24 @@
+format 76
+
+statecanvas 128130 state_ref 134530 // stateOn
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  show_decomp_icon xyzwh 109 185 2000 111 53
+end
+statecanvas 128258 state_ref 134658 // StateOff
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 126 459 2005 75 37
+end
+pseudostatecanvas 128514 pseudostate_ref 134530 // initial
+   xyz 181 233 2005
+end
+transitioncanvas 128386 transition_ref 134530 // <transition>
+  
+  from ref 128130 z 2006 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 129026 transition_ref 134786 // <transition>
+  
+  from ref 128514 z 2006 to ref 128258
+  write_horizontally default show_definition default drawing_language default
+end
+end

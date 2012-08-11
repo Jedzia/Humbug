@@ -1,0 +1,3 @@
+class OpenCommand
+!!!398338.cpp!!!	execute() : void
+doc.open();

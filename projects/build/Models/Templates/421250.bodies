@@ -1,0 +1,3 @@
+class ToolbarButton
+!!!399234.cpp!!!	clicked() : void
+m_clickedCommand->execute();

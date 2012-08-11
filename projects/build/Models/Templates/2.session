@@ -1,0 +1,17 @@
+window_sizes 1280 774 325 949 593 104
+windows_style
+diagrams
+  active  classdiagram_ref 200450 // Visitor
+    949 593 100 4 0 0
+end
+show_stereotypes
+selected deploymentview_ref 278786 // Visitor
+open
+  deploymentview_ref 141186 // toplevel
+  
+  package_ref 220034 // tmp
+  
+  package_ref 246402 // Behavioral
+  deploymentview_ref 258818 // DesignPatterns
+end
+end

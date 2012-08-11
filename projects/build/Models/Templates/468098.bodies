@@ -1,0 +1,11 @@
+class SetupProcess_State
+!!!474242.cpp!!!	create(inout stm : SetupProcess) : void
+  {
+    stm._set_currentState(stm._setupprocess_state._setup_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess.Setup");
+#endif
+    stm._setupprocess_state._setup_state.create(stm);
+  }
+!!!474754.cpp!!!	_upper(inout stm : SetupProcess) : SetupProcess::AnyState
+  return 0;

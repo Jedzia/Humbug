@@ -1,0 +1,380 @@
+format 76
+"tmplproc" // tmplproc
+  revision 19
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "src/tmplproc/"
+  cpp_src_dir "src/tmplproc/"
+  classview 232834 "tmplproc"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 239106 // tmplproc
+    classdiagram 134530 "tmplproc"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      size A4
+    end
+
+    class 366978 "ProgOptions"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "!  Command line parser.
+/ Parses the command line arguments and prepares a Option struct with
+/ the data representation of the command line arguments for easy processing. "
+      class 373762 "Result"
+	visibility package stereotype "enum"
+	cpp_decl "${comment}enum ${name} {
+${items}
+};
+"
+	java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+	php_decl "${comment}${visibility}final class ${name} {
+${items}}
+"
+	python_2_2 python_decl "class ${name}:
+${docstring}${members}
+"
+	idl_decl "${comment}enum ${name} {
+${items}};
+"
+	explicit_switch_type ""
+	
+	comment "! Represents the result of the command line parser."
+	attribute 284674 "rsOk"
+	  public type class_ref 373762 // Result
+	  init_value "0"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  comment "/< Processed without errors."
+	end
+
+	attribute 285058 "rsHelpRequested"
+	  public type class_ref 373762 // Result
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  comment "/< Help requested by --help or -h"
+	end
+
+	attribute 284802 "rsProgOptionsError"
+	  public type class_ref 373762 // Result
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  comment "/< The specified options are not valid."
+	end
+
+	attribute 285186 "rsFatalError"
+	  public type class_ref 373762 // Result
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  comment "/< Internal error/exception occured."
+	end
+
+	attribute 284930 "rsNoInputFiles"
+	  public type class_ref 373762 // Result
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  comment "/< No input files specified."
+	end
+
+	attribute 285442 "rsUnknown"
+	  public type class_ref 373762 // Result
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  comment "/< Unknown error, not initialized. Alarm!"
+	end
+      end
+
+      operation 362498 "ProgOptions"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 2
+	  param in name "ac" explicit_type "int"
+	  param inout name "av" explicit_type "char"
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} ${p0}${v0}, ${t1} * * ${p1}${v1}${)}${volatile}${throw};
+"
+	cpp_def "//#include <build/cmake/include/debug.h>
+
+${inline}${class}::${name}${(}${t0} ${p0}, ${t1} * * ${p1}${)}
+        : m_ac(ac), m_av(av)  ${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! Constructs a new ProgOptions object and parse the command line arguments."
+      end
+
+      operation 362626 "~ProgOptions"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! Destructor"
+      end
+
+      operation 362754 "language"
+	preserve_cpp_body_indent const public explicit_return_type "char"
+	nparams 1
+	  param in name "x" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} * ${name}${(}${t0} ${p0}${v0}${)}${const}${volatile}${throw}${abstract};"
+	cpp_def "${comment}${inline}const ${type} * ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! Bla"
+      end
+
+      operation 362882 "getPoptions"
+	const cpp_inline public explicit_return_type "Options"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract} { return m_poptions; };"
+	
+	
+	
+	
+	comment "! Gets the parsed command line options."
+      end
+
+      operation 376322 "isValid"
+	const cpp_inline public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract} { return m_result == rsOk; };"
+	
+	
+	
+	
+	comment "! Is true if the command line options are valid."
+      end
+
+      operation 363010 "isOk"
+	const cpp_inline public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract} { return m_result <= rsHelpRequested; };"
+	
+	
+	
+	
+	comment "! Returns true if the command line options are valid or help is requested."
+      end
+
+      operation 376194 "isHelpRequested"
+	const cpp_inline public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract} { return m_result == rsHelpRequested; };"
+	
+	
+	
+	
+	comment "! Returns true if help was requested by the --help command line switch."
+      end
+
+      operation 369666 "get_m_result"
+	force_body_gen const cpp_inline public return_type class_ref 373762 // Result
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return m_result;
+}
+"
+	cpp_name_spec "getResult"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 278018 // m_result
+	comment "! Gets the parse result."
+      end
+
+      operation 363138 "prepare"
+	preserve_cpp_body_indent private return_type class_ref 373762 // Result
+	nparams 3
+	  param in name "ac" explicit_type "int"
+	  param inout name "av" explicit_type "char"
+	  param inout name "m_p" explicit_type "Options"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${v0}, ${t1} * * ${p1}${v1}, ${t2} & ${p2}${)}${const}${volatile}${throw}${abstract};"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} * * ${p1}, ${t2} & ${p2}${)}${const}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "!  Internal preparation of the command line arguments to the Options structure.
+
+ bool operator!(void) { return IsOk(); }"
+      end
+
+      attribute 277762 "m_ac"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	comment "! Count of the command line arguments."
+      end
+
+      attribute 277890 "m_av"
+	private explicit_type "char"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} * * ${name}${value};"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	comment "! Hold the raw command line argument data."
+      end
+
+      attribute 278018 "m_result"
+	private type class_ref 373762 // Result
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 369666 // get_m_result
+	comment "! Internal storage for the result of the command line argument preparation."
+      end
+    end
+  end
+
+  deploymentview 239106 "tmplproc"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 306434 "ProgOptions"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+//#include \"../global.h\"
+${includes}
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <fstream>
+#include <string>
+
+${declarations}
+${namespace_start}
+
+// A helper function to simplify the main part.
+template<class T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
+    std::copy(v.begin(), v.end(), std::ostream_iterator<T>(std::cout, \" \"));
+    return os;
+}
+
+template<class T>
+std::wostream& operator<<(std::wostream& os, const std::vector<T>& v) {
+    std::copy(v.begin(), v.end(), std::ostream_iterator<T, wchar_t>(std::wcout, L\" \"));
+    return os;
+}
+
+
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"tmplproc/stdafx.h\"
+${includes}
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/parsers.hpp>
+#include <boost/program_options/variables_map.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/token_functions.hpp>
+
+using namespace std;
+using namespace boost;
+namespace po = boost::program_options;
+
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 366978 // ProgOptions
+      end
+    end
+  end
+end

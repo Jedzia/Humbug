@@ -1,0 +1,19 @@
+class AnyState
+!!!432002.cpp!!!	makecall(inout stm : Telephone) : void
+  AnyState * st = _upper(stm);
+
+  if (st != 0)
+    st->makecall(stm);
+#ifdef VERBOSE_STATE_MACHINE
+  else
+    puts("DEBUG : transition makecall not expected");
+#endif
+!!!432770.cpp!!!	makeOnHook(inout stm : Telephone) : void
+  AnyState * st = _upper(stm);
+
+  if (st != 0)
+    st->makeOnHook(stm);
+#ifdef VERBOSE_STATE_MACHINE
+  else
+    puts("DEBUG : transition makeOnHook not expected");
+#endif
