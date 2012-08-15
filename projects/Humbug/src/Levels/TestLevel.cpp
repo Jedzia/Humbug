@@ -64,7 +64,7 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
     m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
     mcol = CColor::White();
-    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/TestLevelBg.png") );
+    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/TestScreenBg.png") );
 
     //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
@@ -87,7 +87,7 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
 
     //std::string pstr;
     outstring <<
-    "Error error C2248: 'boost::noncopyable_::noncopyable::noncopyable' : cannot access private member "
+    "The Test Level! \n"
               <<
     "declared in class " <<
     "'boost::noncopyable_::noncopyable'" << "\t" <<
@@ -132,7 +132,7 @@ void TestLevel::OnDraw(){
     m_pMainCanvas->FillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
     m_pMainCanvas->AddUpdateRect(frect);
 
-    CRectangle dstDims( 0, 0, 200, 200);
+    CRectangle dstDims( 0, 0, 600, 200);
     m_pScrollText->Put(m_pBackground.get(),dstDims, dstDims );
     m_pMainCanvas->AddUpdateRect(dstDims);
 

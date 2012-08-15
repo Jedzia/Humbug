@@ -23,6 +23,7 @@
 #include "StartScreen.h"
 #include "GUI/Visual/HookableManager.h"
 #include "TestScreen.h"
+#include "Levels/TestLevel.h"
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -327,6 +328,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->EnableHookable("StartScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
@@ -545,6 +547,10 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         //
         //HookMgr()->Test2();
         HookMgr()->EnableHookable("StartScreen");
+    }
+    else if( sym == SDLK_3 )   {
+        //
+        HookMgr()->EnableHookable("TestLevel");
     }
 
 } // OnKeyDown

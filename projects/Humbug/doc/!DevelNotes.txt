@@ -1,4 +1,14 @@
 
+
+-X-X-X-X- Sa, 11 Aug 2012 11:18:52 -----------------------------------------------------------
+Game, Text:
+
+Beware! This is the Mega-Blobber.
+Mr. Blobber ariving.
+Joint or die!
+You are a the young Mr./Mrs. Sammy Blobber junior. Your are getting an adult of the big and famous Blobber clan.
+So there are many riddles and hard aufgaben to solve, before you blablabla get into the blabla dings of the elder.
+-----------------------------------------------------------------------------------------------
 -X-X-X-X- Montag, 16. Juli 2012 -----------------------------------------------------------------------------
 
 D:\E\Projects\C++\Humbug\build\Humbug\src\Debug>
