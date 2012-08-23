@@ -157,8 +157,9 @@ SET(Humbug_MyGUI_headers
 		TestThread.h
 		TestTimer.h
 
-		StartScreen.h
-		TestScreen.h
+		Screens/StartScreen.h
+		Screens/TestScreen.h
+		Screens/HighscoreScreen.h
 )
 SET(Humbug_MyGUI_sources 
 		GUI/Hud.cpp
@@ -167,8 +168,9 @@ SET(Humbug_MyGUI_sources
 		TestThread.cpp
 		TestTimer.cpp
 
-		StartScreen.cpp
-		TestScreen.cpp
+		Screens/StartScreen.cpp
+		Screens/TestScreen.cpp
+		Screens/HighscoreScreen.cpp
 )
 
 SET(Humbug_Level_headers 

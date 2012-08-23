@@ -54,17 +54,20 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 	IF(IMGCONVERSION_CMAKE_DEBUG)
 		MESSAGE(STATUS "[IMGCONV] processing ${_file_namef}")
 	ENDIF()
-	#SET(_file_fullpath "${_file_path}/${_file_name}.png")
+	
+	SET(_imgconv_final_output_dir "${_imgconv_output_dir}/${_file_rel_path}")
+	#MESSAGE(STATUS "[IMGCONV] _imgconv_final_output_dir: ${_imgconv_final_output_dir}")
 	#MESSAGE(STATUS "[IMGCONV-XXX]  _additional_path=${_additional_path}")
 	#MESSAGE(STATUS "[IMGCONV-XXX]  _file_rel=${_file_rel} _file_path=${_file_path} _image_source_file=${_image_source_file}")
 	#SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_file_name}.${_format}")
 	#SET(_out_file_fullpath  "${PROJECT_BINARY_DIR}/${_file_name}.${_format}")
 	IF(_additional_path)
 		SET(_out_file_fullpath  "${_imgconv_output_dir}/${_additional_path}/${_file_name}.${_format}")
+		#MESSAGE(STATUS "[IMGCONV] HAS _additional_path")
 	ELSE()
 		SET(_out_file_fullpath  "${_imgconv_output_dir}/${_file_rel_path}/${_file_name}.${_format}")
 	ENDIF()
-#	MESSAGE(STATUS "[IMGCONV] output ${_out_file_fullpath}")
+	#MESSAGE(STATUS "[IMGCONV] output ${_out_file_fullpath}")
 
 
 	SET(_inkscape_exts ".svg")
@@ -95,7 +98,7 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 	ADD_CUSTOM_COMMAND(
 		OUTPUT "${_out_file_fullpath}"
 		POST_BUILD
-		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}
+		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS} && touch ${_imgconv_final_output_dir}
 		DEPENDS "${_image_source_file}"
 		COMMENT "Convert ${_file_namef} Image to ${_file_name}.${_format}." 
 	)

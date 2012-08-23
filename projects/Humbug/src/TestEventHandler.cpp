@@ -20,9 +20,10 @@
 #include "TestEventHandler.h"
 #include "TestThread.h"
 #include "TestTimer.h"
-#include "StartScreen.h"
+#include "Screens/StartScreen.h"
 #include "GUI/Visual/HookableManager.h"
-#include "TestScreen.h"
+#include "Screens/TestScreen.h"
+#include "Screens/HighscoreScreen.h"
 #include "Levels/TestLevel.h"
 
 //#include "GUI/TileEngine/TileSet.h"
@@ -329,6 +330,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
     HookMgr()->EnableHookable("StartScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
@@ -541,12 +543,13 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         //
         //HookMgr()->Test1();
         //HookMgr()->DisableHookable("StartScreen");
-        HookMgr()->EnableHookable("Test1");
+        HookMgr()->EnableHookable("StartScreen");
     }
     else if( sym == SDLK_2 )   {
         //
         //HookMgr()->Test2();
-        HookMgr()->EnableHookable("StartScreen");
+        //HookMgr()->EnableHookable("Test1");
+        HookMgr()->EnableHookable("Highscores");
     }
     else if( sym == SDLK_3 )   {
         //

@@ -27,6 +27,8 @@ msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Playground\zfs
 
 msbuild Humbug.sln /v:n /p:Configuration=Release /t:Humbug
 
+msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug && Humbug\src\Debug\Humbug.exe
+
 -----------------------------------------------------------------------------------------------
 -X-X-X-X- Donnerstag, 5. Juli 2012 -----------------------------------------------------------------------------
  
