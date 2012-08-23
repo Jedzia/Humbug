@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HOOKABLEMANAGER_H
-#define HOOKABLEMANAGER_H
+#ifndef HUMBUG_GUI_VISUAL_HOOKABLEMANAGER_H
+#define HUMBUG_GUI_VISUAL_HOOKABLEMANAGER_H
 
 #include "Hookable.h"
 #include <boost/shared_ptr.hpp>
@@ -94,4 +94,4 @@ private:
     HookRegistryDictionary m_mapRegistry;
     Hookable* m_pActiveHook;
 };
-#endif // HOOKABLEMANAGER_H
+#endif // HUMBUG_GUI_VISUAL_HOOKABLEMANAGER_H

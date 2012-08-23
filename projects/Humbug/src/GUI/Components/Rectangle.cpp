@@ -187,14 +187,14 @@ bool CRectangle::Contains ( CPoint& pt )
 	return ( Contains ( pt.GetX ( ) , pt.GetY ( ) ) ) ;
 }
 
-CRectangle& CRectangle::operator = ( CRectangle& rc ) 
+/*CRectangle& CRectangle::operator = ( CRectangle& rc ) 
 {
 	X ( ) = rc.GetX ( ) ;
 	Y ( ) = rc.GetY ( ) ;
 	W ( ) = rc.GetW ( ) ;
 	H ( ) = rc.GetH ( ) ;
 	return ( *this ) ;
-}
+}*/
 
 CRectangle& CRectangle::operator = ( const CRectangle& rc ) 
 {

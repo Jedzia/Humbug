@@ -1,10 +1,10 @@
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef HUMBUG_GUI_COMPONENTS_SCREEN_H
+#define HUMBUG_GUI_COMPONENTS_SCREEN_H
 #include "../Visual/Hookable.h"
 #include "../Visual/MessageHandler.h"
 //#include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Canvas.h"
-#include "boost/signals.hpp"
+#include <boost/signals.hpp>
 
 //class CMainCanvas;
 //class CCanvas;
@@ -30,7 +30,7 @@ class Screen : public Hookable/*, CMessageHandler*/ {
 public:
 
     Screen(CCanvas *background);
-    ~Screen();
+    virtual ~Screen();
 
     virtual void OnUpdate();
     virtual void OnDraw() = 0;
@@ -53,4 +53,4 @@ private:
 	int i;
 };
 
-#endif // SCREEN_H
+#endif // HUMBUG_GUI_COMPONENTS_SCREEN_H

@@ -1,7 +1,7 @@
-#ifndef STARTSCREEN_H
-#define STARTSCREEN_H
+#ifndef HUMBUG_SCREENS_STARTSCREEN_H
+#define HUMBUG_SCREENS_STARTSCREEN_H
 #include "GUI/Components/Screen.h"
-#include "boost/smart_ptr/scoped_ptr.hpp"
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 class FileLoader;
 class CCanvas;
@@ -37,4 +37,4 @@ private:
     boost::scoped_ptr<CSpriteManager> m_pSprMgr;
 };
 
-#endif // STARTSCREEN_H
+#endif // HUMBUG_SCREENS_STARTSCREEN_H

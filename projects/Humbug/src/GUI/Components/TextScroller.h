@@ -1,5 +1,5 @@
-#ifndef TEXTSCROLLER_H
-#define TEXTSCROLLER_H
+#ifndef HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H
+#define HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H
 
 #include "Text.h"
 #include "Point.h"
@@ -26,4 +26,4 @@ private:
 
 };
 
-#endif // TEXTSCROLLER_H
+#endif // HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H

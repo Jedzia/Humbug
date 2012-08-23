@@ -13,6 +13,7 @@
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
+#include "WavyTextFloat.h"
 #include <cstdlib>
 
 struct HighscoreScreen::HighscoreScreenImpl {
@@ -55,6 +56,59 @@ HighscoreScreen::~HighscoreScreen(void){
     return grpID;
     //throw std::exception("The method or operation is not implemented.");
    }*/
+
+namespace hspriv {
+class EyeMover {
+    int h_;
+    bool toggle_;
+    int deltaY_;
+    uint32_t sproffs;
+    //int rnd;
+
+public:
+    EyeMover(int deltaY = 0, uint32_t spriteoffset = 4) : deltaY_(deltaY), h_(-1), toggle_(false), sproffs(spriteoffset)
+    {
+        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")" << std::endl);
+        int rnd =  180 - ( rand() % 360);
+        h_ = rnd;
+    }
+
+    ~EyeMover()
+    {
+        dbgOut(__FUNCTION__ << " " << this << std::endl);
+    }
+
+    void operator()(CSprite* sprite, int frameNumber) {
+        double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
+        int ssin = static_cast<int>(ss * 100);
+
+        //sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_ + ssin));
+        sprite->SetPos(CPoint(130 + ssin, deltaY_));
+        sprite->SprOffset(frameNumber % sproffs);
+
+        if (h_ >= 180)
+        {
+            toggle_ = false;
+        }
+        else if (h_ <= -180)
+        {
+            toggle_ = true;
+        }
+
+        if (toggle_)
+        {
+            h_++;
+        } 
+        else
+        {
+            h_--;
+        }
+    }
+
+};
+}
+
+
 bool HighscoreScreen::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
@@ -86,17 +140,31 @@ bool HighscoreScreen::OnInit( int argc, char* argv[] ){
     outstring << " .................... ";
     outstring << "328.123.847";
 
-    m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
+    CText *text = new CText(m_pArialfont, outstring.str(), m_colText);
 
+    //const boost::function<void(CCanvas*, int)> textMo = mtextfloat;
+    //text->AddModifier(boost::ref( mtextfloat ));
+    text->AddModifier(WavyTextFloat(64));
+    m_pScrollText.reset(text);
+
+    // ### Sprites ###
+    CSprite *m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+        CRectangle(0, 0, 64, 64), CPoint(64, 0) );
+    m_pSprMgr->AddSprite(m_pSprEye, hspriv::EyeMover(160) );
+    //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
+    //m_pSprMgr->AddSprite(m_pSprEye);
+    CSprite *m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
+        CRectangle(0, 0, 256, 64), CPoint(0, 64) );
+    m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
+    m_pSprMgr->AddSprite(m_pSprWormler, hspriv::EyeMover(260, 40));
 
     return Screen::OnInit(argc, argv);
 
-    //return true;
 } // OnInit
 
 void HighscoreScreen::OnIdle(int frameNumber){
     //m_pScroller->Scroll(4);
-    //m_pSprMgr->OnIdle(frameNumber);
+    m_pSprMgr->OnIdle(frameNumber);
 }
 
 void HighscoreScreen::OnDraw(){
@@ -126,6 +194,7 @@ void HighscoreScreen::OnDraw(){
         coldelta = 0;
     }
 
+    m_pSprMgr->OnDraw();
 
     m_pMainCanvas->Unlock();
 } // OnDraw

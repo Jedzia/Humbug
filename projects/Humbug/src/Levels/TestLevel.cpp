@@ -55,6 +55,9 @@ TestLevel::~TestLevel(void){
     return grpID;
     //throw std::exception("The method or operation is not implemented.");
    }*/
+
+
+
 bool TestLevel::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();

@@ -1,5 +1,5 @@
-#ifndef __EVENTHANDLER_H__
-#define __EVENTHANDLER_H__
+#ifndef HUMBUG_GUI_VISUAL_EVENTHANDLER_H_
+#define HUMBUG_GUI_VISUAL_EVENTHANDLER_H_
 
 #include "Application.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
@@ -84,4 +84,4 @@ private:
 
 };
 
-#endif //#ifndef __EVENTHANDLER_H__
+#endif //#ifndef HUMBUG_GUI_VISUAL_EVENTHANDLER_H_

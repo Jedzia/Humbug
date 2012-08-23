@@ -1,6 +1,6 @@
 //include guards
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+#ifndef HUMBUG___APPLICATION_H__
+#define HUMBUG___APPLICATION_H__
 
 //include message handler(base class)
 #include "MessageHandler.h"
@@ -88,4 +88,4 @@ protected:
     void SetMainCanvas(CMainCanvas* val) { m_pMainCanvas = val; }
 };
 
-#endif //#ifndef __APPLICATION_H__
+#endif //#ifndef HUMBUG___APPLICATION_H__

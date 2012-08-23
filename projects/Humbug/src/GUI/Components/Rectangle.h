@@ -78,7 +78,7 @@ public:
 
     // Todo: all to const refs
 	//assignment operators
-	CRectangle& operator = ( CRectangle& rc ) ;
+	//CRectangle& operator = ( CRectangle& rc ) ;
 	CRectangle& operator = ( const CRectangle& rc ) ;
 	CRectangle& operator += ( const CPoint& pt ) ;
 	CRectangle& operator -= ( const CPoint& pt ) ;

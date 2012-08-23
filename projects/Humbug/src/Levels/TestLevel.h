@@ -1,7 +1,7 @@
-#ifndef TestLevel_H
-#define TestLevel_H
+#ifndef HUMBUG_LEVELS_TESTLEVEL_H
+#define HUMBUG_LEVELS_TESTLEVEL_H
 #include "../GUI/Components/Screen.h"
-#include "boost/smart_ptr/scoped_ptr.hpp"
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 class FileLoader;
 class CCanvas;
@@ -37,4 +37,4 @@ private:
     boost::scoped_ptr<CSpriteManager> m_pSprMgr;
 };
 
-#endif // TestLevel_H
+#endif // HUMBUG_LEVELS_TESTLEVEL_H

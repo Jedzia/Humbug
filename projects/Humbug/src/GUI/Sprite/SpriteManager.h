@@ -1,5 +1,5 @@
-#ifndef PROJECT_SPRITEMANAGER_H
-#define PROJECT_SPRITEMANAGER_H
+#ifndef HUMBUG_GUI_SPRITE_SPRITEMANAGER_H
+#define HUMBUG_GUI_SPRITE_SPRITEMANAGER_H
 
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "Sprite.h"
@@ -25,4 +25,4 @@ private:
 
 std::ostream& operator<<(std::ostream& o, const CSpriteManager& r);
 
-#endif // PROJECT_SPRITEMANAGER_H guard
+#endif // HUMBUG_GUI_SPRITE_SPRITEMANAGER_H guard
