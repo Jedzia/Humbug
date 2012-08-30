@@ -5,7 +5,9 @@ title [Humbug] Visual Studio 2010 Command Prompt
 @REM call explorer projects\Humbug
 @set PATH=%PATH%;%~dp0projects\build\PCLint\MSVC90;%~dp0projects\build\scripts
 
-call "C:\Program Files\Microsoft DirectX SDK (June 2010)\Utilities\Bin\dx_setenv.cmd"
+REM call "C:\Program Files\Microsoft DirectX SDK (June 2010)\Utilities\Bin\dx_setenv.cmd"
+REM call "C:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
+cd "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\"
 call "C:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
 set PATH=D:\QT4\bin;%PATH%;C:\Program Files\SVN\bin;C:\ActivePerl\site\bin;C:\ActivePerl\bin
 set QTDIR=D:\QT4

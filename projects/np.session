@@ -1,13 +1,6 @@
 <NotepadPlus>
     <Session activeView="0">
-        <mainView activeIndex="1">
-            <File firstVisibleLine="839" xOffset="0" scrollWidth="12648" startPos="38558" endPos="38558" selMode="0" lang="Normal Text" encoding="-1" filename="C:\Documents and Settings\root\Desktop\!Text\notes.txt">
-                <Mark line="269" />
-                <Mark line="279" />
-                <Mark line="287" />
-            </File>
-            <File firstVisibleLine="0" xOffset="0" scrollWidth="4304" startPos="1367" endPos="1367" selMode="0" lang="Normal Text" encoding="-1" filename="C:\Documents and Settings\root\Desktop\!Text\InsWinBuch.txt" />
-        </mainView>
+        <mainView activeIndex="1" />
         <subView activeIndex="0" />
     </Session>
 </NotepadPlus>
