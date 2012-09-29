@@ -38,9 +38,9 @@ HighscoreScreen::HighscoreScreen( FileLoader& loader, CCanvas* background) :
 }
 
 HighscoreScreen::~HighscoreScreen(void){
-    if (m_pArialfont) {
-        TTF_CloseFont(m_pArialfont);
-    }
+    //if (m_pArialfont) { Not needed, is freed by the loader. // Todo: Implement an immediate free function for fonts, like in images 
+    //    TTF_CloseFont(m_pArialfont);
+    //}
 
     //delete m_pScrollText;
     //delete m_pScroller;
@@ -116,7 +116,8 @@ bool HighscoreScreen::OnInit( int argc, char* argv[] ){
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-    m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 24);
+	m_pArialfont = m_Loader.LoadFont("Fonts/ARIAL.TTF", 24);
+	//m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 24);
     mcol = CColor::White();
     SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/HighscoreScreenBg.png") );
 

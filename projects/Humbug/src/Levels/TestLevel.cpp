@@ -37,9 +37,9 @@ TestLevel::TestLevel( FileLoader& loader, CCanvas* background) :
 }
 
 TestLevel::~TestLevel(void){
-    if (m_pArialfont) {
-        TTF_CloseFont(m_pArialfont);
-    }
+    //if (m_pArialfont) {
+    //    TTF_CloseFont(m_pArialfont);
+    //}
 
     //delete m_pScrollText;
     //delete m_pScroller;
@@ -65,7 +65,8 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-    m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
+    //m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
+	m_pArialfont = m_Loader.LoadFont("Fonts/ARIAL.TTF", 30);
     mcol = CColor::White();
     SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/TestScreenBg.png") );
 
