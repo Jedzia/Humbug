@@ -1,4 +1,4 @@
-# Uncrustify 0.53
+# Uncrustify 0.49+svn
 #
 # General options
 #
@@ -67,9 +67,6 @@ indent_else_if                           { False, True }
   False=treat 'else\nif' as 'else if' for indenting purposes
   True=indent the 'if' one level
   
-
-indent_var_def_blk                       Number
-  Amount to indent variable declarations after a open brace. neg=relative, pos=absolute
 
 indent_func_call_param                   { False, True }
   True:  indent continued function call parameters one indent level
@@ -159,10 +156,6 @@ indent_square_nl                         { False, True }
 indent_preserve_sql                      { False, True }
   Don't change the relative indent of ESQL/C 'EXEC SQL' bodies
 
-indent_align_assign                      { False, True }
-  Align continued statements at the '='. Default=True
-  If FALSE or the '=' is followed by a newline, the next line is indent one tab.
-
 #
 # Spacing options
 #
@@ -173,26 +166,8 @@ sp_arith                                 { Ignore, Add, Remove, Force }
 sp_assign                                { Ignore, Add, Remove, Force }
   Add or remove space around assignment operator '=', '+=', etc
 
-sp_before_assign                         { Ignore, Add, Remove, Force }
-  Add or remove space before assignment operator '=', '+=', etc. Overrides sp_assign.
-
-sp_after_assign                          { Ignore, Add, Remove, Force }
-  Add or remove space after assignment operator '=', '+=', etc. Overrides sp_assign.
-
 sp_enum_assign                           { Ignore, Add, Remove, Force }
   Add or remove space around assignment '=' in enum
-
-sp_enum_before_assign                    { Ignore, Add, Remove, Force }
-  Add or remove space before assignment '=' in enum. Overrides sp_enum_assign.
-
-sp_enum_after_assign                     { Ignore, Add, Remove, Force }
-  Add or remove space after assignment '=' in enum. Overrides sp_enum_assign.
-
-sp_pp_concat                             { Ignore, Add, Remove, Force }
-  Add or remove space around preprocessor '##' concatenation operator
-
-sp_pp_stringify                          { Ignore, Add, Remove, Force }
-  Add or remove space after preprocessor '#' stringify operator
 
 sp_bool                                  { Ignore, Add, Remove, Force }
   Add or remove space around boolean operators '&&' and '||'
@@ -275,20 +250,11 @@ sp_before_sparen                         { Ignore, Add, Remove, Force }
 sp_inside_sparen                         { Ignore, Add, Remove, Force }
   Add or remove space inside if-condition '(' and ')'
 
-sp_inside_sparen_close                   { Ignore, Add, Remove, Force }
-  Add or remove space before if-condition ')'. Overrides sp_inside_sparen.
-
 sp_after_sparen                          { Ignore, Add, Remove, Force }
   Add or remove space after ')' of 'if', 'for', 'switch', and 'while'
 
 sp_sparen_brace                          { Ignore, Add, Remove, Force }
   Add or remove space between ')' and '{' of 'if', 'for', 'switch', and 'while'
-
-sp_invariant_paren                       { Ignore, Add, Remove, Force }
-  Add or remove space between 'invariant' and '(' in the D language.
-
-sp_after_invariant_paren                 { Ignore, Add, Remove, Force }
-  Add or remove space after the ')' in 'invariant (C) c' in the D language.
 
 sp_special_semi                          { Ignore, Add, Remove, Force }
   Add or remove space before empty statement ';' on 'if', 'for' and 'while'
@@ -325,9 +291,6 @@ sp_after_class_colon                     { Ignore, Add, Remove, Force }
 
 sp_before_class_colon                    { Ignore, Add, Remove, Force }
   Add or remove space before class ':'
-
-sp_before_case_colon                     { Ignore, Add, Remove, Force }
-  Add or remove space before case ':'
 
 sp_after_operator                        { Ignore, Add, Remove, Force }
   Add or remove space between 'operator' and operator sign
@@ -402,9 +365,6 @@ sp_attribute_paren                       { Ignore, Add, Remove, Force }
 
 sp_defined_paren                         { Ignore, Add, Remove, Force }
   Add or remove space between 'defined' and '(' in '#if defined (FOO)'
-
-sp_throw_paren                           { Ignore, Add, Remove, Force }
-  Add or remove space between 'throw' and '(' in 'throw (something)'
 
 sp_macro                                 { Ignore, Add, Remove, Force }
   Add or remove space between macro and value
@@ -507,12 +467,6 @@ sp_cond_question                         { Ignore, Add, Remove, Force }
 sp_case_label                            { Ignore, Add, Remove, Force }
   Fix the spacing between 'case' and the label. Only 'ignore' and 'force' make sense here.
 
-sp_range                                 { Ignore, Add, Remove, Force }
-  Control the space around the D '..' operator.
-
-sp_cmt_cpp_start                         { Ignore, Add, Remove, Force }
-  Control the space after the opening of a C++ comment '// A' vs '//A'
-
 #
 # Code alignment (not left column spaces/tabs)
 #
@@ -559,9 +513,6 @@ align_var_def_gap                        Number
 
 align_var_def_colon                      { False, True }
   Whether to align the colon in struct bit fields
-
-align_var_def_attribute                  { False, True }
-  Whether to align any attribute after the variable name
 
 align_var_def_inline                     { False, True }
   Whether to align inline struct/enum/union variable definitions
@@ -624,17 +575,11 @@ align_right_cmt_gap                      Number
   If a trailing comment is more than this number of columns away from the text it follows,
   it will qualify for being aligned.
 
-align_right_cmt_at_col                   Number
-  Align trailing comment at or beyond column N; 'pulls in' comments as a bonus side effect (0=ignore)
-
 align_func_proto_span                    Number
   The span for aligning function prototypes (0=don't align)
 
 align_func_proto_gap                     Number
   Minimum gap between the return type and the function name.
-
-align_on_operator                        { False, True }
-  Align function protos on the 'operator' keyword instead of what follows
 
 align_mix_var_proto                      { False, True }
   Whether to mix aligning prototype and variable declarations.
@@ -779,8 +724,7 @@ nl_switch_brace                          { Ignore, Add, Remove, Force }
   Add or remove newline between 'switch' and '{'
 
 nl_multi_line_cond                       { False, True }
-  Add a newline between ')' and '{' if the ')' is on a different line than the if/for/etc.
-  Overrides nl_for_brace, nl_if_brace, nl_switch_brace, nl_while_switch, and nl_catch_brace.
+  Add or remove newline when condition spans two or more lines
 
 nl_multi_line_define                     { False, True }
   Force a newline in a define after the macro name for multi-line defines.
@@ -808,10 +752,6 @@ nl_class_init_args                       { Ignore, Add, Remove, Force }
 
 nl_func_type_name                        { Ignore, Add, Remove, Force }
   Add or remove newline between return type and function name in definition
-
-nl_func_scope_name                       { Ignore, Add, Remove, Force }
-  Add or remove newline between function scope and name in a definition
-  Controls the newline after '::' in 'void A::f() { }'
 
 nl_func_proto_type_name                  { Ignore, Add, Remove, Force }
   Add or remove newline between return type and function name in a prototype
@@ -851,10 +791,6 @@ nl_after_brace_open_cmt                  { False, True }
 nl_after_vbrace_open                     { False, True }
   Whether to put a newline after a virtual brace open.
   These occur in un-braced if/while/do/for statement bodies.
-
-nl_after_brace_close                     { False, True }
-  Whether to put a newline after a brace close.
-  Does not apply if followed by a necessary ';'.
 
 nl_define_macro                          { False, True }
   Whether to alter newlines in '#define' macros
@@ -992,22 +928,6 @@ nl_after_access_spec                     Number
   The number of newlines after a 'private:', 'public:', 'protected:', 'signals:', or 'slots:' label.
   0 = No change.
 
-nl_comment_func_def                      Number
-  The number of newlines between a function def and the function comment.
-  0 = No change.
-
-nl_after_try_catch_finally               Number
-  The number of newlines after a try-catch-finally block that isn't followed by a brace close.
-  0 = No change.
-
-nl_around_cs_property                    Number
-  The number of newlines before and after a property, indexer or event decl.
-  0 = No change.
-
-nl_between_get_set                       Number
-  The number of newlines between the get/set/add/remove handlers in C#.
-  0 = No change.
-
 eat_blanks_after_open_brace              { False, True }
   Whether to remove blank lines after '{'
 
@@ -1056,14 +976,6 @@ mod_add_long_switch_closebrace_comment   Number
   If a switch body exceeds the specified number of newlines and doesn't have a comment after
   the close brace, a comment will be added.
 
-mod_add_long_ifdef_endif_comment         Number
-  If an #ifdef body exceeds the specified number of newlines and doesn't have a comment after
-  the #else, a comment will be added.
-
-mod_add_long_ifdef_else_comment          Number
-  If an #ifdef or #else body exceeds the specified number of newlines and doesn't have a comment after
-  the #endif, a comment will be added.
-
 mod_sort_import                          { False, True }
   If TRUE, will sort consecutive single-line 'import' statements [Java, D]
 
@@ -1076,9 +988,6 @@ mod_sort_include                         { False, True }
 
 mod_move_case_break                      { False, True }
   If TRUE, it will move a 'break' that appears after a fully braced 'case' before the close brace.
-
-mod_remove_empty_return                  { False, True }
-  If TRUE, it will remove a void 'return;' that appears as the last statement in a function.
 
 #
 # Comment modifications
@@ -1129,10 +1038,6 @@ cmt_insert_file_header                   String
   The filename that contains text to insert at the head of a file if the file doesn't start with a C/C++ comment.
   Will substitue $(filename) with the current file's name.
 
-cmt_insert_file_footer                   String
-  The filename that contains text to insert at the end of a file if the file doesn't end with a C/C++ comment.
-  Will substitue $(filename) with the current file's name.
-
 cmt_insert_func_header                   String
   The filename that contains text to insert before a function implementation if the function isn't preceeded with a C/C++ comment.
   Will substitue $(function) with the function name and $(javaparam) with the javadoc @param and @return stuff.
@@ -1141,11 +1046,6 @@ cmt_insert_func_header                   String
 cmt_insert_class_header                  String
   The filename that contains text to insert before a class if the class isn't preceeded with a C/C++ comment.
   Will substitue $(class) with the class name.
-
-cmt_insert_before_preproc                { False, True }
-  If a preprocessor is encountered when stepping backwards from a function name, then
-  this option decides whether the comment should be inserted.
-  Affects cmt_insert_func_header and cmt_insert_class_header.
 
 #
 # Preprocessor options
