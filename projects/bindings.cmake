@@ -310,6 +310,7 @@ IF(USE_INKSCAPE)
 #		"[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\doxygen_is1;Inno Setup: App Path]/bin"
         "$ENV{ProgramFiles}/Inkscape"
         "C:/Program Files/Inkscape"
+        "D:/Program Files (x86)/Inkscape"
 #		/Applications/Doxygen.app/Contents/Resources
 #		/Applications/Doxygen.app/Contents/MacOS
 	  DOC "Inkscape .... (http://www.inkscape.org)"

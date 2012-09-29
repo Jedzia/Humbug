@@ -182,7 +182,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //char *file = "blue.png";
     //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     //fl = new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-    fl.reset(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
+    //fl.reset(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
+    fl.reset(new FileLoader("E:/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     CTileSet* tileSet = NULL;
@@ -274,7 +275,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_imp_ptr.reset();
     }
     m_pDrawCanvas = m_pBackground;
-
+	//return true;
     //m_pTileSet->GetTileImage()->ShowTiles(m_pBackground);
     //CTile tile = m_pTileSet->CreateTile(1);
     //tile.Draw(m_pBackground, CPoint(200,300));
@@ -332,6 +333,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
     HookMgr()->EnableHookable("StartScreen");
+	//HookMgr()->EnableHookable("Test1");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
     //std::map<std::string, boost::shared_ptr<HookCreator>> xx;
@@ -341,7 +343,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //new TestHookable();
 
     m_pConsole =
-        new CConsole( this, "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/ConsoleFont.bmp",
+        new CConsole( this, "E:/Projects/C++/Humbug/build2010/Humbug/src/Debug/ConsoleFont.bmp",
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
                         300) );
     return(true);

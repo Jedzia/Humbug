@@ -5,12 +5,13 @@ title [Humbug] Visual Studio 2010 Command Prompt
 @REM call explorer projects\Humbug
 @set PATH=%PATH%;%~dp0projects\build\PCLint\MSVC90;%~dp0projects\build\scripts
 
-REM call "C:\Program Files\Microsoft DirectX SDK (June 2010)\Utilities\Bin\dx_setenv.cmd"
-REM call "C:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
+REM VS100COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\Tools\
+call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd"
 cd "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\"
-call "C:\Program Files\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
+call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
 set PATH=D:\QT4\bin;%PATH%;C:\Program Files\SVN\bin;C:\ActivePerl\site\bin;C:\ActivePerl\bin
 set QTDIR=D:\QT4
+set SDLDIR=%~dp0build2010\DEPS\SDL-1.2.15
 cd build2010
 
 @REM irgendwas mit popd oder pushd
@@ -22,7 +23,7 @@ REM call %comspec% /k ""C:\Programme\Microsoft Visual Studio 8\VC\vcvarsall.bat"
 
 ECHO 
 ECHO .
-ECHO "C:\Program Files\CMake-2.8.5\bin\cmake-gui" ..\projects
+ECHO "D:\Program Files (x86)\CMake\bin\cmake-gui" ..\projects
 ECHO .
 ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:ALL_BUILD:Rebuild
 ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug:Rebuild

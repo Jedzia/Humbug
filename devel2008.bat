@@ -5,10 +5,11 @@ title [Humbug] Visual Studio 2008 Command Prompt
 @REM call explorer projects\Humbug
 @set PATH=%PATH%;%~dp0projects\build\PCLint\MSVC90;%~dp0projects\build\scripts
 
-call "C:\Program Files\Microsoft DirectX SDK (June 2010)\Utilities\Bin\dx_setenv.cmd"
-call "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
+call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd"
+call "D:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
 set PATH=D:\QT4-VS2008\bin;%PATH%;C:\Program Files\SVN\bin;C:\ActivePerl\site\bin;C:\ActivePerl\bin
-set QTDIR=D:\QT4-VS2008
+REM set QTDIR=D:\QT4-VS2008
+set SDLDIR=%~dp0build2010\DEPS\SDL-1.2.15
 cd build
 @REM call VStudio2005CMD
 

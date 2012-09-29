@@ -155,7 +155,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-    m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
+	m_pArialfont = TTF_OpenFont("E:/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
     mcol = CColor::White();
     SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/Intro.png") );
 
@@ -180,11 +180,11 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 
     //std::string pstr;
     outstring <<
-    "Error error C2248: 'boost::noncopyable_::noncopyable::noncopyable' : cannot access private member "
+    "Well, this is Humbug"
               <<
     "declared in class " <<
     "'boost::noncopyable_::noncopyable'" << "\t" <<
-    "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" <<
+    "Bla bla bla" <<
     "\t" << "48" << "\t" << "Humbug" << "\r\n" <<
     "\r\n" <<
     "Error" << "\t" << "3" << "\t" <<
@@ -192,7 +192,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
             <<
     "class " <<
     "'boost::scoped_ptr<T>'" << "\t" <<
-    "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" << "\t" << "48" << "\t" <<
+    "XYZ ABC DEF" << "\t" << "48" << "\t" <<
     "Humbug" << "\r\n" <<
     "";
 

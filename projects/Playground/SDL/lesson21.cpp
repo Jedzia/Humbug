@@ -164,10 +164,12 @@ bool init()
 bool load_files()
 {
     //Load the dot image
-    dot = load_image( "D:/E/Projects/C++/Humbug/build/Playground/Debug/dot.bmp" );
+    //dot = load_image( "E:/Projects/C++/Humbug/build/Playground/Debug/dot.bmp" );
+    dot = load_image( "dot.bmp" );
 
     //Load the background
-    background = load_image( "D:/E/Projects/C++/Humbug/build/Playground/Debug/bg.png" );
+    //background = load_image( "E:/Projects/C++/Humbug/build/Playground/Debug/bg.png" );
+    background = load_image( "bg.png" );
 
     //If there was a problem in loading the dot
     if( dot == NULL )

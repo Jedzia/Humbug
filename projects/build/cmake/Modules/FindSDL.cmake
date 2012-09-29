@@ -65,7 +65,11 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+#Todo: There are problems on Win7 VS2010 when SDLMain is not found. Write a check for that
 #SET(SDL_LIBRARY_TEMP "X" )
+
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL-1.2.15)
+#MESSAGE(STATUS "_DEP_PATH: ${_DEP_PATH}")
 
 FIND_PATH(SDL_INCLUDE_DIR SDL.h
   HINTS
@@ -82,6 +86,7 @@ FIND_PATH(SDL_INCLUDE_DIR SDL.h
   /opt/local # DarwinPorts
   /opt/csw # Blastwave
   /opt
+  ${_DEP_PATH}
 )
 #MESSAGE("SDL_INCLUDE_DIR is ${SDL_INCLUDE_DIR}")
 
@@ -89,15 +94,17 @@ FIND_PATH(SDL_INCLUDE_DIR SDL.h
 
 IF(WIN32)
 
-    FIND_LIBRARY(SDL_LIBRARY_DLL_RELEASE NAMES SDL.dll PATHS
+    FIND_FILE(SDL_LIBRARY_DLL_RELEASE NAMES SDL.dll PATHS
     	/lib
-	/usr/lib
-	/usr/local/lib
+		/usr/lib
+		/usr/local/lib
+		${_DEP_PATH}/VisualC/SDL/Release
     )
-    FIND_LIBRARY(SDL_LIBRARY_DLL_DEBUG NAMES SDL.dll PATHS
+    FIND_FILE(SDL_LIBRARY_DLL_DEBUG NAMES SDL.dll PATHS
     	/lib
-	/usr/lib
-	/usr/local/lib
+		/usr/lib
+		/usr/local/lib
+		${_DEP_PATH}/VisualC/SDL/Debug
     )
     
 ENDIF(WIN32)
@@ -105,7 +112,7 @@ ENDIF(WIN32)
 IF(MINGW)
     FIND_LIBRARY(SDL_LIBRARY_TEMP NAMES libSDL.dll.a PATHS
     #C:/MinGW/msys/1.0/lib
-    	/lib
+    /lib
 	/usr/lib
 	/usr/local/lib
     )
@@ -124,6 +131,7 @@ FIND_LIBRARY(SDL_LIBRARY_TEMP
   /opt/local
   /opt/csw
   /opt
+  ${_DEP_PATH}/VisualC/SDL/Release
 )
 
 ENDIF(MINGW)
@@ -159,6 +167,7 @@ IF(NOT SDL_BUILDING_LIBRARY)
       /opt/local
       /opt/csw
       /opt
+  	  ${_DEP_PATH}/VisualC/SDLmain/Release
     )
   ENDIF(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
 ENDIF(NOT SDL_BUILDING_LIBRARY)
