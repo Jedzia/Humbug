@@ -9,7 +9,7 @@ extern "C"
 #define STRING2(x) #x
 #define STRING(x) STRING2(x)
 
-#define HumbugLIB_NAMESPACE sk64lib
+#define HumbugLIB_NAMESPACE humbuglib
 #define HumbugLIB_BEGIN_NAMESPACE namespace Support { namespace HumbugLIB_NAMESPACE {
 #define HumbugLIB_END_NAMESPACE } }
 #define HumbugLIB_USE_NAMESPACE using namespace Support::HumbugLIB_NAMESPACE;

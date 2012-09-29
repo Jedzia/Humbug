@@ -372,6 +372,7 @@ Copy_DLL_To_Target(Humbug SDLTTF_LIBRARY)
 #TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
 #                        ${QSCINTILLA2_LIB} CppStructz )
 TargetLinkBoost(Humbug "filesystem;system;regex;signals")
+TARGET_LINK_LIBRARIES(Humbug HumbugLib)
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})

@@ -7,7 +7,7 @@ title [Humbug] Visual Studio 2008 Command Prompt
 
 call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd"
 call "D:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
-set PATH=D:\QT4-VS2008\bin;%PATH%;C:\Program Files\SVN\bin;C:\ActivePerl\site\bin;C:\ActivePerl\bin
+set PATH=D:\QT4-VS2008\bin;%PATH%;C:\Program Files\SVN\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\site\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\bin
 REM set QTDIR=D:\QT4-VS2008
 set SDLDIR=%~dp0build2010\DEPS\SDL-1.2.15
 cd build

@@ -52,6 +52,7 @@ SET(HumbugLib_interface
 
 SET(HumbugLib_headers 
   stdafx.h
+  AppGB.h
 #  shared/Txt.h
 #  shared/FileHelper.h
 )
@@ -59,13 +60,14 @@ SET(HumbugLib_headers
 SET(HumbugLib_sources 
 #  shared/Txt.cpp
   FileDetector.cpp
+  AppGB.cpp
 #  Unzipper.cpp
 #  Zipper.cpp
 )
 IF(WIN32)
-SET(HumbugLib_sources ${HumbugLib_sources}
-#  FileSystem/win32.cpp
-)  
+	SET(HumbugLib_sources ${HumbugLib_sources}
+		win32/appinit.cpp
+	)  
 ENDIF(WIN32)
 ADD_DEFINITIONS(-DUNICODE=1)
 

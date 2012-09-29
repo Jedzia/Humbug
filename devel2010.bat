@@ -9,7 +9,7 @@ REM VS100COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\T
 call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd"
 cd "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\"
 call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" x86
-set PATH=D:\QT4\bin;%PATH%;C:\Program Files\SVN\bin;C:\ActivePerl\site\bin;C:\ActivePerl\bin
+set PATH=D:\QT4\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\site\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\bin;%PATH%;C:\Program Files\SVN\bin;
 set QTDIR=D:\QT4
 set SDLDIR=%~dp0build2010\DEPS\SDL-1.2.15
 cd build2010

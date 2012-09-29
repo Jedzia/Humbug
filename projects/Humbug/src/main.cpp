@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <malloc.h>
 #include <stdio.h>
+#include "HumbugLib\src\HumbugLib\AppGB.h"
 
 /*void dumpMallinfo(void) {
     struct mallinfo m = mallinfo();
@@ -10,12 +11,6 @@
 
 //
 //#include <build/cmake/include/debug.h>
-
-std::string getexepath()
-  {
-  char result[ MAX_PATH ];
-  return std::string( result, GetModuleFileNameA( NULL, result, MAX_PATH ) );
-  }
 
 int bmain(int argc, char *argv[])
 {
@@ -56,12 +51,7 @@ int bmain(int argc, char *argv[])
 //    int ff = app.exec();
     int ff = 0;
 	std::cout << std::endl << "This is Humbug (" << argv[0] << ")." << std::endl;
-	std::string exepath(getexepath());
-    std::cout << "Starting at '" << exepath << "'." << std::endl;
-	std::string::size_type lastdirpos = exepath.find_last_of("\\");
-	std::cout << "Dirpos at '" << lastdirpos << "'." << std::endl;
-	std::string purepath = exepath.substr(0, lastdirpos + 1);
-	std::cout << "purepath '" << purepath << "'." << std::endl;
+	std::string exepath = AppGB::Instance().ExePath();
 
 //    const char* explanation = "Hy there from _RPT1.";
 //_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
