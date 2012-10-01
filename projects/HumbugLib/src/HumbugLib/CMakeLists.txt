@@ -40,8 +40,6 @@ IF(LINUX)
 ENDIF(LINUX)
 
 
-
-
 # HumbugLib Library
 SET(HumbugLib_interface 
   ${HumbugLib_INTERFACE_DIR}/global.h

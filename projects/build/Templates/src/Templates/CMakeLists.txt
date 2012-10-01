@@ -39,7 +39,7 @@ SET(USE_LIB_QSCINTILLA TRUE)
 
 #SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.
-SET(USE_LIB_XSD TRUE)
+#SET(USE_LIB_XSD TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -158,7 +158,7 @@ QT4_WRAP_UI( ui_outfiles  ${Templates_uifiles} )
 MESSAGE(STATUS "ui_outfiles: ${ui_outfiles} ")
 
 INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
-INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
+#INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
 INCLUDE_DIRECTORIES( ${Crunchy_INCLUDE_DIR})
 
@@ -243,8 +243,8 @@ ADD_LIBRARY_X(Templates ${LIBRARY_TYPE}
 #SET(QSCINTILLA2_LIB "optimized;${QT_LIBRARY_DIR}/qscintilla2.lib;debug;${QT_LIBRARY_DIR}/qscintilla2d.lib")
 #optimized;D:/boost/Boost_1_45_0_beta1/stage/lib/boost_filesystem-vc80-mt-1_45.lib;debug;D:/boost/Boost_1_45_0_beta1/stage/lib/boost_filesystem-vc80-mt-gd-1_45.lib
 
-TARGET_LINK_LIBRARIES(Templates ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
-						${QSCINTILLA2_LIB} CppStructz QBounce CorePlug )
+TARGET_LINK_LIBRARIES(Templates ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY}  #${XSD_LIBRARY} 
+						${QSCINTILLA2_LIB} CppStructz CorePlug )
 TargetLinkBoost(Templates "filesystem;system;regex;program_options")
 
 
