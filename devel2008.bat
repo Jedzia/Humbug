@@ -1,12 +1,13 @@
 @ECHO off
 title [Humbug] Visual Studio 2008 Command Prompt 
+
 @set CURDIR=%CD%
 @REM call explorer build
 @REM call explorer projects\Humbug
 @set PATH=%PATH%;%~dp0projects\build\PCLint\MSVC90;%~dp0projects\build\scripts
 
-call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd"
-call "D:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
+call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd" x86
+call "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
 set PATH=D:\QT4-VS2008\bin;%PATH%;C:\Program Files\SVN\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\site\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\bin
 REM set QTDIR=D:\QT4-VS2008
 set SDLDIR=%~dp0build2010\DEPS\SDL-1.2.15

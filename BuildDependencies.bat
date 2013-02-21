@@ -11,6 +11,24 @@ REM set PLIB=$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(WindowsSdkDir)\lib;$(Frame
 set PLIB=%LIB%
 REM goto SDL_gfx
  
+call fetchdependency http://zlib.net/ zlib-1.2.7.tar.gz
+if %ERRORLEVEL% NEQ 0 goto error
+if "%PLATFORM%" == "x64" (
+	pushd "%TMPDIR%\zlib-1.2.7/contrib/masmx64"
+	call bld_ml64.bat
+	popd
+) else (
+	pushd "%TMPDIR%\zlib-1.2.7/contrib/masmx86"
+	call bld_ml32.bat
+	popd
+)
+if %ERRORLEVEL% NEQ 0 goto error
+REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibvc
+REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibstat
+call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln ALL
+if %ERRORLEVEL% NEQ 0 goto error
+REM goto ende
+
 call fetchdependency http://www.libsdl.org/release/ SDL-1.2.15.tar.gz
 if %ERRORLEVEL% NEQ 0 goto error
 call builddependency SDL-1.2.15/VisualC SDL.sln SDLmain
