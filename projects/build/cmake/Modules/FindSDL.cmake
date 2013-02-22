@@ -168,6 +168,7 @@ IF(NOT SDL_BUILDING_LIBRARY)
       /opt/csw
       /opt
   	  ${_DEP_PATH}/VisualC/SDLmain/Release
+  	  ${_DEP_PATH}/VisualC/SDLmain/x64/Release
     )
   ENDIF(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
 ENDIF(NOT SDL_BUILDING_LIBRARY)

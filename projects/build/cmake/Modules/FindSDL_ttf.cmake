@@ -69,6 +69,7 @@ FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE
   /opt/csw
   /opt
   ${_DEP_PATH}/VisualC/Release
+  ${_DEP_PATH}/VisualC/x64/Release
     PATH_SUFFIXES lib64 lib
 )
 SET(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_RELEASE}"  CACHE STRING "SDL true type font library" FORCE)
@@ -80,12 +81,14 @@ IF(WIN32)
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Release
+		${_DEP_PATH}/VisualC/x64/Release
     )
     FIND_FILE(SDLTTF_LIBRARY_DLL_DEBUG NAMES SDL_ttf.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Debug
+		${_DEP_PATH}/VisualC/x64/Debug
     )
 
     # // Todo: extra libfreetype-6
@@ -95,7 +98,16 @@ IF(WIN32)
     #FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
     #FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS D:/E/Projects/C++/Humbug/build/DEPS/SDL_image-1.2.12/VisualC/external/lib/x86/*.dll)
 	#SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
+	IF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlttf_library_dlls_ext_path x86 )
+	ELSE( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlttf_library_dlls_ext_path x64 )
+	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 
+    FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/${_sdlttf_library_dlls_ext_path}/*.dll)
+	SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
+
+	
 ENDIF(WIN32)
 
 INCLUDE(FindPackageHandleStandardArgs)

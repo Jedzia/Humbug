@@ -73,6 +73,7 @@ FIND_LIBRARY(SDLIMAGE_LIBRARY_RELEASE
   /opt/csw
   /opt
   ${_DEP_PATH}/VisualC/Release
+  ${_DEP_PATH}/VisualC/x64/Release
 )
 SET(SDLIMAGE_LIBRARY "optimized;${SDLIMAGE_LIBRARY_RELEASE};debug;${SDLIMAGE_LIBRARY_RELEASE}"  CACHE STRING "SDL image library" FORCE)
 
@@ -83,18 +84,27 @@ IF(WIN32)
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Release
+		${_DEP_PATH}/VisualC/x64/Release
     )
     FIND_FILE(SDLIMAGE_LIBRARY_DLL_DEBUG NAMES SDL_image.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Debug
+		${_DEP_PATH}/VisualC/x64/Debug
     )
 
     #FIND_FILE(SDLIMAGE_LIBRARY_DLL_EXT NAMES libjpeg-8.dll libpng15-15.dll PATHS
 	#	${_DEP_PATH}/VisualC/external/lib/x86
     #)
-    FILE(GLOB SDLIMAGE_LIBRARY_DLLS_EXT ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
+	# check 64 bit
+	IF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlimage_library_dlls_ext_path x86 )
+	ELSE( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlimage_library_dlls_ext_path x64 )
+	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+
+    FILE(GLOB SDLIMAGE_LIBRARY_DLLS_EXT ${_DEP_PATH}/VisualC/external/lib/${_sdlimage_library_dlls_ext_path}/*.dll)
 	SET(SDLIMAGE_LIBRARY_DLLS_EXT "${SDLIMAGE_LIBRARY_DLLS_EXT}"  CACHE STRING "SDL image helper libraries" FORCE)
 
 ENDIF(WIN32)

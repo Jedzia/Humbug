@@ -69,6 +69,7 @@ FIND_LIBRARY(SDLGFX_LIBRARY_RELEASE
   /opt/csw
   /opt
   ${_DEP_PATH}/Release
+  ${_DEP_PATH}/x64/Release
     PATH_SUFFIXES lib64 lib
 )
 SET(SDLGFX_LIBRARY "optimized;${SDLGFX_LIBRARY_RELEASE};debug;${SDLGFX_LIBRARY_RELEASE}"  CACHE STRING "SDL true type font library" FORCE)
@@ -80,12 +81,14 @@ IF(WIN32)
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Release
+		${_DEP_PATH}/x64/Release
     )
     FIND_FILE(SDLGFX_LIBRARY_DLL_DEBUG NAMES SDL_gfx.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Debug
+		${_DEP_PATH}/x64/Debug
     )
 
     #FIND_FILE(SDLIMAGE_LIBRARY_DLL_EXT NAMES libjpeg-8.dll libpng15-15.dll PATHS

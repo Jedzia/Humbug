@@ -33,7 +33,15 @@ IF(USE_LIB_BOOST)
 	SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;regex;program_options;unit_test_framework")
   #ENDIF()
 
-  SET(BOOST_ROOT "" CACHE PATH "Boost root directory")
+  SET(boost_local_root E:/Devel/CPP/Libs/boost/boost-svn)
+  IF(EXISTS "${boost_local_root}")
+	SET(BOOST_ROOT ${boost_local_root} CACHE PATH "Boost root directory")
+  ELSE()
+	SET(BOOST_ROOT "" CACHE PATH "Boost root directory")
+  ENDIF()
+	#### SET(BOOST_ROOT "E:/Devel/CPP/Libs/boost/boost-svn" CACHE PATH "Boost root directory")
+	#MESSAGE( FATAL_ERROR " BLAAAA " )
+  
   IF(BOOST_ROOT)
     # If the user specified a non system path for the boost libraries,
     # then prevent from using the systems boost libraries.
@@ -125,8 +133,6 @@ SET(boost_tmp_component_list)
 
 ENDIF(USE_LIB_BOOST)
 
-
-
 IF(USE_LIB_QT4)
 	MESSAGE( STATUS " Using QT4 libs " )
 
@@ -201,7 +207,7 @@ IF(USE_LIB_XSD)
 ENDIF(USE_LIB_XSD)
 
 IF(USE_LIB_ZLIB)
-	FIND_PACKAGE(ZLIB)
+	FIND_PACKAGE(ZLIBex)
 	MESSAGE( STATUS "ZLIB: " ${PERL_EXECUTABLE} )
 ENDIF(USE_LIB_ZLIB)
 

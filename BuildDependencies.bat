@@ -10,7 +10,9 @@ set PINCLUDE=%INCLUDE%;..\..\SDL-1.2.15\include
 REM set PLIB=$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(WindowsSdkDir)\lib;$(FrameworkSDKDir)lib;$(VSInstallDir)lib;%LIB%
 set PLIB=%LIB%
 REM goto SDL_gfx
- 
+
+
+REM call fetchdependency http://sourceforge.net/projects/libpng/files/zlib/1.2.5/  zlib-1.2.5.tar.gz
 call fetchdependency http://zlib.net/ zlib-1.2.7.tar.gz
 if %ERRORLEVEL% NEQ 0 goto error
 if "%PLATFORM%" == "x64" (
@@ -23,9 +25,9 @@ if "%PLATFORM%" == "x64" (
 	popd
 )
 if %ERRORLEVEL% NEQ 0 goto error
-REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibvc
+call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibvc /p:\"OUT=$(OutDir)\zlib1.dll\"
 REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibstat
-call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln ALL
+REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln ALL
 if %ERRORLEVEL% NEQ 0 goto error
 REM goto ende
 
@@ -48,7 +50,7 @@ if %ERRORLEVEL% NEQ 0 goto error
 
 :SDL_mixer
 REM call fetchzdependency http://www.libsdl.org/projects/SDL_mixer/release/ SDL_mixer-1.2.12.tar.gz 
-call fetchzdependency http://www.libsdl.org/projects/SDL_mixer/release/ SDL_mixer-1.2.12.zip
+call fetchdependency http://www.libsdl.org/projects/SDL_mixer/release/ SDL_mixer-1.2.12.zip
 if %ERRORLEVEL% NEQ 0 goto error
 set PINCLUDE=%INCLUDE%;..\..\SDL-1.2.15\include;..\..\..\SDL-1.2.15\include
 call builddependency SDL_mixer-1.2.12/VisualC SDL_mixer.sln SDL_mixer SDL-1.2.15\VisualC\SDL

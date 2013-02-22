@@ -808,6 +808,7 @@ else(_boost_IN_CACHE)
   if(BOOST_ROOT)
     set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
       ${BOOST_ROOT}/lib
+      ${BOOST_ROOT}/lib/x64/lib
       ${BOOST_ROOT}/stage/lib)
   endif()
   set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS

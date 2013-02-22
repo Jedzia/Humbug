@@ -30,17 +30,20 @@
 #=============================================================================
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/zlib-1.2.7)
 
 FIND_PATH(ZLIB_INCLUDE_DIR zlib.h
     "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GnuWin32\\Zlib;InstallPath]/include"
+	${_DEP_PATH}
 )
 
-SET(ZLIB_NAMES z zlib zdll zlib1 zlibd zlibd1)
+SET(ZLIB_NAMES z zlib zdll zlib1 zlibd zlibd1 zlibwapi)
 FIND_LIBRARY(ZLIB_LIBRARY
     NAMES
         ${ZLIB_NAMES}
     PATHS
         "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GnuWin32\\Zlib;InstallPath]/lib"
+		${_DEP_PATH}/contrib/vstudio/vc9/x64/ZlibDllRelease
 )
 MARK_AS_ADVANCED(ZLIB_LIBRARY ZLIB_INCLUDE_DIR)
 
@@ -66,7 +69,7 @@ ENDIF()
 
 # handle the QUIETLY and REQUIRED arguments and set ZLIB_FOUND to TRUE if 
 # all listed variables are TRUE
-INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(ZLIB REQUIRED_VARS ZLIB_INCLUDE_DIR ZLIB_LIBRARY
                                        VERSION_VAR ZLIB_VERSION_STRING)
 

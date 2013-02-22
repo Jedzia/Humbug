@@ -1,4 +1,61 @@
 
+-X-X-X-X- Do, 21 Feb 2013 16:50:36 -----------------------------------------------------------
+P32/64-bit checks
+
+
+if(1)
+
+if("$ENV{PROCESSOR_ARCHITEW6432}" STREQUAL "")
+  if("$ENV{PROCESSOR_ARCHITECTURE}" STREQUAL "x86")
+     MESSAGE(STATUS "pure 32-bit environment...")
+  else()
+     MESSAGE(STATUS "pure 64-bit environment...")
+  endif()
+else()
+  if("$ENV{PROCESSOR_ARCHITECTURE}" STREQUAL "x86")
+     MESSAGE(STATUS "32-bit program running with an underlying 64-bit environment")
+	#available...
+  else()
+     MESSAGE(STATUS "theoretically impossible case...")
+  endif()
+endif()
+
+IF(WIN64)
+MESSAGE(STATUS "SDL_image Library in Win64!")
+ENDIF()
+
+MESSAGE(STATUS "CMAKE_SIZEOF_VOID_P=${CMAKE_SIZEOF_VOID_P}")
+
+#include (CheckIncludeFileCXX)
+#include (CheckCpp11)
+if( NOT APPLE )
+   # check 64 bit
+   if( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+     set( HAVE_64_BIT 0 )
+     MESSAGE(STATUS "HAVE_64_BIT 0")
+   else( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+     set( HAVE_64_BIT 1 )
+     MESSAGE(STATUS "HAVE_64_BIT 1")
+   endif( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+
+   # check endianness
+   include( TestBigEndian )
+   test_big_endian( HAVE_BIG_ENDIAN )
+   if( HAVE_BIG_ENDIAN )
+     set( HAVE_BIG_ENDIAN 1 )
+     MESSAGE(STATUS "HAVE_BIG_ENDIAN 1")
+   else( HAVE_BIG_ENDIAN )
+     set( HAVE_BIG_ENDIAN 0 )
+     MESSAGE(STATUS "HAVE_BIG_ENDIAN 0")
+   endif( HAVE_BIG_ENDIAN )
+endif( NOT APPLE )
+endif()
+
+     MESSAGE(FATAL_ERROR "TEMPORARY END")
+
+
+-----------------------------------------------------------------------------------------------
+
 
 -X-X-X-X- Sa, 11 Aug 2012 11:18:52 -----------------------------------------------------------
 Game, Text:
