@@ -2,10 +2,12 @@
 #include "TestLevel.h"
 
 //#include <build/cmake/include/debug.h>
+#include <cstdlib>
 #include "boost/lambda/lambda.hpp"
 #include "boost/function.hpp"
 //
 #include "../Filesystem/FileLoader.h"
+#include "../GUI/Components/Image.h"
 #include "../GUI/Components/Rectangle.h"
 #include "../GUI/Components/Text.h"
 #include "../GUI/Components/TextScroller.h"
@@ -13,7 +15,6 @@
 #include "../GUI/Sprite/Sprite.h"
 #include "../GUI/Sprite/SpriteManager.h"
 #include "../GUI/Visual/EventHandler.h"
-#include <cstdlib>
 
 struct TestLevel::TestLevelImpl {
     //prv::EyeMover eyemover;
@@ -79,7 +80,10 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
 
-    //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
+	//m_pSprite = new CSprite(m_Loader, "Sprites/kmail.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
+	m_pSprite = new CSprite(m_Loader, "Images/Sky01.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
+
+	//m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
 
@@ -130,6 +134,14 @@ void TestLevel::OnDraw(){
     CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
+	
+	static CPoint sp(0,0);
+	m_pSprite->SetPos(sp);
+	m_pSprite->Draw();
+	sp.Subtract(CPoint(6,0));
+
+	//m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );
+	m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
 
     //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];

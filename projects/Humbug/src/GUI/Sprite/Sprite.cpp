@@ -45,6 +45,7 @@ CSprite::CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
     loader.FreeLast();
     if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
         m_pSprImage = new CImage( new CCanvas( alphasurf ), true );
+		m_crSprDim = m_pSprImage->SrcRect();
     }
     else {
         m_pSprImage = new CImage( new CCanvas( alphasurf ), spriteDimension, true );

@@ -35,6 +35,7 @@ private:
     boost::scoped_ptr<CText> m_pScrollText;
     boost::scoped_ptr<CTextScroller> m_pScroller;
     boost::scoped_ptr<CSpriteManager> m_pSprMgr;
+	CSprite *m_pSprite;
 };
 
 #endif // HUMBUG_LEVELS_TESTLEVEL_H

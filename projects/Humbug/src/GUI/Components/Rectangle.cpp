@@ -323,6 +323,11 @@ CRectangle CRectangle::operator - ( CRectangle& rc )
 	return ( result ) ;
 }
 
+bool CRectangle::operator == ( const CRectangle& rc ) 
+{
+	return ( X ( ) == rc.GetX ( ) && Y ( ) == rc.GetY ( ) && W ( ) == rc.GetW ( ) && H ( ) == rc.GetH ( ) ) ;
+}
+
 bool CRectangle::operator == ( CRectangle& rc ) 
 {
 	return ( X ( ) == rc.X ( ) && Y ( ) == rc.Y ( ) && W ( ) == rc.W ( ) && H ( ) == rc.H ( ) ) ;

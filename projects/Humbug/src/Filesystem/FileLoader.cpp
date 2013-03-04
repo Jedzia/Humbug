@@ -135,7 +135,7 @@ struct FileLoader::FileLoaderImpl {
         {
             //std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
             HUMBUG_FILELOADER_THROW(
-                FileLoaderException("[FileLoader::LoadImg-slurp5]", filename,
+                FileLoaderException("[FileLoader::LoadImg-imgmem]", filename,
                 boost::system::error_code(FILELOADER_ERRNO, boost::system::system_category())));
             return NULL;
         }
@@ -151,7 +151,7 @@ struct FileLoader::FileLoaderImpl {
                 //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
                 // load a internal error image.
                 HUMBUG_FILELOADER_THROW(
-                    FileLoaderException(std::string("[FileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
+                    FileLoaderException(std::string("[FileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + IMG_GetError(), 1));
                 // generic_category
             }
         }

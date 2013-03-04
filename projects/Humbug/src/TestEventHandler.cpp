@@ -25,6 +25,7 @@
 #include "Screens/TestScreen.h"
 #include "Screens/HighscoreScreen.h"
 #include "Levels/TestLevel.h"
+#include "HumbugLib/src/HumbugLib/AppGB.h"
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -129,6 +130,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //initialize parent class
     CEventHandler::OnInit(argc, argv);
 
+
     //create display surface
     Uint32 video_flags;
 
@@ -183,7 +185,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     //fl = new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     //fl.reset(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
-    fl.reset(new FileLoader("E:/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
+	//fl.reset(new FileLoader("E:/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
+
+	std::string appDir = AppGB::Instance().AppDir();
+	fl.reset(new FileLoader(appDir + "base_data"));
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     CTileSet* tileSet = NULL;

@@ -93,6 +93,7 @@ public:
 
 	//comparisons
 	bool operator == ( CRectangle& rc ) ;
+	bool operator == ( const CRectangle& rc ) ;
 	bool operator != ( CRectangle& rc ) ;
 
 	//clip or wrap points

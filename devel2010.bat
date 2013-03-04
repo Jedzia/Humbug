@@ -26,20 +26,20 @@ ECHO
 ECHO .
 ECHO "D:\Program Files (x86)\CMake\bin\cmake-gui" ..\projects
 ECHO .
-ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:ALL_BUILD:Rebuild
-ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug:Rebuild
-ECHO msbuild Humbug.sln /v:n /p:Configuration=Debug /t:HumbugConsole:Rebuild
-ECHO msbuild Humbug.sln /t:Rebuild /v:diag /p:Configuration=Debug
-ECHO msbuild Humbug.sln /v:d /p:Configuration=Debug
-ECHO msbuild Humbug.sln /v:d /p:Configuration=Debug /t:Playground\throw_error
-ECHO msbuild Humbug.sln /v:d /p:Configuration=Debug /t:Playground\throw_error:Rebuild
-ECHO msbuild Humbug.sln /v:d /p:Configuration=Debug /t:Playground\csz_textdocument
+ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:ALL_BUILD:Rebuild
+ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:Humbug:Rebuild
+ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:HumbugConsole:Rebuild
+ECHO msbuild Humbug.sln /t:Rebuild /m /v:diag /p:Configuration=Debug
+ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug
+ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\throw_error
+ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\throw_error:Rebuild
+ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\csz_textdocument
 ECHO Playground\Debug\csz_textdocument.exe
-ECHO msbuild Humbug.sln /v:d /p:Configuration=Debug /t:Library\CppStructz
+ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Library\CppStructz
 ECHO msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-CppStructz_src_UnitTests-unit_test_example_01
 ECHO msbuild Humbug.sln /p:Configuration=Debug /t:Playground\plugin\plugin
 ECHO msbuild Humbug.sln /p:Configuration=Debug /t:Playground\templates_statemachine
-ECHO msbuild ALL_BUILD.vcxproj /v:m /p:Configuration=Debug
+ECHO msbuild ALL_BUILD.vcxproj /m /v:m /p:Configuration=Debug
 ECHO "C:\Program Files\CMake-2.8.5\bin\ctest.exe" --force-new-ctest-process -C Debug
 ECHO .
 
