@@ -93,6 +93,7 @@ SET(Humbug_Component_headers
 		GUI/Components/Color.h
 		GUI/Components/Canvas.h
 		GUI/Components/Image.h
+		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
 
 		GUI/Components/Text.h
@@ -117,6 +118,7 @@ SET(Humbug_Component_sources
 		GUI/Components/Color.cpp
 		GUI/Components/Canvas.cpp
 		GUI/Components/Image.cpp
+		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
 
 		GUI/Components/Text.cpp

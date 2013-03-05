@@ -9,6 +9,7 @@
 #include "../Filesystem/FileLoader.h"
 #include "../GUI/Components/Image.h"
 #include "../GUI/Components/Rectangle.h"
+#include "../GUI/Components/SeamlessImage.h"
 #include "../GUI/Components/Text.h"
 #include "../GUI/Components/TextScroller.h"
 #include "../GUI/Data/ColorData.h"
@@ -84,7 +85,8 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     m_Loader.FreeLast();
 
 	//m_pSprite = new CSprite(m_Loader, "Sprites/kmail.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
-	m_pSprite = new CSprite(m_Loader, "Images/Sky01.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
+	//m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky01.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
+	m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*, CRectangle(0,0,64,64)*/);
 
 	//m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -138,10 +140,10 @@ void TestLevel::OnDraw(){
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
 	
-	static CPoint sp(0,0);
+	static CPoint sp(0,110);
 	m_pSprite->SetPos(sp);
 	m_pSprite->Draw();
-	sp.Subtract(CPoint(6,0));
+	sp.Subtract(CPoint(-3,0));
 
 	//m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );
 	m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
@@ -151,9 +153,13 @@ void TestLevel::OnDraw(){
     m_pMainCanvas->FillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
     m_pMainCanvas->AddUpdateRect(frect);
 
-    CRectangle dstDims( 0, 0, 600, 200);
-    m_pScrollText->Put(m_pBackground.get(),dstDims, dstDims );
+	static int xxx = 0;
+	CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
+	CRectangle srcDims( 0, 0, 600, 200);
+	//m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
+	m_pScrollText->Put(m_pMainCanvas, dstDims, srcDims );
     m_pMainCanvas->AddUpdateRect(dstDims);
+	xxx++;
 
     coldelta++;
 

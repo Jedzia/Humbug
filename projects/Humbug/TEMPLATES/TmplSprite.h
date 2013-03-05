@@ -5,17 +5,17 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the Sprite.h class.
+ *             the Template.h class.
  * \folder     $(folder)
- * \file       Sprite.h
+ * \file       Template.h
  * \date       2012-07-10
  * \author     Jedzia.
  *
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_GUI_SPRITE_CSPRITE_H
-#define HUMBUG_GUI_SPRITE_CSPRITE_H
+#ifndef HUMBUG_GUI_Template_CTemplate_H
+#define HUMBUG_GUI_Template_CTemplate_H
 #include "..\Components\Point.h"
 #include "..\Components\Rectangle.h"
 #include <string>
@@ -41,22 +41,22 @@ namespace gui
 
   /// Represents a two-dimensional image or animation.
   /** Hold function to bla bla bla. */
-  class CSprite {
+  class CTemplate {
 public:
 
-      CSprite( CCanvas* mainCanvas, CImage* sprImage, CCanvas* background = NULL, bool freeSrc = false,
-              CRectangle spriteDimension = CRectangle(0, 0, 0,
-                      0), CPoint spriteMove = CPoint(0, 0) );
+      CTemplate( CCanvas* mainCanvas, CImage* sprImage, CCanvas* background = NULL, bool freeSrc = false,
+              CRectangle TemplateDimension = CRectangle(0, 0, 0,
+                      0), CPoint TemplateMove = CPoint(0, 0) );
 
-      CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle spriteDimension =
-                  CRectangle(0, 0, 0, 0), CPoint spriteMove = CPoint(0, 0) );
-      ~CSprite();
+      CTemplate( FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle TemplateDimension =
+                  CRectangle(0, 0, 0, 0), CPoint TemplateMove = CPoint(0, 0) );
+      ~CTemplate();
 
       void Draw();
 
       /** Set Screen Position.
-       *  Sets the screen position of the sprite.
-       *  @param position The position of the sprite on screen.
+       *  Sets the screen position of the Template.
+       *  @param position The position of the Template on screen.
        * @return nothing.
        */
       void SetPos(CPoint pos);
@@ -70,7 +70,7 @@ public:
 
       void SetColorAndAlpha(Uint32 key, Uint8 alpha);
 
-      friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
+      friend std::ostream& operator<<(std::ostream& o, const CTemplate& r);
 
 private:
 
@@ -84,6 +84,6 @@ private:
       bool m_bOwner;
   };
 
-  std::ostream& operator<<(std::ostream& o, const CSprite& r);
+  std::ostream& operator<<(std::ostream& o, const CTemplate& r);
 }
-#endif // HUMBUG_GUI_SPRITE_CSPRITE_H guard
+#endif // HUMBUG_GUI_Template_CTemplate_H guard

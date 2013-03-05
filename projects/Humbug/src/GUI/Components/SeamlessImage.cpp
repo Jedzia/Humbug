@@ -6,56 +6,56 @@
 #include "../Components/Image.h"
 #include "Filesystem/FileLoader.h"
 #include "SDL.h"
-#include "Sprite.h"
+#include "SeamlessImage.h"
 
 //#include <build/cmake/include/debug.h>
 using namespace gui::components;
 namespace gui
 {
 // freeSrc: Take ownership of 'sprImage' and delete it on destruction.
-  CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
-          CRectangle spriteDimension,
-          CPoint spriteMove) :
+  CSeamlessImage::CSeamlessImage(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
+          CRectangle SeamlessImageDimension,
+          CPoint SeamlessImageMove) :
       m_bOwner(freeSrc),
       m_pMainCanvas(mainCanvas),
       m_pSprImage(sprImage),
       m_pBackground(background),
       m_cpPos(0, 0),
       m_cpOldPos(0, 0),
-      m_cpSprMove(spriteMove),
-      m_crSprDim(spriteDimension){
+      m_cpSprMove(SeamlessImageMove),
+      m_crSprDim(SeamlessImageDimension){
       dbgOut(__FUNCTION__ << std::endl);
 
       //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
       //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
   }
 
-  CSprite::CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
-          CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
-          CPoint spriteMove /*= CPoint(0,0) */ ) :
+  CSeamlessImage::CSeamlessImage( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
+          CRectangle SeamlessImageDimension /*= CRectangle(0,0,0,0) */,
+          CPoint SeamlessImageMove /*= CPoint(0,0) */ ) :
       m_bOwner(true),
       m_pMainCanvas(mainCanvas),
       m_pBackground(NULL),
       m_cpPos(0, 0),
       m_cpOldPos(0, 0),
-      m_cpSprMove(spriteMove),
-      m_crSprDim(spriteDimension){
+      m_cpSprMove(SeamlessImageMove),
+      m_crSprDim(SeamlessImageDimension){
       // m_pSprImage(sprImage),
       SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loader.LoadImg(filename) );
 
       // free the loaded surface.
       loader.FreeLast();
 
-      if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
+      if ( SeamlessImageDimension == CRectangle(0, 0, 0, 0) ) {
           m_pSprImage = new CImage( new CCanvas( alphasurf ), true );
           m_crSprDim = m_pSprImage->SrcRect();
       }
       else {
-          m_pSprImage = new CImage( new CCanvas( alphasurf ), spriteDimension, true );
+          m_pSprImage = new CImage( new CCanvas( alphasurf ), SeamlessImageDimension, true );
       }
   }
 
-  CSprite::~CSprite(void){
+  CSeamlessImage::~CSeamlessImage(void){
       if(m_bOwner) {
           delete m_pSprImage;
       }
@@ -63,11 +63,11 @@ namespace gui
       dbgOut(__FUNCTION__ << std::endl);
   }
 
-  /** CSprite, Draw:
+  /** CSeamlessImage, Draw:
    *  Detailed description.
    *  @return TODO
    */
-  void CSprite::Draw(){
+  void CSeamlessImage::Draw(){
       m_pMainCanvas->Lock();
 
       if (m_pBackground) {
@@ -90,6 +90,8 @@ namespace gui
       //SDL_SetAlpha(m_pSprImage->GetCanvas()->GetSurface(), SDL_SRCALPHA /*| SDL_RLEACCEL*/,
       // 128);
       m_pSprImage->Put(m_pMainCanvas, m_cpPos);
+
+
       m_pMainCanvas->Unlock();
 
       //m_pMainCanvas->AddUpdateRect(m_pSprImage->GetCanvas()->GetDimension() + m_cpOldPos);
@@ -99,31 +101,31 @@ namespace gui
       m_cpOldPos = m_cpPos;
   }   // Draw
 
-  /** CSprite, SetPos:
+  /** CSeamlessImage, SetPos:
    *  Detailed description.
    *  @param position TODO
    * @return TODO
    */
-  void CSprite::SetPos( CPoint position ){
+  void CSeamlessImage::SetPos( CPoint position ){
       m_cpPos = position;
   }
 
-  /** CSprite, SprOffset:
+  /** CSeamlessImage, SprOffset:
    *  Detailed description.
    *  @param offset TODO
    * @return TODO
    */
-  void CSprite::SprOffset( int offset ){
+  void CSeamlessImage::SprOffset( int offset ){
       m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
   }
 
-  /** CSprite, SetColorAndAlpha:
+  /** CSeamlessImage, SetColorAndAlpha:
    *  Detailed description.
    *  @param key TODO
    * @param alpha TODO
    * @return TODO
    */
-  void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
+  void CSeamlessImage::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
       SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
       SDL_SetColorKey(alphasurf, SDL_SRCCOLORKEY, key);
       SDL_SetAlpha(alphasurf, 0, alpha);
@@ -135,8 +137,8 @@ namespace gui
    * @param r TODO
    * @return TODO
    */
-  std::ostream& operator<<(std::ostream& o, const CSprite& r) {
-      return o << "CSprite[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
+  std::ostream& operator<<(std::ostream& o, const CSeamlessImage& r) {
+      return o << "CSeamlessImage[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                    << ", W=" << r.GetW() << ", H=" << r.GetH()
                                    <<*/
              " ]";

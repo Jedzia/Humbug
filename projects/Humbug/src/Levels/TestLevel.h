@@ -10,6 +10,7 @@ namespace gui { namespace components {
 }}
 namespace gui {
 	class CSprite;
+	class CSeamlessImage;
 	class CSpriteManager;
 }
 class FileLoader;
@@ -39,7 +40,7 @@ private:
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
 	boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-	gui::CSprite *m_pSprite;
+	gui::CSeamlessImage *m_pSprite;
 };
 
 #endif // HUMBUG_LEVELS_TESTLEVEL_H

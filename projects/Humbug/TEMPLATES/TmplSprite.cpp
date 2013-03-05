@@ -6,56 +6,56 @@
 #include "../Components/Image.h"
 #include "Filesystem/FileLoader.h"
 #include "SDL.h"
-#include "Sprite.h"
+#include "Template.h"
 
 //#include <build/cmake/include/debug.h>
 using namespace gui::components;
 namespace gui
 {
 // freeSrc: Take ownership of 'sprImage' and delete it on destruction.
-  CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
-          CRectangle spriteDimension,
-          CPoint spriteMove) :
+  CTemplate::CTemplate(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
+          CRectangle TemplateDimension,
+          CPoint TemplateMove) :
       m_bOwner(freeSrc),
       m_pMainCanvas(mainCanvas),
       m_pSprImage(sprImage),
       m_pBackground(background),
       m_cpPos(0, 0),
       m_cpOldPos(0, 0),
-      m_cpSprMove(spriteMove),
-      m_crSprDim(spriteDimension){
+      m_cpSprMove(TemplateMove),
+      m_crSprDim(TemplateDimension){
       dbgOut(__FUNCTION__ << std::endl);
 
       //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
       //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
   }
 
-  CSprite::CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
-          CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
-          CPoint spriteMove /*= CPoint(0,0) */ ) :
+  CTemplate::CTemplate( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
+          CRectangle TemplateDimension /*= CRectangle(0,0,0,0) */,
+          CPoint TemplateMove /*= CPoint(0,0) */ ) :
       m_bOwner(true),
       m_pMainCanvas(mainCanvas),
       m_pBackground(NULL),
       m_cpPos(0, 0),
       m_cpOldPos(0, 0),
-      m_cpSprMove(spriteMove),
-      m_crSprDim(spriteDimension){
+      m_cpSprMove(TemplateMove),
+      m_crSprDim(TemplateDimension){
       // m_pSprImage(sprImage),
       SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loader.LoadImg(filename) );
 
       // free the loaded surface.
       loader.FreeLast();
 
-      if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
+      if ( TemplateDimension == CRectangle(0, 0, 0, 0) ) {
           m_pSprImage = new CImage( new CCanvas( alphasurf ), true );
           m_crSprDim = m_pSprImage->SrcRect();
       }
       else {
-          m_pSprImage = new CImage( new CCanvas( alphasurf ), spriteDimension, true );
+          m_pSprImage = new CImage( new CCanvas( alphasurf ), TemplateDimension, true );
       }
   }
 
-  CSprite::~CSprite(void){
+  CTemplate::~CTemplate(void){
       if(m_bOwner) {
           delete m_pSprImage;
       }
@@ -63,11 +63,11 @@ namespace gui
       dbgOut(__FUNCTION__ << std::endl);
   }
 
-  /** CSprite, Draw:
+  /** CTemplate, Draw:
    *  Detailed description.
    *  @return TODO
    */
-  void CSprite::Draw(){
+  void CTemplate::Draw(){
       m_pMainCanvas->Lock();
 
       if (m_pBackground) {
@@ -99,31 +99,31 @@ namespace gui
       m_cpOldPos = m_cpPos;
   }   // Draw
 
-  /** CSprite, SetPos:
+  /** CTemplate, SetPos:
    *  Detailed description.
    *  @param position TODO
    * @return TODO
    */
-  void CSprite::SetPos( CPoint position ){
+  void CTemplate::SetPos( CPoint position ){
       m_cpPos = position;
   }
 
-  /** CSprite, SprOffset:
+  /** CTemplate, SprOffset:
    *  Detailed description.
    *  @param offset TODO
    * @return TODO
    */
-  void CSprite::SprOffset( int offset ){
+  void CTemplate::SprOffset( int offset ){
       m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
   }
 
-  /** CSprite, SetColorAndAlpha:
+  /** CTemplate, SetColorAndAlpha:
    *  Detailed description.
    *  @param key TODO
    * @param alpha TODO
    * @return TODO
    */
-  void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
+  void CTemplate::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
       SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
       SDL_SetColorKey(alphasurf, SDL_SRCCOLORKEY, key);
       SDL_SetAlpha(alphasurf, 0, alpha);
@@ -135,8 +135,8 @@ namespace gui
    * @param r TODO
    * @return TODO
    */
-  std::ostream& operator<<(std::ostream& o, const CSprite& r) {
-      return o << "CSprite[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
+  std::ostream& operator<<(std::ostream& o, const CTemplate& r) {
+      return o << "CTemplate[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                    << ", W=" << r.GetW() << ", H=" << r.GetH()
                                    <<*/
              " ]";
