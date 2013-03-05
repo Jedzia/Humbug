@@ -143,7 +143,7 @@ void TestLevel::OnDraw(){
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
 	
-	static CPoint sp(0,110);
+	static CPoint sp(-1600,110);
 	//m_pSprite->SetPos(sp);
 	//m_pSprite->Draw();
 	m_pSprite->Put(m_pMainCanvas, sp);
