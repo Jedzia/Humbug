@@ -15,6 +15,8 @@
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
 
+using namespace gui::components;
+
 struct TestScreen::TestScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;

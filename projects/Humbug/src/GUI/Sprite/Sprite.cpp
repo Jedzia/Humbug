@@ -9,6 +9,7 @@
 #include "Sprite.h"
 
 //#include <build/cmake/include/debug.h>
+using namespace gui::components;
 
 // freeSrc: Take ownership of 'sprImage' and delete it on destruction.
 CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,

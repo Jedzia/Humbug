@@ -16,13 +16,15 @@
 #include "../GUI/Sprite/SpriteManager.h"
 #include "../GUI/Visual/EventHandler.h"
 
+using namespace gui::components;
+
 struct TestLevel::TestLevelImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
     int x;
 };
 
-TestLevel::TestLevel( FileLoader& loader, CCanvas* background) :
+TestLevel::TestLevel( FileLoader& loader, gui::components::CCanvas* background) :
  pimpl_(new TestLevel::TestLevelImpl ),
     Screen(background),
     m_Loader(loader),

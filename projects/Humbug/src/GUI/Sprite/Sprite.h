@@ -26,27 +26,25 @@ namespace gui { namespace components {
 }}
 class FileLoader;
 
-using namespace gui::components;
-
 class CSprite {
 public:
 
-    CSprite( CCanvas * mainCanvas, CImage * sprImage, CCanvas * background = NULL, bool freeSrc = false,
-            CRectangle spriteDimension = CRectangle(0, 0, 0,
+	CSprite( gui::components::CCanvas * mainCanvas, gui::components::CImage * sprImage, gui::components::CCanvas * background = NULL, bool freeSrc = false,
+            gui::components::CRectangle spriteDimension = gui::components::CRectangle(0, 0, 0,
                     0),
-            CPoint spriteMove = CPoint(0, 0) );
-    CSprite( FileLoader& loader, std::string filename, CCanvas * mainCanvas,
-            CRectangle spriteDimension = CRectangle(0, 0, 0,
+            gui::components::CPoint spriteMove = gui::components::CPoint(0, 0) );
+    CSprite( FileLoader& loader, std::string filename, gui::components::CCanvas * mainCanvas,
+            gui::components::CRectangle spriteDimension = gui::components::CRectangle(0, 0, 0,
                     0),
-            CPoint spriteMove = CPoint(0, 0) );
+            gui::components::CPoint spriteMove = gui::components::CPoint(0, 0) );
     ~CSprite();
     void Draw();
 
-    void SetPos(CPoint pos);
+    void SetPos(gui::components::CPoint pos);
 
     void SprOffset(int offset);
 
-    CImage* SprImage() const { return m_pSprImage; }
+    gui::components::CImage* SprImage() const { return m_pSprImage; }
     void SetColorAndAlpha(Uint32 key, Uint8 alpha);
 
     friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
@@ -54,13 +52,13 @@ public:
 
 private:
 
-    CImage* m_pSprImage;
-    CCanvas* m_pMainCanvas;
-    CCanvas* m_pBackground;
-    CPoint m_cpPos;
-    CPoint m_cpOldPos;
-    CPoint m_cpSprMove;
-    CRectangle m_crSprDim;
+    gui::components::CImage* m_pSprImage;
+    gui::components::CCanvas* m_pMainCanvas;
+    gui::components::CCanvas* m_pBackground;
+    gui::components::CPoint m_cpPos;
+    gui::components::CPoint m_cpOldPos;
+    gui::components::CPoint m_cpSprMove;
+    gui::components::CRectangle m_crSprDim;
     bool m_bOwner;
 };
 std::ostream& operator<<(std::ostream& o, const CSprite& r);

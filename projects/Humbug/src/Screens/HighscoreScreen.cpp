@@ -16,6 +16,8 @@
 #include "WavyTextFloat.h"
 #include <cstdlib>
 
+using namespace gui::components;
+
 struct HighscoreScreen::HighscoreScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
