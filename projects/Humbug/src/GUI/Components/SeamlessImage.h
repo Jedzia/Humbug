@@ -1,89 +1,47 @@
-/*---------------------------------------------------------*/
-/*!
- * This file is part of Humbug, the strangest game ever.
- * License details can be found in the file COPYING.
- * Copyright (c) 2012, EvePanix. All rights reserved.
- *
- * \brief      This file contains the definition of
- *             the SeamlessImage.h class.
- * \folder     $(folder)
- * \file       SeamlessImage.h
- * \date       2012-07-10
- * \author     Jedzia.
- *
- * modified    2012-07-10, Jedzia
- */
-/*---------------------------------------------------------*/
-#ifndef HUMBUG_GUI_SeamlessImage_CSeamlessImage_H
-#define HUMBUG_GUI_SeamlessImage_CSeamlessImage_H
-#include "..\Components\Point.h"
-#include "..\Components\Rectangle.h"
-#include <string>
+#ifndef __SeamlessImage_H__
+#define __SeamlessImage_H__
 
-//using CCanvas=gui::components::CCanvas;
-namespace gui
-{
-  namespace components
-  {
-    class CCanvas;
-    class CImage;
-  }
-}
-class FileLoader;
+#include "Canvas.h"
 
-//
-namespace gui
-{
-  using gui::components::CCanvas;
-  using gui::components::CImage;
-  using gui::components::CPoint;
-  using gui::components::CRectangle;
+namespace gui {
+	namespace components {
 
-  /// Represents a two-dimensional image or animation.
-  /** Hold function to bla bla bla. */
-  class CSeamlessImage {
-public:
+		//CSeamlessImage--abstracts a blittable portion of a canvas
+		class CSeamlessImage
+		{
+		public:
+			//construct from source canvas, source rectangle,and offset point
+			CSeamlessImage ( CCanvas* pcnvSource, bool freeSrc = false ) ;
+			CSeamlessImage ( CCanvas* pcnvSource , CRectangle rcSource, bool freeSrc = false, CPoint ptOffset = CPoint(0 ,0) ) ;
+			//destroy SeamlessImage
+			virtual ~CSeamlessImage ( ) ;
+			//retrieve pointer to canvas
+			CCanvas* GetCanvas ( ) ;
+			//set new canvas
+			void SetCanvas ( CCanvas* pcnvSource ) ;
+			//access source rectangle
+			const CRectangle& SrcRect ( ) const;
+			//access destination rectangle
+			const CRectangle& DstRect ( ) const;
+			//blit SeamlessImage onto a canvas
+			void Put ( CCanvas* pcnvDest , const CPoint& ptDst ) ;
 
-      CSeamlessImage( CCanvas* mainCanvas, CImage* sprImage, CCanvas* background = NULL, bool freeSrc = false,
-              CRectangle SeamlessImageDimension = CRectangle(0, 0, 0,
-                      0), CPoint SeamlessImageMove = CPoint(0, 0) );
+			CRectangle GetSrc() const { return m_rcSrc; }
+			void SetSrc(CRectangle val) { m_rcSrc = val; }
+			CRectangle GetDst() const { return m_rcDst; }
+			void SetDst(CRectangle val) { m_rcDst = val; }
 
-      CSeamlessImage( FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle SeamlessImageDimension =
-                  CRectangle(0, 0, 0, 0), CPoint SeamlessImageMove = CPoint(0, 0) );
-      ~CSeamlessImage();
+		private:
+			//pointer to canvas
+			CCanvas* m_pcnvSrc ;
+			//source rectangle
+			CRectangle m_rcSrc ;
+			//destination rectangle
+			CRectangle m_rcDst ;
+			bool m_bFreeSrc;
+		};
 
-      void Draw();
+	} // namespace components
+} // namespace gui
 
-      /** Set Screen Position.
-       *  Sets the screen position of the SeamlessImage.
-       *  @param position The position of the SeamlessImage on screen.
-       * @return nothing.
-       */
-      void SetPos(CPoint pos);
-
-      void SprOffset(int offset);
-
-      /** Brief description which ends at this dot. Details follow
-       *  here.
-       */
-      CImage * SprImage() const { return m_pSprImage; }
-
-      void SetColorAndAlpha(Uint32 key, Uint8 alpha);
-
-      friend std::ostream& operator<<(std::ostream& o, const CSeamlessImage& r);
-
-private:
-
-      CImage* m_pSprImage;
-      CCanvas* m_pMainCanvas;
-      CCanvas* m_pBackground;
-      CPoint m_cpPos;
-      CPoint m_cpOldPos;
-      CPoint m_cpSprMove;
-      CRectangle m_crSprDim;
-      bool m_bOwner;
-  };
-
-  std::ostream& operator<<(std::ostream& o, const CSeamlessImage& r);
-}
-#endif // HUMBUG_GUI_SeamlessImage_CSeamlessImage_H guard
+#endif

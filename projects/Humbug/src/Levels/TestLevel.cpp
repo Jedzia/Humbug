@@ -86,7 +86,10 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
 
 	//m_pSprite = new CSprite(m_Loader, "Sprites/kmail.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
 	//m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky01.png", m_pBackground.get()/*, CRectangle(0,0,64,64)*/);
-	m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*, CRectangle(0,0,64,64)*/);
+	//m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*, CRectangle(0,0,64,64)*/);
+	SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Images/Sky02.png") );
+	m_Loader.FreeLast();
+	m_pSprite = new CSeamlessImage( new CCanvas( g_pBitmapSurface ), true );
 
 	//m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -141,9 +144,10 @@ void TestLevel::OnDraw(){
     int index = (coldelta * 2 & 63);
 	
 	static CPoint sp(0,110);
-	m_pSprite->SetPos(sp);
-	m_pSprite->Draw();
-	sp.Subtract(CPoint(-3,0));
+	//m_pSprite->SetPos(sp);
+	//m_pSprite->Draw();
+	m_pSprite->Put(m_pMainCanvas, sp);
+	sp.Subtract(CPoint(3,0));
 
 	//m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );
 	m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
