@@ -21,6 +21,8 @@
 #include "SdlInfo.h"
 #include <sstream>
 
+namespace gui {
+
 const char* SdlInfo::indent = "    ";
 //#include <build/cmake/include/debug.h>
 SdlInfo::SdlInfo(SDL_Surface* surface){
@@ -134,4 +136,6 @@ std::ostream& operator<<(std::ostream& o, const SdlInfo& r) {
     o << r.PrintGeneralInfo();
     return o;
 }
+
+} // namespace gui
 

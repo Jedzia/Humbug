@@ -6,6 +6,9 @@
 #include "sdl_ttf.h"
 #include "../Components/Color.h"
 
+namespace gui {
+namespace controls {
+
 //CButton class
 //abstracts a ui button
 class CButton : public CControl  
@@ -44,5 +47,8 @@ public:
 	//message for clicking button
 	static MSGID MSGID_ButtonClick;//parm1=id
 };
+
+} // namespace controls
+} // namespace gui
 
 #endif // #ifndef BUTTON_H__

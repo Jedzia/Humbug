@@ -9,6 +9,8 @@
 //#include <build/cmake/include/debug.h>
 
 
+namespace gui {
+
 //Hookable* Hookable::m_pController = NULL;
 //CEventHandler* Hookable::m_pMaster = NULL;
 //boost::ptr_vector<Hookable> Hookable::m_pvHooks;
@@ -33,7 +35,7 @@ struct Hookable::HookableImpl {
 
     boost::signals::connection m_conInit;
     boost::signals::connection m_conIdle;
-    
+
     Hookable *m_pHost;
 
     HookableImpl(Hookable *host)
@@ -174,7 +176,7 @@ void Hookable::Connect(/*Hookable* controller*/)
 {
     //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
     //pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
-    
+
     // do not use the main Init event. the manager has to pre init them
     //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*m_pController), _1, _2));
     pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*m_pController), _1));
@@ -192,7 +194,7 @@ bool Hookable::OnInit( int argc,char* argv[] )
 {
     m_grpID = GetGroupID();
     dbgOut(__FUNCTION__ << " (" << this << ") m_grpID=" << m_grpID << std::endl);
-    
+
     return true;
     //return Setup();
 }
@@ -230,3 +232,6 @@ void TestHookable::OnDisconnect()
 {
     //throw std::exception("The method or operation is not implemented.");
 }
+
+} // namespace gui
+

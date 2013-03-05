@@ -34,11 +34,11 @@ struct HudImages
 
 };
 
-class Hud : public CControl {
+class Hud : public gui::controls::CControl {
 public:
 
     // Hud(const FileLoader& loader, CCanvas* pCanvas);
-    Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32 id);
+    Hud(const FileLoader& loader, gui::controls::CControl* pParent, HudBackground* bkg, Uint32 id);
     ~Hud();
 
     //void Draw();
@@ -46,7 +46,7 @@ public:
 	virtual bool OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
 
 private:
-	void Init(CControl* pParent);
+	void Init(gui::controls::CControl* pParent);
     gui::components::CRectangle InitRect(const FileLoader& loader);
 
 	//canvas used by window

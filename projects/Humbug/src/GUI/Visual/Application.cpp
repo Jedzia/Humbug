@@ -12,6 +12,10 @@
 #include "../Components/MainCanvas.h"
 #include <stdexcept>
 
+extern int bmain(int argc,char* argv[]);
+
+namespace gui {
+
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
 Uint32 CApplication::m_uiFPSLastTime=0;
@@ -387,14 +391,18 @@ boost::signals::connection CApplication::ConnectOnUpdate( const slot_type_event&
     return m_sigOnUpdate.connect( s );
 }
 
-extern int bmain(int argc,char* argv[]);
+
 void doExit()
 {
     _CrtDumpMemoryLeaks( );
 }
+
+} // namespace gui
+
 //main function
 int main(int argc,char* argv[])
 {
+	using namespace gui;
     //dbgOut(__FUNCTION__ << std::endl);
     _CRT_DEBUG_BLOCK
 
@@ -437,3 +445,5 @@ int main(int argc,char* argv[])
     //new std::string("Maul !");
 	return(result);
 }
+
+

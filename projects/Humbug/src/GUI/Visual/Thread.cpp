@@ -7,6 +7,8 @@
 //
 #include "Thread.h"
 
+namespace gui {
+
 //start the thread(should be called by derived classes constructor)
 void CThread::Start()
 {
@@ -136,4 +138,6 @@ int CThread::OnExecute()
 	//do nothing
 	return(0);
 }
+
+} // namespace gui
 

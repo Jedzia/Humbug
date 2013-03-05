@@ -6,7 +6,7 @@
 	==CTestTimer==
 	Test case for CTimer
 */
-class CTestTimer : public CTimer
+class CTestTimer : public gui::CTimer
 {
 public:
 	//constructor

@@ -6,6 +6,8 @@
 #include "../Components/Rectangle.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+namespace gui {
+
 class CEventHandler;
 
 class CConsole {
@@ -30,5 +32,7 @@ private:
 };
 
 //std::ostream& operator<<(std::ostream& o, const CConsole& r);
+
+} // namespace gui
 
 #endif // __HUMBUG_GUI_VISUAL_CCONSOLE_H guard

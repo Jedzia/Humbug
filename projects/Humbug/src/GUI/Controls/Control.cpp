@@ -5,6 +5,9 @@
 #include "../../stdafx.h"
 #include "Control.h"
 
+namespace gui {
+namespace controls {
+
 //list of windows to bring to front
 std::list<CControl*> CControl::s_lstUpdate(0);
 //list of windows to close
@@ -54,13 +57,13 @@ m_pParent(NULL), m_ptIsDirty(invalidate)
 //destructor
 CControl::~CControl()
 {
-	
+
     //remove from update list
     if(!s_lstUpdate.empty() && !IsMainControl())
-    { 
+    {
         s_lstUpdate.remove(this);
     }
-	
+
     //remove from close list
     if(!s_lstClose.empty() && !IsMainControl())
     {
@@ -181,7 +184,7 @@ void CControl::Draw()
 	{
 		//grab item from list
 		CControl* pChild=(*iter);
-		//draw 
+		//draw
 		pChild->Draw();
 	}
 	//update parent
@@ -314,7 +317,7 @@ bool CControl::OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,
 	//range check
 	if(x>=GetLeft() && x<GetRight() && y>=GetTop() && y<GetBottom())
 	{
-		if(GetMouseHover()==NULL) 
+		if(GetMouseHover()==NULL)
         {
             SetMouseHover(this);
         }
@@ -684,3 +687,5 @@ Uint32 CControl::GetID()
 	return(m_ID);
 }
 
+} // namespace controls
+} // namespace gui

@@ -82,7 +82,7 @@ bool TestScreen::OnInit( int argc, char* argv[] ){
     //"\r\n"
     CColor m_colText = CColor::White();
     std::ostringstream outstring;
-    outstring << "Bla fasel:" << CApplication::ShownFrames();
+    outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
     outstring << " ";
 
     //std::string pstr;

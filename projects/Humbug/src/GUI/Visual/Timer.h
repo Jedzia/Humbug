@@ -3,11 +3,13 @@
 
 #include "MessageHandler.h"
 
+namespace gui {
+
 /*
 	==CTimer==
 	Base class for all timer classes.
 */
-class CTimer : public CMessageHandler  
+class CTimer : public CMessageHandler
 {
 private:
 	//timer id
@@ -34,5 +36,7 @@ public:
 	//on timer handler
 	virtual void OnTimer();
 };
+
+} // namespace gui
 
 #endif //#ifndef __TIMER_H__

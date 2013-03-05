@@ -24,16 +24,18 @@
 #include <map>
 #include <string>
 
+namespace gui {
+
 class HookCreator {
 public:
-    /*HookCreator() 
+    /*HookCreator()
     {
         dbgOut(__FUNCTION__ << " [" << typeid( *this ).name() << "] (" << this << ")" << std::endl);
     };*/
     virtual Hookable* Create()= 0;
 
 protected:
-    virtual ~HookCreator() 
+    virtual ~HookCreator()
     {
         dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
     };
@@ -42,7 +44,7 @@ protected:
 template <typename T>
 class DefaultHookCreator : public HookCreator {
 public:
-    /*DefaultHookCreator() 
+    /*DefaultHookCreator()
     {
         dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
     };*/
@@ -76,7 +78,7 @@ public:
     // Switch the Hookable with the given key to status event-processing OFF.
     void DisableHookable(const std::string& key);
 
-    // Cleanup all registered and instantiated Hookables. 
+    // Cleanup all registered and instantiated Hookables.
     void Close();
 
     void Test1();
@@ -94,4 +96,7 @@ private:
     HookRegistryDictionary m_mapRegistry;
     Hookable* m_pActiveHook;
 };
+
+} // namespace gui
+
 #endif // HUMBUG_GUI_VISUAL_HOOKABLEMANAGER_H

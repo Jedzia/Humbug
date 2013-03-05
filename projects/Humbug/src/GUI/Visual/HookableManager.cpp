@@ -6,13 +6,15 @@
 
 //#include <build/cmake/include/debug.h>
 
+namespace gui {
+
 class HookBinder
 {
 public:
 	HookBinder();
 	~HookBinder();
 };
- 
+
 HookableManager::HookableManager(CEventHandler* master)
 : m_pMaster(master), m_pActiveHook(NULL)
 {
@@ -21,7 +23,7 @@ HookableManager::HookableManager(CEventHandler* master)
          {
              throw std::runtime_error("You have to specify a valid master event handler.");
          }
-         
+
          //TestHookable *nn = HookCreator<TestHookable>::Create();
 }
 
@@ -72,7 +74,7 @@ Hookable* HookableManager::GetHookable( const std::string& key )
         {
             std::string msg = "GetHookable found no matching key ";
             msg += "'" + key + "'.";
-            throw std::runtime_error(msg); 
+            throw std::runtime_error(msg);
         }
         else
         {
@@ -146,4 +148,6 @@ void HookableManager::UnregisterHookable( std::string key )
 {
 
 }
+
+} // namespace gui
 

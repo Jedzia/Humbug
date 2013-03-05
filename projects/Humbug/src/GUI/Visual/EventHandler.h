@@ -4,6 +4,8 @@
 #include "Application.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+namespace gui {
+
 class HookableManager;
 
 
@@ -11,12 +13,12 @@ class HookableManager;
 	==CEventHandler==
 	Event dispatching application class
 */
-class CEventHandler : public CApplication  
+class CEventHandler : public CApplication
 {
 public:
 
     static MSGID MSGID_QuitApp;//no parms
-    
+
     //constructor
 	CEventHandler();
 	//destructor
@@ -83,5 +85,7 @@ private:
     //slot_type_init m_slotOnInit;
 
 };
+
+} // namespace gui
 
 #endif //#ifndef HUMBUG_GUI_VISUAL_EVENTHANDLER_H_

@@ -7,6 +7,8 @@
 //
 #include "Timer.h"
 
+namespace gui {
+
 //timer procedure
 Uint32 CTimer::TimerProc(Uint32 interval,void* param)
 {
@@ -86,4 +88,6 @@ void CTimer::OnTimer()
 {
 	//do nothing
 }
+
+} // namespace gui
 

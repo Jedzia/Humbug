@@ -7,7 +7,7 @@
 	==CTestThread==
 	Test case for CThread
 */
-class CTestThread : public CThread
+class CTestThread : public gui::CThread
 {
 public:
 	//constructor

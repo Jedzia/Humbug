@@ -6,33 +6,36 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
-namespace gui { namespace components {
+namespace gui { 
+	class Hookable;
+	class Screen;
+	class CConsole;
+
+	namespace components {
 	class CImage;
-}}
+}
+}
 
 class HUD;
-class CConsole;
 class CSprite;
 class CTestThread;
 class CTestTimer;
 class PlayerKeys;
 class CTileEngine;
 class CTileSet;
-class Hookable;
-class Screen;
 
 
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
 */
-class CTestEventHandler : public CEventHandler
+class CTestEventHandler : public gui::CEventHandler
 {
 private:
     boost::scoped_ptr<FileLoader> fl;
     //FileLoader* fl;
     //main display surface
-    CConsole* m_pConsole;
+    gui::CConsole* m_pConsole;
 
     CCanvas* m_pBackground;
     CCanvas* m_pDrawCanvas;
@@ -60,7 +63,7 @@ private:
     int m_inActiveSprite;
     int m_inScreenDelta;
 
-    Screen* m_scrStart;
+    gui::Screen* m_scrStart;
 protected:
     //idle behavior
 	virtual void OnIdle(int frameNumber);
@@ -85,12 +88,12 @@ public:
 	//key press
 	void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
 	//message handler
-	bool OnMessage(MSGID MsgID,MSGPARM Parm1,MSGPARM Parm2,MSGPARM Parm3,MSGPARM Parm4);
+	bool OnMessage(gui::MSGID MsgID,gui::MSGPARM Parm1,gui::MSGPARM Parm2,gui::MSGPARM Parm3,gui::MSGPARM Parm4);
    	//event filtering
 	bool FilterEvent(SDL_Event* pEvent);
 	//message ids
-	static MSGID MSGID_ClearScreen;//no parms
-	static MSGID MSGID_DrawPixel;//parm1=x,parm2=y
+	static gui::MSGID MSGID_ClearScreen;//no parms
+	static gui::MSGID MSGID_DrawPixel;//parm1=x,parm2=y
 };
 
 #endif //#ifndef HUMBUG___TESTEVENTHANDLER_H__

@@ -27,6 +27,9 @@
 #include "Levels/TestLevel.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
 
+using namespace gui;
+using namespace gui::controls;
+
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
 /// This is called when the game should draw itself.
@@ -106,7 +109,7 @@ void CTestEventHandler::OnExit(){
     //delete m_pMainCanvas;
 
     //delete main control
-    delete CControl::GetMainControl();
+    delete gui::controls::CControl::GetMainControl();
     delete m_pSprite;
     delete m_pSprite2;
     delete m_pBackground;
@@ -348,7 +351,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //new TestHookable();
 
     m_pConsole =
-        new CConsole( this, "E:/Projects/C++/Humbug/build2010/Humbug/src/Debug/ConsoleFont.bmp",
+        new gui::CConsole( this, "E:/Projects/C++/Humbug/build2010/Humbug/src/Debug/ConsoleFont.bmp",
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
                         300) );
     return(true);

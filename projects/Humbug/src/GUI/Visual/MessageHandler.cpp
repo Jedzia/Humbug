@@ -3,6 +3,8 @@
 //
 #include "MessageHandler.h"
 
+namespace gui {
+
 //static member initialization
 //next message id(static)
 MSGID CMessageHandler::s_NextMSGID=0;
@@ -151,3 +153,6 @@ void CMessageHandler::OnRemoveChild(CMessageHandler* pmhChild)
 {
 	//do nothing
 }
+
+} // namespace gui
+

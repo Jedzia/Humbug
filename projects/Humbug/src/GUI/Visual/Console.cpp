@@ -13,10 +13,10 @@
 #include "internal.h"
 #include "split.h"
 
-//#include <functional> 
-//#include <algorithm> 
-#include <iostream> 
-//#include <boost/bind.hpp> 
+//#include <functional>
+//#include <algorithm>
+#include <iostream>
+//#include <boost/bind.hpp>
 //#include "boost/bind/mem_fn.hpp"
 //#include <tr1/functional>
 //#include "boost/function.hpp"
@@ -26,6 +26,8 @@
 #ifdef MSYS
 	//_CRTIMP char* __cdecl __MINGW_NOTHROW	strdup (const char*) __MINGW_ATTRIB_MALLOC;
 #endif
+
+namespace gui {
 
 //#include <build/cmake/include/debug.h>
 struct CConsole::CConsoleImpl {
@@ -110,7 +112,7 @@ struct CConsole::CConsoleImpl {
         CON_Out(console, "listcommands");
         CON_Out(console, "prompt");
     }
-    
+
     ~CConsoleImpl()
     {
         m_vCmdCallbacks.erase(m_pConsole);
@@ -225,3 +227,6 @@ void CConsole::DoSomething( void )
 //        << ", W=" << r.GetW() << ", H=" << r.GetH()
 //        <<*/ " ]";
 //}
+
+} // namespace gui
+

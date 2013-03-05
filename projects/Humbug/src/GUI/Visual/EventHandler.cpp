@@ -10,6 +10,8 @@
 #include "HookableManager.h"
 
 
+namespace gui {
+
 MSGID CEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 
 //constructor
@@ -309,4 +311,6 @@ bool CEventHandler::OnPostInit( int argc,char* argv[] )
     m_sigOnInit(argc, argv);
     return true;
 }
+
+} // namespace gui
 

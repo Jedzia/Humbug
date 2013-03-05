@@ -25,6 +25,9 @@
 struct SDL_Surface;
 
 //
+namespace gui {
+
+//
 struct SdlInfoGeneral
 {
     bool IsVideoSurface;
@@ -93,5 +96,7 @@ private:
     SdlInfoGeneral m_stGeneralInfo;
 };
 std::ostream& operator<<(std::ostream& o, const SdlInfo& r);
+
+} // namespace gui
 
 #endif // HUMBUG_SDLINFO_H

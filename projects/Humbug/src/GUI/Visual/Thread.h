@@ -4,11 +4,13 @@
 #include "MessageHandler.h"
 #include "SDL_thread.h"
 
+namespace gui {
+
 /*
 	==CThread==
 	Base class for all user defined thread classes
 */
-class CThread : public CMessageHandler  
+class CThread : public CMessageHandler
 {
 private:
 	//pointer to the thread
@@ -53,5 +55,7 @@ public:
 	//thread procedure
 	virtual int OnExecute();
 };
+
+} // namespace gui
 
 #endif //#ifndef __THREAD_H__

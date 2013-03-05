@@ -4,6 +4,9 @@
 #include "../../stdafx.h"
 #include "Button.h"
 
+namespace gui {
+namespace controls {
+
 MSGID CButton::MSGID_ButtonClick=CMessageHandler::GetNextMSGID();//parm1=id
 //button font
 TTF_Font* CButton::s_ButtonFont=NULL;
@@ -152,3 +155,6 @@ TTF_Font* CButton::GetButtonFont()
 	//return buton font
 	return(s_ButtonFont);
 }
+
+} // namespace controls
+} // namespace gui

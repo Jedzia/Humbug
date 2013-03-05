@@ -6,9 +6,12 @@
 #include "../Components/Canvas.h"
 #include <list>
 
+namespace gui {
+namespace controls {
+
 //CControl class
 //abstracts a user interface control
-class CControl 
+class CControl
 {
 private:
 	//parent
@@ -123,4 +126,6 @@ public:
 	bool HasMouseHover();
 };
 
+} // namespace controls
+} // namespace gui
 #endif //

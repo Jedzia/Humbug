@@ -8,6 +8,8 @@
 #include "boost/signals/connection.hpp"
 #include "../Components/MainCanvas.h"
 
+namespace gui {
+
 //class CMainCanvas;
 
 /*
@@ -18,12 +20,12 @@
 class CApplication : public CMessageHandler
 {
 public:
-    // signal types 
+    // signal types
     typedef boost::signal<void ()> signal_type_event;
     typedef signal_type_event::slot_type slot_type_event;
     typedef boost::signal<void (int)> signal_type_idle;
     typedef signal_type_idle::slot_type slot_type_idle;
-    
+
 	typedef boost::signal<void (int, char**)> signal_type_init;
     typedef signal_type_init::slot_type slot_type_init;
 
@@ -86,5 +88,7 @@ protected:
     //main display surface
     void SetMainCanvas(gui::components::CMainCanvas* val) { m_pMainCanvas = val; }
 };
+
+} // namespace gui
 
 #endif //#ifndef HUMBUG___APPLICATION_H__

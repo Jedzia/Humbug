@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "HumbugLib\src\HumbugLib\AppGB.h"
 
+//namespace gui { 
+
 /*void dumpMallinfo(void) {
     struct mallinfo m = mallinfo();
     printf("uordblks = %d\nfordblks = %d\n", m.uordblks, m.fordblks);
@@ -65,3 +67,4 @@ int bmain(int argc, char *argv[])
     return ff;
 }
 
+//}

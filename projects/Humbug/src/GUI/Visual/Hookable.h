@@ -5,6 +5,8 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+namespace gui {
+
 class CEventHandler;
 
 //message id
@@ -73,5 +75,7 @@ protected:
 private:
 };
 
+
+} // namespace gui
 
 #endif // HUMBUG_GUI_VISUAL_HOOKABLE_H guard
