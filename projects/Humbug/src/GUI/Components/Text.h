@@ -6,6 +6,9 @@
 #include "Color.h"
 #include "Rectangle.h"
 
+namespace gui {
+namespace components {
+
 class CCanvas;
 
 struct CTextModifierData
@@ -30,7 +33,7 @@ public:
     void AddModifier(TextModifier updfunc);
     void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect ) const;
     CCanvas * GetCanvas() const { return m_pText; }
-    
+
 private:
     void RunModifiers(CCanvas *textcanvas) const;
 
@@ -50,5 +53,8 @@ public:
 
 };
 
+
+} // namespace components
+} // namespace gui
 
 #endif // HUMBUG_GUI_COMPONENTS_TEXT_H

@@ -6,6 +6,9 @@
 #include "Canvas.h"
 
 
+namespace gui {
+namespace components {
+
 class CTextScroller {
 public:
 
@@ -25,5 +28,8 @@ private:
     int xdelta1;
 
 };
+
+} // namespace components
+} // namespace gui
 
 #endif // HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H

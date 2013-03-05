@@ -22,6 +22,10 @@
 //#include "../Data/ColorData.h"
 
 //#include <build/cmake/include/debug.h>
+
+namespace gui {
+namespace components {
+
 CText::CText( TTF_Font* font, std::string text, CColor textcolor /*= CColor::Black()*/ ) :
     m_pFont(font),
     m_strText(text),
@@ -102,3 +106,6 @@ CTextParagraph::~CTextParagraph()
 {
 
 }
+
+} // namespace components
+} // namespace gui

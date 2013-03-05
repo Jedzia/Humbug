@@ -11,7 +11,7 @@ class CEventHandler;
 class CConsole {
 public:
 
-    CConsole(CEventHandler* parent, const std::string& fontName, CCanvas* displayScreen, int lines, CRectangle rect);
+    CConsole(CEventHandler* parent, const std::string& fontName, gui::components::CCanvas* displayScreen, int lines, gui::components::CRectangle rect);
     ~CConsole();
 
     void Draw(void) const;
@@ -24,8 +24,8 @@ public:
 private:
     struct CConsoleImpl;
     boost::scoped_ptr<CConsoleImpl> pimpl_;
-    CCanvas* m_pScreen;
-    CRectangle m_crDimensions;
+    gui::components::CCanvas* m_pScreen;
+    gui::components::CRectangle m_crDimensions;
     bool m_bIsVisible;
 };
 

@@ -5,8 +5,10 @@
 #include "GUI/Components/Canvas.h"
 #include <string>
 
+namespace gui { namespace components {
+	class CCanvas;
+}}
 class FileLoader;
-class CImage;
 
 class HudBackground  {
 public:
@@ -16,10 +18,10 @@ public:
     ~HudBackground();
 
     //void Draw();
-	CCanvas* GetCanvas();
+	gui::components::CCanvas* GetCanvas();
 
 private:
-	CCanvas* m_pFooter;
+	gui::components::CCanvas* m_pFooter;
 };
 
 struct HudImages
@@ -45,7 +47,7 @@ public:
 
 private:
 	void Init(CControl* pParent);
-    CRectangle InitRect(const FileLoader& loader);
+    gui::components::CRectangle InitRect(const FileLoader& loader);
 
 	//canvas used by window
 	const FileLoader& m_pLoader;
@@ -53,9 +55,9 @@ private:
 	//CPoint dst;
     HudBackground* m_pBackground;
 	// CCanvas* footer;
-	CImage* footerImage;
+	gui::components::CImage* footerImage;
     bool oldstate;
-    CCanvas* tmpcanvas;
+    gui::components::CCanvas* tmpcanvas;
     bool flank;
 };
 

@@ -6,9 +6,12 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+namespace gui { namespace components {
+	class CImage;
+}}
+
 class HUD;
 class CConsole;
-class CImage;
 class CSprite;
 class CTestThread;
 class CTestTimer;
@@ -17,6 +20,8 @@ class CTileEngine;
 class CTileSet;
 class Hookable;
 class Screen;
+
+
 /*
 	==CTestEventHandler==
 	CEventHandler component test.

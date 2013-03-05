@@ -20,9 +20,13 @@
 //#include "../Components/Rectangle.h"
 #include <string>
 
-class CTileImage;
-class CCanvas;
+using namespace gui::components;
 
+namespace gui { namespace components {
+class CCanvas;
+}}
+
+class CTileImage;
 
 class CTile {
 public:

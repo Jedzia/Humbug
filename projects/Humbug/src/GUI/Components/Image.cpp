@@ -1,5 +1,9 @@
 #include "../../stdafx.h"
 #include "Image.h"
+
+namespace gui {
+namespace components {
+
 CImage::CImage ( CCanvas* pcnvSource, bool freeSrc )
 : m_bFreeSrc(freeSrc){
     dbgOut(__FUNCTION__ << std::endl);
@@ -47,3 +51,5 @@ void CImage::Put ( CCanvas* pcnvDest, const CPoint& ptDst ){
     DstRect ( ) -= ptDst;
 }
 
+} // namespace components
+} // namespace gui

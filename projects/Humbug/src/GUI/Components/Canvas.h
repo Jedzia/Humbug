@@ -8,6 +8,9 @@
 #include <list>
 #include <string>
 
+namespace gui {
+namespace components {
+
 //CCanvas class
 class CCanvas
 {
@@ -99,5 +102,7 @@ public:
 	static CCanvas* LoadBMPCompatible ( std::string sFileName ) ;
 
 } ;
+} // namespace components
+} // namespace gui
 
 #endif

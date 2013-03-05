@@ -33,7 +33,7 @@ public:
 
     void HookIdle();
 
-    CPoint Char() const { return CPoint(charx, chary); }
+    gui::components::CPoint Char() const { return gui::components::CPoint(charx, chary); }
 
     int CharX() const { return charx; }
 

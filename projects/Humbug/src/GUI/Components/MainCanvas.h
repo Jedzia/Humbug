@@ -3,8 +3,11 @@
 
 #include "Canvas.h"
 
+namespace gui {
+namespace components {
+
 //main canvas, abstract primary display surface
-class CMainCanvas : public CCanvas  
+class CMainCanvas : public CCanvas
 {
 public:
 	//constructor
@@ -13,4 +16,7 @@ public:
 	virtual ~CMainCanvas ( ) ;
 };
 
-#endif 
+} // namespace components
+} // namespace gui
+
+#endif

@@ -2,14 +2,17 @@
 #include "Point.h"
 #include <math.h>
 
+namespace gui {
+namespace components {
+
 //constructor
-CPoint::CPoint ( int x , int y ) 
+CPoint::CPoint ( int x , int y )
 {
 	//set the x and y of the point
 	Set ( x , y ) ;
 }
 
-CPoint::CPoint ( const CPoint& pt ) 
+CPoint::CPoint ( const CPoint& pt )
 {
 	//set x and y of the point
 	SetX ( pt.GetX ( ) ) ;
@@ -18,19 +21,19 @@ CPoint::CPoint ( const CPoint& pt )
 
 
 //destructor
-CPoint::~CPoint ( ) 
+CPoint::~CPoint ( )
 {
 	//do nothing
 }
 
 //properties
-int& CPoint::X ( ) 
+int& CPoint::X ( )
 {
 	//return x component
 	return ( m_x ) ;
 }
 
-int& CPoint::Y ( ) 
+int& CPoint::Y ( )
 {
 	//return y component
 	return ( m_y ) ;
@@ -48,20 +51,20 @@ int CPoint::GetY ( ) const
 	return ( m_y ) ;
 }
 
-void CPoint::SetX ( int x ) 
+void CPoint::SetX ( int x )
 {
 	//assign new value to x component
 	m_x = x ;
 }
 
-void CPoint::SetY ( int y ) 
+void CPoint::SetY ( int y )
 {
 	//assign new value to y component
 	m_y = y ;
 }
 
 //setter
-CPoint& CPoint::Set ( int x , int y ) 
+CPoint& CPoint::Set ( int x , int y )
 {
 	//set x and y
 	X ( ) = x ;
@@ -70,7 +73,7 @@ CPoint& CPoint::Set ( int x , int y )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::Copy ( CPoint& pt ) 
+CPoint& CPoint::Copy ( CPoint& pt )
 {
 	//copy x and y
 	X ( ) = pt.X ( ) ;
@@ -80,7 +83,7 @@ CPoint& CPoint::Copy ( CPoint& pt )
 }
 
 //move
-CPoint& CPoint::Move ( int dx , int dy ) 
+CPoint& CPoint::Move ( int dx , int dy )
 {
 	//move x and y
 	X ( ) += dx ;
@@ -89,7 +92,7 @@ CPoint& CPoint::Move ( int dx , int dy )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::Add ( CPoint& pt ) 
+CPoint& CPoint::Add ( CPoint& pt )
 {
 	//add point to this point
 	( *this ) += pt ;
@@ -97,7 +100,7 @@ CPoint& CPoint::Add ( CPoint& pt )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::Subtract ( CPoint& pt ) 
+CPoint& CPoint::Subtract ( CPoint& pt )
 {
 	//subtract point from this point
 	( *this ) -= pt ;
@@ -106,7 +109,7 @@ CPoint& CPoint::Subtract ( CPoint& pt )
 }
 
 //scale
-CPoint& CPoint::Scale ( int scalar ) 
+CPoint& CPoint::Scale ( int scalar )
 {
 	//multiply this point by a scalar
 	( *this ) *= scalar ;
@@ -115,7 +118,7 @@ CPoint& CPoint::Scale ( int scalar )
 }
 
 //distance
-int CPoint::Distance ( CPoint& pt ) 
+int CPoint::Distance ( CPoint& pt )
 {
 	//calculate distance
 	int distance = X ( ) * X ( ) + Y ( ) * Y ( ) ;
@@ -126,7 +129,7 @@ int CPoint::Distance ( CPoint& pt )
 
 //operators
 //assignment
-CPoint& CPoint::operator = ( CPoint& pt ) 
+CPoint& CPoint::operator = ( CPoint& pt )
 {
 	//copy x and y
 	X ( ) = pt.X ( ) ;
@@ -135,7 +138,7 @@ CPoint& CPoint::operator = ( CPoint& pt )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::operator += ( CPoint& pt ) 
+CPoint& CPoint::operator += ( CPoint& pt )
 {
 	//add to x and y
 	X ( ) += pt.X ( ) ;
@@ -144,7 +147,7 @@ CPoint& CPoint::operator += ( CPoint& pt )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::operator -= ( CPoint& pt ) 
+CPoint& CPoint::operator -= ( CPoint& pt )
 {
 	//subtract x and y
 	X ( ) -= pt.X ( ) ;
@@ -153,7 +156,7 @@ CPoint& CPoint::operator -= ( CPoint& pt )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::operator *= ( int scalar ) 
+CPoint& CPoint::operator *= ( int scalar )
 {
 	//multiply by scalar
 	X ( ) *= scalar ;
@@ -162,7 +165,7 @@ CPoint& CPoint::operator *= ( int scalar )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::operator /= ( int scalar ) 
+CPoint& CPoint::operator /= ( int scalar )
 {
 	//divide by scalar
 	X ( ) /= scalar ;
@@ -171,7 +174,7 @@ CPoint& CPoint::operator /= ( int scalar )
 }
 
 //unary
-CPoint CPoint::operator - ( ) 
+CPoint CPoint::operator - ( )
 {
 	//unary negativeness--multiply by -1
 	CPoint pt = ( *this ) ;
@@ -179,13 +182,13 @@ CPoint CPoint::operator - ( )
 	return ( pt ) ;
 }
 
-CPoint CPoint::operator + ( ) 
+CPoint CPoint::operator + ( )
 {
 	//unary positiveness
 	return ( *this ) ;
 }
 
-CPoint CPoint::operator + ( CPoint& pt ) 
+CPoint CPoint::operator + ( CPoint& pt )
 {
 	//add points together
 	CPoint result ;
@@ -195,7 +198,7 @@ CPoint CPoint::operator + ( CPoint& pt )
 	return ( result ) ;
 }
 
-CPoint CPoint::operator - ( CPoint& pt ) 
+CPoint CPoint::operator - ( CPoint& pt )
 {
 	//subtract points
 	CPoint result ;
@@ -205,7 +208,7 @@ CPoint CPoint::operator - ( CPoint& pt )
 	return ( result ) ;
 }
 
-CPoint CPoint::operator * ( int scalar ) 
+CPoint CPoint::operator * ( int scalar )
 {
 	//multiply point by scalar
 	CPoint result ;
@@ -215,7 +218,7 @@ CPoint CPoint::operator * ( int scalar )
 	return ( result ) ;
 }
 
-CPoint CPoint::operator / ( int scalar ) 
+CPoint CPoint::operator / ( int scalar )
 {
 	//divide by scalar
 	CPoint result ;
@@ -226,21 +229,24 @@ CPoint CPoint::operator / ( int scalar )
 }
 
 //comparison
-bool CPoint::operator == ( CPoint& pt ) 
+bool CPoint::operator == ( CPoint& pt )
 {
 	//check for equality
 	return ( X ( ) == pt.X ( ) && Y ( ) == pt.Y ( ) ) ;
 }
 
-bool CPoint::operator != ( CPoint& pt ) 
+bool CPoint::operator != ( CPoint& pt )
 {
 	//check for inequality
 	return ( !( ( *this ) == pt ) ) ;
 }
 
-CPoint operator * ( int scalar , CPoint& pt ) 
+CPoint operator * ( int scalar , CPoint& pt )
 {
 	//scalar*pt rather than pt*scalar, still the same idea...
 	CPoint result = pt * scalar ;
 	return ( result ) ;
 }
+
+} // namespace components
+} // namespace gui

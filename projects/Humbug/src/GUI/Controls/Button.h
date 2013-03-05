@@ -14,19 +14,19 @@ private:
 	//caption for button
 	std::string m_sCaption;
 	//colors for button
-	CColor m_colFace;
-	CColor m_colText;
-	CColor m_colHilite;
-	CColor m_colShadow;
+	gui::components::CColor m_colFace;
+	gui::components::CColor m_colText;
+	gui::components::CColor m_colHilite;
+	gui::components::CColor m_colShadow;
 	//canvas for text
-	CCanvas* m_pcnvText;
+	gui::components::CCanvas* m_pcnvText;
 	//pressed state
 	bool m_bPressed;
 	//button font
 	static TTF_Font* s_ButtonFont;
 public:
 	//construction
-	CButton(CControl* pParent,CRectangle rcDimensions,Uint32 id,std::string sCaption,CColor colFace=CColor(192,192,192),CColor colText=CColor(0,0,0),CColor colHilite=CColor(255,255,255),CColor colShadow=CColor(128,128,128));
+	CButton(CControl* pParent,gui::components::CRectangle rcDimensions,Uint32 id,std::string sCaption,gui::components::CColor colFace=gui::components::CColor(192,192,192),gui::components::CColor colText=gui::components::CColor(0,0,0),gui::components::CColor colHilite=gui::components::CColor(255,255,255),gui::components::CColor colShadow=gui::components::CColor(128,128,128));
 	//destruction
 	virtual ~CButton();
 	//customize redrawing

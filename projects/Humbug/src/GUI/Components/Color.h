@@ -3,11 +3,14 @@
 
 #include "sdl.h"
 
+namespace gui {
+namespace components {
+
 /*
 	==CColor==
 	Abstracts SDL_Color
 */
-class CColor  
+class CColor
 {
 private:
 	//actual color representation
@@ -99,5 +102,8 @@ CColor operator~(CColor& Color);
 //comparison operators
 bool operator==(CColor& Color1,CColor& Color2);
 bool operator!=(CColor& Color1,CColor& Color2);
+
+} // namespace components
+} // namespace gui
 
 #endif //#ifndef __COLOR_H__

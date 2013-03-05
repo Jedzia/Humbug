@@ -19,7 +19,7 @@ CControl* CControl::s_pMouseFocus=NULL;
 CControl* CControl::s_pMouseHover=NULL;
 
 //master control constructor
-CControl::CControl(CCanvas* pCanvas):
+CControl::CControl(gui::components::CCanvas* pCanvas):
 m_lstChildren(0),
 m_ID(0),
 m_pParent(NULL), m_ptIsDirty(false)
@@ -30,12 +30,12 @@ m_pParent(NULL), m_ptIsDirty(false)
 	//this is the main control
 	s_pMainControl=this;
 	//set position
-	SetPosition(CPoint(0,0));
+	SetPosition(gui::components::CPoint(0,0));
     Invalidate();
 }
 
 //child control constructor
-CControl::CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id, bool invalidate):
+CControl::CControl(CControl* pParent,gui::components::CRectangle rcDimensions,Uint32 id, bool invalidate):
 m_lstChildren(0),
 m_ID(id),
 m_pParent(NULL), m_ptIsDirty(invalidate)
@@ -44,7 +44,7 @@ m_pParent(NULL), m_ptIsDirty(invalidate)
 	//set parent
 	SetParent(pParent);
 	//create an rgb compatible surface
-	m_pCanvas=CCanvas::CreateRGBCompatible(0,rcDimensions.GetW(),rcDimensions.GetH());
+	m_pCanvas=gui::components::CCanvas::CreateRGBCompatible(0,rcDimensions.GetW(),rcDimensions.GetH());
 	//set position
 	m_ptPosition.SetX(rcDimensions.GetX());
 	m_ptPosition.SetY(rcDimensions.GetY());
@@ -189,7 +189,7 @@ void CControl::Draw()
 	if(pParent)
 	{
 		//set up rectangles
-		CRectangle rcDst,rcSrc;
+		gui::components::CRectangle rcDst,rcSrc;
 		//set destination rectangle
 		rcDst.Set(GetPosition().GetX(),GetPosition().GetY(),GetWidth(),GetHeight());
 		//set source rectangle
@@ -207,7 +207,7 @@ void CControl::Draw()
 //invalidate control
 void CControl::Invalidate()
 {
-    CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
+    gui::components::CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
     GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
     // Todo: for all children
     m_ptIsDirty = true;
@@ -441,7 +441,7 @@ bool CControl::FilterEvent(SDL_Event* pEvent)
 }
 
 //get position
-CPoint CControl::GetPosition()
+gui::components::CPoint CControl::GetPosition()
 {
 	//return position
 	return(m_ptPosition);
@@ -530,14 +530,14 @@ Uint16 CControl::GetBottom()
 }
 
 //set position
-void CControl::SetPosition(CPoint ptPosition)
+void CControl::SetPosition(gui::components::CPoint ptPosition)
 {
 	//set new position
 	m_ptPosition=ptPosition;
 }
 
 //get canvas
-CCanvas* CControl::GetCanvas()
+gui::components::CCanvas* CControl::GetCanvas()
 {
 	//get the canvas
 	return(m_pCanvas);

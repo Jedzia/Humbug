@@ -9,6 +9,9 @@
 #include "boost/signals.hpp"
 #include "boost/bind.hpp"
 
+namespace gui {
+namespace components {
+
 //#include <build/cmake/include/debug.h>
 Screen::Screen( CCanvas *background )
     : Hookable(true)//, CMessageHandler()
@@ -39,7 +42,7 @@ bool Screen::OnInit( int argc,char* argv[] )
     //Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*hook)));
     //Master()->ConnectOnDraw((const CApplication::slot_type_event&)boost::bind(&Screen::OnIdle, boost::ref(*hook)));
     //Master()->ConnectOnDraw((const CApplication::slot_type_event&)boost::bind(&Screen::OnDraw, boost::ref(*screen)));
-    
+
     //m_conDraw = Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
     //m_conUpdate = Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
     return result;
@@ -76,3 +79,5 @@ void Screen::OnDisconnect()
     //return true;
 }*/
 
+} // namespace components
+} // namespace gui

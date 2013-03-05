@@ -156,8 +156,8 @@ struct CConsole::CConsoleImpl {
 
 CConsole::CConsoleImpl::callbackDict CConsole::CConsoleImpl::m_vCmdCallbacks;
 
-CConsole::CConsole(CEventHandler* parent, const std::string& fontName, CCanvas* displayScreen, int lines,
-        CRectangle rect ) :
+CConsole::CConsole(CEventHandler* parent, const std::string& fontName, gui::components::CCanvas* displayScreen, int lines,
+        gui::components::CRectangle rect ) :
     pimpl_(new CConsole::CConsoleImpl(parent) ) ,
     m_pScreen(displayScreen),
     m_crDimensions(rect){

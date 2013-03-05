@@ -1,7 +1,12 @@
 #include "../../stdafx.h"
 #include "Canvas.h"
 #include <memory.h>
+
+namespace gui {
+namespace components {
+
 using namespace std;
+
 CCanvas::CCanvas ( SDL_Surface* pSurface ){
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface ( pSurface );
@@ -208,3 +213,5 @@ CColor CCanvas::MatchColor ( CColor color ){
     return ( color );
 }
 
+} // namespace components
+} // namespace gui

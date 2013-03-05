@@ -6,8 +6,14 @@
 #include "Tile.h"
 #include "TileImage.h"
 #include <string>
-class CCanvas;
 
+
+namespace gui { namespace components {
+	class CCanvas;
+}}
+class FileLoader;
+
+using namespace gui::components;
 
 class CTileSet {
 public:

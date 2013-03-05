@@ -3,8 +3,13 @@
 
 //
 #include "TextScroller.h"
+#include "Canvas.h"
 
 //#include <build/cmake/include/debug.h>
+
+namespace gui {
+namespace components {
+
 CTextScroller::CTextScroller( CCanvas *dstCanvas, const CText& text, CPoint textPosition,
         int windowWidth ) :
     m_rDstCanvas(dstCanvas),
@@ -48,3 +53,5 @@ void CTextScroller::Scroll( int deltaX )
     }
 }
 
+} // namespace components
+} // namespace gui

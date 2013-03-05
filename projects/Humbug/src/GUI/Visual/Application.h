@@ -18,7 +18,6 @@
 class CApplication : public CMessageHandler
 {
 public:
-
     // signal types 
     typedef boost::signal<void ()> signal_type_event;
     typedef signal_type_event::slot_type slot_type_event;
@@ -34,7 +33,7 @@ public:
 	//destructor
 	virtual ~CApplication();
 
-    CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
+	gui::components::CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
 
     // Signal handling
     boost::signals::connection ConnectOnIdle(const slot_type_idle& s);
@@ -79,13 +78,13 @@ private:
 
     //set singleton pointer
     static void SetApplication(CApplication* pTheApp);
-    CMainCanvas* m_pMainCanvas;
+    gui::components::CMainCanvas* m_pMainCanvas;
 protected:
     //initialization
     virtual bool OnPreInit(int argc,char* argv[]) = 0;
     virtual bool OnPostInit(int argc,char* argv[]) = 0;
     //main display surface
-    void SetMainCanvas(CMainCanvas* val) { m_pMainCanvas = val; }
+    void SetMainCanvas(gui::components::CMainCanvas* val) { m_pMainCanvas = val; }
 };
 
 #endif //#ifndef HUMBUG___APPLICATION_H__

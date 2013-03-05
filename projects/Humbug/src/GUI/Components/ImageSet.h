@@ -4,8 +4,11 @@
 #include "Image.h"
 #include <vector>
 
+namespace gui {
+namespace components {
+
 //CImageSet--controls any number of images
-class CImageSet  
+class CImageSet
 {
 private :
 	//container for images
@@ -29,5 +32,8 @@ public:
 	//retrieve number of images in the set
 	int ImageCount ( ) ;
 };
+
+} // namespace components
+} // namespace gui
 
 #endif // !defined(AFX_IMAGESET_H__61209253_2528_46E3_A688_679AA42FFB5E__INCLUDED_)

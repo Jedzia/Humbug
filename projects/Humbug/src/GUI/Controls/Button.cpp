@@ -9,7 +9,7 @@ MSGID CButton::MSGID_ButtonClick=CMessageHandler::GetNextMSGID();//parm1=id
 TTF_Font* CButton::s_ButtonFont=NULL;
 
 //construction
-CButton::CButton(CControl* pParent,CRectangle rcDimensions,Uint32 id,std::string sCaption,CColor colFace,CColor colText,CColor colHilite,CColor colShadow):
+CButton::CButton(CControl* pParent,gui::components::CRectangle rcDimensions,Uint32 id,std::string sCaption,gui::components::CColor colFace,gui::components::CColor colText,gui::components::CColor colHilite,gui::components::CColor colShadow):
 CControl(pParent,rcDimensions,id),
 m_pcnvText(NULL),
 m_bPressed(false)
@@ -71,7 +71,7 @@ void CButton::OnDraw()
 	//unlock the surface
 	GetCanvas()->Unlock();
 	//blit text
-	CRectangle rcSrc,rcDst;
+	gui::components::CRectangle rcSrc,rcDst;
 	rcSrc.Set(0,0,m_pcnvText->GetWidth(),m_pcnvText->GetHeight());
 	rcDst=rcSrc;
 	rcDst.SetX((GetWidth()-rcSrc.GetW())/2);
@@ -129,7 +129,7 @@ void CButton::SetCaption(std::string sCaption)
 	//create text canvas
 	if(m_sCaption!="" && s_ButtonFont!=NULL)
 	{
-		m_pcnvText=new CCanvas(TTF_RenderText_Blended(s_ButtonFont,m_sCaption.c_str(),m_colText));
+		m_pcnvText=new gui::components::CCanvas(TTF_RenderText_Blended(s_ButtonFont,m_sCaption.c_str(),m_colText));
 	}
 }
 

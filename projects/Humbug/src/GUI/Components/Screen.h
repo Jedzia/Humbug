@@ -12,13 +12,16 @@ class FileLoader;
 //class CCanvas;
 
 
+namespace gui {
+namespace components {
+
 template <typename T>
 class ScreenCreator : public HookCreator {
     FileLoader& m_loader;
     CCanvas *m_background;
 public:
 
-    ScreenCreator(FileLoader& loader, CCanvas *background) 
+    ScreenCreator(FileLoader& loader, CCanvas *background)
         : m_loader(loader), m_background(background)
     {};
     Hookable* Create(){
@@ -52,5 +55,8 @@ private:
     boost::signals::connection m_conUpdate;
 	int i;
 };
+
+} // namespace components
+} // namespace gui
 
 #endif // HUMBUG_GUI_COMPONENTS_SCREEN_H

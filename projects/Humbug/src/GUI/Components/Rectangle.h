@@ -5,8 +5,11 @@
 #include "point.h"
 #include <iostream>
 
+namespace gui {
+namespace components {
+
 //CRectangle--abstract an SDL_Rect
-class CRectangle  
+class CRectangle
 {
 private:
 	//internal representation of a SDL_Rect
@@ -99,7 +102,7 @@ public:
 	//clip or wrap points
 	CPoint Clip ( CPoint pt ) ;
 	CPoint Wrap ( CPoint pt ) ;
-	
+
     friend std::ostream& operator<<(std::ostream& o, const CRectangle& r);
 };
 
@@ -109,5 +112,8 @@ CRectangle operator - ( CPoint& pt , CRectangle& rc ) ;
 
 
 std::ostream& operator<<(std::ostream& o, const CRectangle& r);
+
+} // namespace components
+} // namespace gui
 
 #endif

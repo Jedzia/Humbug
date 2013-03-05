@@ -2,52 +2,55 @@
 #include "../../stdafx.h"
 #include "Rectangle.h"
 
-CRectangle::CRectangle ( Sint16 x , Sint16 y , Uint16 w , Uint16 h ) 
+namespace gui {
+namespace components {
+
+CRectangle::CRectangle ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
 {
 	Set ( x , y , w , h ) ;
 }
 
-CRectangle::CRectangle ( CPoint xy , CPoint wh ) 
+CRectangle::CRectangle ( CPoint xy , CPoint wh )
 {
     Set ( xy.GetX() , xy.GetY() , wh.GetX() , wh.GetY() ) ;
 }
 
-CRectangle::CRectangle ( SDL_Rect rc ) 
+CRectangle::CRectangle ( SDL_Rect rc )
 {
 	Set ( rc.x , rc.y , rc.w , rc.h ) ;
 }
 
-CRectangle::CRectangle ( SDL_Rect* prc ) 
+CRectangle::CRectangle ( SDL_Rect* prc )
 {
 	Set ( prc->x , prc->y , prc->w , prc->h ) ;
 }
 
-CRectangle::CRectangle ( const CRectangle& rc ) 
+CRectangle::CRectangle ( const CRectangle& rc )
 {
 	Set ( rc.GetX() , rc.GetY() , rc.GetW() , rc.GetH() ) ;
 	//( *this ) = rc ;
 }
 
-CRectangle::~CRectangle ( ) 
+CRectangle::~CRectangle ( )
 {
 }
 
-Sint16& CRectangle::X ( ) 
+Sint16& CRectangle::X ( )
 {
 	return ( m_rect.x ) ;
 }
 
-Sint16& CRectangle::Y ( ) 
+Sint16& CRectangle::Y ( )
 {
 	return ( m_rect.y ) ;
 }
 
-Uint16& CRectangle::W ( ) 
+Uint16& CRectangle::W ( )
 {
 	return ( m_rect.w ) ;
 }
 
-Uint16& CRectangle::H ( ) 
+Uint16& CRectangle::H ( )
 {
 	return ( m_rect.h ) ;
 }
@@ -94,24 +97,24 @@ void CRectangle::SetH(Uint16 h)
 	m_rect.h=h;
 }
 
-CRectangle::operator SDL_Rect ( ) 
+CRectangle::operator SDL_Rect ( )
 {
 	return ( m_rect ) ;
 }
 
-CRectangle::operator SDL_Rect* ( ) 
+CRectangle::operator SDL_Rect* ( )
 {
 	return ( &m_rect ) ;
 }
 
-CRectangle::operator CPoint ( ) 
+CRectangle::operator CPoint ( )
 {
 	CPoint pt ;
 	pt.Set ( X ( ) , Y ( ) ) ;
 	return ( pt ) ;
 }
 
-CRectangle& CRectangle::Set ( Sint16 x , Sint16 y , Uint16 w , Uint16 h ) 
+CRectangle& CRectangle::Set ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
 {
 	X ( ) = x ;
 	Y ( ) = y ;
@@ -120,74 +123,74 @@ CRectangle& CRectangle::Set ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Copy ( CRectangle& rc ) 
+CRectangle& CRectangle::Copy ( CRectangle& rc )
 {
 	( *this ) = rc ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::SetEmpty ( ) 
+CRectangle& CRectangle::SetEmpty ( )
 {
 	Set ( 0 , 0 , 0 , 0 ) ;
 	return ( *this ) ;
 }
 
-bool CRectangle::IsEmpty ( ) 
+bool CRectangle::IsEmpty ( )
 {
 	return ( W ( ) == 0 && H ( ) == 0 ) ;
 }
 
-CRectangle& CRectangle::Offset ( Sint16 dx , Sint16 dy ) 
+CRectangle& CRectangle::Offset ( Sint16 dx , Sint16 dy )
 {
 	X ( ) += dx ;
 	Y ( ) += dy ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Offset ( CPoint& pt ) 
+CRectangle& CRectangle::Offset ( CPoint& pt )
 {
 	Offset ( pt.X ( ) , pt.Y ( ) ) ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Move ( Sint16 x , Sint16 y ) 
+CRectangle& CRectangle::Move ( Sint16 x , Sint16 y )
 {
 	X ( ) = x ;
 	Y ( ) = y ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Move ( const CPoint& pt ) 
+CRectangle& CRectangle::Move ( const CPoint& pt )
 {
 	Move ( pt.GetX ( ) , pt.GetY ( ) ) ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Intersect ( CRectangle& rc ) 
+CRectangle& CRectangle::Intersect ( CRectangle& rc )
 {
 	( *this ) -= rc ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Union ( CRectangle& rc ) 
+CRectangle& CRectangle::Union ( CRectangle& rc )
 {
 	( *this ) += rc ;
 	return ( *this ) ;
 }
 
-bool CRectangle::Contains ( Sint16 x , Sint16 y ) 
+bool CRectangle::Contains ( Sint16 x , Sint16 y )
 {
 	x -= X ( ) ;
 	y -= Y ( ) ;
 	return ( x >= 0 && y >= 0 && x < W ( ) && y < H ( ) ) ;
 }
 
-bool CRectangle::Contains ( CPoint& pt ) 
+bool CRectangle::Contains ( CPoint& pt )
 {
 	return ( Contains ( pt.GetX ( ) , pt.GetY ( ) ) ) ;
 }
 
-/*CRectangle& CRectangle::operator = ( CRectangle& rc ) 
+/*CRectangle& CRectangle::operator = ( CRectangle& rc )
 {
 	X ( ) = rc.GetX ( ) ;
 	Y ( ) = rc.GetY ( ) ;
@@ -196,7 +199,7 @@ bool CRectangle::Contains ( CPoint& pt )
 	return ( *this ) ;
 }*/
 
-CRectangle& CRectangle::operator = ( const CRectangle& rc ) 
+CRectangle& CRectangle::operator = ( const CRectangle& rc )
 {
 	X ( ) = rc.GetX ( ) ;
 	Y ( ) = rc.GetY ( ) ;
@@ -205,21 +208,21 @@ CRectangle& CRectangle::operator = ( const CRectangle& rc )
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::operator += ( const CPoint& pt ) 
+CRectangle& CRectangle::operator += ( const CPoint& pt )
 {
 	X ( ) += pt.GetX() ;
 	Y ( ) += pt.GetY() ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::operator -= ( const CPoint& pt ) 
+CRectangle& CRectangle::operator -= ( const CPoint& pt )
 {
 	X ( ) -= pt.GetX() ;
 	Y ( ) -= pt.GetY() ;
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::operator += ( CRectangle& rc ) 
+CRectangle& CRectangle::operator += ( CRectangle& rc )
 {
 	//( *this ) = ( *this ) + rc ;
 	CRectangle tmp = ( *this ) + rc ;
@@ -227,7 +230,7 @@ CRectangle& CRectangle::operator += ( CRectangle& rc )
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::operator -= ( CRectangle& rc ) 
+CRectangle& CRectangle::operator -= ( CRectangle& rc )
 {
 	//( *this ) = ( *this ) - rc ;
 	CRectangle tmp = ( *this ) - rc ;
@@ -235,21 +238,21 @@ CRectangle& CRectangle::operator -= ( CRectangle& rc )
 	return ( *this ) ;
 }
 
-CRectangle CRectangle::operator + ( const CPoint& pt ) 
+CRectangle CRectangle::operator + ( const CPoint& pt )
 {
 	CRectangle result = ( *this ) ;
 	result += pt ;
 	return ( result ) ;
 }
 
-CRectangle CRectangle::operator - ( const CPoint& pt ) 
+CRectangle CRectangle::operator - ( const CPoint& pt )
 {
 	CRectangle result = ( *this ) ;
 	result -= pt ;
 	return ( result ) ;
 }
 
-CRectangle CRectangle::operator + ( CRectangle& rc ) 
+CRectangle CRectangle::operator + ( CRectangle& rc )
 {
 	int left1 , top1 , right1, bottom1 ;
 	int left2 , top2 , right2, bottom2 ;
@@ -282,11 +285,11 @@ CRectangle CRectangle::operator + ( CRectangle& rc )
 		result.W ( ) = right1 ;
 		result.H ( ) = bottom1 ;
 	}
-		
+
 	return ( result ) ;
 }
 
-CRectangle CRectangle::operator - ( CRectangle& rc ) 
+CRectangle CRectangle::operator - ( CRectangle& rc )
 {
 	int left1 , top1 , right1, bottom1 ;
 	int left2 , top2 , right2, bottom2 ;
@@ -319,40 +322,40 @@ CRectangle CRectangle::operator - ( CRectangle& rc )
 		result.W ( ) = right1 ;
 		result.H ( ) = bottom1 ;
 	}
-		
+
 	return ( result ) ;
 }
 
-bool CRectangle::operator == ( const CRectangle& rc ) 
+bool CRectangle::operator == ( const CRectangle& rc )
 {
 	return ( X ( ) == rc.GetX ( ) && Y ( ) == rc.GetY ( ) && W ( ) == rc.GetW ( ) && H ( ) == rc.GetH ( ) ) ;
 }
 
-bool CRectangle::operator == ( CRectangle& rc ) 
+bool CRectangle::operator == ( CRectangle& rc )
 {
 	return ( X ( ) == rc.X ( ) && Y ( ) == rc.Y ( ) && W ( ) == rc.W ( ) && H ( ) == rc.H ( ) ) ;
 }
 
-bool CRectangle::operator != ( CRectangle& rc ) 
+bool CRectangle::operator != ( CRectangle& rc )
 {
 	return ( !( ( *this ) == rc ) );
 }
 
-CRectangle operator + ( CPoint& pt , CRectangle& rc ) 
+CRectangle operator + ( CPoint& pt , CRectangle& rc )
 {
 	CRectangle result = rc ;
 	result += pt ;
 	return ( result ) ;
 }
 
-CRectangle operator - ( CPoint& pt , CRectangle& rc ) 
+CRectangle operator - ( CPoint& pt , CRectangle& rc )
 {
 	CRectangle result = rc ;
 	result -= pt ;
 	return ( result ) ;
 }
 
-CPoint CRectangle::Clip ( CPoint pt ) 
+CPoint CRectangle::Clip ( CPoint pt )
 {
 	if ( pt.X ( ) < X ( ) ) pt.X ( ) = X ( ) ;
 	if ( pt.Y ( ) < Y ( ) ) pt.Y ( ) = Y ( ) ;
@@ -361,7 +364,7 @@ CPoint CRectangle::Clip ( CPoint pt )
 	return ( pt ) ;
 }
 
-CPoint CRectangle::Wrap ( CPoint pt ) 
+CPoint CRectangle::Wrap ( CPoint pt )
 {
 	if ( IsEmpty ( ) ) return ( CPoint ( 0 , 0 ) ) ;
 	while ( pt.X ( ) < X ( ) ) pt.X ( ) += W ( ) ;
@@ -372,8 +375,10 @@ CPoint CRectangle::Wrap ( CPoint pt )
 }
 
 std::ostream& operator<<(std::ostream& o, const CRectangle& r) {
-    return o << "CRectangle[ X=" << r.GetX() << ", Y=" << r.GetY() 
-		<< ", W=" << r.GetW() << ", H=" << r.GetH() 
+    return o << "CRectangle[ X=" << r.GetX() << ", Y=" << r.GetY()
+		<< ", W=" << r.GetW() << ", H=" << r.GetH()
 		<< " ]";
 }
 
+} // namespace components
+} // namespace gui

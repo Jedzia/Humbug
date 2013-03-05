@@ -2,8 +2,11 @@
 #ifndef __GUI_COMPONENTS_POINT_H__
 #define __GUI_COMPONENTS_POINT_H__
 
+namespace gui {
+namespace components {
+
 //point class
-class CPoint  
+class CPoint
 {
 private:
 	//x and y
@@ -34,7 +37,7 @@ public:
 	CPoint& Move ( int dx , int dy ) ;
 	CPoint& Add ( CPoint& pt ) ;
 	CPoint& Subtract ( CPoint& pt ) ;
-	
+
 	//scale
 	CPoint& Scale ( int scalar ) ;
 
@@ -66,5 +69,7 @@ public:
 
 CPoint operator * ( int scalar , CPoint& pt ) ;
 
-//sentinel
+} // namespace components
+} // namespace gui
+
 #endif

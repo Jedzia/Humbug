@@ -4,9 +4,11 @@
 #include <boost/smart_ptr/scoped_ptr.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
-class CCanvas;
-class CText;
-struct CTextModifierData;
+namespace gui { namespace components {
+	class CCanvas;
+	class CText;
+	struct CTextModifierData;
+}}
 
 class WavyTextFloat
 {
@@ -20,7 +22,7 @@ public:
     WavyTextFloat(int steps = 16);
     ~WavyTextFloat();
 
-    void operator() (const CCanvas *textcanvas, const CText *text, CTextModifierData& mdata);
+    void operator() (const gui::components::CCanvas *textcanvas, const gui::components::CText *text, gui::components::CTextModifierData& mdata);
 };
 
 

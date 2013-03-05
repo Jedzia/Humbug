@@ -20,9 +20,9 @@ private:
 	//list of windows to close
 	static std::list<CControl*> s_lstClose;
 	//canvas used by window
-	CCanvas* m_pCanvas;
+	gui::components::CCanvas* m_pCanvas;
 	//position
-	CPoint m_ptPosition;
+	gui::components::CPoint m_ptPosition;
 	//id
 	Uint32 m_ID;
 	//static pointer to main control
@@ -37,9 +37,9 @@ protected:
     bool m_ptIsDirty;
 public:
 	//master control constructor
-	CControl(CCanvas* pCanvas);
+	CControl(gui::components::CCanvas* pCanvas);
 	//child control constructor
-	CControl(CControl* pParent,CRectangle rcDimensions,Uint32 id, bool invalidate = true);
+	CControl(CControl* pParent,gui::components::CRectangle rcDimensions,Uint32 id, bool invalidate = true);
 	//destructor
 	virtual ~CControl();
 	//set parent
@@ -89,7 +89,7 @@ public:
 	//static event filter
 	static bool FilterEvent(SDL_Event* pEvent);
 	//get position
-	CPoint GetPosition();
+	gui::components::CPoint GetPosition();
 	//get width and height
 	Uint16 GetWidth();
 	Uint16 GetHeight();
@@ -99,9 +99,9 @@ public:
 	Uint16 GetTop();
 	Uint16 GetBottom();
 	//set position
-	void SetPosition(CPoint ptPosition);
+	void SetPosition(gui::components::CPoint ptPosition);
 	//get canvas
-	CCanvas* GetCanvas();
+	gui::components::CCanvas* GetCanvas();
 	//get main control
 	static CControl* GetMainControl();
 	//get keyboard focus control

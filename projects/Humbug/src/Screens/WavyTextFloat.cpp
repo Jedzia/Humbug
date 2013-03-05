@@ -19,7 +19,7 @@ WavyTextFloat::~WavyTextFloat()
     dbgOut(__FUNCTION__ << " " << this << std::endl);
 }
 
-void WavyTextFloat::operator()( const CCanvas *textcanvas, const CText *text, CTextModifierData& mdata )
+void WavyTextFloat::operator()( const gui::components::CCanvas *textcanvas, const gui::components::CText *text, gui::components::CTextModifierData& mdata )
 {
     SDL_Color *wavemap = ColorData::Instance()->Wavemap();
     for(int i = 0; i < 64; i++)

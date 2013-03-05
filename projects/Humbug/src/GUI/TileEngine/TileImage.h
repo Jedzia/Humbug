@@ -20,7 +20,12 @@
 #include "../Components/Point.h"
 #include "Tile.h"
 #include <string>
+
+using namespace gui::components;
+
+namespace gui { namespace components {
 class CImage;
+}}
 class FileLoader;
 
 // configuration of a tile image.

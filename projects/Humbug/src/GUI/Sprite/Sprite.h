@@ -19,9 +19,15 @@
 #include "..\Components\Point.h"
 #include "..\Components\Rectangle.h"
 #include <string>
-class CCanvas;
-class CImage;
+
+namespace gui { namespace components {
+	class CCanvas;
+	class CImage;
+}}
 class FileLoader;
+
+using namespace gui::components;
+
 class CSprite {
 public:
 

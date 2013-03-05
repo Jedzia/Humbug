@@ -19,6 +19,8 @@
 #include "GUI/Components/Image.h"
 #include "Hud.h"
 
+using namespace gui::components;
+
 //#include <build/cmake/include/debug.h>
 /*Hud::Hud(const FileLoader& loader, CCanvas* pCanvas) :
     CControl(pCanvas),
@@ -33,7 +35,7 @@ HudBackground::HudBackground(FileLoader& loader, std::string filename) :
     dbgOut(__FUNCTION__ << std::endl);
 
     //m_pFooter = new CCanvas( loader.LoadImg( filename.c_str() ) );
-    m_pFooter = new CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg( filename.c_str() ) ) );
+    m_pFooter = new gui::components::CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg( filename.c_str() ) ) );
 }
 
 HudBackground::~HudBackground(void){
@@ -41,7 +43,7 @@ HudBackground::~HudBackground(void){
     delete m_pFooter;
 }
 
-CCanvas * HudBackground::GetCanvas() {
+gui::components::CCanvas * HudBackground::GetCanvas() {
     return m_pFooter;
 }
 
@@ -54,7 +56,7 @@ Hud::Hud(const FileLoader& loader, CControl* pParent, HudBackground* bkg, Uint32
     //Init(pParent);
     //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     //footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
-    CCanvas* footer = bkg->GetCanvas();
+    gui::components::CCanvas* footer = bkg->GetCanvas();
     std::cout << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
     footerImage = new CImage( footer );
     CPoint dst( 0, pParent->GetCanvas()->GetHeight( ) - footer->GetHeight( ) );

@@ -2,6 +2,9 @@
 #include "ImageSet.h"
 #include <algorithm>
 
+namespace gui {
+namespace components {
+
 using namespace std;
 
 CImageSet::CImageSet()
@@ -22,43 +25,45 @@ CImageSet::~CImageSet()
 	}
 }
 
-void CImageSet::AddImage ( CImage* pimg ) 
+void CImageSet::AddImage ( CImage* pimg )
 {
 	ImageList ( ).push_back ( pimg ) ;
 }
 
-bool CImageSet::HasImage ( CImage* pimg ) 
+bool CImageSet::HasImage ( CImage* pimg )
 {
 	vector < CImage* >::iterator iter = find ( ImageList ( ).begin ( ) , ImageList ( ).end ( ) , pimg ) ;
 	return ( iter != ImageList ( ).end ( ) ) ;
 }
 
-int CImageSet::FindImage ( CImage* pimg ) 
+int CImageSet::FindImage ( CImage* pimg )
 {
 	vector < CImage* >::iterator iter = find ( ImageList ( ).begin ( ) , ImageList ( ).end ( ) , pimg ) ;
 	if ( iter == ImageList ( ).end ( ) ) return ( -1 ) ;
 	return ( iter - ImageList ( ).begin ( ) ) ;
 }
 
-void CImageSet::RemoveImage ( CImage* pimg ) 
+void CImageSet::RemoveImage ( CImage* pimg )
 {
 	vector < CImage* >::iterator iter = find ( ImageList ( ).begin ( ) , ImageList ( ).end ( ) , pimg ) ;
 	if ( iter == ImageList ( ).end ( ) ) return ;
 	ImageList ( ).erase ( iter ) ;
 }
 
-CImage* CImageSet::GetImage ( int index ) 
+CImage* CImageSet::GetImage ( int index )
 {
 	return ( ImageList ( ) [ index ] ) ;
 }
 
-vector < CImage* >& CImageSet::ImageList ( ) 
+vector < CImage* >& CImageSet::ImageList ( )
 {
 	return ( m_vecImages ) ;
 }
 
-int CImageSet::ImageCount ( ) 
+int CImageSet::ImageCount ( )
 {
 	return ( ImageList ( ).size ( ) ) ;
 }
 
+} // namespace components
+} // namespace gui

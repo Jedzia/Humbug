@@ -5,6 +5,9 @@
 #include "../../stdafx.h"
 #include "Color.h"
 
+namespace gui {
+namespace components {
+
 //standard constructor
 CColor::CColor(Uint8 r,Uint8 g,Uint8 b)
 {
@@ -527,7 +530,7 @@ CColor operator~(CColor& Color)
 	//assign
 	Color3=Color;
 	//do operator
-	// FUCKING SHIT, 
+	// FUCKING SHIT,
 	//Color^=CColor(255,255,255);
 	//return color
 	return(Color3);
@@ -546,3 +549,5 @@ bool operator!=(CColor& Color1,CColor& Color2)
 	return(!(Color1==Color2));
 }
 
+} // namespace components
+} // namespace gui

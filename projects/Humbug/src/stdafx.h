@@ -31,14 +31,14 @@
 
 #include <wchar.h>
 
-#ifdef USE_QT
+/*#ifdef USE_QT
 #  include <QApplication>
 #  include <QtCore>
 #  include <QtGui>
 #  include <QMainWindow>
 #  include <QDomDocument>
 #  include <Qsci/qscilexercpp.h>
-#endif // USE_QT
+#endif // USE_QT*/
 
 
 #if defined(USE_LIB_BOOST)
@@ -51,15 +51,15 @@
     #include <boost/system/system_error.hpp>
 
     #include <boost/progress.hpp>
-    
+
     #include <boost/smart_ptr.hpp>
     #include <boost/ptr_container/ptr_vector.hpp>
     #include <boost/ptr_container/ptr_map.hpp>
-   
+
     #include <boost/bind.hpp>
     #include "boost/bind/mem_fn.hpp"
     #include "boost/function.hpp"
-    
+
     #include "boost/signals.hpp"
     #include "boost/signals/connection.hpp"
 
@@ -71,7 +71,9 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
+#include "GUI/Components/Rectangle.h"
 
+//using namespace gui::components;
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;

@@ -3,8 +3,11 @@
 
 #include "Canvas.h"
 
+namespace gui {
+namespace components {
+
 //CImage--abstracts a blittable portion of a canvas
-class CImage  
+class CImage
 {
 private:
 	//pointer to canvas
@@ -31,5 +34,8 @@ public:
 	//blit image onto a canvas
 	void Put ( CCanvas* pcnvDest , const CPoint& ptDst ) ;
 };
+
+} // namespace components
+} // namespace gui
 
 #endif
