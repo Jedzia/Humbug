@@ -21,50 +21,51 @@
 #include <string>
 
 //using CCanvas=gui::components::CCanvas;
-
-namespace gui { namespace components {
-	class CCanvas;
-	class CImage;
-}}
-class FileLoader;
-
 namespace gui {
-
-class CSprite {
+  namespace components {
+    class CCanvas;
+    class CImage;
+  }
+}
+class FileLoader;
+namespace gui {
+  class CSprite {
 public:
 
-	CSprite( gui::components::CCanvas * mainCanvas, gui::components::CImage * sprImage, gui::components::CCanvas * background = NULL, bool freeSrc = false,
-            gui::components::CRectangle spriteDimension = gui::components::CRectangle(0, 0, 0,
-                    0),
-            gui::components::CPoint spriteMove = gui::components::CPoint(0, 0) );
-    CSprite( FileLoader& loader, std::string filename, gui::components::CCanvas * mainCanvas,
-            gui::components::CRectangle spriteDimension = gui::components::CRectangle(0, 0, 0,
-                    0),
-            gui::components::CPoint spriteMove = gui::components::CPoint(0, 0) );
-    ~CSprite();
-    void Draw();
+      CSprite( gui::components::CCanvas* mainCanvas, gui::components::CImage* sprImage,
+              gui::components::CCanvas* background = NULL, bool freeSrc = false,
+              gui::components::CRectangle spriteDimension = gui::components::CRectangle(0, 0, 0,
+                      0),
+              gui::components::CPoint spriteMove = gui::components::CPoint(0, 0) );
+      CSprite( FileLoader& loader, std::string filename, gui::components::CCanvas* mainCanvas,
+              gui::components::CRectangle spriteDimension = gui::components::CRectangle(0, 0, 0,
+                      0),
+              gui::components::CPoint spriteMove = gui::components::CPoint(0, 0) );
+      ~CSprite();
+      void Draw();
 
-    void SetPos(gui::components::CPoint pos);
+      void SetPos(gui::components::CPoint pos);
 
-    void SprOffset(int offset);
+      void SprOffset(int offset);
 
-    gui::components::CImage* SprImage() const { return m_pSprImage; }
-    void SetColorAndAlpha(Uint32 key, Uint8 alpha);
+      gui::components::CImage * SprImage() const { return m_pSprImage; }
 
-    friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
+      void SetColorAndAlpha(Uint32 key, Uint8 alpha);
 
+      friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
 
 private:
 
-    gui::components::CImage* m_pSprImage;
-    gui::components::CCanvas* m_pMainCanvas;
-    gui::components::CCanvas* m_pBackground;
-    gui::components::CPoint m_cpPos;
-    gui::components::CPoint m_cpOldPos;
-    gui::components::CPoint m_cpSprMove;
-    gui::components::CRectangle m_crSprDim;
-    bool m_bOwner;
-};
-std::ostream& operator<<(std::ostream& o, const CSprite& r);
+      gui::components::CImage* m_pSprImage;
+      gui::components::CCanvas* m_pMainCanvas;
+      gui::components::CCanvas* m_pBackground;
+      gui::components::CPoint m_cpPos;
+      gui::components::CPoint m_cpOldPos;
+      gui::components::CPoint m_cpSprMove;
+      gui::components::CRectangle m_crSprDim;
+      bool m_bOwner;
+  };
+
+  std::ostream& operator<<(std::ostream& o, const CSprite& r);
 }
 #endif // HUMBUG_GUI_SPRITE_CSPRITE_H guard

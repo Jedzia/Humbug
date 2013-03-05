@@ -15,6 +15,7 @@
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
 
+using namespace gui;
 using namespace gui::components;
 
 struct TestScreen::TestScreenImpl {

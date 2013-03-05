@@ -12,9 +12,8 @@ namespace gui { namespace components {
 class FileLoader;
 namespace gui {
 	class CSprite;
+	class CSpriteManager;
 }
-
-class CSpriteManager;
 
 class HighscoreScreen : public gui::components::Screen {
 public:
@@ -41,7 +40,7 @@ private:
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::ptr_vector<gui::components::CText> m_pvecTexts;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
-    boost::scoped_ptr<CSpriteManager> m_pSprMgr;
+	boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
     //WavyTextFloat mtextfloat;
 };
 

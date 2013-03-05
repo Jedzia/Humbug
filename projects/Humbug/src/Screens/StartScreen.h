@@ -11,9 +11,9 @@ namespace gui { namespace components {
 class FileLoader;
 namespace gui {
 	class CSprite;
+	class CSpriteManager;
 }
 
-class CSpriteManager;
 
 class StartScreen : public gui::components::Screen {
 public:
@@ -39,7 +39,7 @@ private:
     boost::shared_ptr<gui::components::CCanvas> m_pBackground;
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
-    boost::scoped_ptr<CSpriteManager> m_pSprMgr;
+	boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
 };
 
 #endif // HUMBUG_SCREENS_STARTSCREEN_H
