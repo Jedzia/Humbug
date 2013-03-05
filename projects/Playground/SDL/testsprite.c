@@ -12,7 +12,7 @@
 #define NUM_SPRITES	100
 #define MAX_SPEED 	1
 
-SDL_Surface *sprite;
+SDL_Surface *gui;
 int numsprites;
 SDL_Rect *sprite_rects;
 SDL_Rect *positions;
@@ -33,27 +33,27 @@ int LoadSprite(char *file)
 	SDL_Surface *temp;
 
 	/* Load the sprite image */
-	sprite = SDL_LoadBMP(file);
-	if ( sprite == NULL ) {
+	gui = SDL_LoadBMP(file);
+	if ( gui == NULL ) {
 		fprintf(stderr, "Couldn't load %s: %s", file, SDL_GetError());
 		return(-1);
 	}
 
 	/* Set transparent pixel as the pixel at (0,0) */
-	if ( sprite->format->palette ) {
-		SDL_SetColorKey(sprite, (SDL_SRCCOLORKEY|SDL_RLEACCEL),
-						*(Uint8 *)sprite->pixels);
+	if ( gui->format->palette ) {
+		SDL_SetColorKey(gui, (SDL_SRCCOLORKEY|SDL_RLEACCEL),
+						*(Uint8 *)gui->pixels);
 	}
 
 	/* Convert sprite to video format */
-	temp = SDL_DisplayFormat(sprite);
-	SDL_FreeSurface(sprite);
+	temp = SDL_DisplayFormat(gui);
+	SDL_FreeSurface(gui);
 	if ( temp == NULL ) {
 		fprintf(stderr, "Couldn't convert background: %s\n",
 							SDL_GetError());
 		return(-1);
 	}
-	sprite = temp;
+	gui = temp;
 
 	/* We're ready to roll. :) */
 	return(0);
@@ -87,7 +87,7 @@ void MoveSprites(SDL_Surface *screen, Uint32 background)
 
 		/* Blit the sprite onto the screen */
 		area = *position;
-		SDL_BlitSurface(sprite, NULL, screen, &area);
+		SDL_BlitSurface(gui, NULL, screen, &area);
 		sprite_rects[nupdates++] = area;
 	}
 
@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
 	/* Allocate memory for the sprite info */
 	mem = (Uint8 *)malloc(4*sizeof(SDL_Rect)*numsprites);
 	if ( mem == NULL ) {
-		SDL_FreeSurface(sprite);
+		SDL_FreeSurface(gui);
 		fprintf(stderr, "Out of memory!\n");
 		quit(2);
 	}
@@ -237,14 +237,14 @@ int main(int argc, char *argv[])
 	sprite_rects += numsprites;
 	velocities = sprite_rects;
 	sprite_rects += numsprites;
-	sprite_w = sprite->w;
-	sprite_h = sprite->h;
+	sprite_w = gui->w;
+	sprite_h = gui->h;
 	srand(time(NULL));
 	for ( i=0; i<numsprites; ++i ) {
 		positions[i].x = rand()%(screen->w - sprite_w);
 		positions[i].y = rand()%(screen->h - sprite_h);
-		positions[i].w = sprite->w;
-		positions[i].h = sprite->h;
+		positions[i].w = gui->w;
+		positions[i].h = gui->h;
 		velocities[i].x = 0;
 		velocities[i].y = 0;
 		while ( ! velocities[i].x && ! velocities[i].y ) {
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
 	if ( (screen->flags & SDL_DOUBLEBUF) == SDL_DOUBLEBUF ) {
 		printf("Screen has double-buffering enabled\n");
 	}
-	if ( (sprite->flags & SDL_HWSURFACE) == SDL_HWSURFACE ) {
+	if ( (gui->flags & SDL_HWSURFACE) == SDL_HWSURFACE ) {
 		printf("Sprite is in video memory\n");
 	} else {
 		printf("Sprite is in system memory\n");
@@ -273,15 +273,15 @@ int main(int argc, char *argv[])
 	{ SDL_Rect dst;
 		dst.x = 0;
 		dst.y = 0;
-		dst.w = sprite->w;
-		dst.h = sprite->h;
-		SDL_BlitSurface(sprite, NULL, screen, &dst);
+		dst.w = gui->w;
+		dst.h = gui->h;
+		SDL_BlitSurface(gui, NULL, screen, &dst);
 		SDL_FillRect(screen, &dst, background);
 	}
-	if ( (sprite->flags & SDL_HWACCEL) == SDL_HWACCEL ) {
+	if ( (gui->flags & SDL_HWACCEL) == SDL_HWACCEL ) {
 		printf("Sprite blit uses hardware acceleration\n");
 	}
-	if ( (sprite->flags & SDL_RLEACCEL) == SDL_RLEACCEL ) {
+	if ( (gui->flags & SDL_RLEACCEL) == SDL_RLEACCEL ) {
 		printf("Sprite blit uses RLE acceleration\n");
 	}
 
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 		}
 		MoveSprites(screen, background);
 	}
-	SDL_FreeSurface(sprite);
+	SDL_FreeSurface(gui);
 	free(mem);
 
 	/* Print out some timing information */

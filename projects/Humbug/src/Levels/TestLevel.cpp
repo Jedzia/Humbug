@@ -17,6 +17,7 @@
 #include "../GUI/Visual/EventHandler.h"
 
 using namespace gui::components;
+using namespace gui;
 
 struct TestLevel::TestLevelImpl {
     //prv::EyeMover eyemover;

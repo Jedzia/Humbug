@@ -8,8 +8,10 @@ namespace gui { namespace components {
 	class CText;
 	class CTextScroller;
 }}
+namespace gui {
+	class CSprite;
+}
 class FileLoader;
-class CSprite;
 class CSpriteManager;
 
 class TestLevel : public gui::components::Screen {
@@ -37,7 +39,7 @@ private:
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<CSpriteManager> m_pSprMgr;
-	CSprite *m_pSprite;
+	gui::CSprite *m_pSprite;
 };
 
 #endif // HUMBUG_LEVELS_TESTLEVEL_H

@@ -11,6 +11,8 @@
 //#include <build/cmake/include/debug.h>
 using namespace gui::components;
 
+namespace gui {
+
 // freeSrc: Take ownership of 'sprImage' and delete it on destruction.
 CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
         CRectangle spriteDimension,
@@ -112,3 +114,4 @@ std::ostream& operator<<(std::ostream& o, const CSprite& r) {
                                  <<*/" ]";
 }
 
+}

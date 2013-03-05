@@ -10,7 +10,10 @@ namespace gui { namespace components {
 	class CTextScroller;
 }}
 class FileLoader;
-class CSprite;
+namespace gui {
+	class CSprite;
+}
+
 class CSpriteManager;
 
 class HighscoreScreen : public gui::components::Screen {

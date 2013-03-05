@@ -20,11 +20,15 @@
 #include "..\Components\Rectangle.h"
 #include <string>
 
+//using CCanvas=gui::components::CCanvas;
+
 namespace gui { namespace components {
 	class CCanvas;
 	class CImage;
 }}
 class FileLoader;
+
+namespace gui {
 
 class CSprite {
 public:
@@ -62,5 +66,5 @@ private:
     bool m_bOwner;
 };
 std::ostream& operator<<(std::ostream& o, const CSprite& r);
-
+}
 #endif // HUMBUG_GUI_SPRITE_CSPRITE_H guard

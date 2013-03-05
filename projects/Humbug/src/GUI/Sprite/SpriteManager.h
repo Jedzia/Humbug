@@ -12,7 +12,7 @@ public:
     CSpriteManager(/*SDL_Surface* screen*/);
     ~CSpriteManager();
 
-    void AddSprite(CSprite *sprite, const boost::function<void(CSprite*, int)>& updfunc = NULL);
+	void AddSprite(gui::CSprite *sprite, const boost::function<void(gui::CSprite*, int)>& updfunc = NULL);
     void OnDraw();
     void OnIdle(int frameNumber);
 

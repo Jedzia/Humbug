@@ -17,7 +17,10 @@ namespace gui {
 }
 
 class HUD;
-class CSprite;
+namespace gui {
+	class CSprite;
+}
+
 class CTestThread;
 class CTestTimer;
 class PlayerKeys;
@@ -40,8 +43,8 @@ private:
     CCanvas* m_pBackground;
     CCanvas* m_pDrawCanvas;
     CImage* m_pBlue;
-    CSprite* m_pSprite;
-    CSprite* m_pSprite2;
+	gui::CSprite* m_pSprite;
+    gui::CSprite* m_pSprite2;
     CTileEngine* m_pTileEngine;
     //CTileSet* m_pTileSet;
 	Hud* m_pHud;

@@ -17,6 +17,7 @@
 #include <cstdlib>
 
 using namespace gui::components;
+using namespace gui;
 
 struct HighscoreScreen::HighscoreScreenImpl {
     //prv::EyeMover eyemover;

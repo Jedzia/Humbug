@@ -247,7 +247,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( fl->LoadImg("icons/red.png") );
             CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
             fl->FreeLast();
-            m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
+            m_pSprite = new gui::CSprite(m_pMainCanvas, new CImage( tmpCanvas,
                             true ), m_pBackground, true);
         }
 
@@ -256,7 +256,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //    new CImage( new CCanvas( SDL_DisplayFormatAlpha( fl.LoadImg("Voiture.bmp")) ), spr2Dim
         // ),
         //    m_pBackground, spr2Dim, CPoint(32,0));
-        m_pSprite2 = new CSprite( *fl, "Sprites/Voiture.bmp", m_pMainCanvas,
+        m_pSprite2 = new gui::CSprite( *fl, "Sprites/Voiture.bmp", m_pMainCanvas,
                 CRectangle(0, 0, 32, 32), CPoint(32, 0) );
 
         //m_pSprite2->m_pSprImage->SrcRect() = spr2Dim.Move(CPoint(32,0)*15);

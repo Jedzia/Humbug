@@ -16,6 +16,7 @@
 #include <cstdlib>
 
 using namespace gui::components;
+using namespace gui;
 
 namespace prv
 {

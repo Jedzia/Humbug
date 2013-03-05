@@ -4,6 +4,8 @@
 #include "SpriteManager.h"
 #include "boost/smart_ptr/weak_ptr.hpp"
 
+using namespace gui;
+
 //#include <build/cmake/include/debug.h>
 typedef boost::shared_ptr<CSprite> SpriteShrp;
 
