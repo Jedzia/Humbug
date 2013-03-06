@@ -19,14 +19,15 @@ namespace gui {
 }
 }
 
-class HUD;
-class CTestThread;
-class CTestTimer;
-class PlayerKeys;
-
 namespace humbug {
 
 	using gui::CTileEngine;	
+
+	class CTestThread;
+	class CTestTimer;
+	class HUD;
+	class PlayerKeys;
+
 /*
 	==CTestEventHandler==
 	CEventHandler component test.

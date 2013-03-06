@@ -3,6 +3,8 @@
 
 //#include <build/cmake/include/debug.h>
 
+namespace gui {
+
 //ColorData* ColorData::m_Instance = NULL;
 
 struct ColorData::ColorDataImpl {
@@ -92,3 +94,5 @@ SDL_Color* ColorData::Wavemap()
 
 
 //boost::details::pool::singleton_default<ColorData> Global::m_colorData;
+
+}

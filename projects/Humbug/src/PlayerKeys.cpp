@@ -20,6 +20,8 @@
 #include "PlayerKeys.h"
 
 //#include <build/cmake/include/debug.h>
+namespace humbug {
+
 PlayerKeys::PlayerKeys(int x, int y) :
 	upup(false),
 	downup(false),
@@ -140,3 +142,4 @@ std::ostream& operator<<(std::ostream& o, const PlayerKeys& r) {
                                     <<*/" ]";
 }
 
+}

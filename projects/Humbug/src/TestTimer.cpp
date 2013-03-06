@@ -2,27 +2,25 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
 #include "TestTimer.h"
+#include "stdafx.h"
 
+namespace humbug {
 //constructor
-CTestTimer::CTestTimer(CMessageHandler* pmhParent):
-CTimer(pmhParent,1000)
-{
-	//start the timer
-	Start();
-}
+  CTestTimer::CTestTimer(CMessageHandler* pmhParent) :
+      CTimer(pmhParent, 1000){
+      //start the timer
+      Start();
+  }
 
 //destructor
-CTestTimer::~CTestTimer()
-{
-	//do nothing
-}
+  CTestTimer::~CTestTimer(){
+      //do nothing
+  }
 
 //timer pulse
-void CTestTimer::OnTimer()
-{
-	//print to stdout
-    std::cout << "Timer pulse!" << std::endl;
+  void CTestTimer::OnTimer(){
+      //print to stdout
+      std::cout << "Timer pulse!" << std::endl;
+  }
 }
-

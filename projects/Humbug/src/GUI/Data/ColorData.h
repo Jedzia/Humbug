@@ -5,6 +5,8 @@
 #include "boost/smart_ptr/scoped_ptr.hpp"
 //#include "boost/pool/detail/singleton.hpp"
 
+namespace gui {
+
 class ColorData {
 public:
 
@@ -31,5 +33,7 @@ protected:
 private:
     //static boost::details::pool::singleton_default<ColorData> m_colorData;
 };*/
+
+}
 
 #endif // COLORDATA_H

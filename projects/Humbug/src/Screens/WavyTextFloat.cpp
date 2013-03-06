@@ -23,7 +23,7 @@ WavyTextFloat::~WavyTextFloat()
 
 void WavyTextFloat::operator()( const gui::components::CCanvas *textcanvas, const gui::components::CText *text, gui::components::CTextModifierData& mdata )
 {
-    SDL_Color *wavemap = ColorData::Instance()->Wavemap();
+	SDL_Color *wavemap = gui::ColorData::Instance()->Wavemap();
     for(int i = 0; i < 64; i++)
         cmap[m_iBoatcols + ((i + m_iFrames) & 63)] = wavemap[i];
 

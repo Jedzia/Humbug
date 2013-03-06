@@ -19,6 +19,8 @@
 #include "GUI\Components\Point.h"
 #include "SDL.h"
 
+namespace humbug {
+
 // see http://content.gpwiki.org/index.php/SDL:Tutorials:Practical_Keyboard_Input
 class PlayerKeys {
 public:
@@ -58,5 +60,7 @@ private:
     int charx;
 };
 std::ostream& operator<<(std::ostream& o, const PlayerKeys& r);
+
+}
 
 #endif // PROJECT_PLAYERKEYS_H guard

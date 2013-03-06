@@ -3,6 +3,8 @@
 
 #include "GUI/Visual/Thread.h"
 
+namespace humbug {
+
 /*
 	==CTestThread==
 	Test case for CThread
@@ -16,5 +18,7 @@ public:
 	//execute
 	int OnExecute();
 };
+
+}
 
 #endif //#ifndef __TESTTHREAD_H__
