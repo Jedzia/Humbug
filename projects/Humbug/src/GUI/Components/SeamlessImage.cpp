@@ -86,6 +86,9 @@ namespace gui {
         CRectangle painton = pcnvDest->GetDimension();
         CRectangle diffrec = m_rcDst + ptDst;
         pcnvDest->Blit ( diffrec, *GetCanvas ( ), m_rcSrc );
+		
+		CRectangle diffrec2 = diffrec + CPoint(2400,0);
+		pcnvDest->Blit ( diffrec2, *GetCanvas ( ), m_rcSrc );
         //DstRect ( ) -= ptDst;
     }
   }       // namespace components

@@ -26,6 +26,7 @@ public:
     typedef boost::signal<void (int)> signal_type_idle;
     typedef signal_type_idle::slot_type slot_type_idle;
 
+	// bool OnInit(int argc,char* argv[])
 	typedef boost::signal<void (int, char**)> signal_type_init;
     typedef signal_type_init::slot_type slot_type_init;
 

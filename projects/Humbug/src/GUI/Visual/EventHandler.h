@@ -16,6 +16,12 @@ class HookableManager;
 class CEventHandler : public CApplication
 {
 public:
+	// signal types
+
+	// bool OnInit(int argc,char* argv[])
+	// void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
+	typedef boost::signal<void (SDLKey sym, SDLMod mod, Uint16 unicode)> signal_type_keydown;
+	typedef signal_type_keydown::slot_type slot_type_keydown;
 
     static MSGID MSGID_QuitApp;//no parms
 
@@ -66,6 +72,10 @@ public:
     boost::signals::connection ConnectOnInit(const slot_type_init& s) {
          return m_sigOnInit.connect( s );
     }
+	boost::signals::connection ConnectOnKeyDown(const slot_type_keydown& s) {
+		return m_sigOnKeyDown.connect( s );
+	}
+
     //boost::signals::connection ConnectOnInit(const slot_type_init& s) {
     //        return m_sigOnInit.connect(s);
     //}
@@ -81,7 +91,8 @@ protected:
     //Hookable* m_Hooks;
 private:
     boost::scoped_ptr<HookableManager> m_HookMgr;
-    signal_type_init m_sigOnInit;
+	signal_type_init m_sigOnInit;
+	signal_type_keydown m_sigOnKeyDown;
     //slot_type_init m_slotOnInit;
 
 };

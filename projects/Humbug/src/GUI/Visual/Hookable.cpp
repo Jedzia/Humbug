@@ -34,7 +34,8 @@ public:
 struct Hookable::HookableImpl {
 
     boost::signals::connection m_conInit;
-    boost::signals::connection m_conIdle;
+	boost::signals::connection m_conIdle;
+	boost::signals::connection m_conKeyDown;
 
     Hookable *m_pHost;
 
