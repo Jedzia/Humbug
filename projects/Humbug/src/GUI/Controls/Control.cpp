@@ -13,13 +13,13 @@ std::list<CControl*> CControl::s_lstUpdate(0);
 //list of windows to close
 std::list<CControl*> CControl::s_lstClose(0);
 //static pointer to main control
-CControl* CControl::s_pMainControl=NULL;
+CControl* CControl::s_pMainControl(NULL);
 //keyboard focus
-CControl* CControl::s_pKeyboardFocus=NULL;
+CControl* CControl::s_pKeyboardFocus(NULL);
 //mouse focus
-CControl* CControl::s_pMouseFocus=NULL;
+CControl* CControl::s_pMouseFocus(NULL);
 //mouse hovering
-CControl* CControl::s_pMouseHover=NULL;
+CControl* CControl::s_pMouseHover(NULL);
 
 //master control constructor
 CControl::CControl(gui::components::CCanvas* pCanvas):
@@ -28,6 +28,12 @@ m_ID(0),
 m_pParent(NULL), m_ptIsDirty(false)
 {
     dbgOut(__FUNCTION__ << std::endl);
+
+	if (s_pMainControl)
+	{
+		// throw new std::exception("CControl::CControl, already has a master control.");
+	}
+	
 	//set the canvas
 	m_pCanvas=pCanvas;
 	//this is the main control

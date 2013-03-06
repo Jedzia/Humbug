@@ -16,6 +16,7 @@
 #include "../GUI/Sprite/Sprite.h"
 #include "../GUI/Sprite/SpriteManager.h"
 #include "../GUI/Visual/EventHandler.h"
+#include "GUI/Controls/Button.h"
 
 using namespace gui::components;
 using namespace gui;
@@ -61,11 +62,16 @@ TestLevel::~TestLevel(void){
     //throw std::exception("The method or operation is not implemented.");
    }*/
 
+using gui::controls::CControl;
 
+gui::controls::CButton* testbutton;
 
 bool TestLevel::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+	
+	testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0,0,160,40), 21345, "Change Direction");
+	testbutton->SetPosition(CPoint(800,30));
 
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -147,7 +153,14 @@ void TestLevel::OnDraw(){
 	//m_pSprite->SetPos(sp);
 	//m_pSprite->Draw();
 	m_pSprite->Put(m_pMainCanvas, sp);
-	sp.Subtract(CPoint(3,0));
+	if (testbutton->IsPressed())
+	{
+		sp.Subtract(CPoint(-3,0));
+	} 
+	else
+	{
+		sp.Subtract(CPoint(3,0));
+	}
 
 	//m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );
 	m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
@@ -164,6 +177,9 @@ void TestLevel::OnDraw(){
 	m_pScrollText->Put(m_pMainCanvas, dstDims, srcDims );
     m_pMainCanvas->AddUpdateRect(dstDims);
 	xxx++;
+
+	testbutton->Invalidate();
+	testbutton->Draw();
 
     coldelta++;
 

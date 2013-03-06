@@ -16,14 +16,26 @@
 /*---------------------------------------------------------*/
 #include "../../stdafx.h"
 #include "SeamlessImage.h"
+#include "../Controls/Button.h"
+
+//using gui::controls::CControl;
 
 namespace gui {
   namespace components {
+
+	  //gui::controls::CButton* testbutton;
+
     CSeamlessImage::CSeamlessImage ( CCanvas* pcnvSource, bool freeSrc ) :
         m_bFreeSrc(freeSrc){
         dbgOut(__FUNCTION__ << std::endl);
         SetCanvas ( pcnvSource );
         m_rcSrc = m_rcDst = pcnvSource->GetDimension();
+
+		
+		//CControl* masterctrl = new CControl(CControl::GetMainControl()->GetCanvas());
+		//CControl* masterctrl = new CControl(CControl::GetMainControl()->GetCanvas());
+		//testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0,0,160,40), 21345, "Change Direction");
+		//testbutton->SetPosition(CPoint(200,200));
     }
 
     CSeamlessImage::CSeamlessImage ( CCanvas* pcnvSource, CRectangle rcSource, bool freeSrc, CPoint ptOffset ) :
@@ -90,6 +102,9 @@ namespace gui {
 		CRectangle diffrec2 = diffrec + CPoint(2400,0);
 		pcnvDest->Blit ( diffrec2, *GetCanvas ( ), m_rcSrc );
         //DstRect ( ) -= ptDst;
+		
+		//testbutton->Invalidate();
+		//testbutton->Draw();
     }
   }       // namespace components
 } // namespace gui
