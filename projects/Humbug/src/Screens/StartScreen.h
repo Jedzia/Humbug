@@ -15,6 +15,8 @@ namespace gui {
 }
 
 
+namespace humbug {
+  namespace screens {
 class StartScreen : public gui::components::Screen {
 public:
 
@@ -42,4 +44,6 @@ private:
 	boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
 };
 
+}
+}
 #endif // HUMBUG_SCREENS_STARTSCREEN_H

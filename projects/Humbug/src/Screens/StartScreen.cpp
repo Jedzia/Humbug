@@ -18,6 +18,8 @@
 using namespace gui::components;
 using namespace gui;
 
+namespace humbug {
+  namespace screens {
 namespace prv
 {
     class EyeMover {
@@ -27,7 +29,7 @@ namespace prv
         static int created;
 
     public:
-        EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false) 
+        EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false)
         {
             dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
             //static int created = 0;
@@ -58,7 +60,7 @@ namespace prv
             if (toggle_)
             {
                 h_++;
-            } 
+            }
             else
             {
                 h_--;
@@ -96,7 +98,7 @@ namespace prv
             if (frame < (sprMaxFrames/2))
             {
                 sprframe = frame;
-            } 
+            }
             else
             {
                 sprframe = sprMaxFrames - frame;
@@ -206,7 +208,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     // m_colText));
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     m_pScroller.reset(new CTextScroller(m_pMainCanvas, *m_pScrollText, CPoint(100, 600), 800));
-	
+
 	// ### Sprites ###
     CSprite *m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
         CRectangle(0, 0, 64, 64), CPoint(64, 0) );
@@ -243,7 +245,7 @@ void StartScreen::OnDraw(){
 
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     m_pMainCanvas->Lock();
-    
+
     m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
     CRectangle frect(400, 300, 85, 85);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
@@ -275,3 +277,5 @@ void StartScreen::OnUpdate(){
     //m_iUpdateTimes++;
 }
 
+}
+}

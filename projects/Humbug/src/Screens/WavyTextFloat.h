@@ -10,6 +10,8 @@ namespace gui { namespace components {
 	struct CTextModifierData;
 }}
 
+namespace humbug {
+  namespace screens {
 class WavyTextFloat
 {
     int m_iBoatcols;
@@ -27,4 +29,6 @@ public:
 
 
 
+}
+}
 #endif // HUMBUG_SCREENS_WAVYTEXTFLOAT_H

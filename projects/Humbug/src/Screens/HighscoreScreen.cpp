@@ -19,6 +19,8 @@
 using namespace gui::components;
 using namespace gui;
 
+namespace humbug {
+  namespace screens {
 struct HighscoreScreen::HighscoreScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
@@ -41,7 +43,7 @@ HighscoreScreen::HighscoreScreen( FileLoader& loader, CCanvas* background) :
 }
 
 HighscoreScreen::~HighscoreScreen(void){
-    //if (m_pArialfont) { Not needed, is freed by the loader. // Todo: Implement an immediate free function for fonts, like in images 
+    //if (m_pArialfont) { Not needed, is freed by the loader. // Todo: Implement an immediate free function for fonts, like in images
     //    TTF_CloseFont(m_pArialfont);
     //}
 
@@ -101,7 +103,7 @@ public:
         if (toggle_)
         {
             h_++;
-        } 
+        }
         else
         {
             h_--;
@@ -212,3 +214,5 @@ void HighscoreScreen::OnUpdate(){
     //m_iUpdateTimes++;
 }
 
+}
+}

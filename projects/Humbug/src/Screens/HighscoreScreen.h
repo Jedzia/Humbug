@@ -15,6 +15,8 @@ namespace gui {
 	class CSpriteManager;
 }
 
+namespace humbug {
+  namespace screens {
 class HighscoreScreen : public gui::components::Screen {
 public:
 
@@ -44,4 +46,6 @@ private:
     //WavyTextFloat mtextfloat;
 };
 
+}
+}
 #endif // HUMBUG_SCREENS_HIGHSCORESCREEN_H

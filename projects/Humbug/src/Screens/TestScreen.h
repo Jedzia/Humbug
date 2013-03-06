@@ -31,6 +31,7 @@ namespace gui {
 class FileLoader;
 
 namespace humbug {
+  namespace screens {
   class TestScreen : public gui::components::Screen {
 public:
 
@@ -58,6 +59,8 @@ private:
       boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
       boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
   };
+}
+
 }
 
 #endif // ifndef HUMBUG_SCREENS_TESTSCREEN_H

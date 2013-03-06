@@ -8,6 +8,8 @@
 #include "GUI/Data/ColorData.h"
 #include "GUI/Components/Text.h"
 
+namespace humbug {
+  namespace screens {
 WavyTextFloat::WavyTextFloat(int steps) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
 {
     dbgOut(__FUNCTION__ << " created:" << " (" << this << ")" << std::endl);
@@ -40,3 +42,5 @@ void WavyTextFloat::operator()( const gui::components::CCanvas *textcanvas, cons
     }
 }
 
+}
+}

@@ -31,6 +31,7 @@ namespace humbug {
 
 	using namespace gui;
 	using namespace gui::controls;
+	using namespace humbug::screens;
 	using humbug::levels::TestLevel;
 
 //#include "GUI/TileEngine/TileSet.h"
@@ -340,7 +341,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<humbug::TestScreen>(*fl, m_pMainCanvas)));
+	HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
     HookMgr()->EnableHookable("StartScreen");

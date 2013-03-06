@@ -35,6 +35,7 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
+  namespace screens {
   struct TestScreen::TestScreenImpl {
       //prv::EyeMover eyemover;
       //prv::WormMover wormmover;
@@ -184,4 +185,5 @@ namespace humbug {
       mcol.SetB( rand() );
       //m_iUpdateTimes++;
   }
+}
 }
