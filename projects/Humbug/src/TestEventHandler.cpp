@@ -27,8 +27,11 @@
 #include "Levels/TestLevel.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
 
-using namespace gui;
-using namespace gui::controls;
+namespace humbug {
+
+	using namespace gui;
+	using namespace gui::controls;
+	using humbug::levels::TestLevel;
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -655,3 +658,5 @@ bool CTestEventHandler::FilterEvent(SDL_Event* pEvent){
 
 //declare application variable
 CTestEventHandler TheApp;
+
+}

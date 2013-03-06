@@ -27,7 +27,7 @@ class PlayerKeys;
 class CTileEngine;
 class CTileSet;
 
-
+namespace humbug {
 /*
 	==CTestEventHandler==
 	CEventHandler component test.
@@ -98,5 +98,5 @@ public:
 	static gui::MSGID MSGID_ClearScreen;//no parms
 	static gui::MSGID MSGID_DrawPixel;//parm1=x,parm2=y
 };
-
+}
 #endif //#ifndef HUMBUG___TESTEVENTHANDLER_H__

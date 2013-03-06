@@ -18,6 +18,9 @@
 #include "../GUI/Visual/EventHandler.h"
 #include "GUI/Controls/Button.h"
 
+namespace humbug {
+	namespace levels {
+
 using namespace gui::components;
 using namespace gui;
 
@@ -200,3 +203,5 @@ void TestLevel::OnUpdate(){
     //m_iUpdateTimes++;
 }
 
+}
+}

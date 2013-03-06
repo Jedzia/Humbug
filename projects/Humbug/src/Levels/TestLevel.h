@@ -15,6 +15,9 @@ namespace gui {
 }
 class FileLoader;
 
+namespace humbug {
+	namespace levels {
+
 class TestLevel : public gui::components::Screen {
 public:
 
@@ -42,5 +45,7 @@ private:
 	boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
 	gui::components::CSeamlessImage *m_pSprite;
 };
+}
+}
 
 #endif // HUMBUG_LEVELS_TESTLEVEL_H
