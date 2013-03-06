@@ -28,6 +28,8 @@ class CImage;
 }}
 class FileLoader;
 
+namespace gui {
+
 // configuration of a tile image.
 struct CTileImageSetup
 {
@@ -77,5 +79,7 @@ private:
     // int usage_count;
 };
 std::ostream& operator<<(std::ostream& o, const CTileImage& r);
+
+}
 
 #endif // HUMBUG_GUI_TILEENGINE_CTILEIMAGE_H guard

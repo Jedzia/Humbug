@@ -8,6 +8,7 @@
 #include "TileImage.h"
 
 //#include <build/cmake/include/debug.h>
+namespace gui {
 CTileImage::CTileImage( FileLoader& loader, std::string filename,
         CTileImageSetup configuration ) :
     CCanvas(){
@@ -71,3 +72,4 @@ std::ostream& operator<<(std::ostream& o, const CTileImage& r) {
                                     <<*/" ]";
 }
 
+}

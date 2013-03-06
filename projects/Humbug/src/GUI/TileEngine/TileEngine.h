@@ -5,6 +5,7 @@
 #include "TileSet.h"
 class FileLoader;
 
+namespace gui {
 class CTileEngine {
 public:
 
@@ -29,5 +30,7 @@ private:
 };
 
 std::ostream& operator<<(std::ostream& o, const CTileEngine& r);
+
+}
 
 #endif // HUMBUG_GUI_TILEENGINE_CTILEENGINE_H guard

@@ -7,6 +7,9 @@
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
 namespace gui { 
+	class CSprite;
+	class CTileEngine;
+	class CTileSet;
 	class Hookable;
 	class Screen;
 	class CConsole;
@@ -17,17 +20,13 @@ namespace gui {
 }
 
 class HUD;
-namespace gui {
-	class CSprite;
-}
-
 class CTestThread;
 class CTestTimer;
 class PlayerKeys;
-class CTileEngine;
-class CTileSet;
 
 namespace humbug {
+
+	using gui::CTileEngine;	
 /*
 	==CTestEventHandler==
 	CEventHandler component test.

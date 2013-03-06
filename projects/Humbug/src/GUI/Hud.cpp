@@ -21,6 +21,8 @@
 
 using namespace gui::components;
 
+namespace humbug {
+
 //#include <build/cmake/include/debug.h>
 /*Hud::Hud(const FileLoader& loader, CCanvas* pCanvas) :
     CControl(pCanvas),
@@ -155,3 +157,4 @@ bool Hud::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, 
     return res;
 }
 
+}

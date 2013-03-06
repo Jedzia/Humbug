@@ -5,6 +5,7 @@
 #include "TileEngine.h"
 #include "../../Filesystem/FileLoader.h"
 
+namespace gui {
 
 
 CTileEngine::CTileEngine(const CCanvas * mainCanvas, const CCanvas * background)
@@ -76,3 +77,4 @@ std::ostream& operator<<(std::ostream& o, const CTileEngine& r) {
         <<*/ " ]";
 }
 
+}

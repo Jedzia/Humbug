@@ -26,6 +26,7 @@ namespace gui { namespace components {
 class CCanvas;
 }}
 
+namespace gui {
 class CTileImage;
 
 class CTile {
@@ -46,5 +47,7 @@ private:
    const CTileImage& m_ctiTileImage;
 };
 std::ostream& operator<<(std::ostream& o, const CTile& r);
+
+}
 
 #endif // HUMBUG_GUI_TILEENGINE_CTILE_H guard

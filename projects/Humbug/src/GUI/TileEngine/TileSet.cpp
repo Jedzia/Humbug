@@ -8,6 +8,7 @@
 #include "SDL.h"
 #include "TileSet.h"
 
+namespace gui {
 CTileSet::CTileSet( const CCanvas * mainCanvas, CTileImage* tileImage, const CCanvas * background, CRectangle screen )
 :  m_pMainCanvas(mainCanvas),
 m_ctiTileImage(tileImage),
@@ -67,3 +68,4 @@ std::ostream& operator<<(std::ostream& o, const CTileSet& r) {
                                  <<*/" ]";
 }
 
+}

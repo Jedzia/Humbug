@@ -10,6 +10,8 @@ namespace gui { namespace components {
 }}
 class FileLoader;
 
+namespace humbug {
+
 class HudBackground  {
 public:
 
@@ -60,5 +62,6 @@ private:
     gui::components::CCanvas* tmpcanvas;
     bool flank;
 };
+}
 
 #endif // GUI_HUD_H

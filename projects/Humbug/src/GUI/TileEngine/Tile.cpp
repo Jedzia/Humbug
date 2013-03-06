@@ -10,6 +10,7 @@
 #include "TileImage.h"
 
 
+namespace gui {
 CTile::CTile(  const CTileImage& tileImage, int index   )
 :  m_ctiTileImage(tileImage), m_iIndex(index){
     dbgOut(__FUNCTION__ << std::endl);
@@ -33,3 +34,4 @@ std::ostream& operator<<(std::ostream& o, const CTile& r) {
                                  <<*/" ]";
 }
 
+}

@@ -15,6 +15,8 @@ class FileLoader;
 
 using namespace gui::components;
 
+namespace gui {
+
 class CTileSet {
 public:
 
@@ -37,5 +39,7 @@ private:
    CRectangle m_crScreen;
 };
 std::ostream& operator<<(std::ostream& o, const CTileSet& r);
+
+}
 
 #endif // HUMBUG_GUI_TILEENGINE_CTILESET_H guard
