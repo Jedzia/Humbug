@@ -805,12 +805,21 @@ else(_boost_IN_CACHE)
   #  Begin finding boost libraries
   # ------------------------------------------------------------------------
 
-  if(BOOST_ROOT)
-    set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
-      ${BOOST_ROOT}/lib
-      ${BOOST_ROOT}/lib/x64/lib
-      ${BOOST_ROOT}/stage/lib)
-  endif()
+if(BOOST_ROOT)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		#set(${MY_VAR_PREFIX}_BITNESS 64)
+		#set(${MY_VAR_PREFIX}_ARCHITECTURE amd64)
+	set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
+		${BOOST_ROOT}/lib/x64/lib
+		${BOOST_ROOT}/lib
+		${BOOST_ROOT}/stage/lib)
+	else()	
+	set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
+		${BOOST_ROOT}/lib
+		${BOOST_ROOT}/stage/lib)
+	endif()
+endif()
+
   set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
     ${_boost_LIBRARY_SEARCH_DIRS_ALWAYS}
     ${Boost_INCLUDE_DIR}/lib

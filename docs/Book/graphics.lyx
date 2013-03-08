@@ -211,7 +211,7 @@ jed
 jedpretty_en
 \end_modules
 \maintain_unincluded_children false
-\language english
+\language ngerman
 \language_package default
 \inputencoding auto
 \fontencoding global
@@ -522,98 +522,6 @@ makeatother
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-% MS .NET Logo
-\end_layout
-
-\begin_layout Plain Layout
-
-%
-\backslash
-includegraphics[height=0.04
-\backslash
-textheight]{Pictures/Microsoft_NET_Logo}
-\end_layout
-
-\begin_layout Plain Layout
-
-%
-\backslash
-includegraphics[width=
-\backslash
-ipicwidth]{#1.
-\backslash
-graext}
-\end_layout
-
-\begin_layout Plain Layout
-
-%
-\backslash
-includegraphics[height=1em]{Pictures/Microsoft_NET_Logo2.
-\backslash
-graext}
-\end_layout
-
-\begin_layout Plain Layout
-
-%
-\backslash
-newcommand{
-\backslash
-NET}{
-\backslash
-textbf{.NET}}
-\end_layout
-
-\begin_layout Plain Layout
-
-%
-\backslash
-newcommand{
-\backslash
-NET}{
-\backslash
-includegraphics[height=1em]{Pictures/Microsoft_NET_Logo2x.
-\backslash
-graext}}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-uselengthunit{mm}
-\end_layout
-
-\begin_layout Plain Layout
-
-%textheight is 
-\backslash
-printlength{
-\backslash
-textwidth}
-\end_layout
-
-\end_inset
-
 .
 \end_layout
 
@@ -639,14 +547,14 @@ status open
 
 \begin_layout Plain Layout
 
-
+%
 \backslash
 begin{psmatrix}[rowsep=0.2cm]
 \end_layout
 
 \begin_layout Plain Layout
 
-1 & 2 & 3 
+%1 & 2 & 3 
 \backslash
 
 \backslash
@@ -655,12 +563,12 @@ begin{psmatrix}[rowsep=0.2cm]
 
 \begin_layout Plain Layout
 
-X & Y & Z
+%X & Y & Z
 \end_layout
 
 \begin_layout Plain Layout
 
-
+%
 \backslash
 end{psmatrix}
 \end_layout
@@ -856,73 +764,24 @@ mmmBtoc{}%
 \end_layout
 
 \begin_layout Standard
-This part describes the function and structure of the repository system.
+This part describes the implementation of a seamless image scrolling mechanism.
 \end_layout
 
 \begin_layout Subsection
-ReflectionTypeDataService
-\end_layout
-
-\begin_layout Subsubsection
-Overview
+Übersicht
 \end_layout
 
 \begin_layout Standard
-The 
-\noun on
-ReflectionTypeDataService
-\noun default
- functions as general data endpoint for hierarchical reflection data.
- This type of data can be generated through 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-NET{}
-\end_layout
-
-\end_inset
-
- internal reflection (\SpecialChar \menuseparator
-System.Reflection
-\begin_inset Index idx
-status open
-
-\begin_layout Plain Layout
-System.Reflection
-\end_layout
-
-\end_inset
-
-) or by parsing Visual Studio project and solution files.
- The exact mechanism of this data fetching sub-modules, the repositories,
- is described in 
+Abbildung 
 \begin_inset CommandInset ref
-LatexCommand formatted
-reference "sub:ReflectionTypeDataRepository"
+LatexCommand ref
+reference "fig:Aufbau-des-Bildschirms"
 
 \end_inset
 
-.
- 
-\end_layout
-
-\begin_layout Standard
-Class Diagram 
-\begin_inset CommandInset ref
-LatexCommand formatted
-reference "fig:ReflectionTypeDataService-Hierar"
-
-\end_inset
-
- shows an overview of the 
-\noun on
-ReflectionTypeDataService
-\noun default
- class and its relations.
+ zeigt den Aufbau des Bildschirms (Screen).
+ Dort befindet sich das Fenster, hier als SeamWindow bezeichnet, in dem
+ das nahtlose Bild angezeigt werden soll.
 \end_layout
 
 \begin_layout Standard
@@ -935,7 +794,7 @@ status open
 \noindent
 \align center
 \begin_inset Graphics
-	filename Pictures/ReflectionTypeDataService/Samcat_Documentation_p4.png
+	filename Pictures/Graphics/seamwin-over.svg
 	width 100text%
 
 \end_inset
@@ -947,14 +806,84 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-ReflectionTypeDataService Hierarchy
+Aufbau des Bildschirms
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:ReflectionTypeDataService-Hierar"
+name "fig:Aufbau-des-Bildschirms"
 
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Pictures/Graphics/seamwin-one.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Aufbau des Bildschirms
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Pictures/Graphics/seamwin.svg
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Aufbau des Bildschirms
 \end_layout
 
 \end_inset

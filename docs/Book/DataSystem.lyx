@@ -302,50 +302,6 @@ status open
 
 \begin_layout Plain Layout
 
-%
-\backslash
-setcounter{equation}{0}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-%
-\backslash
-providecommand{
-\backslash
-Lux}{L
-\backslash
-kern-.1667em
-\backslash
-lower.25em
-\backslash
-hbox{U}
-\backslash
-kern-.125emX
-\backslash
-@}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
 
 \backslash
 def
@@ -373,34 +329,6 @@ kern-.125emX
 \begin_layout Plain Layout
 
   {LyX }} 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Teil Programmieren
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float tableau
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-
 \end_layout
 
 \end_inset

@@ -23,7 +23,24 @@ GET_FILENAME_COMPONENT(${_prj_name}_dir_readme ${CMAKE_CURRENT_SOURCE_DIR}/READM
 GET_FILENAME_COMPONENT(TOP_SRC_DIR ${${_prj_name}_dir_readme} PATH)
 
 INCLUDE(GlobalPaths)
+
+INCLUDE(GetOperatingSystemArchitectureBitness)
+GetOperatingSystemArchitectureBitness(VAR_PREFIX ${PROJECT_NAME})
+message(STATUS "Configuring ${PROJECT_NAME} for ${${PROJECT_NAME}_OS}-${${PROJECT_NAME}_ARCHITECTURE} ${${PROJECT_NAME}_BITNESS}-bit")
+if(${${PROJECT_NAME}_BITNESS} EQUAL 32)
+#	message(STATUS "32-bit build")
+	SET(CMAKE_SYSTEM_X86 TRUE)
+else(${${PROJECT_NAME}_BITNESS} EQUAL 64)
+#	message(STATUS "64-bit build")
+	SET(CMAKE_SYSTEM_X64 TRUE)
+else()
+	message(FATAL_ERROR "Can't determine bitness of the build system.")
+endif()
+
+
+
 INCLUDE(ProjectMacros)
+
 PRJ_OPTION_INIT()
 
 string(COMPARE EQUAL "Linux" ${CMAKE_SYSTEM_NAME} LINUX)

@@ -12,11 +12,11 @@
 #include "../GUI/Components/SeamlessImage.h"
 #include "../GUI/Components/Text.h"
 #include "../GUI/Components/TextScroller.h"
+#include "../GUI/Controls/Button.h"
 #include "../GUI/Data/ColorData.h"
 #include "../GUI/Sprite/Sprite.h"
 #include "../GUI/Sprite/SpriteManager.h"
 #include "../GUI/Visual/EventHandler.h"
-#include "GUI/Controls/Button.h"
 
 namespace humbug {
 	namespace levels {

@@ -35,7 +35,7 @@ SET(USE_LIB_BOOST TRUE)
 SET(USE_LIB_QT4 TRUE)
 
 # Use QSCINTILLA libraries for this project.
-SET(USE_LIB_QSCINTILLA TRUE)
+#SET(USE_LIB_QSCINTILLA TRUE)
 
 #SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.

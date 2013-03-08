@@ -107,8 +107,14 @@ else()
 			SET(XSD_DLL_SUFFIX "" )
 		ENDIF(WIN32)
 
+		if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+			# x64
+			set(XSD_LIB_64_Searchpath ${XSD_DIR}/lib64/${XSD_COMPILER_SUFFIX})
+		endif()
+		
         find_path(XSD_LIBRARY_DIR NAMES ${XSD_LIBNAME}
             PATHS
+                ${XSD_LIB_64_Searchpath}
                 ${XSD_DIR}/lib/${XSD_COMPILER_SUFFIX}
                 /usr/lib
                 /usr/local/lib
@@ -130,8 +136,14 @@ else()
 		SET(__XSD_DLL_RELEASE_NAME "${__XSD_DLL_NAME}.so")
 	ENDIF(WIN32)
 
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+		# x64
+		set(XSD_DLL_64_Searchpath ${XSD_DIR}/bin64)
+	endif()
+
 	find_file(XSD_DLL_DEBUG NAMES ${__XSD_DLL_DEBUG_NAME}
 		 PATHS
+			${XSD_DLL_64_Searchpath}
 			${XSD_DIR}/bin
 			${XSD_LIBRARY_DIR}
 			/usr/bin
@@ -142,6 +154,7 @@ else()
 
         find_file(XSD_DLL_RELEASE NAMES ${__XSD_DLL_RELEASE_NAME}
              PATHS
+   			    ${XSD_DLL_64_Searchpath}
                 ${XSD_DIR}/bin
 				${XSD_LIBRARY_DIR}
                 /usr/bin

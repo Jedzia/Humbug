@@ -142,7 +142,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -178,61 +178,18 @@
        height="195.9086"
        x="105.09679"
        y="87.730675" />
-    <rect
-       style="opacity:0.27272728000000002;fill:#d7f6e1;fill-opacity:0.7846154;stroke:#000000;stroke-width:0.91718012000000004;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:11.00616022000000000, 11.00616022000000000;stroke-dashoffset:0"
-       id="rect3795"
-       width="313.9903"
-       height="195.9086"
-       x="51.843266"
-       y="87.730675" />
-    <rect
-       style="opacity:0.27272728000000002;fill:#b5f6e1;fill-opacity:0.80000001;stroke:#000000;stroke-width:0.91718012000000004;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:11.00616022000000000, 11.00616022000000000;stroke-dashoffset:0"
-       id="rect3795-5"
-       width="313.9903"
-       height="195.9086"
-       x="365.866"
-       y="87.730675" />
-    <text
-       xml:space="preserve"
-       style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Consolas;-inkscape-font-specification:Consolas"
-       x="54.782444"
-       y="205.29243"
-       id="text3830"
-       sodipodi:linespacing="125%"
-       transform="scale(1.0221166,0.97836196)"><tspan
-         sodipodi:role="line"
-         id="tspan3832"
-         x="54.782444"
-         y="205.29243">Image A</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:28.87026405px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:none;stroke:#000000;stroke-width:1.20292771;stroke-opacity:1;font-family:Sans"
-       x="264.41092"
-       y="280.64188"
-       id="text3769"
-       sodipodi:linespacing="125%"
-       transform="scale(1.0221166,0.97836199)"><tspan
-         sodipodi:role="line"
-         id="tspan3771"
-         x="264.41092"
-         y="280.64188"
-         style="stroke-width:1.20292771">SeamWindow</tspan></text>
-    <path
-       style="opacity:0.27272728;fill:#00ff00;fill-opacity:0.93846154;stroke:#000000;stroke-width:0.67279804;stroke-linecap:butt;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 650.67275,295.45601 0,15.28125 -141.6875,0 0,20.46875 141.6875,0 0,14.84375 25.28125,-25.3125 -25.28125,-25.28125 z"
-       id="rect5230"
-       inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:Consolas;-inkscape-font-specification:Consolas"
-       x="567.01306"
+       x="252.40385"
        y="205.29243"
-       id="text3830-3"
+       id="text3769"
        sodipodi:linespacing="125%"
        transform="scale(1.0221166,0.97836196)"><tspan
          sodipodi:role="line"
-         id="tspan3832-1"
-         x="567.01306"
-         y="205.29243">Image B</tspan></text>
+         id="tspan3771"
+         x="252.40385"
+         y="205.29243"
+         style="stroke-width:1.20292771">SeamWindow</tspan></text>
   </g>
 </svg>

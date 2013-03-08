@@ -178,9 +178,8 @@ jedminitoc
 jedgerman
 \end_modules
 \begin_includeonly
-Programmieren.lyx
-DataSystem.lyx
 Grafics.lyx
+graphics.lyx
 \end_includeonly
 \maintain_unincluded_children false
 \language english
@@ -450,10 +449,12 @@ boolean{frontIncluded}}%
 \end_layout
 
 \begin_layout Plain Layout
+
 	% If the front document isn't included, we need a table of contents here
 \end_layout
 
 \begin_layout Plain Layout
+
 	% to generate the references for minitoc.
 \end_layout
 
