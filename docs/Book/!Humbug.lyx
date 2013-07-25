@@ -1,5 +1,5 @@
 #LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 464
+\lyxformat 467
 \begin_document
 \begin_header
 \textclass scrbookjed
@@ -180,6 +180,7 @@ jedgerman
 \begin_includeonly
 Grafics.lyx
 graphics.lyx
+DataSystem.lyx
 \end_includeonly
 \maintain_unincluded_children false
 \language english
