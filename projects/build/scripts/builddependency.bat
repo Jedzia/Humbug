@@ -18,7 +18,7 @@ set LIB=%PLIB%;..\..\%4\Debug;..\%4\Debug
 if "%3" == "ALL" (
 	msbuild /p:Configuration=Debug%PlatBUILD% /p:"VCBuildAdditionalOptions= /useenv" %2
 ) else (
-	msbuild /p:Configuration=Debug%PlatBUILD% /p:"VCBuildAdditionalOptions= /useenv" /t:%3 %2 %4
+	msbuild /p:Configuration=Debug%PlatBUILD% /p:"VCBuildAdditionalOptions= /useenv" /t:%3 %2 
 )
 if %ERRORLEVEL% NEQ 0 goto error
 
@@ -26,7 +26,7 @@ set LIB=%PLIB%;..\..\%4\Release;..\%4\Release
 if "%3" == "ALL" (
 	msbuild /p:Configuration=Release%PlatBUILD% /p:"VCBuildAdditionalOptions= /useenv" %2
 ) else (
-	msbuild /p:Configuration=Release%PlatBUILD% /p:"VCBuildAdditionalOptions= /useenv" /t:%3 %2 %4
+	msbuild /p:Configuration=Release%PlatBUILD% /p:"VCBuildAdditionalOptions= /useenv" /t:%3 %2 
 )
 if %ERRORLEVEL% NEQ 0 goto error
 

@@ -1,3 +1,7 @@
+
+-X-X-X-X- Do, 29 Aug 2013 10:48:29 -----------------------------------------------------------
+move GUI/Components/SeamlessImage.cpp to GUI/Controls/SeamlessImage.cpp. it is a control
+-----------------------------------------------------------------------------------------------
 -X-X-X-X- Dienstag, 17. Juli 2012 -----------------------------------------------------------------------------
 
 Use a plugable architecture for a screen model in the main CTestEventHandler. CScreen?
@@ -12,3 +16,4 @@ Use a plugable architecture for a screen model in the main CTestEventHandler. CS
 
 Better front info for options used in bindings.cmake -> macro.
 ----------------------------------------------------------------------------------------------------------------
+

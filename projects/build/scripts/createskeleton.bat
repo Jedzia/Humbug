@@ -1,3 +1,5 @@
+REM use this in a project/_ProjectName_ folder
+
 mkdir docs
 mkdir docs\%1
 mkdir Model
