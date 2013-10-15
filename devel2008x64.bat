@@ -21,27 +21,7 @@ cd %builddir%
 
 REM call %comspec% /k ""C:\Programme\Microsoft Visual Studio 8\VC\vcvarsall.bat"" x64
 
-ECHO 
-ECHO .
-ECHO "C:\Program Files\CMake-2.8.5\bin\cmake-gui" ..\projects
-ECHO .
-ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:ALL_BUILD:Rebuild
-ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:Humbug:Rebuild
-ECHO "msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:Humbug && Humbug\src\Debug\Humbug.exe"
-ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:HumbugConsole:Rebuild
-ECHO msbuild Humbug.sln /t:Rebuild /m /v:diag /p:Configuration=Debug
-ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug
-ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\throw_error
-ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\throw_error:Rebuild
-ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\csz_textdocument
-ECHO Playground\Debug\csz_textdocument.exe
-ECHO msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Library\CppStructz
-ECHO msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-CppStructz_src_UnitTests-unit_test_example_01
-ECHO msbuild Humbug.sln /p:Configuration=Debug /t:Playground\plugin\plugin
-ECHO msbuild Humbug.sln /p:Configuration=Debug /t:Playground\templates_statemachine
-ECHO msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:ALL_BUILD
-ECHO "C:\Program Files\CMake-2.8.5\bin\ctest.exe" --force-new-ctest-process -C Debug
-ECHO .
+type %~dp0%config\WelcomeShell.txt
 
 start /B "C:\Program Files\Notepad++\notepad++.exe" "%~dp0\projects\np.session"
 REM start /B "devenv" "Humbug.sln"

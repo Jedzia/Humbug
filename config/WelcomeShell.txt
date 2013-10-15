@@ -1,0 +1,24 @@
+     
+   .
+   "C:\Program Files\CMake-2.8.5\bin\cmake-gui" ..\projects
+   .
+   msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:ALL_BUILD:Rebuild
+   msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:Humbug:Rebuild
+   msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:Humbug && Humbug\src\Debug\Humbug.exe
+   msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:HumbugConsole:Rebuild
+   msbuild Humbug.sln /t:Rebuild /m /v:diag /p:Configuration=Debug
+   msbuild Humbug.sln /m /v:d /p:Configuration=Debug
+   msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\throw_error
+   msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\throw_error:Rebuild
+   msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Playground\csz_textdocument
+   Playground\Debug\csz_textdocument.exe
+   msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Library\CppStructz
+   msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-CppStructz_src_UnitTests-unit_test_example_01
+   msbuild Humbug.sln /p:Configuration=Debug /t:Playground\plugin\plugin
+   msbuild Humbug.sln /p:Configuration=Debug /t:Playground\templates_statemachine
+   msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:ALL_BUILD
+   "C:\Program Files\CMake-2.8.5\bin\ctest.exe" --force-new-ctest-process -C Debug
+   
+   Start with:
+   ..\BuildDependencies or ..\BuildDependencies_2010
+ .
