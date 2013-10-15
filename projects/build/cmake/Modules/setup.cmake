@@ -212,6 +212,9 @@ PRJ_OPTION(NLS              "Enable Native Language Support (NLS)" OFF ALL)
 				endif()
         ENDIF(${${_prj_name}_NLS})
 
+
+PRJ_OPTION(EXTERNAL_ZLIB "Use external zlib" ON ALL)
+
 # --------- Set GNUWIN Directory -------------
 
 if(WIN32)

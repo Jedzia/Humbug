@@ -30,7 +30,15 @@
 #=============================================================================
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
-SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/zlib-1.2.7)
+
+
+SET(ZLIBVER $ENV{ZLIBVER})
+IF(NOT ZLIBVER)
+  SET(ZLIBVER "1.2.8")
+ENDIF()
+#message(FATAL_ERROR "ERROR: ${ZLIBVER} bla bla.")
+
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/zlib-${ZLIBVER})
 
 FIND_PATH(ZLIB_INCLUDE_DIR zlib.h
     "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GnuWin32\\Zlib;InstallPath]/include"
@@ -44,6 +52,9 @@ FIND_LIBRARY(ZLIB_LIBRARY
     PATHS
         "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GnuWin32\\Zlib;InstallPath]/lib"
 		${_DEP_PATH}/contrib/vstudio/vc9/x64/ZlibDllRelease
+		${_DEP_PATH}/contrib/vstudio/vc9/x86/ZlibDllRelease
+		${_DEP_PATH}/contrib/vstudio/vc10/x64/ZlibDllRelease
+		${_DEP_PATH}/contrib/vstudio/vc10/x86/ZlibDllRelease
 )
 MARK_AS_ADVANCED(ZLIB_LIBRARY ZLIB_INCLUDE_DIR)
 

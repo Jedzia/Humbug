@@ -12,22 +12,25 @@ set PLIB=%LIB%
 REM goto SDL_gfx
 
 
+IF "%ZLIBVER%"=="" SET ZLIBVER=1.2.8
 REM call fetchdependency http://sourceforge.net/projects/libpng/files/zlib/1.2.5/  zlib-1.2.5.tar.gz
-call fetchdependency http://zlib.net/ zlib-1.2.7.tar.gz
+call fetchdependency http://zlib.net/ zlib-%ZLIBVER%.tar.gz
+if %ERRORLEVEL% NEQ 0 goto error
+call patchdependency unzip DEPS\zlib-1.2.8\contrib\vstudio\vc9 "%SCRDIR%\Dependencies\zlibvc-1.2.8-ZLIB_WINAPI-fix.zip"
 if %ERRORLEVEL% NEQ 0 goto error
 if "%PLATFORM%" == "x64" (
-	pushd "%TMPDIR%\zlib-1.2.7/contrib/masmx64"
+	pushd "%TMPDIR%\zlib-%ZLIBVER%/contrib/masmx64"
 	call bld_ml64.bat
 	popd
 ) else (
-	pushd "%TMPDIR%\zlib-1.2.7/contrib/masmx86"
+	pushd "%TMPDIR%\zlib-%ZLIBVER%/contrib/masmx86"
 	call bld_ml32.bat
 	popd
 )
 if %ERRORLEVEL% NEQ 0 goto error
-call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibvc /p:\"OUT=$(OutDir)\zlib1.dll\"
-REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln zlibstat
-REM call builddependency zlib-1.2.7/contrib/vstudio/vc9 zlibvc.sln ALL
+call builddependency zlib-%ZLIBVER%/contrib/vstudio/vc9 zlibvc.sln zlibvc /p:\"OUT=$(OutDir)\zlib1.dll\"
+REM call builddependency zlib-%ZLIBVER%/contrib/vstudio/vc9 zlibvc.sln zlibstat
+REM call builddependency zlib-%ZLIBVER%/contrib/vstudio/vc9 zlibvc.sln ALL
 if %ERRORLEVEL% NEQ 0 goto error
 REM goto ende
 
@@ -72,8 +75,8 @@ if %ERRORLEVEL% NEQ 0 goto error
 :SDL_gfx
 call fetchdependency http://www.ferzkopp.net/Software/SDL_gfx-2.0/ SDL_gfx-2.0.23.tar.gz
 if %ERRORLEVEL% NEQ 0 goto error
-REM call patchdependency unzip SDL_gfx-2.0.23 "%SCRDIR%\Dependencies\SDL_gfx-2.0.23-VisualC.zip"
-REM if %ERRORLEVEL% NEQ 0 goto error
+call patchdependency unzip DEPS\SDL_gfx-2.0.23 "%SCRDIR%\Dependencies\SDL_gfx-2.0.23-VisualC.zip"
+if %ERRORLEVEL% NEQ 0 goto error
 REM call builddependency SDL_gfx-2.0.23/VisualC SDL_gfx.sln SDL_gfx SDL-1.2.15\VisualC\SDL
 set PINCLUDE=%INCLUDE%;..\SDL-1.2.15\include;..\
 call builddependency SDL_gfx-2.0.23 SDL_gfx_VS2008.sln SDL_gfx SDL-1.2.15\VisualC\SDL

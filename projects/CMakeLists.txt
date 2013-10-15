@@ -40,7 +40,7 @@ SET(CppStructz_No_CorePlug 1)
 
 
 # Include CMakeLists.txt from subdirectories. Say, here comes the project stuff.
-#ADD_SUBDIRECTORY(SupportLibs)
+ADD_SUBDIRECTORY(SupportLibs)
 #ADD_SUBDIRECTORY(CppStructz)
 ADD_SUBDIRECTORY(HumbugLib)
 

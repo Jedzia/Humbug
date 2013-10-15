@@ -96,7 +96,6 @@ IF(WIN32)
 	#	${_DEP_PATH}/VisualC/external/lib/x86
     #)
     #FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
-    #FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS D:/E/Projects/C++/Humbug/build/DEPS/SDL_image-1.2.12/VisualC/external/lib/x86/*.dll)
 	#SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
 	IF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 	 SET( _sdlttf_library_dlls_ext_path x86 )
