@@ -105,6 +105,7 @@ IF(WIN32)
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/SDL/Debug
+		${_DEP_PATH}/VisualC/Debug
     )
     
 ENDIF(WIN32)
@@ -132,6 +133,7 @@ FIND_LIBRARY(SDL_LIBRARY_TEMP
   /opt/csw
   /opt
   ${_DEP_PATH}/VisualC/SDL/Release
+  ${_DEP_PATH}/VisualC/Release
 )
 
 ENDIF(MINGW)

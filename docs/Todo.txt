@@ -1,3 +1,9 @@
+-X-X-X-X- Dienstag, 15. Oktober 2013 -----------------------------------------------------------------------------
+Exchange
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL-1.2.15)
+in the SDL find scripts (projects\build\cmake\Modules\FindSDL.cmake, etc.) with
+the proper environment vars, set by config.bat
+----------------------------------------------------------------------------------------------------------------
 
 -X-X-X-X- Do, 29 Aug 2013 10:48:29 -----------------------------------------------------------
 move GUI/Components/SeamlessImage.cpp to GUI/Controls/SeamlessImage.cpp. it is a control

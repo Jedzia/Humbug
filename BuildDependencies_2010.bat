@@ -14,8 +14,8 @@ REM goto SDL_gfx
 IF "%ZLIBVER%"=="" SET ZLIBVER=1.2.8
 REM call fetchdependency http://sourceforge.net/projects/libpng/files/zlib/1.2.5/  zlib-1.2.5.tar.gz
 call fetchdependency http://zlib.net/ zlib-%ZLIBVER%.tar.gz
-REM if %ERRORLEVEL% NEQ 0 goto error
-REM call patchdependency unzip DEPS\zlib-1.2.8\contrib\vstudio\vc10 "%SCRDIR%\Dependencies\zlibvc-1.2.8-ZLIB_WINAPI-fix.zip"
+if %ERRORLEVEL% NEQ 0 goto error
+call patchdependency unzip DEPS\zlib-1.2.8\contrib\vstudio "%SCRDIR%\Dependencies\zlibvc-1.2.8-ZLIB_WINAPI-fix.zip"
 if %ERRORLEVEL% NEQ 0 goto error
 if "%PLATFORM%" == "x64" (
 	pushd "%TMPDIR%\zlib-%ZLIBVER%/contrib/masmx64"
