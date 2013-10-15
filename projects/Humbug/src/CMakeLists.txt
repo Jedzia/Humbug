@@ -44,7 +44,7 @@ SET(USE_LIB_BOOST TRUE)
 SET(USE_SDL TRUE)
 SET(USE_SDL_IMAGE TRUE)
 SET(USE_SDL_TTF TRUE)
-SET(USE_SDL_GFX TRUE)
+#SET(USE_SDL_GFX TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -381,7 +381,9 @@ TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
-TARGET_LINK_LIBRARIES(Humbug ${SDLGFX_LIBRARY})
+IF(USE_SDL_GFX)
+    TARGET_LINK_LIBRARIES(Humbug ${SDLGFX_LIBRARY})
+ENDIF()
 
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header, 
