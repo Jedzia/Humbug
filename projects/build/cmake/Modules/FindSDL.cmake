@@ -133,6 +133,7 @@ FIND_LIBRARY(SDL_LIBRARY_TEMP
   /opt/csw
   /opt
   ${_DEP_PATH}/VisualC/SDL/Release
+  ${_DEP_PATH}/VisualC/x64/Release
   ${_DEP_PATH}/VisualC/Release
 )
 

@@ -13,6 +13,10 @@ call "%DXSDK_DIR%\Utilities\Bin\dx_setenv.cmd"
 cd "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\"
 call "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat" amd64
 set PATH=E:\Devel\CPP\Libs\QT4\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\site\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\bin;%PATH%;C:\Program Files\SVN\bin;
+if "%PLATFORM%" == "X64" (
+	set PLATFORM=x64
+)
+
 REM set QTDIR=E:\Devel\CPP\Libs\QT4
 SET SDLDIR=%~dp0%builddir%\DEPS\SDL-%SDLVER%
 

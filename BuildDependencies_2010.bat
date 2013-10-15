@@ -82,6 +82,9 @@ REM if %ERRORLEVEL% NEQ 0 goto error
 call fetchdependency http://downloads.sourceforge.net/project/oglconsole/oglconsole/0.2/ oglconsole-0.2.tar.gz
 if %ERRORLEVEL% NEQ 0 goto error
 
+if "%PLATFORM%" == "Win32" goto SDL_gfx
+echo OUCH: SDL_gfx is not available as x64 build!
+goto ende
 :SDL_gfx 
 call fetchdependency http://www.ferzkopp.net/Software/SDL_gfx-2.0/ SDL_gfx-2.0.23.tar.gz
 if %ERRORLEVEL% NEQ 0 goto error
