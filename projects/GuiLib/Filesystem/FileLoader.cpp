@@ -1,11 +1,9 @@
 #include "../stdafx.h"
 #include "FileLoader.h"
 #include <HumbugShared/VFS/zfsystem.h>
-#if SDL_GUILIB_ENABLED
 	#include "SDL.h"
 	#include "SDL_image.h"
 	#include "SDL_ttf.h"
-#endif
 
 using zip_file_system::filesystem;
 using zip_file_system::izfstream;
@@ -30,16 +28,12 @@ FileLoadingInfo::~FileLoadingInfo()
     std::cout << "FileLoadingInfo freeing '" << Name() << "'" << std::endl;
     if(m_pSurface)
     {
-#if SDL_GUILIB_ENABLED
 	        SDL_FreeSurface(m_pSurface);
-#endif
         m_pSurface = NULL;
     }
     else if(m_pFont)
     {
-#if SDL_GUILIB_ENABLED
 	        TTF_CloseFont( m_pFont );
-#endif
         m_pFont = NULL;
         //SDL_FreeRW(m_pArea);
         //m_pArea = NULL;
@@ -125,9 +119,7 @@ struct FileLoader::FileLoaderImpl {
             //data.resize(fsize);
             data = new char[fsize];
             file.read(&data[0], fsize);
-#if SDL_GUILIB_ENABLED
 	            imgmem = SDL_RWFromMem(&data[0], fsize);
-#endif
 
             //sdlsurface = IMG_Load_RW(imgmem, 1);
         }
@@ -156,19 +148,14 @@ struct FileLoader::FileLoaderImpl {
             //data.clear();
             //data.resize(fsize);
             //SDL_LoadBMP_RW(imgmem, 1);
-#if SDL_GUILIB_ENABLED
 	            sdlsurface = IMG_Load_RW(imgmem, 1);
-#endif
             //SDL_FreeRW(imgmem);
             delete[] data;
             if (!sdlsurface) {
                 //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
                 // load a internal error image.
-#if SDL_GUILIB_ENABLED
 					char *imgMsg = IMG_GetError();
-#else
-				    char *imgMsg = "Not SDL";
-#endif
+
                 HUMBUG_FILELOADER_THROW(
                     FileLoaderException(std::string("[FileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
                 // generic_category
@@ -197,22 +184,15 @@ struct FileLoader::FileLoaderImpl {
         {
             //data.clear();
             //data.resize(fsize);
-#if SDL_GUILIB_ENABLED
 	            font = TTF_OpenFontRW(imgmem, 1, ptsize);
-#endif
             flinfo = new FileLoadingInfo(filename, font, imgmem, data);
             //SDL_FreeRW(imgmem);
             //delete[] data;
             if (!font) {
                 //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
                 // load a internal error image.
-#if SDL_GUILIB_ENABLED
 				HUMBUG_FILELOADER_THROW(
 	                    FileLoaderException(std::string("[FileLoader::LoadFont]: '" ) + filename + "' " + TTF_GetError(), 1));
-#else
-				HUMBUG_FILELOADER_THROW(
-						FileLoaderException(std::string("[FileLoader::LoadFont]: '" ) + filename + "' " + "NO SDL", 1));
-#endif
                 // generic_category
             }
 
@@ -244,21 +224,15 @@ struct FileLoader::FileLoaderImpl {
             char* data = new char[fsize];
             file.read(&data[0], fsize);
 
-#if SDL_GUILIB_ENABLED
 	            SDL_RWops* imgmem = SDL_RWFromMem(&data[0], fsize);
 	            sdlsurface = IMG_Load_RW(imgmem, 1);
-#endif
             delete[] data;
             if (!sdlsurface) {
                 //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
                 // load a internal error image.
-#if SDL_GUILIB_ENABLED
 	                HUMBUG_FILELOADER_THROW(
 	                    FileLoaderException(std::string("[FileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
-#else
-				HUMBUG_FILELOADER_THROW(
-					FileLoaderException(std::string("[FileLoader::LoadImg-slurp5]: '" ) + filename + "' " + "NO SDL", 1));
-#endif
+
                 // generic_category
             }
         }

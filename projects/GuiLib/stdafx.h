@@ -68,11 +68,9 @@
 #define DEBUG_MEMORY_SUMMARY_ON_EXIT 1
 #include <build/cmake/include/debug.h>
 
-#if SDL_GUILIB_ENABLED
 	#include "SDL.h"
 	#include "SDL_image.h"
 	#include "SDL_ttf.h"
-#endif
 
 //#include "GUI/Components/Rectangle.h"
 

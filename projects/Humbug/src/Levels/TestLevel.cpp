@@ -6,17 +6,17 @@
 #include "boost/lambda/lambda.hpp"
 #include "boost/function.hpp"
 //
-#include "../Filesystem/FileLoader.h"
-#include "../GUI/Components/Image.h"
-#include "../GUI/Components/Rectangle.h"
-#include "../GUI/Components/SeamlessImage.h"
-#include "../GUI/Components/Text.h"
-#include "../GUI/Components/TextScroller.h"
-#include "../GUI/Controls/Button.h"
-#include "../GUI/Data/ColorData.h"
-#include "../GUI/Sprite/Sprite.h"
-#include "../GUI/Sprite/SpriteManager.h"
-#include "../GUI/Visual/EventHandler.h"
+#include <Filesystem/FileLoader.h>
+#include <GUI/Components/Image.h>
+#include <GUI/Components/Rectangle.h>
+#include <GUI/Components/SeamlessImage.h>
+#include <GUI/Components/Text.h>
+#include <GUI/Components/TextScroller.h>
+#include <GUI/Controls/Button.h>
+#include <GUI/Data/ColorData.h>
+#include <GUI/Sprite/Sprite.h>
+#include <GUI/Sprite/SpriteManager.h>
+#include <GUI/Visual/EventHandler.h>
 
 namespace humbug {
 	namespace levels {
@@ -72,7 +72,7 @@ gui::controls::CButton* testbutton;
 bool TestLevel::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-	
+
 	testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0,0,160,40), 21345, "Change Direction");
 	testbutton->SetPosition(CPoint(800,30));
 
@@ -151,7 +151,7 @@ void TestLevel::OnDraw(){
     CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
-	
+
 	static CPoint sp(-1600,110);
 	//m_pSprite->SetPos(sp);
 	//m_pSprite->Draw();
@@ -159,7 +159,7 @@ void TestLevel::OnDraw(){
 	if (testbutton->IsPressed())
 	{
 		sp.Subtract(CPoint(-3,0));
-	} 
+	}
 	else
 	{
 		sp.Subtract(CPoint(3,0));

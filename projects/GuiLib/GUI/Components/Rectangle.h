@@ -1,20 +1,7 @@
 #ifndef __GUI_COMPONENTS_RECTANGLE_H__
 #define __GUI_COMPONENTS_RECTANGLE_H__
 
-#if SDL_GUILIB_ENABLED
-	#include "sdl.h"
-	#define GSDL_Rect SDL_Rect
-#else
-
-	typedef unsigned __int32	Uint32;
-	typedef signed __int16		Sint16;
-	typedef unsigned __int16	Uint16;
-	typedef struct GSDL_Rect {
-		Sint16 x, y;
-		Uint16 w, h;
-	} GSDL_Rect;
-#endif
-
+#include "sdl.h"
 #include "point.h"
 #include <iostream>
 
@@ -26,15 +13,15 @@ class CRectangle
 {
 private:
 	//internal representation of a SDL_Rect
-	GSDL_Rect m_rect ;
+	SDL_Rect m_rect ;
 public:
 	//constructors--direct member assignment
 	CRectangle ( Sint16 x = 0 , Sint16 y = 0 , Uint16 w = 0 , Uint16 h = 0 ) ;
 	CRectangle ( CPoint xy , CPoint wh ) ;
 	//copy from SDL_Rect
-	//CRectangle ( SDL_Rect rc ) ;
+	CRectangle ( SDL_Rect rc ) ;
 	//copy from SDL_Rect*
-	//CRectangle ( SDL_Rect* prc ) ;
+	CRectangle ( SDL_Rect* prc ) ;
 	//copy from another CRectangle
 	CRectangle ( const CRectangle& rc ) ;
 	virtual ~CRectangle ( ) ;
@@ -59,9 +46,9 @@ public:
 
 	//conversion operators
 	//convert to SDL_Rect
-	operator GSDL_Rect ( ) ;
+	operator SDL_Rect ( ) ;
 	//convert to SDL_Rect*
-	operator GSDL_Rect* ( ) ;
+	operator SDL_Rect* ( ) ;
 	//convert to CPoint
 	operator CPoint ( ) ;
 

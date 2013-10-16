@@ -7,7 +7,7 @@
 //
 #include "EventHandler.h"
 //#include "Hookable.h"
-//#include "HookableManager.h"
+#include "HookableManager.h"
 
 
 namespace gui {
@@ -16,7 +16,7 @@ MSGID CEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 
 //constructor
 CEventHandler::CEventHandler()
-//: m_HookMgr(new HookableManager(this))
+: m_HookMgr(new HookableManager(this))
 {
     //do nothing
 }
@@ -31,155 +31,153 @@ void CEventHandler::OnEvent(SDL_Event* pEvent){
     //filter event
     if( FilterEvent(pEvent) ) { return; }
 
-#if SDL_GUILIB_ENABLED
-	    //dispatch event
-	    switch(pEvent->type)
-	    {
-	    case SDL_ACTIVEEVENT:    //activation event
-	    {
-	        //what was gained or lost?
-	        switch(pEvent->active.state)
-	        {
-	        case SDL_APPMOUSEFOCUS:                //mouse focus
-	        {
-	            //gain or loss?
-	            if(pEvent->active.gain) {
-	                //gain
-	                OnMouseFocus();
-	            }
-	            else {
-	                //loss
-	                OnMouseBlur();
-	            }
-	        } break;
-	        case SDL_APPINPUTFOCUS:                //input focus
-	        {
-	            //gain or loss?
-	            if(pEvent->active.gain) {
-	                //gain
-	                OnInputFocus();
-	            }
-	            else {
-	                //loss
-	                OnInputBlur();
-	            }
-	        } break;
-	        case SDL_APPACTIVE:                //application activation
-	        {
-	            //gain or loss?
-	            if(pEvent->active.gain) {
-	                //gain
-	                OnRestore();
-	            }
-	            else {
-	                //loss
-	                OnMinimize();
-	            }
-	        } break;
-	        } // switch
-	    } break;
-	    case SDL_KEYDOWN:    //key press
-	    {
-	        //key press
-	        OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-	
-	    } break;
-	    case SDL_KEYUP:    //key release
-	    {
-	        //key release
-	        OnKeyUp(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-	
-	    } break;
-	    case SDL_MOUSEMOTION:    //mouse motion
-	    {
-	        OnMouseMove(pEvent->motion.x, pEvent->motion.y, pEvent->motion.xrel, pEvent->motion.yrel,
-	                ( pEvent->motion.state & SDL_BUTTON(SDL_BUTTON_LEFT) )!=0,
-	                ( pEvent->motion.state & SDL_BUTTON(SDL_BUTTON_RIGHT) )!=0,
-	                ( pEvent->motion.state & SDL_BUTTON(SDL_BUTTON_MIDDLE) )!=0);
-	    } break;
-	    case SDL_MOUSEBUTTONDOWN:    //mouse button press
-	    {
-	        //which button?
-	        switch(pEvent->button.button)
-	        {
-	        case SDL_BUTTON_LEFT:                //left button
-	        {
-	            OnLButtonDown(pEvent->button.x, pEvent->button.y);
-	        } break;
-	        case SDL_BUTTON_RIGHT:                //right button
-	        {
-	            OnRButtonDown(pEvent->button.x, pEvent->button.y);
-	        } break;
-	        case SDL_BUTTON_MIDDLE:                //middle button
-	        {
-	            OnMButtonDown(pEvent->button.x, pEvent->button.y);
-	        } break;
-	        } // switch
-	    } break;
-	    case SDL_MOUSEBUTTONUP:    //mouse button release
-	    {
-	        //which button?
-	        switch(pEvent->button.button)
-	        {
-	        case SDL_BUTTON_LEFT:                //left button
-	        {
-	            OnLButtonUp(pEvent->button.x, pEvent->button.y);
-	        } break;
-	        case SDL_BUTTON_RIGHT:                //right button
-	        {
-	            OnRButtonUp(pEvent->button.x, pEvent->button.y);
-	        } break;
-	        case SDL_BUTTON_MIDDLE:                //middle button
-	        {
-	            OnMButtonUp(pEvent->button.x, pEvent->button.y);
-	        } break;
-	        } // switch
-	    } break;
-	    case SDL_JOYAXISMOTION:    //joystick axis motion
-	    {
-	        OnJoyAxis(pEvent->jaxis.which, pEvent->jaxis.axis, pEvent->jaxis.value);
-	    } break;
-	    case SDL_JOYBALLMOTION:    //joystick ball motion
-	    {
-	        OnJoyBall(pEvent->jball.which, pEvent->jball.ball, pEvent->jball.xrel, pEvent->jball.yrel);
-	    } break;
-	    case SDL_JOYHATMOTION:    //joystick hat motion
-	    {
-	        OnJoyHat(pEvent->jhat.which, pEvent->jhat.hat, pEvent->jhat.value);
-	    } break;
-	    case SDL_JOYBUTTONDOWN:    //joystick button press
-	    {
-	        OnJoyButtonDown(pEvent->jbutton.which, pEvent->jbutton.button);
-	    } break;
-	    case SDL_JOYBUTTONUP:    //joystick button release
-	    {
-	        OnJoyButtonUp(pEvent->jbutton.which, pEvent->jbutton.button);
-	    } break;
-	    case SDL_QUIT:    //quit event
-	    {
-	        //ignore
-	    } break;
-	    case SDL_SYSWMEVENT:    //window manager event
-	    {
-	        //ignore
-	    } break;
-	    case SDL_VIDEORESIZE:    //resize video
-	    {
-	        //resize handler
-	        OnResize(pEvent->resize.w, pEvent->resize.h);
-	    } break;
-	    case SDL_VIDEOEXPOSE:    //video expose
-	    {
-	        //expose handler
-	        OnExpose();
-	    } break;
-	    default:    //user defined
-	    {
-	        //user event handler
-	        OnUser(pEvent->user.type, pEvent->user.code, pEvent->user.data1, pEvent->user.data2);
-	    } break;
-	    } // switch
-#endif
+    //dispatch event
+    switch(pEvent->type)
+    {
+    case SDL_ACTIVEEVENT:    //activation event
+    {
+        //what was gained or lost?
+        switch(pEvent->active.state)
+        {
+        case SDL_APPMOUSEFOCUS:                //mouse focus
+        {
+            //gain or loss?
+            if(pEvent->active.gain) {
+                //gain
+                OnMouseFocus();
+            }
+            else {
+                //loss
+                OnMouseBlur();
+            }
+        } break;
+        case SDL_APPINPUTFOCUS:                //input focus
+        {
+            //gain or loss?
+            if(pEvent->active.gain) {
+                //gain
+                OnInputFocus();
+            }
+            else {
+                //loss
+                OnInputBlur();
+            }
+        } break;
+        case SDL_APPACTIVE:                //application activation
+        {
+            //gain or loss?
+            if(pEvent->active.gain) {
+                //gain
+                OnRestore();
+            }
+            else {
+                //loss
+                OnMinimize();
+            }
+        } break;
+        } // switch
+    } break;
+    case SDL_KEYDOWN:    //key press
+    {
+        //key press
+        OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+
+    } break;
+    case SDL_KEYUP:    //key release
+    {
+        //key release
+        OnKeyUp(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+
+    } break;
+    case SDL_MOUSEMOTION:    //mouse motion
+    {
+        OnMouseMove(pEvent->motion.x, pEvent->motion.y, pEvent->motion.xrel, pEvent->motion.yrel,
+                ( pEvent->motion.state & SDL_BUTTON(SDL_BUTTON_LEFT) )!=0,
+                ( pEvent->motion.state & SDL_BUTTON(SDL_BUTTON_RIGHT) )!=0,
+                ( pEvent->motion.state & SDL_BUTTON(SDL_BUTTON_MIDDLE) )!=0);
+    } break;
+    case SDL_MOUSEBUTTONDOWN:    //mouse button press
+    {
+        //which button?
+        switch(pEvent->button.button)
+        {
+        case SDL_BUTTON_LEFT:                //left button
+        {
+            OnLButtonDown(pEvent->button.x, pEvent->button.y);
+        } break;
+        case SDL_BUTTON_RIGHT:                //right button
+        {
+            OnRButtonDown(pEvent->button.x, pEvent->button.y);
+        } break;
+        case SDL_BUTTON_MIDDLE:                //middle button
+        {
+            OnMButtonDown(pEvent->button.x, pEvent->button.y);
+        } break;
+        } // switch
+    } break;
+    case SDL_MOUSEBUTTONUP:    //mouse button release
+    {
+        //which button?
+        switch(pEvent->button.button)
+        {
+        case SDL_BUTTON_LEFT:                //left button
+        {
+            OnLButtonUp(pEvent->button.x, pEvent->button.y);
+        } break;
+        case SDL_BUTTON_RIGHT:                //right button
+        {
+            OnRButtonUp(pEvent->button.x, pEvent->button.y);
+        } break;
+        case SDL_BUTTON_MIDDLE:                //middle button
+        {
+            OnMButtonUp(pEvent->button.x, pEvent->button.y);
+        } break;
+        } // switch
+    } break;
+    case SDL_JOYAXISMOTION:    //joystick axis motion
+    {
+        OnJoyAxis(pEvent->jaxis.which, pEvent->jaxis.axis, pEvent->jaxis.value);
+    } break;
+    case SDL_JOYBALLMOTION:    //joystick ball motion
+    {
+        OnJoyBall(pEvent->jball.which, pEvent->jball.ball, pEvent->jball.xrel, pEvent->jball.yrel);
+    } break;
+    case SDL_JOYHATMOTION:    //joystick hat motion
+    {
+        OnJoyHat(pEvent->jhat.which, pEvent->jhat.hat, pEvent->jhat.value);
+    } break;
+    case SDL_JOYBUTTONDOWN:    //joystick button press
+    {
+        OnJoyButtonDown(pEvent->jbutton.which, pEvent->jbutton.button);
+    } break;
+    case SDL_JOYBUTTONUP:    //joystick button release
+    {
+        OnJoyButtonUp(pEvent->jbutton.which, pEvent->jbutton.button);
+    } break;
+    case SDL_QUIT:    //quit event
+    {
+        //ignore
+    } break;
+    case SDL_SYSWMEVENT:    //window manager event
+    {
+        //ignore
+    } break;
+    case SDL_VIDEORESIZE:    //resize video
+    {
+        //resize handler
+        OnResize(pEvent->resize.w, pEvent->resize.h);
+    } break;
+    case SDL_VIDEOEXPOSE:    //video expose
+    {
+        //expose handler
+        OnExpose();
+    } break;
+    default:    //user defined
+    {
+        //user event handler
+        OnUser(pEvent->user.type, pEvent->user.code, pEvent->user.data1, pEvent->user.data2);
+    } break;
+    } // switch
 
 } // OnEvent
 
@@ -217,16 +215,14 @@ void CEventHandler::OnRestore(){
     //do nothing
 }
 
-#if SDL_GUILIB_ENABLED
-	//keyboard events
-	void CEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
-	    //do nothing
-	}
-	
-	void CEventHandler::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode){
-	    //do nothing
-	}
-#endif
+//keyboard events
+void CEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
+    //do nothing
+}
+
+void CEventHandler::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode){
+    //do nothing
+}
 
 //mouse events
 void CEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft,
@@ -305,16 +301,14 @@ bool CEventHandler::OnPreInit( int argc,char* argv[] )
 void CEventHandler::OnExiting()
 {
     //Hookable::Close();
-//    m_HookMgr->Close();
+    m_HookMgr->Close();
     //delete m_Hooks;
     //throw std::exception("The method or operation is not implemented.");
 }
 
 bool CEventHandler::OnPostInit( int argc,char* argv[] )
 {
-#if SDL_GUILIB_ENABLED
-	    m_sigOnInit(argc, argv);
-#endif
+    m_sigOnInit(argc, argv);
     return true;
 }
 

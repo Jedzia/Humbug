@@ -2,10 +2,13 @@
 #ifndef __MESSAGEHANDLER_H__
 #define __MESSAGEHANDLER_H__
 
+//include sdl
+#include "sdl.h"
+
 namespace gui {
 
 //message id
-typedef unsigned int MSGID;
+typedef Uint32 MSGID;
 
 //message parameters
 typedef void* MSGPARM;

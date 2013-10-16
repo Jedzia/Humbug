@@ -15,7 +15,7 @@ CRectangle::CRectangle ( CPoint xy , CPoint wh )
     Set ( xy.GetX() , xy.GetY() , wh.GetX() , wh.GetY() ) ;
 }
 
-/*CRectangle::CRectangle ( SDL_Rect rc )
+CRectangle::CRectangle ( SDL_Rect rc )
 {
 	Set ( rc.x , rc.y , rc.w , rc.h ) ;
 }
@@ -23,7 +23,7 @@ CRectangle::CRectangle ( CPoint xy , CPoint wh )
 CRectangle::CRectangle ( SDL_Rect* prc )
 {
 	Set ( prc->x , prc->y , prc->w , prc->h ) ;
-}*/
+}
 
 CRectangle::CRectangle ( const CRectangle& rc )
 {
@@ -97,12 +97,12 @@ void CRectangle::SetH(Uint16 h)
 	m_rect.h=h;
 }
 
-CRectangle::operator GSDL_Rect ( )
+CRectangle::operator SDL_Rect ( )
 {
 	return ( m_rect ) ;
 }
 
-CRectangle::operator GSDL_Rect* ( )
+CRectangle::operator SDL_Rect* ( )
 {
 	return ( &m_rect ) ;
 }

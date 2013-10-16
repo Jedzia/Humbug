@@ -1,20 +1,7 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-#if SDL_GUILIB_ENABLED
-	#include "sdl.h"
-	#define GSDL_Color SDL_Color
-#else
-	typedef unsigned __int8		uint8_t;
-	typedef uint8_t		Uint8;
-	typedef struct GSDL_Color {
-		Uint8 r;
-		Uint8 g;
-		Uint8 b;
-		Uint8 unused;
-	} GSDL_Color;
-#endif
-
+#include "sdl.h"
 
 namespace gui {
 namespace components {
@@ -27,7 +14,7 @@ class CColor
 {
 private:
 	//actual color representation
-	GSDL_Color m_Color;
+	SDL_Color m_Color;
 public:
 	//standard constructor
 	CColor(Uint8 r=0,Uint8 g=0,Uint8 b=0);
@@ -52,8 +39,8 @@ public:
 	Uint8& B();
 
 	//conversion operators
-	operator GSDL_Color();
-	operator GSDL_Color*();
+	operator SDL_Color();
+	operator SDL_Color*();
 
 	//assignment operators
 	CColor& operator=(const CColor& Color);

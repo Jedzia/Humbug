@@ -29,12 +29,10 @@ SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 # Use Boost libraries for this project.
 SET(USE_LIB_BOOST TRUE)
 
-if(${${ROOT_PROJECT_NAME}_USE_SDL})
 	SET(USE_SDL TRUE)
 	SET(USE_SDL_IMAGE TRUE)
 	SET(USE_SDL_TTF TRUE)
-	SET(USE_SDL_GFX TRUE)
-endif()
+#	SET(USE_SDL_GFX TRUE)
 
 # local project settings
 INCLUDE (bindings)
@@ -42,33 +40,33 @@ INCLUDE (bindings)
 
 # User-Interface skeleton
 SET(GuiLib_GUI_Data_headers 
-#		GUI/Data/ColorData.h
+		GUI/Data/ColorData.h
 )
 SET(GuiLib_GUI_Data_sources 
-#		GUI/Data/ColorData.cpp
+		GUI/Data/ColorData.cpp
 )
 
 SET(GuiLib_GUI_headers 
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
 		GUI/Visual/MessageHandler.h
-#		GUI/Visual/Thread.h
-#		GUI/Visual/Timer.h
-#		GUI/Visual/Hookable.h
-#		GUI/Visual/HookableManager.h
-#		GUI/Visual/SdlInfo.h
-#		GUI/Visual/Console.h
+		GUI/Visual/Thread.h
+		GUI/Visual/Timer.h
+		GUI/Visual/Hookable.h
+		GUI/Visual/HookableManager.h
+		GUI/Visual/SdlInfo.h
+		GUI/Visual/Console.h
 )
 SET(GuiLib_GUI_sources 
 		GUI/Visual/Application.cpp
 		GUI/Visual/EventHandler.cpp
 		GUI/Visual/MessageHandler.cpp
-#		GUI/Visual/Thread.cpp
-#		GUI/Visual/Timer.cpp
-#		GUI/Visual/Hookable.cpp
-#		GUI/Visual/HookableManager.cpp
-#		GUI/Visual/SdlInfo.cpp
-#		GUI/Visual/Console.cpp
+		GUI/Visual/Thread.cpp
+		GUI/Visual/Timer.cpp
+		GUI/Visual/Hookable.cpp
+		GUI/Visual/HookableManager.cpp
+		GUI/Visual/SdlInfo.cpp
+		GUI/Visual/Console.cpp
 )
 
 # Component set (Canvas, Controls, etc.)
@@ -78,24 +76,24 @@ SET(GuiLib_Component_headers
 		GUI/Components/Color.h
 		GUI/Components/Canvas.h
 		GUI/Components/Image.h
+		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
 
-#		GUI/Components/Text.h
-#		GUI/Components/TextScroller.h
+		GUI/Components/Text.h
+		GUI/Components/TextScroller.h
 		
-#		GUI/Components/Screen.h
+		GUI/Components/Screen.h
 
-#		GUI/Controls/Control.h
-#		GUI/Controls/Button.h
-#		GUI/Controls/SeamlessImage.h
+		GUI/Controls/Control.h
+		GUI/Controls/Button.h
 
-#		GUI/Sprite/Sprite.h
-#		GUI/Sprite/SpriteManager.h
+		GUI/Sprite/Sprite.h
+		GUI/Sprite/SpriteManager.h
 		
-#		GUI/TileEngine/Tile.h
-#		GUI/TileEngine/TileImage.h
-#		GUI/TileEngine/TileSet.h
-#		GUI/TileEngine/TileEngine.h
+		GUI/TileEngine/Tile.h
+		GUI/TileEngine/TileImage.h
+		GUI/TileEngine/TileSet.h
+		GUI/TileEngine/TileEngine.h
 )
 SET(GuiLib_Component_sources 
 		GUI/Components/Point.cpp
@@ -103,41 +101,39 @@ SET(GuiLib_Component_sources
 		GUI/Components/Color.cpp
 		GUI/Components/Canvas.cpp
 		GUI/Components/Image.cpp
+		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
 
-#		GUI/Components/Text.cpp
-#		GUI/Components/TextScroller.cpp
+		GUI/Components/Text.cpp
+		GUI/Components/TextScroller.cpp
 		
-#		GUI/Components/Screen.cpp
+		GUI/Components/Screen.cpp
 
-#		GUI/Controls/Control.cpp
-#		GUI/Controls/Button.cpp
-#		GUI/Controls/SeamlessImage.cpp
+		GUI/Controls/Control.cpp
+		GUI/Controls/Button.cpp
 		
-#		GUI/Sprite/Sprite.cpp
-#		GUI/Sprite/SpriteManager.cpp
+		GUI/Sprite/Sprite.cpp
+		GUI/Sprite/SpriteManager.cpp
 		
-#		GUI/TileEngine/Tile.cpp
-#		GUI/TileEngine/TileImage.cpp
-#		GUI/TileEngine/TileSet.cpp
-#		GUI/TileEngine/TileEngine.cpp
+		GUI/TileEngine/Tile.cpp
+		GUI/TileEngine/TileImage.cpp
+		GUI/TileEngine/TileSet.cpp
+		GUI/TileEngine/TileEngine.cpp
 )
 
 # Console stuff
-if(${${ROOT_PROJECT_NAME}_USE_SDL})
-	SET(GuiLib_GuiConsole_headers 
-			GUI/Visual/DT_drawtext.h
-			GUI/Visual/internal.h
-			GUI/Visual/SDL_console.h
-			GUI/Visual/split.h
-	)
-	SET(GuiLib_GuiConsole_sources 
-			GUI/Visual/DT_drawtext.c
-			GUI/Visual/internal.c
-			GUI/Visual/SDL_console.c
-			GUI/Visual/split.c
-	)
-endif()
+SET(GuiLib_GuiConsole_headers 
+		GUI/Visual/DT_drawtext.h
+		GUI/Visual/internal.h
+		GUI/Visual/SDL_console.h
+		GUI/Visual/split.h
+)
+SET(GuiLib_GuiConsole_sources 
+		GUI/Visual/DT_drawtext.c
+		GUI/Visual/internal.c
+		GUI/Visual/SDL_console.c
+		GUI/Visual/split.c
+)
 
 # putting the sources together
 SET(GuiLib_headers 
@@ -157,14 +153,10 @@ SET(GuiLib_sources
 )
 
 
-if(${${ROOT_PROJECT_NAME}_USE_SDL})
 	INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 	INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
 	INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
 	INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
-else()
-	INCLUDE_DIRECTORIES(${GLFW_INCLUDE_DIR})
-endif()
 INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
@@ -219,14 +211,10 @@ ADD_LIBRARY_X(GuiLib ${LIBRARY_TYPE}
 TargetLinkBoost(GuiLib "filesystem;system;regex;signals")
 TARGET_LINK_LIBRARIES(GuiLib HumbugLib)
 TARGET_LINK_LIBRARIES(GuiLib HumbugShared)
-if(${${ROOT_PROJECT_NAME}_USE_SDL})
 	TARGET_LINK_LIBRARIES(GuiLib ${SDL_LIBRARY})
 	TARGET_LINK_LIBRARIES(GuiLib ${SDLIMAGE_LIBRARY})
 	TARGET_LINK_LIBRARIES(GuiLib ${SDLTTF_LIBRARY})
 	TARGET_LINK_LIBRARIES(GuiLib ${SDLGFX_LIBRARY})
-else()
-	TARGET_LINK_LIBRARIES(GuiLib glfw ${GLFW_LIBRARIES})
-endif()
 
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header, 

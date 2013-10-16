@@ -8,8 +8,6 @@
 #include "boost/signals/connection.hpp"
 #include "../Components/MainCanvas.h"
 
-union SDL_Event;
-
 namespace gui {
 
 //class CMainCanvas;

@@ -22,11 +22,6 @@
 #include "../Visual/MessageHandler.h"
 #include <list>
 
-#if !SDL_GUILIB_ENABLED
-	#define SDLKey int;
-	#define SDLMod int;
-#endif
-
 namespace gui {
   namespace controls {
 //CControl class
@@ -123,7 +118,7 @@ public:
         //keyboard events
         virtual bool OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 
-        //virtual bool OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+        virtual bool OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 
         //mouse events
         virtual bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle);

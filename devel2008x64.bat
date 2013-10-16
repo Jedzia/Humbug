@@ -1,5 +1,5 @@
 @ECHO off
-title [Humbug] Visual Studio 2008 Command Prompt 
+title [Humbug] Visual Studio 2008 x64 Command Prompt 
 @set builddir=build2008x64
 
 @set PLATFORM=x64

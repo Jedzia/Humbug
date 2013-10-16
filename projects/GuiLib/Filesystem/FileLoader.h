@@ -7,6 +7,7 @@
 #include <string>
 
 struct SDL_Surface;
+struct _TTF_Font;
 typedef struct _TTF_Font TTF_Font;
 struct SDL_RWops;
 

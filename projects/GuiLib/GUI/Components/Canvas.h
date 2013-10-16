@@ -2,14 +2,11 @@
 #ifndef __CANVAS_H__
 #define __CANVAS_H__
 
+#include "SDL.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include <list>
 #include <string>
-
-struct SDL_Surface;
-struct SDL_Rect;
-struct SDL_Surface;
 
 namespace gui {
 namespace components {

@@ -97,13 +97,13 @@ Uint8& CColor::B()
 }
 
 //conversion operators
-CColor::operator GSDL_Color()
+CColor::operator SDL_Color()
 {
 	//return color
 	return(m_Color);
 }
 
-CColor::operator GSDL_Color*()
+CColor::operator SDL_Color*()
 {
 	//return pointer to color
 	return(&m_Color);

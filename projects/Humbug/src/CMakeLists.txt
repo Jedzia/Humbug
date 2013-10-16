@@ -192,7 +192,7 @@ SET(Humbug_headers
 		${Humbug_Component_headers}
 		${Humbug_Level_headers}
 
-		Filesystem/FileLoader.h
+#		Filesystem/FileLoader.h
 		PlayerKeys.h
 
 #        qpid/InlineAllocator.h
@@ -208,7 +208,7 @@ SET(Humbug_sources
 		${Humbug_Component_sources}
 		${Humbug_Level_sources}
 
-		Filesystem/FileLoader.cpp
+#		Filesystem/FileLoader.cpp
 		PlayerKeys.cpp
 
 	        main.cpp 

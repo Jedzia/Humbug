@@ -7,12 +7,6 @@
 namespace gui {
 
 class HookableManager;
-#if !SDL_GUILIB_ENABLED
-//#define SDLKey int;
-//#define SDLMod int;
-//enum SDLKey;
-//enum SDLMod;
-#endif
 
 
 /*
@@ -26,10 +20,8 @@ public:
 
 	// bool OnInit(int argc,char* argv[])
 	// void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
-#if SDL_GUILIB_ENABLED
-		typedef boost::signal<void (SDLKey sym, SDLMod mod, Uint16 unicode)> signal_type_keydown;
-		typedef signal_type_keydown::slot_type slot_type_keydown;
-#endif
+	typedef boost::signal<void (SDLKey sym, SDLMod mod, Uint16 unicode)> signal_type_keydown;
+	typedef signal_type_keydown::slot_type slot_type_keydown;
 
     static MSGID MSGID_QuitApp;//no parms
 
@@ -52,10 +44,8 @@ public:
 	virtual void OnMinimize();
 	virtual void OnRestore();
 //keyboard events
-#if SDL_GUILIB_ENABLED
-		virtual void OnKeyDfown(SDLKey sym,SDLMod mod,Uint16 unicode);
-		virtual void OnKeyUp(SDLKey sym,SDLMod mod,Uint16 unicode);
-#endif
+	virtual void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
+	virtual void OnKeyUp(SDLKey sym,SDLMod mod,Uint16 unicode);
 //mouse events
 	virtual void OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
 	virtual void OnLButtonDown(Uint16 x,Uint16 y);
@@ -79,14 +69,12 @@ public:
 
     virtual void OnExiting();
 
-#if SDL_GUILIB_ENABLED
-	    boost::signals::connection ConnectOnInit(const slot_type_init& s) {
-	         return m_sigOnInit.connect( s );
-	    }
-		boost::signals::connection ConnectOnKeyDown(const slot_type_keydown& s) {
-			return m_sigOnKeyDown.connect( s );
-		}
-#endif
+    boost::signals::connection ConnectOnInit(const slot_type_init& s) {
+         return m_sigOnInit.connect( s );
+    }
+	boost::signals::connection ConnectOnKeyDown(const slot_type_keydown& s) {
+		return m_sigOnKeyDown.connect( s );
+	}
 
     //boost::signals::connection ConnectOnInit(const slot_type_init& s) {
     //        return m_sigOnInit.connect(s);
@@ -98,15 +86,13 @@ public:
 protected:
     bool OnPreInit( int argc,char* argv[] );
     bool OnPostInit( int argc,char* argv[] );
-//    HookableManager* HookMgr() const { return m_HookMgr.get(); }
+    HookableManager* HookMgr() const { return m_HookMgr.get(); }
 
     //Hookable* m_Hooks;
 private:
-//    boost::scoped_ptr<HookableManager> m_HookMgr;
-#if SDL_GUILIB_ENABLED
-		signal_type_init m_sigOnInit;
-		signal_type_keydown m_sigOnKeyDown;
-#endif
+    boost::scoped_ptr<HookableManager> m_HookMgr;
+	signal_type_init m_sigOnInit;
+	signal_type_keydown m_sigOnKeyDown;
     //slot_type_init m_slotOnInit;
 
 };

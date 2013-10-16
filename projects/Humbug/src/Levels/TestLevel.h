@@ -16,7 +16,7 @@
 /*---------------------------------------------------------*/
 #ifndef HUMBUG_LEVELS_TESTLEVEL_H
 #define HUMBUG_LEVELS_TESTLEVEL_H
-#include "../GUI/Components/Screen.h"
+#include <GUI/Components/Screen.h>
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
 namespace gui {
