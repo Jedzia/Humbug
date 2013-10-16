@@ -12,28 +12,28 @@ using zip_file_system::izfstream;
 // FileLoadingInfo
 
 FileLoadingInfo::FileLoadingInfo(const std::string name, SDL_Surface* surface)
-: m_strName(name), m_pSurface(surface), m_pFont(NULL), m_pArea(NULL), m_pData(NULL)
+: m_strName(name), m_pSurface(surface), m_pFont(NULL), m_pArea(NULL), m_pData(NULL), m_fsize(0), m_refcount(0)
 {
-
+	std::cout << "FileLoadingInfo create SDL_Surface '" << *this << "'" << std::endl;
 }
 
-FileLoadingInfo::FileLoadingInfo( const std::string name, TTF_Font* font, SDL_RWops* area, char *data )
-: m_strName(name), m_pSurface(NULL), m_pFont(font), m_pArea(area), m_pData(data)
+FileLoadingInfo::FileLoadingInfo( const std::string name, TTF_Font* font, SDL_RWops* area, char *data, int fsize )
+: m_strName(name), m_pSurface(NULL), m_pFont(font), m_pArea(area), m_pData(data), m_fsize(fsize), m_refcount(0)
 {
-
+	std::cout << "FileLoadingInfo create Memdata '" << *this << "'" << std::endl;
 }
 
 FileLoadingInfo::~FileLoadingInfo()
 {
-    std::cout << "FileLoadingInfo freeing '" << Name() << "'" << std::endl;
+    std::cout << "FileLoadingInfo freeing '" << *this << "'" << std::endl;
     if(m_pSurface)
     {
-	        SDL_FreeSurface(m_pSurface);
+	    SDL_FreeSurface(m_pSurface);
         m_pSurface = NULL;
     }
     else if(m_pFont)
     {
-	        TTF_CloseFont( m_pFont );
+	    TTF_CloseFont( m_pFont );
         m_pFont = NULL;
         //SDL_FreeRW(m_pArea);
         //m_pArea = NULL;
@@ -93,10 +93,11 @@ struct FileLoader::FileLoaderImpl {
     }
 
     char* data;
-    SDL_RWops* LoadData(const filesystem& fsys, const std::string& filename)
+    SDL_RWops* LoadData(const filesystem& fsys, const std::string& filename, int& bufsize)
     {
         data = NULL;
         int fsize = fsys.FileSize(filename.c_str());
+		bufsize = fsize;
         izfstream file(filename.c_str());
         //std::vector<char> data;
         SDL_RWops* imgmem = NULL;
@@ -119,7 +120,7 @@ struct FileLoader::FileLoaderImpl {
             //data.resize(fsize);
             data = new char[fsize];
             file.read(&data[0], fsize);
-	            imgmem = SDL_RWFromMem(&data[0], fsize);
+	        imgmem = SDL_RWFromMem(&data[0], fsize);
 
             //sdlsurface = IMG_Load_RW(imgmem, 1);
         }
@@ -133,7 +134,8 @@ struct FileLoader::FileLoaderImpl {
     {
         //std::vector<char> data;
         SDL_Surface* sdlsurface;
-        SDL_RWops* imgmem = LoadData(fsys, filename);
+		int bufsize;
+        SDL_RWops* imgmem = LoadData(fsys, filename, bufsize);
 
         if (! imgmem)
         {
@@ -169,7 +171,8 @@ struct FileLoader::FileLoaderImpl {
     {
         //std::vector<char> data;
         TTF_Font* font;
-        SDL_RWops* imgmem = LoadData(fsys, filename);
+		int bufsize;
+        SDL_RWops* imgmem = LoadData(fsys, filename, bufsize);
         FileLoadingInfo *flinfo = NULL;
 
         if (! imgmem)
@@ -185,7 +188,7 @@ struct FileLoader::FileLoaderImpl {
             //data.clear();
             //data.resize(fsize);
 	            font = TTF_OpenFontRW(imgmem, 1, ptsize);
-            flinfo = new FileLoadingInfo(filename, font, imgmem, data);
+            flinfo = new FileLoadingInfo(filename, font, imgmem, data, bufsize);
             //SDL_FreeRW(imgmem);
             //delete[] data;
             if (!font) {
@@ -252,7 +255,8 @@ FileLoader::FileLoader(const std::string & basepath)
 
 FileLoader::~FileLoader(void)
 {
-    m_pvSurfaces.release();
+    //m_pvSurfaces.release();
+	m_resMap.release();
     dbgOut(__FUNCTION__ << std::endl);
 }
 
@@ -263,6 +267,7 @@ const char* FileLoader::language(int x) const
 
 void FileLoader::Load(const std::string & filename) const
 {
+	std::cout << "FileLoader Load '" << filename << "'" << std::endl;
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
 	std::cout << fsys << std::endl;
 
@@ -286,22 +291,42 @@ void FileLoader::Load(const std::string & filename) const
 
 
 
-SDL_Surface* FileLoader::LoadImg(const std::string & filename) 
+SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string location) 
 {
+
+	std::cout << "FileLoader LoadImg '" << filename << "' " << location << std::endl;
+	/*if (m_pvSurfaces.size() > 0)
+	{
+		surfacevector::pointer result = NULL;
+		surfacevector::iterator end = m_pvSurfaces.end();
+		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+		{
+			FileLoadingInfo& current = (*it);
+			if (current.Name().compare(filename))
+			{
+				//std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
+				std::cout << "FileLoader LoadImg in Cache '" << current << "'" << std::endl;
+				result = &current;
+			}
+		}
+	}*/
+
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
 	std::cout << fsys << std::endl;
 
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
+
     m_pLastSurface = pimpl_->LoadImg(fsys, filename);
-    m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
+    //m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
     return m_pLastSurface;
 }
 
 void FileLoader::FreeLast()
 {
-    boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
-    std::cout << "FileLoader freeing '" << current->Name() << "'" << std::endl;
+    //boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
+	// std::cout << "FileLoader freeing '" << current->Name() << "'" << std::endl;
+	std::cout << "FileLoader freeing 'FreeLast'" << std::endl;
     //std::string nase = f->Name();
     
     /*if (m_pLastSurface)
@@ -312,32 +337,81 @@ void FileLoader::FreeLast()
 
 void FileLoader::Free( const std::string& name )
 {
+	std::cout << "FileLoader freeing '" << name << "'" << std::endl;
 
-    surfacevector::pointer result = NULL;
+    /*surfacevector::pointer result = NULL;
     surfacevector::iterator end = m_pvSurfaces.end();
     for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
     {
         FileLoadingInfo& current = (*it);
         if (current.Name().compare(name))
         {
-            std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
-            //m_pvSurfaces.erase(it);
-            //result = &current;
+			//std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
+			std::cout << "FileLoader freeing '" << current << "'" << std::endl;
+            m_pvSurfaces.erase(it);
+            result = &current;
         }
-    }
+    }*/
     // std::cout << result->Name() << std::endl;
 }
 
-TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize )
+TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::string  location )
 {
-    filesystem fsys(m_pBasepath.c_str(), "zip", true);
+
+	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
+	if (rexs1 != m_resMap.end())
+	{
+		const FileLoadingInfo& finf = *(rexs1->second);
+		std::cout << "FileLoader LoadFont in Cache '" << filename << "'" << std::endl;
+		char *data = finf.m_pData;
+		SDL_RWops* imgmem = SDL_RWFromMem(&data[0], finf.m_fsize);
+		TTF_Font* font = TTF_OpenFontRW(imgmem, 1, ptsize);
+		return font;
+	}
+	else
+		std::cout << "FileLoader LoadFont '" << filename << "'" << std::endl;
+
+
+	//FileLoadingInfo& aaa = m_resMap["bla"];
+	//m_resMap["bla"];
+	/*if (m_pvSurfaces.size() > 0)
+	{
+		surfacevector::pointer result = NULL;
+		surfacevector::iterator end = m_pvSurfaces.end();
+		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+		{
+			FileLoadingInfo& current = (*it);
+			if (current.Name().compare(filename))
+			{
+				//std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
+				std::cout << "FileLoader LoadFont in Cache '" << current << "'" << std::endl;
+				result = &current;
+				break;
+			}
+		}
+	}*/
+
+	filesystem fsys(m_pBasepath.c_str(), "zip", true);
     std::cout << fsys << std::endl;
 
     // Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
     //TTF_Font* m_pLastFont = pimpl_->LoadFont(fsys, filename, ptsize);
     FileLoadingInfo* m_pflInfo = pimpl_->LoadFont(fsys, filename, ptsize);
-    m_pvSurfaces.push_back(m_pflInfo);
+	m_pflInfo->setLoc(location);
+
+	//m_pvSurfaces.push_back(m_pflInfo);
+	//m_resMap.insert(std::string(filename), m_pflInfo);
+
+
+//	boost::ptr_map<std::string, FileLoadingInfo> map;
+	//m_resMap.insert(std::string(filename), boost::ref(m_pflInfo));
+	m_resMap.insert(std::string(filename), m_pflInfo);
+	//const FileLoadingInfo& res = m_resMap.at(filename);
+
+	//boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs2 = m_resMap.find(filename + "dadsad");
+
+
     return m_pflInfo->Font();
 }
 
@@ -422,3 +496,11 @@ boost::system::system_error(ec, what_arg)
     }
 }
 
+
+std::ostream& operator<<( std::ostream& o, const FileLoadingInfo& r )
+{
+      return o << "FileLoadingInfo[ (" << r.Refcount() << ")Name='" << r.Name() << "', Loc=" << r.Loc()
+                                   << ", Font=" << r.Font() << ", rWops=" << r.m_pArea
+                                   <<
+             " ]";
+}

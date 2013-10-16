@@ -162,9 +162,10 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
 	// Todo: Relative and loaded from VFS.
 	// m_pArialfont = TTF_OpenFont("E:/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
-	m_pArialfont = m_Loader.LoadFont("Fonts/arial.ttf", 30);
+	//m_pArialfont = m_Loader.LoadFont("Fonts/arial.ttf", 30);
+	m_pArialfont = TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
-    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/Intro.png") );
+    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/Intro.png") );
 
     //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);

@@ -204,7 +204,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //load in button font. Todo: Error Checking
         //TTF_OpenFont(
           //  "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 15)
-        TTF_Font *arial = fl->LoadFont("Fonts/ARIAL.TTF", 15);
+        TTF_Font *arial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", 15);
         CButton::SetButtonFont( arial );
 
         //m_pBackground->FillRect(m_pBackground->GetDimension(), CColor::LightRed());
@@ -220,7 +220,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             SDL_Surface* tmpsurf;
 
             //tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
-            tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->LoadImg("Moo.png") );
+            tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->FL_LOADIMG("Moo.png") );
 
             // delete loadsurf;
             CCanvas tmpCanvas(tmpsurf);
@@ -238,7 +238,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
-        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->LoadImg("icons/blue.png") );
+        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->FL_LOADIMG("icons/blue.png") );
         fl->FreeLast();
 
         //SDL_FreeSurface( loadsurf );
@@ -248,7 +248,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
         //m_pSprite = new CSprite(m_pMainCanvas, m_pBlue);
         {
-            SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( fl->LoadImg("icons/red.png") );
+            SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( fl->FL_LOADIMG("icons/red.png") );
             CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
             fl->FreeLast();
             m_pSprite = new gui::CSprite(m_pMainCanvas, new CImage( tmpCanvas,

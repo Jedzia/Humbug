@@ -121,10 +121,10 @@ bool HighscoreScreen::OnInit( int argc, char* argv[] ){
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-	m_pArialfont = m_Loader.LoadFont("Fonts/ARIAL.TTF", 24);
-	//m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 24);
+	m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
+	//m_pArialfont = TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
-    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.LoadImg("Intro/HighscoreScreenBg.png") );
+    SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
 
     //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);

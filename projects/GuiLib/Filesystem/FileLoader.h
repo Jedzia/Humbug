@@ -6,28 +6,45 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <string>
 
+//#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("[") + __FILE__ + "]-> " + __FUNCTION__)
+#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + ".-> " + __FUNCTION__)
+#define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__ + ".-> " + __FUNCTION__)
+
 struct SDL_Surface;
 struct _TTF_Font;
 typedef struct _TTF_Font TTF_Font;
 struct SDL_RWops;
 
-class FileLoadingInfo 
+class FileLoadingInfo : public boost::noncopyable
 {
 public:
     FileLoadingInfo(const std::string name, SDL_Surface* surface);
-    FileLoadingInfo(const std::string name, TTF_Font* font, SDL_RWops* area, char *data);
+    FileLoadingInfo(const std::string name, TTF_Font* font, SDL_RWops* area, char *data, int fsize);
     ~FileLoadingInfo();
 
     std::string Name() const { return m_strName; }
     void Name(std::string val) { m_strName = val; }
     TTF_Font* Font() const { return m_pFont; }
+	std::string Loc() const { return m_strLoc; }
+	void setLoc(std::string val) { m_strLoc = val; }
+	int Refcount() const { return m_refcount; }
+
+	void operator ++() { m_refcount++; };
+	void operator --() { m_refcount--; };
 private:
-    std::string m_strName;
-    SDL_Surface* m_pSurface;
+	std::string m_strName;
+	std::string m_strLoc;
+	SDL_Surface* m_pSurface;
     TTF_Font* m_pFont;
     SDL_RWops* m_pArea;
     char *m_pData;
+	int m_refcount;
+	int m_fsize;
+	friend std::ostream& operator<<(std::ostream& o, const FileLoadingInfo& r);
+	friend class FileLoader;
 };
+
+std::ostream& operator<<(std::ostream& o, const FileLoadingInfo& r);
 
 class FileLoader {
 public:
@@ -41,8 +58,8 @@ public:
 
     // Loads a image from the package or filesystem.
     // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
-    SDL_Surface* LoadImg(const std::string & filename) ;
-    TTF_Font* LoadFont(const std::string & filename, int ptsize ) ;
+    SDL_Surface* LoadImg(const std::string & filename, std::string location) ;
+    TTF_Font* LoadFont(const std::string & filename, int ptsize, std::string  location ) ;
     void Free(const std::string& name);
     void FreeLast();
 
@@ -51,7 +68,8 @@ private:
     std::string m_pBasepath;
     SDL_Surface* m_pLastSurface;
     typedef boost::ptr_vector<FileLoadingInfo> surfacevector;
-    surfacevector m_pvSurfaces;
+    //surfacevector m_pvSurfaces;
+	boost::ptr_map<std::string, FileLoadingInfo> m_resMap;
 
     struct FileLoaderImpl;
     boost::scoped_ptr<FileLoaderImpl> pimpl_;

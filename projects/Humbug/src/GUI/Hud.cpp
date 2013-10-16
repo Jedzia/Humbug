@@ -36,7 +36,7 @@ namespace humbug {
       dbgOut(__FUNCTION__ << std::endl);
 
       //m_pFooter = new CCanvas( loader.LoadImg( filename.c_str() ) );
-      m_pFooter = new gui::components::CCanvas( SDL_DisplayFormatAlpha( loader.LoadImg( filename.c_str() ) ) );
+      m_pFooter = new gui::components::CCanvas( SDL_DisplayFormatAlpha( loader.FL_LOADIMG( filename.c_str() ) ) );
   }
 
   HudBackground::~HudBackground(void){
