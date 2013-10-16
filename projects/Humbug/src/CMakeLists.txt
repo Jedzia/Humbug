@@ -56,100 +56,100 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
 # User-Interface skeleton
-SET(Humbug_GUI_Data_headers 
-		GUI/Data/ColorData.h
-)
-SET(Humbug_GUI_Data_sources 
-		GUI/Data/ColorData.cpp
-)
+#SET(Humbug_GUI_Data_headers 
+#		GUI/Data/ColorData.h
+#)
+#SET(Humbug_GUI_Data_sources 
+#		GUI/Data/ColorData.cpp
+#)
 
-SET(Humbug_GUI_headers 
-		GUI/Visual/Application.h
-		GUI/Visual/EventHandler.h
-		GUI/Visual/MessageHandler.h
-		GUI/Visual/Thread.h
-		GUI/Visual/Timer.h
-		GUI/Visual/Hookable.h
-		GUI/Visual/HookableManager.h
-		GUI/Visual/SdlInfo.h
-		GUI/Visual/Console.h
-)
-SET(Humbug_GUI_sources 
-		GUI/Visual/Application.cpp
-		GUI/Visual/EventHandler.cpp
-		GUI/Visual/MessageHandler.cpp
-		GUI/Visual/Thread.cpp
-		GUI/Visual/Timer.cpp
-		GUI/Visual/Hookable.cpp
-		GUI/Visual/HookableManager.cpp
-		GUI/Visual/SdlInfo.cpp
-		GUI/Visual/Console.cpp
-)
+#SET(Humbug_GUI_headers 
+#		GUI/Visual/Application.h
+#		GUI/Visual/EventHandler.h
+#		GUI/Visual/MessageHandler.h
+#		GUI/Visual/Thread.h
+#		GUI/Visual/Timer.h
+#		GUI/Visual/Hookable.h
+#		GUI/Visual/HookableManager.h
+#		GUI/Visual/SdlInfo.h
+#		GUI/Visual/Console.h
+#)
+#SET(Humbug_GUI_sources 
+#		GUI/Visual/Application.cpp
+#		GUI/Visual/EventHandler.cpp
+#		GUI/Visual/MessageHandler.cpp
+#		GUI/Visual/Thread.cpp
+#		GUI/Visual/Timer.cpp
+#		GUI/Visual/Hookable.cpp
+#		GUI/Visual/HookableManager.cpp
+#		GUI/Visual/SdlInfo.cpp
+#		GUI/Visual/Console.cpp
+#)
 
 # Component set (Canvas, Controls, etc.)
-SET(Humbug_Component_headers 
-		GUI/Components/Point.h
-		GUI/Components/Rectangle.h
-		GUI/Components/Color.h
-		GUI/Components/Canvas.h
-		GUI/Components/Image.h
-		GUI/Components/SeamlessImage.h
-		GUI/Components/MainCanvas.h
-
-		GUI/Components/Text.h
-		GUI/Components/TextScroller.h
-		
-		GUI/Components/Screen.h
-
-		GUI/Controls/Control.h
-		GUI/Controls/Button.h
-
-		GUI/Sprite/Sprite.h
-		GUI/Sprite/SpriteManager.h
-		
-		GUI/TileEngine/Tile.h
-		GUI/TileEngine/TileImage.h
-		GUI/TileEngine/TileSet.h
-		GUI/TileEngine/TileEngine.h
-)
-SET(Humbug_Component_sources 
-		GUI/Components/Point.cpp
-		GUI/Components/Rectangle.cpp
-		GUI/Components/Color.cpp
-		GUI/Components/Canvas.cpp
-		GUI/Components/Image.cpp
-		GUI/Components/SeamlessImage.cpp
-		GUI/Components/MainCanvas.cpp
-
-		GUI/Components/Text.cpp
-		GUI/Components/TextScroller.cpp
-		
-		GUI/Components/Screen.cpp
-
-		GUI/Controls/Control.cpp
-		GUI/Controls/Button.cpp
-		
-		GUI/Sprite/Sprite.cpp
-		GUI/Sprite/SpriteManager.cpp
-		
-		GUI/TileEngine/Tile.cpp
-		GUI/TileEngine/TileImage.cpp
-		GUI/TileEngine/TileSet.cpp
-		GUI/TileEngine/TileEngine.cpp
-)
+#SET(Humbug_Component_headers 
+#		GUI/Components/Point.h
+#		GUI/Components/Rectangle.h
+#		GUI/Components/Color.h
+#		GUI/Components/Canvas.h
+#		GUI/Components/Image.h
+#		GUI/Components/SeamlessImage.h
+#		GUI/Components/MainCanvas.h
+#
+#		GUI/Components/Text.h
+#		GUI/Components/TextScroller.h
+#		
+#		GUI/Components/Screen.h
+#
+#		GUI/Controls/Control.h
+#		GUI/Controls/Button.h
+#
+#		GUI/Sprite/Sprite.h
+#		GUI/Sprite/SpriteManager.h
+#		
+#		GUI/TileEngine/Tile.h
+#		GUI/TileEngine/TileImage.h
+#		GUI/TileEngine/TileSet.h
+#		GUI/TileEngine/TileEngine.h
+#)
+#SET(Humbug_Component_sources 
+#		GUI/Components/Point.cpp
+#		GUI/Components/Rectangle.cpp
+#		GUI/Components/Color.cpp
+#		GUI/Components/Canvas.cpp
+#		GUI/Components/Image.cpp
+#		GUI/Components/SeamlessImage.cpp
+#		GUI/Components/MainCanvas.cpp
+#
+#		GUI/Components/Text.cpp
+#		GUI/Components/TextScroller.cpp
+#		
+#		GUI/Components/Screen.cpp
+#
+#		GUI/Controls/Control.cpp
+#		GUI/Controls/Button.cpp
+#		
+#		GUI/Sprite/Sprite.cpp
+#		GUI/Sprite/SpriteManager.cpp
+#		
+#		GUI/TileEngine/Tile.cpp
+#		GUI/TileEngine/TileImage.cpp
+#		GUI/TileEngine/TileSet.cpp
+#		GUI/TileEngine/TileEngine.cpp
+#)
 # Console stuff
-SET(Humbug_GuiConsole_headers 
-		GUI/Visual/DT_drawtext.h
-		GUI/Visual/internal.h
-		GUI/Visual/SDL_console.h
-		GUI/Visual/split.h
-)
-SET(Humbug_GuiConsole_sources 
-		GUI/Visual/DT_drawtext.c
-		GUI/Visual/internal.c
-		GUI/Visual/SDL_console.c
-		GUI/Visual/split.c
-)
+#SET(Humbug_GuiConsole_headers 
+#		GUI/Visual/DT_drawtext.h
+#		GUI/Visual/internal.h
+#		GUI/Visual/SDL_console.h
+#		GUI/Visual/split.h
+#)
+#SET(Humbug_GuiConsole_sources 
+#		GUI/Visual/DT_drawtext.c
+#		GUI/Visual/internal.c
+#		GUI/Visual/SDL_console.c
+#		GUI/Visual/split.c
+#)
 
 # GUI implementation
 SET(Humbug_MyGUI_headers 
@@ -259,6 +259,7 @@ INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${GuiLib_INTERFACE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 
 # Move to bindings
@@ -378,6 +379,7 @@ Copy_Files_To_Target(Humbug "${SDLTTF_LIBRARY_DLLS_EXT}")
 TargetLinkBoost(Humbug "filesystem;system;regex;signals")
 TARGET_LINK_LIBRARIES(Humbug HumbugLib)
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
+TARGET_LINK_LIBRARIES(Humbug GuiLib)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
