@@ -1,9 +1,16 @@
 #ifndef __GUI_COMPONENTS_RECTANGLE_H__
 #define __GUI_COMPONENTS_RECTANGLE_H__
 
+//#include <boost/shared_ptr.hpp>
 #include "sdl.h"
 #include "point.h"
 #include <iostream>
+
+/*struct SDL_Rect;
+typedef short           int16_t;
+typedef int16_t		Sint16;
+typedef unsigned short  uint16_t;
+typedef uint16_t	Uint16;*/
 
 namespace gui {
 namespace components {
@@ -13,7 +20,9 @@ class CRectangle
 {
 private:
 	//internal representation of a SDL_Rect
-	SDL_Rect m_rect ;
+	/*struct CRectangleImpl;
+	boost::scoped_ptr<CRectangleImpl> pimpl_;*/
+	SDL_Rect m_rect;
 public:
 	//constructors--direct member assignment
 	CRectangle ( Sint16 x = 0 , Sint16 y = 0 , Uint16 w = 0 , Uint16 h = 0 ) ;

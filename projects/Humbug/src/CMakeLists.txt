@@ -31,16 +31,6 @@ SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 # Use Boost libraries for this project.
 SET(USE_LIB_BOOST TRUE)
 
-#SET(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
-# Use QT4 libraries for this project.
-#SET(USE_LIB_QT4 TRUE)
-
-# Use QSCINTILLA libraries for this project.
-#SET(USE_LIB_QSCINTILLA TRUE)
-
-#SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
-# Use XSD xerces libraries for this project.
-#SET(USE_LIB_XSD TRUE)
 SET(USE_SDL TRUE)
 SET(USE_SDL_IMAGE TRUE)
 SET(USE_SDL_TTF TRUE)
@@ -54,102 +44,6 @@ INCLUDE (bindings)
 # this does the same as above
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
-
-# User-Interface skeleton
-#SET(Humbug_GUI_Data_headers 
-#		GUI/Data/ColorData.h
-#)
-#SET(Humbug_GUI_Data_sources 
-#		GUI/Data/ColorData.cpp
-#)
-
-#SET(Humbug_GUI_headers 
-#		GUI/Visual/Application.h
-#		GUI/Visual/EventHandler.h
-#		GUI/Visual/MessageHandler.h
-#		GUI/Visual/Thread.h
-#		GUI/Visual/Timer.h
-#		GUI/Visual/Hookable.h
-#		GUI/Visual/HookableManager.h
-#		GUI/Visual/SdlInfo.h
-#		GUI/Visual/Console.h
-#)
-#SET(Humbug_GUI_sources 
-#		GUI/Visual/Application.cpp
-#		GUI/Visual/EventHandler.cpp
-#		GUI/Visual/MessageHandler.cpp
-#		GUI/Visual/Thread.cpp
-#		GUI/Visual/Timer.cpp
-#		GUI/Visual/Hookable.cpp
-#		GUI/Visual/HookableManager.cpp
-#		GUI/Visual/SdlInfo.cpp
-#		GUI/Visual/Console.cpp
-#)
-
-# Component set (Canvas, Controls, etc.)
-#SET(Humbug_Component_headers 
-#		GUI/Components/Point.h
-#		GUI/Components/Rectangle.h
-#		GUI/Components/Color.h
-#		GUI/Components/Canvas.h
-#		GUI/Components/Image.h
-#		GUI/Components/SeamlessImage.h
-#		GUI/Components/MainCanvas.h
-#
-#		GUI/Components/Text.h
-#		GUI/Components/TextScroller.h
-#		
-#		GUI/Components/Screen.h
-#
-#		GUI/Controls/Control.h
-#		GUI/Controls/Button.h
-#
-#		GUI/Sprite/Sprite.h
-#		GUI/Sprite/SpriteManager.h
-#		
-#		GUI/TileEngine/Tile.h
-#		GUI/TileEngine/TileImage.h
-#		GUI/TileEngine/TileSet.h
-#		GUI/TileEngine/TileEngine.h
-#)
-#SET(Humbug_Component_sources 
-#		GUI/Components/Point.cpp
-#		GUI/Components/Rectangle.cpp
-#		GUI/Components/Color.cpp
-#		GUI/Components/Canvas.cpp
-#		GUI/Components/Image.cpp
-#		GUI/Components/SeamlessImage.cpp
-#		GUI/Components/MainCanvas.cpp
-#
-#		GUI/Components/Text.cpp
-#		GUI/Components/TextScroller.cpp
-#		
-#		GUI/Components/Screen.cpp
-#
-#		GUI/Controls/Control.cpp
-#		GUI/Controls/Button.cpp
-#		
-#		GUI/Sprite/Sprite.cpp
-#		GUI/Sprite/SpriteManager.cpp
-#		
-#		GUI/TileEngine/Tile.cpp
-#		GUI/TileEngine/TileImage.cpp
-#		GUI/TileEngine/TileSet.cpp
-#		GUI/TileEngine/TileEngine.cpp
-#)
-# Console stuff
-#SET(Humbug_GuiConsole_headers 
-#		GUI/Visual/DT_drawtext.h
-#		GUI/Visual/internal.h
-#		GUI/Visual/SDL_console.h
-#		GUI/Visual/split.h
-#)
-#SET(Humbug_GuiConsole_sources 
-#		GUI/Visual/DT_drawtext.c
-#		GUI/Visual/internal.c
-#		GUI/Visual/SDL_console.c
-#		GUI/Visual/split.c
-#)
 
 # GUI implementation
 SET(Humbug_MyGUI_headers 
@@ -186,74 +80,28 @@ SET(Humbug_Level_sources
 
 # putting the sources together
 SET(Humbug_headers 
-		${Humbug_GUI_Data_headers}
-		${Humbug_GUI_headers}
 		${Humbug_MyGUI_headers}
-		${Humbug_Component_headers}
 		${Humbug_Level_headers}
 
-#		Filesystem/FileLoader.h
 		PlayerKeys.h
 
-#        qpid/InlineAllocator.h
-#        qpid/InlineVector.h
-#        qpid/RangeSet.h
 	        Project/ProjectModel.h
 )
 
 SET(Humbug_sources 
-		${Humbug_GUI_Data_sources}
-		${Humbug_GUI_sources}
 		${Humbug_MyGUI_sources}
-		${Humbug_Component_sources}
 		${Humbug_Level_sources}
 
-#		Filesystem/FileLoader.cpp
 		PlayerKeys.cpp
 
 	        main.cpp 
 	        Project/ProjectModel.cpp
 )
 
-#WRAP_XSD(Humbug_XSDS_sources Humbug_XSDS_INCLUDE
-#   ${CMAKE_CURRENT_BINARY_DIR}/XsdOut 
-#   ../XSD/project.xsd
-#   OPTIONS cxx-tree --root-element project
-#)
-#INCLUDE_DIRECTORIES(${Humbug_XSDS_INCLUDE})
-#MESSAGE(STATUS "Humbug_XSDS_sources: ${Humbug_XSDS_sources} ")
-#MESSAGE(STATUS "Humbug_XSDS_INCLUDE: ${Humbug_XSDS_INCLUDE} ")
-
-SET(Humbug_mocfiles 
-#        SelectionDialog.h
-#        calculatorform.h
-#        mainwindow.h
-#        lexerdsl.h
-#        CodeEditor.h
-#        XCodeEditor.h
-)
-
-SET(Humbug_uifiles 
-#  calculatorform.ui
-#  mainwindow.ui
-#  SelectionDialog.ui
-)
-
-SET(Humbug_resfiles 
-#  mainwindow.qrc
-)
 
 #SET(CMAKE_BUILD_TYPE DEBUG)
 
-#QT4_WRAP_CPP( moc_outfiles  ${Humbug_mocfiles} )
-#MESSAGE(STATUS "moc_outfiles: ${moc_outfiles} ")
-#QT4_WRAP_UI( ui_outfiles  ${Humbug_uifiles} )
-#MESSAGE(STATUS "ui_outfiles: ${ui_outfiles} ")
-
-#INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
-#INCLUDE_DIRECTORIES( ${XSD_INCLUDE_DIR} )
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
-#ADD_DEFINITIONS("-DHAVE_OPENGL")
 INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
@@ -268,8 +116,6 @@ IF(LINUX)
 ENDIF(LINUX)
 
 
-#ADD_DEFINITIONS(${QT_DEFINITIONS})
-#ADD_DEFINITIONS("-DQSCINTILLA_DLL")
 ADD_DEFINITIONS(${HumbugShared_DEFINITIONS})
 IF(SDLIMAGE_FOUND)
   ADD_DEFINITIONS("-DHAVE_SDLIMAGE")
@@ -281,19 +127,13 @@ IF(LINUX)
 ENDIF(LINUX)
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
-#QT4_ADD_RESOURCES(res_outfiles ${Humbug_resfiles} )
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-#SOURCE_GROUP(Xsd FILES ${Humbug_XSD_sources} )
 SOURCE_GROUP(Resources FILES ${Humbug_resfiles})
 SOURCE_GROUP(GUI FILES ${Humbug_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
-SOURCE_GROUP(GuiHeaders FILES ${Humbug_GUI_headers})
-SOURCE_GROUP(GuiSources FILES ${Humbug_GUI_sources})
-SOURCE_GROUP(CompHeaders FILES ${Humbug_Component_headers})
-SOURCE_GROUP(CompSources FILES ${Humbug_Component_sources})
 
 
 # Move to bindings
@@ -309,32 +149,9 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 
         ${Humbug_headers}
         ${Humbug_sources} 
-		${Humbug_GuiConsole_headers}
-		${Humbug_GuiConsole_sources}
-#        ${Humbug_XSD_sources}
-#        ${Humbug_mocfiles} 
-        ${res_outfiles} 
-        ${moc_outfiles} 
-        ${ui_outfiles}
 )
 
 
-#set_target_properties(Humbug 
-#                        PROPERTIES RESOURCE icons/blue.png
-##                        prop2 value2 ...
-#)
-#Copy_File_To_Target(Humbug ${PROJECT_SOURCE_DIR}/icons/blue.png)
-#Copy_File_To_Target(Humbug ${Humbug_Artwork_DIR}/footer.png)
-
-# Copy linked dll to the executables bin dir
-# We need to check if shared or static .... and put this into a macro.
-#   ADD_CUSTOM_COMMAND(
-#           TARGET Humbug 
-#           POST_BUILD
-#           COMMAND ${CMAKE_COMMAND}
-#           ARGS -E copy_if_different "${PROJECT_SOURCE_DIR}/mainwindow.cpp" "${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}"
-#           COMMENT "source copy dlls and essential files"
-#   )
 
 SET(Pak01_PACKAGE_SOURCE_FILES 
 		${PROJECT_SOURCE_DIR}/icons/
@@ -359,23 +176,13 @@ CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.
 
 #ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 
-#Copy_File_To_Target(Humbug "${PROJECT_SOURCE_DIR}/mainwindow.cpp")
-#Copy_DLL_To_Target(Humbug CppStructz)
-#Copy_DLL_To_Target(Humbug XSD)
-#Copy_DLL_To_Target(Humbug QSCINTILLA)
-##Copy_DLL_To_Target(Humbug HumbugShared)
 Copy_DLL_To_Target(Humbug SDL_LIBRARY)
 Copy_DLL_To_Target(Humbug SDLIMAGE_LIBRARY)
 Copy_Files_To_Target(Humbug "${SDLIMAGE_LIBRARY_DLLS_EXT}")
 Copy_DLL_To_Target(Humbug SDLTTF_LIBRARY)
 Copy_Files_To_Target(Humbug "${SDLTTF_LIBRARY_DLLS_EXT}")
 #Copy_ReleaseDLL_To_Target(Humbug ICU)
-##SET(XSDE_LIB "${XSDE_LIBRARY_DIR}/vc-8.0/xerces-c_3.lib")
-##SET(QSCINTILLA2_LIB "optimized;${QT_LIBRARY_DIR}/qscintilla2.lib;debug;${QT_LIBRARY_DIR}/qscintilla2d.lib")
-##optimized;D:/boost/Boost_1_45_0_beta1/stage/lib/boost_filesystem-vc80-mt-1_45.lib;debug;D:/boost/Boost_1_45_0_beta1/stage/lib/boost_filesystem-vc80-mt-gd-1_45.lib
 
-#TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
-#                        ${QSCINTILLA2_LIB} CppStructz )
 TargetLinkBoost(Humbug "filesystem;system;regex;signals")
 TARGET_LINK_LIBRARIES(Humbug HumbugLib)
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
@@ -457,8 +264,6 @@ TargetLinkBoost(HumbugConsole "program_options")
 TargetLinkBoost(HumbugConsole "filesystem;system;regex")
 #TARGET_LINK_LIBRARIES(HumbugConsole CppStructz)
 TARGET_LINK_LIBRARIES(HumbugConsole HumbugShared)
-#TARGET_LINK_LIBRARIES(HumbugConsole ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} 
-#                        ${QSCINTILLA2_LIB} CppStructz )
 #Copy_DLL_To_Target(HumbugConsole CppStructz)
 IF(USE_NLS)
   Copy_DLL_To_Target(HumbugConsole LIBINTL)

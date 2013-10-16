@@ -5,27 +5,42 @@
 namespace gui {
 namespace components {
 
+#define pimpl_ this
+/*struct CRectangle::CRectangleImpl {
+
+	SDL_Rect m_rect;
+
+	void slurp(std::string& data, const std::string& filename, bool is_binary = false)
+	{
+	}
+};*/
+
 CRectangle::CRectangle ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
+//: pimpl_(new CRectangle::CRectangleImpl)
 {
 	Set ( x , y , w , h ) ;
 }
 
 CRectangle::CRectangle ( CPoint xy , CPoint wh )
+//: pimpl_(new CRectangle::CRectangleImpl)
 {
     Set ( xy.GetX() , xy.GetY() , wh.GetX() , wh.GetY() ) ;
 }
 
 CRectangle::CRectangle ( SDL_Rect rc )
+//: pimpl_(new CRectangle::CRectangleImpl)
 {
 	Set ( rc.x , rc.y , rc.w , rc.h ) ;
 }
 
 CRectangle::CRectangle ( SDL_Rect* prc )
+//: pimpl_(new CRectangle::CRectangleImpl)
 {
 	Set ( prc->x , prc->y , prc->w , prc->h ) ;
 }
 
 CRectangle::CRectangle ( const CRectangle& rc )
+//: pimpl_(new CRectangle::CRectangleImpl)
 {
 	Set ( rc.GetX() , rc.GetY() , rc.GetW() , rc.GetH() ) ;
 	//( *this ) = rc ;
@@ -37,74 +52,74 @@ CRectangle::~CRectangle ( )
 
 Sint16& CRectangle::X ( )
 {
-	return ( m_rect.x ) ;
+	return ( pimpl_->m_rect.x ) ;
 }
 
 Sint16& CRectangle::Y ( )
 {
-	return ( m_rect.y ) ;
+	return ( pimpl_->m_rect.y ) ;
 }
 
 Uint16& CRectangle::W ( )
 {
-	return ( m_rect.w ) ;
+	return ( pimpl_->m_rect.w ) ;
 }
 
 Uint16& CRectangle::H ( )
 {
-	return ( m_rect.h ) ;
+	return ( pimpl_->m_rect.h ) ;
 }
 
 //getters
 Sint16 CRectangle::GetX() const
 {
-	return(m_rect.x);
+	return(pimpl_->m_rect.x);
 }
 
 Sint16 CRectangle::GetY() const
 {
-	return(m_rect.y);
+	return(pimpl_->m_rect.y);
 }
 
 Uint16 CRectangle::GetW() const
 {
-	return(m_rect.w);
+	return(pimpl_->m_rect.w);
 }
 
 Uint16 CRectangle::GetH() const
 {
-	return(m_rect.h);
+	return(pimpl_->m_rect.h);
 }
 
 //setters
 void CRectangle::SetX(Sint16 x)
 {
-	m_rect.x=x;
+	pimpl_->m_rect.x=x;
 }
 
 void CRectangle::SetY(Sint16 y)
 {
-	m_rect.y=y;
+	pimpl_->m_rect.y=y;
 }
 
 void CRectangle::SetW(Uint16 w)
 {
-	m_rect.w=w;
+	pimpl_->m_rect.w=w;
 }
 
 void CRectangle::SetH(Uint16 h)
 {
-	m_rect.h=h;
+	pimpl_->m_rect.h=h;
 }
 
 CRectangle::operator SDL_Rect ( )
 {
-	return ( m_rect ) ;
+	return ( pimpl_->m_rect ) ;
 }
 
 CRectangle::operator SDL_Rect* ( )
 {
-	return ( &m_rect ) ;
+	return ( &pimpl_->m_rect ) ;
 }
 
 CRectangle::operator CPoint ( )
