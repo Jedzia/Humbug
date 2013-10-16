@@ -33,7 +33,7 @@ IF(USE_LIB_BOOST)
 	SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;regex;program_options;unit_test_framework")
   #ENDIF()
 
-  SET(boost_local_root $ENV{BOOSTROOT})
+  SET(boost_local_root $ENV{BOOSTROOTDIR})
   IF(NOT boost_local_root)
     SET(boost_local_root "E:/Devel/CPP/Libs/boost/boost-svn")
   ENDIF()

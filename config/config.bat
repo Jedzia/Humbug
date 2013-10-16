@@ -1,4 +1,4 @@
 SET ZLIBVER=1.2.8
 SET SDLVER=1.2.15
 
-SET BOOSTROOT=E:\Devel\CPP\Libs\boost\boost-1.54.0
+SET BOOSTROOTDIR=E:\Devel\CPP\Libs\boost\boost-1.54.0
