@@ -5,6 +5,7 @@
 #include "SDL_ttf.h"
 #include "Color.h"
 #include "Rectangle.h"
+#include <boost/function.hpp>
 
 namespace gui {
 namespace components {
@@ -28,7 +29,9 @@ public:
     CText(TTF_Font *font, std::string text, CColor textcolor = CColor::Black());
     ~CText();
 
-    typedef const boost::function<void(const CCanvas*,const CText *text, CTextModifierData& mdata)> TextModifier;
+    // Todo: "const boost::function<void" does not work under gcc
+    // typedef const boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
+    typedef boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
     //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
     void AddModifier(TextModifier updfunc);
     void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect ) const;

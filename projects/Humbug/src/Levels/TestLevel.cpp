@@ -158,11 +158,13 @@ void TestLevel::OnDraw(){
 	m_pSprite->Put(m_pMainCanvas, sp);
 	if (testbutton->IsPressed())
 	{
-		sp.Subtract(CPoint(-3,0));
+        CPoint point(-3,0);
+		sp.Subtract(point);
 	}
 	else
 	{
-		sp.Subtract(CPoint(3,0));
+        CPoint point(3,0);
+		sp.Subtract(point);
 	}
 
 	//m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );

@@ -302,7 +302,7 @@ void FileLoader::Load(const std::string & filename) const
 }
 
 
-SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string location) 
+SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string location)
 {
 
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
@@ -341,7 +341,8 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string locat
     SDL_Surface *surface = pimpl_->LoadImg(fsys, filename);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, surface);
 	flInfo->setLoc(location);
-	m_resMap.insert(std::string(filename), flInfo);
+	std::string fname(filename);
+	m_resMap.insert(fname, flInfo);
 
     //m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
     return surface;
@@ -353,13 +354,13 @@ void FileLoader::FreeLast()
 	// std::cout << "FileLoader freeing '" << current->Name() << "'" << std::endl;
 	std::cout << "FileLoader freeing 'FreeLast'" << std::endl;
     //std::string nase = f->Name();
-    
+
     if (m_pLastLoaded == "")
     {
 		return;
         //SDL_FreeSurface(m_pLastSurface);
     }
-	
+
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(m_pLastLoaded);
 	if (rexs1 != m_resMap.end())
 	{
@@ -431,22 +432,23 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
     // Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
     //TTF_Font* m_pLastFont = pimpl_->LoadFont(fsys, filename, ptsize);
-    FileLoadingInfo* m_pflInfo = pimpl_->LoadFont(fsys, filename, ptsize);
-	m_pflInfo->setLoc(location);
+    FileLoadingInfo* flInfo = pimpl_->LoadFont(fsys, filename, ptsize);
+	flInfo->setLoc(location);
 
-	//m_pvSurfaces.push_back(m_pflInfo);
-	//m_resMap.insert(std::string(filename), m_pflInfo);
+	//m_pvSurfaces.push_back(flInfo);
+	//m_resMap.insert(std::string(filename), flInfo);
 
 
 //	boost::ptr_map<std::string, FileLoadingInfo> map;
-	//m_resMap.insert(std::string(filename), boost::ref(m_pflInfo));
-	m_resMap.insert(std::string(filename), m_pflInfo);
+	//m_resMap.insert(std::string(filename), boost::ref(flInfo));
+	std::string fname(filename);
+	m_resMap.insert(fname, flInfo);
 	//const FileLoadingInfo& res = m_resMap.at(filename);
 
 	//boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs2 = m_resMap.find(filename + "dadsad");
 
 
-    return m_pflInfo->Font();
+    return flInfo->Font();
 }
 
 
