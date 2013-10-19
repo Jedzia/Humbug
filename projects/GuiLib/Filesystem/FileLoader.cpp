@@ -42,6 +42,18 @@ FileLoadingInfo::~FileLoadingInfo()
     }
 }
 
+FileLoadingInfo& FileLoadingInfo::operator++( int )
+{
+	m_refcount++;
+	return *this;
+}
+
+FileLoadingInfo& FileLoadingInfo::operator--( int )
+{
+	m_refcount--;
+	return *this;
+}
+
 // FileLoader
 
 struct FileLoader::FileLoaderImpl {
@@ -248,7 +260,7 @@ struct FileLoader::FileLoaderImpl {
 };
 
 FileLoader::FileLoader(const std::string & basepath)
-: pimpl_(new FileLoader::FileLoaderImpl), m_pBasepath(basepath), m_pLastSurface(NULL)
+: pimpl_(new FileLoader::FileLoaderImpl), m_pBasepath(basepath), m_pLastLoaded("")
 {
          dbgOut(__FUNCTION__ << std::endl);
 }
@@ -290,11 +302,19 @@ void FileLoader::Load(const std::string & filename) const
 }
 
 
-
 SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string location) 
 {
 
-	std::cout << "FileLoader LoadImg '" << filename << "' " << location << std::endl;
+	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
+	if (rexs1 != m_resMap.end())
+	{
+		FileLoadingInfo& finf = *(rexs1->second);
+		std::cout << "FileLoader LoadImg in Cache '" << filename << "'" << std::endl;
+		finf++;
+		return finf.m_pSurface;
+	}
+	else
+		std::cout << "FileLoader LoadImg '" << filename << "' " << location << std::endl;
 	/*if (m_pvSurfaces.size() > 0)
 	{
 		surfacevector::pointer result = NULL;
@@ -317,9 +337,14 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string locat
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
 
-    m_pLastSurface = pimpl_->LoadImg(fsys, filename);
+	m_pLastLoaded = filename;
+    SDL_Surface *surface = pimpl_->LoadImg(fsys, filename);
+	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, surface);
+	flInfo->setLoc(location);
+	m_resMap.insert(std::string(filename), flInfo);
+
     //m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
-    return m_pLastSurface;
+    return surface;
 }
 
 void FileLoader::FreeLast()
@@ -329,10 +354,18 @@ void FileLoader::FreeLast()
 	std::cout << "FileLoader freeing 'FreeLast'" << std::endl;
     //std::string nase = f->Name();
     
-    /*if (m_pLastSurface)
+    if (m_pLastLoaded == "")
     {
-        SDL_FreeSurface(m_pLastSurface);
-    }*/
+		return;
+        //SDL_FreeSurface(m_pLastSurface);
+    }
+	
+	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(m_pLastLoaded);
+	if (rexs1 != m_resMap.end())
+	{
+		FileLoadingInfo& finf = *(rexs1->second);
+		std::cout << "FileLoader FreeLast in Cache '" << finf << "'" << std::endl;
+	}
 }
 
 void FileLoader::Free( const std::string& name )
@@ -361,8 +394,9 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
 	if (rexs1 != m_resMap.end())
 	{
-		const FileLoadingInfo& finf = *(rexs1->second);
+		FileLoadingInfo& finf = *(rexs1->second);
 		std::cout << "FileLoader LoadFont in Cache '" << filename << "'" << std::endl;
+		finf++;
 		char *data = finf.m_pData;
 		SDL_RWops* imgmem = SDL_RWFromMem(&data[0], finf.m_fsize);
 		TTF_Font* font = TTF_OpenFontRW(imgmem, 1, ptsize);

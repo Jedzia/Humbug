@@ -6,9 +6,11 @@
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <string>
 
+#define STRX(x) #x
+#define STR(x) STRX(x)
 //#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("[") + __FILE__ + "]-> " + __FUNCTION__)
-#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + ".-> " + __FUNCTION__)
-#define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__ + ".-> " + __FUNCTION__)
+#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + "(" +  STR(__LINE__) + ") -> " + __FUNCTION__)
+#define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 
 struct SDL_Surface;
 struct _TTF_Font;
@@ -29,8 +31,8 @@ public:
 	void setLoc(std::string val) { m_strLoc = val; }
 	int Refcount() const { return m_refcount; }
 
-	void operator ++() { m_refcount++; };
-	void operator --() { m_refcount--; };
+	FileLoadingInfo& operator ++(int);
+	FileLoadingInfo& operator --(int);
 private:
 	std::string m_strName;
 	std::string m_strLoc;
@@ -66,7 +68,7 @@ public:
 private:
 
     std::string m_pBasepath;
-    SDL_Surface* m_pLastSurface;
+	std::string m_pLastLoaded;
     typedef boost::ptr_vector<FileLoadingInfo> surfacevector;
     //surfacevector m_pvSurfaces;
 	boost::ptr_map<std::string, FileLoadingInfo> m_resMap;
