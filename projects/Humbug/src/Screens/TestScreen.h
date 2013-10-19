@@ -28,6 +28,7 @@ namespace gui {
     class CTextScroller;
   }
 }
+typedef struct _TTF_Font TTF_Font;
 class FileLoader;
 
 namespace humbug {

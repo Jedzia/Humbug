@@ -37,7 +37,9 @@ public:
 protected:
     virtual ~HookCreator()
     {
+#ifdef WIN32
         dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
+#endif
     };
 };
 

@@ -261,8 +261,11 @@ FOREACH(f ${playground_SDL_sources})
 		SET(_target_name "SDL_${_target_name}")
 		ADD_EXECUTABLE(${_target_name} ${f})
 #		TargetLinkBoost(${_target_name} "filesystem;system")
-		TARGET_LINK_LIBRARIES(${_target_name} ${SDL_LIBRARY} )
-
+if(LINUX)
+		TARGET_LINK_LIBRARIES(${_target_name} ${SDL_LIBRARY} m)
+else()
+		TARGET_LINK_LIBRARIES(${_target_name} ${SDL_LIBRARY})
+endif()
 		SET_PROPERTY(TARGET ${_target_name} PROPERTY FOLDER "Playground/SDL")
 		SET_TARGET_PROPERTIES(${_target_name}
 		PROPERTIES

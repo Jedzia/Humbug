@@ -4,6 +4,7 @@
 //#include "Eventhandler.h"
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "boost/smart_ptr/scoped_ptr.hpp"
+#include <boost/noncopyable.hpp>
 
 namespace gui {
 

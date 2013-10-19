@@ -67,6 +67,11 @@ IF(WIN32)
 		win32/appinit.cpp
 	)  
 ENDIF(WIN32)
+IF(UNIX OR LINUX)
+	SET(HumbugLib_sources ${HumbugLib_sources}
+		unix/appinit.cpp
+	)  
+ENDIF(UNIX OR LINUX)
 ADD_DEFINITIONS(-DUNICODE=1)
 
 
