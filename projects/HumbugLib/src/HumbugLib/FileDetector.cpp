@@ -1,5 +1,5 @@
 
-#include "HumbugLib/stdafx.h"
+#include "stdafx.h"
 //
 #include "FileDetector.h"
 
@@ -66,4 +66,4 @@ FileDetector::FileType FileDetector::identify(std::ifstream & input_file) {
 }
 
 
-} // namespace HumbugLIB_NAMESPACE
+HumbugLIB_END_NAMESPACE

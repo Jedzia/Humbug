@@ -51,6 +51,9 @@ SET(HumbugLib_interface
 SET(HumbugLib_headers 
   stdafx.h
   AppGB.h
+  Log.h
+  LogManager.h
+  Singleton.h
 #  shared/Txt.h
 #  shared/FileHelper.h
 )
@@ -59,6 +62,8 @@ SET(HumbugLib_sources
 #  shared/Txt.cpp
   FileDetector.cpp
   AppGB.cpp
+  Log.cpp
+  LogManager.cpp
 #  Unzipper.cpp
 #  Zipper.cpp
 )

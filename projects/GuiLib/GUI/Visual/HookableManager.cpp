@@ -41,7 +41,7 @@ void HookableManager::Close()
 
 void HookableManager::AddHookable(std::string key, Hookable *item, bool connectMe )
 {
-    dbgOut(__FUNCTION__ << " Adding Hook " << key << "(" << item << ")" /*<< std::endl*/);
+    dbgOut(__FUNCTION__ << " Adding Hook " << key << "(" << item << ")" << std::endl);
     if ( m_mapHooks.find(key) == m_mapHooks.end() )
     {
         //m_mapHooks.insert( std::make_pair(key, item) );

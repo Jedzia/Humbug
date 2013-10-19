@@ -10,8 +10,10 @@ extern "C"
 #define STRING(x) STRING2(x)
 
 #define HumbugLIB_NAMESPACE humbuglib
-#define HumbugLIB_BEGIN_NAMESPACE namespace Support { namespace HumbugLIB_NAMESPACE {
-#define HumbugLIB_END_NAMESPACE } }
+#define HumbugLIB_BEGIN_NAMESPACE namespace HumbugLIB_NAMESPACE {
+#define HumbugLIB_END_NAMESPACE }
+#define HumbugLIB_BEGIN_SUPPORT_NAMESPACE namespace Support { namespace HumbugLIB_NAMESPACE {
+#define HumbugLIB_END_SUPPORT_NAMESPACE } }
 #define HumbugLIB_USE_NAMESPACE using namespace Support::HumbugLIB_NAMESPACE;
 
 #undef PRJ_NAMESPACE
@@ -57,6 +59,6 @@ extern "C"
 }
 #endif
 
-#include "cpp0xfix.h"
+//#include "cpp0xfix.h"
 
 #endif //HumbugLIB_GLOBAL_H

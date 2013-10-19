@@ -1,5 +1,6 @@
 #include "../stdafx.h"
 #include "FileLoader.h"
+#include <HumbugLib/LogManager.h>
 #include <HumbugShared/VFS/zfsystem.h>
 	#include "SDL.h"
 	#include "SDL_image.h"
@@ -262,7 +263,15 @@ struct FileLoader::FileLoaderImpl {
 FileLoader::FileLoader(const std::string & basepath)
 : pimpl_(new FileLoader::FileLoaderImpl), m_pBasepath(basepath), m_pLastLoaded("")
 {
-         dbgOut(__FUNCTION__ << std::endl);
+	using namespace humbuglib;
+     dbgOut(__FUNCTION__ << std::endl);
+	 LogManager *mLogManager;
+	 if(LogManager::getSingletonPtr() == 0)
+	 {
+		 mLogManager = new LogManager();
+		 mLogManager->createLog("log.txt", true, true);
+	 }
+	 LogManager::getSingleton().logMessage("Creating FileLoader for '" + basepath + "'.");
 }
 
 FileLoader::~FileLoader(void)
@@ -309,7 +318,7 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string locat
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		std::cout << "FileLoader LoadImg in Cache '" << filename << "'" << std::endl;
+		std::cout << "FileLoader LoadImg in Cache '" << filename << "': " << location << std::endl;
 		finf++;
 		return finf.m_pSurface;
 	}
@@ -365,8 +374,10 @@ void FileLoader::FreeLast()
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		std::cout << "FileLoader FreeLast in Cache '" << finf << "'" << std::endl;
+		std::cout << "FileLoader FreeLast found Cached '" << finf << "'" << std::endl;
 	}
+	else
+		std::cout << "FileLoader FreeLast NOT found Cached '" << m_pLastLoaded << "' atom." << std::endl;
 }
 
 void FileLoader::Free( const std::string& name )
@@ -396,7 +407,7 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		std::cout << "FileLoader LoadFont in Cache '" << filename << "'" << std::endl;
+		std::cout << "FileLoader LoadFont in Cache '" << filename << "': " << location << std::endl;
 		finf++;
 		char *data = finf.m_pData;
 		SDL_RWops* imgmem = SDL_RWFromMem(&data[0], finf.m_fsize);
