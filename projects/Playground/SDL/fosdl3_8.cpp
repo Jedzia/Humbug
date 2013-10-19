@@ -13,7 +13,7 @@
 //sdl.dll
 
 //include SDL stuff
-#include "sdl.h"
+#include "SDL.h"
 
 //include ability to exit program
 #include <stdlib.h>

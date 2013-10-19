@@ -1,4 +1,4 @@
-#include "sdl.h"
+#include "SDL.h"
 #include <stdlib.h>
 
 const SDL_VideoInfo* g_pVideoInfo = NULL;

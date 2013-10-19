@@ -2,8 +2,8 @@
 #define __GUI_COMPONENTS_RECTANGLE_H__
 
 //#include <boost/shared_ptr.hpp>
-#include "sdl.h"
-#include "point.h"
+#include "SDL.h"
+#include "Point.h"
 #include <iostream>
 
 /*struct SDL_Rect;

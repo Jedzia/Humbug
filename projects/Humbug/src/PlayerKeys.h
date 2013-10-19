@@ -16,7 +16,7 @@
 /*---------------------------------------------------------*/
 #ifndef PROJECT_PLAYERKEYS_H
 #define PROJECT_PLAYERKEYS_H
-#include "GUI\Components\Point.h"
+#include "GUI/Components/Point.h"
 #include "SDL.h"
 
 namespace humbug {

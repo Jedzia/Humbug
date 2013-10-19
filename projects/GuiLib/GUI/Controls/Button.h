@@ -19,7 +19,7 @@
 
 #include "../Components/Color.h"
 #include "Control.h"
-#include "sdl_ttf.h"
+#include "SDL_ttf.h"
 #include <string>
 
 namespace gui {

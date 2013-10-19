@@ -28,7 +28,9 @@ SET(P_MODULE_PATH "${P_BUILD_PATH}/cmake/Modules")
 SET(CMAKE_MODULE_PATH "${P_MODULE_PATH};${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}")
 SET(_prj_name ${CMAKE_PROJECT_NAME})
 
-INCLUDE (install)
+if ( WIN32 )
+  INCLUDE (install)
+endif( WIN32 )
 INCLUDE (setup)
 INCLUDE (debug)
 

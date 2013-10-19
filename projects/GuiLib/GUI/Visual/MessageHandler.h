@@ -3,7 +3,7 @@
 #define __MESSAGEHANDLER_H__
 
 //include sdl
-#include "sdl.h"
+#include "SDL.h"
 
 namespace gui {
 

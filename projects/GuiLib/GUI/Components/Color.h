@@ -1,7 +1,7 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-#include "sdl.h"
+#include "SDL.h"
 
 namespace gui {
 namespace components {

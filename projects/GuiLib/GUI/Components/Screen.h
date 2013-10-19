@@ -1,6 +1,7 @@
 #ifndef HUMBUG_GUI_COMPONENTS_SCREEN_H
 #define HUMBUG_GUI_COMPONENTS_SCREEN_H
 #include "../Visual/Hookable.h"
+#include "../Visual/HookableManager.h"
 #include "../Visual/MessageHandler.h"
 //#include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Canvas.h"
