@@ -64,7 +64,6 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    m_pConsole(NULL),
     //fl(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data")),
     m_uiLastTicks(0),
     m_inActiveSprite(0),
@@ -123,7 +122,6 @@ void CTestEventHandler::OnExit(){
     delete m_pTileEngine;
     delete m_pKeyHandler;
     delete m_pKeyHandler2;
-    delete m_pConsole;
     fl.reset();
     //destroy font
     //TTF_CloseFont( CButton::GetButtonFont() );
@@ -417,7 +415,7 @@ void CTestEventHandler::OnIdle(int frameNumber){
         m_pSprite->Draw();
         m_pSprite2->Draw();
     }
-    m_pConsole->Draw();
+    //m_pConsole->Draw();
 
     //m_pHud->Draw();
     //m_pMainCanvas->Flip();

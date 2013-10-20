@@ -10,7 +10,7 @@
 
 namespace gui {
 
-//class CMainCanvas;
+class CConsole;
 
 /*
 	==CApplication==
@@ -88,6 +88,8 @@ protected:
     virtual bool OnPostInit(int argc,char* argv[]) = 0;
     //main display surface
     void SetMainCanvas(gui::components::CMainCanvas* val) { m_pMainCanvas = val; }
+	CConsole* m_pConsole;
+
 };
 
 } // namespace gui

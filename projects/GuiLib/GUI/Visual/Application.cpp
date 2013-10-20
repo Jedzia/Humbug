@@ -11,6 +11,7 @@
 //#include "Hookable.h"
 #include "../Components/MainCanvas.h"
 #include <stdexcept>
+#include "GUI/Visual/Console.h"
 #include <HumbugLib/LogManager.h>
 
 extern int bmain(int argc,char* argv[]);
@@ -165,6 +166,7 @@ void CApplication::SetApplication(CApplication* pTheApp)
 
 //constructor
 CApplication::CApplication():
+	m_pConsole(NULL),
     CMessageHandler(NULL), m_pMainCanvas(NULL)
 {
     //_CRT_DEBUG_BLOCK
@@ -212,7 +214,9 @@ void CApplication::OnIdle(int frameNumber)
 	//by default, do nothing
     m_sigOnIdle(frameNumber);
 	m_sigOnDraw();
-    m_pMainCanvas->UpdateRects ( );
+	if (m_pConsole)
+		m_pConsole->Draw();
+	m_pMainCanvas->UpdateRects ( );
 }
 
 //update loop
@@ -231,6 +235,8 @@ void CApplication::OnExit()
     //m_sigOnIdle.disconnect_all_slots();
     //m_sigOnUpdate.disconnect_all_slots();
     //delete main canvas
+	if (m_pConsole)
+		delete m_pConsole;
     delete m_pMainCanvas;
 
     //atexit(SDL_Quit);

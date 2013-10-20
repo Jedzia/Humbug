@@ -38,7 +38,6 @@ private:
     boost::scoped_ptr<FileLoader> fl;
     //FileLoader* fl;
     //main display surface
-    gui::CConsole* m_pConsole;
 
     CCanvas* m_pBackground;
     CCanvas* m_pDrawCanvas;

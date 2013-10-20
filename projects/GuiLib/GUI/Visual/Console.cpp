@@ -32,6 +32,9 @@ namespace gui {
 //#include <build/cmake/include/debug.h>
 struct CConsole::CConsoleImpl {
    void Command_Handler(ConsoleInformation* console, char* command) {
+	   LOGSTREAM << "CConsole::CConsoleImpl Command_Handler> " << command;
+	   CON_Out(console, "Command %s not registered", command);
+
        return;
 //        int argc;
 //           char* argv[128];
