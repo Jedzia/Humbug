@@ -11,6 +11,7 @@
 //#include "Hookable.h"
 #include "../Components/MainCanvas.h"
 #include <stdexcept>
+#include <HumbugLib/LogManager.h>
 
 extern int bmain(int argc,char* argv[]);
 
@@ -189,7 +190,7 @@ CApplication::~CApplication()
     const char* explanation = "THIS IS ~CApplication.CPP Destructing.";
     _RPT1( _CRT_WARN, "\n\n%s:\n**************************************************************************\n", explanation );
     //_CrtDumpMemoryLeaks( );
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     std::cout.flush();
 
 }
@@ -406,9 +407,24 @@ int main(int argc,char* argv[])
     //dbgOut(__FUNCTION__ << std::endl);
     _CRT_DEBUG_BLOCK
 
+	// create logging facility
+	using namespace humbuglib;
+	//dbgOut(__FUNCTION__);
+	LogManager *mLogManager;
+	if(LogManager::getSingletonPtr() == 0)
+	{
+		mLogManager = new LogManager();
+		mLogManager->createLog("log.txt", true, true);
+	}
+	LogManager::getSingleton().logMessage("Application startup at '" + std::string(__FUNCTION__) + "'.");
+	// LogManager::getSingleton().logMessage("Creating FileLoader for '" + basepath + "'.");
+
+
     bmain(argc,argv);
 	//run the application
     int result = -1;
+
+
 
     try
     {

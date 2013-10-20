@@ -163,7 +163,7 @@ CConsole::CConsole(CEventHandler* parent, const std::string& fontName, gui::comp
     pimpl_(new CConsole::CConsoleImpl(parent) ) ,
     m_pScreen(displayScreen),
     m_crDimensions(rect){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 
     pimpl_->m_ceParent = parent;
     pimpl_->m_pConsole = CON_Init(fontName.c_str(), displayScreen->GetSurface(), lines, rect);
@@ -181,7 +181,7 @@ CConsole::~CConsole(void){
     CON_Destroy(pimpl_->m_pConsole);
 
     //delete pimpl_->m_pConsole;
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 void CConsole::Draw( void ) const {

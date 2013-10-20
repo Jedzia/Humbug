@@ -42,12 +42,12 @@ struct Hookable::HookableImpl {
     HookableImpl(Hookable *host)
         : m_pHost(host)
     {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
+        dbgOut(__FUNCTION__ << " " << this);
     }
 
     ~HookableImpl()
     {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
+        dbgOut(__FUNCTION__ << " " << this);
     }
 
     bool OnInit(int argc,char* argv[])
@@ -85,7 +85,7 @@ struct Hookable::HookableImpl {
     : m_bIsInitialized(false)
 {
     dbgOut(__FUNCTION__ << " Hookable master ctor"<< std::endl);
-    //dbgOut("Hookable master ctor" << std::endl);
+    //dbgOut("Hookable master ctor");
     //std::cout.flush();
     //std::cerr << "Hookable master ctor" << std::endl;
 
@@ -109,7 +109,7 @@ struct Hookable::HookableImpl {
 Hookable::Hookable(bool hook)
 : pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false), m_pMaster(NULL), m_pController(NULL)
 {
-    dbgOut(__FUNCTION__ << " Hookable child ctor " << this << std::endl);
+    dbgOut(__FUNCTION__ << " Hookable child ctor " << this);
     //std::cout << "Hookable child ctor" << std::endl;
     //m_pvHooks.push_back(this);
     //Init(m_pMaster, this);
@@ -117,10 +117,10 @@ Hookable::Hookable(bool hook)
 
 Hookable::~Hookable(void)
 {
-    dbgOut(__FUNCTION__ << " Hookable dtor " << this << std::endl);
+    dbgOut(__FUNCTION__ << " Hookable dtor " << this);
          //if (IsMaster())
          {
-             //dbgOut(__FUNCTION__ << " Hookable dtor master kill " << this << std::endl);
+             //dbgOut(__FUNCTION__ << " Hookable dtor master kill " << this);
             //m_pvHooks.release();
          }
 }
@@ -194,7 +194,7 @@ void Hookable::Disconnect()
 bool Hookable::OnInit( int argc,char* argv[] )
 {
     m_grpID = GetGroupID();
-    dbgOut(__FUNCTION__ << " (" << this << ") m_grpID=" << m_grpID << std::endl);
+    dbgOut(__FUNCTION__ << " (" << this << ") m_grpID=" << m_grpID);
 
     return true;
     //return Setup();
@@ -203,13 +203,13 @@ bool Hookable::OnInit( int argc,char* argv[] )
 TestHookable::TestHookable()
 : Hookable(true)
 {
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 
 }
 
 TestHookable::~TestHookable()
 {
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 
 }
 

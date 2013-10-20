@@ -21,7 +21,7 @@
 //
 #include <string>
 
-namespace HumbugLIB_NAMESPACE {
+namespace humbuglib {
   class FileDetector {
 public:
 

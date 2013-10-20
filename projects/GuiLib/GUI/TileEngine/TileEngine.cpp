@@ -11,14 +11,14 @@ namespace gui {
 CTileEngine::CTileEngine(const CCanvas * mainCanvas, const CCanvas * background)
 : m_pMainCanvas(mainCanvas), m_pBackground(background)
 {
-         dbgOut(__FUNCTION__ << std::endl);
+         dbgOut(__FUNCTION__);
 //	_CRT_DEBUG_BLOCK
 }
 
 CTileEngine::~CTileEngine(void)
 {
          m_pvTileSets.release();
-         dbgOut(__FUNCTION__ << std::endl);
+         dbgOut(__FUNCTION__);
 //    const char* explanation = "XXXXXX THIS IS ~CTileEngine.CPP";
 //_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
 //************************************\n", explanation );
@@ -67,7 +67,7 @@ CTileSet * CTileEngine::operator[]( const std::string& tileSetName )
     	}
     }
 
-    dbgOut(__FUNCTION__ << " Found CTileSet: (" << result << ")" << std::endl);
+    dbgOut(__FUNCTION__ << " Found CTileSet: (" << result << ")");
     return result;
 }
 

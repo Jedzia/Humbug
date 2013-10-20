@@ -263,22 +263,19 @@ struct FileLoader::FileLoaderImpl {
 FileLoader::FileLoader(const std::string & basepath)
 : pimpl_(new FileLoader::FileLoaderImpl), m_pBasepath(basepath), m_pLastLoaded("")
 {
-	using namespace humbuglib;
-     dbgOut(__FUNCTION__ << std::endl);
-	 LogManager *mLogManager;
-	 if(LogManager::getSingletonPtr() == 0)
-	 {
-		 mLogManager = new LogManager();
-		 mLogManager->createLog("log.txt", true, true);
-	 }
+	 using namespace humbuglib;
+     dbgOut(__FUNCTION__);
 	 LogManager::getSingleton().logMessage("Creating FileLoader for '" + basepath + "'.");
+	 LogManager::getSingleton().stream() << "Logging from Stream.";
 }
 
 FileLoader::~FileLoader(void)
 {
     //m_pvSurfaces.release();
 	m_resMap.release();
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
+	humbuglib::LogManager::getSingleton().stream() << __FUNCTION__ << " Logging from Stream.";
+
 }
 
 const char* FileLoader::language(int x) const

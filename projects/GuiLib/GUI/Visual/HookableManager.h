@@ -30,7 +30,7 @@ class HookCreator {
 public:
     /*HookCreator()
     {
-        dbgOut(__FUNCTION__ << " [" << typeid( *this ).name() << "] (" << this << ")" << std::endl);
+        dbgOut(__FUNCTION__ << " [" << typeid( *this ).name() << "] (" << this << ")");
     };*/
     virtual Hookable* Create()= 0;
 
@@ -38,7 +38,7 @@ protected:
     virtual ~HookCreator()
     {
 #ifdef WIN32
-        dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
+        dbgOut(__FUNCTION__ << " (" << this << ")");
 #endif
     };
 };
@@ -48,7 +48,7 @@ class DefaultHookCreator : public HookCreator {
 public:
     /*DefaultHookCreator()
     {
-        dbgOut(__FUNCTION__ << " (" << this << ")" << std::endl);
+        dbgOut(__FUNCTION__ << " (" << this << ")");
     };*/
    Hookable* Create(){
         return new T;

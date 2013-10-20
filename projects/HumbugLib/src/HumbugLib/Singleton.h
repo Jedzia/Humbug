@@ -30,7 +30,7 @@
 #  pragma GCC visibility push(default)
 #endif
 
-HumbugLIB_BEGIN_NAMESPACE
+namespace humbuglib {
 
 /** Template class for creating single-instance global classes.
  */
@@ -79,7 +79,7 @@ public:
 
 /** @} */
 /** @} */
-HumbugLIB_END_NAMESPACE
+}
 #if defined ( _GCC_VISIBILITY )
 #  pragma GCC visibility pop
 #endif

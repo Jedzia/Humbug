@@ -24,7 +24,7 @@ namespace gui
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
 
       //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
       //m_cpSprDim.SetY(sprImage->SrcRect().GetH());
@@ -60,7 +60,7 @@ namespace gui
           delete m_pSprImage;
       }
 
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   /** CSprite, Draw:

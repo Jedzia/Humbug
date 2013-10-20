@@ -27,7 +27,7 @@ m_lstChildren(0),
 m_ID(0),
 m_pParent(NULL), m_ptIsDirty(false)
 {
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 
 	if (s_pMainControl)
 	{
@@ -49,7 +49,7 @@ m_lstChildren(0),
 m_ID(id),
 m_pParent(NULL), m_ptIsDirty(invalidate)
 {
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 	//set parent
 	SetParent(pParent);
 	//create an rgb compatible surface
@@ -104,7 +104,7 @@ CControl::~CControl()
 	{
 		delete m_pCanvas;
 	}
-    dbgOut(__FUNCTION__ << " (" << m_ID << ")"  << std::endl);
+    dbgOut(__FUNCTION__ << " (" << m_ID << ")");
 }
 
 //add child handler

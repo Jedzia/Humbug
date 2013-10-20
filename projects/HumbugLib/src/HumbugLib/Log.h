@@ -19,8 +19,9 @@
 #define __Log_H__
 
 #include <HumbugLib/global.h>
+#include <iosfwd>
 
-HumbugLIB_BEGIN_NAMESPACE
+namespace humbuglib {
 
 /** \addtogroup Core
  *  @{
@@ -192,10 +193,9 @@ protected:
 
         Log* mTarget;
         LogMessageLevel mLevel;
-        bool mMaskDebug;
-        //typedef StringUtil::StrStreamType BaseStream;
-        //typedef std::ostream BaseStream;
-        //BaseStream mCache;
+        bool mMaskDebug; 
+		typedef std::stringstream BaseStream;
+        BaseStream mCache;
 
 public:
 
@@ -214,14 +214,14 @@ public:
             mLevel(rhs.mLevel),
             mMaskDebug(rhs.mMaskDebug){
             // explicit copy of stream required, gcc doesn't like implicit
-            //mCache.str(rhs.mCache.str());
+            mCache.str(rhs.mCache.str());
         }
         ~Stream(){
             // flush on destroy
-            /*if (mCache.tellp() > 0)
+            if (mCache.tellp() > 0)
                {
                     mTarget->logMessage(mCache.str(), mLevel, mMaskDebug);
-               }*/
+               }
         }
         /** $(fclass), operator <<:
          *  Detailed description.
@@ -230,7 +230,7 @@ public:
          */
         template <typename T>
         Stream& operator<< (const T& v)                      {
-            //mCache << v;
+            mCache << v;
             return *this;
         }
         /** $(fclass), operator <<:
@@ -240,8 +240,8 @@ public:
          */
         Stream& operator<< (const Flush& v){
             (void)v;
-            //mTarget->logMessage(mCache.str(), mLevel, mMaskDebug);
-            //mCache.str(StringUtil::BLANK);
+            mTarget->logMessage(mCache.str(), mLevel, mMaskDebug);
+            mCache.str("");
             return *this;
         }
     };
@@ -249,7 +249,7 @@ public:
 
 /** @} */
 /** @} */
-HumbugLIB_END_NAMESPACE
+}
 
 //#include "HUMBUGLIBHeaderSuffix.h"
 

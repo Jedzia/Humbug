@@ -18,12 +18,12 @@ Screen::Screen( CCanvas *background )
    // , m_pMainScreen(mainScreen)
     {
 
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 Screen::~Screen(void){
 
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 GroupId Screen::GetGroupID(){

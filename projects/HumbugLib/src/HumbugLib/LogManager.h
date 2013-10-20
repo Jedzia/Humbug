@@ -22,7 +22,7 @@
 #include "Log.h"
 #include "Singleton.h"
 
-HumbugLIB_BEGIN_NAMESPACE
+namespace humbuglib {
 
   /** \addtogroup Core
    *  @{

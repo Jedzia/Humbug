@@ -18,7 +18,7 @@ public:
 HookableManager::HookableManager(CEventHandler* master)
 : m_pMaster(master), m_pActiveHook(NULL)
 {
-         //dbgOut(__FUNCTION__ << std::endl);
+         //dbgOut(__FUNCTION__);
          if ( !master )
          {
              throw std::runtime_error("You have to specify a valid master event handler.");
@@ -29,19 +29,19 @@ HookableManager::HookableManager(CEventHandler* master)
 
 HookableManager::~HookableManager(void)
 {
-         //dbgOut(__FUNCTION__ << std::endl);
+         //dbgOut(__FUNCTION__);
 }
 
 void HookableManager::Close()
 {
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     m_mapHooks.release();
     m_mapRegistry.clear();
 }
 
 void HookableManager::AddHookable(std::string key, Hookable *item, bool connectMe )
 {
-    dbgOut(__FUNCTION__ << " Adding Hook " << key << "(" << item << ")" << std::endl);
+    dbgOut(__FUNCTION__ << " Adding Hook " << key << "(" << item << ")");
     if ( m_mapHooks.find(key) == m_mapHooks.end() )
     {
         //m_mapHooks.insert( std::make_pair(key, item) );
@@ -54,7 +54,7 @@ void HookableManager::AddHookable(std::string key, Hookable *item, bool connectM
             //item->Connect();
             EnableHookable(key);
         }
-        dbgOut(", [" << typeid( *item ).name() << "] (" << this << ")" << std::endl);
+        dbgOut(", [" << typeid( *item ).name() << "] (" << this << ")");
     }
     else
     {
@@ -64,7 +64,7 @@ void HookableManager::AddHookable(std::string key, Hookable *item, bool connectM
 
 Hookable* HookableManager::GetHookable( const std::string& key )
 {
-    dbgOut(__FUNCTION__ << " Searching Hook '" << key << "'." << std::endl);
+    dbgOut(__FUNCTION__ << " Searching Hook '" << key << "'.");
 
     HookDictionary::iterator found =  m_mapHooks.find(key);
     if ( found == m_mapHooks.end() )
@@ -78,7 +78,7 @@ Hookable* HookableManager::GetHookable( const std::string& key )
         }
         else
         {
-            dbgOut(__FUNCTION__ << " Creating Hook '" << key << "' from factory." << std::endl);
+            dbgOut(__FUNCTION__ << " Creating Hook '" << key << "' from factory.");
             Hookable* hookable = regfound->second->Create();
             AddHookable(key, hookable);
             return hookable;
@@ -90,14 +90,14 @@ Hookable* HookableManager::GetHookable( const std::string& key )
 
 void HookableManager::RemoveHookable( const std::string& key )
 {
-    dbgOut(__FUNCTION__ << " Removing Hook " << key << std::endl);
+    dbgOut(__FUNCTION__ << " Removing Hook " << key);
     // disconnect and release
     //m_mapHooks.release(key);
 }
 
 void HookableManager::Test1()
 {
-    dbgOut(__FUNCTION__ << " Disconnecting the StartScreen Hook " << std::endl);
+    dbgOut(__FUNCTION__ << " Disconnecting the StartScreen Hook ");
 
     //const Hookable& hookable = m_mapHooks["StartScreen"];
     Hookable* hookable = GetHookable("StartScreen");
@@ -109,7 +109,7 @@ void HookableManager::Test1()
 
 void HookableManager::Test2()
 {
-    dbgOut(__FUNCTION__ << " Connecting the StartScreen Hook " << std::endl);
+    dbgOut(__FUNCTION__ << " Connecting the StartScreen Hook ");
     Hookable* hookable = GetHookable("StartScreen");
     //hookable->Connect(hookable);
     hookable->Connect();

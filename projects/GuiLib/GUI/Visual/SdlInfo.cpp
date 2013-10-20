@@ -26,14 +26,14 @@ namespace gui {
 const char* SdlInfo::indent = "    ";
 //#include <build/cmake/include/debug.h>
 SdlInfo::SdlInfo(SDL_Surface* surface){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     FillHwInfo();
     FillGeneralInfo(surface);
     FillSurfaceInfo(surface);
 }
 
 SdlInfo::~SdlInfo(void){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 const SdlInfoGeneral& SdlInfo::GetGeneralInfo() const {

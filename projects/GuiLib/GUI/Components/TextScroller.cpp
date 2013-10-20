@@ -18,11 +18,11 @@ CTextScroller::CTextScroller( CCanvas *dstCanvas, const CText& text, CPoint text
     m_iWindowWidth(windowWidth),
     xdelta(0),
     xdelta1(0){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 CTextScroller::~CTextScroller(void){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 void CTextScroller::Draw( )

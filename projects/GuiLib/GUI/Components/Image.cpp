@@ -6,14 +6,14 @@ namespace components {
 
 CImage::CImage ( CCanvas* pcnvSource, bool freeSrc )
 : m_bFreeSrc(freeSrc){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     SetCanvas ( pcnvSource );
     m_rcSrc = m_rcDst = pcnvSource->GetDimension();
 }
 
 CImage::CImage ( CCanvas* pcnvSource, CRectangle rcSource, bool freeSrc, CPoint ptOffset )
 : m_bFreeSrc(freeSrc){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     SetCanvas ( pcnvSource );
     SrcRect ( ) = rcSource;
     DstRect ( ) = rcSource;
@@ -26,7 +26,7 @@ CImage::~CImage ( )
     {
         delete m_pcnvSrc;
     }
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 CCanvas * CImage::GetCanvas ( ){

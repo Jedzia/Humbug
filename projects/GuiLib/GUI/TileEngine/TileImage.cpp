@@ -12,7 +12,7 @@ namespace gui {
 CTileImage::CTileImage( FileLoader& loader, std::string filename,
         CTileImageSetup configuration ) :
     CCanvas(){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
     loader.FreeLast();
     SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
@@ -35,7 +35,7 @@ CTileImage::CTileImage( FileLoader& loader, std::string filename,
 }
 
 CTileImage::~CTileImage(void){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     // Todo: delete the bitmap. here or above.
 }
 

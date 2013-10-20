@@ -27,7 +27,7 @@ namespace gui {
 
     CSeamlessImage::CSeamlessImage ( CCanvas* pcnvSource, bool freeSrc ) :
         m_bFreeSrc(freeSrc){
-        dbgOut(__FUNCTION__ << std::endl);
+        dbgOut(__FUNCTION__);
         SetCanvas ( pcnvSource );
         m_rcSrc = m_rcDst = pcnvSource->GetDimension();
 
@@ -40,7 +40,7 @@ namespace gui {
 
     CSeamlessImage::CSeamlessImage ( CCanvas* pcnvSource, CRectangle rcSource, bool freeSrc, CPoint ptOffset ) :
         m_bFreeSrc(freeSrc){
-        dbgOut(__FUNCTION__ << std::endl);
+        dbgOut(__FUNCTION__);
         SetCanvas ( pcnvSource );
         m_rcSrc = rcSource;
         m_rcDst = rcSource;
@@ -52,7 +52,7 @@ namespace gui {
             delete m_pcnvSrc;
         }
 
-        dbgOut(__FUNCTION__ << std::endl);
+        dbgOut(__FUNCTION__);
     }
 
     /** CSeamlessImage, GetCanvas:

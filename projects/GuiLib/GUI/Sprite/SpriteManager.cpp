@@ -17,12 +17,12 @@ public:
       CSpriteHook( CSprite* sprite, const boost::function<void(CSprite *, int)> updfunc = NULL ) :
           m_pSprite(sprite),
           m_fncUpdate(updfunc){
-          dbgOut(__FUNCTION__ << " " << this << std::endl);
+          dbgOut(__FUNCTION__ << " " << this);
 
           //m_pSprite.reset(sprite);
       }
       ~CSpriteHook(){
-          dbgOut(__FUNCTION__ << " " << this << std::endl);
+          dbgOut(__FUNCTION__ << " " << this);
       }
       void DoIdle(int framenumber){
           if (m_fncUpdate != NULL) {
@@ -39,11 +39,11 @@ public:
   };
 
   CSpriteManager::CSpriteManager(/*SDL_Surface* screen*/){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   CSpriteManager::~CSpriteManager(void){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   void CSpriteManager::AddSprite(CSprite* sprite, const boost::function<void(CSprite *,
@@ -67,7 +67,7 @@ public:
       for (SprStorage::iterator it = m_pvSprites.begin(); it < end; it++)
       {
           //SpriteShrp sprite = it->Sprite();
-          //dbgOut(__FUNCTION__ << " " << &it << std::endl);
+          //dbgOut(__FUNCTION__ << " " << &it);
           (*it).DoIdle(frameNumber);
       }
   }

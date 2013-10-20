@@ -14,7 +14,7 @@ CTileSet::CTileSet( const CCanvas * mainCanvas, CTileImage* tileImage, const CCa
 m_ctiTileImage(tileImage),
     m_pBackground(background),
     m_crScreen(screen){
-   dbgOut(__FUNCTION__ << std::endl);
+   dbgOut(__FUNCTION__);
    // m_pSprImage(sprImage),
 }
 
@@ -22,7 +22,7 @@ m_ctiTileImage(tileImage),
 CTileSet::~CTileSet(void){
     delete m_ctiTileImage;
     m_ctiTileImage = NULL;
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 void CTileSet::Draw(const CTile& tile){

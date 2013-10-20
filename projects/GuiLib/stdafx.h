@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+
 #ifdef _DEBUG
 /*inline void _moo_bugzor(const char* ff)
 {
@@ -22,7 +23,9 @@
 
 }*/
 //# define dbgOut(x) std::cout.flush(); std::cout << x
-# define dbgOut(x) std::cout << x
+//# define dbgOut(x) std::cout << x  << std::endl
+# define dbgOut(x) humbuglib::LogManager::getSingleton().stream() << x
+
 //extern std::ofstream xout;
 //# define dbgOut(x) xout << x
 #else
@@ -78,5 +81,6 @@
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;
+#include <HumbugLib/LogManager.h>
 
 #endif //STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H

@@ -30,7 +30,7 @@ CText::CText( TTF_Font* font, std::string text, CColor textcolor /*= CColor::Bla
     m_pFont(font),
     m_strText(text),
     m_colText(textcolor){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
     m_pText = new CCanvas(TTF_RenderText_Solid(m_pFont, m_strText.c_str(), m_colText));
 
 }
@@ -39,7 +39,7 @@ CText::~CText(){
     m_pFont = NULL;
     delete m_pText;
     m_pText = NULL;
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 

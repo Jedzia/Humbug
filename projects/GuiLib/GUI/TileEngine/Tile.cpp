@@ -13,12 +13,12 @@
 namespace gui {
 CTile::CTile(  const CTileImage& tileImage, int index   )
 :  m_ctiTileImage(tileImage), m_iIndex(index){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 
 CTile::~CTile(void){
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 }
 
 void CTile::Draw(CCanvas* background, const CPoint& position) const {
