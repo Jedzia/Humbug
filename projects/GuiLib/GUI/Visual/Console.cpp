@@ -22,6 +22,8 @@
 //#include "boost/function.hpp"
 //#include <vector>
 #include <map>
+#include <boost/function.hpp>
+#include <boost/functional.hpp>
 
 #ifdef MSYS
 	//_CRTIMP char* __cdecl __MINGW_NOTHROW	strdup (const char*) __MINGW_ATTRIB_MALLOC;
@@ -29,11 +31,18 @@
 
 namespace gui {
 
+
 //#include <build/cmake/include/debug.h>
 struct CConsole::CConsoleImpl {
-   void Command_Handler(ConsoleInformation* console, char* command) {
+
+	CConsole::ConsoleCommandCallback m_hostCallBack;
+
+	void Command_Handler(ConsoleInformation* console, char* command) {
 	   LOGSTREAM << "CConsole::CConsoleImpl Command_Handler> " << command;
 	   CON_Out(console, "Command %s not registered", command);
+	   if (m_hostCallBack)
+		   m_hostCallBack(command);
+		
 
        return;
 //        int argc;
@@ -144,12 +153,13 @@ struct CConsole::CConsoleImpl {
         CON_SetExecuteFunction(console, Wrapper_To_Call_CommandHandler);
     }
 
-    void InitCommandHandler() {
+    void InitCommandHandler(CConsole::ConsoleCommandCallback hostCallBack) {
+		m_hostCallBack = hostCallBack;
         Add_CommandHandler(m_pConsole, this);
     }
 
     CConsoleImpl(CEventHandler* parent)
-        : m_ceParent(parent)
+        : m_ceParent(parent), m_hostCallBack(NULL)
     {
 
     }
@@ -160,6 +170,11 @@ struct CConsole::CConsoleImpl {
 };
 
 CConsole::CConsoleImpl::callbackDict CConsole::CConsoleImpl::m_vCmdCallbacks;
+
+void xxx( std::string s )
+{
+
+}
 
 CConsole::CConsole(CEventHandler* parent, const std::string& fontName, gui::components::CCanvas* displayScreen, int lines,
         gui::components::CRectangle rect ) :
@@ -173,14 +188,19 @@ CConsole::CConsole(CEventHandler* parent, const std::string& fontName, gui::comp
     pimpl_->ListCommands(pimpl_->m_pConsole);
 
     //CON_SetExecuteFunction(pimpl_->m_pConsole, Cmd_Handler);
-    pimpl_->InitCommandHandler();
+	//boost::function<void (std::string)> bla = &CConsole::commandCalled;
+	//ConsoleCommandCallback bla = &xxx;
+	//ConsoleCommandCallback bla2 = std::bind1st(std::mem_fun(&CConsole::commandCalled), this);
+	//bla2("ROTZ");
+	
+	pimpl_->InitCommandHandler(std::bind1st(std::mem_fun(&CConsole::commandCalled), this));
 
     //CON_Show(pimpl_->m_pConsole);
     CON_Topmost(pimpl_->m_pConsole);
     m_bIsVisible = false;
 }
 
-CConsole::~CConsole(void){
+	CConsole::~CConsole(void){
     CON_Destroy(pimpl_->m_pConsole);
 
     //delete pimpl_->m_pConsole;
@@ -223,6 +243,11 @@ bool CConsole::OnEvent( SDL_Event* pEvent ){
 void CConsole::DoSomething( void )
 {
     //m_pScreen->
+}
+
+void CConsole::commandCalled( std::string s )
+{
+	LOGSTREAM << "CConsole::commandCalled Command_Handler> " << s;
 }
 
 //std::ostream& operator<<(std::ostream& o, const CConsole& r) {
