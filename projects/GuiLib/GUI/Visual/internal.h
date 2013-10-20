@@ -24,7 +24,11 @@
 #define _internal_h_
 
 
-#define PRINT_ERROR(X) fprintf(stderr, "ERROR in %s:%s(): %s\n", __FILE__, __FUNCTION__, X)
+//#define PRINT_ERROR(X) fprintf(stderr, "ERROR in %s:%s(): %s\n", __FILE__, __FUNCTION__, X)
+extern void _log_from_c(char *file, char *function, char *text );
+#define PRINT_ERROR(X) _log_from_c(__FILE__, __FUNCTION__, X)
+
+//#define PRINT_ERROR(x) humbuglib::LogManager::getSingleton().logMessage(x)
 
 Uint32	DT_GetPixel(SDL_Surface *surface, int x, int y);
 void	DT_PutPixel(SDL_Surface *surface, int x, int y, Uint32 pixel);

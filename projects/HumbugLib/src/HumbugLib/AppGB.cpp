@@ -15,6 +15,7 @@
  */
 /*---------------------------------------------------------*/
 #include "AppGB.h"
+#include "LogManager.h"
 #include "stdafx.h"
 #include <stdio.h>
 
@@ -29,9 +30,9 @@ extern std::string buildAppDir(const std::string& exePath);
 AppGB::AppGB(){
     using namespace HumbugLIB_NAMESPACE::internal;
     exePath = getExePath();
-    std::cout << "Starting at '" << exePath << "'." << std::endl;
+    LOGSTREAM << "Starting at '" << exePath << "'.";
     appDir = buildAppDir( exePath );
-    std::cout << "appDir '" << appDir << "'." << std::endl;
+    LOGSTREAM << "appDir '" << appDir << "'.";
 }
 AppGB::~AppGB()
 {}

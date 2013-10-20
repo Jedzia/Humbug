@@ -67,7 +67,7 @@ struct Hookable::HookableImpl {
 
         //int resultX=12;
         //sig(resultX);
-        //std::cout << "The result is: " << resultX << '\n';
+        //LOGSTREAM << "The result is: " << resultX << '\n';
 
         //signal_type_init2 fuck;
         //boost::signal<void (int&)> fuck;
@@ -86,7 +86,7 @@ struct Hookable::HookableImpl {
 {
     dbgOut(__FUNCTION__ << " Hookable master ctor"<< std::endl);
     //dbgOut("Hookable master ctor");
-    //std::cout.flush();
+    //LOGSTREAM.flush();
     //std::cerr << "Hookable master ctor" << std::endl;
 
     //std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
@@ -110,7 +110,7 @@ Hookable::Hookable(bool hook)
 : pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false), m_pMaster(NULL), m_pController(NULL)
 {
     dbgOut(__FUNCTION__ << " Hookable child ctor " << this);
-    //std::cout << "Hookable child ctor" << std::endl;
+    //LOGSTREAM << "Hookable child ctor" << std::endl;
     //m_pvHooks.push_back(this);
     //Init(m_pMaster, this);
 }
@@ -127,7 +127,7 @@ Hookable::~Hookable(void)
 
 /*void Hookable::Close()
 {
-    //std::cout << "Releasing Hookable children. size=" << m_pvHooks.size() << std::endl;
+    //LOGSTREAM << "Releasing Hookable children. size=" << m_pvHooks.size() << std::endl;
     //m_pvHooks.release();
 }*/
 
@@ -160,7 +160,7 @@ void Hookable::Init(CEventHandler* master, Hookable* controller)
 
     //int result=12;
     //sig(result);
-    //std::cout << "The result is: " << result << '\n';
+    //LOGSTREAM << "The result is: " << result << '\n';
 
     //boost::signal<void (int, char**)> sig2;
     //sig2.connect(boost::bind(&CEventHandler::OnPreInit, *this, _1, _2));

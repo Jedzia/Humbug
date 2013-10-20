@@ -39,7 +39,7 @@ HighscoreScreen::HighscoreScreen( FileLoader& loader, CCanvas* background) :
     //,m_pSprEye(NULL),
     //m_pSprWormler(NULL)
     {
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 HighscoreScreen::~HighscoreScreen(void){
@@ -52,7 +52,7 @@ HighscoreScreen::~HighscoreScreen(void){
     //delete m_pBackground;
     //delete m_pSprWormler;
     //delete m_pSprEye;
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 /*GroupId HighscoreScreen::GetGroupID()
@@ -73,14 +73,14 @@ class EyeMover {
 public:
     EyeMover(int deltaY = 0, uint32_t spriteoffset = 4) : deltaY_(deltaY), h_(-1), toggle_(false), sproffs(spriteoffset)
     {
-        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")" << std::endl);
+        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
         int rnd =  180 - ( rand() % 360);
         h_ = rnd;
     }
 
     ~EyeMover()
     {
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
+        dbgOut(__FUNCTION__ << " " << this);
     }
 
     void operator()(CSprite* sprite, int frameNumber) {

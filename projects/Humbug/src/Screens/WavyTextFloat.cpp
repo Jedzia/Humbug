@@ -31,12 +31,12 @@ namespace humbug {
     WavyTextFloat::WavyTextFloat(int steps) : m_iBoatcols(0),
                                               m_iFrames(0),
                                               m_iSteps(steps){
-        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")" << std::endl);
+        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
         memset( cmap, 0, sizeof(cmap) );
     }
 
     WavyTextFloat::~WavyTextFloat(){
-        dbgOut(__FUNCTION__ << " " << this << std::endl);
+        dbgOut(__FUNCTION__ << " " << this);
     }
 
     /** WavyTextFloat, operator ():

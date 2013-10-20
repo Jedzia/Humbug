@@ -31,11 +31,11 @@ namespace humbug {
       charxvel(0),
       charyvel(0),
       done(0){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   PlayerKeys::~PlayerKeys(void){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   /** PlayerKeys, HookKeyDown:

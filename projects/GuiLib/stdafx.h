@@ -24,12 +24,11 @@
 }*/
 //# define dbgOut(x) std::cout.flush(); std::cout << x
 //# define dbgOut(x) std::cout << x  << std::endl
-# define dbgOut(x) humbuglib::LogManager::getSingleton().stream() << x
 
 //extern std::ofstream xout;
 //# define dbgOut(x) xout << x
 #else
-# define dbgOut(x)
+//# define dbgOut(x)
 #endif // _DEBUG
 
 #include <wchar.h>

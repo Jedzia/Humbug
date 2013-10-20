@@ -25,7 +25,7 @@ namespace humbug {
    */
   int CTestThread::OnExecute(){
       //print to stdout
-      std::cout << "Test Thread Executing!" << std::endl;
+      LOGSTREAM << "Test Thread Executing!";
       //return
       return(0);
   }

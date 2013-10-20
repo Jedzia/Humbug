@@ -191,7 +191,6 @@ CApplication::~CApplication()
     _RPT1( _CRT_WARN, "\n\n%s:\n**************************************************************************\n", explanation );
     //_CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__);
-    std::cout.flush();
 
 }
 
@@ -212,7 +211,7 @@ void CApplication::OnIdle(int frameNumber)
 {
 	//by default, do nothing
     m_sigOnIdle(frameNumber);
-    m_sigOnDraw();
+	m_sigOnDraw();
     m_pMainCanvas->UpdateRects ( );
 }
 
@@ -285,7 +284,7 @@ int CApplication::Execute(int argc,char* argv[])
     {
         // Get SDL Info
         SdlInfo sdlInfo(SDL_GetVideoSurface());
-        std::cout << sdlInfo << std::endl;
+        LOGSTREAM << sdlInfo;
     }
 
     //The frame rate regulator
@@ -436,11 +435,11 @@ int main(int argc,char* argv[])
 //    }
     catch (std::runtime_error ex)
     {
-        std::cout << std::endl;
-        std::cout << "========================= APPLICATION ERROR !!! =========================" << std::endl;
-        std::cout << ex.what() << std::endl;
-        std::cout << "=========================================================================" << std::endl;
-        std::cout << std::endl;
+        LOGSTREAM << "";
+        LOGSTREAM << "========================= APPLICATION ERROR !!! =========================";
+        LOGSTREAM << ex.what();
+        LOGSTREAM << "=========================================================================";
+        LOGSTREAM << "";
     }
     /*catch (CFileException* e)
     {

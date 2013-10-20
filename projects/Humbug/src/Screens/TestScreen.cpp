@@ -53,7 +53,7 @@ namespace humbug {
       m_pSprMgr(new CSpriteManager){
       //,m_pSprEye(NULL),
       //m_pSprWormler(NULL)
-      dbgOut(__FUNCTION__ << " " << this << std::endl);
+      dbgOut(__FUNCTION__ << " " << this);
   }
 
   TestScreen::~TestScreen(void){
@@ -66,7 +66,7 @@ namespace humbug {
       //delete m_pBackground;
       //delete m_pSprWormler;
       //delete m_pSprEye;
-      dbgOut(__FUNCTION__ << " " << this << std::endl);
+      dbgOut(__FUNCTION__ << " " << this);
   }
 
 /*GroupId TestScreen::GetGroupID()

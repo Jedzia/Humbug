@@ -42,7 +42,7 @@ TestLevel::TestLevel( FileLoader& loader, gui::components::CCanvas* background) 
     //,m_pSprEye(NULL),
     //m_pSprWormler(NULL)
     {
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 TestLevel::~TestLevel(void){
@@ -55,7 +55,7 @@ TestLevel::~TestLevel(void){
     //delete m_pBackground;
     //delete m_pSprWormler;
     //delete m_pSprEye;
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 /*GroupId TestLevel::GetGroupID()

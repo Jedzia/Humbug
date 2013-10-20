@@ -21,7 +21,8 @@
 //#include <boost/thread.hpp>
 #define HUMBUG_AUTO_MUTEX_NAME mutex
 #define HUMBUG_LOCK_AUTO_MUTEX
-//#define HUMBUG_LOCK_AUTO_MUTEX boost::unique_lock<boost::recursive_mutex> ogreAutoMutexLock(OGRE_AUTO_MUTEX_NAME)
+//#define HUMBUG_LOCK_AUTO_MUTEX boost::unique_lock<boost::recursive_mutex>
+// ogreAutoMutexLock(OGRE_AUTO_MUTEX_NAME)
 #ifndef HUMBUG_EXCEPT
 //#define HUMBUG_EXCEPT(num, desc, src) throw HumbugLib::ExceptionFactory::create( \
 // //	HumbugLib::ExceptionCodeType<num>(), desc, src, __FILE__, __LINE__ );
@@ -179,3 +180,16 @@ Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
    }*/
 
 HumbugLIB_END_NAMESPACE
+
+extern "C" {
+    /** $(fclass), _log_from_c:
+     *  Detailed description.
+     *  @param file TODO
+     * @param function TODO
+     * @param text TODO
+     */
+    void _log_from_c(char* file, char* function, char* text ){
+        // fprintf(stderr, "ERROR in %s:%s(): %s\n", file, function, text);
+        humbuglib::LogManager::getSingleton().stream() << "ERROR in " << file << ":" << function << "(): " << text;
+    }
+};

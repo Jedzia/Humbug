@@ -232,7 +232,7 @@ void CON_AlphaGL(SDL_Surface *s, int alpha) {
 				/* Lock the surface for direct access to the pixels */
 				if(SDL_MUSTLOCK(s) && SDL_LockSurface(s) < 0) {
 					PRINT_ERROR("Can't lock surface: ");
-					fprintf(stderr, "%s\n", SDL_GetError());
+					PRINT_ERROR(SDL_GetError());
 					return;
 				}
 				pixel = DT_GetPixel(s, x, y);
@@ -411,7 +411,9 @@ ConsoleInformation *CON_Init(const char *FontName, SDL_Surface *DisplayScreen, i
 	/* Load the consoles font */
 	if(-1 == (newinfo->FontNumber = DT_LoadFont(FontName, TRANS_FONT))) {
 		PRINT_ERROR("Could not load the font ");
-		fprintf(stderr, "\"%s\" for the console!\n", FontName);
+		PRINT_ERROR(FontName);
+		PRINT_ERROR("for the console!");
+		//fprintf(stderr, "\"%s\" for the console!\n", FontName);
 		return NULL;
 	}
 

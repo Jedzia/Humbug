@@ -15,18 +15,18 @@ using zip_file_system::izfstream;
 FileLoadingInfo::FileLoadingInfo(const std::string name, SDL_Surface* surface)
 : m_strName(name), m_pSurface(surface), m_pFont(NULL), m_pArea(NULL), m_pData(NULL), m_fsize(0), m_refcount(0)
 {
-	std::cout << "FileLoadingInfo create SDL_Surface '" << *this << "'" << std::endl;
+	LOGSTREAM << "FileLoadingInfo create SDL_Surface '" << *this << "'";
 }
 
 FileLoadingInfo::FileLoadingInfo( const std::string name, TTF_Font* font, SDL_RWops* area, char *data, int fsize )
 : m_strName(name), m_pSurface(NULL), m_pFont(font), m_pArea(area), m_pData(data), m_fsize(fsize), m_refcount(0)
 {
-	std::cout << "FileLoadingInfo create Memdata '" << *this << "'" << std::endl;
+	LOGSTREAM << "FileLoadingInfo create Memdata '" << *this << "'";
 }
 
 FileLoadingInfo::~FileLoadingInfo()
 {
-    std::cout << "FileLoadingInfo freeing '" << *this << "'" << std::endl;
+    LOGSTREAM << "FileLoadingInfo freeing '" << *this << "'";
     if(m_pSurface)
     {
 	    SDL_FreeSurface(m_pSurface);
@@ -70,7 +70,7 @@ struct FileLoader::FileLoaderImpl {
         izfstream file(filename.c_str());
 
         if (! file)
-            std::cout << "ERROR: Cannot open file!" << std::endl;
+            LOGSTREAM << "ERROR: Cannot open file!";
         else
         {
 
@@ -91,7 +91,7 @@ struct FileLoader::FileLoaderImpl {
         izfstream file(filename.c_str());
 
         if (! file)
-            std::cout << "ERROR: Cannot open file!" << std::endl;
+            LOGSTREAM << "ERROR: Cannot open file!";
         else
         {
 
@@ -118,8 +118,8 @@ struct FileLoader::FileLoaderImpl {
 
         if (! file)
         {
-            //std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-			std::cout << "ERROR: Can't load:" + filename << std::endl;
+            //std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
+			LOGSTREAM << "ERROR: Can't load:" + filename;
 
 			// Todo: does not show filename with the exception.
             HUMBUG_FILELOADER_THROW(
@@ -285,9 +285,9 @@ const char* FileLoader::language(int x) const
 
 void FileLoader::Load(const std::string & filename) const
 {
-	std::cout << "FileLoader Load '" << filename << "'" << std::endl;
+	LOGSTREAM << "FileLoader Load '" << filename << "'";
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
-	std::cout << fsys << std::endl;
+	LOGSTREAM << fsys;
 
     //zip_file_system::filesystem::file_info *finfo;
     //fsys.FindFile(&filename.c_str(), finfo);
@@ -315,12 +315,12 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string locat
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		std::cout << "FileLoader LoadImg in Cache '" << filename << "': " << location << std::endl;
+		LOGSTREAM << "FileLoader LoadImg in Cache '" << filename << "': " << location;
 		finf++;
 		return finf.m_pSurface;
 	}
 	else
-		std::cout << "FileLoader LoadImg '" << filename << "' " << location << std::endl;
+		LOGSTREAM << "FileLoader LoadImg '" << filename << "' " << location;
 	/*if (m_pvSurfaces.size() > 0)
 	{
 		surfacevector::pointer result = NULL;
@@ -330,15 +330,15 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string locat
 			FileLoadingInfo& current = (*it);
 			if (current.Name().compare(filename))
 			{
-				//std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
-				std::cout << "FileLoader LoadImg in Cache '" << current << "'" << std::endl;
+				//LOGSTREAM << "FileLoader freeing '" << current.Name() << "'";
+				LOGSTREAM << "FileLoader LoadImg in Cache '" << current << "'";
 				result = &current;
 			}
 		}
 	}*/
 
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
-	std::cout << fsys << std::endl;
+	LOGSTREAM << fsys;
 
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
@@ -357,8 +357,8 @@ SDL_Surface* FileLoader::LoadImg(const std::string & filename, std::string locat
 void FileLoader::FreeLast()
 {
     //boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
-	// std::cout << "FileLoader freeing '" << current->Name() << "'" << std::endl;
-	std::cout << "FileLoader freeing 'FreeLast'" << std::endl;
+	// LOGSTREAM << "FileLoader freeing '" << current->Name() << "'";
+	LOGSTREAM << "FileLoader freeing 'FreeLast'";
     //std::string nase = f->Name();
 
     if (m_pLastLoaded == "")
@@ -371,15 +371,15 @@ void FileLoader::FreeLast()
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		std::cout << "FileLoader FreeLast found Cached '" << finf << "'" << std::endl;
+		LOGSTREAM << "FileLoader FreeLast found Cached '" << finf << "'";
 	}
 	else
-		std::cout << "FileLoader FreeLast NOT found Cached '" << m_pLastLoaded << "' atom." << std::endl;
+		LOGSTREAM << "FileLoader FreeLast NOT found Cached '" << m_pLastLoaded << "' atom.";
 }
 
 void FileLoader::Free( const std::string& name )
 {
-	std::cout << "FileLoader freeing '" << name << "'" << std::endl;
+	LOGSTREAM << "FileLoader freeing '" << name << "'";
 
     /*surfacevector::pointer result = NULL;
     surfacevector::iterator end = m_pvSurfaces.end();
@@ -388,13 +388,13 @@ void FileLoader::Free( const std::string& name )
         FileLoadingInfo& current = (*it);
         if (current.Name().compare(name))
         {
-			//std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
-			std::cout << "FileLoader freeing '" << current << "'" << std::endl;
+			//LOGSTREAM << "FileLoader freeing '" << current.Name() << "'";
+			LOGSTREAM << "FileLoader freeing '" << current << "'";
             m_pvSurfaces.erase(it);
             result = &current;
         }
     }*/
-    // std::cout << result->Name() << std::endl;
+    // LOGSTREAM << result->Name();
 }
 
 TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::string  location )
@@ -404,7 +404,7 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		std::cout << "FileLoader LoadFont in Cache '" << filename << "': " << location << std::endl;
+		LOGSTREAM << "FileLoader LoadFont in Cache '" << filename << "': " << location;
 		finf++;
 		char *data = finf.m_pData;
 		SDL_RWops* imgmem = SDL_RWFromMem(&data[0], finf.m_fsize);
@@ -412,7 +412,7 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
 		return font;
 	}
 	else
-		std::cout << "FileLoader LoadFont '" << filename << "'" << std::endl;
+		LOGSTREAM << "FileLoader LoadFont '" << filename << "'";
 
 
 	//FileLoadingInfo& aaa = m_resMap["bla"];
@@ -426,8 +426,8 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
 			FileLoadingInfo& current = (*it);
 			if (current.Name().compare(filename))
 			{
-				//std::cout << "FileLoader freeing '" << current.Name() << "'" << std::endl;
-				std::cout << "FileLoader LoadFont in Cache '" << current << "'" << std::endl;
+				//LOGSTREAM << "FileLoader freeing '" << current.Name() << "'";
+				LOGSTREAM << "FileLoader LoadFont in Cache '" << current << "'";
 				result = &current;
 				break;
 			}
@@ -435,7 +435,7 @@ TTF_Font* FileLoader::LoadFont( const std::string & filename, int ptsize, std::s
 	}*/
 
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
-    std::cout << fsys << std::endl;
+    LOGSTREAM << fsys;
 
     // Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 

@@ -52,7 +52,8 @@ int bmain(int argc, char *argv[])
     //delete oukk;
 //    int ff = app.exec();
     int ff = 0;
-	std::cout << std::endl << "This is Humbug (" << argv[0] << ")." << std::endl;
+	LOGSTREAM << "";
+	LOGSTREAM << "This is Humbug (" << argv[0] << ").";
 	std::string exepath = AppGB::Instance().ExePath();
 
 //    const char* explanation = "Hy there from _RPT1.";

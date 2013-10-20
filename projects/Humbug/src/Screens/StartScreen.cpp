@@ -31,14 +31,14 @@ namespace prv
     public:
         EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false)
         {
-            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
+            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")");
             //static int created = 0;
             created++;
         }
 
         ~EyeMover()
         {
-            dbgOut(__FUNCTION__ << " " << this << std::endl);
+            dbgOut(__FUNCTION__ << " " << this);
         }
 
         void operator()(CSprite* sprite, int frameNumber) {
@@ -76,12 +76,12 @@ namespace prv
         static int created;
     public:
         WormMover() : add_(0) {
-            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")" << std::endl);
+            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")");
             created++;
         }
         ~WormMover()
         {
-            dbgOut(__FUNCTION__ << " " << this << std::endl);
+            dbgOut(__FUNCTION__ << " " << this);
         }
 
         void operator()(CSprite* sprite, int frameNumber) {
@@ -131,7 +131,7 @@ StartScreen::StartScreen( FileLoader& loader, CCanvas* background) :
     //,m_pSprEye(NULL),
     //m_pSprWormler(NULL)
     {
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 StartScreen::~StartScreen(void){
@@ -144,7 +144,7 @@ StartScreen::~StartScreen(void){
     //delete m_pBackground;
     //delete m_pSprWormler;
     //delete m_pSprEye;
-    dbgOut(__FUNCTION__ << " " << this << std::endl);
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 /*GroupId StartScreen::GetGroupID()

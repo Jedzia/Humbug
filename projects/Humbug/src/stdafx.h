@@ -22,11 +22,11 @@
 
 }*/
 //# define dbgOut(x) std::cout.flush(); std::cout << x
-# define dbgOut(x) std::cout << x
+//# define dbgOut(x) std::cout << x
 //extern std::ofstream xout;
 //# define dbgOut(x) xout << x
 #else
-# define dbgOut(x)
+//# define dbgOut(x)
 #endif // _DEBUG
 
 #include <wchar.h>
@@ -77,5 +77,6 @@
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;
+#include <HumbugLib/LogManager.h>
 
 #endif //STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H

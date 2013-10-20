@@ -162,4 +162,8 @@ public:
   /** @} */
 }
 
+#define dbgOut(x) humbuglib::LogManager::getSingleton().stream() << x
+#define LOGSTD(x) humbuglib::LogManager::getSingleton().stream() << x
+#define LOGSTREAM humbuglib::LogManager::getSingleton().stream()
+
 #endif // ifndef __LogManager_H__

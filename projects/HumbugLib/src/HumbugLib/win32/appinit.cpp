@@ -15,6 +15,7 @@
  */
 /*---------------------------------------------------------*/
 #include "../stdafx.h"
+#include "../LogManager.h"
 #include <stdio.h>
 #include <windows.h>
 
@@ -28,7 +29,7 @@ std::string getExePath(){
 
 std::string buildAppDir(const std::string& exePath){
     std::string::size_type lastdirpos = exePath.find_last_of("\\");
-    std::cout << "Dirpos at '" << lastdirpos << "'." << std::endl;
+    LOGSTREAM << "Dirpos at '" << lastdirpos << "'.";
     return exePath.substr(0, lastdirpos + 1);
 }
 }

@@ -33,14 +33,14 @@ namespace humbug {
    }*/
   HudBackground::HudBackground(FileLoader& loader, std::string filename) :
       m_pFooter(NULL){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
 
       //m_pFooter = new CCanvas( loader.LoadImg( filename.c_str() ) );
       m_pFooter = new gui::components::CCanvas( SDL_DisplayFormatAlpha( loader.FL_LOADIMG( filename.c_str() ) ) );
   }
 
   HudBackground::~HudBackground(void){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
       delete m_pFooter;
   }
 
@@ -56,13 +56,13 @@ namespace humbug {
       CControl(pParent, bkg->GetCanvas()->GetDimension(), id),
       m_pLoader(loader),
       m_pBackground(bkg){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
 
       //Init(pParent);
       //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
       //footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
       gui::components::CCanvas* footer = bkg->GetCanvas();
-      std::cout << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
+      LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends";
       footerImage = new CImage( footer );
       CPoint dst( 0, pParent->GetCanvas()->GetHeight( ) - footer->GetHeight( ) );
       CControl::SetPosition(dst);
@@ -84,7 +84,7 @@ namespace humbug {
       delete footerImage;
       delete m_pBackground;
       delete tmpcanvas;
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   /** Hud, Init:
@@ -101,7 +101,7 @@ namespace humbug {
    */
   CRectangle Hud::InitRect(const FileLoader& loader){
       /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
-         std::cout << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
+         LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
          //CControl::set
          footerImage = new CImage( footer );
          dst = CPoint( 0, GetCanvas()->GetHeight( ) - footer->GetHeight( ) );*/

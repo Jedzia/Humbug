@@ -83,14 +83,14 @@ CTestEventHandler::CTestEventHandler() :
 
 //destructor
 CTestEventHandler::~CTestEventHandler(){
-    std::cout << "Killing the ~CTestEventHandler" << std::endl;
+    LOGSTREAM << "Killing the ~CTestEventHandler";
 
     //if(m_pHud) {
     //    delete m_pHud;
     //}
     //delete CControl::GetMainControl();
     //delete m_pMainCanvas;
-    dbgOut(__FUNCTION__ << std::endl);
+    dbgOut(__FUNCTION__);
 
 //    const char* explanation = "XXXXXX THIS IS TESTEVENTHANDLER.CPP";
 //_RPT1( _CRT_WARN, "\n\n%s:\n**************************************
@@ -282,7 +282,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     }
     catch (FileLoaderException ex)
     {
-        std::cout << ex.what() << std::endl;
+        LOGSTREAM << ex.what();
 
         //m_imp_ptr.reset();
     }
@@ -354,8 +354,9 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //new TestHookable();
     //new TestHookable();
 
+	// Todo: fixed path used for console font.
     m_pConsole =
-        new gui::CConsole( this, "E:/Projects/C++/Humbug/build2010/Humbug/src/Debug/ConsoleFont.bmp",
+        new gui::CConsole( this, "E:/Projects/C++/Humbug/projects/GuiLib/GUI/Visual/Console/ConsoleFont.bmp",
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
                         300) );
     return(true);
@@ -369,7 +370,8 @@ void CTestEventHandler::PutBlue(){
 
 //idle behavior - Draw the stuff
 void CTestEventHandler::OnIdle(int frameNumber){
-    CApplication::OnIdle(frameNumber); return;
+    CApplication::OnIdle(frameNumber); 
+	//return;
 
     Uint32 now, diff;
     now = SDL_GetTicks();

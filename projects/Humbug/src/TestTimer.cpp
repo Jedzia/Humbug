@@ -21,6 +21,6 @@ namespace humbug {
 //timer pulse
   void CTestTimer::OnTimer(){
       //print to stdout
-      std::cout << "Timer pulse!" << std::endl;
+      LOGSTREAM << "Timer pulse!";
   }
 }
