@@ -1,4 +1,5 @@
 #! /usr/bin/perl
+#Version=1.0.0.0
 use strict;
 use File::Basename;
 use Cwd qw(getcwd abs_path);

@@ -22,6 +22,12 @@ if(NOT XSD_LIBRARY_DIR OR NOT XSD_INCLUDE_DIR OR NOT XSD_EXECUTABLE OR NOT XSD_D
         ENDIF()
 endif()
 
+SET(xsd_local_root $ENV{XSD_ROOTDIR})
+#MESSAGE( FATAL_ERROR " xsd_local_root=${xsd_local_root}" )
+IF(EXISTS "${xsd_local_root}" AND NOT $ENV{XSD_ROOTDIR})
+    SET(Xsd_ROOT $ENV{XSD_ROOTDIR} CACHE PATH "XSD root directory.")
+ENDIF()
+
 #SET(Xsd_ROOT "C:/Program Files/CodeSynthesis XSD 3.3" CACHE PATH "fuck you")
 #
 #SET(XSD_FOUND FALSE)
@@ -38,15 +44,18 @@ if(XSD_LIBRARY_FOUND)
         SET(XSD_FOUND TRUE)
 else()
 
-        find_path(Xsd_ROOT NAMES bin/${__XSD_NAME}
-            PATHS
-                /usr
-                /usr/local
-                "C:/Program Files/CodeSynthesis XSD 3.3"
-        )
-        SET(XSD_DIR ${Xsd_ROOT} CACHE PATH "fuck you" FORCE)
+	IF(NOT Xsd_ROOT)
+		find_path(Xsd_ROOT NAMES bin/${__XSD_NAME}
+		    PATHS
+			/usr
+			/usr/local
+			"C:/Program Files/CodeSynthesis XSD 3.3"
+		)
+	ENDIF()        
+        SET(XSD_DIR ${Xsd_ROOT} CACHE PATH "XSD root directory." FORCE)
         MARK_AS_ADVANCED(XSD_DIR)
 
+#MESSAGE( FATAL_ERROR " XSD_DIR=${XSD_DIR}" )
         find_file(XSD_EXECUTABLE NAMES ${__XSD_NAME}
              PATHS
                  ${XSD_DIR}/bin

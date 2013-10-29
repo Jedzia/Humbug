@@ -1,3 +1,4 @@
 @ECHO off
+call %~dp0%config\config.bat
 REM call "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
-start /B  %comspec% /k ""D:\Program Files (x86)\CMake\bin\cmake-gui"" ..\projects
+start /B  %comspec% /k ""%CMAKE_DIR%\bin\cmake-gui"" ..\projects
