@@ -21,4 +21,6 @@
    
    Start with:
    ..\BuildDependencies or ..\BuildDependencies_2010
- .
+
+   Show version information about the build tools: .
+   version
