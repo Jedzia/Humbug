@@ -8,9 +8,15 @@
 #include "boost/signals/connection.hpp"
 #include "../Components/MainCanvas.h"
 
+union SDL_Event;
+
 namespace gui {
 
 class CConsole;
+class SdlForwarder
+{
+	int bla;
+};
 
 /*
 	==CApplication==
@@ -23,6 +29,11 @@ public:
     // signal types
     typedef boost::signal<void ()> signal_type_event;
     typedef signal_type_event::slot_type slot_type_event;
+
+	//SDL_Event* pEvent
+	typedef boost::signal<void (SDL_Event*)> signal_type_sdlevent;
+	typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
+
     typedef boost::signal<void (int)> signal_type_idle;
     typedef signal_type_idle::slot_type slot_type_idle;
 
@@ -41,7 +52,8 @@ public:
     // Signal handling
     boost::signals::connection ConnectOnIdle(const slot_type_idle& s);
     boost::signals::connection ConnectOnDraw(const slot_type_event& s);
-    boost::signals::connection ConnectOnUpdate(const slot_type_event& s);
+	boost::signals::connection ConnectOnUpdate(const slot_type_event& s);
+	boost::signals::connection ConnectOnEvent(const slot_type_sdlevent& s);
 
 	//initialization
 	virtual bool OnInit(int argc,char* argv[]);
@@ -77,7 +89,8 @@ private:
 
     signal_type_event m_sigOnUpdate;
     signal_type_idle m_sigOnIdle;
-    signal_type_event m_sigOnDraw;
+	signal_type_event m_sigOnDraw;
+	signal_type_sdlevent m_sigOnEvent;
 
     //set singleton pointer
     static void SetApplication(CApplication* pTheApp);

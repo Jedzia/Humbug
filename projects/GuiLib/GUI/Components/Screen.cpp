@@ -58,18 +58,25 @@ void Screen::OnIdle( int frameNumber )
     //throw std::exception("The method or operation is not implemented.");
 }
 
+void Screen::OnEvent( SDL_Event* pEvent )
+{
+
+}
+
 void Screen::OnConnect()
 {
     //Hookable::Connect();
     m_conDraw = Master()->ConnectOnDraw(boost::bind(&Screen::OnDraw, boost::ref(*this)));
-    m_conUpdate = Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
+	m_conUpdate = Master()->ConnectOnUpdate(boost::bind(&Screen::OnUpdate, boost::ref(*this)));
+	m_conEvt = Master()->ConnectOnEvent(boost::bind(&Screen::OnEvent, boost::ref(*this), _1));
 }
 
 void Screen::OnDisconnect()
 {
     //Hookable::Disconnect();
     m_conDraw.disconnect();
-    m_conUpdate.disconnect();
+	m_conUpdate.disconnect();
+	m_conEvt.disconnect();
 }
 
 /*bool Screen::OnInit( int argc,char* argv[] )

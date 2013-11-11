@@ -26,19 +26,20 @@
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
 #include "GUI/Components/TextScroller.h"
+#include "GUI/Controls/Button.h"
+#include "GUI/Controls/Control.h"
 #include "GUI/Data/ColorData.h"
+#include "GUI/Hud.h"
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
-#include "GUI/Controls/Control.h"
-#include "GUI/Hud.h"
-
+#include "../PlayerKeys.h"
+//
 #include <cstdlib>
-#include "GUI/Controls/Button.h"
 
-using namespace gui;
 using namespace gui::components;
 using namespace gui::controls;
+using namespace gui;
 
 namespace humbug {
   struct BlaScreen::BlaScreenImpl {
@@ -55,6 +56,9 @@ namespace humbug {
       //m_iUpdateTimes(0),
       m_pScrollText(NULL),
       m_pScroller(NULL),
+	  m_pHud(NULL),
+	  m_pKeyHandler(NULL),
+	  m_pSprite(NULL),
       m_pSprMgr(new CSpriteManager){
       //,m_pSprEye(NULL),
       //m_pSprWormler(NULL)
@@ -66,7 +70,8 @@ namespace humbug {
           TTF_CloseFont(m_pArialfont);
       }
 
-	  delete m_pSprite;
+      delete m_pSprite;
+	  delete m_pKeyHandler;
 
       //delete m_pScrollText;
       //delete m_pScroller;
@@ -89,28 +94,24 @@ namespace humbug {
       //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
       //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-	  m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
+      m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
       mcol = CColor::White();
       SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
 
-	  CControl* mainControl = CControl::GetMainControl();
-	  m_pHud = new Hud(m_Loader, mainControl, new HudBackground(m_Loader, "Hud/footer.png"), 0);
-	  
-	  //create a button
-	  new CButton(m_pHud, CRectangle(100, 100, 150, 25), 1, "Come on, Press me!");
+      CControl* mainControl = CControl::GetMainControl();
+      m_pHud = new Hud(m_Loader, mainControl, new HudBackground(m_Loader, "Hud/footer.png"), 0);
 
+      //create a button
+      new CButton(m_pHud, CRectangle(100, 100, 150, 25), 1, "Come on, Press me!");
 
-	  {
-		  SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("icons/red.png") );
-		  CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
-		  m_Loader.FreeLast();
-		  m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
-			  true ), m_pBackground.get(), true);
-	  }
-
-
-
-
+      {
+		  // Todo: use SpriteManager of this instance
+          SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("icons/red.png") );
+          CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
+          m_Loader.FreeLast();
+          m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
+                          true ), m_pBackground.get(), true);
+      }
 
       //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
       //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
@@ -151,7 +152,9 @@ namespace humbug {
 
       m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
 
-      return Screen::OnInit(argc, argv);
+	  m_pKeyHandler = new PlayerKeys(200, 200);
+
+	  return Screen::OnInit(argc, argv);
 
       //return true;
   } // OnInit
@@ -164,6 +167,7 @@ namespace humbug {
   void BlaScreen::OnIdle(int frameNumber){
       //m_pScroller->Scroll(4);
       //m_pSprMgr->OnIdle(frameNumber);
+	  m_pKeyHandler->HookIdle();
   }
 
   /** BlaScreen, OnDraw:
@@ -171,37 +175,38 @@ namespace humbug {
    *  @return TODO
    */
   void BlaScreen::OnDraw(){
-
       CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
       m_pMainCanvas->Lock();
 
-	  {
-		  static int coldelta = 0;
-      m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
-      CRectangle frect(700, 100, 185, 185);
-      SDL_Color* wavemap = ColorData::Instance()->Wavemap();
-      int index = (coldelta * 2 & 63);
+      {
+          static int coldelta = 0;
+          m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+          CRectangle frect(700, 100, 185, 185);
+          SDL_Color* wavemap = ColorData::Instance()->Wavemap();
+          int index = (coldelta * 2 & 63);
 
-      //m_pMainCanvas->FillRect( frect, mcol );
-      SDL_Color& fcol = wavemap[index];
-      m_pMainCanvas->FillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
-      m_pMainCanvas->AddUpdateRect(frect);
+          //m_pMainCanvas->FillRect( frect, mcol );
+          SDL_Color& fcol = wavemap[index];
+          m_pMainCanvas->FillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
+          m_pMainCanvas->AddUpdateRect(frect);
 
-      CRectangle dstDims( 0, 0, 200, 200);
-      m_pScrollText->Put(m_pBackground.get(), dstDims, dstDims );
-      m_pMainCanvas->AddUpdateRect(dstDims);
+          CRectangle dstDims( 0, 0, 200, 200);
+          m_pScrollText->Put(m_pBackground.get(), dstDims, dstDims );
+          m_pMainCanvas->AddUpdateRect(dstDims);
 
-      coldelta++;
+          coldelta++;
 
-      if (coldelta > 64) {
-          coldelta = 0;
+          if (coldelta > 64) {
+              coldelta = 0;
+          }
       }
-	  }
 
-	  if(m_pHud) {
-		  m_pHud->Invalidate();
-		  m_pHud->Draw();
-	  }
+	  m_pSprite->Draw();
+
+      if(m_pHud) {
+          m_pHud->Invalidate();
+          m_pHud->Draw();
+      }
 
       m_pMainCanvas->Unlock();
   } // OnDraw
@@ -216,6 +221,15 @@ namespace humbug {
       mcol.SetR( rand() );
       mcol.SetG( rand() );
       mcol.SetB( rand() );
+
+	  m_pSprite->SetPos(m_pKeyHandler->Char() /* + CPoint(50,50)*/);
+	  //m_pSprite->SetPos(CPoint(50,50));
       //m_iUpdateTimes++;
   }
+
+  void BlaScreen::OnEvent( SDL_Event* pEvent )
+  {
+	  m_pKeyHandler->HookEventloop(pEvent);
+  }
+
 }

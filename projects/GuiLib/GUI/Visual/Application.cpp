@@ -206,6 +206,8 @@ bool CApplication::OnInit(int argc,char* argv[])
 void CApplication::OnEvent(SDL_Event* pEvent)
 {
 	//by default, do nothing
+	// m_sigOnEvent(pEvent);
+	// signal handling is done in the main loop.
 }
 
 //idle behavior
@@ -318,6 +320,7 @@ int CApplication::Execute(int argc,char* argv[])
 			if(event.type==SDL_QUIT) break;
 			//event occurred
 			GetApplication()->OnEvent(&event);
+			GetApplication()->m_sigOnEvent(&event);
 		}
 		else
 		{
@@ -397,6 +400,10 @@ boost::signals::connection CApplication::ConnectOnUpdate( const slot_type_event&
     return m_sigOnUpdate.connect( s );
 }
 
+boost::signals::connection CApplication::ConnectOnEvent( const slot_type_sdlevent& s )
+{
+	return m_sigOnEvent.connect( s );
+}
 
 void doExit()
 {

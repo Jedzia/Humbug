@@ -126,11 +126,17 @@ namespace humbug {
       // down a button.
       if (!upup) {        charyvel -= 1;    }
 
-      if (!downup) {charyvel += 1; }
+      if (!downup) {
+          charyvel += 1;
+      }
 
-      if (!rightup) {charxvel += 1; }
+      if (!rightup) {
+          charxvel += 1;
+      }
 
-      if (!leftup) {charxvel -= 1; }
+      if (!leftup) {
+          charxvel -= 1;
+      }
 
       charx += charxvel;
       chary += charyvel;
