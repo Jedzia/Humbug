@@ -21,6 +21,7 @@
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 //
+#include "../PlayerKeys.h"
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Image.h"
 #include "GUI/Components/Rectangle.h"
@@ -33,7 +34,6 @@
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
-#include "../PlayerKeys.h"
 //
 #include <cstdlib>
 
@@ -56,9 +56,12 @@ namespace humbug {
       //m_iUpdateTimes(0),
       m_pScrollText(NULL),
       m_pScroller(NULL),
-	  m_pHud(NULL),
-	  m_pKeyHandler(NULL),
-	  m_pSprite(NULL),
+      m_pHud(NULL),
+      m_pKeyHandler(NULL),
+      m_pKeyHandler2(NULL),
+      m_inActiveSprite(0),
+      m_pSprite(NULL),
+      m_pSprite2(NULL),
       m_pSprMgr(new CSpriteManager){
       //,m_pSprEye(NULL),
       //m_pSprWormler(NULL)
@@ -71,7 +74,9 @@ namespace humbug {
       }
 
       delete m_pSprite;
-	  delete m_pKeyHandler;
+      delete m_pSprite2;
+      delete m_pKeyHandler;
+      delete m_pKeyHandler2;
 
       //delete m_pScrollText;
       //delete m_pScroller;
@@ -105,12 +110,15 @@ namespace humbug {
       new CButton(m_pHud, CRectangle(100, 100, 150, 25), 1, "Come on, Press me!");
 
       {
-		  // Todo: use SpriteManager of this instance
+          // Todo: use SpriteManager of this instance
           SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("icons/red.png") );
           CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
           m_Loader.FreeLast();
           m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
                           true ), m_pBackground.get(), true);
+
+          m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
+                  CRectangle(0, 0, 32, 32), CPoint(32, 0) );
       }
 
       //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
@@ -152,9 +160,10 @@ namespace humbug {
 
       m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
 
-	  m_pKeyHandler = new PlayerKeys(200, 200);
+      m_pKeyHandler = new PlayerKeys(200, 200);
+      m_pKeyHandler2 = new PlayerKeys(400, 200);
 
-	  return Screen::OnInit(argc, argv);
+      return Screen::OnInit(argc, argv);
 
       //return true;
   } // OnInit
@@ -165,10 +174,42 @@ namespace humbug {
    * @return TODO
    */
   void BlaScreen::OnIdle(int frameNumber){
+      /*CRectangle screenWithoutHud( 0, 0,
+              m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH() -
+              m_pHud->GetCanvas()->GetDimension().GetH() );
+
+         //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
+         //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+         static int scrdel = 0;
+         scrdel += m_inScreenDelta;
+         m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0)
+            );*/
+
+      /*if(m_inScreenDelta != 0) {
+         m_pMainCanvas->AddUpdateRect( CRectangle( 0, 0, m_pMainCanvas->GetWidth(),
+                m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
+         }*/
+
       //m_pScroller->Scroll(4);
       //m_pSprMgr->OnIdle(frameNumber);
-	  m_pKeyHandler->HookIdle();
-  }
+      Uint32 now, diff;
+      now = SDL_GetTicks();
+      diff = now - m_uiLastTicks;
+
+      if(diff > 20) {
+          m_pKeyHandler->HookIdle();
+          m_pKeyHandler2->HookIdle();
+          m_uiLastTicks = now;
+      }
+
+      static int spr2pic = 0;
+      m_pSprite2->SprOffset(spr2pic);
+      spr2pic++;
+
+      if (spr2pic == 16) {
+          spr2pic = 0;
+      }
+  } // OnIdle
 
   /** BlaScreen, OnDraw:
    *  Detailed description.
@@ -201,7 +242,8 @@ namespace humbug {
           }
       }
 
-	  m_pSprite->Draw();
+      m_pSprite->Draw();
+      m_pSprite2->Draw();
 
       if(m_pHud) {
           m_pHud->Invalidate();
@@ -222,14 +264,42 @@ namespace humbug {
       mcol.SetG( rand() );
       mcol.SetB( rand() );
 
-	  m_pSprite->SetPos(m_pKeyHandler->Char() /* + CPoint(50,50)*/);
-	  //m_pSprite->SetPos(CPoint(50,50));
+      m_pSprite->SetPos(m_pKeyHandler->Char() /* + CPoint(50,50)*/);
+      m_pSprite2->SetPos( m_pKeyHandler2->Char() );
+      //m_pSprite->SetPos(CPoint(50,50));
       //m_iUpdateTimes++;
   }
 
-  void BlaScreen::OnEvent( SDL_Event* pEvent )
-  {
-	  m_pKeyHandler->HookEventloop(pEvent);
-  }
+  /** BlaScreen, OnEvent:
+   *  Detailed description.
+   *  @param pEvent TODO
+   * @return TODO
+   */
+  void BlaScreen::OnEvent( SDL_Event* pEvent ){
 
+	  if (m_inActiveSprite == 0) {
+		  m_pKeyHandler->HookEventloop(pEvent);
+	  }
+	  else if (m_inActiveSprite == 1)   {
+		  m_pKeyHandler2->HookEventloop(pEvent);
+	  }
+
+	  // Todo: move this functionality to Screen
+      switch(pEvent->type)
+      {
+      case SDL_KEYDOWN:                //key press
+      {
+          //key press
+          //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+          if( pEvent->key.keysym.sym == SDLK_F1 ) {
+              //
+              m_inActiveSprite ^= 1;
+          }
+          break;
+      }
+
+      default:
+          break;
+      } // switch
+  } // OnEvent
 }

@@ -7,7 +7,6 @@
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
 namespace gui { 
-	class CSprite;
 	class CTileEngine;
 	class CTileSet;
 	class Hookable;
@@ -25,8 +24,7 @@ namespace humbug {
 
 	class CTestThread;
 	class CTestTimer;
-	class HUD;
-	class PlayerKeys;
+	//class HUD;
 
 /*
 	==CTestEventHandler==
@@ -42,16 +40,12 @@ private:
     CCanvas* m_pBackground;
     CCanvas* m_pDrawCanvas;
     CImage* m_pBlue;
-	gui::CSprite* m_pSprite;
-    gui::CSprite* m_pSprite2;
     CTileEngine* m_pTileEngine;
     //CTileSet* m_pTileSet;
-	Hud* m_pHud;
+	//Hud* m_pHud;
 	//main display surface
 	//SDL_Surface* m_pDisplaySurface;
     // Player movement;
-    PlayerKeys* m_pKeyHandler;
-    PlayerKeys* m_pKeyHandler2;
 	//test timer
 	CTestTimer* m_pTestTimer;
 	//test thread
@@ -62,7 +56,6 @@ private:
     Uint32 m_uiStartTime;
     void PutBlue();
     unsigned int m_uiNumFrames; 
-    int m_inActiveSprite;
     int m_inScreenDelta;
 
     gui::Screen* m_scrStart;

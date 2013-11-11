@@ -57,6 +57,7 @@ private:
 
       FileLoader& m_Loader;
       Uint8 x;
+	  Uint32 m_uiLastTicks;
       gui::components::CColor mcol;
       TTF_Font* m_pArialfont;
       boost::shared_ptr<gui::components::CCanvas> m_pBackground;
@@ -66,8 +67,10 @@ private:
 
 	  Hud* m_pHud;
 	  PlayerKeys* m_pKeyHandler;
+	  PlayerKeys* m_pKeyHandler2;
 	  gui::CSprite* m_pSprite;
-
+	  gui::CSprite* m_pSprite2;
+	  int m_inActiveSprite;
   };
 }
 
