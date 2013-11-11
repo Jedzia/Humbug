@@ -33,6 +33,7 @@ if ( WIN32 )
 endif( WIN32 )
 INCLUDE (setup)
 INCLUDE (debug)
+#INCLUDE (dependencies)
 
 #SET(BUILD_SHARED_LIBS ON)
 # Do not use the CorePlug dependency for CppStructz

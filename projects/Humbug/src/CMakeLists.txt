@@ -53,6 +53,7 @@ SET(Humbug_MyGUI_headers
 		TestThread.h
 		TestTimer.h
 
+		Screens/BlaScreen.h
 		Screens/StartScreen.h
 		Screens/TestScreen.h
 		Screens/HighscoreScreen.h
@@ -65,6 +66,7 @@ SET(Humbug_MyGUI_sources
 		TestThread.cpp
 		TestTimer.cpp
 
+		Screens/BlaScreen.cpp
 		Screens/StartScreen.cpp
 		Screens/TestScreen.cpp
 		Screens/HighscoreScreen.cpp
