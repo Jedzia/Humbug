@@ -69,9 +69,9 @@ namespace humbug {
   }
 
   BlaScreen::~BlaScreen(void){
-      if (m_pArialfont) {
-          TTF_CloseFont(m_pArialfont);
-      }
+//       if (m_pArialfont) {
+//           TTF_CloseFont(m_pArialfont);
+//       }
 
       delete m_pSprite;
       delete m_pSprite2;

@@ -5,16 +5,16 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the Template.cpp class.
+ *             the TileScreen.cpp class.
  * \folder     $(folder)
- * \file       Template.cpp
+ * \file       TileScreen.cpp
  * \date       2012-07-10
  * \author     Jedzia.
  *
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#include "Template.h"
+#include "TileScreen.h"
 #include "stdafx.h"
 
 //#include <build/cmake/include/debug.h>
@@ -30,51 +30,53 @@
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
+#include "GUI/TileEngine/TileSet.h"
+#include "GUI/TileEngine/TileImage.h"
+#include "GUI/TileEngine/TileEngine.h"
 
 using namespace gui;
 using namespace gui::components;
 
 namespace humbug {
-  struct Template::TemplateImpl {
+  struct TileScreen::TileScreenImpl {
       //prv::EyeMover eyemover;
       //prv::WormMover wormmover;
       int x;
   };
 
-  Template::Template( FileLoader& loader, CCanvas* background) :
-      pimpl_(new Template::TemplateImpl ),
+  TileScreen::TileScreen( FileLoader& loader, CCanvas* background) :
+      pimpl_(new TileScreen::TileScreenImpl ),
       Screen(background),
       m_Loader(loader),
       m_pArialfont(NULL),
       //m_iUpdateTimes(0),
       m_pScrollText(NULL),
       m_pScroller(NULL),
+	  m_inScreenDelta(0),
+	  m_pTileEngine(NULL),
       m_pSprMgr(new CSpriteManager){
       //,m_pSprEye(NULL),
       //m_pSprWormler(NULL)
       dbgOut(__FUNCTION__ << " " << this);
   }
 
-  Template::~Template(void){
-      if (m_pArialfont) {
-          TTF_CloseFont(m_pArialfont);
-      }
-
+  TileScreen::~TileScreen(void){
+	  delete m_pTileEngine;
       //delete m_pScrollText;
       //delete m_pScroller;
       //delete m_pBackground;
       //delete m_pSprWormler;
       //delete m_pSprEye;
-      dbgOut(__FUNCTION__ << " " << this << std::endl);
+      dbgOut(__FUNCTION__ << " " << this);
   }
 
-/*GroupId Template::GetGroupID()
+/*GroupId TileScreen::GetGroupID()
    {
     static GroupId grpID = CreateNextGroupID();
     return grpID;
     //throw std::exception("The method or operation is not implemented.");
    }*/
-  bool Template::OnInit( int argc, char* argv[] ){
+  bool TileScreen::OnInit( int argc, char* argv[] ){
       // Master()->GetMainCanvas();
       CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
 
@@ -83,16 +85,48 @@ namespace humbug {
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
 	  m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
       mcol = CColor::White();
-      SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TemplateScreenBg.png") );
+      SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") );
+	  m_pBackground.reset( new CCanvas( tmpfsurf ) );
 
-      //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-      //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-      m_pBackground.reset( new CCanvas( tmpfsurf ) );
+	  //CCanvas tmpCanvas( tmpfsurf );
+	  m_Loader.FreeLast();
 
-      //CCanvas tmpCanvas( tmpfsurf );
-      m_Loader.FreeLast();
+
+
+
+	  CTileSet* tileSet = NULL;
+	  CTileImageSetup tilesetup;
+	  tilesetup.BitmapIdentifier = "Tiles1";
+	  tilesetup.TileWidth = 64;
+	  tilesetup.TileHeight = 64;
+	  tilesetup.TileCountX = 4;
+	  tilesetup.TileCountY = 1;
+	  tilesetup.TransparentX = 0;
+	  tilesetup.TransparentY = 0;
+	  tilesetup.Sequences = 0;
+	  tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "Tiles1.bmp", tilesetup),
+		  m_pBackground.get(), CRectangle(0, 0, 1024, 768 - 320) );
+
+
+	  m_pTileEngine = new CTileEngine(m_pMainCanvas, m_pBackground.get());
+	  m_pTileEngine->AddTileSet(tileSet);
+	  CTileEngine& eng = (*m_pTileEngine);
+	  (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles(m_pBackground.get());
+	  CTile tile1 = eng["Tiles1"]->CreateTile(0);
+	  CTile tile2 = eng["Tiles1"]->CreateTile(1);
+	  CTile tile3 = eng["Tiles1"]->CreateTile(2);
+	  CTile tile4 = eng["Tiles1"]->CreateTile(3);
+
+	  for (int i = 0; i < 20; i += 4)
+	  {
+		  const int xdiff = 300;
+		  tile1.Draw( m_pBackground.get(), CPoint(xdiff * i, 300) );
+		  tile2.Draw( m_pBackground.get(), CPoint(xdiff * (i + 1), 300) );
+		  tile3.Draw( m_pBackground.get(), CPoint(xdiff * (i + 2), 300) );
+		  tile4.Draw( m_pBackground.get(), CPoint(xdiff * (i + 3), 300) );
+	  }
+
+
 
       //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
       //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -129,21 +163,21 @@ namespace humbug {
       //return true;
   } // OnInit
 
-  /** Template, OnIdle:
+  /** TileScreen, OnIdle:
    *  Detailed description.
    *  @param frameNumber TODO
    * @return TODO
    */
-  void Template::OnIdle(int frameNumber){
+  void TileScreen::OnIdle(int frameNumber){
       //m_pScroller->Scroll(4);
       //m_pSprMgr->OnIdle(frameNumber);
   }
 
-  /** Template, OnDraw:
+  /** TileScreen, OnDraw:
    *  Detailed description.
    *  @return TODO
    */
-  void Template::OnDraw(){
+  void TileScreen::OnDraw(){
       static int coldelta = 0;
 
       CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
@@ -172,11 +206,11 @@ namespace humbug {
       m_pMainCanvas->Unlock();
   } // OnDraw
 
-  /** Template, OnUpdate:
+  /** TileScreen, OnUpdate:
    *  Detailed description.
    *  @return TODO
    */
-  void Template::OnUpdate(){
+  void TileScreen::OnUpdate(){
       Screen::OnUpdate();
       x += 1 + (rand() << 21);
       mcol.SetR( rand() );
@@ -184,4 +218,33 @@ namespace humbug {
       mcol.SetB( rand() );
       //m_iUpdateTimes++;
   }
+
+  void TileScreen::OnMouseMove( Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle )
+  {
+	  m_inScreenDelta++;
+  }
+
+  void TileScreen::OnEvent( SDL_Event* pEvent )
+  {
+	  switch(pEvent->type)
+	  {
+	  case SDL_KEYDOWN:                //key press
+		  {
+			  //key press
+			  //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+			  if( pEvent->key.keysym.sym == SDLK_F1 ) {
+				  //
+				  m_inScreenDelta++;
+				  int x = 0;
+				  x++;
+			  }
+			  break;
+		  }
+
+	  default:
+		  break;
+	  } // switch
+
+  }
+
 }

@@ -27,6 +27,7 @@
 #include "Screens/BlaScreen.h"
 #include "Levels/TestLevel.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
+#include "Screens/TileScreen.h"
 
 namespace humbug {
 
@@ -315,7 +316,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Bla", HookCreatorPtr(new ScreenCreator<BlaScreen>(*fl, m_pMainCanvas)));
-    HookMgr()->EnableHookable("StartScreen");
+	HookMgr()->RegisterHookable("Tiles", HookCreatorPtr(new ScreenCreator<TileScreen>(*fl, m_pMainCanvas)));
+    //HookMgr()->EnableHookable("StartScreen");
 	//HookMgr()->EnableHookable("Test1");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
@@ -357,15 +359,16 @@ void CTestEventHandler::OnIdle(int frameNumber){
     // m_pHud->GetCanvas()->GetDimension());
     //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Union(
     // m_pHud->GetCanvas()->GetDimension());
-    /*CRectangle screenWithoutHud( 0, 0,
+    CRectangle screenWithoutHud( 0, 0,
             m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH() -
-            m_pHud->GetCanvas()->GetDimension().GetH() );
+            //m_pHud->GetCanvas()->GetDimension().GetH() );
+	200 );
 
     //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
     //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
     static int scrdel = 0;
     scrdel += m_inScreenDelta;
-    m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0) );*/
+    m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0) );
 
     //m_pHud->Invalidate();
     CControl::Redraw();
@@ -380,10 +383,11 @@ void CTestEventHandler::OnIdle(int frameNumber){
     //m_pMainCanvas->Flip();
     // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
     //m_pMainCanvas->ClearUpdateRects();
-    /*if(m_inScreenDelta != 0) {
+    if(m_inScreenDelta != 0) {
         m_pMainCanvas->AddUpdateRect( CRectangle( 0, 0, m_pMainCanvas->GetWidth(),
-                        m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
-    }*/
+			//m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
+		m_pMainCanvas->GetHeight() - 200 ) );
+    }
 
     //m_pMainCanvas->UpdateRects ( );
     
@@ -513,6 +517,10 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
 	else if( sym == SDLK_4 )   {
 		//
 		HookMgr()->EnableHookable("Bla");
+	}
+	else if( sym == SDLK_5 )   {
+		//
+		HookMgr()->EnableHookable("Tiles");
 	}
 
 } // OnKeyDown

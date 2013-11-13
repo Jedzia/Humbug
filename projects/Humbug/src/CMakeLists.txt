@@ -57,6 +57,7 @@ SET(Humbug_MyGUI_headers
 		Screens/StartScreen.h
 		Screens/TestScreen.h
 		Screens/HighscoreScreen.h
+		Screens/TileScreen.h
 		Screens/WavyTextFloat.h
 )
 SET(Humbug_MyGUI_sources 
@@ -70,6 +71,7 @@ SET(Humbug_MyGUI_sources
 		Screens/StartScreen.cpp
 		Screens/TestScreen.cpp
 		Screens/HighscoreScreen.cpp
+		Screens/TileScreen.cpp
 		Screens/WavyTextFloat.cpp
 )
 
