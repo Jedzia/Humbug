@@ -19,6 +19,7 @@
 #include "GUI/Components/Screen.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+class FileLoader;
 namespace gui {
   class CSprite;
   class CSpriteManager;
@@ -28,7 +29,6 @@ namespace gui {
     class CTextScroller;
   }
 }
-class FileLoader;
 
 namespace humbug {
   class Template : public gui::components::Screen {

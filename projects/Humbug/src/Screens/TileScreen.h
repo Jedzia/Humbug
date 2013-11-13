@@ -19,17 +19,13 @@
 #include "GUI/Components/Screen.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+class FileLoader;
 namespace gui {
-  class CSprite;
-  class CSpriteManager;
   class CTileEngine;
   namespace components {
     class CCanvas;
-    class CText;
-    class CTextScroller;
   }
 }
-class FileLoader;
 
 namespace humbug {
 
@@ -52,18 +48,10 @@ public:
 
 private:
 
-      struct TileScreenImpl;
-      boost::scoped_ptr<TileScreenImpl> pimpl_;
-
       FileLoader& m_Loader;
 	  int m_inScreenDelta;
-      Uint8 x;
-      gui::components::CColor mcol;
       TTF_Font* m_pArialfont;
       boost::shared_ptr<gui::components::CCanvas> m_pBackground;
-      boost::scoped_ptr<gui::components::CText> m_pScrollText;
-      boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
-      boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
 
 	  gui::CTileEngine* m_pTileEngine;
 
