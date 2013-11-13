@@ -1,3 +1,17 @@
+-X-X-X-X- Mittwoch, 13. November 2013 -----------------------------------------------------------------------------
+
+debug mode 
+Humbug\projects\build\cmake\include\debug.h(17):
+
+#define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_DEBUG
+// #define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_FILE
+//#        define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_WNDW
+#        define _CRT_DEBUG_BLOCK_OUTPUT _CRTDBG_FILE_STDOUT
+
+_CRTDBG_MODE_DEBUG -> to Visual Studio/stdout.
+_CRTDBG_MODE_FILE -> to file.
+_CRTDBG_MODE_WNDW -> to window (really nasty).
+----------------------------------------------------------------------------------------------------------------
 -X-X-X-X- Dienstag, 29. Oktober 2013 -----------------------------------------------------------------------------
 
 a help command (perl)

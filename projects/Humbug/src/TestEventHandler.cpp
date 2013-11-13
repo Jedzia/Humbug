@@ -87,6 +87,7 @@ CTestEventHandler::~CTestEventHandler(){
     //delete CControl::GetMainControl();
     //delete m_pMainCanvas;
     dbgOut(__FUNCTION__);
+	//std::cout << "Killing the ~CTestEventHandler " << __FUNCTION__ << std::endl;
 
 //    const char* explanation = "XXXXXX THIS IS TESTEVENTHANDLER.CPP";
 //_RPT1( _CRT_WARN, "\n\n%s:\n**************************************

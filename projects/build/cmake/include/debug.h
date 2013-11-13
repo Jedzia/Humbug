@@ -14,9 +14,9 @@
 #      endif
 #    if defined(DEBUG_MEMORY_STDOUT)
 
-//#define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_DEBUG
+#define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_DEBUG
 // #define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_FILE
-#        define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_WNDW
+//#        define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_WNDW
 #        define _CRT_DEBUG_BLOCK_OUTPUT _CRTDBG_FILE_STDOUT
 
 //#define _CRT_DEBUG_BLOCK_OUTPUT _CRTDBG_FILE_STDERR
@@ -43,7 +43,7 @@
 #   ifdef DEBUG_MEMORY_SUMMARY_ON_EXIT 
 #   define _CRT_DEBUG_BLOCK  \
     HANDLE hLogFile; \
-    hLogFile = CreateFile(L"c:\\debug_log.txt", GENERIC_WRITE, \
+    hLogFile = CreateFile("D:\\debug_log.txt", GENERIC_WRITE, \
         FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, \
         FILE_ATTRIBUTE_NORMAL, NULL); \
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE); \

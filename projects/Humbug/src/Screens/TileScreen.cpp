@@ -91,7 +91,7 @@ namespace humbug {
       }
       m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
 
-      return Screen::OnInit(argc, argv);
+	  return Screen::OnInit(argc, argv);
   } // OnInit
 
   /** TileScreen, OnIdle:

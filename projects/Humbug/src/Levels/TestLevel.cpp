@@ -50,6 +50,7 @@ TestLevel::~TestLevel(void){
     //    TTF_CloseFont(m_pArialfont);
     //}
 
+	delete m_pSprite;
     //delete m_pScrollText;
     //delete m_pScroller;
     //delete m_pBackground;

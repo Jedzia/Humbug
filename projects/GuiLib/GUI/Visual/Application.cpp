@@ -18,6 +18,8 @@ extern int bmain(int argc,char* argv[]);
 
 namespace gui {
 
+humbuglib::LogManager *mLogManager;
+
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
 Uint32 CApplication::m_uiFPSLastTime=0;
@@ -193,7 +195,10 @@ CApplication::~CApplication()
     _RPT1( _CRT_WARN, "\n\n%s:\n**************************************************************************\n", explanation );
     //_CrtDumpMemoryLeaks( );
     dbgOut(__FUNCTION__);
-
+	if(mLogManager)
+	{
+		delete mLogManager;
+	}
 }
 
 bool CApplication::OnInit(int argc,char* argv[])
@@ -422,7 +427,6 @@ int main(int argc,char* argv[])
 	// create logging facility
 	using namespace humbuglib;
 	//dbgOut(__FUNCTION__);
-	LogManager *mLogManager;
 	if(LogManager::getSingletonPtr() == 0)
 	{
 		mLogManager = new LogManager();
@@ -471,6 +475,12 @@ int main(int argc,char* argv[])
     //_CrtDumpMemoryLeaks( );
     //atexit(doExit);
     //new std::string("Maul !");
+	
+	/*if(LogManager::getSingletonPtr())
+	{
+		delete mLogManager;
+	}*/
+
 	return(result);
 }
 
