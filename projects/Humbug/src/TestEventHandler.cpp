@@ -14,7 +14,6 @@
 #include "GUI/Controls/Button.h"
 //#include "GUI/Hud.h"
 //#include "GUI/Sprite/Sprite.h"
-#include "GUI/TileEngine/TileEngine.h"
 #include "GUI/Visual/Console.h"
 #include "PlayerKeys.h"
 #include "TestEventHandler.h"
@@ -28,11 +27,13 @@
 #include "Levels/TestLevel.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
 #include "Screens/TileScreen.h"
+#include "GUI/Components/MainCanvas.h"
 
 namespace humbug {
 
 	using namespace gui;
 	using namespace gui::controls;
+	using namespace gui::components;
 	using namespace humbug::screens;
 	using humbug::levels::TestLevel;
 
@@ -70,9 +71,7 @@ CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
     /*m_pTileSet(NULL),*/
     m_uiLastTicks2(0),
-    m_uiNumFrames(0),
-    //m_pHud(NULL),
-    m_inScreenDelta(0){
+    m_uiNumFrames(0){
     //dbgOut(__FUNCTION__ << std::endl);
 //	_CRT_DEBUG_BLOCK
 }
@@ -111,13 +110,17 @@ void CTestEventHandler::OnExit(){
 
     //delete main control
     delete gui::controls::CControl::GetMainControl();
-    delete m_pBackground;
     delete m_pBlue;
 
     //delete m_pTileSet;
-    delete m_pTileEngine;
     fl.reset();
-    //destroy font
+
+	// FileLoader frees the surface of m_pBackground,
+	// so this is a workaround.
+	m_pBackground->SetSurface(NULL);
+	delete m_pBackground;
+	
+	//destroy font
     //TTF_CloseFont( CButton::GetButtonFont() );
     //shut down font system
     TTF_Quit();
@@ -190,7 +193,6 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	fl.reset(new FileLoader(appDir + "base_data"));
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-    CTileSet* tileSet = NULL;
     try
     {
         //load in button font. Todo: Error Checking
@@ -208,18 +210,30 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //new CButton(CControl::GetMainControl(),CRectangle(100,100,50,25),1,"Test");
         // m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768- m_pHud->GetHeight());
         {
-            SDL_Surface* loadsurf;
-            SDL_Surface* tmpsurf;
 
-            //tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl.LoadImg("Moo.png") );
-            tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->FL_LOADIMG("Moo.png") );
+			
+			/*// Todo: make a copy, or painting to the súrface is like writíng on Moo.png.
+			m_pBackground = new CCanvas( fl->FL_LOADIMG("Moo.png") );
+			m_pBackground->Invalidate();
+			CRectangle screenrect = m_pMainCanvas->GetDimension();
+			m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+			//m_pMainCanvas->Invalidate();*/
 
-            // delete loadsurf;
+
+			SDL_Surface* loadsurf;
+			SDL_Surface* tmpsurf;
+            
+			// delete loadsurf;
+			//m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->FL_LOADIMG("Moo.png") );
             CCanvas tmpCanvas(tmpsurf);
             CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
             testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
             m_pBackground = testCanvas;
+			CRectangle screenrect = m_pMainCanvas->GetDimension();
+			m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
 
+			//m_pBackground->Invalidate();
             //delete tmpsurf;
             //SDL_FreeSurface( loadsurf );
             fl->FreeLast();
@@ -240,17 +254,6 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
 		//SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
-        CTileImageSetup tilesetup;
-        tilesetup.BitmapIdentifier = "Tiles1";
-        tilesetup.TileWidth = 64;
-        tilesetup.TileHeight = 64;
-        tilesetup.TileCountX = 4;
-        tilesetup.TileCountY = 1;
-        tilesetup.TransparentX = 0;
-        tilesetup.TransparentY = 0;
-        tilesetup.Sequences = 0;
-        tileSet = new CTileSet( m_pMainCanvas, new CTileImage(*fl, "Tiles1.bmp", tilesetup),
-                m_pBackground, CRectangle(0, 0, 1024, 768 - 320) );
 
         // fl->Free("Tiles1.bmp");
     }
@@ -261,28 +264,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_imp_ptr.reset();
     }
     m_pDrawCanvas = m_pBackground;
-	//return true;
-    //m_pTileSet->GetTileImage()->ShowTiles(m_pBackground);
-    //CTile tile = m_pTileSet->CreateTile(1);
-    //tile.Draw(m_pBackground, CPoint(200,300));
-    m_pTileEngine = new CTileEngine(m_pMainCanvas, m_pBackground);
-    m_pTileEngine->AddTileSet(tileSet);
-    CTileEngine& eng = (*m_pTileEngine);
-    (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles(m_pBackground);
-    CTile tile1 = eng["Tiles1"]->CreateTile(0);
-    CTile tile2 = eng["Tiles1"]->CreateTile(1);
-    CTile tile3 = eng["Tiles1"]->CreateTile(2);
-    CTile tile4 = eng["Tiles1"]->CreateTile(3);
 
-    for (int i = 0; i < 20; i += 4)
-    {
-        const int xdiff = 300;
-        tile1.Draw( m_pBackground, CPoint(xdiff * i, 300) );
-        tile2.Draw( m_pBackground, CPoint(xdiff * (i + 1), 300) );
-        tile3.Draw( m_pBackground, CPoint(xdiff * (i + 2), 300) );
-        tile4.Draw( m_pBackground, CPoint(xdiff * (i + 3), 300) );
-    }
-    //m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
+	//m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd =
     // IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );
@@ -351,10 +334,15 @@ void CTestEventHandler::OnIdle(int frameNumber){
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
     //m_pMainCanvas->Lock();
 
-    //update controls
-    CRectangle screenrect = m_pMainCanvas->GetDimension();
+	//CRectangle screenrect = m_pMainCanvas->GetDimension();
+	//m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+	//m_pMainCanvas->Invalidate();
 
-    //m_pBackground->Blit(screenrect, m_pMainCanvas, screenrect);
+    //update controls
+    //CRectangle screenrect = m_pMainCanvas->GetDimension();
+	//m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+	//m_pMainCanvas->Invalidate();
+	//m_pBackground->Blit(screenrect, m_pMainCanvas, screenrect);
     //m_pBackground->UpdateRects();
     //CRectangle& screenWithoutHud = m_pBackground->GetDimension().Intersect(
     // m_pHud->GetCanvas()->GetDimension());
@@ -365,11 +353,6 @@ void CTestEventHandler::OnIdle(int frameNumber){
             //m_pHud->GetCanvas()->GetDimension().GetH() );
 	200 );
 
-    //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
-    //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
-    static int scrdel = 0;
-    scrdel += m_inScreenDelta;
-    m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0) );
 
     //m_pHud->Invalidate();
     CControl::Redraw();
@@ -384,16 +367,11 @@ void CTestEventHandler::OnIdle(int frameNumber){
     //m_pMainCanvas->Flip();
     // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
     //m_pMainCanvas->ClearUpdateRects();
-    if(m_inScreenDelta != 0) {
-        m_pMainCanvas->AddUpdateRect( CRectangle( 0, 0, m_pMainCanvas->GetWidth(),
-			//m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
-		m_pMainCanvas->GetHeight() - 200 ) );
-    }
 
     //m_pMainCanvas->UpdateRects ( );
     
     //m_pMainCanvas->Unlock();
-
+	//m_pMainCanvas->Invalidate();
     // call base method.
     CApplication::OnIdle(frameNumber);
 } // OnIdle
@@ -486,14 +464,6 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     else if( mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE )   {
         // toggle console
         m_pConsole->Toggle();
-    }
-    else if( sym == SDLK_a )   {
-        // toggle console
-        m_inScreenDelta++;
-    }
-    else if( sym == SDLK_d )   {
-        // toggle console
-        m_inScreenDelta--;
     }
     else if( sym == SDLK_c )   {
         //send clear screen message

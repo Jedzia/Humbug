@@ -213,5 +213,10 @@ CColor CCanvas::MatchColor ( CColor color ){
     return ( color );
 }
 
+void CCanvas::Invalidate()
+{
+	AddUpdateRect(GetDimension());
+}
+
 } // namespace components
 } // namespace gui

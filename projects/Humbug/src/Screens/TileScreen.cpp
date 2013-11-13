@@ -59,6 +59,23 @@ namespace humbug {
 
       m_Loader.FreeLast();
 
+
+	  SDL_Surface* loadsurf;
+	  SDL_Surface* tmpsurf;
+	  tmpsurf = SDL_DisplayFormatAlpha( loadsurf = m_Loader.FL_LOADIMG("Moo.png") );
+
+	  // delete loadsurf;
+	  CCanvas tmpCanvas(tmpsurf);
+	  CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+	  testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
+	  //m_pBackground = testCanvas;
+	  m_pBackground.reset( testCanvas );
+
+	  //delete tmpsurf;
+	  //SDL_FreeSurface( loadsurf );
+	  m_Loader.FreeLast();
+
+
       CTileSet* tileSet = NULL;
       CTileImageSetup tilesetup;
       tilesetup.BitmapIdentifier = "Tiles1";
@@ -102,6 +119,7 @@ namespace humbug {
   void TileScreen::OnIdle(int frameNumber){
       //m_pScroller->Scroll(4);
       //m_pSprMgr->OnIdle(frameNumber);
+
   }
 
   /** TileScreen, OnDraw:
@@ -114,7 +132,21 @@ namespace humbug {
       CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
       m_pMainCanvas->Lock();
 
-      m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+	  //CRectangle& screenWithoutHud = m_pMainCanvas->GetDimension().Move(hudsize);
+	  //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+	  static int scrdel = 0;
+	  scrdel += m_inScreenDelta;
+
+	  //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+
+	  //m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0) );
+	  m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pMainCanvas->GetDimension() + CPoint(scrdel, 0));
+	  if(m_inScreenDelta != 0) {
+		  m_pMainCanvas->AddUpdateRect( CRectangle( 0, 0, m_pMainCanvas->GetWidth(),
+		  //m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
+		  	  m_pMainCanvas->GetHeight() - 200 ) );
+	  }
+
       CRectangle frect(700, 500, 185, 185);
       SDL_Color* wavemap = ColorData::Instance()->Wavemap();
       int index = (coldelta * 2 & 63);
@@ -168,12 +200,21 @@ namespace humbug {
       {
           //key press
           //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-          if( pEvent->key.keysym.sym == SDLK_F1 ) {
+		  SDLKey sym = pEvent->key.keysym.sym;
+          if( sym == SDLK_F1 ) {
               //
               m_inScreenDelta++;
               int x = 0;
               x++;
           }
+		  else if( sym == SDLK_a )   {
+			  // toggle console
+			  m_inScreenDelta++;
+		  }
+		  else if( sym == SDLK_d )   {
+			  // toggle console
+			  m_inScreenDelta--;
+		  }
 
           break;
       }

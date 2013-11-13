@@ -62,6 +62,9 @@ public:
 
 	//update any rectangles in the queue
 	void UpdateRects ( ) ;
+	
+	// invalidate the whole surface.
+	void Invalidate();
 
 	//flip surface.  normally, this just updates the entire surface
 	bool Flip ( ) ;
