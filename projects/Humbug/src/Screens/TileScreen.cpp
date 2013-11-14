@@ -201,13 +201,7 @@ namespace humbug {
           //key press
           //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
 		  SDLKey sym = pEvent->key.keysym.sym;
-          if( sym == SDLK_F1 ) {
-              //
-              m_inScreenDelta++;
-              int x = 0;
-              x++;
-          }
-		  else if( sym == SDLK_a )   {
+		  if( sym == SDLK_a )   {
 			  // toggle console
 			  m_inScreenDelta++;
 		  }
@@ -215,7 +209,11 @@ namespace humbug {
 			  // toggle console
 			  m_inScreenDelta--;
 		  }
-
+		  else if( sym == SDLK_x )   {
+			  //CApplication::GetApplication()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4)
+			  //SendMessageQ(MSGID_QuitApp);
+			  CApplication::GetApplication()->SendMessageQ(gui::CEventHandler::MSGID_QuitApp);
+		  }
           break;
       }
 

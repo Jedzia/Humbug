@@ -12,6 +12,7 @@
 
 namespace gui {
 
+	// Todo: maybe put these message definitions in a own header file Messages.h
 MSGID CEventHandler::MSGID_QuitApp = CMessageHandler::GetNextMSGID(); //no parms
 
 //constructor

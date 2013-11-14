@@ -227,7 +227,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 			//m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
 			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->FL_LOADIMG("Moo.png") );
             CCanvas tmpCanvas(tmpsurf);
-            CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+			//CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+			CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768);
             testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
             m_pBackground = testCanvas;
 			CRectangle screenrect = m_pMainCanvas->GetDimension();
