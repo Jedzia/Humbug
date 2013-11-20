@@ -53,7 +53,15 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
+SET(HumbugShared_GameObject_headers 
+	GameObjects/Template.h
+	GameObjects/GVector2D.h
+)
 
+SET(HumbugShared_GameObject_sources 
+	GameObjects/Template.cpp
+	GameObjects/GVector2D.cpp
+)
 
 SET(HumbugShared_headers 
 	GB.h
@@ -77,27 +85,13 @@ SET(HumbugShared_sources
 	VFS/zfsystem.cpp
 	VFS/ziphdr.cpp
 	VFS/zstream.cpp
+	${HumbugShared_GameObject_sources}
 #	Project/ProcessProject.cpp
 #	Project/ProcessProjectPrivate.cpp
 )
 
 #SET(HumbugShared_INCLUDE_DIR ${HumbugShared_IncludePath} CACHE PATH "HumbugShared include directory." FORCE)
 
-
-SET(HumbugShared_mocfiles 
-#        SelectionDialog.h
-#        calculatorform.h
-#        mainwindow.h
-#        lexerdsl.h
-#        CodeEditor.h
-#        XCodeEditor.h
-)
-
-SET(HumbugShared_uifiles 
-#  calculatorform.ui
-#  mainwindow.ui
-#  SelectionDialog.ui
-)
 
 SET(HumbugShared_resfiles 
 #  mainwindow.qrc
@@ -127,7 +121,8 @@ ENDIF(MSYS)
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
 SOURCE_GROUP(Resources FILES ${HumbugShared_resfiles})
-SOURCE_GROUP(GUI FILES ${HumbugShared_uifiles})
+SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_headers})
+SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_sources})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${HumbugShared_headers})
 SOURCE_GROUP(TSources FILES ${HumbugShared_sources})
@@ -139,6 +134,7 @@ ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h 
 
+    	${HumbugShared_GameObject_headers}
         ${HumbugShared_sources} 
         ${HumbugShared_headers}
         ${res_outfiles} 
