@@ -31,6 +31,28 @@
 #include "GUI/Visual/EventHandler.h"
 #include "WavyTextFloat.h"
 #include <cstdlib>
+//
+/*extern "C"
+{
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
+}
+
+#include <luabind/luabind.hpp>
+#include <luabind/operator.hpp>
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/cregex.hpp>
+//
+*/
+
+//#include "plainc_hooks.h"
+//#include "luabind_test.h"
+//#include "luabind_sequencer.h"
+#include <luabind/luabind.hpp>
+#include <lua.hpp>
+//
 
 using namespace gui::components;
 using namespace gui;
@@ -130,6 +152,20 @@ public:
       };
     }
 
+	void greet()
+	{
+		std::cout << "hello world!\n";
+	}
+
+	class testclass
+	{
+	public:
+		testclass(const std::string& s): m_string(s) {}
+		void print_string() { std::cout << m_string << "\n"; }
+
+	private:
+		std::string m_string;
+	};
     /** LuaScreen, OnInit:
      *  Detailed description.
      *  @param argc TODO
@@ -187,8 +223,63 @@ public:
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
+
+
+		/*lua_State* L = luaL_newstate();
+		luaopen_base(L);
+		luaopen_string(L);
+		//luabind::open(L);*/
+
+
+		/*int s(0);
+		lua_State* lua = luaL_newstate();*/
+
+		/*luaopen_base(lua);
+		luaopen_math(lua);
+		luaopen_string(lua);
+		luaopen_table(lua);
+		//    luaopen_io(lua); -- crashes??
+
+		plainc::Register( lua );
+
+		std::cout << "------------------------------------------------" << std::endl;
+		std::cout << "Calling from string: " << std::endl;
+		s = luaL_loadstring( lua, plainc::luascript );
+		if ( s == 0 ) {
+			lua_pcall( lua, 0, LUA_MULTRET, 0 );
+		}*/
+
+		/*luabind::Register( lua );
+		std::cout << "------------------------------------------------" << std::endl;
+		std::cout << "Calling from luabind: " << std::endl;
+		s = luaL_loadstring( lua, luabind::luascript );
+		if ( s == 0 ) {
+			lua_pcall( lua, 0, LUA_MULTRET, 0 );
+		}*/
+
+		using namespace luabind;
+
+		lua_State* L = luaL_newstate();
+		open(L);
+
+		module(L)
+			[
+				def("greet", &greet)
+			];
+
+
+		testclass a("asd");
+
+		module(L)
+			[
+				class_<testclass>("testclass")
+				.def(constructor<const std::string&>())
+				.def("print_string", &testclass::print_string)
+			];
+
         return Screen::OnInit(argc, argv);
     } // OnInit
+
 
     /** LuaScreen, OnIdle:
      *  Detailed description.

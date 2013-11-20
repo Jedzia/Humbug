@@ -119,7 +119,7 @@ INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${GuiLib_INTERFACE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
-
+INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
 # Move to bindings
 IF(LINUX)
   INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
@@ -205,7 +205,11 @@ IF(USE_SDL_GFX)
 ENDIF()
 
 TARGET_LINK_LIBRARIES(Humbug ${LUA_LIBRARY})
-
+#TARGET_LINK_LIBRARIES(Humbug ${LUABIND_LIBRARY})
+TARGET_LINK_LIBRARIES(Humbug luabind)
+ADD_DEPENDENCIES(Humbug luabind)
+#TARGET_LINK_LIBRARIES(Humbug ${LUABIND_LIBRARY})
+# Message(WARNING "LUABIND: ${LUABIND}")
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header, 
 #    warn on invalid header(-Winvalid-pch), source files with header
