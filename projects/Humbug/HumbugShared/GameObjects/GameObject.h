@@ -5,40 +5,40 @@
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the Template.h class.
+ *             the GameObject.h class.
  * \folder     $(folder)
- * \file       Template.h
+ * \file       GameObject.h
  * \date       2013-11-20
  * \author     Jedzia.
  *
  * modified    2013-11-20, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef GAMEOBJECTS_TEMPLATE_H
-#define GAMEOBJECTS_TEMPLATE_H
+#ifndef GAMEOBJECTS_GAMEOBJECT_H
+#define GAMEOBJECTS_GAMEOBJECT_H
 
 #include <string>
 
 namespace gob {
-  class Template {
+  class GameObject {
 public:
 
-      Template();
-      ~Template();
+      GameObject();
+      ~GameObject();
 
-      /** Template, Str:
+      /** GameObject, Str:
        *  Detailed description.
        *  @return TODO
        */
       std::string Str() const { return str; }
 
-      /** Template, Str:
+      /** GameObject, Str:
        *  Detailed description.
        *  @param val TODO
        */
       void Str(std::string val) { str = val; }
 
-      /** Template, Language:
+      /** GameObject, Language:
        *  Detailed description.
        *  @param x TODO
        *  @return TODO
@@ -51,4 +51,4 @@ private:
       std::string str;
   };
 }
-#endif // ifndef GAMEOBJECTS_TEMPLATE_H
+#endif // ifndef GAMEOBJECTS_GAMEOBJECT_H

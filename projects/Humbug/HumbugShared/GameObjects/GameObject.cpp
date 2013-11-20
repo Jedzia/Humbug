@@ -5,9 +5,9 @@
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the Template.cpp class.
+ *             the GameObject.cpp class.
  * \folder     $(folder)
- * \file       Template.cpp
+ * \file       GameObject.cpp
  * \date       2013-11-20
  * \author     Jedzia.
  *
@@ -16,25 +16,25 @@
 /*---------------------------------------------------------*/
 #include "../stdafx.h"
 //
-#include "Template.h"
+#include "GameObject.h"
 
 //#include <build/cmake/include/debug.h>
 
 namespace gob {
-  Template::Template(){
+  GameObject::GameObject(){
       dbgOut(__FUNCTION__ << std::endl);
   }
 
-  Template::~Template(void){
+  GameObject::~GameObject(void){
       dbgOut(__FUNCTION__ << std::endl);
   }
 
-  /** Template, Language:
+  /** GameObject, Language:
    *  Detailed description.
    *  @param x TODO
    * @return TODO
    */
-  const char * Template::Language(int x) const {
+  const char * GameObject::Language(int x) const {
       return "AsciiDoc";
   }
 }
