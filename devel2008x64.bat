@@ -14,6 +14,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x64
 set PATH=D:\QT4-VS2008\bin;%PATH%;C:\Program Files\SVN\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\site\bin;D:\Program Files (x86)\ActivePerl_64_bit\Perl64\bin
 REM set QTDIR=D:\QT4-VS2008
 SET SDLDIR=%~dp0%builddir%\DEPS\SDL-%SDLVER%
+SET LUA_DIR=E:\Devel\CPP\Libs\Lua\5.2.1\vc9\x64\static
 
 IF NOT EXIST "%builddir%" mkdir %builddir%
 cd %builddir%

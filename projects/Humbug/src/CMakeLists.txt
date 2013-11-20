@@ -36,6 +36,8 @@ SET(USE_SDL_IMAGE TRUE)
 SET(USE_SDL_TTF TRUE)
 #SET(USE_SDL_GFX TRUE)
 
+SET(USE_LUA TRUE)
+
 # local project settings
 INCLUDE (bindings)
 
@@ -53,6 +55,7 @@ SET(Humbug_MyGUI_headers
 		TestThread.h
 		TestTimer.h
 
+		Screens/LuaScreen.h
 		Screens/BlaScreen.h
 		Screens/StartScreen.h
 		Screens/TestScreen.h
@@ -67,6 +70,7 @@ SET(Humbug_MyGUI_sources
 		TestThread.cpp
 		TestTimer.cpp
 
+		Screens/LuaScreen.cpp
 		Screens/BlaScreen.cpp
 		Screens/StartScreen.cpp
 		Screens/TestScreen.cpp
@@ -114,6 +118,7 @@ INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${GuiLib_INTERFACE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
 
 # Move to bindings
 IF(LINUX)
@@ -198,6 +203,8 @@ TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
 IF(USE_SDL_GFX)
     TARGET_LINK_LIBRARIES(Humbug ${SDLGFX_LIBRARY})
 ENDIF()
+
+TARGET_LINK_LIBRARIES(Humbug ${LUA_LIBRARY})
 
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header, 
