@@ -39,6 +39,15 @@ INCLUDE (debug)
 # Do not use the CorePlug dependency for CppStructz
 SET(CppStructz_No_CorePlug 1)
 
+SET(LUABIND_INSTALL OFF)# "Install the LuaBind library and headers" ON)
+SET(LUABIND_APPEND_VERSION_SUFFIX OFF)# "Append a version suffix to the library name (like luabind09)?" ON)
+SET(LUABIND_NO_ERROR_CHECKING OFF)# "Build so that all the Lua code is expected only to make legal calls?" OFF)
+SET(LUABIND_NO_EXCEPTIONS OFF)# "Disable all usage of try, catch, and throw?" OFF)
+SET(LUABIND_CPLUSPLUS_LUA OFF)# "Was Lua built as C++?" OFF)
+SET(LUABIND_DYNAMIC_LINK OFF)# "Build luabind as a shared library?" OFF)
+SET(LUABIND_NOT_THREADSAFE OFF)# "Permit the use of static variables, thus making Luabind usable only from one of your system threads." OFF)
+SET(LUABIND_ENABLE_WARNINGS ON)# "Enable extra warnings during the build of the library and tests" ON)
+SET(LUABIND_USE_CXX11 OFF)# "Build Luabind using C++11 features?" ${LUABIND_CXX11_DEFAULT})
 
 
 
