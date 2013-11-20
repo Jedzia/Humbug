@@ -80,6 +80,15 @@ SET(HumbugShared_GameObject_sources
 	GameObjects/GVector2D.cpp
 )
 
+SET(HumbugShared_ScriptHost_headers 
+	ScriptHost/ScriptHost.h
+)
+
+SET(HumbugShared_ScriptHost_sources 
+	ScriptHost/ScriptHost.cpp
+)
+
+
 SET(HumbugShared_sources 
 	GB.cpp
 
@@ -123,12 +132,15 @@ SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
 SOURCE_GROUP(Resources FILES ${HumbugShared_resfiles})
 SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_headers})
 SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_sources})
+SOURCE_GROUP(ScriptHost FILES ${HumbugShared_ScriptHost_headers})
+SOURCE_GROUP(ScriptHost FILES ${HumbugShared_ScriptHost_sources})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${HumbugShared_headers})
 SOURCE_GROUP(TSources FILES ${HumbugShared_sources})
 
 SET(HumbugShared_pre_sources 
     ${HumbugShared_GameObject_sources}
+    ${HumbugShared_ScriptHost_sources}
     ${HumbugShared_sources} 
 )
 
@@ -140,6 +152,7 @@ ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
         defs.h 
 
     	${HumbugShared_pre_sources}
+    	${HumbugShared_ScriptHost_headers}
     	${HumbugShared_GameObject_headers}
         ${HumbugShared_headers}
         ${res_outfiles} 
