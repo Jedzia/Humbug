@@ -11,6 +11,7 @@
 //#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("[") + __FILE__ + "]-> " + __FUNCTION__)
 #define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + "(" +  STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
+#define FL_LOADASSTRING(fname) LoadAsString(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 
 struct SDL_Surface;
 struct _TTF_Font;
@@ -22,7 +23,8 @@ class FileLoadingInfo : public boost::noncopyable
 public:
     FileLoadingInfo(const std::string name, SDL_Surface* surface);
     FileLoadingInfo(const std::string name, TTF_Font* font, SDL_RWops* area, char *data, int fsize);
-    ~FileLoadingInfo();
+	FileLoadingInfo(const std::string name, char *data, int fsize = 0);
+ ~FileLoadingInfo();
 
     std::string Name() const { return m_strName; }
     void Name(std::string val) { m_strName = val; }
@@ -56,7 +58,8 @@ public:
     const char* language(int x) const;
 
     // Placeholder
-    void Load(const std::string & filename) const;
+	void Load(const std::string & filename) const;
+	std::string LoadAsString(const std::string & filename, std::string location);
 
     // Loads a image from the package or filesystem.
     // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.

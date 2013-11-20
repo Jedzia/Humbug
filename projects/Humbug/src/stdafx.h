@@ -1,6 +1,9 @@
 #ifndef STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
 #define STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
 
+//#define WIN32_LEAN_AND_MEAN
+//#include "windows.h"
+
 #include <iostream>
 #include <memory>   // std::auto_ptr
 #include <vector>
@@ -64,6 +67,9 @@
     #include "boost/signals/connection.hpp"
 
 #endif //USE_LIB_BOOST
+
+#include <lua.hpp>
+#include <luabind/luabind.hpp>
 
 #define DEBUG_MEMORY_SUMMARY_ON_EXIT 1
 #include <build/cmake/include/debug.h>

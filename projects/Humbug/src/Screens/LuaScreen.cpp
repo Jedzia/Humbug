@@ -15,7 +15,7 @@
  */
 /*---------------------------------------------------------*/
 #include "LuaScreen.h"
-#include "stdafx.h"
+#include "../stdafx.h"
 
 //#include <build/cmake/include/debug.h>
 #include "boost/function.hpp"
@@ -47,11 +47,9 @@
 //
 */
 
-//#include "plainc_hooks.h"
-//#include "luabind_test.h"
-//#include "luabind_sequencer.h"
-#include <luabind/luabind.hpp>
+//
 #include <lua.hpp>
+#include <luabind/luabind.hpp>
 //
 
 using namespace gui::components;
@@ -64,6 +62,8 @@ namespace humbug {
         //prv::WormMover wormmover;
         int x;
     };
+
+	lua_State* lua;
 
     LuaScreen::LuaScreen( FileLoader& loader, CCanvas* background) :
         pimpl_(new LuaScreen::LuaScreenImpl ),
@@ -225,57 +225,49 @@ public:
 
 
 
-		/*lua_State* L = luaL_newstate();
-		luaopen_base(L);
-		luaopen_string(L);
-		//luabind::open(L);*/
-
-
-		/*int s(0);
-		lua_State* lua = luaL_newstate();*/
-
-		/*luaopen_base(lua);
-		luaopen_math(lua);
-		luaopen_string(lua);
-		luaopen_table(lua);
-		//    luaopen_io(lua); -- crashes??
-
-		plainc::Register( lua );
-
-		std::cout << "------------------------------------------------" << std::endl;
-		std::cout << "Calling from string: " << std::endl;
-		s = luaL_loadstring( lua, plainc::luascript );
-		if ( s == 0 ) {
-			lua_pcall( lua, 0, LUA_MULTRET, 0 );
-		}*/
-
-		/*luabind::Register( lua );
-		std::cout << "------------------------------------------------" << std::endl;
-		std::cout << "Calling from luabind: " << std::endl;
-		s = luaL_loadstring( lua, luabind::luascript );
-		if ( s == 0 ) {
-			lua_pcall( lua, 0, LUA_MULTRET, 0 );
-		}*/
-
 		using namespace luabind;
 
-		lua_State* L = luaL_newstate();
-		open(L);
+		int s(0);
+		lua = luaL_newstate();
+		open(lua);
 
-		module(L)
+		module(lua)
 			[
 				def("greet", &greet)
 			];
-
+  
 
 		testclass a("asd");
 
-		module(L)
+		module(lua)
 			[
 				class_<testclass>("testclass")
 				.def(constructor<const std::string&>())
 				.def("print_string", &testclass::print_string)
 			];
+
+		// A script 
+		const char *luascript = "io=ioCreate()\n" \
+			"ioWrite( io, \"Hello World from String!\")\n" \
+			"ioDelete(io)";
+
+		std::cout << "------------------------------------------------" << std::endl;
+		std::cout << "Calling from string: " << std::endl;
+		s = luaL_loadstring( lua, luascript );
+		if ( s == 0 ) {
+			lua_pcall( lua, 0, LUA_MULTRET, 0 );
+		}
+
+		// A file 
+		std::string& luaFileContent = m_Loader.FL_LOADASSTRING("lua/hello.lua");
+		s = luaL_loadstring( lua, luaFileContent.c_str() );
+		if ( s == 0 ) {
+			lua_pcall( lua, 0, LUA_MULTRET, 0 );
+		}
+
+		std::cout << "------------------------------------------------" << std::endl;
+		
+		//lua_close(lua);
 
         return Screen::OnInit(argc, argv);
     } // OnInit

@@ -24,6 +24,12 @@ FileLoadingInfo::FileLoadingInfo( const std::string name, TTF_Font* font, SDL_RW
 	LOGSTREAM << "FileLoadingInfo create Memdata '" << *this << "'";
 }
 
+FileLoadingInfo::FileLoadingInfo( const std::string name, char *data, int fsize )
+: m_strName(name), m_pSurface(NULL), m_pFont(NULL), m_pArea(NULL), m_pData(data), m_fsize(fsize), m_refcount(0)
+{
+	LOGSTREAM << "FileLoadingInfo create Memdata '" << *this << "'";
+}
+
 FileLoadingInfo::~FileLoadingInfo()
 {
     LOGSTREAM << "FileLoadingInfo freeing '" << *this << "'";
@@ -41,6 +47,12 @@ FileLoadingInfo::~FileLoadingInfo()
         delete[] m_pData;
         m_pData = NULL;
     }
+	else if(m_pData)
+	{
+		delete[] m_pData;
+		m_pData = NULL;
+	}
+
 }
 
 FileLoadingInfo& FileLoadingInfo::operator++( int )
@@ -142,6 +154,50 @@ struct FileLoader::FileLoaderImpl {
         return imgmem;
     }
 
+	int PrepareRead( const filesystem &fsys, const std::string &filename, izfstream &file ) 
+	{
+		int bufsize;
+		//std::string xxx = file.FullFilePath();
+		if(file.Zipped())
+		{
+			bufsize = fsys.FileSize(filename.c_str());
+		}
+		else
+		{
+			file.seekg (0, file.end);
+			bufsize = file.tellg();		
+			//bufsize -= 2;
+			file.seekg (0, file.beg);
+		}
+		return bufsize;
+	}
+
+	char* LoadChar(const filesystem& fsys, const std::string& filename, int& bufsize)
+	{
+		izfstream file(filename.c_str());
+		bufsize = PrepareRead(fsys, filename, file);
+
+		char* data = NULL;
+		if (! file)
+		{
+			//std::cerr << "[FileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
+			LOGSTREAM << "ERROR: Can't load:" + filename;
+
+			// Todo: does not show filename with the exception.
+			HUMBUG_FILELOADER_THROW(
+				FileLoaderException("[FileLoader::LoadChar]", filename,
+				boost::system::error_code(FILELOADER_ERRNO, boost::system::system_category())));
+			return NULL;
+		}
+		else
+		{
+			data = new char[bufsize];
+			file.read(&data[0], bufsize);
+		}
+
+		file.close();
+		return data;
+	}
 
     SDL_Surface* LoadImg(const filesystem& fsys, const std::string& filename)
     {
@@ -281,6 +337,39 @@ FileLoader::~FileLoader(void)
 const char* FileLoader::language(int x) const
 {
     return "AsciiDoc";
+}
+
+std::string FileLoader::LoadAsString(const std::string & filename, std::string location) 
+{
+	std::string tmp;
+	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
+	if (rexs1 != m_resMap.end())
+	{
+		FileLoadingInfo& finf = *(rexs1->second);
+		LOGSTREAM << "FileLoader LoadAsString in Cache '" << filename << "': " << location;
+		finf++;
+		return std::string(finf.m_pData, finf.m_fsize);
+	}
+	else
+		LOGSTREAM << "FileLoader LoadAsString '" << filename << "' " << location;
+
+	filesystem fsys(m_pBasepath.c_str(), "zip", true);
+	LOGSTREAM << fsys;
+
+	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
+
+
+	m_pLastLoaded = filename;
+	int bufsize;
+	char *data = pimpl_->LoadChar(fsys, filename, bufsize);
+	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, data, bufsize);
+	flInfo->setLoc(location);
+	std::string fname(filename);
+	m_resMap.insert(fname, flInfo);
+
+    //m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
+    //return surface;
+	return std::string(data, bufsize);
 }
 
 void FileLoader::Load(const std::string & filename) const
