@@ -18,6 +18,7 @@
 #define SCRIPTHOST_SCRIPTHOST_H
 
 #include <string>
+#include "boost/smart_ptr/scoped_ptr.hpp"
 
 namespace shost {
   class ScriptHost {
@@ -47,7 +48,10 @@ public:
 
 	  void RunScript2(const std::string& script) const;
 	  void RunScript3(const std::string& script) const;
+	  void RunScript4(const std::string& script) const;
 private:
+	struct ScriptHostImpl;
+	boost::scoped_ptr<ScriptHostImpl> pimpl_;
 
       int i;
       std::string str;
