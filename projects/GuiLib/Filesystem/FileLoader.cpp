@@ -129,9 +129,8 @@ struct FileLoader::FileLoaderImpl {
     SDL_RWops* LoadData(const filesystem& fsys, const std::string& filename, int& bufsize)
     {
         data = NULL;
-        int fsize = fsys.FileSize(filename.c_str());
-		bufsize = fsize;
-        izfstream file(filename.c_str());
+		izfstream file(filename.c_str());
+		bufsize = PrepareRead(fsys, filename, file);
         //std::vector<char> data;
         SDL_RWops* imgmem = NULL;
         SDL_Surface *sdlsurface=NULL;
@@ -151,9 +150,9 @@ struct FileLoader::FileLoaderImpl {
         {
             //data.clear();
             //data.resize(fsize);
-            data = new char[fsize];
-            file.read(&data[0], fsize);
-	        imgmem = SDL_RWFromMem(&data[0], fsize);
+            data = new char[bufsize];
+            file.read(&data[0], bufsize);
+	        imgmem = SDL_RWFromMem(&data[0], bufsize);
 
             //sdlsurface = IMG_Load_RW(imgmem, 1);
         }
@@ -168,13 +167,14 @@ struct FileLoader::FileLoaderImpl {
 		//std::string xxx = file.FullFilePath();
 		if(file.Zipped())
 		{
+			// File is in ZIP, get size.
 			bufsize = fsys.FileSize(filename.c_str());
 		}
 		else
 		{
+			// File is on disc, get size.
 			file.seekg (0, file.end);
 			bufsize = file.tellg();		
-			//bufsize -= 2;
 			file.seekg (0, file.beg);
 		}
 		return bufsize;
@@ -284,8 +284,8 @@ struct FileLoader::FileLoaderImpl {
 
     SDL_Surface* LoadImgXX(const filesystem& fsys, const std::string& filename)
     {
-        int fsize = fsys.FileSize(filename.c_str());
-        izfstream file(filename.c_str());
+		izfstream file(filename.c_str());
+		int fsize = PrepareRead(fsys, filename, file);
         //std::vector<char> data;
         SDL_Surface* sdlsurface;
 
