@@ -6,12 +6,12 @@
 
 GVector2D::GVector2D()
 {
-         dbgOut(__FUNCTION__ << std::endl);
+         dbgOut(__FUNCTION__);
 }
 
 GVector2D::~GVector2D(void)
 {
-         dbgOut(__FUNCTION__ << std::endl);
+         dbgOut(__FUNCTION__);
 }
 
 const char* GVector2D::language(int x) const

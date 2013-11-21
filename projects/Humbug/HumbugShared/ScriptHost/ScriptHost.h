@@ -14,12 +14,12 @@
  * modified    2013-11-20, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef GAMEOBJECTS_SCRIPTHOST_H
-#define GAMEOBJECTS_SCRIPTHOST_H
+#ifndef SCRIPTHOST_SCRIPTHOST_H
+#define SCRIPTHOST_SCRIPTHOST_H
 
 #include <string>
 
-namespace gob {
+namespace shost {
   class ScriptHost {
 public:
 
@@ -43,7 +43,7 @@ public:
        *  @param x TODO
        *  @return TODO
        */
-      const char * Language(int x) const;
+	  void RunScript(const std::string& script) const;
 
 private:
 

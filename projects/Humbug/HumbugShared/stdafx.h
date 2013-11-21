@@ -22,10 +22,12 @@
   #  define dbgOut(x)
 #endif // _DEBUG
 
+#include <HumbugLib/LogManager.h>
 // Standard headers
 #include <iostream>
 #include <memory>   // std::auto_ptr
 #include <wchar.h>
+
 // Standard headers VFS
 #include <algorithm>
 #include <cassert>
@@ -63,7 +65,8 @@
 #endif
 //#include <CppStructz/log/LogHelper.h>
 //#include <Crunchy/global.h>
+#include <lua.hpp>
+#include <luabind/luabind.hpp>
 
-//#include "TestClass.h"
 //class __declspec(dllimport) TestClass;
 #endif //STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H

@@ -22,11 +22,11 @@
 
 namespace gob {
   Template::Template(){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   Template::~Template(void){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   /** Template, Language:

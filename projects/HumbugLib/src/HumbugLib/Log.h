@@ -19,6 +19,10 @@
 #define __Log_H__
 
 #include <HumbugLib/global.h>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
 #include <iosfwd>
 
 namespace humbuglib {

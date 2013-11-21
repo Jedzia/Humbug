@@ -22,11 +22,11 @@
 
 namespace gob {
   GameObject::GameObject(){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   GameObject::~GameObject(void){
-      dbgOut(__FUNCTION__ << std::endl);
+      dbgOut(__FUNCTION__);
   }
 
   /** GameObject, Language:

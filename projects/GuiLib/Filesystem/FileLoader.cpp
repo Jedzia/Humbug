@@ -67,6 +67,14 @@ FileLoadingInfo& FileLoadingInfo::operator--( int )
 	return *this;
 }
 
+std::ostream& operator<<( std::ostream& o, const FileLoadingInfo& r )
+{
+	return o << "FileLoadingInfo[ (" << r.Refcount() << ")Name='" << r.Name() << "', Loc=" << r.Loc()
+		<< ", Font=" << r.Font() << ", rWops=" << r.m_pArea
+		<<
+		" ]";
+}
+
 // FileLoader
 
 struct FileLoader::FileLoaderImpl {
@@ -630,10 +638,3 @@ boost::system::system_error(ec, what_arg)
 }
 
 
-std::ostream& operator<<( std::ostream& o, const FileLoadingInfo& r )
-{
-      return o << "FileLoadingInfo[ (" << r.Refcount() << ")Name='" << r.Name() << "', Loc=" << r.Loc()
-                                   << ", Font=" << r.Font() << ", rWops=" << r.m_pArea
-                                   <<
-             " ]";
-}

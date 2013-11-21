@@ -30,6 +30,7 @@
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
 #include "WavyTextFloat.h"
+#include "HumbugShared/ScriptHost/ScriptHost.h"
 #include <cstdlib>
 //
 /*extern "C"
@@ -47,10 +48,6 @@
 //
 */
 
-//
-#include <lua.hpp>
-#include <luabind/luabind.hpp>
-//
 
 using namespace gui::components;
 using namespace gui;
@@ -62,8 +59,6 @@ namespace humbug {
         //prv::WormMover wormmover;
         int x;
     };
-
-	lua_State* lua;
 
     LuaScreen::LuaScreen( FileLoader& loader, CCanvas* background) :
         pimpl_(new LuaScreen::LuaScreenImpl ),
@@ -152,20 +147,6 @@ public:
       };
     }
 
-	void greet()
-	{
-		std::cout << "hello world!\n";
-	}
-
-	class testclass
-	{
-	public:
-		testclass(const std::string& s): m_string(s) {}
-		void print_string() { std::cout << m_string << "\n"; }
-
-	private:
-		std::string m_string;
-	};
     /** LuaScreen, OnInit:
      *  Detailed description.
      *  @param argc TODO
@@ -224,50 +205,8 @@ public:
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
 
-
-		using namespace luabind;
-
-		int s(0);
-		lua = luaL_newstate();
-		open(lua);
-
-		module(lua)
-			[
-				def("greet", &greet)
-			];
-  
-
-		testclass a("asd");
-
-		module(lua)
-			[
-				class_<testclass>("testclass")
-				.def(constructor<const std::string&>())
-				.def("print_string", &testclass::print_string)
-			];
-
-		// A script 
-		const char *luascript = "io=ioCreate()\n" \
-			"ioWrite( io, \"Hello World from String!\")\n" \
-			"ioDelete(io)";
-
-		std::cout << "------------------------------------------------" << std::endl;
-		std::cout << "Calling from string: " << std::endl;
-		s = luaL_loadstring( lua, luascript );
-		if ( s == 0 ) {
-			lua_pcall( lua, 0, LUA_MULTRET, 0 );
-		}
-
-		// A file 
-		std::string& luaFileContent = m_Loader.FL_LOADASSTRING("lua/hello.lua");
-		s = luaL_loadstring( lua, luaFileContent.c_str() );
-		if ( s == 0 ) {
-			lua_pcall( lua, 0, LUA_MULTRET, 0 );
-		}
-
-		std::cout << "------------------------------------------------" << std::endl;
-		
-		//lua_close(lua);
+		shost::ScriptHost shost;
+		shost.RunScript(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
 
         return Screen::OnInit(argc, argv);
     } // OnInit

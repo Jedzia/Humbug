@@ -19,6 +19,7 @@
 #define __LogManager_H__
 
 #include <HumbugLib/global.h>
+#include <map>
 #include "Log.h"
 #include "Singleton.h"
 
