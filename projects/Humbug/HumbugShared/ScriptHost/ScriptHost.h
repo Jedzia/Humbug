@@ -46,6 +46,7 @@ public:
 	  void RunScript(const std::string& script) const;
 
 	  void RunScript2(const std::string& script) const;
+	  void RunScript3(const std::string& script) const;
 private:
 
       int i;
