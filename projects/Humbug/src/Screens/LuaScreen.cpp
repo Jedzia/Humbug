@@ -206,7 +206,8 @@ public:
 
 
 		shost::ScriptHost shost;
-		shost.RunScript(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
+		//shost.RunScript2(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
+		shost.RunScript(m_Loader.FL_LOADASSTRING("lua/funcret.lua"));
 
         return Screen::OnInit(argc, argv);
     } // OnInit
