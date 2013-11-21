@@ -19,6 +19,7 @@
 
 #include <string>
 #include "boost/smart_ptr/scoped_ptr.hpp"
+//#include <luabind/scope.hpp>
 
 namespace shost {
   class ScriptHost {
@@ -38,6 +39,7 @@ public:
        *  @param val TODO
        */
       void Str(std::string val) { str = val; }
+	  //luabind::module_ RegisterModule(const std::string& script) const;
 
       /** ScriptHost, Language:
        *  Detailed description.

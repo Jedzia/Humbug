@@ -17,7 +17,10 @@
 #include "../stdafx.h"
 //
 #include "ScriptHost.h"
+#include "ScriptHostIO.h"
+#include "ScriptHostPrivate.h"
 #include "plainc_hooks.h"
+#include <math.h>
 #include <lua.hpp>
 #include <luabind/luabind.hpp>
 //#include "HumbugLib/LogManager.h"
@@ -25,108 +28,6 @@
 //#include <build/cmake/include/debug.h>
 
 namespace shost {
-  class IO {
-public:
-
-      /** $(fclass), WriteLn:
-       *  Detailed description.
-       *  @param c TODO
-       */
-      void WriteLn( const char* c ){
-          std::cout << c << std::endl;
-      }
-  };
-
-  class IOReg {
-public:
-
-      /** $(fclass), createIO:
-       *  Detailed description.
-       *  @param lua TODO
-       * @return TODO
-       */
-      static int createIO( lua_State* lua ){
-          void* io = (void *)new IO();
-          lua_pushlightuserdata( lua, io );
-          return 1;
-      }
-      /** $(fclass), deleteIO:
-       *  Detailed description.
-       *  @param lua TODO
-       * @return TODO
-       */
-      static int deleteIO(  lua_State* lua ){
-          int argc = lua_gettop( lua );
-
-          if ( argc > 0  ) {
-              IO* io = (IO *)lua_topointer( lua, 1 );
-              delete io;
-          }
-
-          return 1;
-      }
-      /** $(fclass), WriteLnIO:
-       *  Detailed description.
-       *  @param lua TODO
-       * @return TODO
-       */
-      static int WriteLnIO( lua_State* lua ){
-          int argc = lua_gettop( lua );
-
-          if ( argc > 1  ) {
-              IO* io = (IO *)lua_topointer( lua, 1 );
-              std::string p;
-
-              for ( int i = 2; i <= argc; i++ ) {
-                  p += lua_tostring( lua, i );
-              }
-              io->WriteLn( p.c_str( ) );
-          }
-
-          return 1;
-      }
-      /** $(fclass), writeLn:
-       *  Detailed description.
-       *  @param lua TODO
-       * @return TODO
-       */
-      static int writeLn( lua_State* lua ){
-          int argc = lua_gettop( lua );
-
-          for ( int i = 1; i <= argc; i++ ) {
-              const char* c = lua_tostring( lua, i );
-              std::cout << c;
-          }
-
-          if ( argc > 0 ) {
-              std::cout << std::endl;
-          }
-
-          lua_pushnumber( lua, argc );
-          return 1;
-      }
-      /** $(fclass), Register:
-       *  Detailed description.
-       *  @param lua TODO
-       */
-      static void Register( lua_State* lua ){
-          //lua_register( lua, "writeLn", writeLn );
-
-          //lua_register( lua, "ioCreate", createIO );
-          //lua_register( lua, "ioDelete", deleteIO );
-          //lua_register( lua, "ioWrite", WriteLnIO );
-          lua_register( lua, "write", WriteLnIO );
-      }
-  };
-
-  /** $(fclass), greet:
-   *  Detailed description.
-   *
-   */
-  void greet(){
-      std::cout << "hello world!\n";
-  }
-
   class testclass {
 public:
 
@@ -143,80 +44,13 @@ private:
       std::string m_string;
   };
 
-  /*
-  ** these libs are loaded by lua.c and are readily available to any Lua
-  ** program
-  */
-  static const luaL_Reg loadedlibs[] = {
-      {"_G", luaopen_base},
-      {LUA_LOADLIBNAME, luaopen_package},
-      {LUA_COLIBNAME, luaopen_coroutine},
-      {LUA_TABLIBNAME, luaopen_table},
-      {LUA_IOLIBNAME, luaopen_io},
-      {LUA_OSLIBNAME, luaopen_os},
-      {LUA_STRLIBNAME, luaopen_string},
-      {LUA_BITLIBNAME, luaopen_bit32},
-      {LUA_MATHLIBNAME, luaopen_math},
-      {LUA_DBLIBNAME, luaopen_debug},
-      {NULL, NULL}
-  };
-
-  /*
-  ** these libs are preloaded and must be required before used
-  */
-  static const luaL_Reg preloadedlibs[] = {
-      {NULL, NULL}
-  };
-
-  /** $(fclass), openLuaLib:
-   *  Detailed description.
-   *  @param L TODO
-   * @param lib TODO
-   */
-  void openLuaLib (lua_State* L, const luaL_Reg* lib) {
-      /* call open functions from 'loadedlibs' and set results to global table */
-      luaL_requiref(L, lib->name, lib->func, 1);
-      lua_pop(L, 1);              /* remove lib */
-  }
-
-  /** $(fclass), openLuaLib:
-   *  Detailed description.
-   *  @param L TODO
-   * @param name TODO
-   */
-  void openLuaLib (lua_State* L, const char* name) {
-      const luaL_Reg* lib;
-
-      /* call open functions from 'loadedlibs' and set results to global table */
-      for (lib = loadedlibs; lib->func; lib++) {
-          if (strcmp(name, lib->name) == 0) {
-              luaL_requiref(L, lib->name, lib->func, 1);
-              lua_pop(L, 1);                      /* remove lib */
-          }
-      }
-  }
-
-  /** $(fclass), openLuaLibs:
-   *  Detailed description.
-   *  @param L TODO
-   */
-  void openLuaLibs (lua_State* L) {
-      const luaL_Reg* lib;
-
-      /* call open functions from 'loadedlibs' and set results to global table */
-      for (lib = loadedlibs; lib->func; lib++) {
-          luaL_requiref(L, lib->name, lib->func, 1);
-          lua_pop(L, 1);          /* remove lib */
-      }
-  }
-
   /** $(fclass), copyGlobalString:
    *  Detailed description.
    *  @param L TODO
    * @param name TODO
    * @return TODO
    */
-  char * copyGlobalString(lua_State* L, const char* name) {
+  std::string copyGlobalString(lua_State* L, const char* name) {
       char* s = NULL;
       lua_getglobal(L, name);
 
@@ -225,27 +59,23 @@ private:
       }
 
       lua_pop(L, 1);
-      return s;
+	  std::string str(s);
+	  delete s;
+
+      return str;
   }
 
-  struct ScriptHost::ScriptHostImpl {
-	  lua_State* L;
-	  int x;
-  };
+#include "ScriptHostImpl.h"
 
-
-  ScriptHost::ScriptHost()
-	  : pimpl_(new ScriptHost::ScriptHostImpl )
-  {
-	  dbgOut(__FUNCTION__ );
-	  LOGSTREAM << "ScriptHost bIS THERE !!!!!!!!!!!!";
+  ScriptHost::ScriptHost() :
+      pimpl_(new ScriptHost::ScriptHostImpl ){
+      dbgOut(__FUNCTION__ );
+      LOGSTREAM << "ScriptHost bIS THERE !!!!!!!!!!!!";
   }
 
   ScriptHost::~ScriptHost(void){
-	  dbgOut(__FUNCTION__);
+      dbgOut(__FUNCTION__);
   }
-
-
 
   /** ScriptHost, RunScript:
    *  Detailed description.
@@ -264,8 +94,8 @@ private:
       //openLuaLib (L, &iolib);
 
       //openLuaLib (L, LUA_LOADLIBNAME);
-      openLuaLib (pimpl_->L, "_G");
-      openLuaLib (pimpl_->L, LUA_IOLIBNAME);
+      LuaReg::openLuaLib (pimpl_->L, "_G");
+      LuaReg::openLuaLib (pimpl_->L, LUA_IOLIBNAME);
 
       {
         luabind::open(pimpl_->L);
@@ -275,14 +105,40 @@ private:
                         .def(constructor<const std::string&>())
                         .def("print_string", &testclass::print_string)
                 ];*/
-
-        module_ bindModule = module(pimpl_->L);
+		
+		// *** Bind a class with functions that can be instantiated in Lua ***
+		// module(pimpl_->L) or
+        module_& bindModule = module(pimpl_->L);
         bindModule
         [
             class_<testclass>("testclass")
             .def( constructor<const std::string & >() )
             .def("print_string", &testclass::print_string)
+			//.def("writeLn", &greet2)
+			//.def(sc, )
         ];
+
+
+
+		// *** Bind a class with functions and make it a global var ***
+		luabind::class_<dummy> sc = class_<dummy>("dummy")
+			.def("greet", &dummy::greet)
+		    //.def("greet2", greet2)
+			;
+			//.scope[
+			//def("greet", &dummy::greet)
+			//];
+		bindModule[sc];
+		dummy luaDummy;
+		// To make the dummy var global in Lua do:
+		//luabind::push(pimpl_->L, luaDummy);
+		//lua_setglobal(pimpl_->L, "dummy");
+		// or 
+		//pimpl_->push(luaDummy);
+		//pimpl_->setglobal("dummy");
+		// or
+		pimpl_->pushglobal(luaDummy, "dummy");
+
 
         /* variable with an unique address */
         static const char* Key = "myVar";
@@ -290,6 +146,14 @@ private:
 
         lua_pushstring(pimpl_->L, "FromScriptHost");
         lua_setglobal(pimpl_->L, Key);
+
+		// *** Bind a static function ***
+		//IOReg::createIO(pimpl_->L);
+		//luabind::def("sin", &std::sin);
+		luabind::scope& fn = luabind::def("greet2", greet2);
+		bindModule[fn];
+
+
 
         //testclass *luaTestObj = new testclass("Created in " __FILE__);
         testclass luaTestObj("Created in " __FILE__);
@@ -307,7 +171,9 @@ private:
                 std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
             }
             else {
-                std::cout << "Got <" << Key << "> from Lua:(" << copyGlobalString(pimpl_->L, Key) << ")" << std::endl;
+				//char *result = copyGlobalString(pimpl_->L, Key);
+                std::cout << "Got <" << Key << "> from Lua:\"" << copyGlobalString(pimpl_->L, Key) << "\"" << std::endl;
+				//delete result;
             }
         }
       }
@@ -334,8 +200,8 @@ private:
       //openLuaLib (pimpl_->L, &iolib);
 
       //openLuaLib (pimpl_->L, LUA_LOADLIBNAME);
-      openLuaLib (pimpl_->L, "_G");
-      openLuaLib (pimpl_->L, LUA_IOLIBNAME);
+      LuaReg::openLuaLib (pimpl_->L, "_G");
+      LuaReg::openLuaLib (pimpl_->L, LUA_IOLIBNAME);
 
       //IOReg::Register(pimpl_->L);
       //IOReg::createIO(pimpl_->L);
@@ -405,8 +271,8 @@ private:
       //openLuaLib (pimpl_->L, &iolib);
 
       //openLuaLib (pimpl_->L, LUA_LOADLIBNAME);
-      openLuaLib (pimpl_->L, "_G");
-      openLuaLib (pimpl_->L, LUA_IOLIBNAME);
+      LuaReg::openLuaLib (pimpl_->L, "_G");
+      LuaReg::openLuaLib (pimpl_->L, LUA_IOLIBNAME);
 
       //plainc::Register( pimpl_->L );
 
@@ -491,4 +357,12 @@ private:
 
       lua_close(pimpl_->L);
   } // RunScript2
+
+
+/*  luabind::module_ ScriptHost::RegisterModule( const std::string& script ) const
+  {
+	  luabind::module_ bindModule = luabind::module(pimpl_->L);
+	  return bindModule;
+  }
+*/
 }
