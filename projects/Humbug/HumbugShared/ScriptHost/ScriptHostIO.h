@@ -141,6 +141,27 @@ public:
 
   };
 
+  class SpriteModel
+  {
+  public:
+	  SpriteModel()
+		  : frame(0)
+	  {
+
+	  };
+
+	  int Frame() const { return frame; }
+
+	  void greet(){
+		  std::cout << "greet !\n";
+	  }
+	  static void stgreet(){
+		  std::cout << "greet !\n";
+	  }
+  private:
+	  int frame;
+  };
+
 }
 
 #endif // ifndef SCRIPTHOST_SCRIPTHOSTIO_H

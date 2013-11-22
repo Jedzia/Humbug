@@ -14,6 +14,7 @@
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
+#include <iomanip>
 
 using namespace gui::components;
 using namespace gui;
@@ -239,7 +240,17 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 } // OnInit
 
 void StartScreen::OnIdle(int frameNumber){
-    m_pScroller->Scroll(4);
+	int ticks = SDL_GetTicks();
+	std::cout << "frameNumber :" << frameNumber << std::endl;
+	std::cout << "ticks :" << (ticks / 1000) << "." << std::setw(3) <<  std::setfill('0') << (ticks % 1000);
+	std::cout << "  t/f:" << ticks/frameNumber;
+	
+	static int lastticks = 0;
+	std::cout << "  diff:" << ticks - lastticks  << std::endl;
+	lastticks = ticks;
+	// Todo make this settable in the constructor an dependent 
+	// on the frameNumber(ticks)
+    m_pScroller->Scroll(2);
     m_pSprMgr->OnIdle(frameNumber);
 }
 

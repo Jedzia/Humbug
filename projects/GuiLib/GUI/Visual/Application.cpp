@@ -23,7 +23,7 @@ humbuglib::LogManager *mLogManager;
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
 Uint32 CApplication::m_uiFPSLastTime=0;
-int CApplication::m_iFramesCap = 25;
+int CApplication::m_iFramesCap = 30;
 Uint32 CApplication::m_iShownFrames = 0;
 
 
@@ -219,8 +219,11 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 void CApplication::OnIdle(int frameNumber)
 {
 	//by default, do nothing
+	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
     m_sigOnIdle(frameNumber);
+	// std::cout << "---APP After m_sigOnIdle---" << std::endl;
 	m_sigOnDraw();
+	// std::cout << "---APP After m_sigOnDraw---" << std::endl;
 	if (m_pConsole)
 		m_pConsole->Draw();
 	m_pMainCanvas->UpdateRects ( );
@@ -329,10 +332,15 @@ int CApplication::Execute(int argc,char* argv[])
 		}
 		else
 		{
+			//std::cout << std::endl << "APPdiff:" << SDL_GetTicks() - m_uiFPSLastTime  << std::endl;
 			//no event, so idle
+			//GetApplication()->OnIdle(SDL_GetTicks()/60);
+			//std::cout << "---APP BeforeIdle---" << std::endl;
 			GetApplication()->OnIdle(frameNumber);
-            shownFrames++;
+			//std::cout << "---APP AfterIdle---" << std::endl;
+			shownFrames++;
             GetApplication()->Update();
+			//std::cout << "---APP AfterUpdate---" << std::endl;
             frameNumber++;
 
             //Cap the frame rate

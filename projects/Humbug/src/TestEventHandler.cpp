@@ -330,7 +330,7 @@ void CTestEventHandler::PutBlue(){
 
 //idle behavior - Draw the stuff
 void CTestEventHandler::OnIdle(int frameNumber){
-    CApplication::OnIdle(frameNumber); 
+    //CApplication::OnIdle(frameNumber); 
 	//return;
 
 
