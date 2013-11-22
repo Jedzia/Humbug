@@ -103,13 +103,18 @@ public:
        *  @param lua TODO
        */
       static void Register( lua_State* lua ){
-          //lua_register( lua, "writeLn", writeLn );
+          lua_register( lua, "writeLn", writeLn );
 
           //lua_register( lua, "ioCreate", createIO );
           //lua_register( lua, "ioDelete", deleteIO );
           //lua_register( lua, "ioWrite", WriteLnIO );
           lua_register( lua, "write", WriteLnIO );
       }
+  };
+
+  struct PropA
+  {
+	  int a;
   };
 
   /** global, greet:

@@ -117,7 +117,9 @@ private:
 			//.def("writeLn", &greet2)
 			//.def(sc, )
         ];
-
+		// create and push the testclass object
+		testclass luaTestObj("Created in " __FILE__);
+		pimpl_->pushglobal(luaTestObj, "game");
 
 
 		// *** Bind a class with functions and make it a global var ***
@@ -140,7 +142,7 @@ private:
 		pimpl_->pushglobal(luaDummy, "dummy");
 
 
-        /* variable with an unique address */
+        /* Push a global string var */
         static const char* Key = "myVar";
         static const char* value = "FromScriptHost";
 
@@ -153,28 +155,19 @@ private:
 		luabind::scope& fn = luabind::def("greet2", greet2);
 		bindModule[fn];
 
-
-
-        //testclass *luaTestObj = new testclass("Created in " __FILE__);
-        testclass luaTestObj("Created in " __FILE__);
-        luabind::push(pimpl_->L, luaTestObj);
-        //lua_pushlightuserdata(pimpl_->L, luaTestObj);
-        lua_setglobal(pimpl_->L, "game");
-
         // A file
         s = luaL_loadstring( pimpl_->L, script.c_str() );
 
         if ( s == 0 ) {
-            int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
-
-            if (ret != 0) {
-                std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
-            }
-            else {
+			int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
+			if (ret != 0) {
+				std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+			}
+			else {
 				//char *result = copyGlobalString(pimpl_->L, Key);
-                std::cout << "Got <" << Key << "> from Lua:\"" << copyGlobalString(pimpl_->L, Key) << "\"" << std::endl;
+				std::cout << "Got <" << Key << "> from Lua:\"" << copyGlobalString(pimpl_->L, Key) << "\"" << std::endl;
 				//delete result;
-            }
+			}
         }
       }
 
@@ -357,6 +350,69 @@ private:
 
       lua_close(pimpl_->L);
   } // RunScript2
+
+
+    
+  void ScriptHost::RunScript5(const std::string& script) const {
+      using namespace luabind;
+
+      int s(0);
+      pimpl_->L = luaL_newstate();
+	  LuaReg::openLuaLibs(pimpl_->L);
+	  luabind::open(pimpl_->L);
+
+      module(pimpl_->L)
+      [
+          def("greet", &greet)
+		  // get nicht, warum?
+		  //, def("writeLn", &IOReg::writeLn)
+      ];
+	  
+	  IOReg::Register(pimpl_->L);
+	  module(pimpl_->L)
+		  [
+			  class_<PropA>("PropA")
+			  .def_readwrite("a", &PropA::a)
+		  ];
+
+	  PropA b;
+	  b.a = 666;
+	  pimpl_->pushglobal(b, "b");
+
+
+	  // A script
+      const char* luascript =  "" 
+							    "a=1\n" 
+								"a=a+1\n" 
+								"writeLn(\"a:\"..a)\n" 
+								"writeLn(\"b.a:\"..b.a)\n" 
+								"b.a=b.a+1\n" 
+                                "greet()\n"
+							  ;
+
+      std::cout << "------------------------------------------------" << std::endl;
+      std::cout << "Calling from string: " << std::endl;
+      s = luaL_loadstring( pimpl_->L, luascript );
+
+      if ( s == 0 ) {
+		  lua_pushvalue(pimpl_->L, -1); 
+		  int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
+		  ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
+		if (ret != 0) {
+			std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+		}
+		else {
+			//char *result = copyGlobalString(pimpl_->L, Key);
+			//std::cout << "Got <" << Key << "> from Lua:\"" << copyGlobalString(pimpl_->L, Key) << "\"" << std::endl;
+			//delete result;
+		}
+
+      }
+      std::cout << "------------------------------------------------" << std::endl;
+
+      lua_close(pimpl_->L);
+  } // RunScript2
+
 
 
 /*  luabind::module_ ScriptHost::RegisterModule( const std::string& script ) const

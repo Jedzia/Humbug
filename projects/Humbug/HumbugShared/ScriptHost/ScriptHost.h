@@ -51,6 +51,7 @@ public:
 	  void RunScript2(const std::string& script) const;
 	  void RunScript3(const std::string& script) const;
 	  void RunScript4(const std::string& script) const;
+	  void RunScript5(const std::string& script) const;
 private:
 	struct ScriptHostImpl;
 	boost::scoped_ptr<ScriptHostImpl> pimpl_;
