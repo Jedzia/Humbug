@@ -46,7 +46,7 @@ protected:
 private:
     GroupId GetGroupID();
 
-    virtual void OnIdle( int frameNumber );
+    virtual void OnIdle( int ticks );
 	virtual void OnEvent(SDL_Event* pEvent);
     virtual void OnConnect();
     virtual void OnDisconnect();

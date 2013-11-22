@@ -43,7 +43,7 @@ public:
       ~BlaScreen();
 
       virtual bool OnInit( int argc, char* argv[] );
-      virtual void OnIdle(int frameNumber);
+      virtual void OnIdle(int ticks);
 	  virtual void OnEvent(SDL_Event* pEvent);
 
       virtual void OnDraw();

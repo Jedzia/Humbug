@@ -62,13 +62,13 @@ public:
       }
   }
 
-  void CSpriteManager::OnIdle( int frameNumber ){
+  void CSpriteManager::OnIdle( int ticks ){
       SprStorage::iterator end = m_pvSprites.end();
       for (SprStorage::iterator it = m_pvSprites.begin(); it < end; it++)
       {
           //SpriteShrp sprite = it->Sprite();
           //dbgOut(__FUNCTION__ << " " << &it);
-          (*it).DoIdle(frameNumber);
+          (*it).DoIdle(ticks);
       }
   }
 

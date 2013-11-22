@@ -131,12 +131,12 @@ namespace humbug {
 
   /** Template, OnIdle:
    *  Detailed description.
-   *  @param frameNumber TODO
+   *  @param ticks TODO
    * @return TODO
    */
-  void Template::OnIdle(int frameNumber){
+  void Template::OnIdle(int ticks){
       //m_pScroller->Scroll(4);
-      //m_pSprMgr->OnIdle(frameNumber);
+      //m_pSprMgr->OnIdle(ticks);
   }
 
   /** Template, OnDraw:

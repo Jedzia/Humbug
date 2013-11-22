@@ -329,8 +329,8 @@ void CTestEventHandler::PutBlue(){
 } // PutBlue
 
 //idle behavior - Draw the stuff
-void CTestEventHandler::OnIdle(int frameNumber){
-    //CApplication::OnIdle(frameNumber); 
+void CTestEventHandler::OnIdle(int ticks){
+    //CApplication::OnIdle(ticks); 
 	//return;
 
 
@@ -376,7 +376,7 @@ void CTestEventHandler::OnIdle(int frameNumber){
     //m_pMainCanvas->Unlock();
 	//m_pMainCanvas->Invalidate();
     // call base method.
-    CApplication::OnIdle(frameNumber);
+    CApplication::OnIdle(ticks);
 } // OnIdle
 
 //update loop

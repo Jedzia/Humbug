@@ -213,7 +213,7 @@ TestHookable::~TestHookable()
 
 }
 
-void TestHookable::OnIdle(int frameNumber)
+void TestHookable::OnIdle(int ticks)
 {
 
 }

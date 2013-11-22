@@ -216,11 +216,11 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 }
 
 //idle behavior
-void CApplication::OnIdle(int frameNumber)
+void CApplication::OnIdle(int ticks)
 {
 	//by default, do nothing
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
-    m_sigOnIdle(frameNumber);
+    m_sigOnIdle(ticks);
 	// std::cout << "---APP After m_sigOnIdle---" << std::endl;
 	m_sigOnDraw();
 	// std::cout << "---APP After m_sigOnDraw---" << std::endl;

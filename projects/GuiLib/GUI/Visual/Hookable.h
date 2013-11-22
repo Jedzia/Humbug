@@ -26,7 +26,7 @@ public:
     //initialization
     virtual bool OnInit(int argc,char* argv[]);
 
-    virtual void OnIdle(int frameNumber) = 0;
+    virtual void OnIdle(int ticks) = 0;
     friend class HookableManager;
 
 protected:
@@ -65,7 +65,7 @@ public:
     TestHookable();
     virtual ~TestHookable();
 
-    void OnIdle(int frameNumber);
+    void OnIdle(int ticks);
     virtual GroupId GetGroupID();
 
     virtual void OnConnect();

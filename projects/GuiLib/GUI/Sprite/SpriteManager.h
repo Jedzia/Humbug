@@ -35,7 +35,7 @@ public:
 
       void OnDraw();
 
-      void OnIdle(int frameNumber);
+      void OnIdle(int ticks);
 
       friend std::ostream& operator<<(std::ostream& o, const CSpriteManager& r);
 

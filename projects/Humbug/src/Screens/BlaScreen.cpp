@@ -170,10 +170,10 @@ namespace humbug {
 
   /** BlaScreen, OnIdle:
    *  Detailed description.
-   *  @param frameNumber TODO
+   *  @param ticks TODO
    * @return TODO
    */
-  void BlaScreen::OnIdle(int frameNumber){
+  void BlaScreen::OnIdle(int ticks){
       /*CRectangle screenWithoutHud( 0, 0,
               m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH() -
               m_pHud->GetCanvas()->GetDimension().GetH() );
@@ -191,7 +191,7 @@ namespace humbug {
          }*/
 
       //m_pScroller->Scroll(4);
-      //m_pSprMgr->OnIdle(frameNumber);
+      //m_pSprMgr->OnIdle(ticks);
       Uint32 now, diff;
       now = SDL_GetTicks();
       diff = now - m_uiLastTicks;

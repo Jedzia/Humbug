@@ -137,9 +137,9 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     //return true;
 } // OnInit
 
-void TestLevel::OnIdle(int frameNumber){
+void TestLevel::OnIdle(int ticks){
     //m_pScroller->Scroll(4);
-    //m_pSprMgr->OnIdle(frameNumber);
+    //m_pSprMgr->OnIdle(ticks);
 }
 
 void TestLevel::OnDraw(){

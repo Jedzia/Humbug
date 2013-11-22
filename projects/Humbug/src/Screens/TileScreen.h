@@ -36,7 +36,7 @@ public:
       ~TileScreen();
 
       virtual bool OnInit( int argc, char* argv[] );
-      virtual void OnIdle(int frameNumber);
+      virtual void OnIdle(int ticks);
 
       virtual void OnDraw();
 

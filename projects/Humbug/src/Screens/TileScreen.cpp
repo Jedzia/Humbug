@@ -113,12 +113,12 @@ namespace humbug {
 
   /** TileScreen, OnIdle:
    *  Detailed description.
-   *  @param frameNumber TODO
+   *  @param ticks TODO
    * @return TODO
    */
-  void TileScreen::OnIdle(int frameNumber){
+  void TileScreen::OnIdle(int ticks){
       //m_pScroller->Scroll(4);
-      //m_pSprMgr->OnIdle(frameNumber);
+      //m_pSprMgr->OnIdle(ticks);
 
   }
 

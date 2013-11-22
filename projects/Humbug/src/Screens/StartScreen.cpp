@@ -42,12 +42,12 @@ namespace prv
             dbgOut(__FUNCTION__ << " " << this);
         }
 
-        void operator()(CSprite* sprite, int frameNumber) {
-            double ss = std::sin(static_cast<double>(frameNumber) / 12);
+        void operator()(CSprite* sprite, int ticks) {
+            double ss = std::sin(static_cast<double>(ticks) / 12);
             int ssin = static_cast<int>(ss * 155);
 
-            sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_ + ssin));
-            sprite->SprOffset(frameNumber % 8);
+            sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
+            sprite->SprOffset(ticks % 8);
 
             if (h_ >= 100)
             {
@@ -85,15 +85,15 @@ namespace prv
             dbgOut(__FUNCTION__ << " " << this);
         }
 
-        void operator()(CSprite* sprite, int frameNumber) {
-            //sprite->SetPos(CPoint(100 + ((frameNumber % 32) * 16), 420));
+        void operator()(CSprite* sprite, int ticks) {
+            //sprite->SetPos(CPoint(100 + ((ticks % 32) * 16), 420));
             const int sprMaxFrames = 40;
-            int frame = (frameNumber % sprMaxFrames);
-            int div = (frameNumber % (sprMaxFrames*4)) / sprMaxFrames;
+            int frame = (ticks % sprMaxFrames);
+            int div = (ticks % (sprMaxFrames*4)) / sprMaxFrames;
             //int movdelta = div * 40;
             int movdelta = 0;
 
-            int deltaX = static_cast<int>( ((frameNumber % (sprMaxFrames*4))*4.3) );
+            int deltaX = static_cast<int>( ((ticks % (sprMaxFrames*4))*4.3) );
             sprite->SetPos(CPoint(10 + deltaX + movdelta, 420));
             int sprframe;
             if (frame < (sprMaxFrames/2))
@@ -239,19 +239,19 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     //return true;
 } // OnInit
 
-void StartScreen::OnIdle(int frameNumber){
-	int ticks = SDL_GetTicks();
-	std::cout << "frameNumber :" << frameNumber << std::endl;
-	std::cout << "ticks :" << (ticks / 1000) << "." << std::setw(3) <<  std::setfill('0') << (ticks % 1000);
-	std::cout << "  t/f:" << ticks/frameNumber;
+void StartScreen::OnIdle(int ticks){
+	int sdlticks = SDL_GetTicks();
+	std::cout << "frameNumber :" << ticks << std::endl;
+	std::cout << "ticks :" << (sdlticks / 1000) << "." << std::setw(3) <<  std::setfill('0') << (sdlticks % 1000);
+	std::cout << "  t/f:" << sdlticks/ticks;
 	
 	static int lastticks = 0;
-	std::cout << "  diff:" << ticks - lastticks  << std::endl;
-	lastticks = ticks;
+	std::cout << "  diff:" << sdlticks - lastticks  << std::endl;
+	lastticks = sdlticks;
 	// Todo make this settable in the constructor an dependent 
 	// on the frameNumber(ticks)
     m_pScroller->Scroll(2);
-    m_pSprMgr->OnIdle(frameNumber);
+    m_pSprMgr->OnIdle(ticks);
 }
 
 void StartScreen::OnDraw(){

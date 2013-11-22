@@ -55,7 +55,7 @@ private:
     gui::Screen* m_scrStart;
 protected:
     //idle behavior
-	virtual void OnIdle(int frameNumber);
+	virtual void OnIdle(int ticks);
     //update loop
 	virtual void Update();
 public:

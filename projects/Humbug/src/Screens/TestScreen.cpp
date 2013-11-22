@@ -132,12 +132,12 @@ namespace humbug {
 
   /** TestScreen, OnIdle:
    *  Detailed description.
-   *  @param frameNumber TODO
+   *  @param ticks TODO
    * @return TODO
    */
-  void TestScreen::OnIdle(int frameNumber){
+  void TestScreen::OnIdle(int ticks){
       //m_pScroller->Scroll(4);
-      //m_pSprMgr->OnIdle(frameNumber);
+      //m_pSprMgr->OnIdle(ticks);
   }
 
   /** TestScreen, OnDraw:

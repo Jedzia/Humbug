@@ -62,7 +62,7 @@ public:
 	virtual void OnEvent(SDL_Event* pEvent);
 
 	//idle behavior
-	virtual void OnIdle(int frameNumber);
+	virtual void OnIdle(int ticks);
 
    	//update loop
 	virtual void Update();

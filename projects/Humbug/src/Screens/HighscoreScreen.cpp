@@ -102,16 +102,16 @@ public:
           /** $(fclass), operator ():
            *  Detailed description.
            *  @param sprite TODO
-           * @param frameNumber TODO
+           * @param ticks TODO
            * @return TODO
            */
-          void operator()(CSprite* sprite, int frameNumber) {
+          void operator()(CSprite* sprite, int ticks) {
               double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
               int ssin = static_cast<int>(ss * 100);
 
-              //sprite->SetPos(CPoint(100 + ((frameNumber % 128) * 6), 460 + h_ + deltaY_ + ssin));
+              //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
               sprite->SetPos( CPoint(130 + ssin, deltaY_) );
-              sprite->SprOffset(frameNumber % sproffs);
+              sprite->SprOffset(ticks % sproffs);
 
               if (h_ >= 180) {
                   toggle_ = false;
@@ -192,12 +192,12 @@ public:
 
     /** HighscoreScreen, OnIdle:
      *  Detailed description.
-     *  @param frameNumber TODO
+     *  @param ticks TODO
      * @return TODO
      */
-    void HighscoreScreen::OnIdle(int frameNumber){
+    void HighscoreScreen::OnIdle(int ticks){
         //m_pScroller->Scroll(4);
-        m_pSprMgr->OnIdle(frameNumber);
+        m_pSprMgr->OnIdle(ticks);
     }
 
     /** HighscoreScreen, OnDraw:

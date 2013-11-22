@@ -53,7 +53,7 @@ void Screen::OnUpdate()
 
 }
 
-void Screen::OnIdle( int frameNumber )
+void Screen::OnIdle( int ticks )
 {
     //throw std::exception("The method or operation is not implemented.");
 }
