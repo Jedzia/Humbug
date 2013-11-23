@@ -498,7 +498,11 @@ private:
   {
 	  lua_State *Lstate = NULL;
 	  Lstate = luaL_newstate();
+	  // Todo: Safety! io lib, etc.
 	  LuaReg::openLuaLibs(Lstate);
+	  //LuaReg::openLuaLib (Lstate, "_G");
+	  //LuaReg::openLuaLib (Lstate, LUA_IOLIBNAME);
+
 	  luabind::open(Lstate);
 	  return Lstate;
   }
