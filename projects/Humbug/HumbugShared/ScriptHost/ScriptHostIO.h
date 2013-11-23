@@ -112,11 +112,6 @@ public:
       }
   };
 
-  struct PropA
-  {
-	  int a;
-  };
-
   /** global, greet:
    *  Detailed description.
    *

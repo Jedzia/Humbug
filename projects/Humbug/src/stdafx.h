@@ -68,8 +68,8 @@
 
 #endif //USE_LIB_BOOST
 
-//#include <lua.hpp>
-//#include <luabind/luabind.hpp>
+#include <lua.hpp>
+#include <luabind/luabind.hpp>
 
 #define DEBUG_MEMORY_SUMMARY_ON_EXIT 1
 #include <build/cmake/include/debug.h>

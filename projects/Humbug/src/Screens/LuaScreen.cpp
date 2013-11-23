@@ -58,6 +58,9 @@ namespace humbug {
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
         int x;
+		//shost::luascript<int, int, int> *script;
+		long allocReqNum;
+		boost::shared_ptr<shost::luascript<int, int, int>> script;
     };
 
     LuaScreen::LuaScreen( FileLoader& loader, CCanvas* background) :
@@ -204,6 +207,8 @@ public:
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
+		//_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
+		//_crtBreakAlloc = pimpl_->allocReqNum+4;
 
 		shost::ScriptHost shost;
 		//shost.RunScript2(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
@@ -212,7 +217,10 @@ public:
 		//shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
 		shost.RunScript6(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
 
-        return Screen::OnInit(argc, argv);
+		//pimpl_->script = shost.generate<int, int, int>();
+		pimpl_->script = shost.generate<int, int, int>(m_Loader.FL_LOADASSTRING("lua/sprite1.lua"));
+
+		return Screen::OnInit(argc, argv);
     } // OnInit
 
 
@@ -223,6 +231,8 @@ public:
      */
     void LuaScreen::OnIdle(int ticks){
         //m_pScroller->Scroll(4);
+		int x,y;
+		pimpl_->script->run_script(ticks, x, y);
         m_pSprMgr->OnIdle(ticks);
     }
 

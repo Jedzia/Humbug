@@ -25,8 +25,6 @@
 #include <luabind/luabind.hpp>
 //#include "HumbugLib/LogManager.h"
 
-//#include <build/cmake/include/debug.h>
-
 namespace shost {
   class testclass {
 public:
@@ -416,36 +414,18 @@ private:
 
 
 
-  template<class Callee, class X1, class X2>
-  class luascript
-  {
-  public:
-	  luascript(){};
-  	~luascript(){};
-
-	void run_script(const Callee supply, X1& ret1, X2& ret2)
-	{
-		ret1 = 2 * supply;
-		ret2 = 4 * supply;
-	};
-
-  protected:
-  	
-  private:
-  };
-
-  void ScriptHost::RunScript6(const std::string& script) const {
+  void ScriptHost::RunScript6(const std::string& script) {
 	  using namespace luabind;
 
 
 	  int ticks = 60;
-	  int x,y;
-	  luascript<int, int, int> scr;
-	  scr.run_script(ticks, x, y);
+	  //int x,y;
+	  //luascript<int, int, int> scr(initLua());
+	  //scr.run_script(ticks, x, y);
 
-	  std::cout << "ticks: " << ticks;
-	  std::cout << " x: " << x;
-	  std::cout << " y: " << y << std::endl;
+	  //std::cout << "ticks: " << ticks;
+	  //std::cout << " x: " << x;
+	  //std::cout << " y: " << y << std::endl;
 
 	  int s(0);
 	  pimpl_->L = luaL_newstate();
@@ -502,10 +482,31 @@ private:
 	  std::cout << "------------------------------------------------" << std::endl;
 
 	  lua_close(pimpl_->L);
+
+	  //luascript<int, int, int> *luascr = generate();
+	  //int xxxx = this->generate<int, int, int>();
+	  //generate(ticks, x, y);
+	  
+	  //luascript<int, int, int> *luascr = generate<int, int, int>();
+	  //void *luascr = generate<int, int, int>();
+
+	  //luascript<int, int, int> *luascr = generate<int, int, int>();
+
   } // RunScript2
 
+  lua_State* ScriptHost::initLua()
+  {
+	  lua_State *Lstate = NULL;
+	  Lstate = luaL_newstate();
+	  LuaReg::openLuaLibs(Lstate);
+	  luabind::open(Lstate);
+	  return Lstate;
+  }
 
-
+  void ScriptHost::closeLua( lua_State* Lstate )
+  {
+	  lua_close(Lstate);
+  }
 
 /*  luabind::module_ ScriptHost::RegisterModule( const std::string& script ) const
   {
