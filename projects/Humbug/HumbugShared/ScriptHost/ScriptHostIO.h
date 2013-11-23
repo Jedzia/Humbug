@@ -8,10 +8,10 @@
  *             the ScriptHostIO.h class.
  * \folder     $(folder)
  * \file       ScriptHostIO.h
- * \date       2013-11-20
+ * \date       2013-11-22
  * \author     Jedzia.
  *
- * modified    2013-11-20, Jedzia
+ * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
 #ifndef SCRIPTHOST_SCRIPTHOSTIO_H
@@ -112,6 +112,70 @@ public:
       }
   };
 
+  class dummy {
+public:
+
+      /** dummy, greet:
+       *  Detailed description.
+       *
+       */
+      void greet(){
+          std::cout << "greet !\n";
+      }
+      /** dummy, stgreet:
+       *  Detailed description.
+       *
+       */
+      static void stgreet(){
+          std::cout << "greet !\n";
+      }
+  };
+
+  struct PropA
+  {
+      int a;
+
+      /** PropA, greet:
+       *  Detailed description.
+       *
+       */
+      void greet(){
+          std::cout << "hello world from PropA!\n";
+      }
+  };
+
+  class SpriteModel {
+public:
+
+      SpriteModel() :
+          frame(0)
+      {}
+
+      /** SpriteModel, Frame:
+       *  Detailed description.
+       *  @return TODO
+       */
+      int Frame() const { return frame; }
+
+      /** SpriteModel, greet:
+       *  Detailed description.
+       *
+       */
+      void greet(){
+          std::cout << "greet !\n";
+      }
+      /** SpriteModel, stgreet:
+       *  Detailed description.
+       *
+       */
+      static void stgreet(){
+          std::cout << "greet !\n";
+      }
+private:
+
+      int frame;
+  };
+
   /** global, greet:
    *  Detailed description.
    *
@@ -120,43 +184,13 @@ public:
       std::cout << "hello world!\n";
   }
 
+  /** global, greet2:
+   *  Detailed description.
+   *
+   */
   void greet2(){
-	  std::cout << "hello st fnc greet2!\n";
+      std::cout << "hello st fnc greet2!\n";
   }
-
-  class dummy
-  {
-  public:
-	  void greet(){
-		  std::cout << "greet !\n";
-	  }
-	  static void stgreet(){
-		  std::cout << "greet !\n";
-	  }
-
-  };
-
-  class SpriteModel
-  {
-  public:
-	  SpriteModel()
-		  : frame(0)
-	  {
-
-	  };
-
-	  int Frame() const { return frame; }
-
-	  void greet(){
-		  std::cout << "greet !\n";
-	  }
-	  static void stgreet(){
-		  std::cout << "greet !\n";
-	  }
-  private:
-	  int frame;
-  };
-
 }
 
 #endif // ifndef SCRIPTHOST_SCRIPTHOSTIO_H

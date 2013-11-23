@@ -82,6 +82,7 @@ SET(HumbugShared_GameObject_sources
 )
 
 SET(HumbugShared_ScriptHost_headers 
+	ScriptHost/LuaScript.h
 	ScriptHost/ScriptHostIO.h
 	ScriptHost/ScriptHostPrivate.h
 	ScriptHost/ScriptHostImpl.h

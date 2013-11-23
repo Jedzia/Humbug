@@ -14,13 +14,10 @@
  * modified    2013-03-06, Jedzia
  */
 /*---------------------------------------------------------*/
-#include "LuaScreen.h"
 #include "../stdafx.h"
+#include "LuaScreen.h"
 
 //#include <build/cmake/include/debug.h>
-#include "boost/function.hpp"
-#include "boost/lambda/lambda.hpp"
-//
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
@@ -29,25 +26,26 @@
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
-#include "WavyTextFloat.h"
 #include "HumbugShared/ScriptHost/ScriptHost.h"
+#include "WavyTextFloat.h"
+#include <boost/function.hpp>
+#include <boost/lambda/lambda.hpp>
 #include <cstdlib>
 //
 /*extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+   {
+   #include "lua.h"
+   #include "lauxlib.h"
+   #include "lualib.h"
+   }
 
-#include <luabind/luabind.hpp>
-#include <luabind/operator.hpp>
-#include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/cregex.hpp>
-//
-*/
-
+   #include <luabind/luabind.hpp>
+   #include <luabind/operator.hpp>
+   #include <boost/filesystem/operations.hpp>
+   #include <boost/filesystem/path.hpp>
+   #include <boost/cregex.hpp>
+   //
+ */
 
 using namespace gui::components;
 using namespace gui;
@@ -58,9 +56,9 @@ namespace humbug {
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
         int x;
-		//shost::luascript<int, int, int> *script;
-		long allocReqNum;
-		boost::shared_ptr<shost::luascript<int, int, int>> script;
+        //shost::LuaScript<int, int, int> *script;
+        long allocReqNum;
+        boost::shared_ptr<shost::LuaScript<int, int, int >> script;
     };
 
     LuaScreen::LuaScreen( FileLoader& loader, CCanvas* background) :
@@ -136,7 +134,7 @@ public:
               if (h_ >= 180) {
                   toggle_ = false;
               }
-              else if (h_ <= -180)   {
+              else if (h_ <= -180) {
                   toggle_ = true;
               }
 
@@ -207,22 +205,21 @@ public:
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
-		//_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
-		//_crtBreakAlloc = pimpl_->allocReqNum+4;
+        //_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
+        //_crtBreakAlloc = pimpl_->allocReqNum+4;
 
-		shost::ScriptHost shost;
-		//shost.RunScript2(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
-		// shost.RunScript(m_Loader.FL_LOADASSTRING("lua/funcret.lua"));
-		//shost.RunScript4(m_Loader.FL_LOADASSTRING("lua/iowrite.lua"));
-		//shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
-		shost.RunScript6(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
+        shost::ScriptHost shost;
+        //shost.RunScript2(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
+        // shost.RunScript(m_Loader.FL_LOADASSTRING("lua/funcret.lua"));
+        //shost.RunScript4(m_Loader.FL_LOADASSTRING("lua/iowrite.lua"));
+        //shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
+        shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
 
-		//pimpl_->script = shost.generate<int, int, int>();
-		pimpl_->script = shost.generate<int, int, int>(m_Loader.FL_LOADASSTRING("lua/sprite1.lua"));
+        //pimpl_->script = shost.generate<int, int, int>();
+        pimpl_->script = shost.generate<int, int, int>( m_Loader.FL_LOADASSTRING("lua/sprite1.lua") );
 
-		return Screen::OnInit(argc, argv);
+        return Screen::OnInit(argc, argv);
     } // OnInit
-
 
     /** LuaScreen, OnIdle:
      *  Detailed description.
@@ -231,8 +228,8 @@ public:
      */
     void LuaScreen::OnIdle(int ticks){
         //m_pScroller->Scroll(4);
-		int x,y;
-		pimpl_->script->run_script(ticks, x, y);
+        int x, y;
+        pimpl_->script->run_script(ticks, x, y);
         m_pSprMgr->OnIdle(ticks);
     }
 

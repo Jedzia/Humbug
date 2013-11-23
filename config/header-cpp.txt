@@ -8,9 +8,9 @@
  *             the $(filename) class.
  * \folder     $(folder)
  * \file       $(filename)
- * \date       2013-11-20
+ * \date       2013-11-22
  * \author     Jedzia.
  *
- * modified    2013-11-20, Jedzia
+ * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
