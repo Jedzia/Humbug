@@ -79,5 +79,32 @@ public:
           }
       }
   };
+
+  struct LuaVars {
+
+    /** LuaVars, copyGlobalString:
+   *  Copy the content of a global string.
+   * @param L Lua State
+   * @param name The name of the global variable, that holds the string data.
+   * @return the content of the lua string variable specified by @param name as
+   * std::string.
+   */
+  static std::string copyGlobalString(lua_State* L, const char* name) {
+      char* s = NULL;
+      lua_getglobal(L, name);
+
+      if ( !lua_isnil(L, -1) ) {
+          s = strdup( lua_tostring(L, -1) );
+      }
+
+      lua_pop(L, 1);
+      std::string str(s);
+	  // owner has to delete the character data.
+      delete s;
+
+      return str;
+  }
+};
+
 }
 #endif // ifndef SCRIPTHOST_SCRIPTHOSTPRIVATE_H

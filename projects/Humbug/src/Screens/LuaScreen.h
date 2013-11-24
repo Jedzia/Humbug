@@ -63,6 +63,7 @@ private:
         boost::ptr_vector<gui::components::CText> m_pvecTexts;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
+		gui::CSprite* m_pSprEye;
         //WavyTextFloat mtextfloat;
     };
   }

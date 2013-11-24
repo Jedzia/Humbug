@@ -54,15 +54,16 @@ public:
        * @param ret1 TODO
        * @param ret2 TODO
        */
-      template<class Callee, class X1, class X2>
-      void run_script(const Callee supply, X1& ret1, X2& ret2) {
-          ret1 = 2 * supply;
-          ret2 = 4 * supply;
+      
+      void run_script(const Callee& supply) {
+          //ret1 = 2 * supply;
+          //ret2 = 4 * supply;
+		  host = supply;
 
-          std::cout << "" << __FUNCTION__ << " ticks: " << supply;
-          std::cout << " x: " << ret1;
-          std::cout << " y: " << ret2;
-          std::cout << " dataX1: " << dataX1 << std::endl;
+          //std::cout << "" << __FUNCTION__ << " ticks: " << supply;
+          //std::cout << " x: " << ret1;
+          //std::cout << " y: " << ret2;
+          //std::cout << " dataX1: " << dataX1 << std::endl;
 
           lua_pushvalue(m_L, -1);
           int ret = lua_pcall( m_L, 0, LUA_MULTRET, 0 );
@@ -71,6 +72,18 @@ public:
               std::cout << "[run_script] error running : " << lua_tostring(m_L, -1) << std::endl;
           }
       }
+
+	  Callee GetHost() const { return host; }
+	  void SetHost(Callee val) { host = val; }
+	  X1 GetDataX1() const { return dataX1; }
+	  void SetDataX1(X1 val) { dataX1 = val; }
+	  X2 GetDataX2() const { return dataX2; }
+	  void SetDataX2(X2 val) { dataX2 = val; }
+
+	  template<class T>
+	  void AddStatic(T& value) {
+	  }
+
 protected:
 
 private:
@@ -108,7 +121,7 @@ private:
       LuaScript(lua_State* L, std::string scriptText) :
           m_L(L),
           m_scriptText(scriptText),
-          dataX1(666){
+          dataX1(666), dataX2(777){
           //std::cout << " Callee: " << sizeof(Callee) << std::endl;
           std::cout << " Callee: " << typeid(Callee).name() << std::endl;
           pushglobal( boost::ref( this ), "Host");
@@ -116,9 +129,9 @@ private:
       lua_State* m_L;
       std::string m_scriptText;
 
-      X1 dataX1;
-      X2 dataX2;
-
+	  Callee host;
+	  X1 dataX1;
+	  X2 dataX2;
       /** ScriptHost:
        *  Detailed description.
        *  $(javaparam)

@@ -26,14 +26,20 @@
 //#include "HumbugLib/LogManager.h"
 
 namespace shost {
-  /** testclass:
-   *  Detailed description.
+  /** @class testclass:
+   *  Exists only temporary for testing purposes.
    *
    */
   class testclass {
 public:
 
-      testclass(const std::string& s) : m_string(s) {}
+
+       /** testclass, testclass:
+       *   Detailed description.
+       *   @param s Initializes the data member of
+	   *   the class.
+       */
+	  testclass(const std::string& s) : m_string(s) {}
 
       /** testclass, print_string:
        *  Detailed description.
@@ -45,27 +51,6 @@ private:
 
       std::string m_string;
   };
-
-  /** $(fclass), copyGlobalString:
-   *  Detailed description.
-   *  @param L TODO
-   * @param name TODO
-   * @return TODO
-   */
-  std::string copyGlobalString(lua_State* L, const char* name) {
-      char* s = NULL;
-      lua_getglobal(L, name);
-
-      if ( !lua_isnil(L, -1) ) {
-          s = strdup( lua_tostring(L, -1) );
-      }
-
-      lua_pop(L, 1);
-      std::string str(s);
-      delete s;
-
-      return str;
-  }
 
 #include "ScriptHostImpl.h"
 
@@ -167,7 +152,7 @@ private:
               else {
                   //char *result = copyGlobalString(pimpl_->L, Key);
                   std::cout << "Got <" << Key << "> from Lua:\"" <<
-                      copyGlobalString(pimpl_->L, Key) << "\"" << std::endl;
+					  LuaVars::copyGlobalString(pimpl_->L, Key) << "\"" << std::endl;
                   //delete result;
               }
           }
@@ -238,7 +223,7 @@ private:
           }
           else {
               //lua_getglobal(pimpl_->L, Key);
-              std::cout << "Got <" << Key << "> from Lua:(" << copyGlobalString(pimpl_->L, Key) << ")" << std::endl;
+			  std::cout << "Got <" << Key << "> from Lua:(" << LuaVars::copyGlobalString(pimpl_->L, Key) << ")" << std::endl;
               //lua_pop
               //luabind::pcall_callback_fun()
           }

@@ -66,7 +66,7 @@ public:
        */
       template<class Callee, class X1, class X2>
       boost::shared_ptr<LuaScript<Callee, X1,
-                                  X2> > generate(const std::string& script){
+		  X2> > generate(const std::string& script, const std::string& host, const std::string& x1, const std::string& x2){
           using namespace luabind;
           lua_State* L = initLua();
           luabind::module(L)
@@ -75,7 +75,9 @@ public:
               class_<LuaScript<Callee, X1, X2 >> ("HostType")
               //.def_readwrite("X1", &LuaScript<Callee, X1, X2>::dataX1)
               //.def_readwrite("X2", &LuaScript<Callee, X1, X2>::dataX2)
-              .def_readwrite("X1", &LuaScript<Callee, X1, X2>::dataX1)
+			  .def_readonly(host.c_str(), &LuaScript<Callee, X1, X2>::host)
+			  .def_readwrite(x1.c_str(), &LuaScript<Callee, X1, X2>::dataX1)
+			  .def_readwrite(x2.c_str() , &LuaScript<Callee, X1, X2>::dataX2)
           ];
 
           // Compile the script. Todo: error checking

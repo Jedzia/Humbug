@@ -58,7 +58,7 @@ namespace humbug {
         int x;
         //shost::LuaScript<int, int, int> *script;
         long allocReqNum;
-        boost::shared_ptr<shost::LuaScript<int, int, int >> script;
+        boost::shared_ptr<shost::LuaScript<int, double, double >> script;
     };
 
     LuaScreen::LuaScreen( FileLoader& loader, CCanvas* background) :
@@ -195,7 +195,7 @@ public:
         m_pScrollText.reset(text);
 
         // ### Sprites ###
-        CSprite* m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+        m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
                 CRectangle(0, 0, 64, 64), CPoint(64, 0) );
         m_pSprMgr->AddSprite( m_pSprEye, hspriv::EyeMover(160) );
         //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
@@ -216,10 +216,18 @@ public:
         shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
 
         //pimpl_->script = shost.generate<int, int, int>();
-        pimpl_->script = shost.generate<int, int, int>( m_Loader.FL_LOADASSTRING("lua/sprite1.lua") );
+        pimpl_->script = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING("lua/sprite1.lua"),"Ticks", "X", "Y" );
 
         return Screen::OnInit(argc, argv);
     } // OnInit
+
+	struct World
+	{
+		int ScreenX;
+		int ScreenY;
+
+		int FPS;
+	};
 
     /** LuaScreen, OnIdle:
      *  Detailed description.
@@ -227,10 +235,19 @@ public:
      * @return TODO
      */
     void LuaScreen::OnIdle(int ticks){
+		World w;
+		w.FPS = CApplication::FramesCap();
+		CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+		CRectangle& screenRect = m_pMainCanvas->GetDimension();
+		w.ScreenX = screenRect.GetW();
+		w.ScreenY = screenRect.GetH();
+
         //m_pScroller->Scroll(4);
-        int x, y;
-        pimpl_->script->run_script(ticks, x, y);
-        m_pSprMgr->OnIdle(ticks);
+        pimpl_->script->run_script(ticks);
+        //m_pSprMgr->OnIdle(ticks);
+		double spr1X = pimpl_->script->GetDataX1();
+		double spr1Y = pimpl_->script->GetDataX2();
+		m_pSprEye->SetPos(CPoint(static_cast<int>(spr1X), static_cast<int>(spr1Y)));
     }
 
     /** LuaScreen, OnDraw:

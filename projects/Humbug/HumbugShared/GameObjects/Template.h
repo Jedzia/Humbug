@@ -20,6 +20,10 @@
 #include <string>
 
 namespace gob {
+  /** @class Template:
+   *  Detailed description.
+   *  @return TODO
+   */
   class Template {
 public:
 
