@@ -222,63 +222,39 @@ public:
         shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
 
         //pimpl_->script = shost.generate<int, int, int>();
-        pimpl_->script = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-                        "lua/sprite1.lua"), "Ticks", "X", "Y" );
+        //pimpl_->script = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+        //                "lua/sprite1.lua"), "Ticks", "X", "Y" );
+		
+		typedef shost::LuaScript<int, double, double> ScriptType;
+		ScriptType::ScriptPointer s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+			"lua/sprite1.lua"), "Ticks", "X", "Y" );
 
-        
+		pimpl_->script = s;
+
         world.FPS = CApplication::FramesCap();
         CRectangle& screenRect = m_pMainCanvas->GetDimension();
         world.ScreenX = screenRect.GetW();
         world.ScreenY = screenRect.GetH();
-        //luabind::module_&  m = pimpl_->script->module();
-//		luabind::class_<World> *cl =  pimpl_->script->AddStatic<World>(world);
-//
-//		(*cl)
-//			.def_readonly("FPS", &World::FPS)
-//			.def_readonly("ScreenX", &World::ScreenX)
-//			.def_readonly("ScreenY", &World::ScreenY);
-//		delete cl;
 
+		// Todo maybe an functor to initialize more global stuff 
+		/*(*s->AddStatic(world))("World")
+			.def_readonly("FPS", &World::FPS)
+			.def_readonly("ScreenX", &World::ScreenX)
+			.def_readonly("ScreenY", &World::ScreenY);*/
 
-
-		// by hand 
-		/*luabind::module_ *m = new luabind::module_(pimpl_->script->L(), 0);
-		luabind::class_<World> *cl = new luabind::class_<World> ("World");
-		(*cl)
+		//boost::shared_ptr<shost::LuaScript<int ,double, double>::static_binder<World>> bnd = s->AddStatic(world);
+		/*boost::shared_ptr<ScriptType::static_binder<World>> bnd = s->AddStatic(world);
+		
+		(*bnd)("World")
+			.def_readonly("FPS", &World::FPS)
+			.def_readonly("ScreenX", &World::ScreenX)
+			.def_readonly("ScreenY", &World::ScreenY);*/
+		
+		(*s->AddStatic(world))("World")
 			.def_readonly("FPS", &World::FPS)
 			.def_readonly("ScreenX", &World::ScreenX)
 			.def_readonly("ScreenY", &World::ScreenY);
 
-		(*m)[
-			(*cl)
-		];*/
-
-		/*shost::LuaScript<int ,double, double>::static_binder<World> *bnd =  pimpl_->script->AddStatic<World>(world);
-		//pimpl_->script->type::static_binder<World> *bnd =  pimpl_->script->AddStatic<World>(world);
-		(*bnd)[
-			(*cl).def_readonly("FPS", &World::FPS)
-
-		];
-
-		(*bnd)()
-			.def_readonly("FPS", &World::FPS);*/
-
-		(*pimpl_->script->AddStatic<World>(world))("World")
-			.def_readonly("FPS", &World::FPS)
-			.def_readonly("ScreenX", &World::ScreenX)
-			.def_readonly("ScreenY", &World::ScreenY);
-
-
-		//delete cl;
-		//delete m;
-
-        /*pimpl_->script->module()[
-            luabind::class_<World> ("World")
-				.def_readonly("FPS", &World::FPS)
-				.def_readonly("ScreenX", &World::ScreenX)
-				.def_readonly("ScreenY", &World::ScreenY)
-        ];*/
-		//pimpl_->script->pushglobal(world, "World");
 
         return Screen::OnInit(argc, argv);
     } // OnInit
