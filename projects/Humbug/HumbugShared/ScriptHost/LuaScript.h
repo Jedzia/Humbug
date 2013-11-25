@@ -54,11 +54,10 @@ public:
        * @param ret1 TODO
        * @param ret2 TODO
        */
-      
       void run_script(const Callee& supply) {
           //ret1 = 2 * supply;
           //ret2 = 4 * supply;
-		  host = supply;
+          host = supply;
 
           //std::cout << "" << __FUNCTION__ << " ticks: " << supply;
           //std::cout << " x: " << ret1;
@@ -71,18 +70,151 @@ public:
           if (ret != 0) {
               std::cout << "[run_script] error running : " << lua_tostring(m_L, -1) << std::endl;
           }
+      } // run_script
+      /** static_binder, GetHost:
+       *  Detailed description.
+       *  @return TODO
+       */
+      Callee GetHost() const { return host; }
+
+      /** static_binder, SetHost:
+       *  Detailed description.
+       *  @param val TODO
+       */
+      void SetHost(Callee val) { host = val; }
+
+      /** static_binder, GetDataX1:
+       *  Detailed description.
+       *  @return TODO
+       */
+      X1 GetDataX1() const { return dataX1; }
+
+      /** static_binder, SetDataX1:
+       *  Detailed description.
+       *  @param val TODO
+       */
+      void SetDataX1(X1 val) { dataX1 = val; }
+
+      /** static_binder, GetDataX2:
+       *  Detailed description.
+       *  @return TODO
+       */
+      X2 GetDataX2() const { return dataX2; }
+
+      /** static_binder, SetDataX2:
+       *  Detailed description.
+       *  @param val TODO
+       */
+      void SetDataX2(X2 val) { dataX2 = val; }
+
+      /** @class static_binder:
+       *  Detailed description.
+       *  @param s TODO
+       * @return TODO
+       */
+      template<class Obj>
+      class static_binder {
+	  private:
+		  static_binder(lua_State* L, Obj& value )
+			  : m_L(L), m_value(value), m_cl(NULL), m_name(NULL)
+		  {
+		  }
+public:
+
+          ~static_binder(){
+              luabind::module(m_L)
+              [
+                  *m_cl
+              ];
+
+              delete m_cl;
+			  luabind::push<Obj>(m_L, m_value);
+			  lua_setglobal(m_L, m_name);
+          }
+          /** ScriptHost, operator []:
+           *  Detailed description.
+           *  @param s TODO
+           * @return TODO
+           */
+          void operator[](luabind::scope s)
+          {}
+          /*void operator()(luabind::class_<Obj> const& c){
+                  //luabind::class_<World>
+             }*/
+          luabind::class_<Obj>& operator()(const char *name){
+              //luabind::class_<World>
+			  m_name = name;
+              m_cl = new luabind::class_<Obj> (name);
+              return *m_cl;
+          }
+
+		  /*luabind::class_<Obj>& operator->(){
+			  //luabind::class_<World>
+			  cl = new luabind::class_<Obj> ("World");
+
+			  return *cl;
+		  }*/
+
+private:
+
+          luabind::class_<Obj>* m_cl;
+          lua_State* m_L;
+		  Obj& m_value;
+		  const char *m_name;
+
+		  friend class LuaScript;
+      };
+
+      template<class T>
+      boost::shared_ptr<static_binder<T >> AddStatic(T & value) {
+          static_binder<T>* bnd = new static_binder<T>(m_L, value);
+          return boost::shared_ptr<static_binder<T >> (bnd);
       }
 
-	  Callee GetHost() const { return host; }
-	  void SetHost(Callee val) { host = val; }
-	  X1 GetDataX1() const { return dataX1; }
-	  void SetDataX1(X1 val) { dataX1 = val; }
-	  X2 GetDataX2() const { return dataX2; }
-	  void SetDataX2(X2 val) { dataX2 = val; }
+      /** ScriptHost, AddStatic2:
+       *  Detailed description.
+       *  @param value TODO
+       * @return TODO
+       */
+      template<class T>
+      luabind::class_<T> * AddStatic2(T& value) {
+          //luabind::module_ *m = new luabind::module(m_L);
+          /*luabind::class_<T> *cl = new luabind::class_<T> ("World");
+           * m[
+                  cl
+             ];*/
 
-	  template<class T>
-	  void AddStatic(T& value) {
-	  }
+          luabind::module_* m = new luabind::module_(m_L, 0);
+          luabind::class_<T>* cl = new luabind::class_<T> ("World");
+          (*m)[
+              *cl
+          ];
+
+          return cl;
+      }
+      /** ScriptHost, module:
+       *  Detailed description.
+       *  @param name TODO
+       * @return TODO
+       */
+      inline luabind::module_ module(char const* name = 0){
+          return luabind::module_(m_L, name);
+      }
+      /** LuaScript, pushglobal:
+       *  Detailed description.
+       *  @param value TODO
+       * @param var TODO
+       */
+      template<class T>
+      void pushglobal(T& value, const char* var) {
+          luabind::push<T>(m_L, value);
+          setglobal(var);
+      }
+      /** ScriptHost, L:
+       *  Detailed description.
+       *  @return TODO
+       */
+      lua_State * L() const { return m_L; }
 
 protected:
 
@@ -95,16 +227,6 @@ private:
       template<class T>
       void push(T& value) {
           luabind::push<T>(m_L, value);
-      }
-      /** LuaScript, pushglobal:
-       *  Detailed description.
-       *  @param value TODO
-       * @param var TODO
-       */
-      template<class T>
-      void pushglobal(T& value, const char* var) {
-          luabind::push<T>(m_L, value);
-          setglobal(var);
       }
       /** LuaScript, setglobal:
        *  Detailed description.
@@ -129,9 +251,9 @@ private:
       lua_State* m_L;
       std::string m_scriptText;
 
-	  Callee host;
-	  X1 dataX1;
-	  X2 dataX2;
+      Callee host;
+      X1 dataX1;
+      X2 dataX2;
       /** ScriptHost:
        *  Detailed description.
        *  $(javaparam)

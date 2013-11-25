@@ -97,6 +97,12 @@ namespace humbug {
    }*/
 
     namespace hspriv {
+      /** @class EyeMover:
+       *  Detailed description.
+       *  @param sprite TODO
+       * @param ticks TODO
+       * @return TODO
+       */
       class EyeMover {
           int h_;
           bool toggle_;
@@ -107,9 +113,9 @@ namespace humbug {
 public:
 
           EyeMover(int deltaY = 0, uint32_t spriteoffset = 4) : deltaY_(deltaY),
-                                                                h_(-1),
-                                                                toggle_(false),
-                                                                sproffs(spriteoffset){
+              h_(-1),
+              toggle_(false),
+              sproffs(spriteoffset){
               dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
               int rnd = 180 - ( rand() % 360);
               h_ = rnd;
@@ -216,18 +222,66 @@ public:
         shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
 
         //pimpl_->script = shost.generate<int, int, int>();
-        pimpl_->script = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING("lua/sprite1.lua"),"Ticks", "X", "Y" );
+        pimpl_->script = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+                        "lua/sprite1.lua"), "Ticks", "X", "Y" );
+
+        
+        world.FPS = CApplication::FramesCap();
+        CRectangle& screenRect = m_pMainCanvas->GetDimension();
+        world.ScreenX = screenRect.GetW();
+        world.ScreenY = screenRect.GetH();
+        //luabind::module_&  m = pimpl_->script->module();
+//		luabind::class_<World> *cl =  pimpl_->script->AddStatic<World>(world);
+//
+//		(*cl)
+//			.def_readonly("FPS", &World::FPS)
+//			.def_readonly("ScreenX", &World::ScreenX)
+//			.def_readonly("ScreenY", &World::ScreenY);
+//		delete cl;
+
+
+
+		// by hand 
+		/*luabind::module_ *m = new luabind::module_(pimpl_->script->L(), 0);
+		luabind::class_<World> *cl = new luabind::class_<World> ("World");
+		(*cl)
+			.def_readonly("FPS", &World::FPS)
+			.def_readonly("ScreenX", &World::ScreenX)
+			.def_readonly("ScreenY", &World::ScreenY);
+
+		(*m)[
+			(*cl)
+		];*/
+
+		/*shost::LuaScript<int ,double, double>::static_binder<World> *bnd =  pimpl_->script->AddStatic<World>(world);
+		//pimpl_->script->type::static_binder<World> *bnd =  pimpl_->script->AddStatic<World>(world);
+		(*bnd)[
+			(*cl).def_readonly("FPS", &World::FPS)
+
+		];
+
+		(*bnd)()
+			.def_readonly("FPS", &World::FPS);*/
+
+		(*pimpl_->script->AddStatic<World>(world))("World")
+			.def_readonly("FPS", &World::FPS)
+			.def_readonly("ScreenX", &World::ScreenX)
+			.def_readonly("ScreenY", &World::ScreenY);
+
+
+		//delete cl;
+		//delete m;
+
+        /*pimpl_->script->module()[
+            luabind::class_<World> ("World")
+				.def_readonly("FPS", &World::FPS)
+				.def_readonly("ScreenX", &World::ScreenX)
+				.def_readonly("ScreenY", &World::ScreenY)
+        ];*/
+		//pimpl_->script->pushglobal(world, "World");
 
         return Screen::OnInit(argc, argv);
     } // OnInit
-
-	struct World
-	{
-		int ScreenX;
-		int ScreenY;
-
-		int FPS;
-	};
 
     /** LuaScreen, OnIdle:
      *  Detailed description.
@@ -235,19 +289,12 @@ public:
      * @return TODO
      */
     void LuaScreen::OnIdle(int ticks){
-		World w;
-		w.FPS = CApplication::FramesCap();
-		CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-		CRectangle& screenRect = m_pMainCanvas->GetDimension();
-		w.ScreenX = screenRect.GetW();
-		w.ScreenY = screenRect.GetH();
-
         //m_pScroller->Scroll(4);
         pimpl_->script->run_script(ticks);
         //m_pSprMgr->OnIdle(ticks);
-		double spr1X = pimpl_->script->GetDataX1();
-		double spr1Y = pimpl_->script->GetDataX2();
-		m_pSprEye->SetPos(CPoint(static_cast<int>(spr1X), static_cast<int>(spr1Y)));
+        double spr1X = pimpl_->script->GetDataX1();
+        double spr1Y = pimpl_->script->GetDataX2();
+        m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
     }
 
     /** LuaScreen, OnDraw:

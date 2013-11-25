@@ -35,6 +35,16 @@ namespace gui {
 
 namespace humbug {
   namespace screens {
+
+	  struct World
+	  {
+		  int ScreenX;
+		  int ScreenY;
+
+		  int FPS;
+	  };
+
+
     class LuaScreen : public gui::components::Screen {
 public:
 
@@ -65,6 +75,7 @@ private:
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
 		gui::CSprite* m_pSprEye;
         //WavyTextFloat mtextfloat;
+		World world;
     };
   }
 }
