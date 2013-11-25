@@ -154,6 +154,10 @@ public:
       };
     }
 
+	void greet(){
+		std::cout << "hello world from LuaScreen!\n";
+	}
+
     /** LuaScreen, OnInit:
      *  Detailed description.
      *  @param argc TODO
@@ -221,14 +225,9 @@ public:
         //shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
         shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
 
-        //pimpl_->script = shost.generate<int, int, int>();
-        //pimpl_->script = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-        //                "lua/sprite1.lua"), "Ticks", "X", "Y" );
-		
 		typedef shost::LuaScript<int, double, double> ScriptType;
-		ScriptType::ScriptPointer s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+		ScriptType::Script s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
 			"lua/sprite1.lua"), "Ticks", "X", "Y" );
-
 		pimpl_->script = s;
 
         world.FPS = CApplication::FramesCap();
@@ -237,20 +236,8 @@ public:
         world.ScreenY = screenRect.GetH();
 
 		// Todo maybe an functor to initialize more global stuff 
-		/*(*s->AddStatic(world))("World")
-			.def_readonly("FPS", &World::FPS)
-			.def_readonly("ScreenX", &World::ScreenX)
-			.def_readonly("ScreenY", &World::ScreenY);*/
-
-		//boost::shared_ptr<shost::LuaScript<int ,double, double>::static_binder<World>> bnd = s->AddStatic(world);
-		/*boost::shared_ptr<ScriptType::static_binder<World>> bnd = s->AddStatic(world);
-		
-		(*bnd)("World")
-			.def_readonly("FPS", &World::FPS)
-			.def_readonly("ScreenX", &World::ScreenX)
-			.def_readonly("ScreenY", &World::ScreenY);*/
-		
 		(*s->AddStatic(world))("World")
+			.def("greet", &greet)
 			.def_readonly("FPS", &World::FPS)
 			.def_readonly("ScreenX", &World::ScreenX)
 			.def_readonly("ScreenY", &World::ScreenY);

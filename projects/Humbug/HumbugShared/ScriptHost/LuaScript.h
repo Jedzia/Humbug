@@ -43,7 +43,7 @@ namespace shost {
   class LuaScript {
 public:
 
-      typedef boost::shared_ptr<LuaScript<Callee, X1, X2> > ScriptPointer;
+      typedef boost::shared_ptr<LuaScript<Callee, X1, X2> > Script;
 	  //        boost::shared_ptr<LuaScript<int ,double, double>::static_binder<World>>
       typedef LuaScript<Callee, X1, X2> type;
 
