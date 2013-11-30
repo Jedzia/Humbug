@@ -95,7 +95,7 @@ private:
 
           // *** Bind a class with functions that can be instantiated in Lua ***
           // module(pimpl_->L) or
-          module_& bindModule = module(pimpl_->L);
+          module_ bindModule = module(pimpl_->L);
           bindModule
           [
               class_<testclass>("testclass")
@@ -137,7 +137,7 @@ private:
           // *** Bind a static function ***
           //IOReg::createIO(pimpl_->L);
           //luabind::def("sin", &std::sin);
-          luabind::scope& fn = luabind::def("greet2", greet2);
+          luabind::scope fn = luabind::def("greet2", greet2);
           bindModule[fn];
 
           // A file

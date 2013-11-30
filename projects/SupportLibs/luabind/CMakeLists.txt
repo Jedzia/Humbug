@@ -120,7 +120,6 @@ if(MSVC)
         # ("comma operator within array index expression")
         _luabind_add_flag(/wd4709 SUPPORTS_WD4709_FLAG)
     endif()
-    set( LUABIND_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Include-directory for Luabind." FORCE )
 else()
 
     set(possible_flags)
@@ -189,6 +188,8 @@ else()
         endforeach()
     endif()
 endif()
+
+set( LUABIND_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Include-directory for Luabind." FORCE )
 
 include_directories(${Boost_INCLUDE_DIRS}
     "${CMAKE_CURRENT_SOURCE_DIR}"

@@ -240,7 +240,7 @@ public:
 		pimpl_->script = s;
 
         world.FPS = CApplication::FramesCap();
-        CRectangle& screenRect = m_pMainCanvas->GetDimension();
+        CRectangle screenRect = m_pMainCanvas->GetDimension();
         world.ScreenX = screenRect.GetW();
         world.ScreenY = screenRect.GetH();
 

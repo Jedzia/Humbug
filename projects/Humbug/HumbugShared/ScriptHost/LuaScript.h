@@ -23,6 +23,7 @@
 #include <lua.hpp>
 #include <luabind/luabind.hpp>
 #include <string>
+//#include "ScriptHost.h"
 
 namespace shost {
   /** @class LuaRegHelper:
@@ -48,7 +49,8 @@ public:
       typedef LuaScript<Callee, X1, X2> type;
 
       ~LuaScript(){
-          ScriptHost::closeLua(m_L);
+          //ScriptHost::closeLua(m_L);
+	  lua_close(m_L);
       }
       /** LuaScript, run_script:
        *  Detailed description.

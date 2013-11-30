@@ -555,14 +555,14 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
             //successful lock
             //set pixel
             //m_pDrawCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
-            CRectangle frect( (Sint16)(int)Parm1, (Sint16)(int)Parm2, 1, 1 );
-
+            CRectangle frect( (Sint16)(long)Parm1, (Sint16)(long)Parm2, 1, 1 );
+            
             //m_pMainCanvas->FillRect(frect, CColor::Red());
             //m_pDrawCanvas->AddUpdateRect(frect);
-            m_pBlue->Put( m_pDrawCanvas, CPoint( (Sint16)(int)Parm1, (Sint16)(int)Parm2 ) );
+            m_pBlue->Put( m_pDrawCanvas, CPoint( (Sint16)(long)Parm1, (Sint16)(long)Parm2 ) );
 
             for (int i = 0; i < 50; i++) {
-                m_pMainCanvas->AddUpdateRect( CRectangle( (Sint16)(int)Parm1, (Sint16)(int)Parm2,
+                m_pMainCanvas->AddUpdateRect( CRectangle( (Sint16)(long)Parm1, (Sint16)(long)Parm2,
                                 m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ) );
             }
 //            m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1,

@@ -102,7 +102,7 @@ SET(boost_tmp_component_list)
     SET(_plural "")
   ENDIF()
   IF( boost_tmp_component_list_count GREATER 0 AND Boost_INCLUDE_DIR)
-    MESSAGE( FATAL_ERROR "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
+    MESSAGE( WARNING "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
 	  "bindings.cmake in that way is not implemented, yet :(\n"
 	  "Include the \"${boost_tmp_component_list}\" component${_plural} at a call to FIND_PACKAGE( Boost ) at one central location:"
 	  " Here, in this script above at \nSET(USE_LIB_BOOST_COMPONENTS ...)\n"
@@ -258,7 +258,7 @@ IF(USE_SDL_GFX)
 ENDIF(USE_SDL_GFX)
 
 IF(USE_LUA)
-	FIND_PACKAGE(LUA52 REQUIRED)
+	FIND_PACKAGE(Lua52 REQUIRED)
 	IF( NOT LUA52_FOUND )
 		MESSAGE(FATAL_ERROR "LUA Library not found!")
 	ENDIF( NOT LUA52_FOUND )
@@ -315,7 +315,7 @@ ENDIF(CHECK_STRINGS)
 #...
 #SET(CHECK_STRINGS )
 # Besser wird es sein den PROJECT_NAME Ansatz zu nehmen, da die Variablen sonnst
-# für den Aufrufer verloren sind.
+# f\FCr den Aufrufer verloren sind.
 
 IF(USE_MAGICK)
 	FIND_PACKAGE(ImageMagick)

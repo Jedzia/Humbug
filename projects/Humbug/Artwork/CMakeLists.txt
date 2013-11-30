@@ -89,9 +89,14 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
 		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_file_fullpath}\"")
 		#SET(Build_Image_ARGUMENTS "${_image_source_file}")
+
+		IF(UNIX)
+		  SEPARATE_ARGUMENTS(Build_Image_ARGUMENTS UNIX_COMMAND "${Build_Image_ARGUMENTS}")
+		ENDIF(UNIX)
 	ENDIF()
 
 	#SEPARATE_ARGUMENTS(Build_Image_ARGUMENTS_LIST WINDOWS_COMMAND "${Build_Image_ARGUMENTS}")
+
 #	MESSAGE(STATUS "[IMGCONV-X] DEPENDS ${_image_source_file}")
 #	MESSAGE(STATUS "[IMGCONV-X] OUTPUT ${_out_file_fullpath}")
 	

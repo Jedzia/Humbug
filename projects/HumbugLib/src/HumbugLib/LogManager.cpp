@@ -18,6 +18,7 @@
 //
 #include "LogManager.h"
 #include <algorithm>
+#include <stdexcept>
 //#include <boost/thread.hpp>
 #define HUMBUG_AUTO_MUTEX_NAME mutex
 #define HUMBUG_LOCK_AUTO_MUTEX
@@ -110,7 +111,7 @@ Log * LogManager::getLog( const std::string& name){
     }
     else {
         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
-        throw std::exception("Log not found. LogManager::getLog");
+        throw std::runtime_error("Log not found. LogManager::getLog");
     }
 }
 
@@ -137,7 +138,7 @@ void LogManager::destroyLog(const std::string& name){
 void LogManager::destroyLog(Log* log){
     if(!log) {
         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
-        throw std::exception("Cannot destroy a null log. LogManager::destroyLog");
+        throw std::runtime_error("Cannot destroy a null log. LogManager::destroyLog");
     }
 
     destroyLog( log->getName() );
@@ -170,7 +171,7 @@ Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
     }
     else {
         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
-        throw std::exception("Default log not found. LogManager::stream");
+        throw std::runtime_error("Default log not found. LogManager::stream");
     }
 }
 

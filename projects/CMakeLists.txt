@@ -14,7 +14,7 @@
 ## !!!!!! CMake Help: http://www.cmake.org/cmake/help/cmake-2-8-docs.html !!!!!
 ## CMake Useful Variables: http://cmake.org/Wiki/CMake_Useful_Variables
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.10)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
 if ( CYGWIN )
   set(CMAKE_LEGACY_CYGWIN_WIN32 1)
 endif( CYGWIN )

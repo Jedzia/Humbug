@@ -4,6 +4,8 @@
 #include <boost/smart_ptr/scoped_ptr.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 
+typedef struct _TTF_Font TTF_Font;
+
 namespace gui { namespace components {
 	class CCanvas;
 	class CText;
