@@ -57,7 +57,9 @@ public:
 
       void RunScript5(const std::string& script) const;
 
-      void RunScript6(const std::string& script);
+	  void RunScript6(const std::string& script);
+	 
+	  void RunScript7(const std::string& script);
 
       /** $(class), generate:
        *  Detailed description.

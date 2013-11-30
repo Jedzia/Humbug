@@ -488,6 +488,79 @@ private:
       //luascript<int, int, int> *luascr = generate<int, int, int>();
   } // RunScript2
 
+ 
+  void ScriptHost::RunScript7(const std::string& script) {
+	  using namespace luabind;
+
+	  // run Lua function
+	  int s(0);
+	  pimpl_->L = luaL_newstate();
+	  LuaReg::openLuaLibs(pimpl_->L);
+	  luabind::open(pimpl_->L);
+
+	  module(pimpl_->L)
+		  [
+			  def("greet", &greet)
+			  // get nicht, warum?
+			  //, def("writeLn", &IOReg::writeLn)
+		  ];
+
+	  IOReg::Register(pimpl_->L);
+	  module(pimpl_->L)
+		  [
+			  class_<PropA>("PropA")
+			  .def_readwrite("a", &PropA::a)
+		  ];
+
+	  PropA b;
+	  b.a = 666;
+	  pimpl_->pushglobal(b, "b");
+
+	  // A script
+	  const char* luascript = ""
+		  "a=1\n"
+		  "a=a+1\n"
+		  "writeLn(\"a:\"..a)\n"
+		  "writeLn(\"b.a:\"..b.a)\n"
+		  "b.a=b.a+1\n"
+		  "greet()\n"
+		  ;
+
+	  std::cout << "------------------------------------------------" << std::endl;
+	  std::cout << "Calling from string: " << std::endl;
+	  s = luaL_loadstring( pimpl_->L, luascript );
+
+	  if ( s == 0 ) {
+		  //lua_pushvalue(pimpl_->L, -1);
+		  int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
+
+		  if (ret != 0) {
+			  std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+		  }
+		  else {
+			  //char *result = copyGlobalString(pimpl_->L, Key);
+			  //std::cout << "Got <" << Key << "> from Lua:\"" << copyGlobalString(pimpl_->L, Key)
+			  // << "\"" << std::endl;
+			  //delete result;
+		  }
+	  }
+
+	  std::cout << "------------------------------------------------" << std::endl;
+
+	  lua_close(pimpl_->L);
+
+	  //luascript<int, int, int> *luascr = generate();
+	  //int xxxx = this->generate<int, int, int>();
+	  //generate(ticks, x, y);
+
+	  //luascript<int, int, int> *luascr = generate<int, int, int>();
+	  //void *luascr = generate<int, int, int>();
+
+	  //luascript<int, int, int> *luascr = generate<int, int, int>();
+  } // RunScript2
+
+
+  
   /** $(class), initLua:
    *  Detailed description.
    *  @return TODO
