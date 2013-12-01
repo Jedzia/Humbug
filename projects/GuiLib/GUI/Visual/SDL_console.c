@@ -376,7 +376,7 @@ void CON_DrawConsole(ConsoleInformation *console) {
 
 
 /* Initializes the console */
-ConsoleInformation *CON_Init(const char *FontName, SDL_Surface *DisplayScreen, int lines, SDL_Rect rect) {
+ConsoleInformation *CON_Init(SDL_Surface *Surface, SDL_Surface *DisplayScreen, int lines, SDL_Rect rect) {
 	int loop;
 	SDL_Surface *Temp;
 	ConsoleInformation *newinfo;
@@ -409,9 +409,10 @@ ConsoleInformation *CON_Init(const char *FontName, SDL_Surface *DisplayScreen, i
 	CON_SetTabCompletion(newinfo, Default_TabFunction);
 
 	/* Load the consoles font */
-	if(-1 == (newinfo->FontNumber = DT_LoadFont(FontName, TRANS_FONT))) {
+	//if(-1 == (newinfo->FontNumber = DT_LoadFont(FontName, TRANS_FONT))) {
+	if(-1 == (newinfo->FontNumber = DT_LoadFontFromSurface(Surface, TRANS_FONT))) {
 		PRINT_ERROR("Could not load the font ");
-		PRINT_ERROR(FontName);
+		//PRINT_ERROR(FontName);
 		PRINT_ERROR("for the console!");
 		//fprintf(stderr, "\"%s\" for the console!\n", FontName);
 		return NULL;

@@ -22,6 +22,8 @@
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <string>
 
+typedef struct _TTF_Font TTF_Font;
+
 namespace gui {
   class CEventHandler;
 
@@ -30,7 +32,7 @@ public:
 
   	  typedef boost::function<void(std::string)> ConsoleCommandCallback;
 
-      CConsole(CEventHandler* parent, const std::string& fontName, gui::components::CCanvas* displayScreen, int lines,
+      CConsole(CEventHandler* parent, SDL_Surface *font, gui::components::CCanvas* displayScreen, int lines,
               gui::components::CRectangle rect);
       ~CConsole();
 

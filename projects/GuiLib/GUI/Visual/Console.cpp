@@ -211,7 +211,7 @@ namespace gui {
 	  LOGSTREAM << "quitCommand> " << command;
   }
   
-  CConsole::CConsole(CEventHandler* parent, const std::string& fontName, gui::components::CCanvas* displayScreen,
+  CConsole::CConsole(CEventHandler* parent, SDL_Surface *font, gui::components::CCanvas* displayScreen,
           int lines,
           gui::components::CRectangle rect ) :
       pimpl_( new CConsole::CConsoleImpl(parent) ),
@@ -220,7 +220,7 @@ namespace gui {
       dbgOut(__FUNCTION__);
 
       pimpl_->m_ceParent = parent;
-      pimpl_->m_pConsole = CON_Init(fontName.c_str(), displayScreen->GetSurface(), lines, rect);
+      pimpl_->m_pConsole = CON_Init(font, displayScreen->GetSurface(), lines, rect);
       pimpl_->ListCommands(pimpl_->m_pConsole);
 
       //CON_SetExecuteFunction(pimpl_->m_pConsole, Cmd_Handler);
