@@ -314,11 +314,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //new TestHookable();
     //new TestHookable();
 
-	// Todo: fixed path used for console font.
-	// "E:/Projects/C++/Humbug/projects/GuiLib/GUI/Visual/Console/ConsoleFont.bmp"
-	SDL_Surface *consoleFont = fl->FL_LOADIMG("Fonts/ConsoleFont.bmp");
     m_pConsole =
-        new gui::CConsole( this, consoleFont,
+        new gui::CConsole( this, fl->FL_LOADIMG("Fonts/ConsoleFont.bmp"),
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
                         300) );
     return(true);

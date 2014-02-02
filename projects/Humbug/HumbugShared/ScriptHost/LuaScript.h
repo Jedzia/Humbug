@@ -66,7 +66,7 @@ public:
           //std::cout << "" << __FUNCTION__ << " ticks: " << supply;
           //std::cout << " x: " << ret1;
           //std::cout << " y: " << ret2;
-          //std::cout << " dataX1: " << dataX1 << std::endl;
+          //std::cout << " data1: " << data1 << std::endl;
 
           lua_pushvalue(m_L, -1);
           int ret = lua_pcall( m_L, 0, LUA_MULTRET, 0 );
@@ -87,29 +87,29 @@ public:
        */
       void SetHost(Callee val) { host = val; }
 
-      /** static_binder, GetDataX1:
+      /** static_binder, GetData1:
        *  Detailed description.
        *  @return TODO
        */
-      X1 GetDataX1() const { return dataX1; }
+      X1 GetData1() const { return data1; }
 
-      /** static_binder, SetDataX1:
+      /** static_binder, SetData1:
        *  Detailed description.
        *  @param val TODO
        */
-      void SetDataX1(X1 val) { dataX1 = val; }
+      void SetData1(X1 val) { data1 = val; }
 
-      /** static_binder, GetDataX2:
+      /** static_binder, GetData2:
        *  Detailed description.
        *  @return TODO
        */
-      X2 GetDataX2() const { return dataX2; }
+      X2 GetData2() const { return data2; }
 
-      /** static_binder, SetDataX2:
+      /** static_binder, SetData2:
        *  Detailed description.
        *  @param val TODO
        */
-      void SetDataX2(X2 val) { dataX2 = val; }
+      void SetData2(X2 val) { data2 = val; }
 
       /** @class static_binder:
        *  Detailed description.
@@ -276,7 +276,7 @@ private:
       LuaScript(lua_State* L, std::string scriptText) :
           m_L(L),
           m_scriptText(scriptText),
-          dataX1(666), dataX2(777){
+          data1(666), data2(777){
           //std::cout << " Callee: " << sizeof(Callee) << std::endl;
           std::cout << "LuaScript ctor Callee: " << typeid(Callee).name() << std::endl;
           pushglobal( boost::ref( this ), "Host");
@@ -285,8 +285,8 @@ private:
       std::string m_scriptText;
 
       Callee host;
-      X1 dataX1;
-      X2 dataX2;
+      X1 data1;
+      X2 data2;
       /** ScriptHost:
        *  Detailed description.
        *  $(javaparam)

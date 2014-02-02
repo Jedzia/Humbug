@@ -232,7 +232,7 @@ public:
         //shost.RunScript4(m_Loader.FL_LOADASSTRING("lua/iowrite.lua"));
         //shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
         //shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
-		shost.RunScript7( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
+		//shost.RunScript7( m_Loader.FL_LOADASSTRING("lua/--FREE--.lua") );
 
 		typedef shost::LuaScript<int, double, double> ScriptType;
 		ScriptType::Script s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
@@ -262,10 +262,10 @@ public:
      */
     void LuaScreen::OnIdle(int ticks){
         //m_pScroller->Scroll(4);
-        //pimpl_->script->run_script(ticks);
-        //double spr1X = pimpl_->script->GetDataX1();
-        //double spr1Y = pimpl_->script->GetDataX2();
-		//m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
+        pimpl_->script->run_script(ticks);
+        double spr1X = pimpl_->script->GetData1();
+        double spr1Y = pimpl_->script->GetData2();
+		m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
 		//m_pSprMgr->OnIdle(ticks);
     }

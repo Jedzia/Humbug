@@ -75,11 +75,11 @@ public:
           [
               //class_<Callee>("HostX"),
               class_<LuaScript<Callee, X1, X2 >> ("HostType")
-              //.def_readwrite("X1", &LuaScript<Callee, X1, X2>::dataX1)
-              //.def_readwrite("X2", &LuaScript<Callee, X1, X2>::dataX2)
+              //.def_readwrite("X1", &LuaScript<Callee, X1, X2>::data1)
+              //.def_readwrite("X2", &LuaScript<Callee, X1, X2>::data2)
 			  .def_readonly(host.c_str(), &LuaScript<Callee, X1, X2>::host)
-			  .def_readwrite(x1.c_str(), &LuaScript<Callee, X1, X2>::dataX1)
-			  .def_readwrite(x2.c_str() , &LuaScript<Callee, X1, X2>::dataX2)
+			  .def_readwrite(x1.c_str(), &LuaScript<Callee, X1, X2>::data1)
+			  .def_readwrite(x2.c_str() , &LuaScript<Callee, X1, X2>::data2)
           ];
 
           // Compile the script. Todo: error checking
