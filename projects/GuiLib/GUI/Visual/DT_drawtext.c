@@ -129,66 +129,10 @@ int DT_LoadFontFromSurface(SDL_Surface *Temp, int flags) {
 	return FontNumber;
 }
 
-// /* Loads the font into a new struct
-//  * returns -1 as an error else it returns the number
-//  * of the font for the user to use
-//  */
-// int DT_LoadFont(const char *BitmapName, int flags) {
-// 	int FontNumber = 0;
-// 	BitFont **CurrentFont = &BitFonts;
-// 	SDL_Surface *Temp;
-// 
-// 
-// 	while(*CurrentFont) {
-// 		CurrentFont = &((*CurrentFont)->NextFont);
-// 		FontNumber++;
-// 	}
-// 
-// 	/* load the font bitmap */
-// 
-// #ifdef HAVE_SDLIMAGE
-// 	Temp = IMG_Load(BitmapName);
-// #else
-// 	Temp = SDL_LoadBMP(BitmapName);
-// #endif
-// 
-//     if(Temp == NULL) {
-// 		PRINT_ERROR("Cannot load file ");
-// 		printf("%s: %s\n", BitmapName, SDL_GetError());
-// 		return -1;
-// 	}
-// 
-// 	/* Add a font to the list */
-// 	*CurrentFont = (BitFont *) malloc(sizeof(BitFont));
-// 
-// 	(*CurrentFont)->FontSurface = SDL_DisplayFormat(Temp);
-// 	SDL_FreeSurface(Temp);
-// 
-// 	(*CurrentFont)->CharWidth = (*CurrentFont)->FontSurface->w / 256;
-// 	(*CurrentFont)->CharHeight = (*CurrentFont)->FontSurface->h;
-// 	(*CurrentFont)->FontNumber = FontNumber;
-// 	(*CurrentFont)->NextFont = NULL;
-// 
-// 
-// 	/* Set font as transparent if the flag is set.  The assumption we'll go on
-// 	 * is that the first pixel of the font image will be the color we should treat
-// 	 * as transparent.
-// 	 */
-// 	if(flags & TRANS_FONT) {
-// 		if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
-// 			DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_TRANSPARENT);
-// 		else
-// 			SDL_SetColorKey((*CurrentFont)->FontSurface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB((*CurrentFont)->FontSurface->format, 255, 0, 255));
-// 	} else if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
-// 		DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_OPAQUE);
-// 
-// 	return FontNumber;
-// }
-
 /* Takes the font type, coords, and text to draw to the surface*/
 void DT_DrawText(const char *string, SDL_Surface *surface, int FontType, int x, int y) {
 	int loop;
-	int characters;
+	size_t characters;
 	int current;
 	SDL_Rect SourceRect, DestRect;
 	BitFont *CurrentFont;
@@ -226,7 +170,7 @@ void DT_DrawText(const char *string, SDL_Surface *surface, int FontType, int x, 
 	/* if we're in OpenGL-mode, we need to manually update after blitting. */
 	if(surface->flags & SDL_OPENGLBLIT) {
 		DestRect.x = x;
-		DestRect.w = characters * CurrentFont->CharWidth;
+		DestRect.w = (Uint16)characters * CurrentFont->CharWidth;
 		SDL_UpdateRects(surface, 1, &DestRect);
 	}
 }
