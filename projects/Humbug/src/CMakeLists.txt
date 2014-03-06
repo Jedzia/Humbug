@@ -55,6 +55,7 @@ SET(Humbug_MyGUI_headers
 		TestThread.h
 		TestTimer.h
 
+		Screens/HopperScreen.h
 		Screens/LuaScreen.h
 		Screens/BlaScreen.h
 		Screens/StartScreen.h
@@ -70,6 +71,7 @@ SET(Humbug_MyGUI_sources
 		TestThread.cpp
 		TestTimer.cpp
 
+		Screens/HopperScreen.cpp
 		Screens/LuaScreen.cpp
 		Screens/BlaScreen.cpp
 		Screens/StartScreen.cpp
@@ -168,6 +170,7 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
 	    ${Humbug_Artwork_WORKDIR}/Intro/
+	    #${Humbug_Artwork_WORKDIR}/Screens/
 	    ${Humbug_Artwork_WORKDIR}/Images/
 		#${PROJECT_SOURCE_DIR}/icons/blue.png
 	    #${P_ROOT_PATH}/Artwork/footer.png
