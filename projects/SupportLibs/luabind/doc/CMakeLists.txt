@@ -39,10 +39,10 @@ set(SOURCES
     
 if (WIN32)
     list (APPEND SOURCES make.bat)
-    set(SPHINX_CMD "${CMAKE_CURRENT_BINARY_DIR}/make.bat" html)
+    set(SPHINX_CMD "${CMAKE_CURRENT_BINARY_DIR}/make.bat" htmlhelp)
 else()
     list (APPEND SOURCES Makefile)
-    set(SPHINX_CMD make html)
+    set(SPHINX_CMD make htmlhelp)
 endif()
 
 set(SOURCES_COPIED)

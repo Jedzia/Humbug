@@ -23,7 +23,34 @@
 #include <lua.hpp>
 #include <luabind/luabind.hpp>
 #include <string>
+#include <vector>
 //#include "ScriptHost.h"
+
+
+namespace luabind {
+	template<typename ListType>
+	struct default_converter<std::vector<ListType> > : native_converter_base<std::vector<ListType> > {
+		static int compute_score(lua_State* L, int index) {
+			return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
+		}
+
+		std::vector<ListType> from(lua_State* L, int index) {
+			std::vector<ListType> list;
+			for (luabind::iterator i(luabind::object(luabind::from_stack(L, index))), end; i != end; ++i)
+				list.push_back(luabind::object_cast<ListType>(*i));
+
+			return list;
+		}
+
+		void to(lua_State* L, const std::vector<ListType>& l) {
+			luabind::object list = luabind::newtable(L);
+			for (size_t i = 0; i < l.size(); ++i)
+				list[i+1] = l[i];
+
+			list.push(L);
+		}
+	};
+}
 
 namespace shost {
   /** @class LuaRegHelper:
@@ -52,13 +79,14 @@ public:
           //ScriptHost::closeLua(m_L);
 	  lua_close(m_L);
       }
-      /** LuaScript, run_script:
+      
+	  /** LuaScript, run_script:
        *  Detailed description.
        *  @param supply TODO
        * @param ret1 TODO
        * @param ret2 TODO
        */
-      void run_script(const Callee& supply) {
+      int run_script(const Callee& supply) {
           //ret1 = 2 * supply;
           //ret2 = 4 * supply;
           host = supply;
@@ -74,7 +102,10 @@ public:
           if (ret != 0) {
               std::cout << "[run_script] error running : " << lua_tostring(m_L, -1) << std::endl;
           }
-      } // run_script
+		  return ret;
+      } 
+	  
+	  // run_script
         /** static_binder, GetHost:
          *  Detailed description.
          *  @return TODO
@@ -142,7 +173,19 @@ public:
 
               delete m_cl;
               luabind::push<Obj>(m_L, m_value);
-              lua_setglobal(m_L, m_name);
+			  //std::string classname(m_name);
+			  //classname += "_";
+			  //lua_setglobal(m_L, m_name);
+			  if (m_inst_name)
+			  {
+				  //lua_setglobal(m_L, classname.c_str());
+				  lua_setglobal(m_L, m_inst_name);
+			  }
+			  else
+			  {
+				  lua_setglobal(m_L, m_name);
+			  }
+
           }
           /*void operator[](luabind::scope s)
              {}*/
@@ -151,7 +194,7 @@ public:
                   //luabind::class_<World>
              }*/
 
-          luabind::class_<Obj>& operator()(const char* name){
+          luabind::class_<Obj>& operator()(const char* name, const char* instance = NULL){
 			  if (m_name)
 			  {
 				  std::string nm("Script Object '");
@@ -160,8 +203,13 @@ public:
 				  throw std::runtime_error( nm.c_str() );
 			  }
 
-              m_name = name;
-              m_cl = new luabind::class_<Obj> (name);
+			  //std::string classname =  name;
+			  //classname += "_";
+			  //m_cl = new luabind::class_<Obj> (classname.c_str());
+			  
+			  m_cl = new luabind::class_<Obj> (name);
+			  m_name =  name;
+			  m_inst_name =  instance;
               return *m_cl;
           }
           /*luabind::class_<Obj>& D(const char* name){
@@ -180,13 +228,14 @@ public:
 private:
 
           static_binder(lua_State* L, Obj& value )
-              : m_L(L), m_value(value), m_cl(NULL), m_name(NULL){
+              : m_L(L), m_value(value), m_cl(NULL), m_name(NULL), m_inst_name(NULL){
               // Todo: check values.
           }
           luabind::class_<Obj>* m_cl;
           lua_State* m_L;
           Obj& m_value;
-          const char* m_name;
+		  const char* m_name;
+		  const char* m_inst_name;
 
           /** @class LuaScript:
            *  Detailed description.
@@ -233,6 +282,72 @@ private:
       inline luabind::module_ module(char const* name = 0){
           return luabind::module_(m_L, name);
       }
+
+	/*  //void testme();
+	  void testme()
+	  {
+		  int stackp = -1;
+
+		
+		  luabind::object o(luabind::globals(m_L)["myVar"]);
+		  if (o)
+		  {
+			  // is_valid
+			  // ...
+
+			  int luatype = luabind::type(o);
+			  if (luabind::type(o) == LUA_TNUMBER)
+			  {
+				  int otherValue = luabind::object_cast<int>(o);
+				  otherValue++;
+			  }
+		  }
+
+
+
+		  luabind::object o2(luabind::globals(m_L)["t"]);
+		  if (o2)
+		  {
+			  // is_valid
+			  // ...
+
+			  int luatype = luabind::type(o2);
+			  if (luabind::type(o2) == LUA_TTABLE)
+			  {
+				  luabind::table otherValue = luabind::object_cast<luabind::table>(o2);
+				  int abc = 4;
+				  abc++;
+			  }
+		  }
+
+		  return;
+		  bool isValid = true;
+		  do 
+		  {
+			  luabind::object o(luabind::from_stack(m_L, stackp));
+			  isValid = o.is_valid();
+			  if (isValid)
+			  {
+				  // is_valid
+				  // ...
+
+				  int luatype = luabind::type(o);
+				  if (luabind::type(o) == LUA_TTABLE)
+				  {
+					  int abc = 0;
+					  abc++;
+
+				  }
+
+				  stackp--;
+			  }
+
+		  } while (isValid);
+
+		  
+	  }*/
+
+
       /** LuaScript, pushglobal:
        *  Detailed description.
        *  @param value TODO

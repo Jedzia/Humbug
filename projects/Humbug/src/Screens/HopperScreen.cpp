@@ -166,6 +166,22 @@ public:
 		std::cout << "hello world from HopperScreen!\n";
 	}
 
+	class TestClass {
+	public:
+		TestClass(std::vector<int> v) : m_vec(v) {}
+
+		TestClass(int b, int e) {
+			for (int i = b; i <= e; ++i)
+				m_vec.push_back(i);
+		}
+
+		int get(size_t i) const {
+			return m_vec[i];
+		}
+
+	private:
+		std::vector<int> m_vec;
+	};
     /** HopperScreen, OnInit:
      *  Detailed description.
      *  @param argc TODO
@@ -213,9 +229,9 @@ public:
         m_pScrollText.reset(text);
 
         // ### Sprites ###
-        m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
+        m_pSprEye = new CSprite( m_Loader, "Sprites/male_sprites.png", m_pMainCanvas,
                 CRectangle(0, 0, 64, 64), CPoint(64, 0) );
-        m_pSprMgr->AddSprite( m_pSprEye, hspriv::EyeMover(160) );
+        m_pSprMgr->AddSprite( m_pSprEye, hspriv::EyeMover(160, 8) );
         //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
         //m_pSprMgr->AddSprite(m_pSprEye);
         CSprite* m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
@@ -252,6 +268,48 @@ public:
 			.def_readonly("ScreenY", &World::ScreenY);
 
 
+
+		ScriptType::Script sprInit = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+			"lua/male_sprites.spr"), "Ticks", "X", "Y" );
+		//ScriptType::Script sprInit = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+		//	"Sprites/male_sprites.spr"), "Ticks", "X", "Y" );
+
+		TestClass st(12,99);
+
+		(*sprInit->AddStatic(st))("TestClass", "tc")
+			.def(luabind::constructor<std::vector<int> >())
+			.def(luabind::constructor<int, int>())
+			.def("get", &TestClass::get);
+
+
+			
+		/*luabind::module(sprInit->L())
+			[
+				luabind::class_<TestClass>("TestClass_")
+				.def(luabind::constructor<std::vector<int> >())
+				.def(luabind::constructor<int, int>())
+				.def("get", &TestClass::get)
+			];*/
+
+		int success = sprInit->run_script(99);
+
+		luabind::object o3(luabind::globals(sprInit->L())["tcx"]);
+		if (o3)
+		{
+			// is_valid
+			// ...
+
+			int luatype = luabind::type(o3);
+			if (luabind::type(o3) == LUA_TUSERDATA)
+			{
+				TestClass otherValue = luabind::object_cast<TestClass>(o3);
+				int abc = 4;
+				abc++;
+			}
+		}
+
+
+
         return Screen::OnInit(argc, argv);
     } // OnInit
 
@@ -265,9 +323,9 @@ public:
         pimpl_->script->run_script(ticks);
         double spr1X = pimpl_->script->GetData1();
         double spr1Y = pimpl_->script->GetData2();
-		m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
+		//m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
-		//m_pSprMgr->OnIdle(ticks);
+		m_pSprMgr->OnIdle(ticks);
     }
 
     /** HopperScreen, OnDraw:

@@ -91,6 +91,7 @@ SET(HumbugShared_ScriptHost_headers
 
 SET(HumbugShared_ScriptHost_sources 
 	ScriptHost/ScriptHost.cpp
+	ScriptHost/LuaScript.cpp
 )
 
 
