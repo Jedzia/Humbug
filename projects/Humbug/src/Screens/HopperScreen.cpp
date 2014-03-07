@@ -182,6 +182,46 @@ public:
 	private:
 		std::vector<int> m_vec;
 	};
+
+	class SpriteFrame {
+	public:
+
+		SpriteFrame(unsigned int x, unsigned int y) 
+			: m_x(x), m_y(y) {
+		}
+
+		unsigned int X() const { return m_x; }
+		unsigned int Y() const { return m_y; }
+
+
+	private:
+		unsigned int m_x;
+		unsigned int m_y;
+	};
+
+	// checked type with success return value.
+	template<typename ObjType>
+	bool GetLuaValue(lua_State *L, const char * varName, ObjType& value)  
+	{
+		bool success = false;
+		luabind::object o4(luabind::globals(L)[varName]);
+		if (o4)
+		{
+			// is_valid
+
+			int luatype = luabind::type(o4);
+			if (luabind::type(o4) == LUA_TUSERDATA)
+			{
+				success = true;
+				value = luabind::object_cast<ObjType>(o4);
+			}
+		}
+		// or throw ?
+
+		return success;
+	};
+
+
     /** HopperScreen, OnInit:
      *  Detailed description.
      *  @param argc TODO
@@ -281,8 +321,20 @@ public:
 			.def(luabind::constructor<int, int>())
 			.def("get", &TestClass::get);
 
+		//boost::shared_ptr<shost::LuaScript::register_binder<SpriteFrame >>& bla=
+		int xyz = 55;
 
-			
+		typedef shost::LuaVarCapsule<luabind::class_<SpriteFrame>> SprCapsule;
+		SprCapsule maleSpriteCap = shost::makeFarm(sprInit,
+		(*sprInit->Register<SpriteFrame>())("SpriteFrame")
+			.def(luabind::constructor<int, int>())
+			.def("X", &SpriteFrame::X)
+			.def("Y", &SpriteFrame::Y));
+
+		//luabind::class_<SpriteFrame>& xasd = maleSpriteCap.Value();
+		//SprCapsule::ObjType mmy(1,2);
+		//mmy.X();
+
 		/*luabind::module(sprInit->L())
 			[
 				luabind::class_<TestClass>("TestClass_")
@@ -308,6 +360,25 @@ public:
 			}
 		}
 
+		SpriteFrame otherValue = maleSpriteCap.GetLuaValue("spf");
+		
+		SpriteFrame otherValue2(0,0);
+		bool fsuccess = sprInit->GetLuaValue<SpriteFrame>("spf", otherValue2);
+
+		luabind::object o4(luabind::globals(sprInit->L())["spf"]);
+		if (o4)
+		{
+			// is_valid
+			// ...
+
+			int luatype = luabind::type(o4);
+			if (luabind::type(o4) == LUA_TUSERDATA)
+			{
+				SpriteFrame otherValue = luabind::object_cast<SpriteFrame>(o4);
+				int abc = 4;
+				abc++;
+			}
+		}
 
 
         return Screen::OnInit(argc, argv);

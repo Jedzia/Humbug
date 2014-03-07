@@ -501,6 +501,8 @@ namespace luabind
           , detail::null_type
         >::type HeldType;
 
+		typedef T MyType; 
+
         template <class Src, class Target>
         void add_downcast(Src*, Target*, boost::mpl::true_)
         {
