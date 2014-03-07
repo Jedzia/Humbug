@@ -61,6 +61,52 @@ namespace shost {
    */
   class LuaRegHelper {};
 
+  // checked type with success return value.
+  template<typename ObjType>
+  bool GetLuaValue(lua_State *L, const char * varName, ObjType& value)  
+  {
+	  bool success = false;
+	  luabind::object o4(luabind::globals(L)[varName]);
+	  if (o4)
+	  {
+		  // is_valid
+
+		  int luatype = luabind::type(o4);
+		  if (luabind::type(o4) == LUA_TUSERDATA)
+		  {
+			  success = true;
+			  value = luabind::object_cast<ObjType>(o4);
+		  }
+	  }
+	  // or throw ?
+
+	  return success;
+  };
+
+  template<typename ObjType>
+  ObjType GetLuaValue(lua_State *L, const char * varName)  
+  {
+	  luabind::object o4(luabind::globals(L)[varName]);
+	  if (o4)
+	  {
+		  // is_valid
+
+		  int luatype = luabind::type(o4);
+		  if (luabind::type(o4) == LUA_TUSERDATA)
+		  {
+			  //ObjType otherValue = luabind::object_cast<ObjType>(o4);
+			  //return otherValue;
+			  return luabind::object_cast<ObjType>(o4);
+		  }
+	  }
+
+	  std::string msg = "Can't fetch Lua variable '";
+	  msg += varName;
+	  msg += "'.";
+	  throw std::runtime_error(msg.c_str());
+  }
+
+
   template<typename ObjClass>
   class LuaVarCapsule {
   public:
@@ -81,45 +127,18 @@ namespace shost {
 	  // checked type with success return value.
 	  bool GetLuaValue(const char * varName, ObjType& value) const 
 	  {
-		  bool success = false;
-		  luabind::object o4(luabind::globals(m_L)[varName]);
-		  if (o4)
-		  {
-			  // is_valid
-
-			  int luatype = luabind::type(o4);
-			  if (luabind::type(o4) == LUA_TUSERDATA)
-			  {
-				  success = true;
-				  value = luabind::object_cast<ObjType>(o4);
-			  }
-		  }
-		  // or throw ?
-
-		  return success;
+		  return shost::GetLuaValue<ObjType>(m_L, varName, value);
 	  }
 
 	  // checked type with exception on failure.
 	  ObjType GetLuaValue(const char * varName) const 
 	  {
-		  luabind::object o4(luabind::globals(m_L)[varName]);
-		  if (o4)
-		  {
-			  // is_valid
-
-			  int luatype = luabind::type(o4);
-			  if (luabind::type(o4) == LUA_TUSERDATA)
-			  {
-				  //ObjType otherValue = luabind::object_cast<ObjType>(o4);
-				  //return otherValue;
-				  return luabind::object_cast<ObjType>(o4);
-			  }
-		  }
-		 
-		  std::string msg = "Can't fetch Lua variable '";
-		  msg += varName;
-		  msg += "'.";
-		  throw std::runtime_error(msg.c_str());
+		  return shost::GetLuaValue<ObjType>(m_L, varName);
+		  
+		  //std::string msg = "Can't fetch Lua variable '";
+		  //msg += varName;
+		  //msg += "'.";
+		  //throw std::runtime_error(msg.c_str());
 	  }
 
   private:
@@ -456,88 +475,15 @@ private:
 	  template<typename ObjType>
 	  bool GetLuaValue(const char * varName, ObjType& value)  
 	  {
-		  bool success = false;
-		  luabind::object o4(luabind::globals(m_L)[varName]);
-		  if (o4)
-		  {
-			  // is_valid
-
-			  int luatype = luabind::type(o4);
-			  if (luabind::type(o4) == LUA_TUSERDATA)
-			  {
-				  success = true;
-				  value = luabind::object_cast<ObjType>(o4);
-			  }
-		  }
-		  // or throw ?
-
-		  return success;
+		  return shost::GetLuaValue<ObjType>(m_L, varName, value);
 	  };
 
-	/*  //void testme();
-	  void testme()
+	  // checked type with exception on failure.
+	  template<typename ObjType>
+	  ObjType GetLuaValue(const char * varName) const 
 	  {
-		  int stackp = -1;
-
-		
-		  luabind::object o(luabind::globals(m_L)["myVar"]);
-		  if (o)
-		  {
-			  // is_valid
-			  // ...
-
-			  int luatype = luabind::type(o);
-			  if (luabind::type(o) == LUA_TNUMBER)
-			  {
-				  int otherValue = luabind::object_cast<int>(o);
-				  otherValue++;
-			  }
-		  }
-
-
-
-		  luabind::object o2(luabind::globals(m_L)["t"]);
-		  if (o2)
-		  {
-			  // is_valid
-			  // ...
-
-			  int luatype = luabind::type(o2);
-			  if (luabind::type(o2) == LUA_TTABLE)
-			  {
-				  luabind::table otherValue = luabind::object_cast<luabind::table>(o2);
-				  int abc = 4;
-				  abc++;
-			  }
-		  }
-
-		  return;
-		  bool isValid = true;
-		  do 
-		  {
-			  luabind::object o(luabind::from_stack(m_L, stackp));
-			  isValid = o.is_valid();
-			  if (isValid)
-			  {
-				  // is_valid
-				  // ...
-
-				  int luatype = luabind::type(o);
-				  if (luabind::type(o) == LUA_TTABLE)
-				  {
-					  int abc = 0;
-					  abc++;
-
-				  }
-
-				  stackp--;
-			  }
-
-		  } while (isValid);
-
-		  
-	  }*/
-
+		  return shost::GetLuaValue<ObjType>(m_L, varName);
+	  }
 
       /** LuaScript, pushglobal:
        *  Detailed description.

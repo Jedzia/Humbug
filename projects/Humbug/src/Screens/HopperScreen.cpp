@@ -199,26 +199,20 @@ public:
 		unsigned int m_y;
 	};
 
-	// checked type with success return value.
-	template<typename ObjType>
-	bool GetLuaValue(lua_State *L, const char * varName, ObjType& value)  
-	{
-		bool success = false;
-		luabind::object o4(luabind::globals(L)[varName]);
-		if (o4)
-		{
-			// is_valid
+	class SpriteMovie {
+	public:
 
-			int luatype = luabind::type(o4);
-			if (luabind::type(o4) == LUA_TUSERDATA)
-			{
-				success = true;
-				value = luabind::object_cast<ObjType>(o4);
-			}
+		SpriteMovie(std::string x, unsigned int y) 
+			: m_x(x), m_y(y) {
 		}
-		// or throw ?
 
-		return success;
+		std::string X() const { return m_x; }
+		unsigned int Y() const { return m_y; }
+
+
+	private:
+		std::string m_x;
+		unsigned int m_y;
 	};
 
 
@@ -331,6 +325,11 @@ public:
 			.def("X", &SpriteFrame::X)
 			.def("Y", &SpriteFrame::Y));
 
+		(*sprInit->Register<SpriteMovie>())("SpriteMovie")
+			.def(luabind::constructor<std::string, int>())
+			.def("X", &SpriteMovie::X)
+			.def("Y", &SpriteMovie::Y);
+
 		//luabind::class_<SpriteFrame>& xasd = maleSpriteCap.Value();
 		//SprCapsule::ObjType mmy(1,2);
 		//mmy.X();
@@ -342,6 +341,7 @@ public:
 				.def(luabind::constructor<int, int>())
 				.def("get", &TestClass::get)
 			];*/
+
 
 		int success = sprInit->run_script(99);
 
@@ -360,10 +360,12 @@ public:
 			}
 		}
 
-		SpriteFrame otherValue = maleSpriteCap.GetLuaValue("spf");
-		
 		SpriteFrame otherValue2(0,0);
-		bool fsuccess = sprInit->GetLuaValue<SpriteFrame>("spf", otherValue2);
+		bool success3 = maleSpriteCap.GetLuaValue("spf", otherValue2);
+		SpriteFrame otherValuex = maleSpriteCap.GetLuaValue("spf");
+		
+		SpriteFrame otherValue3(0,0);
+		bool fsuccess = sprInit->GetLuaValue<SpriteFrame>("spf", otherValue3);
 
 		luabind::object o4(luabind::globals(sprInit->L())["spf"]);
 		if (o4)
@@ -379,6 +381,13 @@ public:
 				abc++;
 			}
 		}
+
+
+
+
+		//SpriteMovie otherValue3(0,0);
+		//fsuccess = sprInit->GetLuaValue<SpriteMovie>("spMovie", otherValue3);
+		SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
 
         return Screen::OnInit(argc, argv);
