@@ -26,30 +26,46 @@
 #include <vector>
 //#include "ScriptHost.h"
 
-
 namespace luabind {
-	template<typename ListType>
-	struct default_converter<std::vector<ListType> > : native_converter_base<std::vector<ListType> > {
-		static int compute_score(lua_State* L, int index) {
-			return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
-		}
+  template<typename ListType>
+  struct default_converter<std::vector<ListType> > : native_converter_base<std::vector<ListType> > {
+      /** LuaRegHelper, compute_score:
+       *  Detailed description.
+       *  @param L TODO
+       * @param index TODO
+       * @return TODO
+       */
+      static int compute_score(lua_State* L, int index) {
+          return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
+      }
+      /** LuaRegHelper, from:
+       *  Detailed description.
+       *  @param L TODO
+       * @param index TODO
+       * @return TODO
+       */
+      std::vector<ListType> from(lua_State* L, int index) {
+          std::vector<ListType> list;
 
-		std::vector<ListType> from(lua_State* L, int index) {
-			std::vector<ListType> list;
-			for (luabind::iterator i(luabind::object(luabind::from_stack(L, index))), end; i != end; ++i)
-				list.push_back(luabind::object_cast<ListType>(*i));
+          for (luabind::iterator i( luabind::object( luabind::from_stack(L, index) ) ), end; i != end; ++i) {
+              list.push_back( luabind::object_cast<ListType>(*i) );
+          }
+          return list;
+      }
+      /** LuaRegHelper, to:
+       *  Detailed description.
+       *  @param L TODO
+       * @param l TODO
+       */
+      void to(lua_State* L, const std::vector<ListType>& l) {
+          luabind::object list = luabind::newtable(L);
 
-			return list;
-		}
-
-		void to(lua_State* L, const std::vector<ListType>& l) {
-			luabind::object list = luabind::newtable(L);
-			for (size_t i = 0; i < l.size(); ++i)
-				list[i+1] = l[i];
-
-			list.push(L);
-		}
-	};
+          for (size_t i = 0; i < l.size(); ++i) {
+              list[i + 1] = l[i];
+          }
+          list.push(L);
+      }
+  };
 }
 
 namespace shost {
@@ -63,93 +79,93 @@ namespace shost {
 
   // checked type with success return value.
   template<typename ObjType>
-  bool GetLuaValue(lua_State *L, const char * varName, ObjType& value)  
-  {
-	  bool success = false;
-	  luabind::object o4(luabind::globals(L)[varName]);
-	  if (o4)
-	  {
-		  // is_valid
+  bool GetLuaValue(lua_State* L, const char* varName, ObjType& value){
+      bool success = false;
+      luabind::object o4(luabind::globals(L)[varName]);
 
-		  int luatype = luabind::type(o4);
-		  if (luabind::type(o4) == LUA_TUSERDATA)
-		  {
-			  success = true;
-			  value = luabind::object_cast<ObjType>(o4);
-		  }
-	  }
-	  // or throw ?
+      if (o4) {
+          // is_valid
+          int luatype = luabind::type(o4);
 
-	  return success;
-  };
+          if (luabind::type(o4) == LUA_TUSERDATA) {
+              success = true;
+              value = luabind::object_cast<ObjType>(o4);
+          }
+      }
 
+      // or throw ?
+
+      return success;
+  } // GetLuaValue
+
+  /** LuaVarCapsule, GetLuaValue:
+   *  Detailed description.
+   *  @param L TODO
+   * @param varName TODO
+   * @return TODO
+   */
   template<typename ObjType>
-  ObjType GetLuaValue(lua_State *L, const char * varName)  
-  {
-	  luabind::object o4(luabind::globals(L)[varName]);
-	  if (o4)
-	  {
-		  // is_valid
+  ObjType GetLuaValue(lua_State* L, const char* varName){
+      luabind::object o4(luabind::globals(L)[varName]);
 
-		  int luatype = luabind::type(o4);
-		  if (luabind::type(o4) == LUA_TUSERDATA)
-		  {
-			  //ObjType otherValue = luabind::object_cast<ObjType>(o4);
-			  //return otherValue;
-			  return luabind::object_cast<ObjType>(o4);
-		  }
-	  }
+      if (o4) {
+          // is_valid
+          int luatype = luabind::type(o4);
 
-	  std::string msg = "Can't fetch Lua variable '";
-	  msg += varName;
-	  msg += "'.";
-	  throw std::runtime_error(msg.c_str());
-  }
+          if (luabind::type(o4) == LUA_TUSERDATA) {
+              //ObjType otherValue = luabind::object_cast<ObjType>(o4);
+              //return otherValue;
+              return luabind::object_cast<ObjType>(o4);
+          }
+      }
 
+      std::string msg = "Can't fetch Lua variable '";
+      msg += varName;
+      msg += "'.";
+      throw std::runtime_error( msg.c_str() );
+  } // GetLuaValue
 
+  /** @class LuaVarCapsule:
+   *  Detailed description.
+   *  @param varName TODO
+   * @param value TODO
+   * @return TODO
+   */
   template<typename ObjClass>
   class LuaVarCapsule {
-  public:
+public:
 
-	  //typedef luabind::class_<ObjClass>::HeldType  MyType;
-	  //typename luabind::class_<ObjClass>::MyType *xMyType;
-	  //typedef typename luabind::class_<ObjClass>::MyType::MyType MyType;
-	  typedef typename luabind::class_<ObjClass>::MyType::MyType ObjType;
+      typedef typename luabind::class_<ObjClass>::MyType::MyType ObjType;
 
-	  LuaVarCapsule(lua_State* L, ObjClass& value )
-		  : m_L(L)//, m_value(value)
-	  {
-			  // Todo: check values.
-	  }
+      LuaVarCapsule(lua_State* L, ObjClass& value )
+          : m_L(L){       //, m_value(value)
+                          // Todo: check values.
+      }
+      // checked type with success return value.
+      bool GetLuaValue(const char* varName, ObjType& value) const {
+          return shost::GetLuaValue<ObjType>(m_L, varName, value);
+      }
+      // checked type with exception on failure.
+      ObjType GetLuaValue(const char* varName) const {
+          return shost::GetLuaValue<ObjType>(m_L, varName);
+      }
+private:
 
-	  //ObjClass& Value() const { return m_value; }
-	  
-	  // checked type with success return value.
-	  bool GetLuaValue(const char * varName, ObjType& value) const 
-	  {
-		  return shost::GetLuaValue<ObjType>(m_L, varName, value);
-	  }
-
-	  // checked type with exception on failure.
-	  ObjType GetLuaValue(const char * varName) const 
-	  {
-		  return shost::GetLuaValue<ObjType>(m_L, varName);
-		  
-		  //std::string msg = "Can't fetch Lua variable '";
-		  //msg += varName;
-		  //msg += "'.";
-		  //throw std::runtime_error(msg.c_str());
-	  }
-
-  private:
-	  //ObjClass& m_value;
-	  lua_State* m_L;
+      //ObjClass& m_value;
+      lua_State* m_L;
   };
 
+  /** LuaScript, makeFarm:
+   *  Detailed description.
+   *  @param p TODO
+   * @param a TODO
+   * @return TODO
+   */
   template <typename T1, typename T2>
   LuaVarCapsule<T2> makeFarm(T1 p, T2& a) {
-	  return LuaVarCapsule<T2>(p->L(), a);
+      return LuaVarCapsule<T2>(p->L(), a);
   }
+
   /** @class LuaScript:
    *  Detailed description.
    *  @param supply TODO
@@ -161,29 +177,21 @@ namespace shost {
 public:
 
       typedef boost::shared_ptr<LuaScript<Callee, X1, X2> > Script;
-	  //        boost::shared_ptr<LuaScript<int ,double, double>::static_binder<World>>
+      //        boost::shared_ptr<LuaScript<int ,double, double>::static_binder<World>>
       typedef LuaScript<Callee, X1, X2> type;
 
       ~LuaScript(){
           //ScriptHost::closeLua(m_L);
-	  lua_close(m_L);
+          lua_close(m_L);
       }
-      
-	  /** LuaScript, run_script:
+      /** LuaScript, run_script:
        *  Detailed description.
        *  @param supply TODO
        * @param ret1 TODO
        * @param ret2 TODO
        */
       int run_script(const Callee& supply) {
-          //ret1 = 2 * supply;
-          //ret2 = 4 * supply;
           host = supply;
-
-          //std::cout << "" << __FUNCTION__ << " ticks: " << supply;
-          //std::cout << " x: " << ret1;
-          //std::cout << " y: " << ret2;
-          //std::cout << " data1: " << data1 << std::endl;
 
           lua_pushvalue(m_L, -1);
           int ret = lua_pcall( m_L, 0, LUA_MULTRET, 0 );
@@ -191,10 +199,9 @@ public:
           if (ret != 0) {
               std::cout << "[run_script] error running : " << lua_tostring(m_L, -1) << std::endl;
           }
-		  return ret;
-      } 
-	  
-	  // run_script
+
+          return ret;
+      } // run_script
         /** static_binder, GetHost:
          *  Detailed description.
          *  @return TODO
@@ -241,19 +248,17 @@ public:
 public:
 
           ~static_binder(){
-			  if (!m_name)
-			  {
-				  std::string nm("Script Object is not initialized with a name. Use operator(\"Name\") to register it.");
-				  throw std::runtime_error( nm.c_str() );
-			  }
+              if (!m_name) {
+                  std::string nm("Script Object is not initialized with a name. Use operator(\"Name\") to register it.");
+                  throw std::runtime_error( nm.c_str() );
+              }
 
-			  if (!m_cl)
-			  {
-				  std::string nm("Script Object '");
-				  nm += m_name;
-				  nm += "' is not initialized with object class definitions. Use .def_readonly(), etc. to register it.";
-				  throw std::runtime_error( nm.c_str() );
-			  }
+              if (!m_cl) {
+                  std::string nm("Script Object '");
+                  nm += m_name;
+                  nm += "' is not initialized with object class definitions. Use .def_readonly(), etc. to register it.";
+                  throw std::runtime_error( nm.c_str() );
+              }
 
               luabind::module(m_L)
               [
@@ -262,71 +267,44 @@ public:
 
               delete m_cl;
               luabind::push<Obj>(m_L, m_value);
-			  //std::string classname(m_name);
-			  //classname += "_";
-			  //lua_setglobal(m_L, m_name);
-			  if (m_inst_name)
-			  {
-				  //lua_setglobal(m_L, classname.c_str());
-				  lua_setglobal(m_L, m_inst_name);
-			  }
-			  else
-			  {
-				  lua_setglobal(m_L, m_name);
-			  }
 
+              if (m_inst_name) {
+                  lua_setglobal(m_L, m_inst_name);
+              }
+              else {
+                  lua_setglobal(m_L, m_name);
+              }
           }
-          /*void operator[](luabind::scope s)
-             {}*/
-
-          /*void operator()(luabind::class_<Obj> const& c){
-                  //luabind::class_<World>
-             }*/
-
+          /** LuaScript, operator ():
+           *  Detailed description.
+           *  @param name TODO
+           * @param instance TODO
+           * @return TODO
+           */
           luabind::class_<Obj>& operator()(const char* name, const char* instance = NULL){
-			  if (m_name)
-			  {
-				  std::string nm("Script Object '");
-				  nm += name;
-				  nm += "' is already set. Create a new one with LuaScript::AddStatic().";
-				  throw std::runtime_error( nm.c_str() );
-			  }
+              if (m_name) {
+                  std::string nm("Script Object '");
+                  nm += name;
+                  nm += "' is already set. Create a new one with LuaScript::AddStatic().";
+                  throw std::runtime_error( nm.c_str() );
+              }
 
-			  //std::string classname =  name;
-			  //classname += "_";
-			  //m_cl = new luabind::class_<Obj> (classname.c_str());
-			  
-			  m_cl = new luabind::class_<Obj> (name);
-			  m_name =  name;
-			  m_inst_name =  instance;
+              m_cl = new luabind::class_<Obj> (name);
+              m_name = name;
+              m_inst_name = instance;
               return *m_cl;
-          }
-          /*luabind::class_<Obj>& D(const char* name){
-                  m_name = name;
-                  m_cl = new luabind::class_<Obj> (name);
-                  return *m_cl;
-             }*/
-
-          /*luabind::class_<Obj>& operator->(){
-                  //luabind::class_<World>
-                  cl = new luabind::class_<Obj> ("World");
-
-                  return *cl;
-             }*/
-
+          } // ()
 private:
 
-	static_binder(lua_State* L, Obj& value )
+          static_binder(lua_State* L, Obj& value )
               : m_L(L), m_value(value), m_cl(NULL), m_name(NULL), m_inst_name(NULL){
               // Todo: check values.
           }
-
-
           luabind::class_<Obj>* m_cl;
           lua_State* m_L;
           Obj& m_value;
-		  const char* m_name;
-		  const char* m_inst_name;
+          const char* m_name;
+          const char* m_inst_name;
 
           /** @class LuaScript:
            *  Detailed description.
@@ -336,24 +314,27 @@ private:
           friend class LuaScript;
       };
 
-	  template<class Obj>
+      /** @class register_binder:
+       *  Detailed description.
+       *  @param name TODO
+       * @return TODO
+       */
+      template<class Obj>
       class register_binder : boost::noncopyable {
 public:
 
           ~register_binder(){
-			  if (!m_name)
-			  {
-				  std::string nm("Script Object is not initialized with a name. Use operator(\"Name\") to register it.");
-				  throw std::runtime_error( nm.c_str() );
-			  }
+              if (!m_name) {
+                  std::string nm("Script Object is not initialized with a name. Use operator(\"Name\") to register it.");
+                  throw std::runtime_error( nm.c_str() );
+              }
 
-			  if (!m_cl)
-			  {
-				  std::string nm("Script Object '");
-				  nm += m_name;
-				  nm += "' is not initialized with object class definitions. Use .def_readonly(), etc. to register it.";
-				  throw std::runtime_error( nm.c_str() );
-			  }
+              if (!m_cl) {
+                  std::string nm("Script Object '");
+                  nm += m_name;
+                  nm += "' is not initialized with object class definitions. Use .def_readonly(), etc. to register it.";
+                  throw std::runtime_error( nm.c_str() );
+              }
 
               luabind::module(m_L)
               [
@@ -362,56 +343,34 @@ public:
 
               delete m_cl;
           }
-          /*void operator[](luabind::scope s)
-             {}*/
-
-          /*void operator()(luabind::class_<Obj> const& c){
-                  //luabind::class_<World>
-             }*/
-
+          /** LuaScript, operator ():
+           *  Detailed description.
+           *  @param name TODO
+           * @return TODO
+           */
           luabind::class_<Obj>& operator()(const char* name){
-			  if (m_name)
-			  {
-				  std::string nm("Script Object '");
-				  nm += name;
-				  nm += "' is already set. Create a new one with LuaScript::AddStatic().";
-				  throw std::runtime_error( nm.c_str() );
-			  }
+              if (m_name) {
+                  std::string nm("Script Object '");
+                  nm += name;
+                  nm += "' is already set. Create a new one with LuaScript::AddStatic().";
+                  throw std::runtime_error( nm.c_str() );
+              }
 
-			  //std::string classname =  name;
-			  //classname += "_";
-			  //m_cl = new luabind::class_<Obj> (classname.c_str());
-			  
-			  m_cl = new luabind::class_<Obj> (name);
-			  m_name =  name;
+              m_cl = new luabind::class_<Obj> (name);
+              m_name = name;
               return *m_cl;
           }
-          /*luabind::class_<Obj>& D(const char* name){
-                  m_name = name;
-                  m_cl = new luabind::class_<Obj> (name);
-                  return *m_cl;
-             }*/
-
-          /*luabind::class_<Obj>& operator->(){
-                  //luabind::class_<World>
-                  cl = new luabind::class_<Obj> ("World");
-
-                  return *cl;
-             }*/
-
 private:
 
-	register_binder(lua_State* L)
+          register_binder(lua_State* L)
               : m_L(L), m_cl(NULL), m_name(NULL), m_inst_name(NULL){
               // Todo: check values.
           }
-
-
           luabind::class_<Obj>* m_cl;
           lua_State* m_L;
           //Obj& m_value;
-		  const char* m_name;
-		  const char* m_inst_name;
+          const char* m_name;
+          const char* m_inst_name;
 
           /** @class LuaScript:
            *  Detailed description.
@@ -421,21 +380,17 @@ private:
           friend class LuaScript;
       };
 
-
-
-
-
-	  template<class T>
-	  boost::shared_ptr<register_binder<T >> Register() {
-		  // Todo: check for double registration.
-		  return boost::shared_ptr<register_binder<T >> (
-			  new register_binder<T>(m_L)
-			  );
-	  }
+      template<class T>
+      boost::shared_ptr<register_binder<T >> Register() {
+          // Todo: check for double registration.
+          return boost::shared_ptr<register_binder<T >> (
+              new register_binder<T>(m_L)
+              );
+      }
 
       template<class T>
       boost::shared_ptr<static_binder<T >> AddStatic(T & value) {
-		  // Todo: check for double registration.
+          // Todo: check for double registration.
           return boost::shared_ptr<static_binder<T >> (
               new static_binder<T>(m_L, value)
               );
@@ -448,12 +403,6 @@ private:
        */
       template<class T>
       luabind::class_<T> * AddStatic2(T& value) {
-          //luabind::module_ *m = new luabind::module(m_L);
-          /*luabind::class_<T> *cl = new luabind::class_<T> ("World");
-           * m[
-                  cl
-             ];*/
-
           luabind::module_* m = new luabind::module_(m_L, 0);
           luabind::class_<T>* cl = new luabind::class_<T> ("World");
           (*m)[
@@ -470,21 +419,16 @@ private:
       inline luabind::module_ module(char const* name = 0){
           return luabind::module_(m_L, name);
       }
-
-	  // checked type with success return value.
-	  template<typename ObjType>
-	  bool GetLuaValue(const char * varName, ObjType& value)  
-	  {
-		  return shost::GetLuaValue<ObjType>(m_L, varName, value);
-	  };
-
-	  // checked type with exception on failure.
-	  template<typename ObjType>
-	  ObjType GetLuaValue(const char * varName) const 
-	  {
-		  return shost::GetLuaValue<ObjType>(m_L, varName);
-	  }
-
+      // checked type with success return value.
+      template<typename ObjType>
+      bool GetLuaValue(const char* varName, ObjType& value){
+          return shost::GetLuaValue<ObjType>(m_L, varName, value);
+      }
+      // checked type with exception on failure.
+      template<typename ObjType>
+      ObjType GetLuaValue(const char* varName) const {
+          return shost::GetLuaValue<ObjType>(m_L, varName);
+      }
       /** LuaScript, pushglobal:
        *  Detailed description.
        *  @param value TODO
@@ -529,7 +473,6 @@ private:
           m_L(L),
           m_scriptText(scriptText),
           data1(666), data2(777){
-          //std::cout << " Callee: " << sizeof(Callee) << std::endl;
           std::cout << "LuaScript ctor Callee: " << typeid(Callee).name() << std::endl;
           pushglobal( boost::ref( this ), "Host");
       }

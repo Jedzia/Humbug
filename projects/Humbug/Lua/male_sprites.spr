@@ -8,6 +8,15 @@ print("tc:get(8): ", tc:get(8))
 -- tcx = TestClass(1, 9)
 tcx = TestClass({1, 2, 3})
 
+F=SpriteFrame;
+
+spf = SpriteFrame(2083,42)
+
+-- spMovieOld = SpriteMovieOld("walk", spf)
+-- spMovieOld = SpriteMovieOld("walk", SpriteFrame(888,777))
+spMovieOld = SpriteMovieOld("walk", F(888,777))
+spMovie = SpriteMovie("walk", { F(0,0), F(0,1), F(0,2) })
+
 -- t = {[Name]="foo", { 0, 0 }, name="bar", "d", "e"}
 
 -- write to IO

@@ -199,20 +199,36 @@ public:
 		unsigned int m_y;
 	};
 
-	class SpriteMovie {
+	class SpriteMovieOld {
 	public:
 
-		SpriteMovie(std::string x, unsigned int y) 
+		SpriteMovieOld(std::string x, SpriteFrame y) 
 			: m_x(x), m_y(y) {
 		}
 
 		std::string X() const { return m_x; }
-		unsigned int Y() const { return m_y; }
+		SpriteFrame Y() const { return m_y; }
 
 
 	private:
 		std::string m_x;
-		unsigned int m_y;
+		SpriteFrame m_y;
+	};
+
+	class SpriteMovie {
+	public:
+
+		SpriteMovie(std::string x, std::vector<SpriteFrame> y) 
+			: m_x(x), m_y(y) {
+		}
+
+		std::string X() const { return m_x; }
+		std::vector<SpriteFrame> Y() const { return m_y; }
+
+
+	private:
+		std::string m_x;
+		std::vector<SpriteFrame> m_y;
 	};
 
 
@@ -325,8 +341,13 @@ public:
 			.def("X", &SpriteFrame::X)
 			.def("Y", &SpriteFrame::Y));
 
+		(*sprInit->Register<SpriteMovieOld>())("SpriteMovieOld")
+			.def(luabind::constructor<std::string, SpriteFrame>())
+			.def("X", &SpriteMovieOld::X)
+			.def("Y", &SpriteMovieOld::Y);
+
 		(*sprInit->Register<SpriteMovie>())("SpriteMovie")
-			.def(luabind::constructor<std::string, int>())
+			.def(luabind::constructor<std::string, std::vector<SpriteFrame>>())
 			.def("X", &SpriteMovie::X)
 			.def("Y", &SpriteMovie::Y);
 
@@ -387,8 +408,10 @@ public:
 
 		//SpriteMovie otherValue3(0,0);
 		//fsuccess = sprInit->GetLuaValue<SpriteMovie>("spMovie", otherValue3);
+		SpriteMovieOld smovieOld = sprInit->GetLuaValue<SpriteMovieOld>("spMovieOld");
 		SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
+		//int *x = new int(666);
 
         return Screen::OnInit(argc, argv);
     } // OnInit
