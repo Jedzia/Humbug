@@ -12,6 +12,7 @@
 #define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + "(" +  STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOADASSTRING(fname) LoadAsString(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
+#define FL_LOAD(fname) Load(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 
 struct SDL_Surface;
 struct _TTF_Font;
@@ -32,6 +33,8 @@ public:
 	std::string Loc() const { return m_strLoc; }
 	void setLoc(std::string val) { m_strLoc = val; }
 	int Refcount() const { return m_refcount; }
+	char * Data() const { return m_pData; }
+	int Size() const { return m_fsize; }
 
 	FileLoadingInfo& operator ++(int);
 	FileLoadingInfo& operator --(int);
@@ -58,7 +61,7 @@ public:
     const char* language(int x) const;
 
     // Placeholder
-	void Load(const std::string & filename) const;
+	FileLoadingInfo& Load(const std::string & filename, std::string location);
 	std::string LoadAsString(const std::string & filename, std::string location);
 
     // Loads a image from the package or filesystem.

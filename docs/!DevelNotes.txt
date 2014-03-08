@@ -1,3 +1,50 @@
+-X-X-X-X- Samstag, 8. März 2014 -----------------------------------------------------------------------------
+
+; --------------------------------------------------------
+; Example for exporting binary files from Tile Studio
+;
+; Version 1.0 - June 6, 2004
+; Mike Wiering (mike@wieringsoftware.nl)
+; --------------------------------------------------------
+
+
+#binfile <ProjectName>.bin 8
+
+"This text will be included"
+<0><0><0><0><0>
+
+#tileset
+
+<TileWidth:"32">
+<TileHeight:"32">
+<TileCount:"32">
+
+#map
+
+<MapWidth>
+<TileSetIdentifier><MapIdentifier><MapHeight>
+
+<TileSetIdentifier><MapIdentifier>
+<MapWidth><MapHeight>
+
+#mapdata  
+<TileNumber:32>
+#end mapdata
+
+<TileSetIdentifier><MapIdentifier><MapHeight><MapWidth>
+#mapdata
+<BoundMapValue>
+#end mapdata
+
+#end map
+
+#end tileset
+
+#end binfile
+
+; --------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------
 -X-X-X-X- Montag, 13. Mai 2013 -----------------------------------------------------------------------------
 
 HAL Institut für geistesgestörte Roboter.

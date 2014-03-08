@@ -66,6 +66,12 @@
     #include "boost/signals.hpp"
     #include "boost/signals/connection.hpp"
 
+	#include <boost/cstdint.hpp>
+	#include <iostream>
+	#include <boost/iostreams/device/array.hpp>
+	#include <boost/iostreams/stream.hpp>
+	#include <boost/archive/binary_iarchive.hpp>
+
 #endif //USE_LIB_BOOST
 
 #include <lua.hpp>

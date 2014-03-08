@@ -380,28 +380,35 @@ std::string FileLoader::LoadAsString(const std::string & filename, std::string l
 	return std::string(data, bufsize);
 }
 
-void FileLoader::Load(const std::string & filename) const
+FileLoadingInfo& FileLoader::Load(const std::string & filename, std::string location)
 {
-	LOGSTREAM << "FileLoader Load '" << filename << "'";
+	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
+	if (rexs1 != m_resMap.end())
+	{
+		FileLoadingInfo& finf = *(rexs1->second);
+		LOGSTREAM << "FileLoader LoadImg in Cache '" << filename << "': " << location;
+		finf++;
+		return finf;
+	}
+	else
+		LOGSTREAM << "FileLoader Load '" << filename << "' " << location;
+
 	filesystem fsys(m_pBasepath.c_str(), "zip", true);
 	LOGSTREAM << fsys;
 
-    //zip_file_system::filesystem::file_info *finfo;
-    //fsys.FindFile(&filename.c_str(), finfo);
-
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
-    std::string contents;
-    std::vector<char> vcontents;
-    // slurp(contents, filename, false);
-    //slurp(contents, filename);
-    //slurp4(vcontents, fsys, filename);
 
-    //std::string contents((std::istreambuf_iterator<char>(infile)),
-      //  std::istreambuf_iterator<char>());
+	m_pLastLoaded = filename;
+	int bufsize;
+	char *data = pimpl_->LoadChar(fsys, filename, bufsize);
+	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, data, bufsize);
+	flInfo->setLoc(location);
+	std::string fname(filename);
+	m_resMap.insert(fname, flInfo);
 
-    //std::string tmp;
-
+    //m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
+    return *flInfo;
 }
 
 

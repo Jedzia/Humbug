@@ -34,6 +34,15 @@
 #include <boost/function.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <cstdlib>
+
+//#include <stdint.h>
+#include <boost/cstdint.hpp>
+#include <iostream>
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+
+
 //
 /*extern "C"
    {
@@ -266,8 +275,31 @@ public:
         //text->AddModifier(boost::ref( mtextfloat ));
         text->AddModifier( WavyTextFloat(64) );
         m_pScrollText.reset(text);
-
+ 
 		// ### Tiles ###
+		
+		FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
+		char *tilesdata = finf.Data();
+
+		char buf[4096];
+		for (int i = 0; i < finf.Size() ; i++)
+		{
+			buf[i] = tilesdata[i];
+		}
+
+		uint16_t data[] = {1234, 5678};
+		char* dataPtr = (char*)&data;
+
+		typedef boost::iostreams::basic_array_source<char> Device;
+		//boost::iostreams::stream_buffer<Device> buffer(dataPtr, sizeof(data));
+		boost::iostreams::stream_buffer<Device> buffer(finf.Data(), finf.Size());
+		boost::archive::binary_iarchive archive(buffer, boost::archive::no_header);
+
+		uint16_t word1, word2;
+		archive >> word1 >> word2;
+		std::cout << word1 << "," << word2 << std::endl;
+
+
 
 		CTileSet* tileSet = NULL;
 		CTileImageSetup tilesetup;
@@ -294,7 +326,7 @@ public:
 
 		for (int i = 0; i < 2; i += 4)
 		{
-			const int xdiff = 300;
+			const int xdiff = 100;
 			tile1.Draw( m_pBackground.get(), CPoint(xdiff * i, 300) );
 			tile2.Draw( m_pBackground.get(), CPoint(xdiff * (i + 1), 300) );
 			tile3.Draw( m_pBackground.get(), CPoint(xdiff * (i + 2), 300) );
@@ -474,13 +506,21 @@ public:
         CRectangle txtDims = m_pScrollText->GetCanvas()->GetDimension();
         CRectangle dstDims = txtDims + CPoint( 335, 200);
         m_pScrollText->Put(m_pBackground.get(), dstDims, txtDims );
-        m_pMainCanvas->AddUpdateRect(dstDims);
+		m_pMainCanvas->AddUpdateRect(dstDims);
 
         coldelta++;
 
         if (coldelta > 64) {
             coldelta = 0;
         }
+
+		CTileEngine& eng = (*m_pTileEngine);
+		CTile tile1 = eng["Tiles1"]->CreateTile(0);
+		const int xdiff = 100;
+		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
+		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
+		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
+
 
         m_pSprMgr->OnDraw();
 

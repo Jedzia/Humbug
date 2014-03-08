@@ -25,7 +25,7 @@ INCLUDE (BoostExtensions)
 INCLUDE (PCHSupport)
 INCLUDE (helpers)
 
-SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals")
+SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;serialization")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
 SET(USE_LIB_BOOST TRUE)
@@ -163,7 +163,7 @@ FOREACH(f ${playground_sources})
 	IF(${_target_name} STREQUAL "stdafx")
 	ELSE(${_target_name} STREQUAL "stdafx")
 		ADD_EXECUTABLE(${_target_name} ${f})
-		TargetLinkBoost(${_target_name} "filesystem;system")
+		TargetLinkBoost(${_target_name} "filesystem;system;serialization")
 		#SET_PROPERTY(TARGET throw_error PROPERTY FOLDER "Playground/3rdParty")
 		SET_PROPERTY(TARGET ${_target_name} PROPERTY FOLDER "Playground")
 
