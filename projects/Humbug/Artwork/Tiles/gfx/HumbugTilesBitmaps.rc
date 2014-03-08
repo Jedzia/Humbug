@@ -1,2 +1,2 @@
-Tiles1 BITMAP "gfx\Tiles1.bmp"
-Buildings BITMAP "gfx\Buildings.bmp"
+Tiles1 BITMAP "gfx\Tiles1.png"
+Buildings BITMAP "gfx\Buildings.png"
