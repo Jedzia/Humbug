@@ -257,7 +257,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ), true );
 
-		//SDL_Surface* ddd1 = fl2.LoadImg("icons/blue.png");
+		//SDL_Surface* ddd1 = fl2.LoadImg("Icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
 
         // fl->Free("Tiles1.bmp");

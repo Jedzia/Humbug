@@ -168,14 +168,14 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 
 
 SET(Pak01_PACKAGE_SOURCE_FILES 
-		${PROJECT_SOURCE_DIR}/icons/
+		${PROJECT_SOURCE_DIR}/Icons/
 	    ${Humbug_Artwork_DIR}/data/
 		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
 	    ${Humbug_Artwork_WORKDIR}/Intro/
 	    #${Humbug_Artwork_WORKDIR}/Screens/
 	    ${Humbug_Artwork_WORKDIR}/Images/
-		#${PROJECT_SOURCE_DIR}/icons/blue.png
+		#${PROJECT_SOURCE_DIR}/Icons/blue.png
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    #${Humbug_Artwork_WORKDIR}/footer.png
 	    ${Humbug_Artwork_DIR}/Sprites/Sprites/
