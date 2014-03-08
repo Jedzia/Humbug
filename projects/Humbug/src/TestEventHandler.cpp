@@ -27,6 +27,7 @@
 #include "Screens/LuaScreen.h"
 #include "Screens/HopperScreen.h"
 #include "Levels/TestLevel.h"
+#include "Levels/LevelA.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
 #include "Screens/TileScreen.h"
 #include "GUI/Components/MainCanvas.h"
@@ -306,6 +307,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	HookMgr()->RegisterHookable("Tiles", HookCreatorPtr(new ScreenCreator<TileScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Lua", HookCreatorPtr(new ScreenCreator<LuaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Hopper", HookCreatorPtr(new ScreenCreator<HopperScreen>(*fl, m_pMainCanvas)));
+	HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
     //HookMgr()->EnableHookable("StartScreen");
 	//HookMgr()->EnableHookable("Test1");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
@@ -504,6 +506,10 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
 	else if( sym == SDLK_7 )   {
 		//
 		HookMgr()->EnableHookable("Hopper");
+	}
+	else if( sym == SDLK_a )   {
+		//
+		HookMgr()->EnableHookable("LevelA");
 	}
 
 } // OnKeyDown

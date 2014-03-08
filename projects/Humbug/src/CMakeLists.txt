@@ -83,9 +83,11 @@ SET(Humbug_MyGUI_sources
 
 SET(Humbug_Level_headers 
 		Levels/TestLevel.h
+		Levels/LevelA.h
 )
 SET(Humbug_Level_sources 
 		Levels/TestLevel.cpp
+		Levels/LevelA.cpp
 )
 
 # putting the sources together
