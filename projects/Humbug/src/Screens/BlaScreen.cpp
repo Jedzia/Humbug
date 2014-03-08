@@ -111,7 +111,7 @@ namespace humbug {
 
       {
           // Todo: use SpriteManager of this instance
-          SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("icons/red.png") );
+          SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Icons/red.png") );
           CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
           m_Loader.FreeLast();
           m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,

@@ -23,6 +23,9 @@
 #include "GUI/Components/Text.h"
 #include "GUI/Components/TextScroller.h"
 #include "GUI/Data/ColorData.h"
+#include "GUI/TileEngine/TileEngine.h"
+#include "GUI/TileEngine/TileImage.h"
+#include "GUI/TileEngine/TileSet.h"
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
@@ -57,9 +60,10 @@ Documentation about what is detected.
 
 using namespace gui::components;
 using namespace gui;
+using namespace humbug::screens;
 
 namespace humbug {
-  namespace screens {
+  namespace levels {
     struct LevelA::LevelAImpl {
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
@@ -162,6 +166,7 @@ public:
       };
     }
 
+
 	void greetHopperA(){
 		std::cout << "hello world from LevelA!\n";
 	}
@@ -197,22 +202,6 @@ public:
 	private:
 		unsigned int m_x;
 		unsigned int m_y;
-	};
-
-	class SpriteMovieOld {
-	public:
-
-		SpriteMovieOld(std::string x, SpriteFrame y) 
-			: m_x(x), m_y(y) {
-		}
-
-		std::string X() const { return m_x; }
-		SpriteFrame Y() const { return m_y; }
-
-
-	private:
-		std::string m_x;
-		SpriteFrame m_y;
 	};
 
 	class SpriteMovie {
@@ -278,6 +267,43 @@ public:
         text->AddModifier( WavyTextFloat(64) );
         m_pScrollText.reset(text);
 
+		// ### Tiles ###
+
+		CTileSet* tileSet = NULL;
+		CTileImageSetup tilesetup;
+		tilesetup.BitmapIdentifier = "Tiles1";
+		tilesetup.TileWidth = 32;
+		tilesetup.TileHeight = 32;
+		tilesetup.TileCountX = 4;
+		tilesetup.TileCountY = 1;
+		tilesetup.TransparentX = 0;
+		tilesetup.TransparentY = 0;
+		tilesetup.Sequences = 0;
+		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/blocks1.png", tilesetup),
+			m_pBackground.get(), CRectangle(0, 0, 640, 480) );
+
+		m_pTileEngine = new CTileEngine( m_pMainCanvas, m_pBackground.get() );
+		m_pTileEngine->AddTileSet(tileSet);
+		CTileEngine& eng = (*m_pTileEngine);
+		//(*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles( m_pBackground.get() );
+		
+		CTile tile1 = eng["Tiles1"]->CreateTile(0);
+		CTile tile2 = eng["Tiles1"]->CreateTile(1);
+		CTile tile3 = eng["Tiles1"]->CreateTile(2);
+		CTile tile4 = eng["Tiles1"]->CreateTile(3);
+
+		for (int i = 0; i < 2; i += 4)
+		{
+			const int xdiff = 300;
+			tile1.Draw( m_pBackground.get(), CPoint(xdiff * i, 300) );
+			tile2.Draw( m_pBackground.get(), CPoint(xdiff * (i + 1), 300) );
+			tile3.Draw( m_pBackground.get(), CPoint(xdiff * (i + 2), 300) );
+			tile4.Draw( m_pBackground.get(), CPoint(xdiff * (i + 3), 300) );
+		}
+		m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
+
+
+
         // ### Sprites ###
         m_pSprEye = new CSprite( m_Loader, "Sprites/male_spritesA.png", m_pMainCanvas,
                 CRectangle(0, 0, 64, 64), CPoint(64, 0) );
@@ -341,11 +367,6 @@ public:
 			.def("X", &SpriteFrame::X)
 			.def("Y", &SpriteFrame::Y));
 
-		(*sprInit->Register<SpriteMovieOld>())("SpriteMovieOld")
-			.def(luabind::constructor<std::string, SpriteFrame>())
-			.def("X", &SpriteMovieOld::X)
-			.def("Y", &SpriteMovieOld::Y);
-
 		(*sprInit->Register<SpriteMovie>())("SpriteMovie")
 			.def(luabind::constructor<std::string, std::vector<SpriteFrame>>())
 			.def("X", &SpriteMovie::X)
@@ -408,7 +429,6 @@ public:
 
 		//SpriteMovie otherValue3(0,0);
 		//fsuccess = sprInit->GetLuaValue<SpriteMovie>("spMovie", otherValue3);
-		SpriteMovieOld smovieOld = sprInit->GetLuaValue<SpriteMovieOld>("spMovieOld");
 		SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
 		//int *x = new int(666);

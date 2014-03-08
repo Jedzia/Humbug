@@ -39,6 +39,7 @@ namespace humbug {
 	using namespace gui::components;
 	using namespace humbug::screens;
 	using humbug::levels::TestLevel;
+	using humbug::levels::LevelA;
 
 //#include "GUI/TileEngine/TileSet.h"
 /// <summary>
@@ -500,14 +501,14 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
 		HookMgr()->EnableHookable("Tiles");
 	}
 	else if( sym == SDLK_6 )   {
-		//
+		// 
 		HookMgr()->EnableHookable("Lua");
 	}
 	else if( sym == SDLK_7 )   {
 		//
 		HookMgr()->EnableHookable("Hopper");
 	}
-	else if( sym == SDLK_a )   {
+	else if( sym == SDLK_8 )   {
 		//
 		HookMgr()->EnableHookable("LevelA");
 	}

@@ -32,10 +32,11 @@ class FileLoader;
 namespace gui {
   class CSprite;
   class CSpriteManager;
+  class CTileEngine;
 }
 
 namespace humbug {
-  namespace screens {
+  namespace levels {
 
     class LevelA : public gui::components::Screen {
 public:
@@ -67,7 +68,9 @@ private:
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
 		gui::CSprite* m_pSprEye;
         //WavyTextFloat mtextfloat;
-		World world;
+		// Todo: move world to a central place ( under game centric terms )
+		screens::World world;
+		gui::CTileEngine* m_pTileEngine;
     };
   }
 }

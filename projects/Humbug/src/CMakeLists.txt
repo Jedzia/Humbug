@@ -169,6 +169,7 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 
 SET(Pak01_PACKAGE_SOURCE_FILES 
 		${PROJECT_SOURCE_DIR}/icons/
+	    ${Humbug_Artwork_DIR}/data/
 		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
 	    ${Humbug_Artwork_WORKDIR}/Intro/
