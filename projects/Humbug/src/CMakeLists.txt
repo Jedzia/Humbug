@@ -26,7 +26,7 @@ INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
 INCLUDE (PackageCreate)
 
-SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
+SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;serialization")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
 SET(USE_LIB_BOOST TRUE)
@@ -199,7 +199,7 @@ Copy_DLL_To_Target(Humbug SDLTTF_LIBRARY)
 Copy_Files_To_Target(Humbug "${SDLTTF_LIBRARY_DLLS_EXT}")
 #Copy_ReleaseDLL_To_Target(Humbug ICU)
 
-TargetLinkBoost(Humbug "filesystem;system;regex;signals")
+TargetLinkBoost(Humbug "filesystem;system;regex;signals;serialization")
 TARGET_LINK_LIBRARIES(Humbug HumbugLib)
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug GuiLib)

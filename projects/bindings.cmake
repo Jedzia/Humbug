@@ -30,7 +30,7 @@ IF(USE_LIB_BOOST)
 
   #IF(NOT USE_LIB_BOOST_COMPONENTS)
 	#SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;unit_test_framework")
-	SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;regex;program_options;unit_test_framework")
+	SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;regex;program_options;unit_test_framework;serialization")
   #ENDIF()
 
   SET(boost_local_root $ENV{BOOST_ROOTDIR})
