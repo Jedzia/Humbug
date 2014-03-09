@@ -92,11 +92,16 @@ namespace humbug {
       m_pTileEngine = new CTileEngine( m_pMainCanvas, m_pBackground.get() );
       m_pTileEngine->AddTileSet(tileSet);
       CTileEngine& eng = (*m_pTileEngine);
-      (*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles( m_pBackground.get() );
+	  m_pTileEngine->GetTileSet("Tiles1")->GetTileImage()->ShowTiles( m_pBackground.get() );
+	  /*(*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles( m_pBackground.get() );
       CTile tile1 = eng["Tiles1"]->CreateTile(0);
       CTile tile2 = eng["Tiles1"]->CreateTile(1);
       CTile tile3 = eng["Tiles1"]->CreateTile(2);
-      CTile tile4 = eng["Tiles1"]->CreateTile(3);
+      CTile tile4 = eng["Tiles1"]->CreateTile(3);*/
+	  CTile tile1 = eng.GetTileSet("Tiles1")->CreateTile(0);
+	  CTile tile2 = eng.GetTileSet("Tiles1")->CreateTile(1);
+	  CTile tile3 = eng.GetTileSet("Tiles1")->CreateTile(2);
+	  CTile tile4 = eng.GetTileSet("Tiles1")->CreateTile(3);
 
       for (int i = 0; i < 20; i += 4)
       {

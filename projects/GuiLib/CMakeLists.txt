@@ -93,6 +93,7 @@ SET(GuiLib_Component_headers
 		GUI/TileEngine/Tile.h
 		GUI/TileEngine/TileImage.h
 		GUI/TileEngine/TileSet.h
+		GUI/TileEngine/TileMap.h
 		GUI/TileEngine/TileEngine.h
 )
 SET(GuiLib_Component_sources 
@@ -118,6 +119,7 @@ SET(GuiLib_Component_sources
 		GUI/TileEngine/Tile.cpp
 		GUI/TileEngine/TileImage.cpp
 		GUI/TileEngine/TileSet.cpp
+		GUI/TileEngine/TileMap.cpp
 		GUI/TileEngine/TileEngine.cpp
 )
 

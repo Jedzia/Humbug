@@ -45,7 +45,7 @@ void CTileEngine::AddTileSet(FileLoader& loader, const CTileImageSetup& config, 
     AddTileSet(tileSet);
 }
 
-CTileSet * CTileEngine::operator[]( const std::string& tileSetName )
+CTileMap * CTileEngine::operator[]( const std::string& mapName )
 {
     /*TileStorage::iterator it = m_pvTileSets.find(console);
     if(it != m_vCmdCallbacks.end())
@@ -57,6 +57,28 @@ CTileSet * CTileEngine::operator[]( const std::string& tileSetName )
     }*/
 
 
+    MapStorage::pointer result = NULL;
+    MapStorage::iterator end = m_pvTileSets.end();
+    for (MapStorage::iterator it = m_pvTileSets.begin(); it < end ; it++)
+    {
+        CTileMap& current = (*it);
+    	if (current.MapIdentifier() == mapName)
+    	{
+            result = &current;
+    	}
+    }
+
+    dbgOut(__FUNCTION__ << " Found CTileMap: (" << result << ")");
+    return result;
+}
+
+void CTileEngine::AddTileMap( CTileMap * tmap )
+{
+	m_pvTileMaps.push_back(tmap);
+}
+
+CTileSet * CTileEngine::GetTileSet( const std::string& tileSetName )
+{
     TileStorage::pointer result = NULL;
     TileStorage::iterator end = m_pvTileSets.end();
     for (TileStorage::iterator it = m_pvTileSets.begin(); it < end ; it++)
@@ -70,11 +92,6 @@ CTileSet * CTileEngine::operator[]( const std::string& tileSetName )
 
     dbgOut(__FUNCTION__ << " Found CTileSet: (" << result << ")");
     return result;
-}
-
-void CTileEngine::AddTileMap( CTileMap * tmap )
-{
-	m_pvTileMaps.push_back(tmap);
 }
 
 std::ostream& operator<<(std::ostream& o, const CTileEngine& r) {

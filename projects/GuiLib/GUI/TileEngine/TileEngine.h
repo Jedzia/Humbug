@@ -3,6 +3,7 @@
 
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "TileSet.h"
+#include "TileMap.h"
 class FileLoader;
 
 namespace gui {
@@ -14,9 +15,9 @@ public:
 
     void AddTileSet(CTileSet * tileset);
     void AddTileSet(FileLoader& loader, const CTileImageSetup& config, const CRectangle& screen);
-
-
-    CTileSet * operator[]( const std::string& tileSetName );
+	CTileSet * GetTileSet( const std::string& tileSetName );
+    
+	CTileMap * operator[]( const std::string& mapName );
 
     friend std::ostream& operator<<(std::ostream& o, const CTileEngine& r);
 	void AddTileMap( CTileMap * tmap );

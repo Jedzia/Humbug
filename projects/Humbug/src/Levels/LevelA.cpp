@@ -292,18 +292,19 @@ public:
 		m_pTileEngine->AddTileSet(tileSet);
 
 		//std::string humbugTilesTil = m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til");
-		CTileMap *tmap = new CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til"));
-		FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
-		tmap->ReadBinary(finf.Data(), finf.Size());
+		//CTileMap *tmap = new CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til"));
+		CTileMap *tmap = new CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/Map1.map"));
+		//FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
+		//tmap->ReadBinary(finf.Data(), finf.Size());
 		m_pTileEngine->AddTileMap(tmap);
 
 		CTileEngine& eng = (*m_pTileEngine);
 		//(*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles( m_pBackground.get() );
 		
-		CTile tile1 = eng["Tiles1"]->CreateTile(0);
-		CTile tile2 = eng["Tiles1"]->CreateTile(1);
-		CTile tile3 = eng["Tiles1"]->CreateTile(2);
-		CTile tile4 = eng["Tiles1"]->CreateTile(3);
+		CTile tile1 = eng.GetTileSet("Tiles1")->CreateTile(0);
+		CTile tile2 = eng.GetTileSet("Tiles1")->CreateTile(1);
+		CTile tile3 = eng.GetTileSet("Tiles1")->CreateTile(2);
+		CTile tile4 = eng.GetTileSet("Tiles1")->CreateTile(3);
 
 		for (int i = 0; i < 2; i += 4)
 		{
@@ -496,7 +497,7 @@ public:
         }
 
 		CTileEngine& eng = (*m_pTileEngine);
-		CTile tile1 = eng["Tiles1"]->CreateTile(0);
+		CTile tile1 = eng.GetTileSet("Tiles1")->CreateTile(0);
 		const int xdiff = 100;
 		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
 		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
