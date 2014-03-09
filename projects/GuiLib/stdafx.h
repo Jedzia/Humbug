@@ -65,6 +65,13 @@
     #include "boost/signals.hpp"
     #include "boost/signals/connection.hpp"
 
+	#include <boost/cstdint.hpp>
+	#include <iostream>
+	#include <boost/iostreams/device/array.hpp>
+	#include <boost/iostreams/stream.hpp>
+	#include <boost/archive/binary_iarchive.hpp>
+	#include <boost/archive/binary_oarchive.hpp>
+
 #endif //USE_LIB_BOOST
 
 #define DEBUG_MEMORY_SUMMARY_ON_EXIT 1

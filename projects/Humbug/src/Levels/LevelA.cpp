@@ -35,14 +35,6 @@
 #include <boost/lambda/lambda.hpp>
 #include <cstdlib>
 
-//#include <stdint.h>
-#include <boost/cstdint.hpp>
-#include <iostream>
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-
-
 //
 /*extern "C"
    {
@@ -277,29 +269,11 @@ public:
         m_pScrollText.reset(text);
  
 		// ### Tiles ###
+
+
+
+		// ###
 		
-		FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
-		char *tilesdata = finf.Data();
-
-		char buf[4096];
-		for (int i = 0; i < finf.Size() ; i++)
-		{
-			buf[i] = tilesdata[i];
-		}
-
-		uint16_t data[] = {1234, 5678};
-		char* dataPtr = (char*)&data;
-
-		typedef boost::iostreams::basic_array_source<char> Device;
-		//boost::iostreams::stream_buffer<Device> buffer(dataPtr, sizeof(data));
-		boost::iostreams::stream_buffer<Device> buffer(finf.Data(), finf.Size());
-		boost::archive::binary_iarchive archive(buffer, boost::archive::no_header);
-
-		uint16_t word1, word2;
-		archive >> word1 >> word2;
-		std::cout << word1 << "," << word2 << std::endl;
-
-
 
 		CTileSet* tileSet = NULL;
 		CTileImageSetup tilesetup;
@@ -316,6 +290,13 @@ public:
 
 		m_pTileEngine = new CTileEngine( m_pMainCanvas, m_pBackground.get() );
 		m_pTileEngine->AddTileSet(tileSet);
+
+		//std::string humbugTilesTil = m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til");
+		CTileMap *tmap = new CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til"));
+		FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
+		tmap->ReadBinary(finf.Data(), finf.Size());
+		m_pTileEngine->AddTileMap(tmap);
+
 		CTileEngine& eng = (*m_pTileEngine);
 		//(*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles( m_pBackground.get() );
 		

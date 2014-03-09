@@ -1,3 +1,46 @@
+
+-X-X-X-X- Sa, 08 Mrz 2014 23:03:38 -----------------------------------------------------------
+; --------------------------------------------------------
+; Example for exporting binary files from Tile Studio
+;
+; Version 1.0 - June 6, 2004
+; Mike Wiering (mike@wieringsoftware.nl)
+; --------------------------------------------------------
+
+
+#binfile <ProjectName>.bin 16
+
+;"This text will be included"
+;<0><0><0><0><0>
+#tileset
+;#tilebitmap <TileSetIdentifier>.png 256
+;#end tilebitmap
+
+<TileCount>
+<TileWidth>
+<TileHeight>
+<0x55555555>
+<0x55555555>
+<0x55555555>
+<0x55555555>
+<0x55555555>
+<TileSetIdentifier><0:"8">
+
+#map
+
+<MapWidth><MapHeight>
+<MapIdentifier><0:"8">
+
+#mapdata  
+<TileNumber>
+<BoundMapValue>
+#end mapdata
+
+#end map
+#end tileset
+#end binfile
+; --------------------------------------------------------
+-----------------------------------------------------------------------------------------------
 -X-X-X-X- Samstag, 8. März 2014 -----------------------------------------------------------------------------
 
 ; --------------------------------------------------------

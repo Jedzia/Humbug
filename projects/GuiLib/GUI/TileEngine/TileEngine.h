@@ -19,11 +19,13 @@ public:
     CTileSet * operator[]( const std::string& tileSetName );
 
     friend std::ostream& operator<<(std::ostream& o, const CTileEngine& r);
-
+	void AddTileMap( CTileMap * tmap );
 private:
     //const CTileImage* m_ctiTileImage;
-    typedef boost::ptr_vector<CTileSet> TileStorage;
-    TileStorage m_pvTileSets;
+	typedef boost::ptr_vector<CTileSet> TileStorage;
+	typedef boost::ptr_vector<CTileMap> MapStorage;
+	TileStorage m_pvTileSets;
+	MapStorage m_pvTileMaps;
     const CCanvas* m_pMainCanvas;
     const CCanvas* m_pBackground;
     //CRectangle m_crScreen;

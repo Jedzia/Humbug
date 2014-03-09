@@ -5,15 +5,13 @@
 ; Mike Wiering (mike@wieringsoftware.nl)
 ; --------------------------------------------------------
 
-
-#binfile <ProjectName>.bin 16
-
+#tileset
+#file <ProjectName>.til
 ;"This text will be included"
 ;<0><0><0><0><0>
 #tileset
 ;#tilebitmap <TileSetIdentifier>.png 256
 ;#end tilebitmap
-
 <TileCount>
 <TileWidth>
 <TileHeight>
@@ -23,19 +21,31 @@
 <0x55555555>
 <0x55555555>
 ;<TileSetIdentifier><0:"8">
-<TileSetIdentifier><0>
-
+<TileSetIdentifier>
+<TileSetIdentifier>.png
+<MapCount>
 #map
-
-<MapWidth><MapHeight>
-<MapIdentifier><0:"8">
-
-#mapdata  
-<TileNumber>
-<BoundMapValue>
-#end mapdata
-
+<MapIdentifier>
 #end map
 #end tileset
-#end binfile
+#end file
+
+
+; maps
+#tileset
+#map
+#file <MapIdentifier>.map
+<MapWidth>
+<MapHeight>
+<MapIdentifier>
+<TileSetIdentifier>
+; <Y>:\n
+#mapdata "\n"  ","  ",\n"  ",\n"  ""
+( <TileNumber:"%04d">, <BoundMapValue:"%04d"> ) 
+;( <TileNumber>, <BoundMapValue> ), 
+#end mapdata
+
+#end file
+#end map
+#end tileset
 ; --------------------------------------------------------

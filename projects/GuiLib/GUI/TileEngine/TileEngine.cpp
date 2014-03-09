@@ -17,7 +17,8 @@ CTileEngine::CTileEngine(const CCanvas * mainCanvas, const CCanvas * background)
 
 CTileEngine::~CTileEngine(void)
 {
-         m_pvTileSets.release();
+	m_pvTileSets.release();
+	m_pvTileMaps.release();
          dbgOut(__FUNCTION__);
 //    const char* explanation = "XXXXXX THIS IS ~CTileEngine.CPP";
 //_RPT1( _CRT_WARN, "\n\n%s:\n**************************************\
@@ -69,6 +70,11 @@ CTileSet * CTileEngine::operator[]( const std::string& tileSetName )
 
     dbgOut(__FUNCTION__ << " Found CTileSet: (" << result << ")");
     return result;
+}
+
+void CTileEngine::AddTileMap( CTileMap * tmap )
+{
+	m_pvTileMaps.push_back(tmap);
 }
 
 std::ostream& operator<<(std::ostream& o, const CTileEngine& r) {

@@ -17,6 +17,14 @@ using namespace gui::components;
 
 namespace gui {
 
+	class CTileMap {
+	public:
+		CTileMap( const std::string& mapData);
+		~CTileMap();
+
+		void ReadBinary(char *tilesdata, size_t length);
+	};
+
 class CTileSet {
 public:
 
