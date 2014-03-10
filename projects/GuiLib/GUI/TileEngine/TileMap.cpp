@@ -179,13 +179,14 @@ namespace gui {
           for (unsigned int w = 0; w < m_MapWidth; w++)
           {
 			  int tileNumber = m_TileNumbers[h * m_MapHeight + w];
-			  if (tileNumber == 0) 
+			  if (tileNumber <= 0) 
 			  {
+				  // Todo minus check, exception ...
 				  continue;
 			  }
 
 			  // Todo: maybe cache the tiles.
-			  CTile tile = tileSet.CreateTile(tileNumber);
+			  CTile tile = tileSet.CreateTile(tileNumber - 1);
 
 			  CPoint pos(w * 32, h * 32);
 			  tile.Draw(background, pos);

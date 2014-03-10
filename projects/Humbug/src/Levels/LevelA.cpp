@@ -293,8 +293,8 @@ public:
 		tilesetup.TransparentX = 0;
 		tilesetup.TransparentY = 0;
 		tilesetup.Sequences = 0;
-		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/blocks1.png", tilesetup),
-			m_pBackground.get(), CRectangle(0, 0, 640, 480) );
+		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", tilesetup),
+			m_pBackground.get(), CRectangle(0, 0, 1024, 768) );
 
 		m_pTileEngine = new CTileEngine( m_pMainCanvas, m_pBackground.get() );
 		m_pTileEngine->AddTileSet(tileSet);
@@ -307,7 +307,7 @@ public:
 		m_pTileEngine->AddTileMap(tmap);
 		(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
 
-		CTileEngine& eng = (*m_pTileEngine);
+		/*CTileEngine& eng = (*m_pTileEngine);
 		//(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles( m_pBackground.get() );
 		
 		CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
@@ -323,8 +323,8 @@ public:
 			tile3.Draw( m_pBackground.get(), CPoint(xdiff * (i + 2), 300) );
 			tile4.Draw( m_pBackground.get(), CPoint(xdiff * (i + 3), 300) );
 		}
+		*/
 		m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
-
 
 
         // ### Sprites ###
@@ -505,12 +505,12 @@ public:
             coldelta = 0;
         }
 
-		CTileEngine& eng = (*m_pTileEngine);
+		/*CTileEngine& eng = (*m_pTileEngine);
 		CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
 		const int xdiff = 100;
 		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
 		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
-		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
+		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());*/
 
 
         m_pSprMgr->OnDraw();
