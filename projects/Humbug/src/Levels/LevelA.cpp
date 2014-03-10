@@ -288,15 +288,19 @@ public:
 		tilesetup.TileSetName = LevelNames::LevelAName;
 		tilesetup.TileWidth = 32;
 		tilesetup.TileHeight = 32;
-		tilesetup.TileCountX = 4;
-		tilesetup.TileCountY = 1;
+		tilesetup.TileCountX = 13;
+		tilesetup.TileCountY = 2;
 		tilesetup.TransparentX = 0;
 		tilesetup.TransparentY = 0;
 		tilesetup.Sequences = 0;
-		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", tilesetup),
+//		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", tilesetup),
+//			m_pBackground.get(), CRectangle(0, 0, 1024, 768) );
+
+		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", "data/levels/LevelA/HumbugTiles.til"),
 			m_pBackground.get(), CRectangle(0, 0, 1024, 768) );
 
-		m_pTileEngine = new CTileEngine( m_pMainCanvas, m_pBackground.get() );
+		// Todo: read and parse a CTileImageSetup from "data/levels/LevelA/HumbugTiles.til" like in CTileMap
+		m_pTileEngine.reset(new CTileEngine( m_pMainCanvas, m_pBackground.get() ));
 		m_pTileEngine->AddTileSet(tileSet);
 
 		//std::string humbugTilesTil = m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til");

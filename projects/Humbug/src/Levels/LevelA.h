@@ -70,7 +70,7 @@ private:
         //WavyTextFloat mtextfloat;
 		// Todo: move world to a central place ( under game centric terms )
 		screens::World world;
-		gui::CTileEngine* m_pTileEngine;
+		boost::scoped_ptr<gui::CTileEngine> m_pTileEngine;
     };
   }
 }

@@ -10,11 +10,13 @@
 ;"This text will be included"
 ;<0><0><0><0><0>
 #tileset
-#tilebitmap <TileSetIdentifier>.png 256
+#tilebitmap <TileSetIdentifier>.png 512
 #end tilebitmap
-<TileCount>
 <TileWidth>
 <TileHeight>
+<TileCount>
+<HorizontalTileCount>
+<VerticalTileCount>
 <0x55555555>
 <0x55555555>
 <0x11111111>

@@ -85,8 +85,12 @@ namespace gui {
 
               htstrstr >> tmp;
 
-              m_TileNumbers[h * m_MapHeight + w] = tileNumber;
-              m_BoundMapValues[h * m_MapHeight + w] = boundMapValue;
+
+			  //unsigned int pos = (h * m_MapHeight) + w;
+			  unsigned int index = (h * m_MapWidth) + w;
+			  std::cout << "w:" << w << " h:" << h << " -> " << index << std::endl;
+              m_TileNumbers[index] = tileNumber;
+              m_BoundMapValues[index] = boundMapValue;
           }
           //htstrstr >> tmp;
           //htstrstr >> tmp;
@@ -178,12 +182,18 @@ namespace gui {
       {
           for (unsigned int w = 0; w < m_MapWidth; w++)
           {
-			  int tileNumber = m_TileNumbers[h * m_MapHeight + w];
+			  unsigned int index = (h * m_MapWidth) + w;
+			  int tileNumber = m_TileNumbers[index];
 			  if (tileNumber <= 0) 
 			  {
 				  // Todo minus check, exception ...
 				  continue;
 			  }
+
+			  /*if (tileNumber > 8) 
+			  {
+				  x++;
+			  }*/
 
 			  // Todo: maybe cache the tiles.
 			  CTile tile = tileSet.CreateTile(tileNumber - 1);
@@ -191,7 +201,7 @@ namespace gui {
 			  CPoint pos(w * 32, h * 32);
 			  tile.Draw(background, pos);
 
-			  int boundMapValue = m_BoundMapValues[h * m_MapHeight + w];
+			  int boundMapValue = m_BoundMapValues[index];
 			  int y = tileNumber + boundMapValue;
 		  }
       }
