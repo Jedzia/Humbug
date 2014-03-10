@@ -77,23 +77,17 @@ namespace gui {
               int tileNumber;
               int boundMapValue;
 
-              //item >> tmp;
               item >> tileNumber;
               item >> tmp;
               item >> boundMapValue;
-              //item >> tmp;
 
               htstrstr >> tmp;
 
 
-			  //unsigned int pos = (h * m_MapHeight) + w;
 			  unsigned int index = (h * m_MapWidth) + w;
-			  std::cout << "w:" << w << " h:" << h << " -> " << index << std::endl;
               m_TileNumbers[index] = tileNumber;
               m_BoundMapValues[index] = boundMapValue;
           }
-          //htstrstr >> tmp;
-          //htstrstr >> tmp;
       }
   }
 

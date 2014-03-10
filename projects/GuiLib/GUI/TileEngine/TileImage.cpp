@@ -54,17 +54,18 @@ namespace gui {
 		  std::string tileConfData = loader.FL_LOADASSTRING(tileDescrFile);
 		  // parse me
 		  std::istringstream htstrstr(tileConfData);
-		  int TileCount, tmp, MapCount;
+		  int TileCount, MapCount;
+		  uint32_t dummy1x, dummy2x, dummy3x, dummy4x, dummy5x;
 		  std::string picture;
 
 		  htstrstr >> m_tiConfig.TileWidth >> m_tiConfig.TileHeight;
 		  htstrstr >> TileCount;
 		  htstrstr >> m_tiConfig.TileCountX >> m_tiConfig.TileCountY;
-		  htstrstr >> tmp;
-		  htstrstr >> tmp;
-		  htstrstr >> tmp;
-		  htstrstr >> tmp;
-		  htstrstr >> tmp;
+		  htstrstr >> dummy1x;
+		  htstrstr >> dummy2x;
+		  htstrstr >> dummy3x;
+		  htstrstr >> dummy4x;
+		  htstrstr >> dummy5x;
 		  htstrstr >> m_tiConfig.TileSetName;
 		  htstrstr >> picture;
 		  htstrstr >> MapCount;

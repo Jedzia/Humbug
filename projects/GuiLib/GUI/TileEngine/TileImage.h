@@ -63,7 +63,10 @@ struct CTileImageInfo : CTileImageSetup
 class CTileImage : CCanvas {
 public:
 
-    CTileImage( FileLoader& loader, std::string filename, CTileImageSetup configuration );
+	
+    // CTileImage( FileLoader& loader, std::string filename, const std::string& tileConfData ); direct conf data
+	CTileImage( FileLoader& loader, std::string filename, std::string tileDescrFile );
+	CTileImage( FileLoader& loader, std::string filename, CTileImageSetup configuration );
     virtual ~CTileImage();
     bool ShowTiles( CCanvas * destination, const CPoint& destPosition = CPoint(0, 0) ) const ;
 
