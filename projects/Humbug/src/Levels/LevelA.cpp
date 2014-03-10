@@ -35,6 +35,14 @@
 #include <boost/lambda/lambda.hpp>
 #include <cstdlib>
 
+struct LevelNames
+{
+	static const char * const LevelAName;
+	static const int ddd = 56;
+};
+
+const char * const LevelNames::LevelAName = "LevelA";
+
 //
 /*extern "C"
    {
@@ -277,7 +285,7 @@ public:
 
 		CTileSet* tileSet = NULL;
 		CTileImageSetup tilesetup;
-		tilesetup.BitmapIdentifier = "Tiles1";
+		tilesetup.TileSetName = LevelNames::LevelAName;
 		tilesetup.TileWidth = 32;
 		tilesetup.TileHeight = 32;
 		tilesetup.TileCountX = 4;
@@ -297,14 +305,15 @@ public:
 		//FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
 		//tmap->ReadBinary(finf.Data(), finf.Size());
 		m_pTileEngine->AddTileMap(tmap);
+		(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
 
 		CTileEngine& eng = (*m_pTileEngine);
-		//(*m_pTileEngine)["Tiles1"]->GetTileImage()->ShowTiles( m_pBackground.get() );
+		//(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles( m_pBackground.get() );
 		
-		CTile tile1 = eng.GetTileSet("Tiles1")->CreateTile(0);
-		CTile tile2 = eng.GetTileSet("Tiles1")->CreateTile(1);
-		CTile tile3 = eng.GetTileSet("Tiles1")->CreateTile(2);
-		CTile tile4 = eng.GetTileSet("Tiles1")->CreateTile(3);
+		CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
+		CTile tile2 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(1);
+		CTile tile3 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(2);
+		CTile tile4 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(3);
 
 		for (int i = 0; i < 2; i += 4)
 		{
@@ -497,7 +506,7 @@ public:
         }
 
 		CTileEngine& eng = (*m_pTileEngine);
-		CTile tile1 = eng.GetTileSet("Tiles1")->CreateTile(0);
+		CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
 		const int xdiff = 100;
 		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
 		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );

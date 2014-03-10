@@ -78,7 +78,7 @@ namespace humbug {
 
       CTileSet* tileSet = NULL;
       CTileImageSetup tilesetup;
-      tilesetup.BitmapIdentifier = "Tiles1";
+      tilesetup.TileSetName = "Tiles1";
       tilesetup.TileWidth = 64;
       tilesetup.TileHeight = 64;
       tilesetup.TileCountX = 4;

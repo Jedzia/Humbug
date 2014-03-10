@@ -33,7 +33,7 @@ namespace gui {
 // configuration of a tile image.
 struct CTileImageSetup
 {
-    std::string BitmapIdentifier;
+    std::string TileSetName;
     int TileWidth;
     int TileHeight;
     int TileCountX;

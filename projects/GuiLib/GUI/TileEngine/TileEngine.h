@@ -7,8 +7,25 @@
 class FileLoader;
 
 namespace gui {
+
+
 class CTileEngine {
 public:
+
+	class CTileRunner {
+		private:
+		CTileRunner(const CCanvas * mainCanvas, const CCanvas * background, CTileEngine *engine, CTileMap *tileMap, CTileSet *tileSet);
+
+	public:
+		~CTileRunner();
+		void AddTileSet(CTileSet * tileset);
+		void DrawMap(CCanvas* background);
+		friend class CTileEngine;
+	private:
+		CTileMap *m_tileMap;
+		CTileSet *m_tileSet;
+		//const CCanvas* m_pBackground;
+	};
 
     CTileEngine(const CCanvas * mainCanvas, const CCanvas * background);
     ~CTileEngine();
@@ -17,7 +34,7 @@ public:
     void AddTileSet(FileLoader& loader, const CTileImageSetup& config, const CRectangle& screen);
 	CTileSet * GetTileSet( const std::string& tileSetName );
     
-	CTileMap * operator[]( const std::string& mapName );
+	CTileRunner operator[]( const std::string& mapName );
 
     friend std::ostream& operator<<(std::ostream& o, const CTileEngine& r);
 	void AddTileMap( CTileMap * tmap );

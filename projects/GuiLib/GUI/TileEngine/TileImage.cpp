@@ -23,7 +23,7 @@ CTileImage::CTileImage( FileLoader& loader, std::string filename,
     SetSurface( bitmap );
     m_tiConfig.BitmapHeight = GetHeight();
     m_tiConfig.BitmapWidth = GetWidth();
-    m_tiConfig.BitmapIdentifier = configuration.BitmapIdentifier;
+    m_tiConfig.TileSetName = configuration.TileSetName;
     m_tiConfig.TileWidth = configuration.TileWidth;
     m_tiConfig.TileHeight = configuration.TileHeight;
     m_tiConfig.TileCountX = configuration.TileCountX;

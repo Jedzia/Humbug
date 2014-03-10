@@ -42,7 +42,7 @@ public:
 
 	  void ReadBinary(char* tilesdata, size_t length);
 	  
-	  void Draw(CTileSet& tileSet);
+	  void Draw(CTileSet& tileSet, CCanvas* background, const CPoint& position);
 
       //unsigned int MapWidth() const { return m_MapWidth; }
       //unsigned int MapHeight() const { return m_MapHeight; }

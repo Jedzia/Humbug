@@ -42,8 +42,8 @@ namespace gui {
 
       //std::tr1::array<int,3,4> myarray;
 
-      int* m_TileNumbers = new int[m_MapWidth * m_MapHeight];
-      int* m_BoundMapValues = new int[m_MapWidth * m_MapHeight];
+      m_TileNumbers = new int[m_MapWidth * m_MapHeight];
+      m_BoundMapValues = new int[m_MapWidth * m_MapHeight];
 
       for (unsigned int h = 0; h < m_MapHeight; h++)
       {
@@ -94,7 +94,10 @@ namespace gui {
   }
 
   CTileMap::~CTileMap()
-  {}
+  {
+	  delete[] m_TileNumbers;
+	  delete[] m_BoundMapValues;
+  }
 
   /** $(class), ReadBinary:
    *  Detailed description.
@@ -161,10 +164,35 @@ namespace gui {
       std::string bla(byte1);
   } // CTileMap::ReadBinary
 
-  void CTileMap::Draw( CTileSet& tileSet )
-  {
-	    CTile tile = tileSet.CreateTile(0);
-		//tileSet.Draw(tile);
-  }
+  /** $(class), Draw:
+   *  Detailed description.
+   *  @param tileSet TODO
+   * @return TODO
+   */
+  void CTileMap::Draw( CTileSet& tileSet, CCanvas* background, const CPoint& position ){
+      //CTile tile = tileSet.CreateTile(0);
+      //tileSet.Draw(tile);
 
+
+      for (unsigned int h = 0; h < m_MapHeight; h++)
+      {
+          for (unsigned int w = 0; w < m_MapWidth; w++)
+          {
+			  int tileNumber = m_TileNumbers[h * m_MapHeight + w];
+			  if (tileNumber == 0) 
+			  {
+				  continue;
+			  }
+
+			  // Todo: maybe cache the tiles.
+			  CTile tile = tileSet.CreateTile(tileNumber);
+
+			  CPoint pos(w * 32, h * 32);
+			  tile.Draw(background, pos);
+
+			  int boundMapValue = m_BoundMapValues[h * m_MapHeight + w];
+			  int y = tileNumber + boundMapValue;
+		  }
+      }
+  }
 }
