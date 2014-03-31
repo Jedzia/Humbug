@@ -41,40 +41,53 @@ namespace gui {
 		  dbgOut(__FUNCTION__);
 		  SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
 		  loader.FreeLast();
-		  SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
-		  SDL_SetAlpha(bitmap, 0, 128);
-		  //SDL_SetAlpha(bitmap, 0, 0);
-		  //SDL_SetAlpha(bitmap, 0, 255);
-		  SetSurface( bitmap );
-		  m_tiConfig.BitmapHeight = GetHeight();
-		  m_tiConfig.BitmapWidth = GetWidth();
 
 
 		  std::string tileConfData = loader.FL_LOADASSTRING(tileDescrFile);
 		  // parse me
 		  std::istringstream htstrstr(tileConfData);
 		  int TileCount, MapCount;
-		  uint32_t dummy1x, dummy2x, dummy3x, dummy4x, dummy5x;
+		  uint32_t transparentColorR , transparentColorG, transparentColorB;
+		  uint32_t dummy1x, dummy2x, dummy3x, dummy4x, dummy5x, transparentColor;
 		  std::string picture;
+		  std::string tmpStr;
 
 		  htstrstr >> m_tiConfig.TileWidth >> m_tiConfig.TileHeight;
 		  htstrstr >> TileCount;
 		  htstrstr >> m_tiConfig.TileCountX >> m_tiConfig.TileCountY;
-		  htstrstr >> dummy1x;
-		  htstrstr >> dummy2x;
-		  htstrstr >> dummy3x;
+		  htstrstr >> transparentColorR;
+		  htstrstr >> transparentColorG;
+		  htstrstr >> transparentColorB;
 		  htstrstr >> dummy4x;
 		  htstrstr >> dummy5x;
 		  htstrstr >> m_tiConfig.TileSetName;
 		  htstrstr >> picture;
 		  htstrstr >> MapCount;
-
+		
+		  transparentColor = transparentColorR;
+		  transparentColor <<= 8;
+		  transparentColor |= transparentColorG;
+		  transparentColor <<= 8;
+		  transparentColor |= transparentColorB;
+		  //transparentColor <<= 8;
+		  SDL_SetAlpha(bitmap, 0, 128);
+		  SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, transparentColor);
 		  /*for (int i = 0; i < MapCount ; i++)
 		  {
 			  std::string MapName;
 			  htstrstr >> MapName;
 		  }*/
+
+
+		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
+		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xffffff);
+		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
+		  //SDL_SetAlpha(bitmap, 0, 0);
+		  //SDL_SetAlpha(bitmap, 0, 255);
+		  SetSurface( bitmap );
+		  m_tiConfig.BitmapHeight = GetHeight();
+		  m_tiConfig.BitmapWidth = GetWidth();
+
 	  }
 
   CTileImage::~CTileImage(void){

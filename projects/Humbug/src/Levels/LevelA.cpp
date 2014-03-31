@@ -240,6 +240,7 @@ public:
     bool LevelA::OnInit( int argc, char* argv[] ){
         // Master()->GetMainCanvas();
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+		m_pMainCanvas->Clear(CColor::Black());
 
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -549,12 +550,14 @@ public:
 				//OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
 				SDLKey sym = pEvent->key.keysym.sym;
 				if( sym == SDLK_a )   {
-					// toggle console
 					m_inScreenDelta++;
 				}
 				else if( sym == SDLK_d )   {
-					// toggle console
 					m_inScreenDelta--;
+				}
+				else if( sym == SDLK_r )   {
+					CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+					m_pMainCanvas->Clear(CColor::Black());
 				}
 				else if( sym == SDLK_x )   {
 					//CApplication::GetApplication()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4)
