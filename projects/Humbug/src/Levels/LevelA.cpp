@@ -90,6 +90,7 @@ namespace humbug {
         //m_iUpdateTimes(0),
         m_pScrollText(NULL),
         m_pScroller(NULL),
+		m_inScreenDelta(0),
         m_pSprMgr(new CSpriteManager){
         //,m_pSprEye(NULL),
         //m_pSprWormler(NULL)
@@ -300,7 +301,7 @@ public:
 		// LevelA.til, LevelA.map, LevelA.png ... hmmm no HumbugTiles.til contains descriptions for the available maps and the png
 		// so HumbugTiles.til can load the LevelA.png, cos that is inside the .til file
 		CTileSet *tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", "data/levels/LevelA/HumbugTiles.til"),
-			m_pBackground.get(), CRectangle(0, 0, 1024, 768) );
+			m_pBackground.get(), CRectangle(0, 0, 1024 * 2, 768 * 2) );
 
 		m_pTileEngine.reset(new CTileEngine( m_pMainCanvas, m_pBackground.get() ));
 		m_pTileEngine->AddTileSet(tileSet);
@@ -490,7 +491,8 @@ public:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Lock();
 
-        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+		CPoint pDelta(m_inScreenDelta, 0);
+        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() + pDelta );
         /*CRectangle frect(700, 500, 185, 185);
            SDL_Color* wavemap = ColorData::Instance()->Wavemap();
            int index = (coldelta * 2 & 63);
@@ -516,8 +518,8 @@ public:
 		const int xdiff = 100;
 		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
 		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
-		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());*/
-
+		*/
+		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
 
         m_pSprMgr->OnDraw();
 
@@ -536,5 +538,36 @@ public:
         mcol.SetB( rand() );
         //m_iUpdateTimes++;
     }
+
+
+	void LevelA::OnEvent( SDL_Event* pEvent ){
+		switch(pEvent->type)
+		{
+		case SDL_KEYDOWN:                    //key press
+			{
+				//key press
+				//OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+				SDLKey sym = pEvent->key.keysym.sym;
+				if( sym == SDLK_a )   {
+					// toggle console
+					m_inScreenDelta++;
+				}
+				else if( sym == SDLK_d )   {
+					// toggle console
+					m_inScreenDelta--;
+				}
+				else if( sym == SDLK_x )   {
+					//CApplication::GetApplication()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4)
+					//SendMessageQ(MSGID_QuitApp);
+					CApplication::GetApplication()->SendMessageQ(gui::CEventHandler::MSGID_QuitApp);
+				}
+				break;
+			}
+
+		default:
+			break;
+		}     // switch
+	} // OnEvent
+
   }
 }

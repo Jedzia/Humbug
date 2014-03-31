@@ -109,8 +109,9 @@ namespace gui {
    */
   bool CTileImage::Draw( const CTile& tile, CCanvas* destination, const CPoint& destPosition ) const {
       destination->Lock();
-      CRectangle rectDst = destination->GetDimension() + destPosition;
+	  //CRectangle rectDst = destination->GetDimension() + destPosition;
       CPoint tileDimension(m_tiConfig.TileWidth, m_tiConfig.TileHeight);
+	  CRectangle rectDst(destPosition, tileDimension);
 
       int xmod = tile.Index() % m_tiConfig.TileCountX;
       int ymod = tile.Index() / m_tiConfig.TileCountX;
@@ -120,6 +121,7 @@ namespace gui {
 
       bool result = destination->Blit(rectDst, *this, rectSrc);
       destination->Unlock();
+	  LOGSTREAM << "CTileImage::Draw->" << rectDst << ", " << rectSrc << ".";
       return result;
   }
 

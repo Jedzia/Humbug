@@ -47,6 +47,7 @@ public:
         virtual bool OnInit( int argc, char* argv[] );
 
         virtual void OnIdle(int ticks);
+		virtual void OnEvent(SDL_Event* pEvent);
 
         virtual void OnDraw();
 
@@ -56,6 +57,7 @@ private:
 
         struct LevelAImpl;
         boost::scoped_ptr<LevelAImpl> pimpl_;
+		int m_inScreenDelta;
 
         FileLoader& m_Loader;
         Uint8 x;

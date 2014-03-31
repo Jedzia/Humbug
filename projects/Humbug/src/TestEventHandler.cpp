@@ -137,6 +137,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     CEventHandler::OnInit(argc, argv);
 
 
+	SDL_WM_SetCaption("Humbug, the Game", NULL);
     //create display surface
     Uint32 video_flags;
 
