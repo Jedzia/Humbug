@@ -77,6 +77,12 @@ void CColor::SetB(Uint8 b)
 	m_Color.b=b;
 }
 
+void CColor::SetA(Uint8 a)
+{
+	//set blue
+	m_Color.unused=a;
+}
+
 //rgb accessors
 Uint8& CColor::R()
 {

@@ -181,6 +181,12 @@ namespace gui {
 			  if (tileNumber <= 0) 
 			  {
 				  // Todo minus check, exception ...
+				  //tileNumber = 4;
+				  CTileImage blackImage(CColor::Black());
+				  CTile tile2(blackImage, 0);
+				  CPoint pos2(w * 32, h * 32);
+				  tile2.Draw(background, pos2);
+
 				  continue;
 			  }
 

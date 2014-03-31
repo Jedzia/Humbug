@@ -32,6 +32,7 @@ public:
 	void SetR(Uint8 r);
 	void SetG(Uint8 g);
 	void SetB(Uint8 b);
+	void SetA(Uint8 b);
 
 	//rgb accessors
 	Uint8& R();

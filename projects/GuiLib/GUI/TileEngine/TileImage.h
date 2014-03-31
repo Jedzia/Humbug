@@ -65,6 +65,7 @@ public:
 
 	
     // CTileImage( FileLoader& loader, std::string filename, const std::string& tileConfData ); direct conf data
+	CTileImage( const CColor& color );
 	CTileImage( FileLoader& loader, std::string filename, std::string tileDescrFile );
 	CTileImage( FileLoader& loader, std::string filename, CTileImageSetup configuration );
     virtual ~CTileImage();
