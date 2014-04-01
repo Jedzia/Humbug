@@ -67,9 +67,13 @@ namespace humbug {
 	  // delete loadsurf;
 	  CCanvas tmpCanvas(tmpsurf);
 	  CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+	  //tmpCanvas->SetColorKey(CColor::Black());
+	  //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 22);
+
 	  testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
 	  //m_pBackground = testCanvas;
 	  m_pBackground.reset( testCanvas );
+      //SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 22);
 
 	  //delete tmpsurf;
 	  //SDL_FreeSurface( loadsurf );

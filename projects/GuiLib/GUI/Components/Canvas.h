@@ -73,7 +73,7 @@ public:
 	bool SetColorKey ( CColor& color ) ;
 
 	//retrieve the color key
-	CColor GetColorKey ( ) ;
+	CColor GetColorKey ( ) const;
 
 	//clear the color key
 	bool ClearColorKey ( ) ;

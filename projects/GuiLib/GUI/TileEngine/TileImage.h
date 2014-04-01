@@ -60,12 +60,12 @@ struct CTileImageInfo : CTileImageSetup
 };
 
 // The image, that holds the elements of a tile-set.
-class CTileImage : CCanvas {
+class CTileImage : public CCanvas {
 public:
 
 	
     // CTileImage( FileLoader& loader, std::string filename, const std::string& tileConfData ); direct conf data
-	CTileImage( const CColor& color );
+	CTileImage( const CCanvas* background, const CColor& color );
 	CTileImage( FileLoader& loader, std::string filename, std::string tileDescrFile );
 	CTileImage( FileLoader& loader, std::string filename, CTileImageSetup configuration );
     virtual ~CTileImage();

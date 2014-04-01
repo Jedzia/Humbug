@@ -249,13 +249,26 @@ public:
         //m_pArialfont =
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
-        SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png") );
+		SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png") );
+		//SDL_Surface* tmpfsurf =  m_Loader.FL_LOADIMG("Intro/LevelABg.png");
+
+		CCanvas tmpCanvas(tmpfsurf);
+		CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024, 768);
+		SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 128);
+		testCanvas->SetColorKey(CColor(0x00,0x00,0x00));
+
+		testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
+
+
+
+// SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY
 
         //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
         //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
         //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-        //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-        m_pBackground.reset( new CCanvas( tmpfsurf ) );
+        m_pBackground.reset( testCanvas );
+		//m_pBackground->SetColorKey(CColor::Black());
+		//SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 128);
 
         //CCanvas tmpCanvas( tmpfsurf );
         m_Loader.FreeLast();

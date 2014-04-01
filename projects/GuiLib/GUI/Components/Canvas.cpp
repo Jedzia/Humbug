@@ -132,7 +132,7 @@ bool CCanvas::SetColorKey ( CColor& color ){
     return ( SDL_SetColorKey ( GetSurface ( ), SDL_SRCCOLORKEY, col ) == 0 );
 }
 
-CColor CCanvas::GetColorKey ( ){
+CColor CCanvas::GetColorKey ( ) const {
     Uint32 col = GetSurface ( )->format->colorkey;
     CColor color;
     SDL_GetRGB ( col, GetSurface ( )->format, &color.R ( ), &color.G ( ), &color.B ( ) );
