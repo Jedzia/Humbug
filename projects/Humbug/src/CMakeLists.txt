@@ -50,6 +50,7 @@ INCLUDE (bindings)
 # GUI implementation
 SET(Humbug_MyGUI_headers 
 		GUI/Hud.h
+		GUI/DebugOverlay.h
 
 		TestEventHandler.h
 		TestThread.h
@@ -66,6 +67,7 @@ SET(Humbug_MyGUI_headers
 )
 SET(Humbug_MyGUI_sources 
 		GUI/Hud.cpp
+		GUI/DebugOverlay.cpp
 
 		TestEventHandler.cpp
 		TestThread.cpp

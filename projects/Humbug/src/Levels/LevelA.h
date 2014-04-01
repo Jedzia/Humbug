@@ -36,6 +36,7 @@ namespace gui {
 }
 
 namespace humbug {
+class DebugOverlay;
   namespace levels {
 
     class LevelA : public gui::components::Screen {
@@ -63,8 +64,10 @@ private:
         Uint8 x;
         gui::components::CColor mcol;
         TTF_Font* m_pArialfont;
-        boost::shared_ptr<gui::components::CCanvas> m_pBackground;
-        boost::scoped_ptr<gui::components::CText> m_pScrollText;
+		boost::shared_ptr<gui::components::CCanvas> m_pBackground;
+		boost::shared_ptr<gui::components::CCanvas> m_pTiles;
+		boost::scoped_ptr<gui::components::CText> m_pScrollText;
+		boost::scoped_ptr<DebugOverlay> m_pOverlay;
         boost::ptr_vector<gui::components::CText> m_pvecTexts;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;

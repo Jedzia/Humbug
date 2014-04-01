@@ -19,6 +19,7 @@
 
 //#include <build/cmake/include/debug.h>
 #include "Filesystem/FileLoader.h"
+#include "GUI/DebugOverlay.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
 #include "GUI/Components/TextScroller.h"
@@ -242,6 +243,8 @@ public:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
 		m_pMainCanvas->Clear(CColor::Black());
 
+		m_pOverlay.reset(new DebugOverlay(m_Loader, gui::controls::CControl::GetMainControl(), 1));
+
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
         // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
@@ -249,17 +252,21 @@ public:
         //m_pArialfont =
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
-		SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png") );
-		//SDL_Surface* tmpfsurf =  m_Loader.FL_LOADIMG("Intro/LevelABg.png");
-
-		CCanvas tmpCanvas(tmpfsurf);
-		CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024, 768);
-		SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 128);
+		
+		//	CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png") ));
+		CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ));
+		CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight());
+		//SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);
 		testCanvas->SetColorKey(CColor(0x00,0x00,0x00));
 
 		testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
 
 
+		// das muss alles in die tiles engine. die muss wissen welchen ColorKey sie braucht und wie gross der canvas sein muss.
+		// braucht ihn ja nur einmal zu erstellen und kann ihn dann cachen.
+		CCanvas* tmpTilesCanvas = CCanvas::CreateRGBCompatible(NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight());
+		tmpTilesCanvas->SetColorKey(CColor(0x00,0x00,0x00));
+		m_pTiles.reset( tmpTilesCanvas );
 
 // SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY
 
@@ -326,7 +333,7 @@ public:
 		//FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
 		//tmap->ReadBinary(finf.Data(), finf.Size());
 		m_pTileEngine->AddTileMap(tmap);
-		(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
+		//(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
 
 		/*CTileEngine& eng = (*m_pTileEngine);
 		//(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles( m_pBackground.get() );
@@ -492,6 +499,7 @@ public:
         double spr1Y = pimpl_->script->GetData2();
 		//m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
+		m_pOverlay->IdleSetVars(ticks);
 		m_pSprMgr->OnIdle(ticks);
     }
 
@@ -501,12 +509,20 @@ public:
      */
     void LevelA::OnDraw(){
         static int coldelta = 0;
+		static int tilesDelta = 0;
+		tilesDelta += m_inScreenDelta;
 
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Lock();
 
-		CPoint pDelta(m_inScreenDelta, 0);
-        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() + pDelta );
+		CPoint pDelta(tilesDelta, 0);
+        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() - pDelta );
+
+		(*m_pTileEngine)["Map1"].DrawMap(m_pTiles.get());
+		// (*m_pTileEngine)["Map1"].DrawMap(); sollte einen canvas zurueckgeben, der weiss wie gross er sein muss 
+		m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pTiles, m_pTiles->GetDimension() + pDelta );
+
+		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
         /*CRectangle frect(700, 500, 185, 185);
            SDL_Color* wavemap = ColorData::Instance()->Wavemap();
            int index = (coldelta * 2 & 63);
@@ -533,9 +549,9 @@ public:
 		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
 		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
 		*/
-		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
 
         m_pSprMgr->OnDraw();
+		m_pOverlay->OnDraw();
 
         m_pMainCanvas->Unlock();
     } // OnDraw

@@ -177,7 +177,7 @@ namespace gui {
 	  //SDL_SetAlpha(tileSet.GetTileImage()->GetSurface(), SDL_SRCALPHA, 128);
 	  //SDL_SetAlpha(background->GetSurface(), SDL_SRCALPHA, 128);
 	  //SDL_SetColorKey(background->GetSurface(), SDL_SRCCOLORKEY, 0x000000);
-	  background->Clear(CColor::Black());
+	  //background->Clear(CColor::Black());
 	  //background->SetColorKey(CColor::Black());
 
       for (unsigned int h = 0; h < m_MapHeight; h++)
@@ -188,18 +188,7 @@ namespace gui {
 			  int tileNumber = m_TileNumbers[index];
 			  if (tileNumber <= 0) 
 			  {
-				  continue;
 				  // Todo minus check, exception ...
-				  //tileNumber = 4;
-				  //tileSet.GetTileImage();
-				  CTileImage blackImage(tileSet.GetTileImage(), CColor::Black());
-				  //CTileImage blackImage(background, CColor::Black());
-				  
-				  //CTile tile2(*tileSet.GetTileImage(), 0);
-				  CTile tile2(blackImage, 0);
-				  CPoint pos2(w * 32, h * 32);
-				  tile2.Draw(background, pos2);
-
 				  continue;
 			  }
 

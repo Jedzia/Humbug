@@ -71,10 +71,10 @@ namespace gui {
 		  transparentColor |= transparentColorB;
 		  //transparentColor <<= 8;
 		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 128);
-		  SDL_SetAlpha(bitmap, SDL_SRCALPHA, 22);
+		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 22);
 
 		  //Clear(CColor::Black);
-		  SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0x000000);
+		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0x000000);
 		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, transparentColor);
 		  /*for (int i = 0; i < MapCount ; i++)
 		  {
@@ -94,60 +94,6 @@ namespace gui {
 		  m_tiConfig.BitmapHeight = GetHeight();
 		  m_tiConfig.BitmapWidth = GetWidth();
 
-	  }
-
-	  CTileImage::CTileImage( const CCanvas* background, const CColor& color )
-		  : CCanvas()
-	  {
-		  //const CCanvas* testCanvas2 = background;
-		  //CCanvas* testCanvas =CCanvas::CreateRGBCompatible(SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY, 64, 64);
-		  //CCanvas* testCanvas = CCanvas::CreateRGBCompatible(SDL_SWSURFACE, 64, 64);
-		  CCanvas* testCanvas = background->CreateRGBCompatible(SDL_SWSURFACE, 64, 64);
-
-		  //CCanvas* testCanvas = background->CreateRGBCompatible(SDL_SWSURFACE, testCanvas2->GetWidth(), testCanvas2->GetHeight());
-		  //CCanvas* testCanvas = background->CreateRGBCompatible(SDL_SWSURFACE, testCanvas2->GetWidth(), testCanvas2->GetHeight());
-		 
-		  //CCanvas* testCanvas2 =CCanvas::CreateRGBCompatible(SDL_SWSURFACE, 64, 64);
-		  //CCanvas* testCanvas = CCanvas::CreateRGB(SDL_SWSURFACE | SDL_SRCALPHA, 64, 64, 8, 0, 0, 1, 255);
-		  /*CCanvas* testCanvas = CCanvas::CreateRGB(SDL_SWSURFACE, 64, 64, 
-			  background->GetSurface()->format->BitsPerPixel, 
-			  background->GetSurface()->format->Rmask,
-			  background->GetSurface()->format->Gmask,
-			  background->GetSurface()->format->Bmask,
-			  background->GetSurface()->format->Amask);*/
-		  //CCanvas* testCanvas = CCanvas::CreateRGB(SDL_SWSURFACE | SDL_SRCALPHA, 64, 64, testCanvas2->GetSurface()->format->BitsPerPixel, 0, 0, 1, 255);
-		  SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 33);
-		  
-		  //CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 128, 128);
-		  //CColor fcolor(0x00, 0x00, 0x00);
-		  //fcolor.SetA(128);
-		  //testCanvas->FillRect(testCanvas->GetDimension(), fcolor);
-		  //Uint32 col = SDL_MapRGB ( testCanvas->GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
-		  //Uint32 colb = SDL_MapRGB ( background->GetSurface ( )->format, 0x00, 0x00, 0x00);
-		  //Uint32 col = 0x22330000;
-		  //Uint32 col2 =0xffffff;
-		  
-		  //testCanvas->Clear(CColor::Black());
-		  //testCanvas->Clear(background->GetColorKey());
-		  //testCanvas->SetColorKey(background->GetColorKey());
-		  //testCanvas->FillRect(CRectangle(8,8,16,16), background->GetColorKey());
-		  testCanvas->FillRect(CRectangle(8,8,16,16), CColor::Red());
-
-		  //testCanvas->FillRect(NULL, )
-		  //SDL_FillRect ( testCanvas->GetSurface ( ), CRectangle(8,8,16,16), col2 );
-		  //SDL_FillRect ( testCanvas->GetSurface ( ), NULL, background->GetColorKey());
-		  //CColor backColor(background->GetColorKey());
-
-		  //SDL_SetColorKey(testCanvas->GetSurface(), SDL_SRCCOLORKEY, colb);
-		  
-
-		  //testCanvas->Clear(fcolor);
-		  
-		  //SDL_SetColorKey(testCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xffffffff);
-		  //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 128);
-		  
-		  //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, SDL_ALPHA_TRANSPARENT);
-		  SetSurface( testCanvas->GetSurface() );
 	  }
 
   CTileImage::~CTileImage(void){
@@ -194,7 +140,7 @@ namespace gui {
 
       bool result = destination->Blit(rectDst, *this, rectSrc);
       destination->Unlock();
-	  LOGSTREAM << "CTileImage::Draw->" << rectDst << ", " << rectSrc << ".";
+	  // LOGSTREAM << "CTileImage::Draw->" << rectDst << ", " << rectSrc << ".";
       return result;
   }
 
