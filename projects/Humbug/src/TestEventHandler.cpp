@@ -15,7 +15,7 @@
 //#include "GUI/Hud.h"
 //#include "GUI/Sprite/Sprite.h"
 #include "GUI/Visual/Console.h"
-#include "PlayerKeys.h"
+#include "Input/PlayerKeys.h"
 #include "TestEventHandler.h"
 #include "TestThread.h"
 #include "TestTimer.h"

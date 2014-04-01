@@ -19,6 +19,7 @@
 
 //#include <build/cmake/include/debug.h>
 #include "../Screens/WavyTextFloat.h"
+#include "../Input/PlayerKeys2.h"
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
@@ -117,6 +118,16 @@ public:
 			m_sprConstMover.Y(y);
 
 		};
+
+		void UpdatePlayer(CPoint& p)
+		{
+			float x = static_cast<float>( p.X() );
+			float y = static_cast<float>( p.Y() );
+			m_sprConstMover.X(x);
+			m_sprConstMover.Y(y);
+
+		};
+
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
         int x;
@@ -456,8 +467,7 @@ private:
 
 		CSprite* m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
 			CRectangle(0, 0, 32, 32), CPoint(32, 0) );
-		//m_pSprMgr->AddSprite( m_pSprite2, hspriv::EyeMover(260, 4) );
-		m_pSprMgr->AddSprite( m_pSprite2, pimpl_->m_sprConstMover );
+		m_pSprMgr->AddSprite( m_pSprite2, boost::ref( pimpl_->m_sprConstMover ));
 
         //_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
         //_crtBreakAlloc = pimpl_->allocReqNum+4;
@@ -571,6 +581,7 @@ private:
         SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
         //int *x = new int(666);
+		m_pKeyHandler.reset(new PlayerKeys2(200, 200));
 
         return Screen::OnInit(argc, argv);
     } // OnInit
@@ -587,7 +598,8 @@ private:
         double spr1Y = pimpl_->script->GetData2();
         //m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
-        m_pOverlay->IdleSetVars(ticks);
+		m_pKeyHandler->HookIdle(10);
+		m_pOverlay->IdleSetVars(ticks);
         m_pSprMgr->OnIdle(ticks);
     }
 
@@ -657,6 +669,7 @@ private:
         mcol.SetB( rand() );
 
 		pimpl_->UpdatePlayer();
+		pimpl_->UpdatePlayer(m_pKeyHandler->Char());
         //m_iUpdateTimes++;
     }
 
@@ -666,6 +679,9 @@ private:
      * @return TODO
      */
     void LevelA::OnEvent( SDL_Event* pEvent ){
+		
+		m_pKeyHandler->HookEventloop(pEvent);
+
         switch(pEvent->type)
         {
         case SDL_KEYDOWN:                            //key press
@@ -675,19 +691,19 @@ private:
             SDLKey sym = pEvent->key.keysym.sym;
 
             if( sym == SDLK_w ) {
-                pimpl_->m_player.Move( GVector2D::Up() );
+                //pimpl_->m_player.Move( GVector2D::Up() );
             }
             else if( sym == SDLK_s ) {
-                pimpl_->m_player.Move( GVector2D::Down() );
+                //pimpl_->m_player.Move( GVector2D::Down() );
             }
 
             if( sym == SDLK_a ) {
-                m_inScreenDelta++;
-                pimpl_->m_player.Move( GVector2D::Left() );
+               // m_inScreenDelta++;
+                //pimpl_->m_player.Move( GVector2D::Left() );
             }
             else if( sym == SDLK_d ) {
-                m_inScreenDelta--;
-                pimpl_->m_player.Move( GVector2D::Right() );
+               // m_inScreenDelta--;
+                //pimpl_->m_player.Move( GVector2D::Right() );
             }
             else if( sym == SDLK_r ) {
                 CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();

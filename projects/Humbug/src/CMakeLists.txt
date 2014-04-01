@@ -97,19 +97,21 @@ SET(Humbug_headers
 		${Humbug_MyGUI_headers}
 		${Humbug_Level_headers}
 
-		PlayerKeys.h
+		Input/PlayerKeys.h
+		Input/PlayerKeys2.h
 
-	        Project/ProjectModel.h
+	    Project/ProjectModel.h
 )
 
 SET(Humbug_sources 
 		${Humbug_MyGUI_sources}
 		${Humbug_Level_sources}
 
-		PlayerKeys.cpp
+		Input/PlayerKeys.cpp
+		Input/PlayerKeys2.cpp
 
-	        main.cpp 
-	        Project/ProjectModel.cpp
+	    main.cpp 
+	    Project/ProjectModel.cpp
 )
 
 

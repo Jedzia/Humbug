@@ -37,6 +37,8 @@ namespace gui {
 
 namespace humbug {
   class DebugOverlay;
+  class PlayerKeys2;
+
   namespace levels {
     class LevelA : public gui::components::Screen {
 public:
@@ -67,7 +69,8 @@ private:
         boost::shared_ptr<gui::components::CCanvas> m_pBackground;
         boost::shared_ptr<gui::components::CCanvas> m_pTiles;
         boost::scoped_ptr<gui::components::CText> m_pScrollText;
-        boost::scoped_ptr<DebugOverlay> m_pOverlay;
+		boost::scoped_ptr<DebugOverlay> m_pOverlay;
+		boost::scoped_ptr<PlayerKeys2> m_pKeyHandler;
         boost::ptr_vector<gui::components::CText> m_pvecTexts;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;

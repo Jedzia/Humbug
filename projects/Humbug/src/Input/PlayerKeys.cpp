@@ -144,14 +144,14 @@ namespace humbug {
       if (charx < 0) {
           charx = 0;
       }
-      else if (charx > 1024)   {
+      else if (charx > 1024) {
           charx = 1024;
       }
 
       if (chary < 0) {
           chary = 0;
       }
-      else if (chary > 768)   {
+      else if (chary > 768) {
           chary = 768;
       }
   } // HookIdle
