@@ -18,8 +18,8 @@
 #include "LevelA.h"
 
 //#include <build/cmake/include/debug.h>
-#include "../Screens/WavyTextFloat.h"
 #include "../Input/PlayerKeys2.h"
+#include "../Screens/WavyTextFloat.h"
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
@@ -77,67 +77,92 @@ using namespace humbug::screens;
 
 namespace humbug {
   namespace levels {
-	  class Introplayer
-	  {
-	  public:
-		  Introplayer(FileLoader& loader, CCanvas* background)
-			  : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_done(false)
-		  {
-			  m_pArialfont = loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
-			  m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
-			  SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 5);
-		  };
-		  void SetBackground(CCanvas * val) { m_pBackground = val; }
-		  bool IsDone() const { return m_done; }
+    /** @class Introplayer:
+     *  Detailed description.
+     *  @param val TODO
+     */
+    class Introplayer {
+public:
 
-		  void OnIdle(int ticks)
-		  {
-			  if (m_done)
-			  {
-				  return;
-			  }
+        Introplayer(FileLoader& loader, CCanvas* background)
+            : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_done(false), m_step(0){
+            m_pArialfont = loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48);
+            m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
+            SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 5);
+        }
+        /** SprConstMover, SetBackground:
+         *  Detailed description.
+         *  @param val TODO
+         */
+        void SetBackground(CCanvas* val) { m_pBackground = val; }
 
-			  if (m_firstTick < 0)
-			  {
-				  m_firstTick = ticks;
-			  }
+        /** SprConstMover, IsDone:
+         *  Detailed description.
+         *  @return TODO
+         */
+        bool IsDone() const { return m_done; }
 
-			  int curTicks = ticks - m_firstTick;
-			  if (curTicks > 600)
-			  {
-				  m_done = true;
-			  }
+        /** SprConstMover, OnIdle:
+         *  Detailed description.
+         *  @param ticks TODO
+         */
+        void OnIdle(int ticks){
+            if (m_done) {
+                return;
+            }
 
-			  if (curTicks > 0 && curTicks < 300 )
-			  {
+            if (m_firstTick < 0) {
+                m_firstTick = ticks;
+            }
 
-			  CText infoText(m_pArialfont, "Hoho Du Nase", CColor::Red());
-			  //infoText.Put(m_pBackground, m_pBackground->GetDimension());
-			  infoText.Put(m_canvas, m_canvas->GetDimension() + CPoint(200,400));
+            int curTicks = ticks - m_firstTick;
 
-			  //m_canvas->Blit(m_pBackground->GetDimension(), *m_pBackground, m_canvas->GetDimension());
-			  m_pBackground->Blit(m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension());
-			  m_pBackground->AddUpdateRect(m_pBackground->GetDimension());
-			  }
+            if (curTicks > 400) {
+                m_done = true;
+            }
 
-			  m_lastTick = ticks;
-		  };
-	  private:
-		  CCanvas *m_pBackground;
-		  CCanvas *m_canvas;
-		  TTF_Font* m_pArialfont;
-		  int m_lastTick;
-		  int m_firstTick;
-		  bool m_done;
-	  };
+            if ((m_step == 0) && (curTicks > 0 && curTicks < 200) ) {
+                CText infoText( m_pArialfont, "And Now...", CColor::Red() );
+                //infoText.Put(m_pBackground, m_pBackground->GetDimension());
+                infoText.Put( m_canvas, m_canvas->GetDimension() + CPoint(200, 400) );
 
+                //m_canvas->Blit(m_pBackground->GetDimension(), *m_pBackground,
+                // m_canvas->GetDimension());
+                m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
+                m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
+            }
+			else if ((m_step == 0) &&(curTicks > 200 && curTicks < 220 )) {
+				SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 255);
+				m_canvas->Clear(CColor::LightGray());
+				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
+				m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
+				m_step++;
+			}
+			else if ((m_step == 1) &&(curTicks > 220 && curTicks < 320 )) {
+				SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 11);
+				CText infoText( m_pArialfont, "To Something Completely Different!", CColor::Blue() );
+				infoText.Put( m_canvas, m_canvas->GetDimension() + CPoint(100, 200) );
+				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
+				m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
+			}
 
-	  struct LevelA::LevelAImpl {
+            m_lastTick = ticks;
+        } // OnIdle
+private:
 
-		  LevelAImpl(FileLoader& loader, CCanvas* background)
-			  : m_intro(loader, background)
-		  {
-		  };
+        CCanvas* m_pBackground;
+        CCanvas* m_canvas;
+        TTF_Font* m_pArialfont;
+        int m_lastTick;
+        int m_firstTick;
+		int m_step;
+        bool m_done;
+    };
+
+    struct LevelA::LevelAImpl {
+        LevelAImpl(FileLoader& loader, CCanvas* background)
+            : m_intro(loader, background)
+        {}
         /** @class SprConstMover:
          *  Detailed description.
          *  @param sprite TODO
@@ -146,6 +171,7 @@ namespace humbug {
          */
         class SprConstMover {
             float x, y;
+
 public:
 
             SprConstMover(float startX = 0, float startY = 0) : x(startX), y(startY){
@@ -161,38 +187,60 @@ public:
              * @return TODO
              */
             void operator()(CSprite* sprite, int ticks) {
-                sprite->SetPos( CPoint(static_cast<int>(x), static_cast<int>(y)) );
+                sprite->SetPos( CPoint( static_cast<int>(x), static_cast<int>(y) ) );
             }
+            /** EyeMover, Y:
+             *  Detailed description.
+             *  @return TODO
+             */
+            float Y() const { return y; }
 
-			float Y() const { return y; }
-			void Y(float val) { y = val; }
-			float X() const { return x; }
-			void X(float val) { x = val; }
+            /** EyeMover, Y:
+             *  Detailed description.
+             *  @param val TODO
+             */
+            void Y(float val) { y = val; }
+
+            /** EyeMover, X:
+             *  Detailed description.
+             *  @return TODO
+             */
+            float X() const { return x; }
+
+            /** EyeMover, X:
+             *  Detailed description.
+             *  @param val TODO
+             */
+            void X(float val) { x = val; }
         };
 
-		void UpdatePlayer()
-		{
-			float x = m_player.GetPosition().x;
-			float y = m_player.GetPosition().y;
-			m_sprConstMover.X(x);
-			m_sprConstMover.Y(y);
-
-		};
-		
-		void DoIntro(int ticks)
-		{
-			m_intro.OnIdle(ticks);
-		}
-
-		void UpdatePlayer(CPoint& p)
-		{
-			float x = static_cast<float>( p.X() );
-			float y = static_cast<float>( p.Y() );
-			m_sprConstMover.X(x);
-			m_sprConstMover.Y(y);
-
-		};
-
+        /** EyeMover, UpdatePlayer:
+         *  Detailed description.
+         *
+         */
+        void UpdatePlayer(){
+            float x = m_player.GetPosition().x;
+            float y = m_player.GetPosition().y;
+            m_sprConstMover.X(x);
+            m_sprConstMover.Y(y);
+        }
+        /** EyeMover, DoIntro:
+         *  Detailed description.
+         *  @param ticks TODO
+         */
+        void DoIntro(int ticks){
+            m_intro.OnIdle(ticks);
+        }
+        /** EyeMover, UpdatePlayer:
+         *  Detailed description.
+         *  @param p TODO
+         */
+        void UpdatePlayer(CPoint& p){
+            float x = static_cast<float>( p.X() );
+            float y = static_cast<float>( p.Y() );
+            m_sprConstMover.X(x);
+            m_sprConstMover.Y(y);
+        }
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
         int x;
@@ -200,12 +248,12 @@ public:
         long allocReqNum;
         boost::shared_ptr<shost::LuaScript<int, double, double >> script;
         Player m_player;
-		SprConstMover m_sprConstMover;
-		Introplayer m_intro;
+        SprConstMover m_sprConstMover;
+        Introplayer m_intro;
     };
 
     LevelA::LevelA( FileLoader& loader, CCanvas* background) :
-        pimpl_(new LevelA::LevelAImpl(loader, background) ),
+        pimpl_( new LevelA::LevelAImpl(loader, background) ),
         Screen(background),
         m_Loader(loader),
         m_pArialfont(NULL),
@@ -499,7 +547,7 @@ private:
         //tmap->ReadBinary(finf.Data(), finf.Size());
         m_pTileEngine->AddTileMap(tmap);
         //(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
-		(*m_pTileEngine)["Map1"].DrawMap( m_pTiles.get() );
+        (*m_pTileEngine)["Map1"].DrawMap( m_pTiles.get() );
 
         /*CTileEngine& eng = (*m_pTileEngine);
            //(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles(
@@ -532,9 +580,9 @@ private:
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
-		CSprite* m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
-			CRectangle(0, 0, 32, 32), CPoint(32, 0) );
-		m_pSprMgr->AddSprite( m_pSprite2, boost::ref( pimpl_->m_sprConstMover ));
+        CSprite* m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
+                CRectangle(0, 0, 32, 32), CPoint(32, 0) );
+        m_pSprMgr->AddSprite( m_pSprite2, boost::ref( pimpl_->m_sprConstMover ) );
 
         //_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
         //_crtBreakAlloc = pimpl_->allocReqNum+4;
@@ -648,7 +696,7 @@ private:
         SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
         //int *x = new int(666);
-		m_pKeyHandler.reset(new PlayerKeys2(200, 600));
+        m_pKeyHandler.reset( new PlayerKeys2(200, 600) );
 
         return Screen::OnInit(argc, argv);
     } // OnInit
@@ -665,10 +713,10 @@ private:
         double spr1Y = pimpl_->script->GetData2();
         //m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
-		m_pKeyHandler->HookIdle(ticks, 5);
-		m_pOverlay->IdleSetVars(ticks);
+        m_pKeyHandler->HookIdle(ticks, 5);
+        m_pOverlay->IdleSetVars(ticks);
         m_pSprMgr->OnIdle(ticks);
-		pimpl_->DoIntro(ticks);
+        pimpl_->DoIntro(ticks);
     }
 
     /** LevelA, OnDraw:
@@ -676,10 +724,10 @@ private:
      *  @return TODO
      */
     void LevelA::OnDraw(){
-		if (!pimpl_->m_intro.IsDone())
-		{
-			return;
-		}
+        if ( !pimpl_->m_intro.IsDone() ) {
+            return;
+        }
+
         static int coldelta = 0;
         static int tilesDelta = 0;
         tilesDelta += m_inScreenDelta;
@@ -687,7 +735,7 @@ private:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Lock();
 
-		CPoint pTilesDelta(m_pKeyHandler->Char().GetX() - 200, 0);
+        CPoint pTilesDelta(m_pKeyHandler->Char().GetX() - 200, 0);
         CPoint pDelta(tilesDelta, 0);
         m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() - pDelta );
 
@@ -741,8 +789,8 @@ private:
         mcol.SetG( rand() );
         mcol.SetB( rand() );
 
-		//pimpl_->UpdatePlayer();
-		pimpl_->UpdatePlayer(m_pKeyHandler->Char());
+        //pimpl_->UpdatePlayer();
+        pimpl_->UpdatePlayer( m_pKeyHandler->Char() );
         //m_iUpdateTimes++;
     }
 
@@ -752,8 +800,7 @@ private:
      * @return TODO
      */
     void LevelA::OnEvent( SDL_Event* pEvent ){
-		
-		m_pKeyHandler->HookEventloop(pEvent);
+        m_pKeyHandler->HookEventloop(pEvent);
 
         switch(pEvent->type)
         {
@@ -771,11 +818,11 @@ private:
             }
 
             if( sym == SDLK_a ) {
-               // m_inScreenDelta++;
+                // m_inScreenDelta++;
                 //pimpl_->m_player.Move( GVector2D::Left() );
             }
             else if( sym == SDLK_d ) {
-               // m_inScreenDelta--;
+                // m_inScreenDelta--;
                 //pimpl_->m_player.Move( GVector2D::Right() );
             }
             else if( sym == SDLK_r ) {
