@@ -5,9 +5,9 @@
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the GameObject.cpp class.
+ *             the Player.cpp class.
  * \folder     $(folder)
- * \file       GameObject.cpp
+ * \file       Player.cpp
  * \date       2013-11-20
  * \author     Jedzia.
  *
@@ -16,26 +16,22 @@
 /*---------------------------------------------------------*/
 #include "../stdafx.h"
 //
-#include "GameObject.h"
+#include "Player.h"
 
 //#include <build/cmake/include/debug.h>
 
 namespace gob {
-	GameObject::GameObject(std::string name)
-	  : m_name(name){
+	Player::Player() : GameObject("Player1"){
       dbgOut(__FUNCTION__);
   }
 
-  GameObject::~GameObject(void){
+  Player::~Player(void){
       dbgOut(__FUNCTION__);
   }
 
-  /** GameObject, Language:
-   *  Detailed description.
-   *  @param x TODO
-   * @return TODO
-   */
-  const char * GameObject::Language(int x) const {
-      return "AsciiDoc";
+  void Player::Move( GVector2D direction )
+  {
+	  m_position = m_position + direction;
   }
+
 }

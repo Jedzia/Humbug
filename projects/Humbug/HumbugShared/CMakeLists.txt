@@ -73,12 +73,16 @@ SET(HumbugShared_GameObject_headers
 	GameObjects/Template.h
 	GameObjects/GameObject.h
 	GameObjects/GVector2D.h
+	GameObjects/GPoint2D.h
+	GameObjects/Player.h
 )
 
 SET(HumbugShared_GameObject_sources 
 	GameObjects/Template.cpp
 	GameObjects/GameObject.cpp
 	GameObjects/GVector2D.cpp
+	GameObjects/GPoint2D.cpp
+	GameObjects/Player.cpp
 )
 
 SET(HumbugShared_ScriptHost_headers 

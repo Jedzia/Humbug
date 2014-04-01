@@ -16,10 +16,10 @@
 /*---------------------------------------------------------*/
 #ifndef HUMBUG_SCREENS_LEVELA_H
 #define HUMBUG_SCREENS_LEVELA_H
+#include "../Screens/LuaScreen.h"
 #include "GUI/Components/Screen.h"
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/smart_ptr/scoped_ptr.hpp>
-#include "../Screens/LuaScreen.h"
 
 namespace gui {
   namespace components {
@@ -36,9 +36,8 @@ namespace gui {
 }
 
 namespace humbug {
-class DebugOverlay;
+  class DebugOverlay;
   namespace levels {
-
     class LevelA : public gui::components::Screen {
 public:
 
@@ -48,7 +47,8 @@ public:
         virtual bool OnInit( int argc, char* argv[] );
 
         virtual void OnIdle(int ticks);
-		virtual void OnEvent(SDL_Event* pEvent);
+
+        virtual void OnEvent(SDL_Event* pEvent);
 
         virtual void OnDraw();
 
@@ -58,24 +58,24 @@ private:
 
         struct LevelAImpl;
         boost::scoped_ptr<LevelAImpl> pimpl_;
-		int m_inScreenDelta;
+        int m_inScreenDelta;
 
         FileLoader& m_Loader;
         Uint8 x;
         gui::components::CColor mcol;
         TTF_Font* m_pArialfont;
-		boost::shared_ptr<gui::components::CCanvas> m_pBackground;
-		boost::shared_ptr<gui::components::CCanvas> m_pTiles;
-		boost::scoped_ptr<gui::components::CText> m_pScrollText;
-		boost::scoped_ptr<DebugOverlay> m_pOverlay;
+        boost::shared_ptr<gui::components::CCanvas> m_pBackground;
+        boost::shared_ptr<gui::components::CCanvas> m_pTiles;
+        boost::scoped_ptr<gui::components::CText> m_pScrollText;
+        boost::scoped_ptr<DebugOverlay> m_pOverlay;
         boost::ptr_vector<gui::components::CText> m_pvecTexts;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-		gui::CSprite* m_pSprEye;
+        gui::CSprite* m_pSprEye;
         //WavyTextFloat mtextfloat;
-		// Todo: move world to a central place ( under game centric terms )
-		screens::World world;
-		boost::scoped_ptr<gui::CTileEngine> m_pTileEngine;
+        // Todo: move world to a central place ( under game centric terms )
+        screens::World world;
+        boost::scoped_ptr<gui::CTileEngine> m_pTileEngine;
     };
   }
 }

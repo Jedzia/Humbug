@@ -23,20 +23,20 @@ namespace gob {
   class GameObject {
 public:
 
-      GameObject();
+	GameObject(std::string name);
       ~GameObject();
 
       /** GameObject, Str:
        *  Detailed description.
        *  @return TODO
        */
-      std::string Str() const { return str; }
+      std::string Str() const { return m_name; }
 
       /** GameObject, Str:
        *  Detailed description.
        *  @param val TODO
        */
-      void Str(std::string val) { str = val; }
+      void Str(std::string name) { m_name = name; }
 
       /** GameObject, Language:
        *  Detailed description.
@@ -48,7 +48,7 @@ public:
 private:
 
       int i;
-      std::string str;
+      std::string m_name;
   };
 }
 #endif // ifndef GAMEOBJECTS_GAMEOBJECT_H

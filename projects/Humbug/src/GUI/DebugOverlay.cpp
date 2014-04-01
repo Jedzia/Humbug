@@ -93,64 +93,15 @@ namespace humbug {
 	  std::ostringstream outstring;
 	  outstring << "Ticks: " << m_ticks;
 
-	  CText* text = new CText(m_pDebugfont, outstring.str(), m_colText);
+	  CText text(m_pDebugfont, outstring.str(), m_colText);
 
-	  CRectangle txtDims = text->GetCanvas()->GetDimension();
+	  CRectangle txtDims = text.GetCanvas()->GetDimension();
 	  CRectangle dstDims = globalPosition;
-	  text->Put(pCanvas, dstDims, txtDims );
+	  text.Put(pCanvas, dstDims, txtDims );
 
 	  pCanvas->AddUpdateRect(dstDims);
 
-	  //CText prText()
-	  int x = 1;
-	  x++;
-      /*
-         CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
-         flank = true;
-         bool checkSwitch = HasMouseHover() ^ flank;
-
-         //footerImage->Put( GetCanvas(), dst );
-         if( checkSwitch &&  oldstate == false) {
-          //clear to light gray
-          CRectangle& ownDimensions = GetCanvas()->GetDimension();
-          GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
-
-          //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255,
-             155)
-          // );
-          CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
-          Invalidate();
-          //m_ptIsDirty = true;
-         }
-         else if(!checkSwitch &&  oldstate == true)   {
-          //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
-          footerImage->Put( GetCanvas(), CPoint(0, 0) );
-
-          //GetParent()->Update();
-          int dreck = this->GetWidth();
-
-          //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
-          CControl::GetMainControl()->GetCanvas()->AddUpdateRect(globalPosition);
-          Invalidate();
-          //m_ptIsDirty = true;
-         }
-
-         static bool xset = false;
-
-         if(!xset) {
-          xset = true;
-         }
-
-         if(m_ptIsDirty) {
-          int abc = 123;
-
-          //footerImage->Put( GetCanvas(), CPoint(0, 0) );
-          //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
-          //m_ptIsDirty = false;
-         }
-
-         oldstate = checkSwitch;*/
-      CControl::OnDraw();
+	  CControl::OnDraw();
   } // OnDraw
 
   /** DebugOverlay, OnMouseMove:

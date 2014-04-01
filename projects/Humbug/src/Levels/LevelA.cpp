@@ -18,28 +18,29 @@
 #include "LevelA.h"
 
 //#include <build/cmake/include/debug.h>
+#include "../Screens/WavyTextFloat.h"
 #include "Filesystem/FileLoader.h"
-#include "GUI/DebugOverlay.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
 #include "GUI/Components/TextScroller.h"
 #include "GUI/Data/ColorData.h"
+#include "GUI/DebugOverlay.h"
+#include "GUI/Sprite/Sprite.h"
+#include "GUI/Sprite/SpriteManager.h"
 #include "GUI/TileEngine/TileEngine.h"
 #include "GUI/TileEngine/TileImage.h"
 #include "GUI/TileEngine/TileSet.h"
-#include "GUI/Sprite/Sprite.h"
-#include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
+#include "HumbugShared/GameObjects/Player.h"
 #include "HumbugShared/ScriptHost/ScriptHost.h"
-#include "../Screens/WavyTextFloat.h"
 #include <boost/function.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <cstdlib>
 
 struct LevelNames
 {
-	static const char * const LevelAName;
-	static const int ddd = 56;
+    static const char * const LevelAName;
+    static const int ddd = 56;
 };
 
 const char * const LevelNames::LevelAName = "LevelA";
@@ -61,13 +62,14 @@ const char * const LevelNames::LevelAName = "LevelA";
  */
 
 /*`
-[heading `TEST_category_tag`]
+   [heading `TEST_category_tag`]
 
-Documentation about what is detected.
-*/
+   Documentation about what is detected.
+ */
 
 //#define TEST_category_tag TEST_VERSION_NUMBER(0,0,0)
 
+using namespace gob;
 using namespace gui::components;
 using namespace gui;
 using namespace humbug::screens;
@@ -75,12 +77,54 @@ using namespace humbug::screens;
 namespace humbug {
   namespace levels {
     struct LevelA::LevelAImpl {
+        /** @class SprConstMover:
+         *  Detailed description.
+         *  @param sprite TODO
+         * @param ticks TODO
+         * @return TODO
+         */
+        class SprConstMover {
+            float x, y;
+public:
+
+            SprConstMover(float startX = 0, float startY = 0) : x(startX), y(startY){
+                dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
+            }
+            ~SprConstMover(){
+                dbgOut(__FUNCTION__ << " " << this);
+            }
+            /** $(fclass), operator ():
+             *  Detailed description.
+             *  @param sprite TODO
+             * @param ticks TODO
+             * @return TODO
+             */
+            void operator()(CSprite* sprite, int ticks) {
+                sprite->SetPos( CPoint(static_cast<int>(x), static_cast<int>(y)) );
+            }
+
+			float Y() const { return y; }
+			void Y(float val) { y = val; }
+			float X() const { return x; }
+			void X(float val) { x = val; }
+        };
+
+		void UpdatePlayer()
+		{
+			float x = m_player.GetPosition().x;
+			float y = m_player.GetPosition().y;
+			m_sprConstMover.X(x);
+			m_sprConstMover.Y(y);
+
+		};
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
         int x;
         //shost::LuaScript<int, int, int> *script;
         long allocReqNum;
         boost::shared_ptr<shost::LuaScript<int, double, double >> script;
+        Player m_player;
+		SprConstMover m_sprConstMover;
     };
 
     LevelA::LevelA( FileLoader& loader, CCanvas* background) :
@@ -91,7 +135,7 @@ namespace humbug {
         //m_iUpdateTimes(0),
         m_pScrollText(NULL),
         m_pScroller(NULL),
-		m_inScreenDelta(0),
+        m_inScreenDelta(0),
         m_pSprMgr(new CSpriteManager){
         //,m_pSprEye(NULL),
         //m_pSprWormler(NULL)
@@ -177,60 +221,97 @@ public:
       };
     }
 
+    /** TestClass, greetHopperA:
+     *  Detailed description.
+     *
+     */
+    void greetHopperA(){
+        std::cout << "hello world from LevelA!\n";
+    }
 
-	void greetHopperA(){
-		std::cout << "hello world from LevelA!\n";
-	}
+    /** @class TestClass:
+     *  Detailed description.
+     *  @param i TODO
+     * @return TODO
+     */
+    class TestClass {
+public:
 
-	class TestClass {
-	public:
-		TestClass(std::vector<int> v) : m_vec(v) {}
+        TestClass(std::vector<int> v) : m_vec(v) {}
 
-		TestClass(int b, int e) {
-			for (int i = b; i <= e; ++i)
-				m_vec.push_back(i);
-		}
+        TestClass(int b, int e) {
+            for (int i = b; i <= e; ++i) {
+                m_vec.push_back(i);
+            }
+        }
+        /** SpriteFrame, get:
+         *  Detailed description.
+         *  @param i TODO
+         * @return TODO
+         */
+        int get(size_t i) const {
+            return m_vec[i];
+        }
+private:
 
-		int get(size_t i) const {
-			return m_vec[i];
-		}
+        std::vector<int> m_vec;
+    };
 
-	private:
-		std::vector<int> m_vec;
-	};
+    /** @class SpriteFrame:
+     *  Detailed description.
+     *  @return TODO
+     */
+    class SpriteFrame {
+public:
 
-	class SpriteFrame {
-	public:
+        SpriteFrame(unsigned int x, unsigned int y)
+            : m_x(x), m_y(y) {}
 
-		SpriteFrame(unsigned int x, unsigned int y) 
-			: m_x(x), m_y(y) {
-		}
+        /** SpriteMovie, X:
+         *  Detailed description.
+         *  @return TODO
+         */
+        unsigned int X() const { return m_x; }
 
-		unsigned int X() const { return m_x; }
-		unsigned int Y() const { return m_y; }
+        /** SpriteMovie, Y:
+         *  Detailed description.
+         *  @return TODO
+         */
+        unsigned int Y() const { return m_y; }
 
+private:
 
-	private:
-		unsigned int m_x;
-		unsigned int m_y;
-	};
+        unsigned int m_x;
+        unsigned int m_y;
+    };
 
-	class SpriteMovie {
-	public:
+    /** @class SpriteMovie:
+     *  Detailed description.
+     *  @return TODO
+     */
+    class SpriteMovie {
+public:
 
-		SpriteMovie(std::string x, std::vector<SpriteFrame> y) 
-			: m_x(x), m_y(y) {
-		}
+        SpriteMovie(std::string x, std::vector<SpriteFrame> y)
+            : m_x(x), m_y(y) {}
 
-		std::string X() const { return m_x; }
-		std::vector<SpriteFrame> Y() const { return m_y; }
+        /** $(class), X:
+         *  Detailed description.
+         *  @return TODO
+         */
+        std::string X() const { return m_x; }
 
+        /** $(class), Y:
+         *  Detailed description.
+         *  @return TODO
+         */
+        std::vector<SpriteFrame> Y() const { return m_y; }
 
-	private:
-		std::string m_x;
-		std::vector<SpriteFrame> m_y;
-	};
+private:
 
+        std::string m_x;
+        std::vector<SpriteFrame> m_y;
+    };
 
     /** LevelA, OnInit:
      *  Detailed description.
@@ -241,9 +322,9 @@ public:
     bool LevelA::OnInit( int argc, char* argv[] ){
         // Master()->GetMainCanvas();
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-		m_pMainCanvas->Clear(CColor::Black());
+        m_pMainCanvas->Clear( CColor::Black() );
 
-		m_pOverlay.reset(new DebugOverlay(m_Loader, gui::controls::CControl::GetMainControl(), 1));
+        m_pOverlay.reset( new DebugOverlay(m_Loader, gui::controls::CControl::GetMainControl(), 1) );
 
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -252,21 +333,24 @@ public:
         //m_pArialfont =
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
-		
-		//	CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png") ));
-		CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ));
-		CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight());
-		//SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);
-		testCanvas->SetColorKey(CColor(0x00,0x00,0x00));
 
-		testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
+        //	CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png")
+        // ));
+        CCanvas tmpCanvas( SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ) );
+        CCanvas* testCanvas =
+            CCanvas::CreateRGBCompatible( NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
+        //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);
+        testCanvas->SetColorKey( CColor(0x00, 0x00, 0x00) );
 
+        testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
 
-		// das muss alles in die tiles engine. die muss wissen welchen ColorKey sie braucht und wie gross der canvas sein muss.
-		// braucht ihn ja nur einmal zu erstellen und kann ihn dann cachen.
-		CCanvas* tmpTilesCanvas = CCanvas::CreateRGBCompatible(NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight());
-		tmpTilesCanvas->SetColorKey(CColor(0x00,0x00,0x00));
-		m_pTiles.reset( tmpTilesCanvas );
+        // das muss alles in die tiles engine. die muss wissen welchen ColorKey sie braucht und wie
+        // gross der canvas sein muss.
+        // braucht ihn ja nur einmal zu erstellen und kann ihn dann cachen.
+        CCanvas* tmpTilesCanvas = CCanvas::CreateRGBCompatible( NULL,
+                m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
+        tmpTilesCanvas->SetColorKey( CColor(0x00, 0x00, 0x00) );
+        m_pTiles.reset( tmpTilesCanvas );
 
 // SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY
 
@@ -274,8 +358,8 @@ public:
         //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
         //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
         m_pBackground.reset( testCanvas );
-		//m_pBackground->SetColorKey(CColor::Black());
-		//SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 128);
+        //m_pBackground->SetColorKey(CColor::Black());
+        //SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 128);
 
         //CCanvas tmpCanvas( tmpfsurf );
         m_Loader.FreeLast();
@@ -297,63 +381,67 @@ public:
         //text->AddModifier(boost::ref( mtextfloat ));
         text->AddModifier( WavyTextFloat(64) );
         m_pScrollText.reset(text);
- 
-		// ### Tiles ###
 
+        // ### Tiles ###
 
+        // ###
 
-		// ###
-		
+        /*CTileSet* tileSet = NULL;
+           CTileImageSetup tilesetup;
+           tilesetup.TileSetName = LevelNames::LevelAName;
+           tilesetup.TileWidth = 32;
+           tilesetup.TileHeight = 32;
+           tilesetup.TileCountX = 13;
+           tilesetup.TileCountY = 2;
+           tilesetup.TransparentX = 0;
+           tilesetup.TransparentY = 0;
+           tilesetup.Sequences = 0;
+           tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader,
+              "data/levels/LevelA/LevelA.png", tilesetup),
+                m_pBackground.get(), CRectangle(0, 0, 1024, 768) );*/
 
-		/*CTileSet* tileSet = NULL;
-		CTileImageSetup tilesetup;
-		tilesetup.TileSetName = LevelNames::LevelAName;
-		tilesetup.TileWidth = 32;
-		tilesetup.TileHeight = 32;
-		tilesetup.TileCountX = 13;
-		tilesetup.TileCountY = 2;
-		tilesetup.TransparentX = 0;
-		tilesetup.TransparentY = 0;
-		tilesetup.Sequences = 0;
-		tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", tilesetup),
-			m_pBackground.get(), CRectangle(0, 0, 1024, 768) );*/
+        // Todo simplify this and let 'em load by CTileEngine with a simplified convention for the
+        // files
+        // LevelA.til, LevelA.map, LevelA.png ... hmmm no HumbugTiles.til contains descriptions for
+        // the available maps and the png
+        // so HumbugTiles.til can load the LevelA.png, cos that is inside the .til file
+        CTileSet* tileSet =
+            new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png",
+                            "data/levels/LevelA/HumbugTiles.til"),
+                    m_pBackground.get(), CRectangle(0, 0, 1024 * 2, 768 * 2) );
 
-		// Todo simplify this and let 'em load by CTileEngine with a simplified convention for the files
-		// LevelA.til, LevelA.map, LevelA.png ... hmmm no HumbugTiles.til contains descriptions for the available maps and the png
-		// so HumbugTiles.til can load the LevelA.png, cos that is inside the .til file
-		CTileSet *tileSet = new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png", "data/levels/LevelA/HumbugTiles.til"),
-			m_pBackground.get(), CRectangle(0, 0, 1024 * 2, 768 * 2) );
+        m_pTileEngine.reset( new CTileEngine( m_pMainCanvas, m_pBackground.get() ) );
+        m_pTileEngine->AddTileSet(tileSet);
 
-		m_pTileEngine.reset(new CTileEngine( m_pMainCanvas, m_pBackground.get() ));
-		m_pTileEngine->AddTileSet(tileSet);
+        //std::string humbugTilesTil =
+        // m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til");
+        //CTileMap *tmap = new
+        // CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til"));
+        CTileMap* tmap = new CTileMap( m_Loader.FL_LOADASSTRING("data/levels/LevelA/Map1.map") );
+        //FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
+        //tmap->ReadBinary(finf.Data(), finf.Size());
+        m_pTileEngine->AddTileMap(tmap);
+        //(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
 
-		//std::string humbugTilesTil = m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til");
-		//CTileMap *tmap = new CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til"));
-		CTileMap *tmap = new CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/Map1.map"));
-		//FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
-		//tmap->ReadBinary(finf.Data(), finf.Size());
-		m_pTileEngine->AddTileMap(tmap);
-		//(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
+        /*CTileEngine& eng = (*m_pTileEngine);
+           //(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles(
+              m_pBackground.get() );
 
-		/*CTileEngine& eng = (*m_pTileEngine);
-		//(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles( m_pBackground.get() );
-		
-		CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
-		CTile tile2 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(1);
-		CTile tile3 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(2);
-		CTile tile4 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(3);
+           CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
+           CTile tile2 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(1);
+           CTile tile3 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(2);
+           CTile tile4 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(3);
 
-		for (int i = 0; i < 2; i += 4)
-		{
-			const int xdiff = 100;
-			tile1.Draw( m_pBackground.get(), CPoint(xdiff * i, 300) );
-			tile2.Draw( m_pBackground.get(), CPoint(xdiff * (i + 1), 300) );
-			tile3.Draw( m_pBackground.get(), CPoint(xdiff * (i + 2), 300) );
-			tile4.Draw( m_pBackground.get(), CPoint(xdiff * (i + 3), 300) );
-		}
-		*/
-		m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
-
+           for (int i = 0; i < 2; i += 4)
+           {
+                const int xdiff = 100;
+                tile1.Draw( m_pBackground.get(), CPoint(xdiff * i, 300) );
+                tile2.Draw( m_pBackground.get(), CPoint(xdiff * (i + 1), 300) );
+                tile3.Draw( m_pBackground.get(), CPoint(xdiff * (i + 2), 300) );
+                tile4.Draw( m_pBackground.get(), CPoint(xdiff * (i + 3), 300) );
+           }
+         */
+        m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
 
         // ### Sprites ###
         m_pSprEye = new CSprite( m_Loader, "Sprites/male_spritesA.png", m_pMainCanvas,
@@ -366,6 +454,11 @@ public:
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
+		CSprite* m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
+			CRectangle(0, 0, 32, 32), CPoint(32, 0) );
+		//m_pSprMgr->AddSprite( m_pSprite2, hspriv::EyeMover(260, 4) );
+		m_pSprMgr->AddSprite( m_pSprite2, pimpl_->m_sprConstMover );
+
         //_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
         //_crtBreakAlloc = pimpl_->allocReqNum+4;
 
@@ -375,114 +468,109 @@ public:
         //shost.RunScript4(m_Loader.FL_LOADASSTRING("lua/iowrite.lua"));
         //shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
         //shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
-		//shost.RunScript7( m_Loader.FL_LOADASSTRING("lua/--FREE--.lua") );
+        //shost.RunScript7( m_Loader.FL_LOADASSTRING("lua/--FREE--.lua") );
 
-		typedef shost::LuaScript<int, double, double> ScriptType;
-		ScriptType::Script s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-			"lua/sprite1.lua"), "Ticks", "X", "Y" );
-		pimpl_->script = s;
+        typedef shost::LuaScript<int, double, double> ScriptType;
+        ScriptType::Script s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+                        "lua/sprite1.lua"), "Ticks", "X", "Y" );
+        pimpl_->script = s;
 
         world.FPS = CApplication::FramesCap();
         CRectangle screenRect = m_pMainCanvas->GetDimension();
         world.ScreenX = screenRect.GetW();
         world.ScreenY = screenRect.GetH();
 
-		// Todo maybe an functor to initialize more global stuff 
-		(*s->AddStatic(world))("World")
-			.def("greet", &greetHopperA)
-			.def_readonly("FPS", &World::FPS)
-			.def_readonly("ScreenX", &World::ScreenX)
-			.def_readonly("ScreenY", &World::ScreenY);
+        // Todo maybe an functor to initialize more global stuff
+        ( *s->AddStatic(world) )("World")
+        .def("greet", &greetHopperA)
+        .def_readonly("FPS", &World::FPS)
+        .def_readonly("ScreenX", &World::ScreenX)
+        .def_readonly("ScreenY", &World::ScreenY);
 
+        ScriptType::Script sprInit = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
+                        "Sprites/male_spritesA.spr"), "Ticks", "X", "Y" );
+        //ScriptType::Script sprInit = shost.generate<int, double, double>(
+        // m_Loader.FL_LOADASSTRING(
+        //	"Sprites/male_sprites.spr"), "Ticks", "X", "Y" );
 
+        TestClass st(12, 99);
 
-		ScriptType::Script sprInit = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-			"Sprites/male_spritesA.spr"), "Ticks", "X", "Y" );
-		//ScriptType::Script sprInit = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-		//	"Sprites/male_sprites.spr"), "Ticks", "X", "Y" );
+        ( *sprInit->AddStatic(st) )("TestClass", "tc")
+        .def( luabind::constructor<std::vector<int> >() )
+        .def( luabind::constructor<int, int>() )
+        .def("get", &TestClass::get);
 
-		TestClass st(12,99);
+        //boost::shared_ptr<shost::LuaScript::register_binder<SpriteFrame >>& bla=
+        int xyz = 55;
 
-		(*sprInit->AddStatic(st))("TestClass", "tc")
-			.def(luabind::constructor<std::vector<int> >())
-			.def(luabind::constructor<int, int>())
-			.def("get", &TestClass::get);
+        typedef shost::LuaVarCapsule<luabind::class_<SpriteFrame >> SprCapsule;
+        SprCapsule maleSpriteCap = shost::makeFarm( sprInit,
+                ( *sprInit->Register<SpriteFrame>() )("SpriteFrame")
+                .def( luabind::constructor<int, int>() )
+                .def("X", &SpriteFrame::X)
+                .def("Y", &SpriteFrame::Y) );
 
-		//boost::shared_ptr<shost::LuaScript::register_binder<SpriteFrame >>& bla=
-		int xyz = 55;
+        ( *sprInit->Register<SpriteMovie>() )("SpriteMovie")
+        .def( luabind::constructor<std::string, std::vector<SpriteFrame >> () )
+        .def("X", &SpriteMovie::X)
+        .def("Y", &SpriteMovie::Y);
 
-		typedef shost::LuaVarCapsule<luabind::class_<SpriteFrame>> SprCapsule;
-		SprCapsule maleSpriteCap = shost::makeFarm(sprInit,
-		(*sprInit->Register<SpriteFrame>())("SpriteFrame")
-			.def(luabind::constructor<int, int>())
-			.def("X", &SpriteFrame::X)
-			.def("Y", &SpriteFrame::Y));
+        //luabind::class_<SpriteFrame>& xasd = maleSpriteCap.Value();
+        //SprCapsule::ObjType mmy(1,2);
+        //mmy.X();
 
-		(*sprInit->Register<SpriteMovie>())("SpriteMovie")
-			.def(luabind::constructor<std::string, std::vector<SpriteFrame>>())
-			.def("X", &SpriteMovie::X)
-			.def("Y", &SpriteMovie::Y);
+        /*luabind::module(sprInit->L())
+                [
+                        luabind::class_<TestClass>("TestClass_")
+                        .def(luabind::constructor<std::vector<int> >())
+                        .def(luabind::constructor<int, int>())
+                        .def("get", &TestClass::get)
+                ];*/
 
-		//luabind::class_<SpriteFrame>& xasd = maleSpriteCap.Value();
-		//SprCapsule::ObjType mmy(1,2);
-		//mmy.X();
+        int success = sprInit->run_script(99);
 
-		/*luabind::module(sprInit->L())
-			[
-				luabind::class_<TestClass>("TestClass_")
-				.def(luabind::constructor<std::vector<int> >())
-				.def(luabind::constructor<int, int>())
-				.def("get", &TestClass::get)
-			];*/
+        luabind::object o3(luabind::globals( sprInit->L() )["tcx"]);
 
+        if (o3) {
+            // is_valid
+            // ...
 
-		int success = sprInit->run_script(99);
+            int luatype = luabind::type(o3);
 
-		luabind::object o3(luabind::globals(sprInit->L())["tcx"]);
-		if (o3)
-		{
-			// is_valid
-			// ...
+            if (luabind::type(o3) == LUA_TUSERDATA) {
+                TestClass otherValue = luabind::object_cast<TestClass>(o3);
+                int abc = 4;
+                abc++;
+            }
+        }
 
-			int luatype = luabind::type(o3);
-			if (luabind::type(o3) == LUA_TUSERDATA)
-			{
-				TestClass otherValue = luabind::object_cast<TestClass>(o3);
-				int abc = 4;
-				abc++;
-			}
-		}
+        SpriteFrame otherValue2(0, 0);
+        bool success3 = maleSpriteCap.GetLuaValue("spf", otherValue2);
+        SpriteFrame otherValuex = maleSpriteCap.GetLuaValue("spf");
 
-		SpriteFrame otherValue2(0,0);
-		bool success3 = maleSpriteCap.GetLuaValue("spf", otherValue2);
-		SpriteFrame otherValuex = maleSpriteCap.GetLuaValue("spf");
-		
-		SpriteFrame otherValue3(0,0);
-		bool fsuccess = sprInit->GetLuaValue<SpriteFrame>("spf", otherValue3);
+        SpriteFrame otherValue3(0, 0);
+        bool fsuccess = sprInit->GetLuaValue<SpriteFrame>("spf", otherValue3);
 
-		luabind::object o4(luabind::globals(sprInit->L())["spf"]);
-		if (o4)
-		{
-			// is_valid
-			// ...
+        luabind::object o4(luabind::globals( sprInit->L() )["spf"]);
 
-			int luatype = luabind::type(o4);
-			if (luabind::type(o4) == LUA_TUSERDATA)
-			{
-				SpriteFrame otherValue = luabind::object_cast<SpriteFrame>(o4);
-				int abc = 4;
-				abc++;
-			}
-		}
+        if (o4) {
+            // is_valid
+            // ...
 
+            int luatype = luabind::type(o4);
 
+            if (luabind::type(o4) == LUA_TUSERDATA) {
+                SpriteFrame otherValue = luabind::object_cast<SpriteFrame>(o4);
+                int abc = 4;
+                abc++;
+            }
+        }
 
+        //SpriteMovie otherValue3(0,0);
+        //fsuccess = sprInit->GetLuaValue<SpriteMovie>("spMovie", otherValue3);
+        SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
-		//SpriteMovie otherValue3(0,0);
-		//fsuccess = sprInit->GetLuaValue<SpriteMovie>("spMovie", otherValue3);
-		SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
-
-		//int *x = new int(666);
+        //int *x = new int(666);
 
         return Screen::OnInit(argc, argv);
     } // OnInit
@@ -497,10 +585,10 @@ public:
         pimpl_->script->run_script(ticks);
         double spr1X = pimpl_->script->GetData1();
         double spr1Y = pimpl_->script->GetData2();
-		//m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
+        //m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
-		m_pOverlay->IdleSetVars(ticks);
-		m_pSprMgr->OnIdle(ticks);
+        m_pOverlay->IdleSetVars(ticks);
+        m_pSprMgr->OnIdle(ticks);
     }
 
     /** LevelA, OnDraw:
@@ -509,20 +597,21 @@ public:
      */
     void LevelA::OnDraw(){
         static int coldelta = 0;
-		static int tilesDelta = 0;
-		tilesDelta += m_inScreenDelta;
+        static int tilesDelta = 0;
+        tilesDelta += m_inScreenDelta;
 
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Lock();
 
-		CPoint pDelta(tilesDelta, 0);
+        CPoint pDelta(tilesDelta, 0);
         m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() - pDelta );
 
-		(*m_pTileEngine)["Map1"].DrawMap(m_pTiles.get());
-		// (*m_pTileEngine)["Map1"].DrawMap(); sollte einen canvas zurueckgeben, der weiss wie gross er sein muss 
-		m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pTiles, m_pTiles->GetDimension() + pDelta );
+        (*m_pTileEngine)["Map1"].DrawMap( m_pTiles.get() );
+        // (*m_pTileEngine)["Map1"].DrawMap(); sollte einen canvas zurueckgeben, der weiss wie gross
+        // er sein muss
+        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pTiles, m_pTiles->GetDimension() + pDelta );
 
-		m_pMainCanvas->AddUpdateRect(m_pMainCanvas->GetDimension());
+        m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
         /*CRectangle frect(700, 500, 185, 185);
            SDL_Color* wavemap = ColorData::Instance()->Wavemap();
            int index = (coldelta * 2 & 63);
@@ -535,7 +624,7 @@ public:
         CRectangle txtDims = m_pScrollText->GetCanvas()->GetDimension();
         CRectangle dstDims = txtDims + CPoint( 335, 200);
         m_pScrollText->Put(m_pBackground.get(), dstDims, txtDims );
-		m_pMainCanvas->AddUpdateRect(dstDims);
+        m_pMainCanvas->AddUpdateRect(dstDims);
 
         coldelta++;
 
@@ -543,15 +632,15 @@ public:
             coldelta = 0;
         }
 
-		/*CTileEngine& eng = (*m_pTileEngine);
-		CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
-		const int xdiff = 100;
-		//tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
-		tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
-		*/
+        /*CTileEngine& eng = (*m_pTileEngine);
+           CTile tile1 = eng.GetTileSet(LevelNames::LevelAName)->CreateTile(0);
+           const int xdiff = 100;
+           //tile1.Draw( m_pBackground.get(), CPoint(coldelta * 5, 100) );
+           tile1.Draw( m_pMainCanvas, CPoint(coldelta * 5, 100) );
+         */
 
         m_pSprMgr->OnDraw();
-		m_pOverlay->OnDraw();
+        m_pOverlay->OnDraw();
 
         m_pMainCanvas->Unlock();
     } // OnDraw
@@ -566,40 +655,56 @@ public:
         mcol.SetR( rand() );
         mcol.SetG( rand() );
         mcol.SetB( rand() );
+
+		pimpl_->UpdatePlayer();
         //m_iUpdateTimes++;
     }
 
+    /** $(class), OnEvent:
+     *  Detailed description.
+     *  @param pEvent TODO
+     * @return TODO
+     */
+    void LevelA::OnEvent( SDL_Event* pEvent ){
+        switch(pEvent->type)
+        {
+        case SDL_KEYDOWN:                            //key press
+        {
+            //key press
+            //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+            SDLKey sym = pEvent->key.keysym.sym;
 
-	void LevelA::OnEvent( SDL_Event* pEvent ){
-		switch(pEvent->type)
-		{
-		case SDL_KEYDOWN:                    //key press
-			{
-				//key press
-				//OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-				SDLKey sym = pEvent->key.keysym.sym;
-				if( sym == SDLK_a )   {
-					m_inScreenDelta++;
-				}
-				else if( sym == SDLK_d )   {
-					m_inScreenDelta--;
-				}
-				else if( sym == SDLK_r )   {
-					CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-					m_pMainCanvas->Clear(CColor::Black());
-				}
-				else if( sym == SDLK_x )   {
-					//CApplication::GetApplication()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4)
-					//SendMessageQ(MSGID_QuitApp);
-					CApplication::GetApplication()->SendMessageQ(gui::CEventHandler::MSGID_QuitApp);
-				}
-				break;
-			}
+            if( sym == SDLK_w ) {
+                pimpl_->m_player.Move( GVector2D::Up() );
+            }
+            else if( sym == SDLK_s ) {
+                pimpl_->m_player.Move( GVector2D::Down() );
+            }
 
-		default:
-			break;
-		}     // switch
-	} // OnEvent
+            if( sym == SDLK_a ) {
+                m_inScreenDelta++;
+                pimpl_->m_player.Move( GVector2D::Left() );
+            }
+            else if( sym == SDLK_d ) {
+                m_inScreenDelta--;
+                pimpl_->m_player.Move( GVector2D::Right() );
+            }
+            else if( sym == SDLK_r ) {
+                CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+                m_pMainCanvas->Clear( CColor::Black() );
+            }
+            else if( sym == SDLK_x ) {
+                //CApplication::GetApplication()->SendMessageQ(MsgID,Parm1,Parm2,Parm3,Parm4)
+                //SendMessageQ(MSGID_QuitApp);
+                CApplication::GetApplication()->SendMessageQ(gui::CEventHandler::MSGID_QuitApp);
+            }
 
+            break;
+        }
+
+        default:
+            break;
+        }             // switch
+    }     // OnEvent
   }
 }
