@@ -17,49 +17,67 @@
 #ifndef PROJECT_PLAYERKEYS2_H
 #define PROJECT_PLAYERKEYS2_H
 #include "GUI/Components/Point.h"
-#include "SDL.h"
 #include "HumbugShared/GameObjects/GPoint2D.h"
+#include "SDL.h"
 
 namespace humbug {
-
 // see http://content.gpwiki.org/index.php/SDL:Tutorials:Practical_Keyboard_Input
-class PlayerKeys2 {
+  class PlayerKeys2 {
 public:
 
-    PlayerKeys2(float x = 0, float y = 0);
-    ~PlayerKeys2();
-    void HookEventloop(SDL_Event* pEvent);
+      PlayerKeys2(float x = 0, float y = 0);
+      ~PlayerKeys2();
+      void HookEventloop(SDL_Event* pEvent);
 
-    void HookKeyDown(SDLKey sym);
+      /** PlayerKeys2, HookIdle:
+       *  Here we update the player movement.
+       *  @return TODO
+       */
+      void HookIdle(int ticks, float speed);
 
-    void HookKeyUp(SDLKey sym);
+      /** $(class), Char:
+       *  Detailed description.
+       *  @return TODO
+       */
+      gui::components::CPoint Char() const { return gui::components::CPoint( static_cast<int>( m_position.x),
+                                                     static_cast<int>(m_position.y) ); }
 
-  /** PlayerKeys2, HookIdle:
-   *  Here we update the player movement.
-   *  @return TODO
-   */
-    void HookIdle(float speed);
+      /** $(class), CharX:
+       *  Detailed description.
+       *  @return TODO
+       */
+      float CharX() const { return m_position.x; }
 
-    gui::components::CPoint Char() const { return gui::components::CPoint(static_cast<int>( m_position.x), static_cast<int>(m_position.y)); }
+      /** $(class), CharX:
+       *  Detailed description.
+       *  @param val TODO
+       */
+      void CharX(float val) { m_position.x = val; }
 
-    float CharX() const { return m_position.x; }
+      /** $(class), CharY:
+       *  Detailed description.
+       *  @return TODO
+       */
+      float CharY() const { return m_position.y; }
 
-    void CharX(float val) { m_position.x = val; }
+      /** $(class), CharY:
+       *  Detailed description.
+       *  @param val TODO
+       */
+      void CharY(float val) { m_position.y = val; }
 
-    float CharY() const { return m_position.y; }
-
-    void CharY(float val) { m_position.y = val; }
-
-    friend std::ostream& operator<<(std::ostream& o, const PlayerKeys2& r);
+      friend std::ostream& operator<<(std::ostream& o, const PlayerKeys2& r);
 
 private:
 
-	gob::GVector2D m_direction;
-	gob::GPoint2D m_position;
-	float speed;
-};
-std::ostream& operator<<(std::ostream& o, const PlayerKeys2& r);
+      gob::GVector2D m_direction;
+      gob::GPoint2D m_position;
+      float m_speed;
+	  int m_lastTick;
+	  float m_curspeed;
+  };
 
+  std::ostream& operator<<(std::ostream& o, const PlayerKeys2& r);
 }
 
 #endif // PROJECT_PLAYERKEYS2_H guard

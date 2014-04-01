@@ -68,6 +68,9 @@ void CText::Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& sr
     //canvas->AddUpdateRect(canvas->GetDimension());
 }
 
+void CText::Put(CCanvas *canvas, const CRectangle& dstRect) const {
+	Put(canvas, dstRect, GetCanvas()->GetDimension());
+}
 void CText::RunModifiers(CCanvas *textcanvas) const
 {
     /*return;

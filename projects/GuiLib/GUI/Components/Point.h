@@ -31,6 +31,7 @@ public:
 
 	//setter
 	CPoint& Set ( int x , int y ) ;
+	CPoint Offset ( int x , int y ) ;
 	CPoint& Copy ( CPoint& pt ) ;
 
 	//move

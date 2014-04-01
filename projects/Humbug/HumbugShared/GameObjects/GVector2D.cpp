@@ -135,4 +135,10 @@ namespace gob {
   gob::GVector2D GVector2D::Right(){
       return GVector2D(1, 0);
   }
+
+  gob::GVector2D GVector2D::Zero()
+  {
+	  return GVector2D(0, 0);
+  }
+
 }

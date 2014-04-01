@@ -33,6 +33,10 @@ public:
       GVector2D operator+(const GVector2D &vect) const;
 
       GVector2D operator-(const GVector2D &vect) const;
+	  bool operator ==(const GVector2D& v) const
+	  {
+		  return ((x == v.x) && (y == v.y));
+	  }
 
       void rotate(float angle);
 
@@ -53,7 +57,9 @@ public:
 
       static GVector2D Left();
 
-      static GVector2D Right();
+	  static GVector2D Right();
+	  
+	  static GVector2D Zero();
   };
 }
 #endif // GAMEOBJECTS_GVECTOR2D_H

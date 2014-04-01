@@ -21,7 +21,7 @@
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 //
-#include "../PlayerKeys.h"
+#include "../Input/PlayerKeys.h"
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Image.h"
 #include "GUI/Components/Rectangle.h"

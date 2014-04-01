@@ -24,7 +24,7 @@ using namespace gob;
 //#include <build/cmake/include/debug.h>
 namespace humbug {
   PlayerKeys2::PlayerKeys2(float x, float y) :
-      m_position(x,y){
+      m_position(x, y), m_speed(0), m_lastTick(0){
       dbgOut(__FUNCTION__);
   }
 
@@ -32,68 +32,45 @@ namespace humbug {
       dbgOut(__FUNCTION__);
   }
 
-  /** PlayerKeys2, HookKeyDown:
-   *  Detailed description.
-   *  @param sym TODO
-   * @return TODO
-   */
-  void PlayerKeys2::HookKeyDown(SDLKey sym){
-      switch(sym) {
-      case SDLK_LEFT:
-		  m_direction = m_direction + GVector2D::Left();
-          break;
-      case SDLK_RIGHT:
-		  m_direction = m_direction + GVector2D::Right();
-		  break;
-      case SDLK_UP:
-		  m_direction = m_direction + GVector2D::Up();
-		  break;
-      case SDLK_DOWN:
-		  m_direction = m_direction + GVector2D::Down();
-		  break;
-      default:
-          break;
-      } // switch
-  } // HookKeyDown
-
-  /** PlayerKeys2, HookKeyUp:
-   *  Detailed description.
-   *  @param sym TODO
-   * @return TODO
-   */
-  void PlayerKeys2::HookKeyUp( SDLKey sym ){
-      switch(sym) {
-      case SDLK_LEFT:
-		  m_direction = m_direction - GVector2D::Left();
-		  break;
-      case SDLK_RIGHT:
-		  m_direction = m_direction - GVector2D::Right();
-		  break;
-      case SDLK_UP:
-		  m_direction = m_direction - GVector2D::Up();
-		  break;
-      case SDLK_DOWN:
-		  m_direction = m_direction - GVector2D::Down();
-		  break;
-      default:
-          break;
-      } // switch
-  } // HookKeyUp
-
   /** PlayerKeys2, HookEventloop:
    *  Detailed description.
    *  @param keyevent TODO
    * @return TODO
    */
   void PlayerKeys2::HookEventloop( SDL_Event* keyevent ){
+      float mul = 0;
 
-      if (keyevent->type == SDL_KEYDOWN) {
-          HookKeyDown(keyevent->key.keysym.sym);
-      }
+      switch(keyevent->type) {
+      case SDL_KEYDOWN:
+          mul = 1;
+          break;
+      case SDL_KEYUP:
+          mul = -1;
+          break;
+      default:
+          return;
+      }     // switch
 
-      if (keyevent->type == SDL_KEYUP) {
-          HookKeyUp(keyevent->key.keysym.sym);
-      }
+      switch(keyevent->key.keysym.sym) {
+	  case SDLK_LEFT:
+	  case SDLK_a:
+          m_direction = m_direction + GVector2D::Left() * mul;
+          break;
+      case SDLK_RIGHT:
+	  case SDLK_d:
+		  m_direction = m_direction + GVector2D::Right() * mul;
+          break;
+      case SDLK_UP:
+	  case SDLK_w:
+		  m_direction = m_direction + GVector2D::Down() * mul;
+          break;
+      case SDLK_DOWN:
+	  case SDLK_s:
+		  m_direction = m_direction + GVector2D::Up() * mul;
+          break;
+      default:
+          break;
+      }     // switch
 
       //HookIdle();
   } // HookEventloop
@@ -102,24 +79,36 @@ namespace humbug {
    *  Here we update the player movement.
    *  @return TODO
    */
-  void PlayerKeys2::HookIdle(float speed){
+  void PlayerKeys2::HookIdle(int ticks, float speed){
       //These continue to accelerate the character if the user is holding
       // down a button.
-	  m_position = m_position + m_direction;
+	  float tickDelta = ticks - m_lastTick;
+	  m_curspeed += ( tickDelta / 50 ) * speed;
+	  if (m_direction == GVector2D::Zero())
+	  {
+		  m_curspeed = 0;
+	  }
+	  if (m_curspeed > speed)
+	  {
+		  m_curspeed = speed;
+	  }
+
+      m_position = m_position + ( m_direction * m_curspeed );
 
       /*if (charx < 0) {
           charx = 0;
-      }
-      else if (charx > 1024) {
+         }
+         else if (charx > 1024) {
           charx = 1024;
-      }
+         }
 
-      if (chary < 0) {
+         if (chary < 0) {
           chary = 0;
-      }
-      else if (chary > 768) {
+         }
+         else if (chary > 768) {
           chary = 768;
-      }*/
+         }*/
+	  m_lastTick = ticks;
   } // HookIdle
 
   /** $(fclass), operator <<:
@@ -130,8 +119,8 @@ namespace humbug {
    */
   std::ostream& operator<<(std::ostream& o, const PlayerKeys2& r) {
       return o << "PlayerKeys2[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
-                                      << ", W=" << r.GetW() << ", H=" << r.GetH()
-                                      <<*/
+                                       << ", W=" << r.GetW() << ", H=" << r.GetH()
+                                       <<*/
              " ]";
   }
 }

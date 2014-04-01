@@ -90,6 +90,7 @@ namespace humbug {
 
 
 	  CColor m_colText = CColor::White();
+	  CColor m_colBack = CColor::Black();
 	  std::ostringstream outstring;
 	  outstring << "Ticks: " << m_ticks;
 
@@ -97,6 +98,7 @@ namespace humbug {
 
 	  CRectangle txtDims = text.GetCanvas()->GetDimension();
 	  CRectangle dstDims = globalPosition;
+	  pCanvas->FillRect(txtDims, m_colBack);
 	  text.Put(pCanvas, dstDims, txtDims );
 
 	  pCanvas->AddUpdateRect(dstDims);

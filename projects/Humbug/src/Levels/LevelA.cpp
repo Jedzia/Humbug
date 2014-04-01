@@ -77,7 +77,67 @@ using namespace humbug::screens;
 
 namespace humbug {
   namespace levels {
-    struct LevelA::LevelAImpl {
+	  class Introplayer
+	  {
+	  public:
+		  Introplayer(FileLoader& loader, CCanvas* background)
+			  : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_done(false)
+		  {
+			  m_pArialfont = loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
+			  m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
+			  SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 5);
+		  };
+		  void SetBackground(CCanvas * val) { m_pBackground = val; }
+		  bool IsDone() const { return m_done; }
+
+		  void OnIdle(int ticks)
+		  {
+			  if (m_done)
+			  {
+				  return;
+			  }
+
+			  if (m_firstTick < 0)
+			  {
+				  m_firstTick = ticks;
+			  }
+
+			  int curTicks = ticks - m_firstTick;
+			  if (curTicks > 600)
+			  {
+				  m_done = true;
+			  }
+
+			  if (curTicks > 0 && curTicks < 300 )
+			  {
+
+			  CText infoText(m_pArialfont, "Hoho Du Nase", CColor::Red());
+			  //infoText.Put(m_pBackground, m_pBackground->GetDimension());
+			  infoText.Put(m_canvas, m_canvas->GetDimension() + CPoint(200,400));
+
+			  //m_canvas->Blit(m_pBackground->GetDimension(), *m_pBackground, m_canvas->GetDimension());
+			  m_pBackground->Blit(m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension());
+			  m_pBackground->AddUpdateRect(m_pBackground->GetDimension());
+			  }
+
+			  m_lastTick = ticks;
+		  };
+	  private:
+		  CCanvas *m_pBackground;
+		  CCanvas *m_canvas;
+		  TTF_Font* m_pArialfont;
+		  int m_lastTick;
+		  int m_firstTick;
+		  bool m_done;
+	  };
+
+
+	  struct LevelA::LevelAImpl {
+
+		  LevelAImpl(FileLoader& loader, CCanvas* background)
+			  : m_intro(loader, background)
+		  {
+		  };
         /** @class SprConstMover:
          *  Detailed description.
          *  @param sprite TODO
@@ -118,6 +178,11 @@ public:
 			m_sprConstMover.Y(y);
 
 		};
+		
+		void DoIntro(int ticks)
+		{
+			m_intro.OnIdle(ticks);
+		}
 
 		void UpdatePlayer(CPoint& p)
 		{
@@ -136,10 +201,11 @@ public:
         boost::shared_ptr<shost::LuaScript<int, double, double >> script;
         Player m_player;
 		SprConstMover m_sprConstMover;
+		Introplayer m_intro;
     };
 
     LevelA::LevelA( FileLoader& loader, CCanvas* background) :
-        pimpl_(new LevelA::LevelAImpl ),
+        pimpl_(new LevelA::LevelAImpl(loader, background) ),
         Screen(background),
         m_Loader(loader),
         m_pArialfont(NULL),
@@ -359,7 +425,7 @@ private:
         // gross der canvas sein muss.
         // braucht ihn ja nur einmal zu erstellen und kann ihn dann cachen.
         CCanvas* tmpTilesCanvas = CCanvas::CreateRGBCompatible( NULL,
-                m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
+                m_pMainCanvas->GetWidth() * 2, m_pMainCanvas->GetHeight() );
         tmpTilesCanvas->SetColorKey( CColor(0x00, 0x00, 0x00) );
         m_pTiles.reset( tmpTilesCanvas );
 
@@ -433,6 +499,7 @@ private:
         //tmap->ReadBinary(finf.Data(), finf.Size());
         m_pTileEngine->AddTileMap(tmap);
         //(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());
+		(*m_pTileEngine)["Map1"].DrawMap( m_pTiles.get() );
 
         /*CTileEngine& eng = (*m_pTileEngine);
            //(*m_pTileEngine)[LevelNames::LevelAName]->GetTileImage()->ShowTiles(
@@ -581,7 +648,7 @@ private:
         SpriteMovie smovie = sprInit->GetLuaValue<SpriteMovie>("spMovie");
 
         //int *x = new int(666);
-		m_pKeyHandler.reset(new PlayerKeys2(200, 200));
+		m_pKeyHandler.reset(new PlayerKeys2(200, 600));
 
         return Screen::OnInit(argc, argv);
     } // OnInit
@@ -598,9 +665,10 @@ private:
         double spr1Y = pimpl_->script->GetData2();
         //m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
-		m_pKeyHandler->HookIdle(10);
+		m_pKeyHandler->HookIdle(ticks, 5);
 		m_pOverlay->IdleSetVars(ticks);
         m_pSprMgr->OnIdle(ticks);
+		pimpl_->DoIntro(ticks);
     }
 
     /** LevelA, OnDraw:
@@ -608,6 +676,10 @@ private:
      *  @return TODO
      */
     void LevelA::OnDraw(){
+		if (!pimpl_->m_intro.IsDone())
+		{
+			return;
+		}
         static int coldelta = 0;
         static int tilesDelta = 0;
         tilesDelta += m_inScreenDelta;
@@ -615,13 +687,14 @@ private:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Lock();
 
+		CPoint pTilesDelta(m_pKeyHandler->Char().GetX() - 200, 0);
         CPoint pDelta(tilesDelta, 0);
         m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() - pDelta );
 
-        (*m_pTileEngine)["Map1"].DrawMap( m_pTiles.get() );
+        //(*m_pTileEngine)["Map1"].DrawMap( m_pTiles.get() );
         // (*m_pTileEngine)["Map1"].DrawMap(); sollte einen canvas zurueckgeben, der weiss wie gross
         // er sein muss
-        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pTiles, m_pTiles->GetDimension() + pDelta );
+        m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pTiles, m_pTiles->GetDimension() + pTilesDelta );
 
         m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
         /*CRectangle frect(700, 500, 185, 185);
@@ -668,7 +741,7 @@ private:
         mcol.SetG( rand() );
         mcol.SetB( rand() );
 
-		pimpl_->UpdatePlayer();
+		//pimpl_->UpdatePlayer();
 		pimpl_->UpdatePlayer(m_pKeyHandler->Char());
         //m_iUpdateTimes++;
     }

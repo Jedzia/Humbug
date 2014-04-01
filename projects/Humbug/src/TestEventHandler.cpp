@@ -31,6 +31,7 @@
 #include "HumbugLib/src/HumbugLib/AppGB.h"
 #include "Screens/TileScreen.h"
 #include "GUI/Components/MainCanvas.h"
+#include "GUI/Components/Text.h"
 
 namespace humbug {
 
@@ -244,7 +245,39 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             //SDL_FreeSurface( loadsurf );
             fl->FreeLast();
 
-            //SDL_FreeSurface( tmpsurf );
+			int fontsize = 48;
+			CPoint sp(220, 240);
+			TTF_Font *iarial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
+
+			const char *lines[] = { 
+				"Press '1' for: TestScreen",
+				"Press '2' for: TestLevel",
+				"Press '3' for: HighscoreScreen",
+				"Press '4' for: BlaScreen",
+				"Press '5' for: TileScreen",
+				"Press '6' for: LuaScreen",
+				"Press '7' for: HopperScreen",
+				"Press '8' for: LevelA"
+			};
+
+			for (int i = 0; i < 8 ; i++)
+			{
+				const char *cur = lines[i];
+				CText infoText(iarial, cur, CColor::Black());
+				infoText.Put(m_pMainCanvas, screenrect + sp.Offset(0, ( i * (fontsize + 10))));
+			}
+
+			/*std::ostringstream outstring;
+			outstring << "Press '1' for: StartScreen";
+			CText infoText(iarial, outstring.str(), CColor::Red());
+			infoText.Put(m_pMainCanvas, screenrect + sp);
+
+			outstring.str(std::string());
+			outstring << "Press '2' for: TestScreen";
+			CText infoText2(iarial, outstring.str(), CColor::Red());
+			infoText2.Put(m_pMainCanvas, screenrect + sp.Offset(0, ( 1 * (fontsize + 10))));*/
+			//infoText2.Put(m_pMainCanvas, screenrect + CPoint(100, 200));
+			//SDL_FreeSurface( tmpsurf );
         }
 
         //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));

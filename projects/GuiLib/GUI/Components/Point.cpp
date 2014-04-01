@@ -241,6 +241,11 @@ bool CPoint::operator != ( CPoint& pt )
 	return ( !( ( *this ) == pt ) ) ;
 }
 
+CPoint CPoint::Offset( int x , int y )
+{
+	return CPoint(X()+ x, Y() + y);
+}
+
 CPoint operator * ( int scalar , CPoint& pt )
 {
 	//scalar*pt rather than pt*scalar, still the same idea...
