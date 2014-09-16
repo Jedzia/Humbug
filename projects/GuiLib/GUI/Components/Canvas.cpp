@@ -1,6 +1,8 @@
 #include "../../stdafx.h"
 #include "Canvas.h"
 #include <memory.h>
+//
+#include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
@@ -53,7 +55,7 @@ void CCanvas::Unlock ( ) const {
 CColor CCanvas::GetPixel ( int x, int y ){
     Uint32 color = 0;
     int position = y * GetSurface ( )->pitch + GetSurface ( )->format->BytesPerPixel * x;
-    char* buffer = ( char * ) GetSurface ( )->pixels;
+    char* buffer = static_cast<char *>(GetSurface ( )->pixels);
     buffer += position;
     memcpy ( &color, buffer, GetSurface ( )->format->BytesPerPixel );
     CColor col;
@@ -63,7 +65,7 @@ CColor CCanvas::GetPixel ( int x, int y ){
 
 void CCanvas::SetPixel ( int x, int y, CColor& color ){
     int position = y * GetSurface ( )->pitch + GetSurface ( )->format->BytesPerPixel * x;
-    char* buffer = ( char * ) GetSurface ( )->pixels;
+    char* buffer = static_cast<char *>(GetSurface ( )->pixels);
     buffer += position;
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.R ( ), color.G ( ), color.B ( ) );
     memcpy ( buffer, &col, GetSurface ( )->format->BytesPerPixel );
@@ -109,7 +111,7 @@ void CCanvas::UpdateRects ( ){
     list < SDL_Rect * >::iterator iter;
     SDL_Rect* pRect;
 
-    for ( iter = m_lstUpdateRects.begin ( ); iter != m_lstUpdateRects.end ( ); iter++ )
+    for ( iter = m_lstUpdateRects.begin ( ); iter != m_lstUpdateRects.end ( ); ++iter )
     {
         pRect = *iter;
 

@@ -38,6 +38,9 @@
 #include <boost/lambda/lambda.hpp>
 #include <cstdlib>
 
+//
+#include <build/cmake/include/debug.h>
+
 struct LevelNames
 {
     static const char * const LevelAName;
@@ -90,6 +93,13 @@ public:
             m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
             SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 5);
         }
+
+		~Introplayer()
+        {
+	        delete m_canvas;
+        }
+
+
         /** SprConstMover, SetBackground:
          *  Detailed description.
          *  @param val TODO
@@ -120,7 +130,6 @@ public:
             if (curTicks > 400) {
                 m_done = true;
             }
-
             if ((m_step == 0) && (curTicks > 0 && curTicks < 200) ) {
                 CText infoText( m_pArialfont, "And Now...", CColor::Red() );
                 //infoText.Put(m_pBackground, m_pBackground->GetDimension());
@@ -449,7 +458,7 @@ private:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Clear( CColor::Black() );
 
-        m_pOverlay.reset( new DebugOverlay(m_Loader, gui::controls::CControl::GetMainControl(), 1) );
+        m_pOverlay.reset( new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1) );
 
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -580,7 +589,7 @@ private:
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 
-        CSprite* m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
+        CSprite* m_pSprite2 = new CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
                 CRectangle(0, 0, 32, 32), CPoint(32, 0) );
         m_pSprMgr->AddSprite( m_pSprite2, boost::ref( pimpl_->m_sprConstMover ) );
 
