@@ -180,3 +180,4 @@ TargetLinkBoost(HumbugShared "filesystem;system;regex")
 #ADD_DEPENDENCIES(HumbugShared CppStructz)
 ADD_PRECOMPILED_HEADER(HumbugShared stdafx.h stdafx.h.gch)
 
+ADD_SUBDIRECTORY( UnitTests )

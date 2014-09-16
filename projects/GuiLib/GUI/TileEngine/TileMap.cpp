@@ -54,19 +54,19 @@ namespace gui {
               char buf[256];
               size_t len = 0;
 
-              while (htstrstr.read( (char *)&buf[len], sizeof(char) ) != 0)
+              while (htstrstr.read( const_cast<char *>(&buf[len]), sizeof(char) ) != 0)
               {
                   if (buf[len] == 0) {
                       break;
                   }
-                  else if (buf[len] == '(') {
-                      continue;
-                  }
-                  else if (buf[len] == ')') {
-                      break;
-                  }
+	              if (buf[len] == '(') {
+		              continue;
+	              }
+	              if (buf[len] == ')') {
+		              break;
+	              }
 
-                  len++;
+	              len++;
 
                   if ( len > sizeof(buf) ) {
                       break;
@@ -111,7 +111,7 @@ namespace gui {
          }*/
 
       uint16_t data[] = {1234, 5678};
-      char* dataPtr = (char *)&data;
+      char* dataPtr = reinterpret_cast<char *>(&data);
 
       /*typedef boost::iostreams::basic_array_sink<char> ODevice;
          boost::iostreams::stream_buffer<ODevice> obuffer(buf, sizeof(buf));
@@ -146,7 +146,7 @@ namespace gui {
       char byte1[256];
       size_t len = 0;
 
-      while (buffer.read( (char *)&byte1[len], sizeof(char) ) != 0)
+      while (buffer.read( const_cast<char *>(&byte1[len]), sizeof(char) ) != 0)
       {
           if (byte1[len] == 0) {
               break;

@@ -14,6 +14,8 @@
    Playground\Debug\csz_textdocument.exe
    msbuild Humbug.sln /m /v:d /p:Configuration=Debug /t:Library\CppStructz
    msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-CppStructz_src_UnitTests-unit_test_example_01
+   msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-HumbugLib_src_UnitTests-unit_test_example_01
+   msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-Humbug_HumbugShared_UnitTests-unit_test_example_01
    msbuild Humbug.sln /p:Configuration=Debug /t:Playground\plugin\plugin
    msbuild Humbug.sln /p:Configuration=Debug /t:Playground\templates_statemachine
    msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:ALL_BUILD
