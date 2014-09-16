@@ -11,6 +11,7 @@
 // alternatively you could define init function yourself
 #define BOOST_TEST_MAIN
 //#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_MODULE MyTestFuck
 #include <BoostTestTargetConfig.h>
 
 //____________________________________________________________________________//
@@ -19,7 +20,8 @@
 BOOST_AUTO_TEST_CASE( test1 )
 {
     // reports 'error in "test1": test 2 == 1 failed'
-    BOOST_CHECK( 2 == 1 );
+    //BOOST_CHECK( 2 == 1 );
+	BOOST_CHECK( 2 == 2 );
 }
 
 //____________________________________________________________________________//

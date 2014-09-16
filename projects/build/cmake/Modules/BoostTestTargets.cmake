@@ -247,13 +247,15 @@ function(add_boost_test _name)
 		if(TESTS AND ( "${Boost_VERSION}" VERSION_GREATER "103799" ))
 			foreach(_test ${TESTS})
 				add_test(NAME
-					${_name}-${_test}
+					${PROJECT_NAME}-${_name}-${_test}
 					COMMAND
 					${_test_command}
 					--run_test=${_test}
 					${Boost_TEST_FLAGS})
+					message(STATUS
+						"[TEST] adding boost::test target: ${PROJECT_NAME}-${_name}-${_test}")
 				if(FAIL_REGULAR_EXPRESSION)
-					set_tests_properties(${_name}-${_test}
+					set_tests_properties(${PROJECT_NAME}-${_name}-${_test}
 						PROPERTIES
 						FAIL_REGULAR_EXPRESSION
 						"${FAIL_REGULAR_EXPRESSION}")
@@ -261,12 +263,14 @@ function(add_boost_test _name)
 			endforeach()
 		else()
 			add_test(NAME
-				${_name}-boost_test
+				${PROJECT_NAME}-${_name}-boost_test
 				COMMAND
 				${_test_command}
 				${Boost_TEST_FLAGS})
+				message(STATUS
+					"[TEST] adding boost::test target: ${PROJECT_NAME}-${_name}-boost_test")
 			if(FAIL_REGULAR_EXPRESSION)
-				set_tests_properties(${_name}-${_test}
+				set_tests_properties(${PROJECT_NAME}-${_name}-boost_test
 					PROPERTIES
 					FAIL_REGULAR_EXPRESSION
 					"${FAIL_REGULAR_EXPRESSION}")

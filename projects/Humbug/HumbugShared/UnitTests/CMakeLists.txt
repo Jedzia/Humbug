@@ -2,7 +2,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-PROJECT( HumbugSharedTest )
+#PROJECT( HumbugSharedTest )
 
 INCLUDE(BoostTestTargets)
 ADD_BOOST_TEST(unit_test_example_01
