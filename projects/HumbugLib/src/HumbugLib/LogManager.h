@@ -162,9 +162,13 @@ public:
   /** @} */
   /** @} */
 }
-
+#ifndef LOGMANAGER_NOLOG
+#define dbgOut(x) 
+#define LOGSTD(x) 
+#define LOGSTREAM std::cerr
+#else
 #define dbgOut(x) humbuglib::LogManager::getSingleton().stream() << x
 #define LOGSTD(x) humbuglib::LogManager::getSingleton().stream() << x
 #define LOGSTREAM humbuglib::LogManager::getSingleton().stream()
-
+#endif
 #endif // ifndef __LogManager_H__

@@ -1,3 +1,10 @@
+-X-X-X-X- Mittwoch, 17. September 2014 -----------------------------------------------------------------------------
+
+For Unit Testing
+E:\Projects\C++\Humbug\build2008x64>
+msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-Humbug_HumbugShared_UnitTests-gameobjects && Humbug\HumbugShared\UnitTests\Debug\boosttest-Humbug_HumbugShared_UnitTests-gameobjects.exe -r detailed
+
+----------------------------------------------------------------------------------------------------------------
 
 -X-X-X-X- Sa, 08 Mrz 2014 23:03:38 -----------------------------------------------------------
 ; --------------------------------------------------------
