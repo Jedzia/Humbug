@@ -14,12 +14,38 @@
 #define BOOST_TEST_MODULE HumbugShared_GVector2D
 #include <BoostTestTargetConfig.h>
 
-#define LOGMANAGER_NOLOG 1
+//#define LOGMANAGER_NOLOG 1
+#include <HumbugLib/LogManager.h>
 #include <HumbugShared/GameObjects/GVector2D.h>
-//#include <HumbugLib/LogManager.h>
 
 using namespace gob;
-//humbuglib::LogManager* mLogManager;
+
+struct MyConfig
+{
+	MyConfig()
+	{
+		std::cout << "global setup\n";
+		if (humbuglib::LogManager::getSingletonPtr() == 0)
+		{
+			mLogManager = new humbuglib::LogManager();
+			mLogManager->createLog("log.txt", true, true);
+		}
+	}
+
+	~MyConfig()
+	{
+		std::cout << "global teardown\n";
+		delete mLogManager;
+	}
+
+	humbuglib::LogManager* mLogManager;
+};
+
+//filesystem* MyConfig::fsys = 0;
+
+//____________________________________________________________________________//
+
+BOOST_GLOBAL_FIXTURE( MyConfig ) ;
 
 //____________________________________________________________________________//
 

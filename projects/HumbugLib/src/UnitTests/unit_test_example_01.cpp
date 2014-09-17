@@ -18,6 +18,7 @@
 // most frequently you implement test cases as a free functions with automatic registration
 BOOST_AUTO_TEST_CASE( test1 )
 {
+	BOOST_TEST_MESSAGE( "setup fixture" );
     // reports 'error in "test1": test 2 == 1 failed'
     BOOST_CHECK( 2 == 2 );
 }
