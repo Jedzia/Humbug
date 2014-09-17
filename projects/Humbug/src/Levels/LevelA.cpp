@@ -474,7 +474,8 @@ private:
         CCanvas* testCanvas =
             CCanvas::CreateRGBCompatible( NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
         //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);
-        testCanvas->SetColorKey( CColor(0x00, 0x00, 0x00) );
+	    CColor c_color = CColor(0x00, 0x00, 0x00);
+	    testCanvas->SetColorKey( c_color );
 
         testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
 
@@ -483,7 +484,7 @@ private:
         // braucht ihn ja nur einmal zu erstellen und kann ihn dann cachen.
         CCanvas* tmpTilesCanvas = CCanvas::CreateRGBCompatible( NULL,
                 m_pMainCanvas->GetWidth() * 2, m_pMainCanvas->GetHeight() );
-        tmpTilesCanvas->SetColorKey( CColor(0x00, 0x00, 0x00) );
+        tmpTilesCanvas->SetColorKey( c_color );
         m_pTiles.reset( tmpTilesCanvas );
 
 // SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY
@@ -799,7 +800,8 @@ private:
         mcol.SetB( rand() );
 
         //pimpl_->UpdatePlayer();
-        pimpl_->UpdatePlayer( m_pKeyHandler->Char() );
+	    CPoint c_point = m_pKeyHandler->Char();
+	    pimpl_->UpdatePlayer( c_point );
         //m_iUpdateTimes++;
     }
 
