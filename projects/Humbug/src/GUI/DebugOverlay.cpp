@@ -86,7 +86,7 @@ namespace humbug {
 
 	  CCanvas *pCanvas = GetParent()->GetCanvas();
 	  CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
-	  CRectangle& ownDimensions = GetCanvas()->GetDimension();
+	  CRectangle ownDimensions = GetCanvas()->GetDimension();
 
 
 	  CColor m_colText = CColor::White();

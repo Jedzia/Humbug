@@ -19,6 +19,9 @@
 #include <GUI/Components/Screen.h>
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
+struct _TTF_Font;
+typedef struct _TTF_Font TTF_Font;
+
 namespace gui {
   namespace components {
     class CCanvas;

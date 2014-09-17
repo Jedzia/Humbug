@@ -214,6 +214,13 @@ IF(USE_SDL_GFX)
     TARGET_LINK_LIBRARIES(Humbug ${SDLGFX_LIBRARY})
 ENDIF()
 
+
+#TODO: without this does not compile under linux
+IF(LINUX)
+	TARGET_LINK_LIBRARIES(Humbug boost_serialization)
+ENDIF(LINUX)
+
+
 #TARGET_LINK_LIBRARIES(Humbug ${LUA_LIBRARY})
 #TARGET_LINK_LIBRARIES(Humbug ${LUABIND_LIBRARY})
 #TARGET_LINK_LIBRARIES(Humbug luabind)
