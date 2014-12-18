@@ -29,6 +29,10 @@ using zip_file_system::izfstream;
 #define STRX(x) # x
 #define STR(x) STRX(x)
 
+#ifndef BUILD_ROOT_PATH
+#error BUILD_ROOT_PATH has to be defined !
+#endif
+
 struct MyConfig
 {
     MyConfig(){
@@ -100,22 +104,23 @@ BOOST_AUTO_TEST_CASE( test1 )
 {
     // reports 'error in "test1": test 2 == 1 failed'
     //BOOST_CHECK( 2 == 1 );
-    BOOST_CHECK( 2 == 2 );
 
     //std::string m_pBasepath = "E:/Projects/C++/Humbug/build2008x64";
 
     std::string filename = "Blafasel.txt";
     //std::string data;
     char* data;
+	int bufsize = 0;
     izfstream file( filename.c_str() );
 
+    BOOST_CHECK( file != 0 );
     if (!file) {
         //LOGSTREAM << "ERROR: Cannot open file!";
         std::cout << "ERROR: Cannot open file!" << std::endl;
     }
     else {
         //data.clear();
-        int bufsize = MyConfig::fsys->FileSize( filename.c_str() );
+        bufsize = MyConfig::fsys->FileSize( filename.c_str() );
         //data.reserve(fsize);
         //file.seekg(0, std::ios::beg);
         //data.append(std::istreambuf_iterator<char>(file.rdbuf()),
@@ -126,12 +131,14 @@ BOOST_AUTO_TEST_CASE( test1 )
 
         delete[] data;
     }
-
+	
+	BOOST_CHECK_MESSAGE( bufsize == 19, "bufsize is " << bufsize );
     file.close();
 }
 
 //____________________________________________________________________________//
 
+/*
 // each test file may contain any number of test cases; each test case has to have unique name
 BOOST_AUTO_TEST_CASE( test2 )
 {
@@ -140,7 +147,7 @@ BOOST_AUTO_TEST_CASE( test2 )
     // reports 'error in "test2": check i == 2 failed [0 != 2]'
     BOOST_CHECK_EQUAL( i, 0 );
 }
-
+*/
 //____________________________________________________________________________//
 
 // EOF
