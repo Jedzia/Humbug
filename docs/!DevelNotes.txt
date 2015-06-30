@@ -1,3 +1,13 @@
+-X-X-X-X- Montag, 29. Juni 2015 -----------------------------------------------------------------------------
+
+MSVC12
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-1.55.0
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-filesystem stage
+----------------------------------------------------------------------------------------------------------------
 -X-X-X-X- Sonntag, 28. Dezember 2014 -----------------------------------------------------------------------------
 
 Git Nerft !
