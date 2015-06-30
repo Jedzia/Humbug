@@ -18,8 +18,8 @@
 # switches the generation of a DLL on.
 # -D${PROJECT_NAME}_ALL_STATIC_LINK enables static linking. TODO: Test it!
 # ---------------------------------------------------------------------------------
-
 MESSAGE( STATUS "Setting Library Config for ${PROJECT_NAME}")
+cmake_policy(SET  CMP0026  OLD)
 
 #INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/build/cmake/include)
@@ -74,6 +74,13 @@ MACRO(ADD_LIBRARY_X)
 
 	#GET_TARGET_PROPERTY(TEMP_LIB_D ${ARGV0} LINK_FLAGS)
 	GET_TARGET_PROPERTY(TEMP_EXE_D ${ARGV0} LOCATION_DEBUG)
+	
+#	# policy CMP0026  Test stuff
+#	MESSAGE( WARNING "--------------------------------------------------")
+#	MESSAGE( WARNING "TEMP_EXE_D: '${TEMP_EXE_D}'")
+#	SET(BLAFASL $<TARGET_FILE:${ARGV0}>)
+#	MESSAGE( WARNING "BLAFASL: '${BLAFASL}'")
+	
 	GET_TARGET_PROPERTY(TEMP_EXE ${ARGV0} LOCATION)
 	GET_TARGET_PROPERTY(TEMP_EXE_R ${ARGV0} LOCATION_RELEASE)
 	GET_FILENAME_COMPONENT(TEMP_LIB_D_PATH ${TEMP_EXE_D} PATH)
