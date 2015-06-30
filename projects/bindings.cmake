@@ -35,7 +35,7 @@ IF(USE_LIB_BOOST)
 
   SET(boost_local_root $ENV{BOOST_ROOTDIR})
   IF(NOT boost_local_root)
-    SET(boost_local_root "E:/Devel/CPP/Libs/boost/boost-svn")
+    SET(boost_local_root "E:/Devel/CPP/Libs/boost/boost-1.55.0")
   ENDIF()
   #SET(boost_local_root E:/Devel/CPP/Libs/boost/boost-svn)
   IF(EXISTS "${boost_local_root}" AND NOT BOOST_ROOT)
@@ -70,12 +70,15 @@ SET(boost_tmp_component_list)
   endforeach(mCOMPONENT)
 
 
+  SET(BOOST_ALWAYS_RERUN ON)
   SET(Boost_USE_STATIC_LIBS   OFF)
   SET(Boost_USE_MULTITHREADED ON)
   #SET(Boost_USE_STATIC_RUNTIME    ON)
   #SET(Boost_COMPAT_STATIC_RUNTIME ON)
+  #SET(Boost_INCLUDE_DIR "")
   # Detailed findboost output
-  set(Boost_DEBUG TRUE)
+  #set(Boost_DEBUG TRUE)
+
   # You can call #ADD_DEFINITIONS(${Boost_LIB_DIAGNOSTIC_DEFINITIONS}) to have diagnostic
   # information about Boost's #automatic linking outputted during compilation time.
   ADD_DEFINITIONS(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
@@ -90,27 +93,26 @@ SET(boost_tmp_component_list)
 	#ADD_DEFINITIONS("-DBOOST_ALL_DYN_LINK")
   ENDIF()
 
-  # Only run the modified boost check if the library not yet detected.
-  # Correct this fuck with an END of the day libfetch...
-  #MESSAGE( " boost_tmp_component_list: ${boost_tmp_component_list} " )
-  list(LENGTH boost_tmp_component_list boost_tmp_component_list_count)
-  #MESSAGE( " boost_tmp_component_list_count: ${boost_tmp_component_list_count} " )
-  #MESSAGE( " Boost_FOUND_INT: ${Boost_FOUND_INT} " )
-  IF( boost_tmp_component_list_count GREATER 1)
-    SET(_plural "s")
-  ELSE()	
-    SET(_plural "")
-  ENDIF()
-  IF( boost_tmp_component_list_count GREATER 0 AND Boost_INCLUDE_DIR)
-    MESSAGE( WARNING "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
-	  "bindings.cmake in that way is not implemented, yet :(\n"
-	  "Include the \"${boost_tmp_component_list}\" component${_plural} at a call to FIND_PACKAGE( Boost ) at one central location:"
-	  " Here, in this script above at \nSET(USE_LIB_BOOST_COMPONENTS ...)\n"
-	  "After that, erase all Boost* CMake-Variables and reconfigure ${_prj_name}.\n"
-	)
-  ENDIF()
-  #IF( boost_tmp_component_list_count GREATER 0)
-    #SET(Boost_INCLUDE_DIR "")
+#  # Only run the modified boost check if the library not yet detected.
+#  # Correct this fuck with an END of the day libfetch...
+#  #MESSAGE( " boost_tmp_component_list: ${boost_tmp_component_list} " )
+#  list(LENGTH boost_tmp_component_list boost_tmp_component_list_count)
+#  #MESSAGE( " boost_tmp_component_list_count: ${boost_tmp_component_list_count} " )
+#  #MESSAGE( " Boost_FOUND_INT: ${Boost_FOUND_INT} " )
+#  IF( boost_tmp_component_list_count GREATER 1)
+#    SET(_plural "s")
+#  ELSE()	
+#    SET(_plural "")
+#  ENDIF()
+#  IF( boost_tmp_component_list_count GREATER 0 AND Boost_INCLUDE_DIR)
+#    MESSAGE( WARNING "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
+#	  "bindings.cmake in that way is not implemented, yet :(\n"
+#	  "Include the \"${boost_tmp_component_list}\" component${_plural} at a call to FIND_PACKAGE( Boost ) at one central location:"
+#	  " Here, in this script above at \nSET(USE_LIB_BOOST_COMPONENTS ...)\n"
+#	  "After that, erase all Boost* CMake-Variables and reconfigure ${_prj_name}.\n"
+#	)
+#  ENDIF()
+
     FIND_PACKAGE( Boost 1.46.0 REQUIRED COMPONENTS ${boost_tmp_component_list} )
     if("${Boost_VERSION}0" LESS "1046000")
 	set(_shared_msg

@@ -15,6 +15,9 @@
 ## CMake Useful Variables: http://cmake.org/Wiki/CMake_Useful_Variables
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
+cmake_policy(SET  CMP0026  OLD)
+cmake_policy(SET  CMP0054  OLD)
+
 if ( CYGWIN )
   set(CMAKE_LEGACY_CYGWIN_WIN32 1)
 endif( CYGWIN )

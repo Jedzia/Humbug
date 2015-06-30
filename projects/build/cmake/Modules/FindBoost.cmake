@@ -251,6 +251,7 @@
 # made to remove references to Qt and make this file more generally applicable
 # And ELSE/ENDIF pairs were removed for readability.
 #########################################################################
+cmake_policy(SET  CMP0054  OLD)
 
 macro(_Boost_ADJUST_LIB_VARS basename)
   if(Boost_INCLUDE_DIR )
@@ -420,9 +421,39 @@ endif(Boost_FIND_VERSION_EXACT)
 # Boost.
 set(Boost_ERROR_REASON)
 
-set( _boost_IN_CACHE TRUE)
-if(Boost_INCLUDE_DIR)
 
+#if(NOT ${BOOST_LAST_ROOT})
+#endif()
+if(NOT ("${BOOST_ROOT}" STREQUAL "${BOOST_LAST_ROOT}"))
+	MESSAGE(WARNING " BOOST_ROOT changed " )
+	unset( Boost_INCLUDE_DIR CACHE )
+	unset( Boost_LIBRARY_DIRS CACHE )
+	foreach(COMPONENT ${Boost_FIND_COMPONENTS})
+		string(TOUPPER ${COMPONENT} UPPERCOMPONENT)
+	    #MESSAGE(WARNING "-----> HAVE '${UPPERCOMPONENT}' - '${Boost_${UPPERCOMPONENT}_FOUND}'")
+		#TODO: this bitch does not delete the cached vars
+
+		set( Boost_${UPPERCOMPONENT}_LIBRARY "Boost_${UPPERCOMPONENT}_LIBRARY-NOTFOUND" )
+		set( Boost_${UPPERCOMPONENT}_LIBRARY_RELEASE "Boost_${UPPERCOMPONENT}_LIBRARY_RELEASE-NOTFOUND" )
+		set( Boost_${UPPERCOMPONENT}_LIBRARY_DEBUG "Boost_${UPPERCOMPONENT}_LIBRARY_DEBUG-NOTFOUND")
+		
+		unset( Boost_${UPPERCOMPONENT}_FOUND CACHE )
+		#unset( Boost_${UPPERCOMPONENT}_LIBRARY CACHE )
+		#unset( Boost_${UPPERCOMPONENT}_LIBRARY_DEBUG CACHE )
+		#unset( Boost_${UPPERCOMPONENT}_LIBRARY_RELEASE CACHE )
+    endforeach(COMPONENT)
+
+	set(BOOST_ALWAYS_RERUN TRUE)
+	set(BOOST_LAST_ROOT ${BOOST_ROOT} CACHE INTERNAL "to check boost rootdir changes" FORCE)
+endif()
+set(BOOST_LAST_ROOT ${BOOST_ROOT} CACHE INTERNAL "to check boost rootdir changes")
+
+
+set( _boost_IN_CACHE TRUE)
+if(BOOST_ALWAYS_RERUN)
+	set( _boost_IN_CACHE FALSE)
+endif(BOOST_ALWAYS_RERUN)
+if(Boost_INCLUDE_DIR)
   # On versions < 1.35, remove the System library from the considered list
   # since it wasn't added until 1.35.
   if(Boost_VERSION AND Boost_FIND_COMPONENTS)
@@ -433,6 +464,7 @@ if(Boost_INCLUDE_DIR)
 
   foreach(COMPONENT ${Boost_FIND_COMPONENTS})
     string(TOUPPER ${COMPONENT} COMPONENT)
+#MESSAGE(WARNING "-----> HAVE '${COMPONENT}' - '${Boost_${COMPONENT}_FOUND}'")
     if(NOT Boost_${COMPONENT}_FOUND)
       set( _boost_IN_CACHE FALSE)
     endif(NOT Boost_${COMPONENT}_FOUND)
