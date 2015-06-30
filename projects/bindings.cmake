@@ -45,7 +45,7 @@ IF(USE_LIB_BOOST)
   ENDIF()
 	#### SET(BOOST_ROOT "E:/Devel/CPP/Libs/boost/boost-svn" CACHE PATH "Boost root directory")
 	#MESSAGE( FATAL_ERROR " BLAAAA " )
-  
+
   IF(BOOST_ROOT)
     # If the user specified a non system path for the boost libraries,
     # then prevent from using the systems boost libraries.
@@ -332,7 +332,9 @@ IF(USE_INKSCAPE)
 #		"[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\doxygen_is1;Inno Setup: App Path]/bin"
         "$ENV{ProgramFiles}/Inkscape"
         "C:/Program Files/Inkscape"
+        "C:/Program Files (x86)/Inkscape"
         "D:/Program Files (x86)/Inkscape"
+		"D:/Program Files/Inkscape/"
 #		/Applications/Doxygen.app/Contents/Resources
 #		/Applications/Doxygen.app/Contents/MacOS
 	  DOC "Inkscape .... (http://www.inkscape.org)"
