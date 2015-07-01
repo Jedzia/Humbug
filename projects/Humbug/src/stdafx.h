@@ -60,11 +60,13 @@
     #include <boost/ptr_container/ptr_map.hpp>
 
     #include <boost/bind.hpp>
-    #include "boost/bind/mem_fn.hpp"
-    #include "boost/function.hpp"
+    #include <boost/bind/mem_fn.hpp>
+    #include <boost/function.hpp>
 
-    #include "boost/signals2.hpp"
-    #include "boost/signals2/connection.hpp"
+    //#include "boost/signals2.hpp"
+    //#include "boost/signals2/connection.hpp"
+	#include <GUI/Detail/Signals.h>
+
 
 	#include <boost/cstdint.hpp>
 	#include <iostream>
@@ -80,10 +82,10 @@
 #define DEBUG_MEMORY_SUMMARY_ON_EXIT 1
 #include <build/cmake/include/debug.h>
 
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
-#include "GUI/Components/Rectangle.h"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <GUI/Components/Rectangle.h>
 
 //using namespace gui::components;
 

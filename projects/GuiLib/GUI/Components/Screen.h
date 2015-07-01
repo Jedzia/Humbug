@@ -5,10 +5,8 @@
 #include "../Visual/HookableManager.h"
 #include "../Visual/MessageHandler.h"
 //#include "GUI/Components/MainCanvas.h"
-#include "GUI/Components/Canvas.h"
-#include <boost/signals2.hpp>
-
-namespace bs = boost::signals2;
+#include "../Components/Canvas.h"
+#include "../Detail/Signals.h"
 
 //class CMainCanvas;
 //class CCanvas;

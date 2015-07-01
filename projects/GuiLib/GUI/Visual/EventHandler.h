@@ -2,9 +2,7 @@
 #define HUMBUG_GUI_VISUAL_EVENTHANDLER_H_
 
 #include "Application.h"
-#include "boost/smart_ptr/scoped_ptr.hpp"
-
-namespace bs = boost::signals2;
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 namespace gui {
 

@@ -4,11 +4,8 @@
 
 //include message handler(base class)
 #include "MessageHandler.h"
-#include "boost/signals2.hpp"
-#include "boost/signals2/connection.hpp"
+#include "../Detail/Signals.h"
 #include "../Components/MainCanvas.h"
-
-namespace bs = boost::signals2;
 
 union SDL_Event;
 
