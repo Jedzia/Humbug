@@ -15,19 +15,8 @@
 #include <boost/iostreams/stream.hpp>
 #include <iostream>
 
-namespace gui {
-#if _MSC_VER >= 1800
-	// Todo: Temporary VS2013 build fix
-	bool operator!=(const std::istringstream::_Mybase& lhs, const std::istringstream::_Mysb::int_type& rhs)
-	{
-		//return !(lhs == rhs);
-		return false;
-	}
-
-	bool operator!=(const std::basic_istream<char>::_Myt& lhs, const std::basic_istream<char>::int_type& rhs);
-#endif
-
-	CTileMap::CTileMap( const std::string& mapData )
+namespace gui {  
+    CTileMap::CTileMap( const std::string& mapData )
       : m_TileSet(NULL), m_MapWidth(0), m_MapHeight(0), m_MapIdentifier(""), m_TileSetIdentifier(""){
       /*std::stringstream htstrstr(mapData);
 
@@ -65,19 +54,19 @@ namespace gui {
               char buf[256];
               size_t len = 0;
 
-              while (htstrstr.read( const_cast<char *>(&buf[len]), sizeof(char) ) != 0)
+              while (htstrstr.read( &buf[len], sizeof(char) ) )
               {
                   if (buf[len] == 0) {
                       break;
                   }
-	              if (buf[len] == '(') {
-		              continue;
-	              }
-	              if (buf[len] == ')') {
-		              break;
-	              }
+                  if (buf[len] == '(') {
+                      continue;
+                  }
+                  if (buf[len] == ')') {
+                      break;
+                  }
 
-	              len++;
+                  len++;
 
                   if ( len > sizeof(buf) ) {
                       break;
@@ -95,7 +84,7 @@ namespace gui {
               htstrstr >> tmp;
 
 
-			  unsigned int index = (h * m_MapWidth) + w;
+              unsigned int index = (h * m_MapWidth) + w;
               m_TileNumbers[index] = tileNumber;
               m_BoundMapValues[index] = boundMapValue;
           }
@@ -104,11 +93,11 @@ namespace gui {
 
   CTileMap::~CTileMap()
   {
-	  delete[] m_TileNumbers;
-	  delete[] m_BoundMapValues;
+      delete[] m_TileNumbers;
+      delete[] m_BoundMapValues;
   }
 
-	/** $(class), ReadBinary:
+    /** $(class), ReadBinary:
    *  Detailed description.
    *  @param tilesdata TODO
    * @param length TODO
@@ -157,7 +146,7 @@ namespace gui {
       char byte1[256];
       size_t len = 0;
 
-      while (buffer.read( const_cast<char *>(&byte1[len]), sizeof(char) ) != 0)
+      while (buffer.read( const_cast<char *>(&byte1[len]), sizeof(char) ))
       {
           if (byte1[len] == 0) {
               break;
@@ -182,41 +171,41 @@ namespace gui {
       //CTile tile = tileSet.CreateTile(0);
       //tileSet.Draw(tile);
 
-	  //background->Clear(background->GetColorKey());
-	  //SDL_SetAlpha(background->GetSurface(), SDL_SRCALPHA, 128);
-	  //tileSet.GetTileImage()->SetColorKey(background->GetColorKey());
-	  //SDL_SetAlpha(tileSet.GetTileImage()->GetSurface(), SDL_SRCALPHA, 128);
-	  //SDL_SetAlpha(background->GetSurface(), SDL_SRCALPHA, 128);
-	  //SDL_SetColorKey(background->GetSurface(), SDL_SRCCOLORKEY, 0x000000);
-	  //background->Clear(CColor::Black());
-	  //background->SetColorKey(CColor::Black());
+      //background->Clear(background->GetColorKey());
+      //SDL_SetAlpha(background->GetSurface(), SDL_SRCALPHA, 128);
+      //tileSet.GetTileImage()->SetColorKey(background->GetColorKey());
+      //SDL_SetAlpha(tileSet.GetTileImage()->GetSurface(), SDL_SRCALPHA, 128);
+      //SDL_SetAlpha(background->GetSurface(), SDL_SRCALPHA, 128);
+      //SDL_SetColorKey(background->GetSurface(), SDL_SRCCOLORKEY, 0x000000);
+      //background->Clear(CColor::Black());
+      //background->SetColorKey(CColor::Black());
 
       for (unsigned int h = 0; h < m_MapHeight; h++)
       {
           for (unsigned int w = 0; w < m_MapWidth; w++)
           {
-			  unsigned int index = (h * m_MapWidth) + w;
-			  int tileNumber = m_TileNumbers[index];
-			  if (tileNumber <= 0) 
-			  {
-				  // Todo minus check, exception ...
-				  continue;
-			  }
+              unsigned int index = (h * m_MapWidth) + w;
+              int tileNumber = m_TileNumbers[index];
+              if (tileNumber <= 0) 
+              {
+                  // Todo minus check, exception ...
+                  continue;
+              }
 
-			  /*if (tileNumber > 8) 
-			  {
-				  x++;
-			  }*/
+              /*if (tileNumber > 8) 
+              {
+                  x++;
+              }*/
 
-			  // Todo: maybe cache the tiles.
-			  CTile tile = tileSet.CreateTile(tileNumber - 1);
+              // Todo: maybe cache the tiles.
+              CTile tile = tileSet.CreateTile(tileNumber - 1);
 
-			  CPoint pos(w * 32, h * 32);
-			  tile.Draw(background, pos);
+              CPoint pos(w * 32, h * 32);
+              tile.Draw(background, pos);
 
-			  int boundMapValue = m_BoundMapValues[index];
-			  int y = tileNumber + boundMapValue;
-		  }
+              int boundMapValue = m_BoundMapValues[index];
+              int y = tileNumber + boundMapValue;
+          }
       }
   }
 }
