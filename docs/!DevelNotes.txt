@@ -1,4 +1,10 @@
 
+-X-X-X-X- Mi, 01 Jul 2015 14:47:40 -----------------------------------------------------------
+Error	1	error LNK2019: unresolved external symbol "__declspec(dllimport) protected: __cdecl boost::archive::detail::basic_iarchive::~basic_iarchive(void)" (__imp_??1basic_iarchive@detail@archive@boost@@IEAA@XZ) referenced in function "int `protected: __cdecl boost::archive::detail::common_iarchive<class boost::archive::binary_iarchive>::common_iarchive<class boost::archive::binary_iarchive>(unsigned int)'::`1'::dtor$0" (?dtor$0@?0???0?$common_iarchive@Vbinary_iarchive@archive@boost@@@detail@archive@boost@@IEAA@I@Z@4HA)	E:\Projects\C++\Humbug\build2013x64\Playground\boost_serialization01.obj	boost_serialization01
+
+fixed ... buggered lib compilation :/
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Mi, 01 Jul 2015 13:26:27 -----------------------------------------------------------
 switch to boost Boost.Signals2 !
 
@@ -8,11 +14,14 @@ void named_slot_map_iterator::decrement() { assert(false); }
 void named_slot_map_iterator::advance(difference_type) { assert(false); }
 #endif
 
+
+Porting from Boost.Signals to Boost.Signals2 http://www.boost.org/doc/libs/1_39_0/doc/html/signals2/porting.html
+
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mi, 01 Jul 2015 12:11:25 -----------------------------------------------------------
 build examples
-set PATH=E:\Devel\CPP\Libs\boost\boost-1.55.0;%PATH%
+set PATH=E:\Devel\CPP\Libs\boost\boost-1.55.0;E:\Devel\CPP\Libs\boost\boost-1.55.0\lib\x64\lib;%PATH%
 b2 -j6 --build-dir=".\build" --toolset=msvc-12.0 address-model=64
 -----------------------------------------------------------------------------------------------
 
@@ -28,6 +37,7 @@ MT-GD class boost::signals::detail::named_slot_map_iterator const & boost::itera
 
 
 -X-X-X-X- Montag, 29. Juni 2015 -----------------------------------------------------------------------------
+Boost build:
 
 MSVC12
 ==========

@@ -7,7 +7,7 @@
  
 int main()
 {
-	boost::uint16_t data[] = {1234, 5678};
+    boost::uint16_t data[] = {1234, 5678};
     char* dataPtr = (char*)&data;
  
     typedef boost::iostreams::basic_array_source<char> Device;
