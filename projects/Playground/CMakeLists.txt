@@ -241,8 +241,8 @@ ENDIF(USE_NLS)
 #  TARGET_LINK_LIBRARIES(zlibtest ${ZLIB_LIBRARY})
 #ENDIF(WIN32)
 
-# button_click.cpp
-TargetLinkBoost(button_click "signals")
+# doc_view_acm.cpp
+TargetLinkBoost(doc_view_acm "signals")
 
 
 # ----- SDL Part -----

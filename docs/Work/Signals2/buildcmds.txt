@@ -1,0 +1,272 @@
+...patience...
+...found 861 targets...
+...updating 31 targets...
+common.mkdir build\boost\bin.v2\libs\signals\example
+
+        if not exist "build\boost\bin.v2\libs\signals\example\\" mkdir "build\boost\bin.v2\libs\signals\example"
+    
+common.mkdir build\boost\bin.v2\libs\signals\example\msvc-12.0
+
+        if not exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\\" mkdir "build\boost\bin.v2\libs\signals\example\msvc-12.0"
+    
+common.mkdir build\boost\bin.v2\libs\signals\example\msvc-12.0\debug
+
+        if not exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\\" mkdir "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug"
+    
+common.mkdir build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64
+
+        if not exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\\" mkdir "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64"
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.obj.rsp
+"button_click.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\button_click.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.obj.rsp
+"difference_connection.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\difference_connection.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.obj.rsp
+"disconnect_all.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\disconnect_all.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.obj.rsp
+"first_positive.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\first_positive.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.obj.rsp
+"maximum.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\maximum.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.obj.rsp
+"print_sum_product.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\print_sum_product.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.obj.rsp
+"quotient_controlling.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_controlling.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.obj.rsp
+"quotient_named.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\quotient_named.exe;1"
+        )
+    
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.obj.rsp
+"no_function.cpp" -Fo"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /favor:blend /wd4675 /EHs -c 
+-DBOOST_ALL_NO_LIB=1 
+"-I..\..\.."
+compile-c-c++ build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.obj
+
+    call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+cl /Zm800 -nologo @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.obj.rsp" 
+
+
+file build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe.rsp
+
+"build\boost\bin.v2\libs\signals\build\msvc-12.0\debug\address-model-64\boost_signals-vc120-gd-1_55.lib" 
+"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.obj"    
+msvc.link build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe
+
+        call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+link /NOLOGO /INCREMENTAL:NO /DEBUG /MACHINE:X64 /MANIFEST /subsystem:console /out:"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe"   @"build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe.rsp"
+        if %ERRORLEVEL% NEQ 0 EXIT %ERRORLEVEL%
+    
+msvc.manifest build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe
+
+        if exist "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe.manifest" (
+            call "C:\Program Files (x86)\microsoft visual studio 12.0\vc\vcvarsall.bat" amd64 >nul
+mt -nologo -manifest "build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe.manifest" "-outputresource:build\boost\bin.v2\libs\signals\example\msvc-12.0\debug\address-model-64\no_function.exe;1"
+        )
+    
+...updated 31 targets...

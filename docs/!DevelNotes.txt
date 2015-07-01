@@ -1,6 +1,13 @@
 
 -X-X-X-X- Mi, 01 Jul 2015 13:26:27 -----------------------------------------------------------
 switch to boost Boost.Signals2 !
+
+see E:\Devel\CPP\Libs\boost\boost-1.55.0\libs\signals\src\named_slot_map.cpp
+#if BOOST_WORKAROUND(_MSC_VER, <= 1800)
+void named_slot_map_iterator::decrement() { assert(false); }
+void named_slot_map_iterator::advance(difference_type) { assert(false); }
+#endif
+
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mi, 01 Jul 2015 12:11:25 -----------------------------------------------------------
