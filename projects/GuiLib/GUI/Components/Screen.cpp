@@ -6,7 +6,7 @@
 #include "MainCanvas.h"
 #include "GUI/Visual/Application.h"
 #include "GUI/Visual/EventHandler.h"
-#include "boost/signals.hpp"
+#include "boost/signals2.hpp"
 #include "boost/bind.hpp"
 
 namespace gui {

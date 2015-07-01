@@ -3,7 +3,7 @@
 //
 #include "Hookable.h"
 #include "EventHandler.h"
-#include "boost/signals.hpp"
+#include "boost/signals2.hpp"
 #include "boost/bind.hpp"
 
 //#include <build/cmake/include/debug.h>
@@ -33,9 +33,9 @@ public:
 
 struct Hookable::HookableImpl {
 
-    boost::signals::connection m_conInit;
-	boost::signals::connection m_conIdle;
-	boost::signals::connection m_conKeyDown;
+    bs::connection m_conInit;
+	bs::connection m_conIdle;
+	bs::connection m_conKeyDown;
 
     Hookable *m_pHost;
 

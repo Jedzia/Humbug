@@ -398,22 +398,22 @@ CApplication* CApplication::GetApplication()
 	return(s_pTheApplication);
 }
 
-boost::signals::connection CApplication::ConnectOnIdle( const slot_type_idle& s )
+bs::connection CApplication::ConnectOnIdle( const slot_type_idle& s )
 {
     return m_sigOnIdle.connect( s );
 }
 
-boost::signals::connection CApplication::ConnectOnDraw( const slot_type_event& s )
+bs::connection CApplication::ConnectOnDraw( const slot_type_event& s )
 {
     return m_sigOnDraw.connect( s );
 }
 
-boost::signals::connection CApplication::ConnectOnUpdate( const slot_type_event& s )
+bs::connection CApplication::ConnectOnUpdate( const slot_type_event& s )
 {
     return m_sigOnUpdate.connect( s );
 }
 
-boost::signals::connection CApplication::ConnectOnEvent( const slot_type_sdlevent& s )
+bs::connection CApplication::ConnectOnEvent( const slot_type_sdlevent& s )
 {
 	return m_sigOnEvent.connect( s );
 }

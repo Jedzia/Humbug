@@ -4,9 +4,11 @@
 
 //include message handler(base class)
 #include "MessageHandler.h"
-#include "boost/signals.hpp"
-#include "boost/signals/connection.hpp"
+#include "boost/signals2.hpp"
+#include "boost/signals2/connection.hpp"
 #include "../Components/MainCanvas.h"
+
+namespace bs = boost::signals2;
 
 union SDL_Event;
 
@@ -27,18 +29,18 @@ class CApplication : public CMessageHandler
 {
 public:
     // signal types
-    typedef boost::signal<void ()> signal_type_event;
+	typedef bs::signal<void()> signal_type_event;
     typedef signal_type_event::slot_type slot_type_event;
 
 	//SDL_Event* pEvent
-	typedef boost::signal<void (SDL_Event*)> signal_type_sdlevent;
+	typedef bs::signal<void(SDL_Event*)> signal_type_sdlevent;
 	typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
 
-    typedef boost::signal<void (int)> signal_type_idle;
+	typedef bs::signal<void(int)> signal_type_idle;
     typedef signal_type_idle::slot_type slot_type_idle;
 
 	// bool OnInit(int argc,char* argv[])
-	typedef boost::signal<void (int, char**)> signal_type_init;
+	typedef bs::signal<void(int, char**)> signal_type_init;
     typedef signal_type_init::slot_type slot_type_init;
 
 	//constructor
@@ -50,10 +52,10 @@ public:
 	gui::components::CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
 
     // Signal handling
-    boost::signals::connection ConnectOnIdle(const slot_type_idle& s);
-    boost::signals::connection ConnectOnDraw(const slot_type_event& s);
-	boost::signals::connection ConnectOnUpdate(const slot_type_event& s);
-	boost::signals::connection ConnectOnEvent(const slot_type_sdlevent& s);
+    bs::connection ConnectOnIdle(const slot_type_idle& s);
+	bs::connection ConnectOnDraw(const slot_type_event& s);
+	bs::connection ConnectOnUpdate(const slot_type_event& s);
+	bs::connection ConnectOnEvent(const slot_type_sdlevent& s);
 
 	//initialization
 	virtual bool OnInit(int argc,char* argv[]);

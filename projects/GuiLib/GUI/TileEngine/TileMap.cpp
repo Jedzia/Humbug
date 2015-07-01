@@ -16,7 +16,18 @@
 #include <iostream>
 
 namespace gui {
-  CTileMap::CTileMap( const std::string& mapData )
+#if _MSC_VER >= 1800
+	// Todo: Temporary VS2013 build fix
+	bool operator!=(const std::istringstream::_Mybase& lhs, const std::istringstream::_Mysb::int_type& rhs)
+	{
+		//return !(lhs == rhs);
+		return false;
+	}
+
+	bool operator!=(const std::basic_istream<char>::_Myt& lhs, const std::basic_istream<char>::int_type& rhs);
+#endif
+
+	CTileMap::CTileMap( const std::string& mapData )
       : m_TileSet(NULL), m_MapWidth(0), m_MapHeight(0), m_MapIdentifier(""), m_TileSetIdentifier(""){
       /*std::stringstream htstrstr(mapData);
 
@@ -97,7 +108,7 @@ namespace gui {
 	  delete[] m_BoundMapValues;
   }
 
-  /** $(class), ReadBinary:
+	/** $(class), ReadBinary:
    *  Detailed description.
    *  @param tilesdata TODO
    * @param length TODO

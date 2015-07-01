@@ -6,7 +6,9 @@
 #include "../Visual/MessageHandler.h"
 //#include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Canvas.h"
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
+
+namespace bs = boost::signals2;
 
 //class CMainCanvas;
 //class CCanvas;
@@ -53,9 +55,9 @@ private:
 
     //CMainCanvas *m_pMainScreen;
 
-	boost::signals::connection m_conDraw;
-    boost::signals::connection m_conUpdate;
-	boost::signals::connection m_conEvt;
+	bs::connection m_conDraw;
+    bs::connection m_conUpdate;
+	bs::connection m_conEvt;
 	int i;
 };
 

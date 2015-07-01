@@ -63,8 +63,8 @@
     #include "boost/bind/mem_fn.hpp"
     #include "boost/function.hpp"
 
-    #include "boost/signals.hpp"
-    #include "boost/signals/connection.hpp"
+    #include "boost/signals2.hpp"
+    #include "boost/signals2/connection.hpp"
 
 	#include <boost/cstdint.hpp>
 	#include <iostream>

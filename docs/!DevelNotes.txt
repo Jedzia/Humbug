@@ -1,3 +1,25 @@
+
+-X-X-X-X- Mi, 01 Jul 2015 13:26:27 -----------------------------------------------------------
+switch to boost Boost.Signals2 !
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 01 Jul 2015 12:11:25 -----------------------------------------------------------
+build examples
+set PATH=E:\Devel\CPP\Libs\boost\boost-1.55.0;%PATH%
+b2 -j6 --build-dir=".\build" --toolset=msvc-12.0 address-model=64
+-----------------------------------------------------------------------------------------------
+
+
+-X-X-X-X- Mi, 01 Jul 2015 13:02:55 -----------------------------------------------------------
+MT-GD class boost::signals::detail::named_slot_map_iterator & boost::iterators::detail::iterator_facade_base<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::iterators::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64,0,0>::derived(void)
+   GD class boost::signals::detail::named_slot_map_iterator & boost::iterator_facade<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64>::derived(void)
+MT-GD class boost::signals::detail::named_slot_map_iterator const & boost::iterators::detail::iterator_facade_base<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::iterators::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64,0,0>::derived(void)
+   GD class boost::signals::detail::named_slot_map_iterator const & boost::iterator_facade<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64>::derived(void)
+   
+-> E:\Devel\CPP\Libs\boost\boost-1.55.0\boost\iterator\iterator_facade.hpp(604)    
+-----------------------------------------------------------------------------------------------
+
+
 -X-X-X-X- Montag, 29. Juni 2015 -----------------------------------------------------------------------------
 
 MSVC12
