@@ -17,7 +17,7 @@
 
 namespace gui {  
     CTileMap::CTileMap( const std::string& mapData )
-      : m_TileSet(NULL), m_MapWidth(0), m_MapHeight(0), m_MapIdentifier(""), m_TileSetIdentifier(""){
+      : m_MapWidth(0), m_MapHeight(0), m_MapIdentifier(""), m_TileSetIdentifier(""), m_TileSet(NULL){
       /*std::stringstream htstrstr(mapData);
 
          uint16_t TileCount1, TileWidth1, TileHeight1;
