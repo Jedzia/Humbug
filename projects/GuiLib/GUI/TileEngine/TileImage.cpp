@@ -16,9 +16,7 @@ namespace gui {
       loader.FreeLast();
       SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
       //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
-      SDL_SetAlpha(bitmap, 0, 128);
-      //SDL_SetAlpha(bitmap, 0, 0);
-      //SDL_SetAlpha(bitmap, 0, 255);
+      SDL_SetSurfaceAlphaMod(bitmap, 128);
       SetSurface( bitmap );
       m_tiConfig.BitmapHeight = GetHeight();
       m_tiConfig.BitmapWidth = GetWidth();
@@ -70,8 +68,8 @@ namespace gui {
 		  transparentColor <<= 8;
 		  transparentColor |= transparentColorB;
 		  //transparentColor <<= 8;
-		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 128);
-		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 22);
+		  //SDL_SetSurfaceAlphaMod(bitmap, 128);
+		  //SDL_SetSurfaceAlphaMod(bitmap, 22);
 
 		  //Clear(CColor::Black);
 		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0x000000);
@@ -86,8 +84,7 @@ namespace gui {
 		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
 		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0xffffff);
 		  //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
-		  //SDL_SetAlpha(bitmap, 0, 0);
-		  //SDL_SetAlpha(bitmap, 0, 255);
+		  //SDL_SetSurfaceAlphaMod(bitmap, 0);
 		  SetSurface( bitmap );
 		  //SetColorKey(CColor::Black());
 

@@ -261,7 +261,7 @@ int RunModeTests(SDL_Surface *screen)
         {
 		SDL_FreeSurface(bmp);
                 bmp = SDL_LoadBMP("sample.bmp");
-		SDL_SetAlpha(bmp, SDL_SRCALPHA, 85); /* 85 - 33% alpha */
+                SDL_SetSurfaceAlphaMod(bmp, 85); /* 85 - 33% alpha */
 		tmp = bmp;
 		bmp = SDL_DisplayFormat(bmp);
 		SDL_FreeSurface(tmp);
@@ -298,7 +298,7 @@ int RunModeTests(SDL_Surface *screen)
         {
 		SDL_FreeSurface(bmpcc);
                 bmpcc = SDL_LoadBMP("sample.bmp");
-		SDL_SetAlpha(bmpcc, SDL_SRCALPHA, 85); /* 85 - 33% alpha */
+                SDL_SetSurfaceAlphaMod(bmpcc, 85); /* 85 - 33% alpha */
                 SDL_SetColorKey(bmpcc, SDL_TRUE | SDL_RLEACCEL, *(Uint8 *)bmpcc->pixels);
 		tmp = bmpcc;
 		bmpcc = SDL_DisplayFormat(bmpcc);

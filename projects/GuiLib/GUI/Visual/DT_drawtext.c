@@ -79,7 +79,7 @@ void DT_SetFontAlphaGL(int FontNumber, int a) {
 			pix[i] = val;
 	/* also make sure that alpha blending is disabled for the font
 	   surface. */
-	SDL_SetAlpha(CurrentFont->FontSurface, 0, SDL_ALPHA_OPAQUE);
+    SDL_SetSurfaceAlphaMod(CurrentFont->FontSurface, SDL_ALPHA_OPAQUE);
 }
 
 /* Loads the font into a new struct

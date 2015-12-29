@@ -287,8 +287,6 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         fl->FreeLast();
 
         //SDL_FreeSurface( loadsurf );
-        //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
-        //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ), true );
 
 		//SDL_Surface* ddd1 = fl2.LoadImg("Icons/blue.png");

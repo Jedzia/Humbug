@@ -273,7 +273,7 @@ void CON_UpdateConsole(ConsoleInformation *console) {
 	SDL_FillRect(console->ConsoleSurface, NULL, SDL_MapRGBA(console->ConsoleSurface->format, 0, 0, 0, console->ConsoleAlpha));
 
 	if(console->OutputScreen->flags & SDL_OPENGLBLIT)
-		SDL_SetAlpha(console->ConsoleSurface, 0, SDL_ALPHA_OPAQUE);
+        SDL_SetSurfaceAlphaMod(console->ConsoleSurface, SDL_ALPHA_OPAQUE);
 
 	/* draw the background image if there is one */
 	if(console->BackgroundImage) {
@@ -713,9 +713,9 @@ void CON_Alpha(ConsoleInformation *console, unsigned char alpha) {
 
 	if((console->OutputScreen->flags & SDL_OPENGLBLIT) == 0) {
 		if(alpha == 0)
-			SDL_SetAlpha(console->ConsoleSurface, 0, alpha);
+            SDL_SetSurfaceAlphaMod(console->ConsoleSurface, alpha);
 		else
-			SDL_SetAlpha(console->ConsoleSurface, SDL_SRCALPHA, alpha);
+            SDL_SetSurfaceAlphaMod(console->ConsoleSurface, alpha);
 	}
 
 	/*	CON_UpdateConsole(console); */

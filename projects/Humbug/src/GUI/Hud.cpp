@@ -72,7 +72,7 @@ namespace humbug {
       //SetMouseHover(this);
 
       tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, GetWidth(), GetHeight() );
-      SDL_SetAlpha(tmpcanvas->GetSurface(), SDL_SRCALPHA, 122);
+      SDL_SetSurfaceAlphaMod(tmpcanvas->GetSurface(), 122);
       footerImage->Put( GetCanvas(), CPoint(0, 0) );
       const CRectangle& ownDimensions = GetCanvas()->GetDimension();
       GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
@@ -132,7 +132,7 @@ namespace humbug {
           //m_ptIsDirty = true;
          }
          else if(!checkSwitch &&  oldstate == true)   {
-          //SDL_SetAlpha(footerImage->GetCanvas()->GetSurface(), SDL_SRCALPHA, 44);
+          //SDL_SetSurfaceAlphaMod(footerImage->GetCanvas()->GetSurface(), 44);
           footerImage->Put( GetCanvas(), CPoint(0, 0) );
 
           //GetParent()->Update();

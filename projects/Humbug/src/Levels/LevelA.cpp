@@ -91,7 +91,7 @@ public:
             : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_done(false), m_step(0){
             m_pArialfont = loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48);
             m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
-            SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 5);
+            SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 5);
         }
 
 		~Introplayer()
@@ -141,14 +141,14 @@ public:
                 m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
             }
 			else if ((m_step == 0) &&(curTicks > 200 && curTicks < 220 )) {
-				SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 255);
+                SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 255);
 				m_canvas->Clear(CColor::LightGray());
 				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
 				m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
 				m_step++;
 			}
 			else if ((m_step == 1) &&(curTicks > 220 && curTicks < 320 )) {
-				SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 11);
+                SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 11);
 				CText infoText( m_pArialfont, "To Something Completely Different!", CColor::Blue() );
 				infoText.Put( m_canvas, m_canvas->GetDimension() + CPoint(100, 200) );
 				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
@@ -473,7 +473,7 @@ private:
         CCanvas tmpCanvas( ( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ) );
         CCanvas* testCanvas =
             CCanvas::CreateRGBCompatible( NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
-        //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);
+        //SDL_SetSurfaceAlphaMod(testCanvas->GetSurface(), 255);
 	    CColor c_color = CColor(0x00, 0x00, 0x00);
 	    testCanvas->SetColorKey( c_color );
 
@@ -491,10 +491,10 @@ private:
 
         //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
         //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
-        //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
+        //SDL_SetSurfaceAlphaMod(tmpfsurf, 0);
         m_pBackground.reset( testCanvas );
         //m_pBackground->SetColorKey(CColor::Black());
-        //SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 128);
+        //SDL_SetSurfaceAlphaMod(m_pBackground->GetSurface(), 128);
 
         //CCanvas tmpCanvas( tmpfsurf );
         m_Loader.FreeLast();

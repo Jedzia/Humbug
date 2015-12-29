@@ -52,7 +52,6 @@ namespace gui {
 
       //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
       //CPoint spos( m_cpPos.GetX(), m_cpPos.GetY());
-      //SDL_SetAlpha(m_pSprImage->GetCanvas()->GetSurface(), SDL_SRCALPHA , 128);
       //m_pSprImage->Put(m_pMainCanvas, m_cpPos);
 
       //m_pMainCanvas->AddUpdateRect(m_pSprImage->GetCanvas()->GetDimension() + m_cpOldPos);

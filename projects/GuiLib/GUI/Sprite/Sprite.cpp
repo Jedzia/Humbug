@@ -87,7 +87,7 @@ namespace gui
 
       //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
       //CPoint spos( m_cpPos.GetX(), m_cpPos.GetY());
-      //SDL_SetAlpha(m_pSprImage->GetCanvas()->GetSurface(), SDL_SRCALPHA /*| SDL_RLEACCEL*/,
+      //SDL_SetSurfaceAlphaMod(m_pSprImage->GetCanvas()->GetSurface() /*| SDL_RLEACCEL*/,
       // 128);
       m_pSprImage->Put(m_pMainCanvas, m_cpPos);
       m_pMainCanvas->Unlock();
@@ -126,7 +126,7 @@ namespace gui
   void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
       SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
       SDL_SetColorKey(alphasurf, SDL_TRUE, key);
-      SDL_SetAlpha(alphasurf, 0, alpha);
+      SDL_SetSurfaceAlphaMod(alphasurf, alpha);
   }
 
   /** $(fclass), operator <<:
