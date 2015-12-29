@@ -122,7 +122,7 @@ void CTestEventHandler::OnExit(){
 
 	// FileLoader frees the surface of m_pBackground,
 	// so this is a workaround.
-	m_pBackground->SetSurface(NULL);
+	//m_pBackground->SetSurface(NULL);
 	delete m_pBackground;
 	
 	//destroy font
@@ -138,14 +138,12 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     CEventHandler::OnInit(argc, argv);
 
 
-	SDL_WM_SetCaption("Humbug, the Game", NULL);
-    //create display surface
     Uint32 video_flags;
 
     //video_flags = SDL_OPENGL;
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
     //video_flags = SDL_ANYFORMAT;
-    video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+    video_flags = SDL_WINDOW_BORDERLESS;
 
     //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
     //SDL_EnableKeyRepeat(100, 1);
@@ -153,7 +151,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
     //construct main canvas
     //m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    CMainCanvas* m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
+    CMainCanvas* m_pMainCanvas = new CMainCanvas("Humbug, the Game", 1024, 768, 0, video_flags);
     SetMainCanvas( m_pMainCanvas );
 
     //m_pDrawCanvas = m_pMainCanvas;
@@ -231,7 +229,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             
 			// delete loadsurf;
 			//m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
-			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->FL_LOADIMG("Moo.png") );
+            //tmpsurf = (loadsurf = fl->FL_LOADIMG("Moo.png"));
+            tmpsurf = loadsurf = fl->FL_LOADIMG("Moo.png");
             CCanvas tmpCanvas(tmpsurf);
 			//CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
 			CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768);
@@ -280,10 +279,11 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 			//SDL_FreeSurface( tmpsurf );
         }
 
-        //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
+        //m_pBackground = new CCanvas( ( tmpsurf ));
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
-        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->FL_LOADIMG("icons/blue.png") );
+        //SDL_Surface* g_pBitmapSurface = (fl->FL_LOADIMG("icons/blue.png"));
+        SDL_Surface* g_pBitmapSurface = (fl->FL_LOADIMG("icons/blue.png"));
         fl->FreeLast();
 
         //SDL_FreeSurface( loadsurf );

@@ -10,10 +10,10 @@ namespace components {
 class CMainCanvas : public CCanvas
 {
 public:
-	//constructor
-	CMainCanvas ( int width , int height , int bpp , Uint32 flags ) ;
-	//destructor
-	virtual ~CMainCanvas ( ) ;
+    //constructor
+    CMainCanvas(const char * title, int width, int height, int bpp, Uint32 flags);
+    //destructor
+    virtual ~CMainCanvas ( ) ;
 };
 
 } // namespace components

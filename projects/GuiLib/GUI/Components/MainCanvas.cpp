@@ -4,8 +4,8 @@
 namespace gui {
 namespace components {
 
-CMainCanvas::CMainCanvas(int width, int height, int bpp, Uint32 flags):
-CCanvas( SDL_CreateWindow("Rotz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags))
+CMainCanvas::CMainCanvas(const char * title, int width, int height, int bpp, Uint32 flags):
+CCanvas(SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags))
 {
     SDL_Delay ( 10 ) ;
 }
@@ -13,7 +13,7 @@ CCanvas( SDL_CreateWindow("Rotz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFIN
 CMainCanvas::~CMainCanvas()
 {
     // SDL_FreeSurface ( GetSurface ( ) );
-    SetSurface ( NULL ) ;
+    SetWindow ( NULL ) ;
 }
 
 } // namespace components

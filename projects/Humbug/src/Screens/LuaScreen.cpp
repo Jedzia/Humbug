@@ -183,7 +183,7 @@ public:
         //m_pArialfont =
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
-        SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LuaScreenBg.png") );
+        SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/LuaScreenBg.png") );
 
         //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
         //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);

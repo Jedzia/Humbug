@@ -54,7 +54,7 @@ namespace humbug {
 
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
       m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
-      SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") );
+      SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") );
       m_pBackground.reset( new CCanvas( tmpfsurf ) );
 
       m_Loader.FreeLast();
@@ -62,7 +62,7 @@ namespace humbug {
 
 	  SDL_Surface* loadsurf;
 	  SDL_Surface* tmpsurf;
-	  tmpsurf = SDL_DisplayFormatAlpha( loadsurf = m_Loader.FL_LOADIMG("Moo.png") );
+	  tmpsurf = ( loadsurf = m_Loader.FL_LOADIMG("Moo.png") );
 
 	  // delete loadsurf;
 	  CCanvas tmpCanvas(tmpsurf);

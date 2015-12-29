@@ -468,9 +468,9 @@ private:
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
 
-        //	CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png")
+        //	CCanvas tmpCanvas(( m_Loader.FL_LOADIMG("Intro/LevelABg.png")
         // ));
-        CCanvas tmpCanvas( SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ) );
+        CCanvas tmpCanvas( ( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ) );
         CCanvas* testCanvas =
             CCanvas::CreateRGBCompatible( NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
         //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);

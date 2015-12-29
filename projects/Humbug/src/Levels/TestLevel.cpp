@@ -105,7 +105,7 @@ namespace humbug {
         // 30);
         m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 30);
         mcol = CColor::White();
-        SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TestScreenBg.png") );
+        SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TestScreenBg.png") );
 
         //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
         //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
@@ -122,7 +122,7 @@ namespace humbug {
         // CRectangle(0,0,64,64)*/);
         //m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*,
         // CRectangle(0,0,64,64)*/);
-        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Images/Sky02.png") );
+        SDL_Surface* g_pBitmapSurface = ( m_Loader.FL_LOADIMG("Images/Sky02.png") );
         m_Loader.FreeLast();
         m_pSprite = new CSeamlessImage( new CCanvas( g_pBitmapSurface ), true );
 

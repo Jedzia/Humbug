@@ -101,7 +101,7 @@ namespace humbug {
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
       m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
       mcol = CColor::White();
-      SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
+      SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
 
       CControl* mainControl = CControl::GetMainControl();
       m_pHud = new Hud(m_Loader, mainControl, new HudBackground(m_Loader, "Hud/footer.png"), 0);
@@ -111,7 +111,7 @@ namespace humbug {
 
       {
           // Todo: use SpriteManager of this instance
-          SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Icons/red.png") );
+          SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Icons/red.png") );
           CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
           m_Loader.FreeLast();
           m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,

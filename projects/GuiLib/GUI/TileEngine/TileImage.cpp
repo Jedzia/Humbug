@@ -12,7 +12,7 @@ namespace gui {
   CTileImage::CTileImage( FileLoader& loader, std::string filename,
           CTileImageSetup configuration ) : CCanvas() {
       dbgOut(__FUNCTION__);
-      SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
+      SDL_Surface* bitmap = ( loader.FL_LOADIMG(filename) );
       loader.FreeLast();
       SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
       //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
@@ -39,7 +39,7 @@ namespace gui {
 
 		  // Todo: duplicate init code ... see other ctor, simplify
 		  dbgOut(__FUNCTION__);
-		  SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
+		  SDL_Surface* bitmap = ( loader.FL_LOADIMG(filename) );
 		  loader.FreeLast();
 
 

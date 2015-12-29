@@ -41,7 +41,7 @@ namespace gui
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension){
       // m_pSprImage(sprImage),
-      SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
+      SDL_Surface* alphasurf = ( loader.FL_LOADIMG(filename) );
 
       // free the loaded surface.
       loader.FreeLast();
