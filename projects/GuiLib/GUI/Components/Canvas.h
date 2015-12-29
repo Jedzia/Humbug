@@ -22,9 +22,9 @@ protected:
     //pointer to an SDL_Surface
     SDL_Window* m_pWindow;
     SDL_Surface* m_pSurface;
-    SDL_Renderer* m_pRenderer;
 
 public:
+    SDL_Renderer* m_pRenderer;
     //constructor
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
     CCanvas(SDL_Window* pWindow = NULL);
@@ -42,6 +42,15 @@ public:
     // setter for the SDL_Surface*
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
     void SetWindow(SDL_Window* pWindow);
+
+    // Render from other Canvas
+    void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    // Render from a surface
+    void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    // Render from a texture
+    void Render(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    // Render myself
+    void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const ;

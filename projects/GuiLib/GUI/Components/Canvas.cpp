@@ -58,7 +58,37 @@ SDL_Surface * CCanvas::GetSurface() const {
     }
 }
 
-bool CCanvas::Lock ( ) const {
+    void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    {
+        SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source->GetSurface());
+        Render(tex, srcRect, dstRect);
+    }
+
+    void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    {
+        SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source);
+        Render(tex, srcRect, dstRect);
+    }
+
+    void CCanvas::Render(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    {
+        SDL_RenderClear(this->m_pRenderer);
+        //Draw the texture
+        SDL_RenderCopy(this->m_pRenderer, texture, srcRect, dstRect);
+        //Update the screen
+        SDL_RenderPresent(this->m_pRenderer);
+
+        // Clean up
+        SDL_DestroyTexture(texture);
+    }
+
+    void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    {
+        SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
+        Render(tex, srcRect, dstRect);
+    }
+
+    bool CCanvas::Lock ( ) const {
     /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
         if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
             return ( true );
