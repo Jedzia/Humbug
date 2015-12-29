@@ -37,6 +37,9 @@ public:
     SDL_Surface* GetSurface() const;
 
     // setter for the SDL_Surface*
+    void SetSurface(SDL_Surface* pSurface);
+
+    // setter for the SDL_Surface*
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
     void SetWindow(SDL_Window* pWindow);
 

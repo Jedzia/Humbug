@@ -43,7 +43,12 @@ SDL_Surface * CCanvas::GetSurface() const {
     return ( m_pSurface );
 }
 
-void CCanvas::SetWindow(SDL_Window* pWindow){
+    void CCanvas::SetSurface(SDL_Surface* pSurface)
+    {
+        m_pSurface = pSurface;
+    }
+
+    void CCanvas::SetWindow(SDL_Window* pWindow){
     m_pWindow = pWindow;
     if (pWindow)
     {
@@ -202,7 +207,7 @@ bool CCanvas::Blit ( const CRectangle& rectDst, const CCanvas& cnvSrc, const CRe
 CCanvas * CCanvas::CreateRGB ( Uint32 flags, int width, int height, int depth, Uint32 Rmask,
         Uint32 Gmask, Uint32 Bmask,
         Uint32 Amask){
-    CCanvas* pCanvas = new CCanvas ( NULL );
+    CCanvas* pCanvas = new CCanvas ( static_cast<SDL_Surface*>(NULL) );
     pCanvas->SetSurface ( SDL_CreateRGBSurface ( flags, width, height, depth, Rmask, Gmask, Bmask,
                     Amask ) );
     return ( pCanvas );

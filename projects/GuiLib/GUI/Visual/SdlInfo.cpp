@@ -45,32 +45,35 @@ const SdlInfoHw&  SdlInfo::GetHwInfo() const {
 }
 
 void SdlInfo::FillGeneralInfo(SDL_Surface* surface){
-    SDL_Surface* videosurface = SDL_GetVideoSurface();
+    /*SDL_Surface* videosurface = SDL_GetVideoSurface();
     m_stGeneralInfo.IsVideoSurface = videosurface == surface;
-    const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
+    //const SDL_VideoInfo* vidinfo = SDL_GetVideoInfo();
+    SDL_DisplayMode vidinfo;
+    int result = SDL_GetDesktopDisplayMode(0, &vidinfo);
+
+    m_stGeneralInfo.VideomodeHeight = vidinfo.h;
+    m_stGeneralInfo.VideomodeWidth = vidinfo.w;
 
     //m_stGeneralInfo.VideoMemorySize = vidinfo->blit_fill;
-    m_stGeneralInfo.HasAccColorfill = vidinfo->blit_fill == 1;
+    m_stGeneralInfo.HasAccColorfill = vidinfo.blit_fill == 1;
     m_stGeneralInfo.HasAccHwToHwBlit = vidinfo->blit_hw == 1;
     m_stGeneralInfo.HasAccHwAlphaBlit = vidinfo->blit_hw_A == 1;
     m_stGeneralInfo.HasAccHwColorkeyBlit = vidinfo->blit_hw_CC == 1;
     m_stGeneralInfo.HasAccSwToHwBlit = vidinfo->blit_sw == 1;
     m_stGeneralInfo.HasAccSwAlphaBlit = vidinfo->blit_sw_A == 1;
     m_stGeneralInfo.HasAccSwColorkeyBlit = vidinfo->blit_sw_CC;
-    m_stGeneralInfo.VideomodeHeight = vidinfo->current_h;
-    m_stGeneralInfo.VideomodeWidth = vidinfo->current_w;
     m_stGeneralInfo.HasHardwareSurfaces = vidinfo->hw_available;
     m_stGeneralInfo.VideoMemorySize = vidinfo->video_mem;
     m_stGeneralInfo.HasWindowManager = vidinfo->wm_available;
-    //m_stGeneralInfo.VideoMemorySize = vidinfo->video_mem;
+    //m_stGeneralInfo.VideoMemorySize = vidinfo->video_mem;*/
 }
 
 void SdlInfo::FillHwInfo(){
     m_hwInfo.HasRDTSC = CastSDLBool( SDL_HasRDTSC() );
     m_hwInfo.HasMMX = CastSDLBool( SDL_HasMMX() );
-    m_hwInfo.HasMMXExt = CastSDLBool( SDL_HasMMXExt() );
+    m_hwInfo.HasMMXExt = CastSDLBool( SDL_HasMMX() );
     m_hwInfo.Has3DNow = CastSDLBool( SDL_Has3DNow() );
-    m_hwInfo.Has3DNowExt = CastSDLBool( SDL_Has3DNowExt() );
+    m_hwInfo.Has3DNowExt = CastSDLBool( SDL_Has3DNow() );
     m_hwInfo.HasSSE = CastSDLBool( SDL_HasSSE() );
     m_hwInfo.HasSSE2 = CastSDLBool( SDL_HasSSE2() );
     m_hwInfo.HasAltiVec = CastSDLBool( SDL_HasAltiVec() );
