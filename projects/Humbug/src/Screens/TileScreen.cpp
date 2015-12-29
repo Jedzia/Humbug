@@ -209,7 +209,7 @@ namespace humbug {
       {
           //key press
           //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-		  SDLKey sym = pEvent->key.keysym.sym;
+          SDL_Keycode sym = pEvent->key.keysym.sym;
 		  if( sym == SDLK_a )   {
 			  // toggle console
 			  m_inScreenDelta++;

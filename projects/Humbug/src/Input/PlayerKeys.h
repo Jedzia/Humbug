@@ -29,9 +29,9 @@ public:
     ~PlayerKeys();
     void HookEventloop(SDL_Event* pEvent);
 
-    void HookKeyDown(SDLKey sym);
+    void HookKeyDown(SDL_Keycode sym);
 
-    void HookKeyUp(SDLKey sym);
+    void HookKeyUp(SDL_Keycode sym);
 
     void HookIdle();
 

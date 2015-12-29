@@ -250,12 +250,12 @@ bool CControl::OnEvent(SDL_Event* pEvent)
 	case SDL_KEYDOWN://key press
 		{
 			//key press
-			return OnKeyDown(pEvent->key.keysym.sym,pEvent->key.keysym.mod,pEvent->key.keysym.unicode);
+			return OnKeyDown(pEvent->key.keysym.sym,pEvent->key.keysym.mod);
 		}break;
 	case SDL_KEYUP://key release
 		{
 			//key release
-			return OnKeyUp(pEvent->key.keysym.sym,pEvent->key.keysym.mod,pEvent->key.keysym.unicode);
+			return OnKeyUp(pEvent->key.keysym.sym,pEvent->key.keysym.mod);
 		}break;
 	case SDL_MOUSEMOTION://mouse motion
 		{
@@ -304,13 +304,13 @@ bool CControl::OnEvent(SDL_Event* pEvent)
 }
 
 //keyboard events
-bool CControl::OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode)
+bool CControl::OnKeyDown(SDL_Keycode sym, Uint16 mod)
 {
 	//return false
 	return(false);
 }
 
-bool CControl::OnKeyUp(SDLKey sym,SDLMod mod,Uint16 unicode)
+bool CControl::OnKeyUp(SDL_Keycode sym, Uint16 mod)
 {
 	//return false
 	return(false);
@@ -436,12 +436,12 @@ bool CControl::FilterEvent(SDL_Event* pEvent)
 		case SDL_KEYDOWN://key press
 			{
 				//key press
-				return GetKeyboardFocus()->OnKeyDown(pEvent->key.keysym.sym,pEvent->key.keysym.mod,pEvent->key.keysym.unicode);
+				return GetKeyboardFocus()->OnKeyDown(pEvent->key.keysym.sym,pEvent->key.keysym.mod);
 			}break;
 		case SDL_KEYUP://key release
 			{
 				//key release
-				return GetKeyboardFocus()->OnKeyUp(pEvent->key.keysym.sym,pEvent->key.keysym.mod,pEvent->key.keysym.unicode);
+				return GetKeyboardFocus()->OnKeyUp(pEvent->key.keysym.sym,pEvent->key.keysym.mod);
 			}break;
 		}
 	}

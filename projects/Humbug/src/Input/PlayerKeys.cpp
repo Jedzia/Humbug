@@ -43,7 +43,7 @@ namespace humbug {
    *  @param sym TODO
    * @return TODO
    */
-  void PlayerKeys::HookKeyDown(SDLKey sym){
+  void PlayerKeys::HookKeyDown(SDL_Keycode sym){
       switch(sym) {
       case SDLK_LEFT:
           leftup = false;
@@ -72,7 +72,7 @@ namespace humbug {
    *  @param sym TODO
    * @return TODO
    */
-  void PlayerKeys::HookKeyUp( SDLKey sym ){
+  void PlayerKeys::HookKeyUp(SDL_Keycode sym){
       switch(sym) {
       case SDLK_LEFT:
           leftup = true;

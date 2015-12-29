@@ -116,9 +116,9 @@ public:
         virtual bool OnEvent(SDL_Event* pEvent);
 
         //keyboard events
-        virtual bool OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+        virtual bool OnKeyDown(SDL_Keycode sym, Uint16 mod);
 
-        virtual bool OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+        virtual bool OnKeyUp(SDL_Keycode sym, Uint16 mod);
 
         //mouse events
         virtual bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle);

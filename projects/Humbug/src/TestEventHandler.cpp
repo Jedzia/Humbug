@@ -461,7 +461,7 @@ void CTestEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely
 }
 
 //key press
-void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
+void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     const int step = 6;
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
 

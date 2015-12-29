@@ -75,7 +75,7 @@ public:
 	//mouse move
 	void OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
 	//key press
-	void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
+    void OnKeyDown(SDL_Keycode sym, Uint16 mod);
 	//message handler
 	bool OnMessage(gui::MSGID MsgID,gui::MSGPARM Parm1,gui::MSGPARM Parm2,gui::MSGPARM Parm3,gui::MSGPARM Parm4);
    	//event filtering
