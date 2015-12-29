@@ -143,7 +143,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //video_flags = SDL_OPENGL;
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
     //video_flags = SDL_ANYFORMAT;
-    video_flags = SDL_WINDOW_BORDERLESS;
+    //video_flags = SDL_WINDOW_BORDERLESS;
+    video_flags = SDL_WINDOW_SHOWN;
 
     //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
     //SDL_EnableKeyRepeat(100, 1);
