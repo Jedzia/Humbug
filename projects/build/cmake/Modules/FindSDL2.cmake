@@ -127,7 +127,7 @@ ELSE(MINGW)
 
 # SDL-1.1 is the name used by FreeBSD ports...
 # don't confuse it for the version number.
-FIND_LIBRARY(SDL_LIBRARY_TEMP 
+FIND_LIBRARY(SDL_LIBRARY_RELEASE 
   NAMES SDL2 SDL SDL-1.1
   HINTS
   $ENV{SDLDIR}
@@ -140,6 +140,20 @@ FIND_LIBRARY(SDL_LIBRARY_TEMP
   ${_DEP_PATH}/VisualC/SDL/Release
   ${_DEP_PATH}/VisualC/x64/Release
   ${_DEP_PATH}/VisualC/Release
+)
+FIND_LIBRARY(SDL_LIBRARY_DEBUG 
+  NAMES SDL2 SDL SDL-1.1
+  HINTS
+  $ENV{SDLDIR}
+  PATH_SUFFIXES lib64 lib
+  PATHS
+  /sw
+  /opt/local
+  /opt/csw
+  /opt
+  ${_DEP_PATH}/VisualC/SDL/Debug
+  ${_DEP_PATH}/VisualC/x64/Debug
+  ${_DEP_PATH}/VisualC/Debug
 )
 
 ENDIF(MINGW)
@@ -165,8 +179,8 @@ IF(NOT SDL_BUILDING_LIBRARY)
     # SDLmain. This is mainly for Windows and OS X. Other (Unix) platforms 
     # seem to provide SDLmain for compatibility even though they don't
     # necessarily need it.
-    FIND_LIBRARY(SDLMAIN_LIBRARY 
-      NAMES SDLmain SDLmain-1.1
+    FIND_LIBRARY(SDLMAIN_LIBRARY_RELEASE 
+      NAMES SDL2main SDL2main-2.0
       HINTS
       $ENV{SDLDIR}
       PATH_SUFFIXES lib64 lib
@@ -176,8 +190,23 @@ IF(NOT SDL_BUILDING_LIBRARY)
       /opt/csw
       /opt
   	  ${_DEP_PATH}/VisualC/SDLmain/Release
-  	  ${_DEP_PATH}/VisualC/SDLmain/x64/Release
+  	  ${_DEP_PATH}/VisualC/x64/Release
     )
+    FIND_LIBRARY(SDLMAIN_LIBRARY_DEBUG 
+      NAMES SDL2main SDL2main-2.0
+      HINTS
+      $ENV{SDLDIR}
+      PATH_SUFFIXES lib64 lib
+      PATHS
+      /sw
+      /opt/local
+      /opt/csw
+      /opt
+  	  ${_DEP_PATH}/VisualC/SDLmain/Debug
+  	  ${_DEP_PATH}/VisualC/x64/Debug
+    )
+  SET(SDLMAIN_LIBRARY "optimized;${SDLMAIN_LIBRARY_RELEASE};debug;${SDLMAIN_LIBRARY_DEBUG}"  CACHE STRING "SDL2 main library" FORCE)
+	
   ENDIF(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
 ENDIF(NOT SDL_BUILDING_LIBRARY)
 
@@ -197,12 +226,12 @@ IF(MINGW)
 ENDIF(MINGW)
 
 SET(SDL_FOUND "NO")
-IF(SDL_LIBRARY_TEMP)
+#IF(SDL_LIBRARY_TEMP)
   # For SDLmain
   IF(NOT SDL_BUILDING_LIBRARY)
-    IF(SDLMAIN_LIBRARY)
-      SET(SDL_LIBRARY_TEMP ${SDLMAIN_LIBRARY} ${SDL_LIBRARY_TEMP})
-    ENDIF(SDLMAIN_LIBRARY)
+    IF(SDLMAIN_LIBRARY_RELEASE)
+      SET(SDL_LIBRARY_TEMP ${SDLMAIN_LIBRARY_RELEASE} ${SDL_LIBRARY_TEMP})
+    ENDIF(SDLMAIN_LIBRARY_RELEASE)
   ENDIF(NOT SDL_BUILDING_LIBRARY)
 
   # For OS X, SDL uses Cocoa as a backend so it must link to Cocoa.
@@ -228,12 +257,20 @@ IF(SDL_LIBRARY_TEMP)
   ENDIF(MINGW)
 
   # Set the final string here so the GUI reflects the final state.
-  SET(SDL_LIBRARY ${SDL_LIBRARY_TEMP} CACHE STRING "Where the SDL Library can be found")
+#  SET(SDL_LIBRARY ${SDL_LIBRARY_TEMP} CACHE STRING "Where the SDL Library can be found")
+  #SET(SDL_LIBRARY ${SDL_LIBRARY_TEMP} CACHE STRING "Where the SDL Library can be found")
+  #SET(SDL_LIBRARY "optimized;${SDLMAIN_LIBRARY_RELEASE};${SDL_LIBRARY_RELEASE};debug;${SDLMAIN_LIBRARY_DEBUG};${SDL_LIBRARY_DEBUG}"  CACHE STRING "SDL2 library" FORCE)
+  SET(SDL_LIBRARY "optimized;${SDL_LIBRARY_RELEASE};debug;${SDL_LIBRARY_DEBUG}"  CACHE STRING "SDL2 library" FORCE)
+
   # Set the temp variable to INTERNAL so it is not seen in the CMake GUI
   SET(SDL_LIBRARY_TEMP "${SDL_LIBRARY_TEMP}" CACHE INTERNAL "")
 
-  SET(SDL_FOUND "YES")
-ENDIF(SDL_LIBRARY_TEMP)
+  #SET(SDL_FOUND "YES")
+#ENDIF(SDL_LIBRARY_TEMP)
 
 #MESSAGE("SDL_LIBRARY is ${SDL_LIBRARY}")
+INCLUDE(FindPackageHandleStandardArgs)
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL
+                                  REQUIRED_VARS SDL_LIBRARY SDL_INCLUDE_DIR)
 

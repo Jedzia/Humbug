@@ -75,7 +75,25 @@ FIND_LIBRARY(SDLIMAGE_LIBRARY_RELEASE
   ${_DEP_PATH}/VisualC/Release
   ${_DEP_PATH}/VisualC/x64/Release
 )
-SET(SDLIMAGE_LIBRARY "optimized;${SDLIMAGE_LIBRARY_RELEASE};debug;${SDLIMAGE_LIBRARY_RELEASE}"  CACHE STRING "SDL image library" FORCE)
+FIND_LIBRARY(SDLIMAGE_LIBRARY_DEBUG 
+  NAMES SDL2_image
+  HINTS
+  $ENV{SDLIMAGEDIR}
+  $ENV{SDLDIR}
+  PATH_SUFFIXES lib64 lib
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
+  /sw
+  /opt/local
+  /opt/csw
+  /opt
+  ${_DEP_PATH}/VisualC/Debug
+  ${_DEP_PATH}/VisualC/x64/Debug
+)
+SET(SDLIMAGE_LIBRARY "optimized;${SDLIMAGE_LIBRARY_RELEASE};debug;${SDLIMAGE_LIBRARY_DEBUG}"  CACHE STRING "SDL image library" FORCE)
 
 IF(WIN32)
 
