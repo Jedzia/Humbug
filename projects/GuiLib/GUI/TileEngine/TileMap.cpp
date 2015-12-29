@@ -176,7 +176,7 @@ namespace gui {
       //tileSet.GetTileImage()->SetColorKey(background->GetColorKey());
       //SDL_SetAlpha(tileSet.GetTileImage()->GetSurface(), SDL_SRCALPHA, 128);
       //SDL_SetAlpha(background->GetSurface(), SDL_SRCALPHA, 128);
-      //SDL_SetColorKey(background->GetSurface(), SDL_SRCCOLORKEY, 0x000000);
+      //SDL_SetColorKey(background->GetSurface(), SDL_TRUE, 0x000000);
       //background->Clear(CColor::Black());
       //background->SetColorKey(CColor::Black());
 

@@ -290,7 +290,7 @@ void CON_UpdateConsole(ConsoleInformation *console) {
 	 */
 	if((console->OutputScreen->flags & SDL_OPENGLBLIT) && (console->OutputScreen->format->BytesPerPixel > 2)) {
 		Uint32 *pix = (Uint32 *) (CurrentFont->FontSurface->pixels);
-		SDL_SetColorKey(CurrentFont->FontSurface, SDL_SRCCOLORKEY, *pix);
+		SDL_SetColorKey(CurrentFont->FontSurface, SDL_TRUE, *pix);
 	}
 
 	/*	now draw text from last but second line to top
@@ -624,7 +624,7 @@ void DrawCommandLine() {
 	   software-mode transparency. */
 	if(Topmost->OutputScreen->flags & SDL_OPENGLBLIT) {
 		Uint32 *pix = (Uint32 *) (CurrentFont->FontSurface->pixels);
-		SDL_SetColorKey(CurrentFont->FontSurface, SDL_SRCCOLORKEY, *pix);
+		SDL_SetColorKey(CurrentFont->FontSurface, SDL_TRUE, *pix);
 	}
 
 	/* first of all restore InputBackground */

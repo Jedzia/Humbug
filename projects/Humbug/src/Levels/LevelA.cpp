@@ -487,10 +487,10 @@ private:
         tmpTilesCanvas->SetColorKey( c_color );
         m_pTiles.reset( tmpTilesCanvas );
 
-// SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY
+// SDL_SWSURFACE | SDL_SRCALPHA | SDL_TRUE
 
-        //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-        //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
+        //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
+        //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
         //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
         m_pBackground.reset( testCanvas );
         //m_pBackground->SetColorKey(CColor::Black());

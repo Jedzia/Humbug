@@ -122,7 +122,7 @@ int DT_LoadFontFromSurface(SDL_Surface *Temp, int flags) {
 		if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
 			DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_TRANSPARENT);
 		else
-			SDL_SetColorKey((*CurrentFont)->FontSurface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB((*CurrentFont)->FontSurface->format, 255, 0, 255));
+			SDL_SetColorKey((*CurrentFont)->FontSurface, SDL_TRUE | SDL_RLEACCEL, SDL_MapRGB((*CurrentFont)->FontSurface->format, 255, 0, 255));
 	} else if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
 		DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_OPAQUE);
 

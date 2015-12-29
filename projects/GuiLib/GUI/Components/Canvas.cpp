@@ -9,47 +9,66 @@ namespace components {
 
 using namespace std;
 
-CCanvas::CCanvas ( SDL_Surface* pSurface ){
+CCanvas::CCanvas(SDL_Surface* pSurface)
+    : m_pRenderer(0), m_pWindow(0), m_pSurface(0)
+{
     //dbgOut(__FUNCTION__ << std::endl);
-    SetSurface ( pSurface );
+    m_pSurface = pSurface;
+    m_lstUpdateRects.clear();
+}
+
+CCanvas::CCanvas ( SDL_Window* pWindow )
+    : m_pRenderer(0), m_pWindow(0), m_pSurface(0)
+{
+    //dbgOut(__FUNCTION__ << std::endl);
+    SetWindow(pWindow);
     m_lstUpdateRects.clear ( );
 }
 
 CCanvas::~CCanvas ( ){
 	ClearUpdateRects ( );
-    if ( GetSurface ( ) ) {
-        SDL_FreeSurface ( GetSurface ( ) );
-        SetSurface ( NULL );
+    if (m_pRenderer) {
+        SDL_DestroyRenderer(m_pRenderer);
+    }
+
+    if (m_pWindow) {
+        SDL_DestroyWindow(m_pWindow);
+        SetWindow(NULL);
     }
 
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
-SDL_Surface * CCanvas::GetSurface ( ) const {
+SDL_Surface * CCanvas::GetSurface() const {
     return ( m_pSurface );
 }
 
-void CCanvas::SetSurface ( SDL_Surface* pSurface ){
-    m_pSurface = pSurface;
+void CCanvas::SetWindow(SDL_Window* pWindow){
+    m_pWindow = pWindow;
+    if (pWindow)
+    {
+        m_pSurface = SDL_GetWindowSurface(pWindow);
+        m_pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
+    }
 }
 
 bool CCanvas::Lock ( ) const {
-    if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
+    /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
         if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
             return ( true );
         }
         else {
             return ( false );
         }
-    }
+    }*/
 
     return ( true );
 }
 
 void CCanvas::Unlock ( ) const {
-    if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
-        SDL_UnlockSurface ( GetSurface ( ) );
-    }
+//    if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
+//        SDL_UnlockSurface ( GetSurface ( ) );
+//    }
 }
 
 CColor CCanvas::GetPixel ( int x, int y ){
@@ -116,22 +135,26 @@ void CCanvas::UpdateRects ( ){
         pRect = *iter;
 
         if ( pRect ) {
-            SDL_UpdateRect ( GetSurface ( ), pRect->x, pRect->y, pRect->w, pRect->h );
+            //SDL_UpdateRect ( GetSurface ( ), pRect->x, pRect->y, pRect->w, pRect->h );
+            SDL_RenderPresent(m_pRenderer);
         }
         else {
-            SDL_UpdateRect ( GetSurface ( ), 0, 0, GetWidth ( ), GetHeight ( ) );
+            //SDL_UpdateRect ( GetSurface ( ), 0, 0, GetWidth ( ), GetHeight ( ) );
+            SDL_RenderPresent(m_pRenderer);
         }
     }
     ClearUpdateRects ( );
 } // UpdateRects
 
 bool CCanvas::Flip ( ){
-    return ( SDL_Flip ( GetSurface ( ) ) == 0 );
+    SDL_RenderPresent(m_pRenderer);
+    //return SDL_Flip(GetSurface()) == 0;
+    return true;
 }
 
 bool CCanvas::SetColorKey ( CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.R ( ), color.G ( ), color.B ( ) );
-    return ( SDL_SetColorKey ( GetSurface ( ), SDL_SRCCOLORKEY, col ) == 0 );
+    return (SDL_SetColorKey(GetSurface(), SDL_TRUE, col) == 0);
 }
 
 CColor CCanvas::GetColorKey ( ) const {

@@ -14,8 +14,8 @@ namespace gui {
       dbgOut(__FUNCTION__);
       SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
       loader.FreeLast();
-      SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
+      SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
+      //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
       SDL_SetAlpha(bitmap, 0, 128);
       //SDL_SetAlpha(bitmap, 0, 0);
       //SDL_SetAlpha(bitmap, 0, 255);
@@ -74,8 +74,8 @@ namespace gui {
 		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 22);
 
 		  //Clear(CColor::Black);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0x000000);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, transparentColor);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0x000000);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, transparentColor);
 		  /*for (int i = 0; i < MapCount ; i++)
 		  {
 			  std::string MapName;
@@ -83,9 +83,9 @@ namespace gui {
 		  }*/
 
 
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xffffff);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0xffffff);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
 		  //SDL_SetAlpha(bitmap, 0, 0);
 		  //SDL_SetAlpha(bitmap, 0, 255);
 		  SetSurface( bitmap );

@@ -125,7 +125,7 @@ namespace gui
    */
   void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
       SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
-      SDL_SetColorKey(alphasurf, SDL_SRCCOLORKEY, key);
+      SDL_SetColorKey(alphasurf, SDL_TRUE, key);
       SDL_SetAlpha(alphasurf, 0, alpha);
   }
 

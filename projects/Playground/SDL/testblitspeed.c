@@ -120,7 +120,7 @@ static void output_surface_details(const char *name, SDL_Surface *surface)
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_RESIZABLE);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_NOFRAME);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_HWACCEL);
-        append_sdl_surface_flag(surface, f, sizeof (f), SDL_SRCCOLORKEY);
+        append_sdl_surface_flag(surface, f, sizeof (f), SDL_TRUE);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_RLEACCELOK);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_RLEACCEL);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_SRCALPHA);

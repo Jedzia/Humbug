@@ -5,9 +5,9 @@ namespace gui {
 namespace components {
 
 CMainCanvas::CMainCanvas(int width, int height, int bpp, Uint32 flags):
-CCanvas ( SDL_SetVideoMode ( width , height , bpp, flags ) )
+CCanvas( SDL_CreateWindow("Rotz", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags))
 {
-	SDL_Delay ( 10 ) ;
+    SDL_Delay ( 10 ) ;
 }
 
 CMainCanvas::~CMainCanvas()

@@ -121,8 +121,8 @@ namespace humbug {
                   CRectangle(0, 0, 32, 32), CPoint(32, 0) );
       }
 
-      //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
+      //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
+      //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
       //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
       //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
       m_pBackground.reset( new CCanvas( tmpfsurf ) );
