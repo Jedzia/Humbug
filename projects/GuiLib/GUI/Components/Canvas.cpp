@@ -58,19 +58,19 @@ SDL_Surface * CCanvas::GetSurface() const {
     }
 }
 
-    void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
     {
         SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source->GetSurface());
         Render(tex, srcRect, dstRect);
     }
 
-    void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
     {
         SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source);
         Render(tex, srcRect, dstRect);
     }
 
-    void CCanvas::Render(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    void CCanvas::Render(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
     {
         SDL_RenderClear(this->m_pRenderer);
         //Draw the texture
@@ -82,7 +82,7 @@ SDL_Surface * CCanvas::GetSurface() const {
         SDL_DestroyTexture(texture);
     }
 
-    void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
     {
         SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
         Render(tex, srcRect, dstRect);
@@ -102,6 +102,7 @@ SDL_Surface * CCanvas::GetSurface() const {
 }
 
 void CCanvas::Unlock ( ) const {
+    Render();
 //    if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
 //        SDL_UnlockSurface ( GetSurface ( ) );
 //    }

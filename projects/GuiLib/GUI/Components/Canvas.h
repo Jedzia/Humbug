@@ -44,13 +44,13 @@ public:
     void SetWindow(SDL_Window* pWindow);
 
     // Render from other Canvas
-    void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
     // Render from a surface
-    void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
     // Render from a texture
-    void Render(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void Render(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
     // Render myself
-    void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const ;
