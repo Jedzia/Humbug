@@ -25,7 +25,7 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL_ttf-2.0.11)
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_ttf-2.0.12)
 
 FIND_PATH(SDLTTF_INCLUDE_DIR SDL_ttf.h
   HINTS
@@ -55,7 +55,7 @@ FIND_PATH(SDLTTF_INCLUDE_DIR SDL_ttf.h
 )
 
 FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE 
-  NAMES SDL_ttf
+  NAMES SDL2_ttf
   HINTS
   $ENV{SDLTTFDIR}
   $ENV{SDLDIR}
@@ -73,7 +73,7 @@ FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE
     PATH_SUFFIXES lib64 lib
 )
 FIND_LIBRARY(SDLTTF_LIBRARY_DEBUG 
-  NAMES SDL_ttf
+  NAMES SDL2_ttf
   HINTS
   $ENV{SDLTTFDIR}
   $ENV{SDLDIR}
@@ -94,14 +94,14 @@ SET(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_D
 
 IF(WIN32)
 
-    FIND_FILE(SDLTTF_LIBRARY_DLL_RELEASE NAMES SDL_ttf.dll PATHS
+    FIND_FILE(SDLTTF_LIBRARY_DLL_RELEASE NAMES SDL2_ttf.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Release
 		${_DEP_PATH}/VisualC/x64/Release
     )
-    FIND_FILE(SDLTTF_LIBRARY_DLL_DEBUG NAMES SDL_ttf.dll PATHS
+    FIND_FILE(SDLTTF_LIBRARY_DLL_DEBUG NAMES SDL2_ttf.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib

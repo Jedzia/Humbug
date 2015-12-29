@@ -1,8 +1,8 @@
-# Locate SDL_ttf library
+# Locate SDL_mixer library
 # This module defines
-# SDLTTF_LIBRARY, the name of the library to link against
-# SDLTTF_FOUND, if false, do not try to link to SDL
-# SDLTTF_INCLUDE_DIR, where to find SDL/SDL.h
+# SDLMIXER_LIBRARY, the name of the library to link against
+# SDLMIXER_FOUND, if false, do not try to link to SDL
+# SDLMIXER_INCLUDE_DIR, where to find SDL/SDL.h
 #
 # $SDLDIR is an environment variable that would
 # correspond to the ./configure --prefix=$SDLDIR
@@ -25,11 +25,12 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL_ttf-2.0.11)
+# Todo: in all FindSDL scripts, use a way to find the lib via "SDL2_gfx", not the versioned path
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_mixer-2.0.0)
 
-FIND_PATH(SDLTTF_INCLUDE_DIR SDL_ttf.h
+FIND_PATH(SDLMIXER_INCLUDE_DIR SDL_mixer.h
   HINTS
-  $ENV{SDLTTFDIR}
+  $ENV{SDLMIXERDIR}
   $ENV{SDLDIR}
   PATH_SUFFIXES include
   PATHS
@@ -54,11 +55,12 @@ FIND_PATH(SDLTTF_INCLUDE_DIR SDL_ttf.h
   ${_DEP_PATH}
 )
 
-FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE 
-  NAMES SDL_ttf
+FIND_LIBRARY(SDLMIXER_LIBRARY_RELEASE 
+  NAMES SDL2_mixer
   HINTS
-  $ENV{SDLTTFDIR}
+  $ENV{SDLMIXERDIR}
   $ENV{SDLDIR}
+  PATH_SUFFIXES lib64 lib
   PATHS
   ~/Library/Frameworks
   /Library/Frameworks
@@ -68,15 +70,14 @@ FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE
   /opt/local
   /opt/csw
   /opt
-  ${_DEP_PATH}/VisualC/Release
   ${_DEP_PATH}/VisualC/x64/Release
-    PATH_SUFFIXES lib64 lib
 )
-FIND_LIBRARY(SDLTTF_LIBRARY_DEBUG 
-  NAMES SDL_ttf
+FIND_LIBRARY(SDLMIXER_LIBRARY_DEBUG 
+  NAMES SDL2_mixer
   HINTS
-  $ENV{SDLTTFDIR}
+  $ENV{SDLMIXERDIR}
   $ENV{SDLDIR}
+  PATH_SUFFIXES lib64 lib
   PATHS
   ~/Library/Frameworks
   /Library/Frameworks
@@ -86,48 +87,28 @@ FIND_LIBRARY(SDLTTF_LIBRARY_DEBUG
   /opt/local
   /opt/csw
   /opt
-  ${_DEP_PATH}/VisualC/Debug
   ${_DEP_PATH}/VisualC/x64/Debug
-    PATH_SUFFIXES lib64 lib
 )
-SET(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_DEBUG}"  CACHE STRING "SDL true type font library" FORCE)
+SET(SDLMIXER_LIBRARY "optimized;${SDLMIXER_LIBRARY_RELEASE};debug;${SDLMIXER_LIBRARY_DEBUG}"  CACHE STRING "SDL mixer library" FORCE)
 
 IF(WIN32)
-
-    FIND_FILE(SDLTTF_LIBRARY_DLL_RELEASE NAMES SDL_ttf.dll PATHS
+    FIND_FILE(SDLMIXER_LIBRARY_DLL_RELEASE NAMES SDL2_mixer.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
-		${_DEP_PATH}/VisualC/Release
+		${_DEP_PATH}/Release
 		${_DEP_PATH}/VisualC/x64/Release
     )
-    FIND_FILE(SDLTTF_LIBRARY_DLL_DEBUG NAMES SDL_ttf.dll PATHS
+    FIND_FILE(SDLMIXER_LIBRARY_DLL_DEBUG NAMES SDL2_mixer.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
-		${_DEP_PATH}/VisualC/Debug
+		${_DEP_PATH}/Debug
 		${_DEP_PATH}/VisualC/x64/Debug
     )
-
-    # // Todo: extra libfreetype-6
-    #FIND_FILE(SDLTTF_LIBRARY_DLL_EXT NAMES libfreetype-6 PATHS
-	#	${_DEP_PATH}/VisualC/external/lib/x86
-    #)
-    #FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
-	#SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
-	IF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-	 SET( _sdlttf_library_dlls_ext_path x86 )
-	ELSE( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-	 SET( _sdlttf_library_dlls_ext_path x64 )
-	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-
-    FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/${_sdlttf_library_dlls_ext_path}/*.dll)
-	SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
-
-	
 ENDIF(WIN32)
 
 INCLUDE(FindPackageHandleStandardArgs)
 
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLTTF
-                                  REQUIRED_VARS SDLTTF_LIBRARY SDLTTF_INCLUDE_DIR)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLMIXER
+                                  REQUIRED_VARS SDLMIXER_LIBRARY SDLMIXER_INCLUDE_DIR)

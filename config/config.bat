@@ -1,7 +1,7 @@
 SET CMAKE_DIR=D:\Program Files (x86)\CMake
 
 SET ZLIBVER=1.2.8
-SET SDLVER=1.2.15
+SET SDLVER=2.0.4
 
 if "%BOOST_ROOTDIR%"=="" ( 
 SET BOOST_ROOTDIR=E:\Devel\CPP\Libs\boost\boost-1.55.0
