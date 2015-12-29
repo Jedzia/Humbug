@@ -72,7 +72,7 @@ namespace gui {
 			  //mySelf->Command_Handler(console, command);
 		  }
 
-		  CON_Out(console, "Command %s not registered", command);
+		  //CON_Out(console, "Command %s not registered", command);
           return;
 //        int argc;
 //           char* argv[128];
@@ -149,15 +149,15 @@ namespace gui {
        */
       void ListCommands(ConsoleInformation* console) {
 		  // internal console based commands 
-          CON_Out(console, "quit");
-          CON_Out(console, "echo");
-          CON_Out(console, "drawtextdemo");
-          CON_Out(console, "alpha");
-          CON_Out(console, "background");
-          CON_Out(console, "move");
-          CON_Out(console, "resize");
-          CON_Out(console, "listcommands");
-          CON_Out(console, "prompt");
+//          CON_Out(console, "quit");
+//          CON_Out(console, "echo");
+//          CON_Out(console, "drawtextdemo");
+//          CON_Out(console, "alpha");
+//          CON_Out(console, "background");
+//          CON_Out(console, "move");
+//          CON_Out(console, "resize");
+//          CON_Out(console, "listcommands");
+//          CON_Out(console, "prompt");
       }
       ~CConsoleImpl(){
           m_vCmdCallbacks.erase(m_pConsole);
@@ -183,7 +183,7 @@ namespace gui {
        */
       static void Add_CommandHandler( ConsoleInformation* console, CConsole::CConsoleImpl* cimpl){
           m_vCmdCallbacks.insert( std::make_pair(console, cimpl) );
-          CON_SetExecuteFunction(console, Wrapper_To_Call_CommandHandler);
+          //CON_SetExecuteFunction(console, Wrapper_To_Call_CommandHandler);
       }
       /** $(fclass), InitCommandHandler:
        *  Detailed description.
@@ -220,7 +220,7 @@ namespace gui {
       dbgOut(__FUNCTION__);
 
       pimpl_->m_ceParent = parent;
-      pimpl_->m_pConsole = CON_Init(font, displayScreen->GetSurface(), lines, rect);
+      //pimpl_->m_pConsole = CON_Init(font, displayScreen->GetSurface(), lines, rect);
       pimpl_->ListCommands(pimpl_->m_pConsole);
 
       //CON_SetExecuteFunction(pimpl_->m_pConsole, Cmd_Handler);
@@ -235,12 +235,12 @@ namespace gui {
 	  pimpl_->AddCommand("quit", &quitCommand);
 
       //CON_Show(pimpl_->m_pConsole);
-      CON_Topmost(pimpl_->m_pConsole);
+      //CON_Topmost(pimpl_->m_pConsole);
       m_bIsVisible = false;
   }
 
   CConsole::~CConsole(void){
-      CON_Destroy(pimpl_->m_pConsole);
+      //CON_Destroy(pimpl_->m_pConsole);
 
       //delete pimpl_->m_pConsole;
       dbgOut(__FUNCTION__);
@@ -251,10 +251,10 @@ namespace gui {
    *  @return TODO
    */
   void CConsole::Draw( void ) const {
-      if (pimpl_->m_pConsole->Visible != CON_CLOSED) {
+      /*if (pimpl_->m_pConsole->Visible != CON_CLOSED) {
           CON_DrawConsole(pimpl_->m_pConsole);
           m_pScreen->AddUpdateRect(m_crDimensions);
-      }
+      }*/
   }
 
   /** CConsole, Toggle:
@@ -263,14 +263,14 @@ namespace gui {
    */
   void CConsole::Toggle( void ){
       //m_bIsVisible = !m_bIsVisible;
-      m_bIsVisible = !(CON_isVisible(pimpl_->m_pConsole) != 0);
+      /*m_bIsVisible = !(CON_isVisible(pimpl_->m_pConsole) != 0);
 
       if (m_bIsVisible) {
           CON_Show(pimpl_->m_pConsole);
       }
       else {
           CON_Hide(pimpl_->m_pConsole);
-      }
+      }*/
   }
 
   /** CConsole, OnEvent:
@@ -279,7 +279,7 @@ namespace gui {
    * @return TODO
    */
   bool CConsole::OnEvent( SDL_Event* pEvent ){
-      if( !CON_Events(pEvent) ) {
+      /*if( !CON_Events(pEvent) ) {
           //continue;
           int abc = 123;
           abc++;
@@ -289,7 +289,9 @@ namespace gui {
           int abc = 123;
           abc++;
           return false;
-      }
+      }*/
+
+      return false;
   }
 
   /** CConsole, DoSomething:

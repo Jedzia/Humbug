@@ -10,7 +10,7 @@
 //#include <build/cmake/include/debug.h>
 namespace gui {
   CTileImage::CTileImage( FileLoader& loader, std::string filename,
-          CTileImageSetup configuration ) : CCanvas() {
+          CTileImageSetup configuration ) : CCanvas(static_cast<SDL_Surface*>(NULL)) {
       dbgOut(__FUNCTION__);
       SDL_Surface* bitmap = ( loader.FL_LOADIMG(filename) );
       loader.FreeLast();
@@ -32,7 +32,7 @@ namespace gui {
   }
 
 	  CTileImage::CTileImage( FileLoader& loader, std::string filename, std::string tileDescrFile )
-		  : CCanvas()
+          : CCanvas(static_cast<SDL_Surface*>(NULL))
 	  {
 
 		  // Todo: duplicate init code ... see other ctor, simplify

@@ -8,9 +8,9 @@
 
 /*struct SDL_Rect;
 typedef short           int16_t;
-typedef int16_t		Sint16;
-typedef unsigned short  uint16_t;
-typedef uint16_t	Uint16;*/
+typedef int16_t		int;
+typedef unsigned short  int_t;
+typedef int_t	int;*/
 
 namespace gui {
 namespace components {
@@ -25,7 +25,7 @@ private:
 	SDL_Rect m_rect;
 public:
 	//constructors--direct member assignment
-	CRectangle ( Sint16 x = 0 , Sint16 y = 0 , Uint16 w = 0 , Uint16 h = 0 ) ;
+	CRectangle ( int x = 0 , int y = 0 , int w = 0 , int h = 0 ) ;
 	CRectangle ( CPoint xy , CPoint wh ) ;
 	//copy from SDL_Rect
 	CRectangle ( SDL_Rect rc ) ;
@@ -36,22 +36,22 @@ public:
 	virtual ~CRectangle ( ) ;
 
 	//accessors for x, y, h, and w
-	Sint16& X ( ) ;
-	Sint16& Y ( ) ;
-	Uint16& W ( ) ;
-	Uint16& H ( ) ;
+	int& X ( ) ;
+	int& Y ( ) ;
+	int& W ( ) ;
+	int& H ( ) ;
 
 	//getters
-	Sint16 GetX() const;
-	Sint16 GetY() const;
-	Uint16 GetW() const;
-	Uint16 GetH() const;
+	int GetX() const;
+	int GetY() const;
+	int GetW() const;
+	int GetH() const;
 
 	//setters
-	void SetX(Sint16 x);
-	void SetY(Sint16 y);
-	void SetW(Uint16 w);
-	void SetH(Uint16 h);
+	void SetX(int x);
+	void SetY(int y);
+	void SetW(int w);
+	void SetH(int h);
 
 	//conversion operators
 	//convert to SDL_Rect
@@ -62,7 +62,7 @@ public:
 	operator CPoint ( ) ;
 
 	//set values for members
-	CRectangle& Set ( Sint16 x , Sint16 y , Uint16 w , Uint16 h ) ;
+	CRectangle& Set ( int x , int y , int w , int h ) ;
 	//copy member values from another CRectangle
 	CRectangle& Copy ( CRectangle& rc ) ;
 
@@ -72,11 +72,11 @@ public:
 	bool IsEmpty ( ) ;
 
 	//offset rectangle by coordinates or point
-	CRectangle& Offset ( Sint16 dx , Sint16 dy ) ;
+	CRectangle& Offset ( int dx , int dy ) ;
 	CRectangle& Offset ( CPoint& pt ) ;
 
 	//move to a position, either coordinates or point
-	CRectangle& Move ( Sint16 x , Sint16 y ) ;
+	CRectangle& Move ( int x , int y ) ;
 	CRectangle& Move ( const CPoint& pt ) ;
 
 	//intersect with another rectangle
@@ -85,7 +85,7 @@ public:
 	CRectangle& Union ( CRectangle& rc ) ;
 
 	//check if a point is within the rectangle
-	bool Contains ( Sint16 x , Sint16 y ) ;
+	bool Contains ( int x , int y ) ;
 	bool Contains ( CPoint& pt ) ;
 
     // Todo: all to const refs

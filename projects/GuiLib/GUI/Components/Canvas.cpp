@@ -3,6 +3,7 @@
 #include <memory.h>
 //
 #include <build/cmake/include/debug.h>
+#include <GuiLib/GUI/Visual/Application.h>
 
 namespace gui {
 namespace components {
@@ -163,10 +164,12 @@ bool CCanvas::SetColorKey ( CColor& color ){
 }
 
 CColor CCanvas::GetColorKey ( ) const {
-    Uint32 col = GetSurface ( )->format->colorkey;
-    CColor color;
-    SDL_GetRGB ( col, GetSurface ( )->format, &color.R ( ), &color.G ( ), &color.B ( ) );
-    return ( color );
+    throw new std::exception("Fuck !");
+//
+//    Uint32 col = GetSurface ( )->format->colorkey;
+//    CColor color;
+//    SDL_GetRGB ( col, GetSurface ( )->format, &color.R ( ), &color.G ( ), &color.B ( ) );
+//    return ( color );
 }
 
 bool CCanvas::ClearColorKey ( ){
@@ -214,7 +217,10 @@ CCanvas * CCanvas::CreateRGB ( Uint32 flags, int width, int height, int depth, U
 }
 
 CCanvas * CCanvas::CreateRGBCompatible ( Uint32 flags, int width, int height ){
-    SDL_PixelFormat* format = SDL_GetVideoSurface ( )->format;
+    // throw new std::exception("Fuck !");
+    //auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
+    auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
+    SDL_PixelFormat* format = surface->format;
     return ( CreateRGB ( flags, width, height, format->BitsPerPixel, format->Rmask, format->Gmask,
                      format->Bmask, format->Amask ) );
 }
@@ -225,8 +231,11 @@ CCanvas * CCanvas::LoadBMP ( string sFileName ){
 }
 
 CCanvas * CCanvas::LoadBMPCompatible ( string sFileName ){
-    SDL_Surface* pSurface = SDL_LoadBMP ( sFileName.c_str ( ) );
-    SDL_Surface* pSurface2 = SDL_DisplayFormat ( pSurface );
+    //throw new std::exception("Fuck !");
+    SDL_Surface* pSurface = SDL_LoadBMP(sFileName.c_str());
+    //SDL_Surface* pSurface2 = SDL_DisplayFormat(pSurface);
+    auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
+    SDL_Surface* pSurface2 = SDL_ConvertSurfaceFormat(pSurface, surface->format->format, 0);
     SDL_FreeSurface ( pSurface );
     return ( new CCanvas ( pSurface2 ) );
 }

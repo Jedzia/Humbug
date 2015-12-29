@@ -18,7 +18,7 @@ CColor::CColor(Uint8 r,Uint8 g,Uint8 b)
 	//set blue
 	SetB(b);
 	//set unused to 0
-	m_Color.unused=0;
+	m_Color.a=0;
 }
 
 //copy constructor
@@ -31,7 +31,7 @@ CColor::CColor(const CColor& Color)
 	//set blue
 	SetB(Color.GetB());
 	//set unused to 0
-	m_Color.unused=0;
+	m_Color.a=0;
 }
 
 //destructor
@@ -80,7 +80,7 @@ void CColor::SetB(Uint8 b)
 void CColor::SetA(Uint8 a)
 {
 	//set blue
-	m_Color.unused=a;
+	m_Color.a=a;
 }
 
 //rgb accessors

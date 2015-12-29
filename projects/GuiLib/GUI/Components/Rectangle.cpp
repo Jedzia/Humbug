@@ -15,7 +15,7 @@ namespace components {
 	}
 };*/
 
-CRectangle::CRectangle ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
+CRectangle::CRectangle ( int x , int y , int w , int h )
 //: pimpl_(new CRectangle::CRectangleImpl)
 {
 	Set ( x , y , w , h ) ;
@@ -50,64 +50,64 @@ CRectangle::~CRectangle ( )
 {
 }
 
-Sint16& CRectangle::X ( )
+int& CRectangle::X ( )
 {
 	return ( pimpl_->m_rect.x ) ;
 }
 
-Sint16& CRectangle::Y ( )
+int& CRectangle::Y ( )
 {
 	return ( pimpl_->m_rect.y ) ;
 }
 
-Uint16& CRectangle::W ( )
+int& CRectangle::W ( )
 {
 	return ( pimpl_->m_rect.w ) ;
 }
 
-Uint16& CRectangle::H ( )
+int& CRectangle::H ( )
 {
 	return ( pimpl_->m_rect.h ) ;
 }
 
 //getters
-Sint16 CRectangle::GetX() const
+int CRectangle::GetX() const
 {
 	return(pimpl_->m_rect.x);
 }
 
-Sint16 CRectangle::GetY() const
+int CRectangle::GetY() const
 {
 	return(pimpl_->m_rect.y);
 }
 
-Uint16 CRectangle::GetW() const
+int CRectangle::GetW() const
 {
 	return(pimpl_->m_rect.w);
 }
 
-Uint16 CRectangle::GetH() const
+int CRectangle::GetH() const
 {
 	return(pimpl_->m_rect.h);
 }
 
 //setters
-void CRectangle::SetX(Sint16 x)
+void CRectangle::SetX(int x)
 {
 	pimpl_->m_rect.x=x;
 }
 
-void CRectangle::SetY(Sint16 y)
+void CRectangle::SetY(int y)
 {
 	pimpl_->m_rect.y=y;
 }
 
-void CRectangle::SetW(Uint16 w)
+void CRectangle::SetW(int w)
 {
 	pimpl_->m_rect.w=w;
 }
 
-void CRectangle::SetH(Uint16 h)
+void CRectangle::SetH(int h)
 {
 	pimpl_->m_rect.h=h;
 }
@@ -129,7 +129,7 @@ CRectangle::operator CPoint ( )
 	return ( pt ) ;
 }
 
-CRectangle& CRectangle::Set ( Sint16 x , Sint16 y , Uint16 w , Uint16 h )
+CRectangle& CRectangle::Set ( int x , int y , int w , int h )
 {
 	X ( ) = x ;
 	Y ( ) = y ;
@@ -155,7 +155,7 @@ bool CRectangle::IsEmpty ( )
 	return ( W ( ) == 0 && H ( ) == 0 ) ;
 }
 
-CRectangle& CRectangle::Offset ( Sint16 dx , Sint16 dy )
+CRectangle& CRectangle::Offset ( int dx , int dy )
 {
 	X ( ) += dx ;
 	Y ( ) += dy ;
@@ -168,7 +168,7 @@ CRectangle& CRectangle::Offset ( CPoint& pt )
 	return ( *this ) ;
 }
 
-CRectangle& CRectangle::Move ( Sint16 x , Sint16 y )
+CRectangle& CRectangle::Move ( int x , int y )
 {
 	X ( ) = x ;
 	Y ( ) = y ;
@@ -193,7 +193,7 @@ CRectangle& CRectangle::Union ( CRectangle& rc )
 	return ( *this ) ;
 }
 
-bool CRectangle::Contains ( Sint16 x , Sint16 y )
+bool CRectangle::Contains ( int x , int y )
 {
 	x -= X ( ) ;
 	y -= Y ( ) ;

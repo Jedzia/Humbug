@@ -299,8 +299,8 @@ int CApplication::Execute(int argc,char* argv[])
 
     {
         // Get SDL Info
-        SdlInfo sdlInfo(SDL_GetVideoSurface());
-        LOGSTREAM << sdlInfo;
+        //SdlInfo sdlInfo(SDL_GetVideoSurface());
+        //LOGSTREAM << sdlInfo;
     }
 
     //The frame rate regulator

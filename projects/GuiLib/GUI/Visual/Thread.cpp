@@ -19,7 +19,7 @@ void CThread::Start()
 	OnStart();
 
 	//get thread pointer
-	m_pThread=SDL_CreateThread(CThread::ThreadFunction,this);
+	m_pThread=SDL_CreateThread(CThread::ThreadFunction, "Thread-Fuck", this);
 
 	//set thread id
 	m_ThreadID=SDL_GetThreadID(m_pThread);

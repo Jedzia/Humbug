@@ -233,7 +233,7 @@ struct FileLoader::FileLoaderImpl {
             if (!sdlsurface) {
                 //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
                 // load a internal error image.
-					char *imgMsg = IMG_GetError();
+					const char *imgMsg = IMG_GetError();
 
                 HUMBUG_FILELOADER_THROW(
                     FileLoaderException(std::string("[FileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
