@@ -232,19 +232,20 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             //tmpsurf = (loadsurf = fl->FL_LOADIMG("Moo.png"));
             tmpsurf = loadsurf = fl->FL_LOADIMG("Moo.png");
             CCanvas tmpCanvas(tmpsurf);
-			//CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+            //CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
 			CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768);
             testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
             m_pBackground = testCanvas;
 			CRectangle screenrect = m_pMainCanvas->GetDimension();
-			m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+            //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+            m_pMainCanvas->Render(m_pBackground, screenrect, screenrect);
 
 			//m_pBackground->Invalidate();
             //delete tmpsurf;
             //SDL_FreeSurface( loadsurf );
             fl->FreeLast();
 
-			int fontsize = 48;
+            int fontsize = 48;
 			CPoint sp(220, 240);
 			TTF_Font *iarial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
 
@@ -341,7 +342,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	HookMgr()->RegisterHookable("Lua", HookCreatorPtr(new ScreenCreator<LuaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Hopper", HookCreatorPtr(new ScreenCreator<HopperScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
-    //HookMgr()->EnableHookable("StartScreen");
+    HookMgr()->EnableHookable("StartScreen");
 	//HookMgr()->EnableHookable("Test1");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);

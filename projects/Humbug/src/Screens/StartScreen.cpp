@@ -278,7 +278,8 @@ void StartScreen::OnDraw(){
 
     m_pScroller->Draw();
     m_pSprMgr->OnDraw();
-
+    
+    m_pMainCanvas->Render();
     m_pMainCanvas->Unlock();
 } // OnDraw
 
