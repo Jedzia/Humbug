@@ -1048,15 +1048,20 @@ void Cursor_BSpace(ConsoleInformation *console) {
 void Cursor_Add(ConsoleInformation *console, SDL_Event *event) {
 	int len = 0;
 
+    if (event->key.keysym.sym < SDLK_SPACE || event->key.keysym.sym > SDLK_z)
+    {
+        return;
+    }
+
     // Todo: keysym.unicode is obsolete
 	/* Again: the commandline has to hold the command and the cursor (+1) */
-	/*if(strlen(Topmost->Command) + 1 < CON_CHARS_PER_LINE && event->key.keysym.unicode) {
+	if(strlen(Topmost->Command) + 1 < CON_CHARS_PER_LINE && event->key.keysym.sym) {
 		Topmost->CursorPos++;
 		len = strlen(Topmost->LCommand);
-		Topmost->LCommand[len] = (char)event->key.keysym.unicode;
+        Topmost->LCommand[len] = (char)event->key.keysym.sym;
 		Topmost->LCommand[len + sizeof(char)] = '\0';
 		Assemble_Command(console);
-	}*/
+	}
 }
 
 void Clear_Command(ConsoleInformation *console) {
