@@ -31,6 +31,7 @@
 #include "SDL.h"
 #include "DT_drawtext.h"
 #include "internal.h"
+//#include "GUI/Visual/Application.h"
 
 #ifdef HAVE_SDLIMAGE
   #include "SDL_image.h"
@@ -86,7 +87,8 @@ void DT_SetFontAlphaGL(int FontNumber, int a) {
  * returns -1 as an error else it returns the number
  * of the font for the user to use
  */
-int DT_LoadFontFromSurface(SDL_Surface *Temp, int flags) {
+int DT_LoadFontFromSurface(SDL_Surface *Temp, int flags, SDL_Surface *displaySurface) {
+    //CApplication::GetMainCanvas();
 	int FontNumber = 0;
 	BitFont **CurrentFont = &BitFonts;
 
@@ -101,11 +103,12 @@ int DT_LoadFontFromSurface(SDL_Surface *Temp, int flags) {
 		PRINT_ERROR("Console: Cannot load a NULL Font \n");
 		return -1;
 	}
-
+    
 	/* Add a font to the list */
 	*CurrentFont = (BitFont *) malloc(sizeof(BitFont));
 
-	(*CurrentFont)->FontSurface = SDL_DisplayFormat(Temp);
+    //(*CurrentFont)->FontSurface = SDL_DisplayFormat(Temp);
+    (*CurrentFont)->FontSurface = SDL_ConvertSurfaceFormat(Temp, displaySurface->format->format, displaySurface->flags);
 	//SDL_FreeSurface(Temp);
 
 	(*CurrentFont)->CharWidth = (*CurrentFont)->FontSurface->w / 256;
@@ -119,12 +122,12 @@ int DT_LoadFontFromSurface(SDL_Surface *Temp, int flags) {
 	 * as transparent.
 	 */
 	if(flags & TRANS_FONT) {
-		if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
-			DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_TRANSPARENT);
-		else
+		//if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
+		//	DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_TRANSPARENT);
+		//else
 			SDL_SetColorKey((*CurrentFont)->FontSurface, SDL_TRUE | SDL_RLEACCEL, SDL_MapRGB((*CurrentFont)->FontSurface->format, 255, 0, 255));
-	} else if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
-		DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_OPAQUE);
+	} //else if(SDL_GetVideoSurface()->flags & SDL_OPENGLBLIT)
+		//DT_SetFontAlphaGL(FontNumber, SDL_ALPHA_OPAQUE);
 
 	return FontNumber;
 }
@@ -168,11 +171,12 @@ void DT_DrawText(const char *string, SDL_Surface *surface, int FontType, int x, 
 		DestRect.x += CurrentFont->CharWidth;
 	}
 	/* if we're in OpenGL-mode, we need to manually update after blitting. */
-	if(surface->flags & SDL_OPENGLBLIT) {
+    // TR2 skipped 
+	/*if(surface->flags & SDL_OPENGLBLIT) {
 		DestRect.x = x;
 		DestRect.w = (Uint16)characters * CurrentFont->CharWidth;
 		SDL_UpdateRects(surface, 1, &DestRect);
-	}
+	}*/
 }
 
 
