@@ -238,8 +238,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
             m_pBackground = testCanvas;
 			CRectangle screenrect = m_pMainCanvas->GetDimension();
-            //m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
-            m_pMainCanvas->Render(m_pBackground, screenrect, screenrect);
+            m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+            //m_pMainCanvas->Render(m_pBackground, screenrect, screenrect);
 
 			//m_pBackground->Invalidate();
             //delete tmpsurf;
@@ -343,7 +343,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	HookMgr()->RegisterHookable("Lua", HookCreatorPtr(new ScreenCreator<LuaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Hopper", HookCreatorPtr(new ScreenCreator<HopperScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
-    HookMgr()->EnableHookable("StartScreen");
+    //HookMgr()->EnableHookable("StartScreen");
 	//HookMgr()->EnableHookable("Test1");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
@@ -411,7 +411,7 @@ void CTestEventHandler::OnIdle(int ticks){
 
     //m_pMainCanvas->UpdateRects ( );
     
-    //m_pMainCanvas->Unlock();
+    //m_pMainCanvas->Render(m_pDrawCanvas, m_pMainCanvas->GetDimension(), m_pMainCanvas->GetDimension());
 	//m_pMainCanvas->Invalidate();
     // call base method.
     CApplication::OnIdle(ticks);
@@ -426,7 +426,6 @@ void CTestEventHandler::Update(){
         fprintf(stdout, "UPD-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks2 = now;
        }*/
-
 	// call base method.
     CApplication::Update();
 }
@@ -502,7 +501,8 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
         //
         m_inActiveSprite ^= 1;
     }*/
-    else if( mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE )   {
+    //else if (mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE)   {
+    else if (sym == SDLK_CARET)   {
         // toggle console
         m_pConsole->Toggle();
     }

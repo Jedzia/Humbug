@@ -227,6 +227,7 @@ void CApplication::OnIdle(int ticks)
 	if (m_pConsole)
 		m_pConsole->Draw();
 	m_pMainCanvas->UpdateRects ( );
+    m_pMainCanvas->Render();
 }
 
 //update loop
