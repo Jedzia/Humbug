@@ -8,7 +8,6 @@ use Path::Class;
 use Cwd;
 
 my $mDEBUG = 0;
-my $searchstring = "Version=";
 #print("Version: 1.0.0 \r\n");
 #print("Version=1.0.0 \r\n");
 
@@ -25,7 +24,7 @@ chdir($scriptdir);
 sub checkFile {
     my $filePath = shift @_;
     my $criteria = shift @_;
-
+	
     open my $fh, $filePath or die "Could not open $filePath: $!";
 
     my @lines = sort grep /\Q$criteria/, <$fh>;
@@ -40,9 +39,21 @@ sub checkFile {
         my $verstr = $lines[0];
         my @ver = split($criteria, $verstr);
     	print "    Version = $ver[1]\n";
-        #print join( "        Ver: ", @ver );
-        # my @values = split('\.', $ver[1]);
-        # print join( "|", @values );
+    }
+}
+
+sub checkInfo {
+    my $filePath = shift @_;
+    my $criteria = shift @_;
+	
+    open my $fh, $filePath or die "Could not open $filePath: $!";
+
+    my @lines = sort grep /\Q$criteria/, <$fh>;
+
+    if (@lines) {
+        my $verstr = $lines[0];
+        my @ver = split($criteria, $verstr);
+    	print "    $ver[1]\n";
     	print "\n";
     }
 }
@@ -74,7 +85,8 @@ for (@perlfiles) {
         next;
     }
     
-    checkFile( $_, $searchstring );
+    checkFile( $_, "Version=" );
+    checkInfo( $_, "Info=" );
 }
 
 
