@@ -32,6 +32,7 @@
 #include "Screens/TileScreen.h"
 #include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Text.h"
+#include "Screens/SimpleScreen.h"
 
 namespace humbug {
 
@@ -152,7 +153,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
     //construct main canvas
     //m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    CMainCanvas* m_pMainCanvas = new CMainCanvas("Humbug, the Game", 1024, 768, 0, video_flags);
+    CMainCanvas* m_pMainCanvas = new CMainCanvas("Humbug, the Game", 1024, 768, video_flags);
     SetMainCanvas( m_pMainCanvas );
 
     //m_pDrawCanvas = m_pMainCanvas;
@@ -251,7 +252,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 			TTF_Font *iarial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
 
 			const char *lines[] = { 
-				"Press '1' for: TestScreen",
+				"Press '1' for: StartScreen",
 				"Press '2' for: TestLevel",
 				"Press '3' for: HighscoreScreen",
 				"Press '4' for: BlaScreen",
@@ -259,9 +260,10 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 				"Press '6' for: LuaScreen",
 				"Press '7' for: HopperScreen",
 				"Press '8' for: LevelA"
-			};
+                "Press '9' for: Simple"
+            };
 
-			for (int i = 0; i < 8 ; i++)
+            for (int i = 0; i < sizeof(lines) / sizeof(const char *); i++)
 			{
 				const char *cur = lines[i];
 				CText infoText(iarial, cur, CColor::Black());
@@ -295,6 +297,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
 
         // fl->Free("Tiles1.bmp");
+        m_pMainCanvas->Render();
     }
     catch (FileLoaderException ex)
     {
@@ -342,7 +345,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	HookMgr()->RegisterHookable("Tiles", HookCreatorPtr(new ScreenCreator<TileScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Lua", HookCreatorPtr(new ScreenCreator<LuaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Hopper", HookCreatorPtr(new ScreenCreator<HopperScreen>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Simple", HookCreatorPtr(new ScreenCreator<SimpleScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->EnableHookable("StartScreen");
 	//HookMgr()->EnableHookable("Test1");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
@@ -546,6 +550,10 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
 		//
 		HookMgr()->EnableHookable("LevelA");
 	}
+    else if (sym == SDLK_9)   {
+        //
+        HookMgr()->EnableHookable("Simple");
+    }
 
 } // OnKeyDown
 

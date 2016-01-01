@@ -46,7 +46,7 @@ namespace gui {
 		  std::istringstream htstrstr(tileConfData);
 		  int TileCount, MapCount;
 		  uint32_t transparentColorR , transparentColorG, transparentColorB;
-		  uint32_t dummy1x, dummy2x, dummy3x, dummy4x, dummy5x, transparentColor;
+          uint32_t dummy4x, dummy5x, transparentColor;
 		  std::string picture;
 		  std::string tmpStr;
 

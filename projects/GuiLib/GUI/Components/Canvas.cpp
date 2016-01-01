@@ -11,15 +11,15 @@ namespace components {
 using namespace std;
 
 CCanvas::CCanvas(SDL_Surface* pSurface)
-    : m_pRenderer(0), m_pWindow(0), m_pSurface(0)
+    : m_pRenderer(nullptr), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr)
 {
     //dbgOut(__FUNCTION__ << std::endl);
-    m_pSurface = pSurface;
+    SetSurface(pSurface);
     m_lstUpdateRects.clear();
 }
 
 CCanvas::CCanvas ( SDL_Window* pWindow )
-    : m_pRenderer(0), m_pWindow(0), m_pSurface(0)
+    : m_pRenderer(nullptr), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr)
 {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
@@ -28,6 +28,12 @@ CCanvas::CCanvas ( SDL_Window* pWindow )
 
 CCanvas::~CCanvas ( ){
 	ClearUpdateRects ( );
+
+    // Clean up
+    if (m_pTexture) {
+        SDL_DestroyTexture(m_pTexture);
+    }
+
     if (m_pRenderer) {
         SDL_DestroyRenderer(m_pRenderer);
     }
@@ -44,8 +50,38 @@ SDL_Surface * CCanvas::GetSurface() const {
     return ( m_pSurface );
 }
 
+SDL_Texture* CCanvas::GetTexture()
+{
+    // Lazy Texture
+    if (m_pTexture == nullptr)
+    {
+        if (this->m_pRenderer)
+        {
+            m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
+        }
+        else
+        {
+            m_pTexture = SDL_CreateTextureFromSurface(CApplication::GetApplication()->GetMainCanvas()->m_pRenderer, m_pSurface);
+        }
+    }
+
+    return m_pTexture;
+}
+
     void CCanvas::SetSurface(SDL_Surface* pSurface)
     {
+        if (!pSurface)
+        {
+            return;
+        }
+
+        //m_pSurface = SDL_CreateRGBSurfaceFrom() pSurface;
+        //m_pSurface = SDL_CreateRGBSurfaceFrom(pSurface->pixels,);
+        //auto mc = CApplication::GetApplication()->GetMainCanvas();
+        //auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
+        //if (surface)
+            //m_pSurface = SDL_ConvertSurfaceFormat(pSurface, surface->format->format, 0);
+        //else
         m_pSurface = pSurface;
     }
 
@@ -54,38 +90,108 @@ SDL_Surface * CCanvas::GetSurface() const {
     if (pWindow)
     {
         m_pSurface = SDL_GetWindowSurface(pWindow);
-        m_pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
+        m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+        m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
     }
 }
 
-    void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
+    SDL_Renderer* CCanvas::GetRenderer() const
     {
-        if (!m_pRenderer)
+        if (this->m_pRenderer)
         {
-            return;
+            return  m_pRenderer;
         }
-        SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source->GetSurface());
-        Render(tex, srcRect, dstRect);
+        else
+        {
+            return CApplication::GetApplication()->GetMainCanvas()->m_pRenderer;
+        }
+
     }
 
-    void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
+    void CCanvas::UpdateTexture(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
     {
-        if (!m_pRenderer)
+        if (!GetTexture() || !source->GetSurface())
         {
             return;
         }
-        SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source);
-        Render(tex, srcRect, dstRect);
+        SDL_UpdateTexture(GetTexture(), NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
+        //SDL_RenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
     }
 
-    void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
+    void CCanvas::UpdateTexture(const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
     {
-        if (!m_pRenderer)
+        if (!GetTexture() || !GetSurface())
         {
             return;
         }
-        SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
-        Render(tex, srcRect, dstRect);
+        SDL_UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
+        //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
+        //SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
+    }
+
+    void CCanvas::RenderCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
+    {
+        if (!this->m_pRenderer || !source->GetTexture())
+        {
+            return;
+        }
+        //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
+        SDL_RenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
+    }
+    
+    void CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
+    {
+        if (!this->m_pRenderer || !GetTexture())
+        {
+            return;
+        }
+        //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
+        SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
+    }
+
+    void CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect)
+    {
+        CApplication::GetApplication()->GetMainCanvas()->RenderCopy(this, srcRect, dstRect);
+
+        //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
+        //SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
+    }
+
+    void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
+    {
+        if (!m_pRenderer || !GetTexture())
+        {
+            return;
+        }
+        //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source->GetSurface());
+        SDL_UpdateTexture(GetTexture(), NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        Render(GetTexture(), srcRect, dstRect);
+    }
+
+    void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
+    {
+        if (!m_pRenderer || !GetTexture())
+        {
+            return;
+        }
+        //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source);
+        SDL_UpdateTexture(GetTexture(), NULL, source->pixels, source->pitch);
+        Render(GetTexture(), srcRect, dstRect);
+    }
+
+    void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
+    {
+        if (!m_pRenderer || !GetTexture())
+        {
+            return;
+        }
+        //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
+        SDL_UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
+        Render(GetTexture(), srcRect, dstRect);
     }
 
     void CCanvas::Render(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const
@@ -94,14 +200,25 @@ SDL_Surface * CCanvas::GetSurface() const {
         {
             return;
         }
-        SDL_RenderClear(this->m_pRenderer);
+        //SDL_RenderClear(this->m_pRenderer);
         //Draw the texture
         SDL_RenderCopy(this->m_pRenderer, texture, srcRect, dstRect);
         //Update the screen
-        SDL_RenderPresent(this->m_pRenderer);
+        //SDL_RenderPresent(this->m_pRenderer);
 
-        // Clean up
-        SDL_DestroyTexture(texture);
+    }
+
+    void CCanvas::RenderFinal() const
+    {
+        if (!m_pRenderer)
+        {
+            return;
+        }
+        //SDL_RenderClear(this->m_pRenderer);
+        //Draw the texture
+        //SDL_RenderCopy(this->m_pRenderer, texture, srcRect, dstRect);
+        //Update the screen
+        SDL_RenderPresent(this->m_pRenderer);
     }
 
     bool CCanvas::Lock ( ) const {
@@ -189,18 +306,18 @@ void CCanvas::UpdateRects ( ){
 
         if ( pRect ) {
             //SDL_UpdateRect ( GetSurface ( ), pRect->x, pRect->y, pRect->w, pRect->h );
-            SDL_RenderPresent(m_pRenderer);
+            //SDL_RenderPresent(m_pRenderer);
         }
         else {
             //SDL_UpdateRect ( GetSurface ( ), 0, 0, GetWidth ( ), GetHeight ( ) );
-            SDL_RenderPresent(m_pRenderer);
+            //SDL_RenderPresent(m_pRenderer);
         }
     }
     ClearUpdateRects ( );
 } // UpdateRects
 
 bool CCanvas::Flip ( ){
-    SDL_RenderPresent(m_pRenderer);
+    //SDL_RenderPresent(m_pRenderer);
     //return SDL_Flip(GetSurface()) == 0;
     return true;
 }
@@ -242,6 +359,13 @@ bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
     return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
 }
+
+bool CCanvas::RenderFillRect(CRectangle& rect, const CColor& color){
+    // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
+    int ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), SDL_ALPHA_OPAQUE);
+    return SDL_RenderFillRect(GetRenderer(), rect);
+}
+
 
 bool CCanvas::Clear ( const CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );

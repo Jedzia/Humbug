@@ -11,7 +11,7 @@ class CMainCanvas : public CCanvas
 {
 public:
     //constructor
-    CMainCanvas(const char * title, int width, int height, int bpp, Uint32 flags);
+    CMainCanvas(const char * title, int width, int height, Uint32 flags);
     //destructor
     virtual ~CMainCanvas ( ) ;
 };

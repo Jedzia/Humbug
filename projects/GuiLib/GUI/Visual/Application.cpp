@@ -226,8 +226,13 @@ void CApplication::OnIdle(int ticks)
 	// std::cout << "---APP After m_sigOnDraw---" << std::endl;
 	if (m_pConsole)
 		m_pConsole->Draw();
+
+    //components::CRectangle frect(100, 200, 185, 185);
+    //bool result = m_pMainCanvas->RenderFillRect(frect, components::CColor(33, 55, 99));
+
+
 	m_pMainCanvas->UpdateRects ( );
-    m_pMainCanvas->Render();
+    m_pMainCanvas->RenderFinal();
 }
 
 //update loop
@@ -352,7 +357,9 @@ int CApplication::Execute(int argc,char* argv[])
                 curdelay = framecap  - fps.get_ticks();
                 //delaynumber++;
                 //fprintf(stdout, "Curdelay: '%d', %d \n", curdelay, delaynumber);
-                SDL_Delay( curdelay );
+                
+                //SDL_Delay( curdelay );
+                
                 /*while (curdelay > 0)
                 {
                     SDL_Delay( capfactor );
@@ -377,7 +384,9 @@ int CApplication::Execute(int argc,char* argv[])
             //FPS.str("");
             //FPS << ShownFrames;
             int delay = m_iShownFrames - m_iFramesCap;
-            fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", m_iShownFrames, loopFrames, curdelay);
+            //fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", m_iShownFrames, loopFrames, curdelay);
+            LOGSTREAM << "FPS: " << m_iShownFrames << ", Loop: " << loopFrames << ", Delay: '" << curdelay << "'";// << std::endl;
+
             m_iShownFrames = shownFrames;
 
             shownFrames = 0;
