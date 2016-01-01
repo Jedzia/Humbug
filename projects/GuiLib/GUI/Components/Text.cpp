@@ -62,7 +62,13 @@ void CText::Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& sr
     //dstRect2.Offset(mdata.DeltaX, mdata.DeltaY);
     //CRectangle srcRect2(srcRect);
     //srcRect2.Offset(mdata.DeltaX, mdata.DeltaY);
-    canvas->Blit(dstRect , *m_pText, srcRect );
+    canvas->Blit(dstRect, *m_pText, srcRect);
+
+    //SDL_Rect src_rect = srcRect.SDLRect();
+    //SDL_Rect dst_rect = dstRect.SDLRect();
+    //canvas->Render(m_pText, &src_rect, &dst_rect);
+
+
     //canvas->AddUpdateRect(dstRect);
     canvas->AddUpdateRect(dstRect);
     //canvas->AddUpdateRect(canvas->GetDimension());

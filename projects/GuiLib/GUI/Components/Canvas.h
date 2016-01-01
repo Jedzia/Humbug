@@ -46,6 +46,11 @@ public:
     // setter for the SDL_Surface*
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
 
+    /** CCanvas, UpdateTexture:
+    *  Draw the underlying surface to the texture. You should use texture only functions.
+    *  @param srcRect source area
+    * @param dstRect target area
+    */
     void UpdateTexture(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
     void RenderCopy(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
     void RenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
