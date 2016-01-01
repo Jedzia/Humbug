@@ -52,10 +52,11 @@ public:
     * @param dstRect target area
     */
     void UpdateTexture(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void UpdateTexture(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    
     void RenderCopy(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
     void RenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
     void RenderCopyToMain(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-    void UpdateTexture(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
     // Render from other Canvas
     void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
@@ -63,9 +64,10 @@ public:
     void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
     // Render from a texture
     void Render(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
-    void RenderFinal() const;
     // Render myself
     void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    
+    void RenderFinal() const;
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const ;

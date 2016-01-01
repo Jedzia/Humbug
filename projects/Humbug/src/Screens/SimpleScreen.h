@@ -19,10 +19,11 @@
 #include "GUI/Components/Screen.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
+
 class FileLoader;
 namespace gui {
-  class CSprite;
-  class CSpriteManager;
+    class CSprite;
+    class CSpriteManager;
   namespace components {
     class CCanvas;
     class CText;
@@ -31,18 +32,25 @@ namespace gui {
 }
 
 namespace humbug {
+  /** @class SimpleScreen:
+   *  Detailed description.
+   *  @param argc TODO
+   * @param argv TODO
+   * @return TODO
+   */
   class SimpleScreen : public gui::components::Screen {
 public:
 
       SimpleScreen(FileLoader& loader, gui::components::CCanvas* background);
       ~SimpleScreen();
 
-      virtual bool OnInit( int argc, char* argv[] );
-      virtual void OnIdle(int ticks);
+      bool OnInit( int argc, char* argv[] ) override;
 
-      virtual void OnDraw();
+      void OnIdle(int ticks) override;
 
-      virtual void OnUpdate();
+      void OnDraw() override;
+
+      void OnUpdate() override;
 
 private:
 
