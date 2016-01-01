@@ -13,6 +13,15 @@ namespace components {
 //CCanvas class
 class CCanvas {
 private:
+    // remove them
+    // Render from other Canvas
+    void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+
+    // Render from a surface
+    void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+
+
+private:
 
     //a list of update rectangles
     std::list < SDL_Rect * > m_lstUpdateRects;
@@ -48,6 +57,13 @@ public:
 
     // setter for the SDL_Surface*
     void SetSurface(SDL_Surface* pSurface);
+
+    /** CCanvas, Render:
+    *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
+    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    */
+    void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
     // setter for the SDL_Surface*
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is
@@ -97,15 +113,6 @@ public:
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
     void RenderCopyToMain(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-
-    // Render from other Canvas
-    void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-
-    // Render from a surface
-    void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-
-    // Render myself
-    void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
     void RenderFinal();
 

@@ -271,13 +271,13 @@ namespace gui {
     }
 
     /** CCanvas, Render:
-     *  Detailed description.
-     *  @param srcRect TODO
-     * @param dstRect TODO
-     * @return TODO
+     *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
+     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
      */
     void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
-        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
+        // this works only for the main canvas
+        if (!m_pRenderer) {
             return;
         }
 
