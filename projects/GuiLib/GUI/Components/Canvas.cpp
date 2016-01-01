@@ -230,12 +230,12 @@ namespace gui {
      * @return TODO
      */
     void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
-        if ( !m_pRenderer || !GetTexture() ) {
-            return;
-        }
+//        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
+//            return;
+//        }
 
-        //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source->GetSurface());
-        SDL_UpdateTexture(GetTexture(), NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source->GetSurface());
+        SDL_UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
         Render(GetTexture(), srcRect, dstRect);
     }
 
@@ -247,12 +247,9 @@ namespace gui {
      * @return TODO
      */
     void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
-        if ( !m_pRenderer || !GetTexture() ) {
-            return;
-        }
 
-        //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, source);
-        SDL_UpdateTexture(GetTexture(), NULL, source->pixels, source->pitch);
+        m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source);
+        SDL_UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
         Render(GetTexture(), srcRect, dstRect);
     }
 
@@ -263,12 +260,12 @@ namespace gui {
      * @return TODO
      */
     void CCanvas::Render(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
-        if ( !m_pRenderer || !GetTexture() ) {
+        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
             return;
         }
 
         //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
-        SDL_UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
+        SDL_UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);
         Render(GetTexture(), srcRect, dstRect);
     }
 
@@ -280,13 +277,13 @@ namespace gui {
      * @return TODO
      */
     void CCanvas::Render(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
-        if (!m_pRenderer) {
-            return;
-        }
+//        if (!m_pRenderer) {
+//            return;
+//        }
 
         //SDL_RenderClear(this->m_pRenderer);
         //Draw the texture
-        SDL_RenderCopy(this->m_pRenderer, texture, srcRect, dstRect);
+        SDL_RenderCopy(GetRenderer(), texture, srcRect, dstRect);
         //Update the screen
         //SDL_RenderPresent(this->m_pRenderer);
     }
@@ -296,6 +293,7 @@ namespace gui {
      *  @return TODO
      */
     void CCanvas::RenderFinal() const {
+        // Todo: assert
         if (!m_pRenderer) {
             return;
         }
@@ -544,6 +542,12 @@ namespace gui {
      */
     bool CCanvas::Clear ( const CColor& color ){
         Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
+        if (m_pTexture)
+        {
+            CRectangle dimension = GetDimension();
+            RenderFillRect(dimension, color);
+        }
+
         return ( SDL_FillRect ( GetSurface ( ), NULL, col ) == 0 );
     }
 
@@ -578,6 +582,7 @@ namespace gui {
         CCanvas* pCanvas = new CCanvas ( static_cast<SDL_Surface *>(NULL) );
         pCanvas->SetSurface ( SDL_CreateRGBSurface ( flags, width, height, depth, Rmask, Gmask, Bmask,
                         Amask ) );
+        pCanvas->m_bOwner = true;
         return ( pCanvas );
     }
 
@@ -604,7 +609,7 @@ namespace gui {
      */
     CCanvas * CCanvas::LoadBMP ( string sFileName ){
         SDL_Surface* pSurface = SDL_LoadBMP ( sFileName.c_str ( ) );
-        return ( new CCanvas ( pSurface ) );
+        return ( new CCanvas ( pSurface, true ) );
     }
 
     /** $(class), LoadBMPCompatible:
@@ -619,7 +624,7 @@ namespace gui {
         auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
         SDL_Surface* pSurface2 = SDL_ConvertSurfaceFormat(pSurface, surface->format->format, 0);
         SDL_FreeSurface ( pSurface );
-        return ( new CCanvas ( pSurface2 ) );
+        return ( new CCanvas ( pSurface2, true ) );
     }
 
 //match color with closest
