@@ -19,6 +19,7 @@ private:
     std::list < SDL_Rect* > m_lstUpdateRects ;
     void SetWindow(SDL_Window* pWindow);
     SDL_Renderer* GetRenderer() const;
+    bool m_bOwner;
 
 protected:
     //pointer to an SDL_Surface
@@ -31,7 +32,7 @@ public:
     //constructor
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is destroyed.
     explicit CCanvas(SDL_Window* pWindow);
-    CCanvas(SDL_Surface* pSurface = NULL);
+    CCanvas(SDL_Surface* pSurface = NULL, bool owner = false);
 
     //destructor
     virtual ~CCanvas ( ) ;

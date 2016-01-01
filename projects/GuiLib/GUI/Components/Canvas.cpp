@@ -26,15 +26,15 @@ namespace gui {
   namespace components {
     using namespace std;
 
-    CCanvas::CCanvas(SDL_Surface* pSurface)
-        : m_pRenderer(nullptr), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr){
+    CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
+        : m_bOwner(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr){
         //dbgOut(__FUNCTION__ << std::endl);
         SetSurface(pSurface);
         m_lstUpdateRects.clear();
     }
 
     CCanvas::CCanvas ( SDL_Window* pWindow )
-        : m_pRenderer(nullptr), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr){
+        : m_bOwner(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr){
         //dbgOut(__FUNCTION__ << std::endl);
         SetWindow(pWindow);
         m_lstUpdateRects.clear ( );
@@ -55,6 +55,11 @@ namespace gui {
         if (m_pWindow) {
             SDL_DestroyWindow(m_pWindow);
             SetWindow(NULL);
+        }
+
+        if (m_bOwner && m_pSurface) {
+            SDL_FreeSurface(m_pSurface);
+            m_pSurface = nullptr;
         }
 
         //dbgOut(__FUNCTION__ << std::endl);
