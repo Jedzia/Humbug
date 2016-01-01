@@ -20,8 +20,6 @@
 //
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
-#include <build/cmake/include/debug.h>
-//
 #include "Filesystem/FileLoader.h"
 #include "GUI/Components/Rectangle.h"
 #include "GUI/Components/Text.h"
@@ -31,6 +29,8 @@
 #include "GUI/Sprite/SpriteManager.h"
 #include "GUI/Visual/EventHandler.h"
 #include <cstdlib>
+//
+#include <build/cmake/include/debug.h>
 
 using namespace gui::components;
 using namespace gui;
@@ -40,24 +40,30 @@ namespace humbug {
       //prv::EyeMover eyemover;
       //prv::WormMover wormmover;
       const int fontsize = 48;
-
-      SimpleScreenImpl(FileLoader& fl) : x(0){
-          TTF_Font* iarial = fl.FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
-
-          m_pScrollText.reset( new CText( iarial, "Hello this is a text", CColor::Black() ) );
-      }
+      int counter;
       int x;
       boost::scoped_ptr<gui::components::CText> m_pScrollText;
       boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
+
+
+      SimpleScreenImpl(FileLoader& fl) : x(0){
+          counter = 0;
+          TTF_Font* iarial = fl.FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
+          m_pScrollText.reset( new CText( iarial, "Hello this is a text", CColor::Black() ) );
+      }
 
       /** $(class), draw:
        *  Detailed description.
        *  @param canvas TODO
        */
-      void draw(CCanvas* canvas){
+      void draw(CCanvas* canvas, SDL_Color& fcol){
           CRectangle screenrect = canvas->GetDimension();
           CPoint sp(20, 540);
-          m_pScrollText->Put( canvas, screenrect + sp.Offset( 0, ( 1 * (fontsize + 10) ) ) );
+          //CColor textColor(fcol.r, fcol.g, fcol.b);
+          //m_pScrollText->SetColor(textColor);
+          m_pScrollText->Put(canvas, screenrect + sp.Offset(fcol.r, (1 * (fontsize + 10))));
+          canvas->ClearUpdateRects();
+          counter++;
       }
   };
 
@@ -98,9 +104,10 @@ namespace humbug {
 
       // only needed when drawing direct 'm_pMainCanvas->Render(m_pBackground->GetSurface());'
       SDL_Surface* tmpfsurf2 = SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, 0);
+      m_pDrawCanvas.reset(new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, 0), true));
       //SDL_Surface* tmpfsurf2 = tmpfsurf;
 
-      m_pBackground.reset( new CCanvas(tmpfsurf2) );
+      m_pBackground.reset( new CCanvas(tmpfsurf2, true) );
 
       //CCanvas tmpCanvas( tmpfsurf );
       m_Loader.FreeLast();
@@ -170,8 +177,11 @@ namespace humbug {
           coldelta = 0;
       }
 
-      pimpl_->draw( m_pBackground.get() );
-      //m_pBackground->UpdateTexture();
+      pimpl_->draw(m_pBackground.get(), fcol);
+      m_pBackground->UpdateTexture();
+      
+      //int *failmemcheck = new int(666);
+
       //m_pMainCanvas->UpdateTexture(m_pBackground.get());
       //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), *m_pBackground,
       // m_pBackground->GetDimension());

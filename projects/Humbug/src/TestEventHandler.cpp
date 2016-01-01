@@ -361,6 +361,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         new gui::CConsole( this, fl->FL_LOADIMG("Fonts/ConsoleFont.bmp"),
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
                         300) );
+
+    //int *failmemcheck = new int(666);
     return(true);
 } // OnInit
 
