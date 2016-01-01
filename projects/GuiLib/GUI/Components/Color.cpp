@@ -9,7 +9,7 @@ namespace gui {
 namespace components {
 
 //standard constructor
-CColor::CColor(Uint8 r,Uint8 g,Uint8 b)
+    CColor::CColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	//set red
 	SetR(r);
@@ -18,7 +18,7 @@ CColor::CColor(Uint8 r,Uint8 g,Uint8 b)
 	//set blue
 	SetB(b);
 	//set unused to 0
-	m_Color.a=0;
+	m_Color.a=a;
 }
 
 //copy constructor
@@ -31,7 +31,7 @@ CColor::CColor(const CColor& Color)
 	//set blue
 	SetB(Color.GetB());
 	//set unused to 0
-	m_Color.a=0;
+    m_Color.a = Color.GetA();
 }
 
 //destructor
@@ -58,7 +58,13 @@ Uint8 CColor::GetB() const
 	return(m_Color.b);
 }
 
-//set rgb
+Uint8 CColor::GetA() const
+{
+    //return blue
+    return(m_Color.a);
+}
+
+    //set rgb
 void CColor::SetR(Uint8 r)
 {
 	//set red
@@ -124,6 +130,8 @@ CColor& CColor::operator=(const CColor& Color)
 	SetG(Color.GetG());
 	//set blue
 	SetB(Color.GetB());
+    //set alpha
+    SetA(Color.GetA());
 	//return
 	return(*this);
 }
@@ -147,6 +155,11 @@ CColor& CColor::operator+=(CColor& Color)
 	if(temp>255) temp=255;
 	SetB(temp);
 
+    //add alpha
+    temp = GetA() + Color.GetA();
+    if (temp>255) temp = 255;
+    SetA(temp);
+
 	//return
 	return(*this);
 }
@@ -165,12 +178,17 @@ CColor& CColor::operator-=(CColor& Color)
 	if(temp<0) temp=0;
 	SetG(temp);
 
-	//add blue
-	temp=GetB()-Color.GetB();
-	if(temp<0) temp=0;
-	SetB(temp);
+    //add blue
+    temp = GetB() - Color.GetB();
+    if (temp<0) temp = 0;
+    SetB(temp);
 
-	//return
+    //add alpha
+    temp = GetA() - Color.GetA();
+    if (temp<0) temp = 0;
+    SetA(temp);
+
+    //return
 	return(*this);
 }
 
@@ -186,11 +204,15 @@ CColor& CColor::operator*=(CColor& Color)
 	temp=(GetG()*Color.GetG())/255;
 	SetG(temp);
 
-	//add blue
-	temp=(GetB()*Color.GetB())/255;
-	SetB(temp);
+    //add blue
+    temp = (GetB()*Color.GetB()) / 255;
+    SetB(temp);
 
-	//return
+    //add alpha
+    temp = (GetA()*Color.GetA()) / 255;
+    SetA(temp);
+
+    //return
 	return(*this);
 }
 
@@ -203,7 +225,8 @@ CColor& CColor::operator*=(int Multiplier)
 		//(*this)=CColor(0,0,0);
 		SetR(0);
 		SetG(0);
-		SetB(0);
+        SetB(0);
+        SetA(0);
 	}
 	else
 	{
@@ -217,10 +240,14 @@ CColor& CColor::operator*=(int Multiplier)
 		temp=(GetG()*Multiplier);
 		SetG(temp);
 
-		//add blue
-		temp=(GetB()*Multiplier);
-		SetB(temp);
-	}
+        //add blue
+        temp = (GetB()*Multiplier);
+        SetB(temp);
+        
+        //add alpha
+        temp = (GetA()*Multiplier);
+        SetA(temp);
+    }
 	return(*this);
 }
 
@@ -233,7 +260,8 @@ CColor& CColor::operator/=(int Divisor)
 		//(*this)=CColor(0,0,0);
 		SetR(0);
 		SetG(0);
-		SetB(0);
+        SetB(0);
+        SetA(0);
 	}
 	else
 	{
@@ -247,10 +275,14 @@ CColor& CColor::operator/=(int Divisor)
 		temp=(GetG()/Divisor);
 		SetG(temp);
 
-		//add blue
-		temp=(GetB()/Divisor);
-		SetB(temp);
-	}
+        //add blue
+        temp = (GetB() / Divisor);
+        SetB(temp);
+       
+        //add alpha
+        temp = (GetA() / Divisor);
+        SetA(temp);
+    }
 	return(*this);
 }
 
@@ -260,9 +292,11 @@ CColor& CColor::operator|=(CColor& Color)
 	SetR(GetR()|Color.GetR());
 	//do green
 	SetG(GetG()|Color.GetG());
-	//do blue
-	SetB(GetB()|Color.GetB());
-	//return
+    //do blue
+    SetB(GetB() | Color.GetB());
+    //do alpha
+    SetA(GetA() | Color.GetA());
+    //return
 	return(*this);
 }
 
@@ -272,9 +306,11 @@ CColor& CColor::operator&=(CColor& Color)
 	SetR(GetR()&Color.GetR());
 	//do green
 	SetG(GetG()&Color.GetG());
-	//do blue
-	SetB(GetB()&Color.GetB());
-	//return
+    //do blue
+    SetB(GetB()&Color.GetB());
+    //do alpha
+    SetA(GetA()&Color.GetA());
+    //return
 	return(*this);
 }
 
@@ -284,9 +320,11 @@ CColor& CColor::operator^=(CColor& Color)
 	SetR(GetR()^Color.GetR());
 	//do green
 	SetG(GetG()^Color.GetG());
-	//do blue
-	SetB(GetB()^Color.GetB());
-	//return
+    //do blue
+    SetB(GetB() ^ Color.GetB());
+    //do alpha
+    SetB(GetA() ^ Color.GetA());
+    //return
 	return(*this);
 }
 

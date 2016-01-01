@@ -17,7 +17,7 @@ private:
 	SDL_Color m_Color;
 public:
 	//standard constructor
-	CColor(Uint8 r=0,Uint8 g=0,Uint8 b=0);
+    CColor(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 0);
 	//copy constructor
 	CColor(const CColor& Color);
 	//destructor
@@ -26,7 +26,8 @@ public:
 	//get rgb
 	Uint8 GetR() const;
 	Uint8 GetG() const;
-	Uint8 GetB() const;
+    Uint8 GetB() const;
+    Uint8 GetA() const;
 
 	//set rgb
 	void SetR(Uint8 r);
