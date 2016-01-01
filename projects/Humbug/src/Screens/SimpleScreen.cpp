@@ -146,69 +146,30 @@ namespace humbug {
    */
   void SimpleScreen::OnDraw(){
       static int coldelta = 0;
-      CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
       // copy background tex to main window renderer (aka paste background)
       m_pBackground->RenderCopyToMain();
-      //m_pBackground->Render();
-      auto mainDim = m_pMainCanvas->GetDimension();
-      //m_pDrawCanvas->Clear(CColor(50, 50, 50));
-      //m_pDrawCanvas->RenderCopyToMain(CRectangle(0, 0, 1024, 768));
-      //return;
-      //m_pBackground->Clear(CColor(22, 22, 22));
-      // m_pBackground->RenderCopyToMain();
-      //m_pDrawCanvas->Clear(CColor(50, 50, 50));
-      //m_pMainCanvas->Render(m_pBackground->GetSurface());
-      
-      //m_pBackground->RenderCopyToMain();
-      //m_pDrawCanvas->RenderCopyToMain();
-      
-      //m_pMainCanvas->Lock();
-      //m_pMainCanvas->RenderCopy(m_pBackground.get());
 
-      //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground,
-      // m_pBackground->GetDimension() );
       CRectangle frect(700, 500, 185, 185);
       CRectangle frect2(100, 200, 185, 185);
       SDL_Color* wavemap = ColorData::Instance()->Wavemap();
       int index = (coldelta * 2 & 63);
 
       SDL_Color& fcol = wavemap[index];
-      //bool result = m_pBackground->RenderFillRect(frect, CColor(fcol.r, fcol.g, fcol.b));
 
-      //for (int i = 0; i < 24; i++)
-      //{
           int i = x % 24;
           auto rect = CRectangle(i * 10, i * 10, 120, 120);
           //m_pBackground->RenderFillRect(rect, CColor(fcol.r, fcol.g, fcol.b));
           CRectangle sdl_rect = rect + CPoint(200,200);
           m_pDrawCanvas->RenderFillRect(sdl_rect, CColor(fcol.r, 255-fcol.g, fcol.b));
-          //m_pMainCanvas->FillRect(frect2, CColor(fcol.r, fcol.g, fcol.b));
-          //m_pBackground->FillRect( frect2, CColor(fcol.r, fcol.g, fcol.b) );
-      //}
 
 
 
       CRectangle screenrect = m_pBackground->GetDimension();
       CPoint sp(220, 240);
       CColor textColor(fcol.r, fcol.g, fcol.b);
-      //pimpl_->m_pScrollText->SetColor(textColor);
-      //CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (2));
-      //pimpl_->m_pScrollText->Put(m_pMainCanvas, CRectangle(0, 0, 0, 0));
-      //pimpl_->m_pScrollText->Put(m_pMainCanvas, screenrect + sp.Offset(0, (i * (pimpl_->fontsize + 10))));
-
+      pimpl_->m_pScrollText->SetColor(textColor);
       pimpl_->m_pScrollText->RenderPut(m_pDrawCanvas.get(), CRectangle(0 + coldelta, 0 + coldelta, 0, 0));
       
-      //canvas->RenderCopyToMain(rect, rect);
-      //m_pDrawCanvas->RenderCopyToMain(m_pDrawCanvas->GetDimension(), m_pDrawCanvas->GetDimension() + sp.Offset(fcol.r / 2, 1));
-      //m_pDrawCanvas->RenderCopyToMain();
-
-      //result = m_pBackground->FillRect(frect2, CColor(fcol.r, fcol.g, fcol.b));
-      //m_pBackground->AddUpdateRect(frect);
-
-      //bool result = m_pBackground->RenderFillRect(frect2, CColor(fcol.r, fcol.g, fcol.b));
-
-      //m_pMainCanvas->Render(m_pDrawCanvas->GetTexture());
-
       CRectangle dstDims(0, 0, 200, 200);
 
       coldelta++;
@@ -217,22 +178,6 @@ namespace humbug {
           coldelta = 0;
       }
 
-     // m_pDrawCanvas->UpdateTexture();
-      //pimpl_->draw(m_pDrawCanvas.get(), fcol);
-      //m_pBackground->UpdateTexture();
-      //m_pDrawCanvas->RenderCopyToMain();
-
-      //int *failmemcheck = new int(666);
-
-      //m_pMainCanvas->UpdateTexture(m_pBackground.get());
-      //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), *m_pBackground,
-      // m_pBackground->GetDimension());
-
-      //m_pMainCanvas->RenderCopy(m_pBackground.get());
-
-      //SDL_RenderCopy(m_pMainCanvas->m_pRenderer, m_pBackground->GetTexture(), NULL, NULL);
-      //m_pMainCanvas->Unlock();
-      //m_pBackground->RenderCopyToMain();
   }   // OnDraw
 
   /** SimpleScreen, OnUpdate:
