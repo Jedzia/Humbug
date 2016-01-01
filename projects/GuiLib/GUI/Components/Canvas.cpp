@@ -65,7 +65,7 @@ namespace gui {
         //dbgOut(__FUNCTION__ << std::endl);
     }
 
-    /** $(class), GetSurface:
+    /** CCanvas, GetSurface:
      *  Detailed description.
      *  @return TODO
      */
@@ -73,7 +73,7 @@ namespace gui {
         return ( m_pSurface );
     }
 
-    /** $(class), GetTexture:
+    /** CCanvas, GetTexture:
      *  Detailed description.
      *  @return TODO
      */
@@ -92,7 +92,7 @@ namespace gui {
         return m_pTexture;
     }
 
-    /** $(class), SetSurface:
+    /** CCanvas, SetSurface:
      *  Detailed description.
      *  @param pSurface TODO
      * @return TODO
@@ -112,7 +112,7 @@ namespace gui {
         m_pSurface = pSurface;
     }
 
-    /** $(class), SetWindow:
+    /** CCanvas, SetWindow:
      *  Detailed description.
      *  @param pWindow TODO
      * @return TODO
@@ -127,7 +127,7 @@ namespace gui {
         }
     }
 
-    /** $(class), GetRenderer:
+    /** CCanvas, GetRenderer:
      *  Detailed description.
      *  @return TODO
      */
@@ -140,7 +140,7 @@ namespace gui {
         }
     }
 
-    /** $(class), UpdateTexture:
+    /** CCanvas, UpdateTexture:
      *  Detailed description.
      *  @param source TODO
      * @param srcRect TODO
@@ -172,13 +172,14 @@ namespace gui {
         //SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), RenderCopy:
-     *  Detailed description.
-     *  @param source TODO
-     * @param srcRect TODO
-     * @param dstRect TODO
-     * @return TODO
-     */
+    /** CCanvas, RenderCopy:
+    *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
+    *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
+    *  CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  @param source The source canvas to get the texture from.
+    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    */
     void CCanvas::RenderCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
         if ( !source->GetTexture() ) {
             return;
@@ -190,23 +191,29 @@ namespace gui {
         SDL_RenderCopy(GetRenderer(), source->GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), RenderCopy:
-     *  Detailed description.
-     *  @param srcRect TODO
-     * @param dstRect TODO
-     * @return TODO
-     */
+    /** CCanvas, RenderCopy:
+    *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
+    *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
+    *  CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    */
     void CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
         SDL_RenderCopy(GetRenderer(), GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), RenderCopyToMain:
-     *  Detailed description.
-     *  @param srcRect TODO
-     * @param dstRect TODO
-     * @return TODO
+    /** CCanvas, RenderCopyToMain:
+     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is 
+     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
+     *  CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
      */
     void CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+        // Todo: all Render** should check the exit codes
+        // see: https://wiki.libsdl.org/SDL_RenderCopy
+        // Return Value
+        // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more information.
         CApplication::GetApplication()->GetMainCanvas()->RenderCopy(this, srcRect, dstRect);
 
         //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels,
@@ -215,7 +222,7 @@ namespace gui {
         //SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), Render:
+    /** CCanvas, Render:
      *  Detailed description.
      *  @param source TODO
      * @param srcRect TODO
@@ -232,7 +239,7 @@ namespace gui {
         Render(GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), Render:
+    /** CCanvas, Render:
      *  Detailed description.
      *  @param source TODO
      * @param srcRect TODO
@@ -246,7 +253,7 @@ namespace gui {
         Render(GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), Render:
+    /** CCanvas, Render:
      *  Detailed description.
      *  @param srcRect TODO
      * @param dstRect TODO
@@ -262,7 +269,7 @@ namespace gui {
         Render(GetTexture(), srcRect, dstRect);
     }
 
-    /** $(class), Render:
+    /** CCanvas, Render:
      *  Detailed description.
      *  @param texture TODO
      * @param srcRect TODO
@@ -282,7 +289,7 @@ namespace gui {
         //SDL_RenderPresent(this->m_pRenderer);
     }
 
-    /** $(class), RenderFinal:
+    /** CCanvas, RenderFinal:
      *  Detailed description.
      *  @return TODO
      */
@@ -299,7 +306,7 @@ namespace gui {
         SDL_RenderPresent(this->m_pRenderer);
     }
 
-    /** $(class), Lock:
+    /** CCanvas, Lock:
      *  Detailed description.
      *  @return TODO
      */
@@ -316,7 +323,7 @@ namespace gui {
         return ( true );
     }
 
-    /** $(class), Unlock:
+    /** CCanvas, Unlock:
      *  Detailed description.
      *  @return TODO
      */
@@ -327,7 +334,7 @@ namespace gui {
 //    }
     }
 
-    /** $(class), GetPixel:
+    /** CCanvas, GetPixel:
      *  Detailed description.
      *  @param x TODO
      * @param y TODO
@@ -344,7 +351,7 @@ namespace gui {
         return ( col );
     }
 
-    /** $(class), SetPixel:
+    /** CCanvas, SetPixel:
      *  Detailed description.
      *  @param x TODO
      * @param y TODO
@@ -359,7 +366,7 @@ namespace gui {
         memcpy ( buffer, &col, GetSurface ( )->format->BytesPerPixel );
     }
 
-    /** $(class), GetWidth:
+    /** CCanvas, GetWidth:
      *  Detailed description.
      *  @return TODO
      */
@@ -367,7 +374,7 @@ namespace gui {
         return ( GetSurface ( )->w );
     }
 
-    /** $(class), GetHeight:
+    /** CCanvas, GetHeight:
      *  Detailed description.
      *  @return TODO
      */
@@ -375,7 +382,7 @@ namespace gui {
         return ( GetSurface ( )->h );
     }
 
-    /** $(class), GetDimension:
+    /** CCanvas, GetDimension:
      *  Detailed description.
      *  @return TODO
      */
@@ -384,7 +391,7 @@ namespace gui {
         return rect;
     }
 
-    /** $(class), AddUpdateRect:
+    /** CCanvas, AddUpdateRect:
      *  Detailed description.
      *  @param UpdateRect TODO
      * @return TODO
@@ -399,7 +406,7 @@ namespace gui {
         m_lstUpdateRects.push_back ( pRect );
     }
 
-    /** $(class), ClearUpdateRects:
+    /** CCanvas, ClearUpdateRects:
      *  Detailed description.
      *  @return TODO
      */
@@ -417,7 +424,7 @@ namespace gui {
         }
     }
 
-    /** $(class), UpdateRects:
+    /** CCanvas, UpdateRects:
      *  Detailed description.
      *  @return TODO
      */
@@ -441,7 +448,7 @@ namespace gui {
         ClearUpdateRects ( );
     } // UpdateRects
 
-    /** $(class), Flip:
+    /** CCanvas, Flip:
      *  Detailed description.
      *  @return TODO
      */
@@ -451,7 +458,7 @@ namespace gui {
         return true;
     }
 
-    /** $(class), SetColorKey:
+    /** CCanvas, SetColorKey:
      *  Detailed description.
      *  @param color TODO
      * @return TODO
@@ -461,7 +468,7 @@ namespace gui {
         return (SDL_SetColorKey(GetSurface(), SDL_TRUE, col) == 0);
     }
 
-    /** $(class), GetColorKey:
+    /** CCanvas, GetColorKey:
      *  Detailed description.
      *  @return TODO
      */
@@ -474,7 +481,7 @@ namespace gui {
 //    return ( color );
     }
 
-    /** $(class), ClearColorKey:
+    /** CCanvas, ClearColorKey:
      *  Detailed description.
      *  @return TODO
      */
@@ -482,7 +489,7 @@ namespace gui {
         return ( SDL_SetColorKey ( GetSurface ( ), 0, 0 ) == 0 );
     }
 
-    /** $(class), SetClipRect:
+    /** CCanvas, SetClipRect:
      *  Detailed description.
      *  @param pRect TODO
      * @return TODO
@@ -496,7 +503,7 @@ namespace gui {
         }
     }
 
-    /** $(class), GetClipRect:
+    /** CCanvas, GetClipRect:
      *  Detailed description.
      *  @return TODO
      */
@@ -506,7 +513,7 @@ namespace gui {
         return ( rect );
     }
 
-    /** $(class), FillRect:
+    /** CCanvas, FillRect:
      *  Detailed description.
      *  @param rect TODO
      * @param color TODO
@@ -517,7 +524,7 @@ namespace gui {
         return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
     }
 
-    /** $(class), RenderFillRect:
+    /** CCanvas, RenderFillRect:
      *  Detailed description.
      *  @param rect TODO
      * @param color TODO
@@ -529,7 +536,7 @@ namespace gui {
         return SDL_RenderFillRect(GetRenderer(), rect);
     }
 
-    /** $(class), Clear:
+    /** CCanvas, Clear:
      *  Detailed description.
      *  @param color TODO
      * @return TODO
@@ -546,7 +553,7 @@ namespace gui {
         return ( SDL_FillRect ( GetSurface ( ), NULL, col ) == 0 );
     }
 
-    /** $(class), Blit:
+    /** CCanvas, Blit:
      *  Detailed description.
      *  @param rectDst TODO
      * @param cnvSrc TODO
@@ -559,7 +566,7 @@ namespace gui {
         return ( SDL_BlitSurface ( cnvSrc.GetSurface ( ), rectSrc2, GetSurface ( ), rectDst2 ) == 0 );
     }
 
-    /** $(class), CreateRGB:
+    /** CCanvas, CreateRGB:
      *  Detailed description.
      *  @param flags TODO
      * @param width TODO
@@ -581,7 +588,7 @@ namespace gui {
         return ( pCanvas );
     }
 
-    /** $(class), CreateRGBCompatible:
+    /** CCanvas, CreateRGBCompatible:
      *  Detailed description.
      *  @param flags TODO
      * @param width TODO
@@ -597,7 +604,7 @@ namespace gui {
                          format->Bmask, format->Amask ) );
     }
 
-    /** $(class), LoadBMP:
+    /** CCanvas, LoadBMP:
      *  Detailed description.
      *  @param sFileName TODO
      * @return TODO
@@ -607,7 +614,7 @@ namespace gui {
         return ( new CCanvas ( pSurface, true ) );
     }
 
-    /** $(class), LoadBMPCompatible:
+    /** CCanvas, LoadBMPCompatible:
      *  Detailed description.
      *  @param sFileName TODO
      * @return TODO
@@ -634,7 +641,7 @@ namespace gui {
         return ( color );
     }
 
-    /** $(class), Invalidate:
+    /** CCanvas, Invalidate:
      *  Detailed description.
      *  @return TODO
      */
