@@ -123,7 +123,7 @@ bool SimpleScreen::OnInit(int argc, char* argv[]){
     CColor m_colText = CColor::White();
     m_pDrawCanvas->Clear( CColor(50, 50, 50) );
     //pimpl_->m_pScrollText->RenderPut(m_pBackground.get(), CRectangle(0, 0, 0, 0));
-    //m_pBackground->RenderCopyToMain();
+    //m_pBackground->MainRenderCopyTo();
 
     return Screen::OnInit(argc, argv);
 
@@ -147,7 +147,7 @@ void SimpleScreen::OnIdle(int ticks){
 void SimpleScreen::OnDraw(){
     static int coldelta = 0;
     // copy background tex to main window renderer (aka paste background)
-    m_pBackground->RenderCopyToMain();
+    m_pBackground->MainRenderCopyTo();
 
     CRectangle frect(700, 500, 185, 185);
     CRectangle frect2(100, 200, 185, 185);

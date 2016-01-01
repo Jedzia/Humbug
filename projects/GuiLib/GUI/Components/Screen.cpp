@@ -52,7 +52,7 @@ void Screen::OnUpdate()
 {
     // Hookable::OnUpdate() runs SDL_UpdateTexture of the main texture with following SDL_RenderCopy. Means GetSurface()->pixels to texture and then update render copy
     // later this should not need the surface any more
-    Master()->GetMainCanvas()->Render();
+    Master()->GetMainCanvas()->MainUpdateAndRenderCopy();
 }
 
 void Screen::OnIdle( int ticks )

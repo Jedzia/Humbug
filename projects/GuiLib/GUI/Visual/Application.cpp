@@ -232,7 +232,7 @@ void CApplication::OnIdle(int ticks)
     //bool result = m_pMainCanvas->FillRect(frect, components::CColor(133, 55, 99));
 
 	m_pMainCanvas->UpdateRects ( );
-    m_pMainCanvas->RenderFinal();
+    m_pMainCanvas->MainRenderFinal();
 }
 
 //update loop

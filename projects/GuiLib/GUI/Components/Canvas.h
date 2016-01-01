@@ -58,13 +58,6 @@ public:
     // setter for the SDL_Surface*
     void SetSurface(SDL_Surface* pSurface);
 
-    /** CCanvas, Render:
-    *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
-    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
-    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
-    */
-    void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-
     // setter for the SDL_Surface*
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is
     // destroyed.
@@ -81,7 +74,7 @@ public:
     /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture at the source is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
-    *  CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
     *  @param source The source canvas to get the texture from.
     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
@@ -99,22 +92,29 @@ public:
     /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
-    *  CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
     void RenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
-    /** CCanvas, RenderCopyToMain:
+    /** CCanvas, MainUpdateAndRenderCopy:
+    *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
+    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    */
+    void MainUpdateAndRenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+
+    /** CCanvas, MainRenderCopyTo:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
     *  CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderCopyToMain(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void MainRenderCopyTo(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
-    void RenderFinal();
+    void MainRenderFinal() const;
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const;

@@ -300,7 +300,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
 
         // fl->Free("Tiles1.bmp");
-        m_pMainCanvas->Render();
+        m_pMainCanvas->MainUpdateAndRenderCopy();
     }
     catch (FileLoaderException ex)
     {
@@ -420,7 +420,7 @@ void CTestEventHandler::OnIdle(int ticks){
 
     //fickText->Put(m_pMainCanvas, CRectangle(ticks % 200, ticks % 200, 0, 0));
     //fickText->RenderPut(m_pMainCanvas, CRectangle(ticks % 200, ticks % 200, 0, 0));
-    //m_pMainCanvas->Render();
+    //m_pMainCanvas->MainUpdateAndRenderCopy();
 
     //m_pMainCanvas->UpdateRects ( );
     //m_pMainCanvas->Render(m_pDrawCanvas, m_pMainCanvas->GetDimension(), m_pMainCanvas->GetDimension());
