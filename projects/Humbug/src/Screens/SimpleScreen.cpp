@@ -56,9 +56,9 @@ struct SimpleScreen::SimpleScreenImpl {
      */
     void draw(CCanvas* canvas, SDL_Color& fcol){
         CRectangle screenrect = canvas->GetDimension();
-        CPoint sp(20, 540);
+        CPoint sp(220, 340);
         CColor textColor(fcol.r, fcol.g, fcol.b);
-        CRectangle rect = screenrect + sp.Offset( fcol.r, 1 * (fontsize + 10) );
+        CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (fontsize + 10) + fcol.g);
 
         m_pScrollText->SetColor(textColor);
         m_pScrollText->RenderPut(canvas, rect);

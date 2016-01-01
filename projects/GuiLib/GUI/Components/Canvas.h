@@ -63,7 +63,7 @@ public:
     void UpdateTexture(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
     /** CCanvas, RenderCopy:
-    *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
+    *  Use this function to copy a portion of the texture to the main window rendering target. If no texture at the source is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
     *  CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
     *  @param source The source canvas to get the texture from.
@@ -71,6 +71,14 @@ public:
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
     void RenderCopy(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
+
+    /** CCanvas, RenderCopy:
+    *  Use this function to copy a portion of the texture to the main window rendering target.
+    *  @param source The source texture to render.
+    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    */
+    void RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
 
     /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
@@ -95,9 +103,6 @@ public:
 
     // Render from a surface
     void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-
-    // Render from a texture
-    void Render(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
 
     // Render myself
     void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);

@@ -192,6 +192,23 @@ namespace gui {
     }
 
     /** CCanvas, RenderCopy:
+    *  Use this function to copy a portion of the texture to the main window rendering target.
+    *  @param source The source texture to render.
+    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
+    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    */
+    void CCanvas::RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
+        //        if (!m_pRenderer) {
+        //            return;
+        //        }
+
+        //SDL_RenderClear(this->m_pRenderer);
+        //Draw the texture
+        //SDL_UpdateTexture(texture, srcRect, GetSurface()->pixels, GetSurface()->pitch);
+        SDL_RenderCopy(GetRenderer(), texture, srcRect, dstRect);
+    }
+
+    /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
     *  CCanvas::RenderCopyToMain(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
@@ -236,7 +253,7 @@ namespace gui {
 
         m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source->GetSurface());
         SDL_UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
-        Render(GetTexture(), srcRect, dstRect);
+        RenderCopy(GetTexture(), srcRect, dstRect);
     }
 
     /** CCanvas, Render:
@@ -250,7 +267,7 @@ namespace gui {
 
         m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source);
         SDL_UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
-        Render(GetTexture(), srcRect, dstRect);
+        RenderCopy(GetTexture(), srcRect, dstRect);
     }
 
     /** CCanvas, Render:
@@ -266,28 +283,9 @@ namespace gui {
 
         //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
         SDL_UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);
-        Render(GetTexture(), srcRect, dstRect);
+        RenderCopy(GetTexture(), srcRect, dstRect);
     }
 
-    /** CCanvas, Render:
-     *  Detailed description.
-     *  @param texture TODO
-     * @param srcRect TODO
-     * @param dstRect TODO
-     * @return TODO
-     */
-    void CCanvas::Render(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
-//        if (!m_pRenderer) {
-//            return;
-//        }
-
-        //SDL_RenderClear(this->m_pRenderer);
-        //Draw the texture
-        //SDL_UpdateTexture(texture, srcRect, GetSurface()->pixels, GetSurface()->pitch);
-        SDL_RenderCopy(GetRenderer(), texture, srcRect, dstRect);
-        //Update the screen
-        //SDL_RenderPresent(this->m_pRenderer);
-    }
 
     /** CCanvas, RenderFinal:
      *  Detailed description.
