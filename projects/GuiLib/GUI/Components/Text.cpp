@@ -17,42 +17,55 @@
 //
 #include "stdafx.h"
 //
-#include "Text.h"
 #include "Canvas.h"
+#include "Text.h"
 //#include "../Data/ColorData.h"
 
 //#include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
-
 CText::CText( TTF_Font* font, std::string text, CColor textcolor /*= CColor::Black()*/ ) :
     m_pFont(font),
     m_strText(text),
     m_colText(textcolor){
     dbgOut(__FUNCTION__);
-    m_pText = new CCanvas(TTF_RenderText_Solid(m_pFont, m_strText.c_str(), m_colText));
-
+    m_pRenderText = TTF_RenderText_Solid(m_pFont, m_strText.c_str(), m_colText);
+    m_pText.reset(new CCanvas(m_pRenderText));
 }
 
 CText::~CText(){
     m_pFont = NULL;
-    delete m_pText;
-    m_pText = NULL;
+
+    if (m_pRenderText)
+    {
+        SDL_FreeSurface(m_pRenderText);
+    }
+    
+
+    //delete m_pText;
+    //m_pText = NULL;
     dbgOut(__FUNCTION__);
 }
 
-
-void CText::Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect  ) const {
+/** $(class), Put:
+ *  Detailed description.
+ *  @param canvas TODO
+ * @param dstRect TODO
+ * @param srcRect TODO
+ * @return TODO
+ */
+void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect  ) const {
     m_pText->Lock();
 
     CTextModifierData mdata;
-    if (!m_vecModifierVault.empty())
-    {
+
+    if ( !m_vecModifierVault.empty() ) {
         TextModifierStorage::const_iterator end = m_vecModifierVault.end();
-        for (TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end ; it++)
+
+        for (TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end; it++)
         {
-            (*it)(m_pText, const_cast<CText *>(this), mdata );
+            (*it)(m_pText.get(), const_cast<CText *>(this), mdata );
         }
     }
 
@@ -68,53 +81,83 @@ void CText::Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& sr
     //SDL_Rect dst_rect = dstRect.SDLRect();
     //canvas->Render(m_pText, &src_rect, &dst_rect);
 
-
     //canvas->AddUpdateRect(dstRect);
     canvas->AddUpdateRect(dstRect);
     //canvas->AddUpdateRect(canvas->GetDimension());
+}     // CText::Put
+
+/** $(class), Put:
+ *  Detailed description.
+ *  @param canvas TODO
+ * @param dstRect TODO
+ * @return TODO
+ */
+void CText::Put(CCanvas* canvas, const CRectangle& dstRect) const {
+    Put( canvas, dstRect, GetCanvas()->GetDimension() );
 }
 
-void CText::Put(CCanvas *canvas, const CRectangle& dstRect) const {
-	Put(canvas, dstRect, GetCanvas()->GetDimension());
+/** $(class), SetColor:
+ *  Detailed description.
+ *  @param m_col_text TODO
+ * @return TODO
+ */
+void CText::SetColor(const CColor m_col_text){
+    //return;
+    if (m_pRenderText)
+    {
+        SDL_FreeSurface(m_pRenderText);
+    }
+    //if (m_pText) {
+    //    delete m_pText;
+   // }
+
+    m_colText = m_col_text;
+    m_pRenderText = TTF_RenderText_Solid(m_pFont, m_strText.c_str(), m_colText);
+    m_pText.reset(new CCanvas(m_pRenderText));
 }
-void CText::RunModifiers(CCanvas *textcanvas) const
-{
+
+/** $(class), RunModifiers:
+ *  Detailed description.
+ *  @param textcanvas TODO
+ * @return TODO
+ */
+void CText::RunModifiers(CCanvas* textcanvas) const {
     /*return;
-    SDL_Color cmap[256];
-    memset(cmap, 0, sizeof(cmap));
+       SDL_Color cmap[256];
+       memset(cmap, 0, sizeof(cmap));
 
-    static int boatcols=0;
-    static int frames=0;
+       static int boatcols=0;
+       static int frames=0;
 
-    SDL_Color *wavemap = ColorData::Instance()->Wavemap();
-    for(int i = 0; i < 64; i++)
+       SDL_Color *wavemap = ColorData::Instance()->Wavemap();
+       for(int i = 0; i < 64; i++)
         cmap[boatcols + ((i + frames) & 63)] = wavemap[i];
 
-    //SDL_SetPalette(m_pText->GetSurface(), SDL_LOGPAL, wavemap, boatcols, 32);
-    SDL_SetPalette(textcanvas->GetSurface(), SDL_LOGPAL, cmap, 0, 256);
-    //boatcols++;
-    frames++;
-    if ( frames > 16   )
-    {
+       //SDL_SetPalette(m_pText->GetSurface(), SDL_LOGPAL, wavemap, boatcols, 32);
+       SDL_SetPalette(textcanvas->GetSurface(), SDL_LOGPAL, cmap, 0, 256);
+       //boatcols++;
+       frames++;
+       if ( frames > 16   )
+       {
         //frames = 0;
-    }*/
+       }*/
 }
 
-void CText::AddModifier( TextModifier updfunc )
-{
+/** $(class), AddModifier:
+ *  Detailed description.
+ *  @param updfunc TODO
+ * @return TODO
+ */
+void CText::AddModifier( TextModifier updfunc ){
     m_vecModifierVault.push_back(updfunc);
 }
 
-
-CTextParagraph::CTextParagraph( TTF_Font *font, std::string text, CColor textcolor /*= CColor::Black()*/ )
-{
-
-}
+CTextParagraph::CTextParagraph( TTF_Font* font, std::string text, CColor textcolor     /*=
+                                                                                          CColor::Black()*/
+        )
+{}
 
 CTextParagraph::~CTextParagraph()
-{
-
-}
-
-} // namespace components
+{}
+}   // namespace components
 } // namespace gui

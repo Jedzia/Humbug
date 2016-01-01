@@ -36,7 +36,14 @@ public:
     void AddModifier(TextModifier updfunc);
     void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect ) const;
 	void Put(CCanvas *canvas, const CRectangle& dstRect) const;
-    CCanvas * GetCanvas() const { return m_pText; }
+    CCanvas * GetCanvas() const { return m_pText.get(); }
+
+    CColor Color() const
+    {
+        return m_colText;
+    }
+
+    void SetColor(const CColor m_col_text);
 
 private:
     void RunModifiers(CCanvas *textcanvas) const;
@@ -44,9 +51,11 @@ private:
     TTF_Font *m_pFont;
     std::string m_strText;
     CColor m_colText;
-    CCanvas *m_pText;
+    //CCanvas *m_pText;
+    boost::scoped_ptr<CCanvas> m_pText;
     typedef std::vector<TextModifier> TextModifierStorage;
     TextModifierStorage m_vecModifierVault;
+    SDL_Surface* m_pRenderText;
 };
 
 class CTextParagraph
