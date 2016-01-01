@@ -34,8 +34,10 @@ public:
     typedef boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
     //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
     void AddModifier(TextModifier updfunc);
-    void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect ) const;
+    void RenderPut(CCanvas *canvas, const CRectangle& dstRect) const;
+    void RenderPut(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
 	void Put(CCanvas *canvas, const CRectangle& dstRect) const;
+    void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
     CCanvas * GetCanvas() const { return m_pText.get(); }
 
     CColor Color() const

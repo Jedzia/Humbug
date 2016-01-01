@@ -227,9 +227,9 @@ void CApplication::OnIdle(int ticks)
 	if (m_pConsole)
 		m_pConsole->Draw();
 
-    //components::CRectangle frect(100, 200, 185, 185);
+    components::CRectangle frect(100, 200, 185, 185);
     //bool result = m_pMainCanvas->RenderFillRect(frect, components::CColor(33, 55, 99));
-
+    //bool result = m_pMainCanvas->FillRect(frect, components::CColor(133, 55, 99));
 
 	m_pMainCanvas->UpdateRects ( );
     m_pMainCanvas->RenderFinal();

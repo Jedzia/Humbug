@@ -68,7 +68,7 @@ public:
     // Render myself
     void Render(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
     
-    void RenderFinal() const;
+    void RenderFinal();
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const ;

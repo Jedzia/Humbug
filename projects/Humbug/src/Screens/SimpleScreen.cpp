@@ -49,7 +49,7 @@ namespace humbug {
       SimpleScreenImpl(FileLoader& fl) : x(0){
           counter = 0;
           TTF_Font* iarial = fl.FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
-          m_pScrollText.reset( new CText( iarial, "Hello this is a text", CColor::Black() ) );
+          m_pScrollText.reset( new CText( iarial, "Hello this is a text", CColor::Red() ) );
       }
 
       /** $(class), draw:
@@ -59,10 +59,13 @@ namespace humbug {
       void draw(CCanvas* canvas, SDL_Color& fcol){
           CRectangle screenrect = canvas->GetDimension();
           CPoint sp(20, 540);
-          //CColor textColor(fcol.r, fcol.g, fcol.b);
-          //m_pScrollText->SetColor(textColor);
-          m_pScrollText->Put(canvas, screenrect + sp.Offset(fcol.r, (1 * (fontsize + 10))));
+          CColor textColor(fcol.r, fcol.g, fcol.b);
+          m_pScrollText->SetColor(textColor);
+          CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (fontsize + 10));
+          m_pScrollText->Put(canvas, rect);
           canvas->ClearUpdateRects();
+          //canvas->RenderCopyToMain(rect, rect);
+          canvas->UpdateTexture(canvas, rect, rect);
           counter++;
       }
   };
@@ -70,7 +73,8 @@ namespace humbug {
   SimpleScreen::SimpleScreen(FileLoader& loader, CCanvas* background) :
       pimpl_( new SimpleScreen::SimpleScreenImpl(loader) ),
       Screen(background),
-      m_Loader(loader){
+      m_Loader(loader), x(0)
+  {
       //m_iUpdateTimes(0),
       //,m_pSprEye(NULL),
       //m_pSprWormler(NULL)
@@ -97,25 +101,29 @@ namespace humbug {
       //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
       //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
       //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-      auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
+      auto surface = m_pMainCanvas->GetSurface();
       //SDL_PixelFormat my_format = *surface->format;
       // my_format.Amask = 0x000000ff;  // A guess...  Try 0xff000000 too?
       //SDL_Surface* tmpfsurf2 = SDL_ConvertSurfaceFormat(tmpfsurf, my_format.format, 0);
 
       // only needed when drawing direct 'm_pMainCanvas->Render(m_pBackground->GetSurface());'
-      SDL_Surface* tmpfsurf2 = SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, 0);
-      m_pDrawCanvas.reset(new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, 0), true));
+      //SDL_Surface* tmpfsurf2 = SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, surface->flags);
+      //m_pDrawCanvas.reset(new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, 0), true));
       //SDL_Surface* tmpfsurf2 = tmpfsurf;
 
-      m_pBackground.reset( new CCanvas(tmpfsurf2, true) );
-
-      //CCanvas tmpCanvas( tmpfsurf );
+      m_pBackground.reset(new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, surface->flags), true));
+      m_pDrawCanvas.reset(new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format, surface->flags), true));
+      //m_pDrawCanvas.reset(m_pBackground->CreateRGBCompatible(surface->flags, m_pBackground->GetWidth(), m_pBackground->GetHeight()));
+     
+      
       m_Loader.FreeLast();
-
-      m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
+      //m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
 
       //"\r\n"
       CColor m_colText = CColor::White();
+      m_pDrawCanvas->Clear(CColor(50, 50, 50));
+      //pimpl_->m_pScrollText->RenderPut(m_pBackground.get(), CRectangle(0, 0, 0, 0));
+      //m_pBackground->RenderCopyToMain();
 
       return Screen::OnInit(argc, argv);
 
@@ -129,6 +137,7 @@ namespace humbug {
    */
   void SimpleScreen::OnIdle(int ticks){
       //x += 1 + (rand() << 21);
+      x += 1;
   }
 
   /** SimpleScreen, OnDraw:
@@ -137,12 +146,22 @@ namespace humbug {
    */
   void SimpleScreen::OnDraw(){
       static int coldelta = 0;
-
       CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
       // copy background tex to main window renderer (aka paste background)
       m_pBackground->RenderCopyToMain();
+      //m_pBackground->Render();
+      auto mainDim = m_pMainCanvas->GetDimension();
+      //m_pDrawCanvas->Clear(CColor(50, 50, 50));
+      //m_pDrawCanvas->RenderCopyToMain(CRectangle(0, 0, 1024, 768));
+      //return;
+      //m_pBackground->Clear(CColor(22, 22, 22));
+      // m_pBackground->RenderCopyToMain();
+      //m_pDrawCanvas->Clear(CColor(50, 50, 50));
       //m_pMainCanvas->Render(m_pBackground->GetSurface());
-
+      
+      //m_pBackground->RenderCopyToMain();
+      //m_pDrawCanvas->RenderCopyToMain();
+      
       //m_pMainCanvas->Lock();
       //m_pMainCanvas->RenderCopy(m_pBackground.get());
 
@@ -156,18 +175,39 @@ namespace humbug {
       SDL_Color& fcol = wavemap[index];
       //bool result = m_pBackground->RenderFillRect(frect, CColor(fcol.r, fcol.g, fcol.b));
 
-      for (int i = 0; i < 24; i++)
-      {
-          auto rect = CRectangle(i * 10, i * 10, i * 20, 185);
-          m_pBackground->RenderFillRect(rect, CColor(fcol.r, fcol.g, fcol.b));
+      //for (int i = 0; i < 24; i++)
+      //{
+          int i = x % 24;
+          auto rect = CRectangle(i * 10, i * 10, 120, 120);
+          //m_pBackground->RenderFillRect(rect, CColor(fcol.r, fcol.g, fcol.b));
+          CRectangle sdl_rect = rect + CPoint(200,200);
+          m_pDrawCanvas->RenderFillRect(sdl_rect, CColor(fcol.r, 255-fcol.g, fcol.b));
+          //m_pMainCanvas->FillRect(frect2, CColor(fcol.r, fcol.g, fcol.b));
           //m_pBackground->FillRect( frect2, CColor(fcol.r, fcol.g, fcol.b) );
-      }
+      //}
+
+
+
+      CRectangle screenrect = m_pBackground->GetDimension();
+      CPoint sp(220, 240);
+      CColor textColor(fcol.r, fcol.g, fcol.b);
+      //pimpl_->m_pScrollText->SetColor(textColor);
+      //CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (2));
+      //pimpl_->m_pScrollText->Put(m_pMainCanvas, CRectangle(0, 0, 0, 0));
+      //pimpl_->m_pScrollText->Put(m_pMainCanvas, screenrect + sp.Offset(0, (i * (pimpl_->fontsize + 10))));
+
+      pimpl_->m_pScrollText->RenderPut(m_pDrawCanvas.get(), CRectangle(0 + coldelta, 0 + coldelta, 0, 0));
+      
+      //canvas->RenderCopyToMain(rect, rect);
+      //m_pDrawCanvas->RenderCopyToMain(m_pDrawCanvas->GetDimension(), m_pDrawCanvas->GetDimension() + sp.Offset(fcol.r / 2, 1));
+      //m_pDrawCanvas->RenderCopyToMain();
+
       //result = m_pBackground->FillRect(frect2, CColor(fcol.r, fcol.g, fcol.b));
       //m_pBackground->AddUpdateRect(frect);
 
       //bool result = m_pBackground->RenderFillRect(frect2, CColor(fcol.r, fcol.g, fcol.b));
 
-      //m_pMainCanvas->Render(m_pBackground->GetTexture());
+      //m_pMainCanvas->Render(m_pDrawCanvas->GetTexture());
 
       CRectangle dstDims(0, 0, 200, 200);
 
@@ -177,9 +217,11 @@ namespace humbug {
           coldelta = 0;
       }
 
-      pimpl_->draw(m_pBackground.get(), fcol);
-      m_pBackground->UpdateTexture();
-      
+     // m_pDrawCanvas->UpdateTexture();
+      //pimpl_->draw(m_pDrawCanvas.get(), fcol);
+      //m_pBackground->UpdateTexture();
+      //m_pDrawCanvas->RenderCopyToMain();
+
       //int *failmemcheck = new int(666);
 
       //m_pMainCanvas->UpdateTexture(m_pBackground.get());
@@ -190,6 +232,7 @@ namespace humbug {
 
       //SDL_RenderCopy(m_pMainCanvas->m_pRenderer, m_pBackground->GetTexture(), NULL, NULL);
       //m_pMainCanvas->Unlock();
+      //m_pBackground->RenderCopyToMain();
   }   // OnDraw
 
   /** SimpleScreen, OnUpdate:

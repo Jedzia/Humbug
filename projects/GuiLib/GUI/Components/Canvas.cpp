@@ -180,14 +180,14 @@ namespace gui {
      * @return TODO
      */
     void CCanvas::RenderCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
-        if ( !this->m_pRenderer || !source->GetTexture() ) {
+        if ( !source->GetTexture() ) {
             return;
         }
 
         //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels,
         // source->GetSurface()->pitch);
         //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
-        SDL_RenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
+        SDL_RenderCopy(GetRenderer(), source->GetTexture(), srcRect, dstRect);
     }
 
     /** $(class), RenderCopy:
@@ -197,14 +197,7 @@ namespace gui {
      * @return TODO
      */
     void CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
-        if ( !this->m_pRenderer || !GetTexture() ) {
-            return;
-        }
-
-        //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels,
-        // source->GetSurface()->pitch);
-        //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
-        SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
+        SDL_RenderCopy(GetRenderer(), GetTexture(), srcRect, dstRect);
     }
 
     /** $(class), RenderCopyToMain:
@@ -283,6 +276,7 @@ namespace gui {
 
         //SDL_RenderClear(this->m_pRenderer);
         //Draw the texture
+        //SDL_UpdateTexture(texture, srcRect, GetSurface()->pixels, GetSurface()->pitch);
         SDL_RenderCopy(GetRenderer(), texture, srcRect, dstRect);
         //Update the screen
         //SDL_RenderPresent(this->m_pRenderer);
@@ -292,7 +286,7 @@ namespace gui {
      *  Detailed description.
      *  @return TODO
      */
-    void CCanvas::RenderFinal() const {
+    void CCanvas::RenderFinal() {
         // Todo: assert
         if (!m_pRenderer) {
             return;
@@ -300,7 +294,7 @@ namespace gui {
 
         //SDL_RenderClear(this->m_pRenderer);
         //Draw the texture
-        //SDL_RenderCopy(this->m_pRenderer, texture, srcRect, dstRect);
+        //SDL_RenderCopy(this->m_pRenderer, GetTexture(), GetDimension(), GetDimension());
         //Update the screen
         SDL_RenderPresent(this->m_pRenderer);
     }
@@ -531,7 +525,7 @@ namespace gui {
      */
     bool CCanvas::RenderFillRect(CRectangle& rect, const CColor& color){
         // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
-        int ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), SDL_ALPHA_OPAQUE);
+        int ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA());
         return SDL_RenderFillRect(GetRenderer(), rect);
     }
 
@@ -546,6 +540,7 @@ namespace gui {
         {
             CRectangle dimension = GetDimension();
             RenderFillRect(dimension, color);
+            //SDL_RenderClear(GetRenderer());
         }
 
         return ( SDL_FillRect ( GetSurface ( ), NULL, col ) == 0 );

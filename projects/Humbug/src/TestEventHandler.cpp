@@ -133,6 +133,8 @@ void CTestEventHandler::OnExit(){
     CEventHandler::OnExit();
 } // OnExit
 
+CText *fickText;
+
 //initialization
 bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //initialize parent class
@@ -270,6 +272,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 				infoText.Put(m_pMainCanvas, screenrect + sp.Offset(0, ( i * (fontsize + 10))));
 			}
 
+            fickText = new CText(iarial, "Ficken, echt jetzt !", CColor::Blue());
 			/*std::ostringstream outstring;
 			outstring << "Press '1' for: StartScreen";
 			CText infoText(iarial, outstring.str(), CColor::Red());
@@ -415,8 +418,11 @@ void CTestEventHandler::OnIdle(int ticks){
     // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
     //m_pMainCanvas->ClearUpdateRects();
 
+    //fickText->Put(m_pMainCanvas, CRectangle(ticks % 200, ticks % 200, 0, 0));
+    //fickText->RenderPut(m_pMainCanvas, CRectangle(ticks % 200, ticks % 200, 0, 0));
+    //m_pMainCanvas->Render();
+
     //m_pMainCanvas->UpdateRects ( );
-    
     //m_pMainCanvas->Render(m_pDrawCanvas, m_pMainCanvas->GetDimension(), m_pMainCanvas->GetDimension());
 	//m_pMainCanvas->Invalidate();
     // call base method.

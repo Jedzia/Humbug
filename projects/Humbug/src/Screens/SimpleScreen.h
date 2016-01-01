@@ -60,6 +60,7 @@ private:
       FileLoader& m_Loader;
       boost::shared_ptr<gui::components::CCanvas> m_pBackground;
       boost::shared_ptr<gui::components::CCanvas> m_pDrawCanvas;
+      int x;
   };
 }
 
