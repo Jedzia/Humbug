@@ -1,16 +1,29 @@
-//
+/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the strangest game ever.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2013, EvePanix. All rights reserved.
+ *
+ * \brief      This file contains the definition of
+ *             the TextScroller.cpp class.
+ * \folder     $(folder)
+ * \file       TextScroller.cpp
+ * \date       2013-11-22
+ * \author     Jedzia.
+ *
+ * modified    2013-11-22, Jedzia
+ */
+/*---------------------------------------------------------*/
 #include "stdafx.h"
-
 //
-#include "TextScroller.h"
 #include "Canvas.h"
-
+#include "TextScroller.h"
+//
 //#include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
-
-CTextScroller::CTextScroller( CCanvas *dstCanvas, const CText& text, CPoint textPosition,
+CTextScroller::CTextScroller( CCanvas* dstCanvas, const CText& text, CPoint textPosition,
         int windowWidth ) :
     m_rDstCanvas(dstCanvas),
     m_rctText(text),
@@ -25,33 +38,75 @@ CTextScroller::~CTextScroller(void){
     dbgOut(__FUNCTION__);
 }
 
-void CTextScroller::Draw( )
-{
-    int textheigth = m_rctText.GetCanvas()->GetHeight();
-    CRectangle textDims(xdelta1-xdelta,0, xdelta,textheigth);
+/** $(class), Draw:
+ *  Detailed description.
+ *  @return TODO
+ */
+void CTextScroller::Draw( ){
+    //int textheigth = m_rctText.GetCanvas()->GetHeight();
+    //CRectangle textDims(xdelta1 - xdelta, 0, xdelta, textheigth);
+    //CRectangle dstDims( m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta, textheigth);
 
-    //CRectangle showline(0,m_cpTextPosition.GetY(),1024,textheigth);
-    //CRectangle dstRect( m_cpTextPosition.GetX(),m_cpTextPosition.GetY(), m_iWindowWidth ,textheigth);
-    CRectangle dstDims( m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta,textheigth);
-
-    m_rctText.Put(m_rDstCanvas,dstDims, textDims );
-
+    CRectangle textDims, dstDims;
+    PrepareDraw(textDims, dstDims);
+    m_rctText.Put(m_rDstCanvas, dstDims, textDims);
 }
 
-void CTextScroller::Scroll( int deltaX )
-{
+/** $(class), Scroll:
+ *  Detailed description.
+ *  @param deltaX TODO
+ * @return TODO
+ */
+void CTextScroller::Scroll( int deltaX ){
     xdelta1 += deltaX;
-    if (xdelta1 >= m_rctText.GetCanvas()->GetWidth())
-    {
+
+    if ( xdelta1 >= m_rctText.GetCanvas()->GetWidth() ) {
         xdelta1 = 0;
     }
-    xdelta =xdelta1;
-    if (xdelta > m_iWindowWidth)
-    {
+
+    xdelta = xdelta1;
+
+    if (xdelta > m_iWindowWidth) {
         //xdelta1 +=2;
         xdelta = m_iWindowWidth;
     }
 }
 
+/** $(class), PrepareDraw:
+ *  Detailed description.
+ *  @param textDims TODO
+ * @param dstDims TODO
+ * @return TODO
+ */
+void CTextScroller::PrepareDraw(CRectangle& textDims, CRectangle& dstDims){
+    int textheigth = m_rctText.GetCanvas()->GetHeight();
+    textDims = CRectangle(xdelta1 - xdelta, 0, xdelta, textheigth);
+    dstDims =
+        CRectangle(m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta, textheigth);
+}
+
+void CTextScroller::PrepareRender(CRectangle& textDims, CRectangle& dstDims){
+    int textheigth = m_rctText.GetCanvas()->GetHeight();
+    textDims = CRectangle(xdelta1 - xdelta, 0, xdelta, textheigth);
+    dstDims =
+        CRectangle(m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta, textheigth);
+
+    dstDims.SetW(0);
+    dstDims.SetH(0);
+    textDims.SetW(30);
+    textDims.SetH(30);
+}
+
+/** $(class), Render:
+ *  Detailed description.
+ *  @return TODO
+ */
+void CTextScroller::Render(){
+    CRectangle textDims, dstDims;
+    PrepareDraw(textDims, dstDims);
+
+    m_rctText.RenderPut(m_rDstCanvas, dstDims, textDims);
+    //m_rctText.RenderPut(m_rDstCanvas, CRectangle(0,0,0,0));
+}
 } // namespace components
 } // namespace gui

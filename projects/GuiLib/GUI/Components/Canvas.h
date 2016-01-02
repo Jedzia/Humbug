@@ -37,10 +37,10 @@ protected:
     SDL_Window* m_pWindow;
     SDL_Surface* m_pSurface;
     SDL_Texture* m_pTexture;
+    SDL_Renderer* m_pRenderer;
 
 public:
 
-    SDL_Renderer* m_pRenderer;
     //constructor
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is
     // destroyed.

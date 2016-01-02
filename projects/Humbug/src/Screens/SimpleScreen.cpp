@@ -42,14 +42,27 @@ struct SimpleScreen::SimpleScreenImpl {
     const int fontsize = 48;
     int counter;
     int x;
+    boost::scoped_ptr<gui::components::CText> m_pStaticText;
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
+
 
     SimpleScreenImpl(FileLoader& fl) : x(0){
         counter = 0;
         TTF_Font* iarial = fl.FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
-        m_pScrollText.reset( new CText( iarial, "Hello this is a text", CColor::Red() ) );
+        m_pStaticText.reset(new CText(iarial, "Hello this is a text", CColor::Red()));
+        m_pScrollText.reset(new CText(iarial, 
+            "Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua."
+            " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute"
+            " iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat"
+            " non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", CColor::Red()));
     }
+
+    void init(CCanvas* canvas)
+    {
+        m_pScroller.reset(new CTextScroller(canvas, *m_pScrollText, CPoint(100, 600), 800));
+    }
+
     /** $(class), draw:
      *  Detailed description.
      *  @param canvas TODO
@@ -60,9 +73,10 @@ struct SimpleScreen::SimpleScreenImpl {
         CColor textColor(fcol.r, fcol.g, fcol.b);
         CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (fontsize + 10) + fcol.g);
 
-        m_pScrollText->SetColor(textColor);
-        m_pScrollText->RenderPut(canvas, rect);
+        m_pStaticText->SetColor(textColor);
+        m_pStaticText->RenderPut(canvas, rect);
 
+        m_pScroller->Render();
         counter++;
     }
 };
@@ -122,9 +136,10 @@ bool SimpleScreen::OnInit(int argc, char* argv[]){
     //"\r\n"
     CColor m_colText = CColor::White();
     m_pDrawCanvas->Clear( CColor(50, 50, 50) );
-    //pimpl_->m_pScrollText->RenderPut(m_pBackground.get(), CRectangle(0, 0, 0, 0));
+    //pimpl_->m_pStaticText->RenderPut(m_pBackground.get(), CRectangle(0, 0, 0, 0));
     //m_pBackground->MainRenderCopyTo();
 
+    pimpl_->init(m_pMainCanvas);
     return Screen::OnInit(argc, argv);
 
     //return true;
@@ -138,6 +153,7 @@ bool SimpleScreen::OnInit(int argc, char* argv[]){
 void SimpleScreen::OnIdle(int ticks){
     //x += 1 + (rand() << 21);
     x += 1;
+    pimpl_->m_pScroller->Scroll(2);
 }
 
 /** SimpleScreen, OnDraw:
@@ -165,16 +181,20 @@ void SimpleScreen::OnDraw(){
     /*CRectangle screenrect = m_pBackground->GetDimension();
     CPoint sp(220, 240);
     CColor textColor(fcol.r, fcol.g, fcol.b);
-    pimpl_->m_pScrollText->SetColor(textColor);
-    pimpl_->m_pScrollText->RenderPut( m_pDrawCanvas.get(), CRectangle(0 + coldelta, 0 + coldelta, 0, 0) );*/
+    pimpl_->m_pStaticText->SetColor(textColor);
+    pimpl_->m_pStaticText->RenderPut( m_pDrawCanvas.get(), CRectangle(0 + coldelta, 0 + coldelta, 0, 0) );*/
 
     pimpl_->draw(m_pDrawCanvas.get(), fcol);;
     
-    CRectangle dstDims(0, 0, 200, 200);
 
+
+
+
+
+    /*CRectangle dstDims(0, 0, 200, 200);
     CCanvas testCanvas;
     CRectangle c_rectangle = rect + CPoint(100, -100);
-    testCanvas.RenderFillRect(c_rectangle, CColor(fcol.r, fcol.g, fcol.b));
+    testCanvas.RenderFillRect(c_rectangle, CColor(fcol.r, fcol.g, fcol.b));*/
 
 
     coldelta++;

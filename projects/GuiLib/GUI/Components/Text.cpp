@@ -77,8 +77,9 @@ void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect, const CRectang
     dest.SetW(srcRect.GetW());
     dest.SetH(srcRect.GetH());
 
-    SDL_Rect sdl_rect = dest.SDLRect();
-    m_pText->RenderCopy(NULL, &sdl_rect);
+    SDL_Rect sdl_dst_rect = dest.SDLRect();
+    SDL_Rect sdl_src_rect = srcRect.SDLRect();
+    m_pText->RenderCopy(&sdl_src_rect, &sdl_dst_rect);
 }
 
 /** $(class), Put:
