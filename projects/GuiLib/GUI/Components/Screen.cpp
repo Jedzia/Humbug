@@ -27,8 +27,8 @@
 
 namespace gui {
 namespace components {
-Screen::Screen( CCanvas* background )
-    : Hookable(true){ //, CMessageHandler()
+    Screen::Screen(CCanvas* background, bool usesSDL2Render)
+    : m_bUsesSDL2Render(usesSDL2Render), Hookable(true){ //, CMessageHandler()
     // , m_pMainScreen(mainScreen)
     dbgOut(__FUNCTION__ << " " << this);
 }
@@ -76,7 +76,11 @@ void Screen::OnUpdate(){
     // Hookable::OnUpdate() runs SDL_UpdateTexture of the main texture with following
     // SDL_RenderCopy. Means GetSurface()->pixels to texture and then update render copy
     // later this should not need the surface any more
-    Master()->GetMainCanvas()->MainUpdateAndRenderCopy();
+    if (!m_bUsesSDL2Render)
+    {
+        // render old SDL1 blit canvas stuff to the main window
+        Master()->GetMainCanvas()->MainUpdateAndRenderCopy();
+    }
 }
 
 /** $(class), OnIdle:

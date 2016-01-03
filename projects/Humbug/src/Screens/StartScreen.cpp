@@ -35,7 +35,7 @@ struct StartScreen::StartScreenImpl {
 
 StartScreen::StartScreen( FileLoader& loader, CCanvas* background) :
  pimpl_(new StartScreen::StartScreenImpl() ),
-    Screen(background),
+    Screen(background, true),
     m_Loader(loader),
     m_pArialfont(NULL),
     //m_iUpdateTimes(0),
@@ -173,14 +173,16 @@ void StartScreen::OnDraw(){
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     m_pMainCanvas->Lock();
 
-    m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+    //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+    m_pBackground->RenderCopy();
+
     CRectangle frect(400, 300, 85, 85);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
 
     //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
-    m_pMainCanvas->FillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
+    m_pMainCanvas->RenderFillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
     m_pMainCanvas->AddUpdateRect(frect);
 
     coldelta++;
@@ -189,8 +191,8 @@ void StartScreen::OnDraw(){
         coldelta = 0;
     }
 
-    m_pScroller->Draw();
-    m_pSprMgr->OnDraw();
+    m_pScroller->Render();
+    m_pSprMgr->Render();
     
     //m_pMainCanvas->MainUpdateAndRenderCopy();
     //m_pMainCanvas->Unlock();

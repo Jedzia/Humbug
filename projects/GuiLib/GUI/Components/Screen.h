@@ -34,7 +34,7 @@ public:
 class Screen : public Hookable/*, CMessageHandler*/ {
 public:
 
-    Screen(CCanvas *background);
+    Screen(CCanvas *background, bool usesSDL2Render = false);
     virtual ~Screen();
 
     virtual void OnUpdate();
@@ -42,14 +42,14 @@ public:
 
     //virtual bool OnInit( int argc,char* argv[] );
 protected:
-    virtual bool OnInit( int argc,char* argv[] );
+    bool OnInit( int argc,char* argv[] ) override;
 private:
-    GroupId GetGroupID();
+    GroupId GetGroupID() override;
 
-    virtual void OnIdle( int ticks );
+    void OnIdle( int ticks ) override;
 	virtual void OnEvent(SDL_Event* pEvent);
-    virtual void OnConnect();
-    virtual void OnDisconnect();
+    void OnConnect() override;
+    void OnDisconnect() override;
 
     //CMainCanvas *m_pMainScreen;
 
@@ -57,6 +57,7 @@ private:
     bs::connection m_conUpdate;
 	bs::connection m_conEvt;
 	int i;
+    bool m_bUsesSDL2Render;
 };
 
 } // namespace components
