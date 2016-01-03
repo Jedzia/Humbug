@@ -1,4 +1,4 @@
-/** $(class), $(function):
+/** $(fclass), $(function):
  *  Detailed description. 
  *  $(javaparam)
  */

@@ -56,22 +56,27 @@ void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect) const
 }
 
 
-void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) const
-{
-    m_pText->Lock();
+    void CText::ApplyModifiers() const
+    {
+        m_pText->Lock();
 
-    CTextModifierData mdata;
+        CTextModifierData mdata;
 
-    if (!m_vecModifierVault.empty()) {
-        TextModifierStorage::const_iterator end = m_vecModifierVault.end();
+        if (!m_vecModifierVault.empty()) {
+            TextModifierStorage::const_iterator end = m_vecModifierVault.end();
 
-        for (TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end; it++)
-        {
-            (*it)(m_pText.get(), const_cast<CText *>(this), mdata);
+            for (TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end; it++)
+            {
+                (*it)(m_pText.get(), const_cast<CText *>(this), mdata);
+            }
         }
+
+        m_pText->Unlock();
     }
 
-    m_pText->Unlock();
+void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) const
+{
+    ApplyModifiers();
 
     CRectangle dest(dstRect);
     dest.SetW(srcRect.GetW());
@@ -90,20 +95,7 @@ void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect, const CRectang
  * @return TODO
  */
 void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect  ) const {
-    m_pText->Lock();
-
-    CTextModifierData mdata;
-
-    if ( !m_vecModifierVault.empty() ) {
-        TextModifierStorage::const_iterator end = m_vecModifierVault.end();
-
-        for (TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end; it++)
-        {
-            (*it)(m_pText.get(), const_cast<CText *>(this), mdata );
-        }
-    }
-
-    m_pText->Unlock();
+    ApplyModifiers();
 
     canvas->Blit(dstRect, *m_pText, srcRect);
     canvas->AddUpdateRect(dstRect);

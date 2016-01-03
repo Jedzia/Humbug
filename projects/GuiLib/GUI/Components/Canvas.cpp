@@ -290,24 +290,20 @@ namespace gui {
      *  Detailed description.
      *  @return TODO
      */
-    void CCanvas::MainRenderFinal() const
+    void CCanvas::MainRenderFinal()
     {
-        // Todo: assert
-        if (!m_pRenderer) {
-            return;
-        }
-
-        //SDL_RenderClear(this->m_pRenderer);
-        //Draw the texture
-        //SDL_RenderCopy(this->m_pRenderer, GetTexture(), GetDimension(), GetDimension());
-        //Update the screen
-        SDL_RenderPresent(this->m_pRenderer);
+        SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
     }
 
-    /** CCanvas, Lock:
-     *  Detailed description.
-     *  @return TODO
-     */
+      void CCanvas::MainRenderClear()
+      {
+          SDL_RenderClear(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+      }
+
+      /** CCanvas, Lock:
+       *  Detailed description.
+       *  @return TODO
+       */
     bool CCanvas::Lock ( ) const {
         /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
             if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {

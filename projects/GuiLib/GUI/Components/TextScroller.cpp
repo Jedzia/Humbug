@@ -38,11 +38,12 @@ CTextScroller::~CTextScroller(void){
     dbgOut(__FUNCTION__);
 }
 
-/** $(class), Draw:
+/** CTextScroller, Draw:
  *  Detailed description.
  *  @return TODO
  */
-void CTextScroller::Draw( ){
+void CTextScroller::Draw( ) const
+{
     //int textheigth = m_rctText.GetCanvas()->GetHeight();
     //CRectangle textDims(xdelta1 - xdelta, 0, xdelta, textheigth);
     //CRectangle dstDims( m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta, textheigth);
@@ -52,7 +53,7 @@ void CTextScroller::Draw( ){
     m_rctText.Put(m_rDstCanvas, dstDims, textDims);
 }
 
-/** $(class), Scroll:
+/** CTextScroller, Scroll:
  *  Detailed description.
  *  @param deltaX TODO
  * @return TODO
@@ -72,41 +73,30 @@ void CTextScroller::Scroll( int deltaX ){
     }
 }
 
-/** $(class), PrepareDraw:
+/** CTextScroller, PrepareDraw:
  *  Detailed description.
  *  @param textDims TODO
  * @param dstDims TODO
  * @return TODO
  */
-void CTextScroller::PrepareDraw(CRectangle& textDims, CRectangle& dstDims){
+void CTextScroller::PrepareDraw(CRectangle& textDims, CRectangle& dstDims) const
+{
     int textheigth = m_rctText.GetCanvas()->GetHeight();
     textDims = CRectangle(xdelta1 - xdelta, 0, xdelta, textheigth);
-    dstDims =
-        CRectangle(m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta, textheigth);
+    int x = m_cpTextPosition.GetX() + m_iWindowWidth - xdelta;
+    dstDims = CRectangle(x, m_cpTextPosition.GetY(), xdelta, textheigth);
 }
 
-void CTextScroller::PrepareRender(CRectangle& textDims, CRectangle& dstDims){
-    int textheigth = m_rctText.GetCanvas()->GetHeight();
-    textDims = CRectangle(xdelta1 - xdelta, 0, xdelta, textheigth);
-    dstDims =
-        CRectangle(m_cpTextPosition.GetX() + m_iWindowWidth - xdelta, m_cpTextPosition.GetY(), xdelta, textheigth);
-
-    dstDims.SetW(0);
-    dstDims.SetH(0);
-    textDims.SetW(30);
-    textDims.SetH(30);
-}
-
-/** $(class), Render:
+/** CTextScroller, Render:
  *  Detailed description.
  *  @return TODO
  */
-void CTextScroller::Render(){
+void CTextScroller::Render() const
+{
     CRectangle textDims, dstDims;
     PrepareDraw(textDims, dstDims);
 
     m_rctText.RenderPut(m_rDstCanvas, dstDims, textDims);
-    //m_rctText.RenderPut(m_rDstCanvas, CRectangle(0,0,0,0));
 }
 } // namespace components
 } // namespace gui

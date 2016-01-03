@@ -48,6 +48,7 @@ public:
     void SetColor(const CColor m_col_text);
 
 private:
+    void ApplyModifiers() const;
     void RunModifiers(CCanvas *textcanvas) const;
 
     TTF_Font *m_pFont;

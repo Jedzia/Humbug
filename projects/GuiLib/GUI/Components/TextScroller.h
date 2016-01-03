@@ -33,16 +33,16 @@ public:
     CTextScroller(CCanvas* dstCanvas, const CText& text, CPoint textPosition, int windowWidth);
     ~CTextScroller();
 
-    void Draw();
+    void Draw() const;
 
     void Scroll(int deltaX);
 
-    void Render();
+    void Render() const;
 
 private:
 
-    void PrepareDraw(CRectangle& textDims, CRectangle& dstDims);
-    void PrepareRender(CRectangle& textDims, CRectangle& dstDims);
+    void PrepareDraw(CRectangle& textDims, CRectangle& dstDims) const;
+
     CCanvas* m_rDstCanvas;
     const CText& m_rctText;
     CPoint m_cpTextPosition;

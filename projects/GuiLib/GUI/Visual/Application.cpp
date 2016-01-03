@@ -222,6 +222,9 @@ void CApplication::OnIdle(int ticks)
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
     m_sigOnIdle(ticks);
 	// std::cout << "---APP After m_sigOnIdle---" << std::endl;
+
+    //m_pMainCanvas->MainRenderClear();
+
 	m_sigOnDraw();
 	// std::cout << "---APP After m_sigOnDraw---" << std::endl;
 	if (m_pConsole)

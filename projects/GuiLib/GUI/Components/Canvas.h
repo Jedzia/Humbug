@@ -114,7 +114,9 @@ public:
     */
     void MainRenderCopyTo(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
-    void MainRenderFinal() const;
+    static void MainRenderFinal();
+
+    static void MainRenderClear();
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const;
