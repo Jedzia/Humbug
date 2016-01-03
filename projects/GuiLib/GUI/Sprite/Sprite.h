@@ -71,8 +71,8 @@ public:
       void SetColorAndAlpha(Uint32 key, Uint8 alpha);
 
       friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
-
-private:
+      void Render();
+  private:
 
       CImage* m_pSprImage;
       CCanvas* m_pMainCanvas;

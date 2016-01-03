@@ -72,7 +72,17 @@ public:
       }
   }
 
-  std::ostream& operator<<(std::ostream& o, const CSpriteManager& r) {
+    void CSpriteManager::Render()
+    {
+        SprStorage::iterator end = m_pvSprites.end();
+        for (SprStorage::iterator it = m_pvSprites.begin(); it < end; it++)
+        {
+            SpriteShrp sprite = it->Sprite();
+            sprite->Render();
+        }
+    }
+
+    std::ostream& operator<<(std::ostream& o, const CSpriteManager& r) {
       return o << "CSpriteManager[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                           << ", W=" << r.GetW() << ", H=" << r.GetH()
                                           <<*/" ]";

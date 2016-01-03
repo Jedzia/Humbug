@@ -129,12 +129,18 @@ namespace gui
       SDL_SetSurfaceAlphaMod(alphasurf, alpha);
   }
 
-  /** $(fclass), operator <<:
-   *  Detailed description.
-   *  @param o TODO
-   * @param r TODO
-   * @return TODO
-   */
+    void CSprite::Render()
+    {
+        m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
+        m_cpOldPos = m_cpPos;
+    }
+
+    /** $(fclass), operator <<:
+     *  Detailed description.
+     *  @param o TODO
+     * @param r TODO
+     * @return TODO
+     */
   std::ostream& operator<<(std::ostream& o, const CSprite& r) {
       return o << "CSprite[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                    << ", W=" << r.GetW() << ", H=" << r.GetH()
