@@ -23,92 +23,10 @@ namespace humbug {
   namespace screens {
 namespace prv
 {
-    class EyeMover {
-        int h_;
-        bool toggle_;
-        int deltaY_;
-        static int created;
+#include "EyeMover.h"
+#include "WormMover.h"
 
-    public:
-        EyeMover(int deltaY = 0) : deltaY_(deltaY), h_(0), toggle_(false)
-        {
-            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")");
-            //static int created = 0;
-            created++;
-        }
-
-        ~EyeMover()
-        {
-            dbgOut(__FUNCTION__ << " " << this);
-        }
-
-        void operator()(CSprite* sprite, int ticks) {
-            double ss = std::sin(static_cast<double>(ticks) / 12);
-            int ssin = static_cast<int>(ss * 155);
-
-            sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
-            sprite->SprOffset(ticks % 8);
-
-            if (h_ >= 100)
-            {
-                toggle_ = false;
-            }
-            else if (h_ <= 0)
-            {
-                toggle_ = true;
-            }
-
-            if (toggle_)
-            {
-                h_++;
-            }
-            else
-            {
-                h_--;
-            }
-        }
-
-    };
-
-    int EyeMover::created = 0;
-
-    class WormMover {
-        int add_;
-        static int created;
-    public:
-        WormMover() : add_(0) {
-            dbgOut(__FUNCTION__ << " created:" << created << " (" << this << ")");
-            created++;
-        }
-        ~WormMover()
-        {
-            dbgOut(__FUNCTION__ << " " << this);
-        }
-
-        void operator()(CSprite* sprite, int ticks) {
-            //sprite->SetPos(CPoint(100 + ((ticks % 32) * 16), 420));
-            const int sprMaxFrames = 40;
-            int frame = (ticks % sprMaxFrames);
-            int div = (ticks % (sprMaxFrames*4)) / sprMaxFrames;
-            //int movdelta = div * 40;
-            int movdelta = 0;
-
-            int deltaX = static_cast<int>( ((ticks % (sprMaxFrames*4))*4.3) );
-            sprite->SetPos(CPoint(10 + deltaX + movdelta, 420));
-            int sprframe;
-            if (frame < (sprMaxFrames/2))
-            {
-                sprframe = frame;
-            }
-            else
-            {
-                sprframe = sprMaxFrames - frame;
-            }
-            sprite->SprOffset(sprframe);
-        }
-    };
-
-    int WormMover::created;
+ 
 
 
 

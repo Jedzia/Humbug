@@ -25,6 +25,7 @@
 #include "GUI/Data/ColorData.h"
 #include "GUI/Sprite/Sprite.h"
 #include "GUI/Sprite/SpriteManager.h"
+#include <GUI/Components/Image.h>
 #include "GUI/Visual/EventHandler.h"
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
@@ -45,9 +46,14 @@ struct SimpleScreen::SimpleScreenImpl {
     boost::scoped_ptr<gui::components::CText> m_pStaticText;
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
+    boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
+    gui::components::CImage* m_pBlue;
+
+    FileLoader& fl;
 
 
-    SimpleScreenImpl(FileLoader& fl) : x(0){
+    SimpleScreenImpl(FileLoader& fl) 
+        : fl(fl), x(0), m_pSprMgr(new CSpriteManager){
         counter = 0;
         TTF_Font* iarial = fl.FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
         m_pStaticText.reset(new CText(iarial, "Hello this is a text", CColor::Red()));
@@ -56,11 +62,18 @@ struct SimpleScreen::SimpleScreenImpl {
             " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute"
             " iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat"
             " non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", CColor::Red()));
+
+        m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
     }
 
     void init(CCanvas* canvas)
     {
         m_pScroller.reset(new CTextScroller(canvas, *m_pScrollText, CPoint(100, 600), 800));
+
+        CSprite *m_pSprEye = new CSprite(fl, "Sprites/eye.png", canvas,
+            CRectangle(0, 0, 64, 64), CPoint(64, 0));
+        //m_pSprMgr->AddSprite(m_pSprEye, boost::ref(pimpl_->eyemover));
+        m_pSprMgr->AddSprite(m_pSprEye);
     }
 
     /** $(class), draw:
@@ -77,6 +90,12 @@ struct SimpleScreen::SimpleScreenImpl {
         m_pStaticText->RenderPut(canvas, rect);
 
         m_pScroller->Render();
+
+        m_pBlue->RenderPut(canvas, CPoint(50, 50));
+
+
+        m_pSprMgr->Render();
+
         counter++;
     }
 };
@@ -154,6 +173,7 @@ void SimpleScreen::OnIdle(int ticks){
     //x += 1 + (rand() << 21);
     x += 1;
     pimpl_->m_pScroller->Scroll(2);
+    pimpl_->m_pSprMgr->OnIdle(ticks);
 }
 
 /** SimpleScreen, OnDraw:
