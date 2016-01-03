@@ -1,4 +1,25 @@
 
+-X-X-X-X- Mo, 04 Jan 2016 00:15:55 -----------------------------------------------------------
+    else if( sym == SDLK_1 )   {
+        HookMgr()->EnableHookable("StartScreen");
+    else if( sym == SDLK_2 )   {
+        HookMgr()->EnableHookable("Highscores");
+    else if( sym == SDLK_3 )   {
+        HookMgr()->EnableHookable("TestLevel");
+	else if( sym == SDLK_4 )   {
+		HookMgr()->EnableHookable("Bla");
+	else if( sym == SDLK_5 )   {
+		HookMgr()->EnableHookable("Tiles");
+	else if( sym == SDLK_6 )   {
+		HookMgr()->EnableHookable("Lua");
+	else if( sym == SDLK_7 )   {
+		HookMgr()->EnableHookable("Hopper");
+	else if( sym == SDLK_8 )   {
+		HookMgr()->EnableHookable("LevelA");
+    else if (sym == SDLK_9)   {
+        HookMgr()->EnableHookable("Simple");
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Mi, 01 Jul 2015 14:47:40 -----------------------------------------------------------
 Error	1	error LNK2019: unresolved external symbol "__declspec(dllimport) protected: __cdecl boost::archive::detail::basic_iarchive::~basic_iarchive(void)" (__imp_??1basic_iarchive@detail@archive@boost@@IEAA@XZ) referenced in function "int `protected: __cdecl boost::archive::detail::common_iarchive<class boost::archive::binary_iarchive>::common_iarchive<class boost::archive::binary_iarchive>(unsigned int)'::`1'::dtor$0" (?dtor$0@?0???0?$common_iarchive@Vbinary_iarchive@archive@boost@@@detail@archive@boost@@IEAA@I@Z@4HA)	E:\Projects\C++\Humbug\build2013x64\Playground\boost_serialization01.obj	boost_serialization01
 

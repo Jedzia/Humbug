@@ -44,6 +44,7 @@ public:
 
         //blit SeamlessImage onto a canvas
         void Put ( CCanvas* pcnvDest, const CPoint& ptDst );
+        void RenderPut(CCanvas* pcnvDest, const CPoint& ptDst);
 
         /** $(fclass), GetSrc:
          *  Detailed description.

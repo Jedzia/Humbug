@@ -106,5 +106,15 @@ namespace gui {
 		//testbutton->Invalidate();
 		//testbutton->Draw();
     }
+
+    void CSeamlessImage::RenderPut(CCanvas* pcnvDest, const CPoint& ptDst)
+    {
+        CRectangle painton = pcnvDest->GetDimension();
+        CRectangle diffrec = m_rcDst + ptDst;
+        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
+
+        CRectangle diffrec2 = diffrec + CPoint(2400, 0);
+        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
+    }
   }       // namespace components
 } // namespace gui

@@ -44,12 +44,10 @@ public:
         TestLevel(FileLoader& loader, gui::components::CCanvas* background);
         ~TestLevel();
 
-        virtual bool OnInit( int argc, char* argv[] );
-        virtual void OnIdle(int ticks);
-
-        virtual void OnDraw();
-
-        virtual void OnUpdate();
+        bool OnInit( int argc, char* argv[] ) override;
+        void OnIdle(int ticks) override;
+        void OnDraw() override;
+        void OnUpdate() override;
 
 private:
 
@@ -64,7 +62,7 @@ private:
         boost::scoped_ptr<gui::components::CText> m_pScrollText;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-        gui::components::CSeamlessImage* m_pSprite;
+        gui::components::CSeamlessImage* m_pSeamlessImage;
     };
   }
 }

@@ -255,14 +255,14 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
 			const char *lines[] = { 
 				"Press '1' for: StartScreen",
-				"Press '2' for: TestLevel",
-				"Press '3' for: HighscoreScreen",
+				"Press '2' for: Highscores",
+				"Press '3' for: TestLevel",
 				"Press '4' for: BlaScreen",
 				"Press '5' for: TileScreen",
 				"Press '6' for: LuaScreen",
 				"Press '7' for: HopperScreen",
-				"Press '8' for: LevelA"
-                "Press '9' for: Simple"
+				"Press '8' for: LevelA",
+                "Press '9' for: SimpleScreen"
             };
 
             for (int i = 0; i < sizeof(lines) / sizeof(const char *); i++)
@@ -272,7 +272,6 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 				infoText.Put(m_pMainCanvas, screenrect + sp.Offset(0, ( i * (fontsize + 10))));
 			}
 
-            fickText = new CText(iarial, "Ficken, echt jetzt !", CColor::Blue());
 			/*std::ostringstream outstring;
 			outstring << "Press '1' for: StartScreen";
 			CText infoText(iarial, outstring.str(), CColor::Red());
@@ -329,7 +328,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //m_scrStart = new StartScreen(*fl, m_pMainCanvas);
     //HookMgr()->AddHookable("StartScreen", m_scrStart, true);
     //HookMgr()->EnableHookable("StartScreen");
-    //HookMgr()->AddHookable("Test1", new TestHookable());
+    //HookMgr()->AddHookable("TestScreen", new TestHookable());
 
     //Hookable *nn = HookCreator<StartScreen>::Create();
     //Hookable *nn = HookCreator<StartScreen>::Create();
@@ -341,7 +340,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
+	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Bla", HookCreatorPtr(new ScreenCreator<BlaScreen>(*fl, m_pMainCanvas)));
@@ -351,7 +350,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Simple", HookCreatorPtr(new ScreenCreator<SimpleScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->EnableHookable("StartScreen");
-	//HookMgr()->EnableHookable("Test1");
+	//HookMgr()->EnableHookable("TestScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
     //std::map<std::string, boost::shared_ptr<HookCreator>> xx;
@@ -531,7 +530,7 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     else if( sym == SDLK_2 )   {
         //
         //HookMgr()->Test2();
-        //HookMgr()->EnableHookable("Test1");
+        //HookMgr()->EnableHookable("TestScreen");
         HookMgr()->EnableHookable("Highscores");
     }
     else if( sym == SDLK_3 )   {

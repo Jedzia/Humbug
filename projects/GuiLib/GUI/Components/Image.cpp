@@ -54,12 +54,7 @@ void CImage::Put ( CCanvas* pcnvDest, const CPoint& ptDst ){
     void CImage::RenderPut(CCanvas* pcnvDest, const CPoint& ptDst)
     {
         DstRect() += ptDst;
-        //pcnvDest->Blit(DstRect(), *GetCanvas(), SrcRect());
-        CCanvas* c_canvas = GetCanvas();
-        //c_canvas->RenderCopy(pcnvDest, SrcRect(), DstRect());
-        pcnvDest->RenderCopy(c_canvas, SrcRect(), DstRect());
-        
-        
+        pcnvDest->RenderCopy(GetCanvas(), SrcRect(), DstRect());
         DstRect() -= ptDst;
     }
 } // namespace components
