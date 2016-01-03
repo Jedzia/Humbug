@@ -37,6 +37,12 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
+    namespace prv
+    {
+#include "EyeMover.h"
+#include "WormMover.h"
+    }
+
 struct SimpleScreen::SimpleScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
@@ -48,6 +54,8 @@ struct SimpleScreen::SimpleScreenImpl {
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
     gui::components::CImage* m_pBlue;
+    prv::EyeMover eyemover;
+
 
     FileLoader& fl;
 
@@ -72,8 +80,8 @@ struct SimpleScreen::SimpleScreenImpl {
 
         CSprite *m_pSprEye = new CSprite(fl, "Sprites/eye.png", canvas,
             CRectangle(0, 0, 64, 64), CPoint(64, 0));
-        //m_pSprMgr->AddSprite(m_pSprEye, boost::ref(pimpl_->eyemover));
-        m_pSprMgr->AddSprite(m_pSprEye);
+        m_pSprMgr->AddSprite(m_pSprEye, boost::ref(eyemover));
+        //m_pSprMgr->AddSprite(m_pSprEye);
     }
 
     /** $(class), draw:
