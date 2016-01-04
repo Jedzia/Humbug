@@ -47,10 +47,9 @@ private:
 public:
 
         //construction
-        CButton( CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption,
-                gui::components::CColor colFace = CColor(192, 192,
-                        192), CColor colText =
-                    CColor(0, 0, 0), CColor colHilite = CColor(255, 255, 255), CColor colShadow = CColor(128, 128, 128) );
+    CButton(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, bool usesSDL2Render = false,
+        gui::components::CColor colFace = CColor(192, 192, 192), CColor colText = CColor(0, 0, 0), 
+        CColor colHilite = CColor(255, 255, 255), CColor colShadow = CColor(128, 128, 128) );
         //destruction
         virtual ~CButton();
 

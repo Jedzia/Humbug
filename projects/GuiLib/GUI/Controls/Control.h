@@ -55,13 +55,14 @@ private:
 protected:
 
         bool m_ptIsDirty;
+        bool m_bUsesSDL2Render;
 
 public:
 
         //master control constructor
-        CControl(gui::components::CCanvas* pCanvas);
+        explicit CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render = false);
         //child control constructor
-        CControl(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, bool invalidate = true);
+        CControl(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, bool invalidate = true, bool usesSDL2Render = false);
         //destructor
         virtual ~CControl();
         //set parent
@@ -106,7 +107,6 @@ public:
 
         //draw control
         void Draw();
-
         void Invalidate();
 
         //customize redrawing

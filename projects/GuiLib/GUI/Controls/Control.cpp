@@ -22,8 +22,9 @@ CControl* CControl::s_pMouseFocus(NULL);
 CControl* CControl::s_pMouseHover(NULL);
 
 //master control constructor
-CControl::CControl(gui::components::CCanvas* pCanvas):
-m_lstChildren(0),
+CControl::CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render) :
+m_lstChildren(0), 
+m_bUsesSDL2Render(usesSDL2Render),
 m_ID(0),
 m_pParent(NULL), m_ptIsDirty(false)
 {
@@ -44,8 +45,9 @@ m_pParent(NULL), m_ptIsDirty(false)
 }
 
 //child control constructor
-CControl::CControl(CControl* pParent,gui::components::CRectangle rcDimensions,Uint32 id, bool invalidate):
+CControl::CControl(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, bool invalidate, bool usesSDL2Render) :
 m_lstChildren(0),
+m_bUsesSDL2Render(usesSDL2Render),
 m_ID(id),
 m_pParent(NULL), m_ptIsDirty(invalidate)
 {
@@ -174,16 +176,19 @@ void CControl::Update()
 void CControl::Redraw()
 {
 	//redraw master control
-	GetMainControl()->Draw();
+    GetMainControl()->Draw();
 }
 
 //draw control
 void CControl::Draw()
 {
+    // Todo: when using textures, they should be (re)generated at ctor or invalidation.
+    // the coordinates have to be relative and recursive paint must be used by the control parent to draw.
+
 	//if main control, update
 	if(IsMainControl()) Update();
 	//handle redrawing
-	OnDraw();
+    OnDraw();
 	//draw all children
 	std::list<CControl*>::iterator iter;
 	for(iter=m_lstChildren.begin();iter!=m_lstChildren.end();iter++)
@@ -207,7 +212,10 @@ void CControl::Draw()
 		rcSrc.SetY(0);
 		//blit
         if(m_ptIsDirty){
-		    pParent->GetCanvas()->Blit(rcDst,*GetCanvas(),rcSrc);
+            if (m_bUsesSDL2Render)
+                pParent->GetCanvas()->RenderCopy(GetCanvas(), rcSrc, rcDst);
+            else
+                pParent->GetCanvas()->Blit(rcDst, *GetCanvas(), rcSrc);
             m_ptIsDirty = false;
         }
 	}

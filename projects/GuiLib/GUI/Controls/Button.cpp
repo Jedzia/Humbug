@@ -11,10 +11,10 @@ namespace gui {
     TTF_Font * CButton::s_ButtonFont = NULL;
 
 //construction
-    CButton::CButton(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption,
+    CButton::CButton(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, bool usesSDL2Render,
             gui::components::CColor colFace, gui::components::CColor colText, gui::components::CColor colHilite,
             gui::components::CColor colShadow) :
-        CControl(pParent, rcDimensions, id),
+        CControl(pParent, rcDimensions, id, true, usesSDL2Render),
         m_pcnvText(NULL),
         m_bPressed(false){
         //set the caption
@@ -41,18 +41,34 @@ namespace gui {
         GetCanvas()->Lock();
 
         if(m_bPressed) {
-            //draw top and bottom
-            for(int x = 0; x<GetWidth(); x++)
+            if (m_bUsesSDL2Render)
             {
-                GetCanvas()->SetPixel(x, 0, m_colShadow);
-                GetCanvas()->SetPixel(x, GetHeight() - 1, m_colHilite);
-            }
+                // Todo: use render to texture ?
+                // https://gist.github.com/Twinklebear/8265888
 
-            //draw left and right
-            for(int y = 0; y<GetHeight(); y++)
+                // Todo: when using textures, they should be (re)generated at ctor or invalidation.
+                // the coordinates have to be relative and recursive paint must be used by the control parent to draw.
+                auto wid = GetWidth();
+                auto hei = GetHeight();
+                components::CRectangle sdl_rect = GetCanvas()->GetDimension();
+                //GetCanvas()->RenderFillRect(sdl_rect, CColor::Red());
+                GetCanvas()->FillRect(sdl_rect, CColor::Red());
+            }
+            else
             {
-                GetCanvas()->SetPixel(0, y, m_colShadow);
-                GetCanvas()->SetPixel(GetWidth() - 1, y, m_colHilite);
+                //draw top and bottom
+                for (int x = 0; x < GetWidth(); x++)
+                {
+                    GetCanvas()->SetPixel(x, 0, m_colShadow);
+                    GetCanvas()->SetPixel(x, GetHeight() - 1, m_colHilite);
+                }
+
+                //draw left and right
+                for (int y = 0; y < GetHeight(); y++)
+                {
+                    GetCanvas()->SetPixel(0, y, m_colShadow);
+                    GetCanvas()->SetPixel(GetWidth() - 1, y, m_colHilite);
+                }
             }
         }
         else {
@@ -80,11 +96,22 @@ namespace gui {
         rcDst.SetX( ( GetWidth() - rcSrc.GetW() ) / 2 );
         rcDst.SetY( ( GetHeight() - rcSrc.GetH() ) / 2 );
         //GetCanvas()->FillRect(CRectangle(0,0,100,100), CColor::Blue());
+        
+        // remove the next line, just for testing
         GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
+        if (m_bUsesSDL2Render)
+        {
+            GetCanvas()->RenderCopy(m_pcnvText, rcSrc, rcDst);
+            //GetCanvas()->UpdateTexture(m_pcnvText, rcSrc, rcDst);
+            //GetCanvas()->UpdateTexture(m_pcnvText);
+        }
+        else
+            GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
+
         //Invalidate();
     } // OnDraw
-
-//left button handlers
+     
+      //left button handlers
     bool CButton::OnLButtonDown(Uint16 x, Uint16 y){
         //if it is a button hit...
         if( CControl::OnLButtonDown(x, y) ) {

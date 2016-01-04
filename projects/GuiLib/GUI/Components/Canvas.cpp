@@ -152,7 +152,7 @@ namespace gui {
             return;
         }
 
-        SDL_UpdateTexture(GetTexture(), NULL, source->GetSurface()->pixels, source->GetSurface()->pitch);
+        SDL_UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
         //SDL_RenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
         //SDL_RenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
     }
