@@ -188,7 +188,8 @@ namespace humbug {
         static CPoint sp(-1600, 110);
         //m_pSprite->SetPos(sp);
         //m_pSprite->Draw();
-        m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
+        //m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
+        m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);
 
         if ( testbutton->IsPressed() ) {
             CPoint point(-3, 0);
