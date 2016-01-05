@@ -113,8 +113,21 @@ namespace gui {
         CRectangle diffrec = m_rcDst + ptDst;
         pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
 
-        CRectangle diffrec2 = diffrec + CPoint(2400, 0);
-        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
+        // east
+        CRectangle diffrec2 = diffrec + CPoint(m_rcDst.GetW(), 0);
+        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec2);
+
+        // west
+        CRectangle diffrec3 = diffrec + CPoint(-m_rcDst.GetW(), 0);
+        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec3);
+
+        // north
+        CRectangle diffrec4 = diffrec + CPoint(0, m_rcDst.GetH());
+        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec4);
+
+        // south
+        CRectangle diffrec5 = diffrec + CPoint(0, -m_rcDst.GetH());
+        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec5);
     }
   }       // namespace components
 } // namespace gui

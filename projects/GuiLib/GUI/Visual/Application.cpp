@@ -361,7 +361,7 @@ int CApplication::Execute(int argc,char* argv[])
                 //delaynumber++;
                 //fprintf(stdout, "Curdelay: '%d', %d \n", curdelay, delaynumber);
                 
-                //SDL_Delay( curdelay );
+                SDL_Delay( curdelay );
                 
                 /*while (curdelay > 0)
                 {

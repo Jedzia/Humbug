@@ -1,7 +1,17 @@
 
+-X-X-X-X- Mo, 04 Jan 2016 14:56:47 -----------------------------------------------------------
+TestLevel with CSeamlessImage needs a camera that can be positioned via WASD keys like in BlaScreen::OnEvent
+see       m_pKeyHandler2 = new PlayerKeys(400, 200);
+
+so Todo: implement WASD move of seamless Image. aka scroller game
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Mo, 04 Jan 2016 11:11:03 -----------------------------------------------------------
-Todo: scroll seamless image around
-add music
+Todo: 
+- scroll seamless image around
+- add music
+- add selection menu screen
+- trails?
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mo, 04 Jan 2016 00:15:55 -----------------------------------------------------------
