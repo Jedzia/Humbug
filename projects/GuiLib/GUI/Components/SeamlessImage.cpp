@@ -17,6 +17,8 @@
 #include "../../stdafx.h"
 #include "SeamlessImage.h"
 #include "../Controls/Button.h"
+#include "../../Filesystem/FileLoader.h"
+#include "Text.h"
 
 //using gui::controls::CControl;
 
@@ -25,8 +27,47 @@ namespace gui {
 
 	  //gui::controls::CButton* testbutton;
 
+      enum CSeamlessImageOrigin
+      {
+          Origin,
+          N,
+          NE,
+          E,
+          SE,
+          S,
+          SW,
+          W,
+          NW,
+          CSeamlessImageOrigin_END
+      };
+
+      static char *CSeamlessImageOriginNames[CSeamlessImageOrigin_END] =
+      {
+          "Origin",
+          "N",
+          "NE",
+          "E",
+          "SE",
+          "S",
+          "SW",
+          "W",
+          "NW"
+      };
+
+      static float windrose[CSeamlessImageOrigin_END][2] = {
+          {  0,  0 }, // Origin
+          {  0,  1 }, // N
+          {  1,  1 }, // NE
+          {  1,  0 }, // E
+          {  1, -1 }, // SE
+          {  0, -1 }, // S
+          { -1, -1 }, // SW
+          { -1,  0 }, // W
+          { -1,  1 }  // NW
+      };
+
     CSeamlessImage::CSeamlessImage ( CCanvas* pcnvSource, bool freeSrc ) :
-        m_bFreeSrc(freeSrc){
+        m_bFreeSrc(freeSrc), m_pLoader(NULL){
         dbgOut(__FUNCTION__);
         SetCanvas ( pcnvSource );
         m_rcSrc = m_rcDst = pcnvSource->GetDimension();
@@ -39,7 +80,7 @@ namespace gui {
     }
 
     CSeamlessImage::CSeamlessImage ( CCanvas* pcnvSource, CRectangle rcSource, bool freeSrc, CPoint ptOffset ) :
-        m_bFreeSrc(freeSrc){
+        m_bFreeSrc(freeSrc), m_pLoader(NULL){
         dbgOut(__FUNCTION__);
         SetCanvas ( pcnvSource );
         m_rcSrc = rcSource;
@@ -111,23 +152,48 @@ namespace gui {
     {
         CRectangle painton = pcnvDest->GetDimension();
         CRectangle diffrec = m_rcDst + ptDst;
-        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
 
-        // east
-        CRectangle diffrec2 = diffrec + CPoint(m_rcDst.GetW(), 0);
-        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec2);
+        for (size_t i = 0; i < CSeamlessImageOrigin_END; i++)
+        {
+            float diffx = windrose[i][0];
+            float diffy = windrose[i][1];
 
-        // west
-        CRectangle diffrec3 = diffrec + CPoint(-m_rcDst.GetW(), 0);
-        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec3);
+            int x = static_cast<int>( ceil( m_rcDst.GetW() * diffx));
+            int y = static_cast<int>( ceil( m_rcDst.GetH() * diffy));
+            CRectangle diffrec2 = diffrec + CPoint(x, y);
+            //pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
+            pcnvDest->RenderCopy(GetCanvas(), painton, diffrec2);
 
-        // north
-        CRectangle diffrec4 = diffrec + CPoint(0, m_rcDst.GetH());
-        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec4);
+            if (m_pLoader)
+            {
+                // show a label for each part of the image
+                static TTF_Font* arialfont = m_pLoader->FL_LOADFONT("Fonts/ARIAL.TTF", 48);
+                CText label(arialfont, CSeamlessImageOriginNames[i], CColor::DarkRed());
+                CRectangle diffrec3 = diffrec2 + CPoint(m_rcDst.GetW() / 2, m_rcDst.GetH() / 2);
+                label.RenderPut(pcnvDest, diffrec3);
+            }
+        }
 
-        // south
-        CRectangle diffrec5 = diffrec + CPoint(0, -m_rcDst.GetH());
-        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec5);
+        return;
+//        CRectangle painton = pcnvDest->GetDimension();
+//        CRectangle diffrec = m_rcDst + ptDst;
+//        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
+//
+//        // east
+//        CRectangle diffrec2 = diffrec + CPoint(m_rcDst.GetW(), 0);
+//        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec2);
+//
+//        // west
+//        CRectangle diffrec3 = diffrec + CPoint(-m_rcDst.GetW(), 0);
+//        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec3);
+//
+//        // north
+//        CRectangle diffrec4 = diffrec + CPoint(0, m_rcDst.GetH());
+//        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec4);
+//
+//        // south
+//        CRectangle diffrec5 = diffrec + CPoint(0, -m_rcDst.GetH());
+//        pcnvDest->RenderCopy(GetCanvas(), painton, diffrec5);
     }
   }       // namespace components
 } // namespace gui

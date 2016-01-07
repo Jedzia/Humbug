@@ -19,6 +19,8 @@
 
 #include "Canvas.h"
 
+class FileLoader;
+
 namespace gui {
   namespace components {
     //CSeamlessImage--abstracts a blittable portion of a canvas
@@ -70,7 +72,14 @@ public:
          */
         void SetDst(CRectangle val) { m_rcDst = val; }
 
+        void SetLoader(FileLoader* const m_p_loader)
+        {
+            m_pLoader = m_p_loader;
+        }
+
 private:
+
+        FileLoader* m_pLoader;
 
         //pointer to canvas
         CCanvas* m_pcnvSrc;

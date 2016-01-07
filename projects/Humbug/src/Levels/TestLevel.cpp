@@ -53,6 +53,7 @@ namespace humbug {
         //m_iUpdateTimes(0),
         m_pScrollText(NULL),
         m_pScroller(NULL),
+        m_pSeamlessImage(NULL),
         m_pSprMgr(new CSpriteManager){
         //,m_pSprEye(NULL),
         //m_pSprWormler(NULL)
@@ -120,9 +121,11 @@ namespace humbug {
         // CRectangle(0,0,64,64)*/);
         //m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*,
         // CRectangle(0,0,64,64)*/);
-        SDL_Surface* g_pBitmapSurface = ( m_Loader.FL_LOADIMG("Images/Sky02.png") );
+        //SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/Sky02.png"));
+        SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/SeamlessA.png"));
         m_Loader.FreeLast();
         m_pSeamlessImage = new CSeamlessImage( new CCanvas( g_pBitmapSurface ), true );
+        m_pSeamlessImage->SetLoader(&m_Loader);
 
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -185,7 +188,8 @@ namespace humbug {
         SDL_Color* wavemap = ColorData::Instance()->Wavemap();
         int index = (coldelta * 2 & 63);
 
-        static CPoint sp(-1600, 110);
+        //static CPoint sp(-480, 110);
+        static CPoint sp(0, 110);
         //m_pSprite->SetPos(sp);
         //m_pSprite->Draw();
         //m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
