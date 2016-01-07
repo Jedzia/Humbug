@@ -148,32 +148,48 @@ namespace gui {
 		//testbutton->Draw();
     }
 
-    void CSeamlessImage::RenderPut(CCanvas* pcnvDest, const CPoint& ptDst)
+    void CSeamlessImage::RenderPut(CCanvas* pcnvDest, const CPoint& ptDstOrig)
     {
+        int w = m_rcDst.GetW();
+        int h = m_rcDst.GetH();
+        CPoint ptDst((ptDstOrig.GetX() % w), (ptDstOrig.GetY() % h));
         CRectangle painton = pcnvDest->GetDimension();
         CRectangle diffrec = m_rcDst + ptDst;
 
-        for (size_t i = 0; i < CSeamlessImageOrigin_END; i++)
+        int maxExpansionX = 3;
+        int maxExpansionY = 3;
+
+        for (int xr = -maxExpansionX; xr < maxExpansionX + 1; xr++)
         {
-            float diffx = windrose[i][0];
-            float diffy = windrose[i][1];
-
-            int x = static_cast<int>( ceil( m_rcDst.GetW() * diffx));
-            int y = static_cast<int>( ceil( m_rcDst.GetH() * diffy));
-            CRectangle diffrec2 = diffrec + CPoint(x, y);
-            //pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
-            pcnvDest->RenderCopy(GetCanvas(), painton, diffrec2);
-
-            if (m_pLoader)
+            for (int yr = -maxExpansionY; yr < maxExpansionY + 1; yr++)
             {
-                // show a label for each part of the image
-                static TTF_Font* arialfont = m_pLoader->FL_LOADFONT("Fonts/ARIAL.TTF", 48);
-                CText label(arialfont, CSeamlessImageOriginNames[i], CColor::DarkRed());
-                CRectangle diffrec3 = diffrec2 + CPoint(m_rcDst.GetW() / 2, m_rcDst.GetH() / 2);
-                label.RenderPut(pcnvDest, diffrec3);
+                //for (int i = 0; i < CSeamlessImageOrigin_END; i++)
+                {
+                    //float diffx = windrose[i][0];
+                    //float diffy = windrose[i][1];
+                    float diffx = xr;
+                    float diffy = yr;
+
+                    int x = static_cast<int>(ceil(w * diffx));
+                    int y = static_cast<int>(ceil(h * diffy));
+                    CRectangle diffrec2 = diffrec + CPoint(x, y);
+                    //pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
+                    pcnvDest->RenderCopy(GetCanvas(), painton, diffrec2);
+
+                    if (m_pLoader)
+                    {
+                        // show a label for each part of the image
+                        static TTF_Font* arialfont = m_pLoader->FL_LOADFONT("Fonts/ARIAL.TTF", 48);
+                        //char* c_seamless_image_origin_name = CSeamlessImageOriginNames[i];
+                        std::ostringstream labelText;
+                        labelText << "O(" << diffx << ", " << diffy << ")";
+                        CText label(arialfont, (labelText.str()), CColor::DarkRed());
+                        CRectangle diffrec3 = diffrec2 + CPoint(m_rcDst.GetW() / 2, m_rcDst.GetH() / 2);
+                        label.RenderPut(pcnvDest, diffrec3);
+                    }
+                }
             }
         }
-
         return;
 //        CRectangle painton = pcnvDest->GetDimension();
 //        CRectangle diffrec = m_rcDst + ptDst;
