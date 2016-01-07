@@ -122,9 +122,9 @@ namespace humbug {
         //m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*,
         // CRectangle(0,0,64,64)*/);
         //SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/Sky02.png"));
-        SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/SeamlessA.png"));
-        m_Loader.FreeLast();
+        SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/SeamlessB.png"));
         m_pSeamlessImage = new CSeamlessImage( new CCanvas( g_pBitmapSurface ), true );
+        m_Loader.FreeLast();
         m_pSeamlessImage->SetLoader(&m_Loader);
 
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());

@@ -156,8 +156,13 @@ namespace gui {
         CRectangle painton = pcnvDest->GetDimension();
         CRectangle diffrec = m_rcDst + ptDst;
 
-        int maxExpansionX = 3;
-        int maxExpansionY = 3;
+        int maxX = static_cast<int>(ceil(painton.GetW() / static_cast<float>(w)));
+        int maxY = static_cast<int>(ceil(painton.GetH() / static_cast<float>(h)));
+
+        int maxExpansionX = maxX;
+        int maxExpansionY = maxY;
+//        int maxExpansionX = 3;
+//        int maxExpansionY = 3;
 
         for (int xr = -maxExpansionX; xr < maxExpansionX + 1; xr++)
         {
@@ -179,12 +184,14 @@ namespace gui {
                     if (m_pLoader)
                     {
                         // show a label for each part of the image
-                        static TTF_Font* arialfont = m_pLoader->FL_LOADFONT("Fonts/ARIAL.TTF", 48);
+                        static TTF_Font* arialfont = m_pLoader->FL_LOADFONT("Fonts/ARIAL.TTF", 24);
                         //char* c_seamless_image_origin_name = CSeamlessImageOriginNames[i];
                         std::ostringstream labelText;
                         labelText << "O(" << diffx << ", " << diffy << ")";
                         CText label(arialfont, (labelText.str()), CColor::DarkRed());
-                        CRectangle diffrec3 = diffrec2 + CPoint(m_rcDst.GetW() / 2, m_rcDst.GetH() / 2);
+                        int labelWidth = label.GetCanvas()->GetWidth() / 2;
+                        int labelHeight = label.GetCanvas()->GetHeight() / 2;
+                        CRectangle diffrec3 = diffrec2 + CPoint((m_rcDst.GetW() / 2) - labelWidth, (m_rcDst.GetH() / 2) - labelHeight);
                         label.RenderPut(pcnvDest, diffrec3);
                     }
                 }

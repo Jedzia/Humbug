@@ -31,7 +31,7 @@ CText::CText( TTF_Font* font, std::string text, CColor textcolor /*= CColor::Bla
     m_pFont(font),
     m_strText(text),
     m_colText(textcolor){
-    dbgOut(__FUNCTION__);
+    //dbgOut(__FUNCTION__);
     m_pRenderText = TTF_RenderUTF8_Blended(m_pFont, m_strText.c_str(), m_colText);
     m_pText.reset(new CCanvas(m_pRenderText));
 }
@@ -47,7 +47,7 @@ CText::~CText(){
 
     //delete m_pText;
     //m_pText = NULL;
-    dbgOut(__FUNCTION__);
+    //dbgOut(__FUNCTION__);
 }
 
 void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect) const
