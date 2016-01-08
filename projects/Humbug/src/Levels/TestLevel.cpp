@@ -57,7 +57,7 @@ namespace humbug {
         m_pScrollText(NULL),
         m_pScroller(NULL),
         m_pSeamlessImage(NULL),
-        m_pKeyHandler(new PlayerKeys3(200, 600)),
+        m_pKeyHandler(new PlayerKeys3(200, 600,false, false, 1.0f)),
         m_pSprMgr(new CSpriteManager){
         //,m_pSprEye(NULL),
         //m_pSprWormler(NULL)
@@ -172,7 +172,7 @@ namespace humbug {
      * @return TODO
      */
     void TestLevel::OnIdle(int ticks){
-        m_pKeyHandler->HookIdle(ticks, 1);
+        m_pKeyHandler->HookIdle(ticks, 1.0f);
         //m_pScroller->Scroll(4);
         //m_pSprMgr->OnIdle(ticks);
     }

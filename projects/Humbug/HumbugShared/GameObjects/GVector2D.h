@@ -22,44 +22,48 @@ namespace gob {
  *  Detailed description.
  *  $(javaparam)
  */
-  class GVector2D {
+class GVector2D {
 public:
 
-      GVector2D(float X = 0, float Y = 0);
-      ~GVector2D();
+    GVector2D(float X = 0, float Y = 0);
+    ~GVector2D();
 
-      GVector2D operator*(float scalar) const;
+    GVector2D operator*(float scalar) const;
 
-      GVector2D operator+(const GVector2D &vect) const;
+    GVector2D operator+(const GVector2D &vect) const;
 
-      GVector2D operator-(const GVector2D &vect) const;
-	  bool operator ==(const GVector2D& v) const
-	  {
-		  return ((x == v.x) && (y == v.y));
-	  }
+    GVector2D operator-(const GVector2D &vect) const;
 
-      void rotate(float angle);
+    /** $(fclass), operator ==:
+     *  Detailed description.
+     *  @param v TODO
+     * @return TODO
+     */
+    bool operator ==(const GVector2D& v) const {
+        return ( (x == v.x) && (y == v.y) );
+    }
+    void Rotate(float angle);
 
-      float crossproduct(const GVector2D &vect2) const;
+    float Crossproduct(const GVector2D &vect2) const;
 
-      float magnitude();
+    float Magnitude() const;
 
-      void normalise();
+    void Normalise();
 
-      // return dot product
-      float dotproduct(const GVector2D &vect) const;
+    // return dot product
+    float Dotproduct(const GVector2D &vect) const;
 
-      float x, y;
+    static GVector2D Up();
 
-      static GVector2D Up();
+    static GVector2D Down();
 
-      static GVector2D Down();
+    static GVector2D Left();
 
-      static GVector2D Left();
+    static GVector2D Right();
 
-	  static GVector2D Right();
-	  
-	  static GVector2D Zero();
-  };
+    static GVector2D Zero();
+
+    float x, y;
+};
 }
 #endif // GAMEOBJECTS_GVECTOR2D_H

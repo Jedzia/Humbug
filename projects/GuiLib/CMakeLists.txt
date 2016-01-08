@@ -46,6 +46,13 @@ SET(GuiLib_GUI_Data_sources
 		GUI/Data/ColorData.cpp
 )
 
+SET(GuiLib_OTHER_headers
+		Keyboard/KeyboardHandler.h
+)
+SET(GuiLib_OTHER_sources
+		Keyboard/KeyboardHandler.cpp
+)
+
 SET(GuiLib_GUI_headers
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
@@ -139,6 +146,7 @@ SET(GuiLib_GuiConsole_sources
 
 # putting the sources together
 SET(GuiLib_headers
+		${GuiLib_OTHER_headers}
 		${GuiLib_GUI_Data_headers}
 		${GuiLib_GUI_headers}
 		${GuiLib_Component_headers}
@@ -147,6 +155,7 @@ SET(GuiLib_headers
 )
 
 SET(GuiLib_sources
+		${GuiLib_OTHER_sources}
 		${GuiLib_GUI_Data_sources}
 		${GuiLib_GUI_sources}
 		${GuiLib_Component_sources}

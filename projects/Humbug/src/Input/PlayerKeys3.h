@@ -18,14 +18,15 @@
 #define PROJECT_PlayerKeys3_H
 #include "GUI/Components/Point.h"
 #include "HumbugShared/GameObjects/GPoint2D.h"
-#include "SDL.h"
+#include <GuiLib/Keyboard/KeyboardHandler.h>
 
 namespace humbug {
+
 // see http://content.gpwiki.org/index.php/SDL:Tutorials:Practical_Keyboard_Input
   class PlayerKeys3 {
 public:
 
-      PlayerKeys3(float x = 0, float y = 0);
+    PlayerKeys3(float x = 0, float y = 0, bool accumulate = true, bool stopOnRelease = false, float maxSpeed = 0.0f);
       ~PlayerKeys3();
       void HookEventloop(SDL_Event* pEvent);
 
@@ -66,16 +67,29 @@ public:
        */
       void CharY(float val) { m_position.y = val; }
 
-      friend std::ostream& operator<<(std::ostream& o, const PlayerKeys3& r);
+      /** PlayerKeys3, Reset:
+      *  Stop movement and return to the initial position set by the constructor.
+      */
       void Reset();
+
+      /** PlayerKeys3, Stop:
+      *  Immediately stops all movement.
+      */
+      void Stop();
+
+      friend std::ostream& operator<<(std::ostream& o, const PlayerKeys3& r);
   private:
 
+      gui::KeyboardHandler m_KeyboardHandler;
       gob::GVector2D m_direction;
       gob::GPoint2D m_position;
       gob::GPoint2D m_InitialPosition;
-      float m_speed;
-	  int m_lastTick;
-	  float m_curspeed;
+      float m_fSpeed;
+	  int m_iLastTick;
+      float m_fCurrentSpeed;
+      float m_fMaxSpeed;
+      bool m_bStopOnRelease;
+      bool m_bAccumulate;
   };
 
   std::ostream& operator<<(std::ostream& o, const PlayerKeys3& r);
