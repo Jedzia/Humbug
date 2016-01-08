@@ -101,6 +101,7 @@ SET(Humbug_headers
 
 		Input/PlayerKeys.h
 		Input/PlayerKeys2.h
+		Input/PlayerKeys3.h
 
 	    Project/ProjectModel.h
 )
@@ -111,6 +112,7 @@ SET(Humbug_sources
 
 		Input/PlayerKeys.cpp
 		Input/PlayerKeys2.cpp
+		Input/PlayerKeys3.cpp
 
 	    main.cpp 
 	    Project/ProjectModel.cpp

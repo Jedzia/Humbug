@@ -18,6 +18,7 @@
 #define HUMBUG_LEVELS_TESTLEVEL_H
 #include <GUI/Components/Screen.h>
 #include <boost/smart_ptr/scoped_ptr.hpp>
+#include "HumbugShared/GameObjects/Player.h"
 
 struct _TTF_Font;
 typedef struct _TTF_Font TTF_Font;
@@ -37,6 +38,8 @@ namespace gui {
 class FileLoader;
 
 namespace humbug {
+    class PlayerKeys3;
+
   namespace levels {
     class TestLevel : public gui::components::Screen {
 public:
@@ -48,8 +51,10 @@ public:
         void OnIdle(int ticks) override;
         void OnDraw() override;
         void OnUpdate() override;
+        void OnEvent(SDL_Event* pEvent) override;
 
-private:
+
+    private:
 
         struct TestLevelImpl;
         boost::scoped_ptr<TestLevelImpl> pimpl_;
@@ -63,6 +68,9 @@ private:
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
         gui::components::CSeamlessImage* m_pSeamlessImage;
+        boost::scoped_ptr<PlayerKeys3> m_pKeyHandler;
+        gob::Player m_player;
+
     };
   }
 }

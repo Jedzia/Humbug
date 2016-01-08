@@ -24,7 +24,7 @@ namespace gob {
 public:
 
 	GameObject(std::string name);
-      ~GameObject();
+      virtual ~GameObject();
 
       /** GameObject, Str:
        *  Detailed description.

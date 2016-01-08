@@ -33,6 +33,9 @@
 #include <GUI/Sprite/Sprite.h>
 #include <GUI/Sprite/SpriteManager.h>
 #include <GUI/Visual/EventHandler.h>
+#include "../Input/PlayerKeys3.h"
+#include "HumbugShared/GameObjects/Player.h"
+
 
 namespace humbug {
   namespace levels {
@@ -54,6 +57,7 @@ namespace humbug {
         m_pScrollText(NULL),
         m_pScroller(NULL),
         m_pSeamlessImage(NULL),
+        m_pKeyHandler(new PlayerKeys3(200, 600)),
         m_pSprMgr(new CSpriteManager){
         //,m_pSprEye(NULL),
         //m_pSprWormler(NULL)
@@ -168,6 +172,7 @@ namespace humbug {
      * @return TODO
      */
     void TestLevel::OnIdle(int ticks){
+        m_pKeyHandler->HookIdle(ticks, 1);
         //m_pScroller->Scroll(4);
         //m_pSprMgr->OnIdle(ticks);
     }
@@ -193,16 +198,17 @@ namespace humbug {
         //m_pSprite->SetPos(sp);
         //m_pSprite->Draw();
         //m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
-        m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);
+        //m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);
+        m_pSeamlessImage->RenderPut(m_pBackground.get(), m_pKeyHandler->Char());
 
-        if ( testbutton->IsPressed() ) {
+        /*if ( testbutton->IsPressed() ) {
             CPoint point(-3, 0);
             sp.Subtract(point);
         }
         else {
             CPoint point(3, 0);
             sp.Subtract(point);
-        }
+        }*/
 
         //m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );
         m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
@@ -242,7 +248,17 @@ namespace humbug {
         mcol.SetR( rand() );
         mcol.SetG( rand() );
         mcol.SetB( rand() );
+
+        if (testbutton->IsPressed()) {
+            m_pKeyHandler->Reset();
+        }
+
         //m_iUpdateTimes++;
     }
+
+      void TestLevel::OnEvent(SDL_Event* pEvent)
+      {
+          m_pKeyHandler->HookEventloop(pEvent);
+      }
   }
 }

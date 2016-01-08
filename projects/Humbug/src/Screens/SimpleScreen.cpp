@@ -30,6 +30,8 @@
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 #include <cstdlib>
+#include "../Input/PlayerKeys2.h"
+#include "HumbugShared/GameObjects/Player.h"
 //
 #include <build/cmake/include/debug.h>
 
@@ -61,7 +63,7 @@ struct SimpleScreen::SimpleScreenImpl {
 
 
     SimpleScreenImpl(FileLoader& fl) 
-        : fl(fl), x(0), m_pSprMgr(new CSpriteManager){
+        : x(0), m_pSprMgr(new CSpriteManager), fl(fl){
         counter = 0;
         TTF_Font* iarial = fl.FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
         m_pStaticText.reset(new CText(iarial, "Hello this is a text", CColor::Red()));
@@ -99,10 +101,10 @@ struct SimpleScreen::SimpleScreenImpl {
 
         m_pScroller->Render();
 
-        m_pBlue->RenderPut(canvas, CPoint(50, 50));
-
-
         m_pSprMgr->Render();
+
+        //CPoint c_point = m_pKeyHandler->Char();
+        m_pBlue->RenderPut(canvas, CPoint(50 + counter, 50));
 
         counter++;
     }
@@ -184,6 +186,7 @@ void SimpleScreen::OnIdle(int ticks){
     pimpl_->m_pSprMgr->OnIdle(ticks);
 }
 
+
 /** SimpleScreen, OnDraw:
  *  Detailed description.
  *  @return TODO
@@ -238,5 +241,9 @@ void SimpleScreen::OnDraw(){
  */
 void SimpleScreen::OnUpdate(){
     Screen::OnUpdate();
+}
+
+void SimpleScreen::OnEvent(SDL_Event* pEvent)
+{
 }
 }

@@ -5,9 +5,9 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the PlayerKeys2.cpp class.
+ *             the PlayerKeys3.cpp class.
  * \folder     $(folder)
- * \file       PlayerKeys2.cpp
+ * \file       PlayerKeys3.cpp
  * \date       2012-07-10
  * \author     Jedzia.
  *
@@ -17,28 +17,28 @@
 #include "stdafx.h"
 
 //
-#include "PlayerKeys2.h"
+#include "PlayerKeys3.h"
 
 using namespace gob;
 
 //#include <build/cmake/include/debug.h>
 namespace humbug {
-  PlayerKeys2::PlayerKeys2(float x, float y) :
-      m_position(x, y), m_speed(0), m_lastTick(0), m_curspeed(0)
+  PlayerKeys3::PlayerKeys3(float x, float y) :
+      m_position(x, y), m_InitialPosition(x, y), m_speed(0), m_lastTick(0), m_curspeed(0)
   {
       dbgOut(__FUNCTION__);
   }
 
-  PlayerKeys2::~PlayerKeys2(void){
+  PlayerKeys3::~PlayerKeys3(void){
       dbgOut(__FUNCTION__);
   }
 
-  /** PlayerKeys2, HookEventloop:
+  /** PlayerKeys3, HookEventloop:
    *  Detailed description.
    *  @param keyevent TODO
    * @return TODO
    */
-  void PlayerKeys2::HookEventloop( SDL_Event* keyevent ){
+  void PlayerKeys3::HookEventloop( SDL_Event* keyevent ){
       float mul = 0;
 
       switch(keyevent->type) {
@@ -76,11 +76,11 @@ namespace humbug {
       //HookIdle();
   } // HookEventloop
 
-  /** PlayerKeys2, HookIdle:
+  /** PlayerKeys3, HookIdle:
    *  Here we update the player movement.
    *  @return TODO
    */
-  void PlayerKeys2::HookIdle(int ticks, float speed){
+  void PlayerKeys3::HookIdle(int ticks, float speed){
       //These continue to accelerate the character if the user is holding
       // down a button.
 	  float tickDelta = ticks - m_lastTick;
@@ -112,14 +112,23 @@ namespace humbug {
 	  m_lastTick = ticks;
   } // HookIdle
 
-  /** $(fclass), operator <<:
-   *  Detailed description.
-   *  @param o TODO
-   * @param r TODO
-   * @return TODO
-   */
-  std::ostream& operator<<(std::ostream& o, const PlayerKeys2& r) {
-      return o << "PlayerKeys2[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
+    void PlayerKeys3::Reset()
+    {
+        m_curspeed = 0;
+        m_position = m_InitialPosition;
+        m_speed = 0;
+        m_direction = GVector2D::Zero();
+        //m_lastTick = 0;
+    }
+
+    /** $(fclass), operator <<:
+       *  Detailed description.
+       *  @param o TODO
+       * @param r TODO
+       * @return TODO
+       */
+  std::ostream& operator<<(std::ostream& o, const PlayerKeys3& r) {
+      return o << "PlayerKeys3[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                        << ", W=" << r.GetW() << ", H=" << r.GetH()
                                        <<*/
              " ]";

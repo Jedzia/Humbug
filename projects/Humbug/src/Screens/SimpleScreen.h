@@ -32,6 +32,7 @@ namespace gui {
 }
 
 namespace humbug {
+
   /** @class SimpleScreen:
    *  Detailed description.
    *  @param argc TODO
@@ -52,8 +53,9 @@ public:
 
       void OnUpdate() override;
 
-private:
+      void OnEvent(SDL_Event* pEvent) override;
 
+private:
       struct SimpleScreenImpl;
       boost::scoped_ptr<SimpleScreenImpl> pimpl_;
 
