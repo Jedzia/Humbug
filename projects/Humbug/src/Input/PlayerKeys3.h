@@ -18,7 +18,7 @@
 #define PROJECT_PlayerKeys3_H
 #include "GUI/Components/Point.h"
 #include "HumbugShared/GameObjects/GPoint2D.h"
-#include <GuiLib/Keyboard/KeyboardHandler.h>
+#include <GuiLib/Input/KeyboardHandler.h>
 
 namespace humbug {
 

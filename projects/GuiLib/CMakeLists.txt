@@ -47,10 +47,10 @@ SET(GuiLib_GUI_Data_sources
 )
 
 SET(GuiLib_OTHER_headers
-		Keyboard/KeyboardHandler.h
+		Input/KeyboardHandler.h
 )
 SET(GuiLib_OTHER_sources
-		Keyboard/KeyboardHandler.cpp
+		Input/KeyboardHandler.cpp
 )
 
 SET(GuiLib_GUI_headers
