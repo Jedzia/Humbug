@@ -17,6 +17,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 PROJECT( GuiLib )
+ADD_SUBDIRECTORY( docs )
 
 MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
 INCLUDE (BoostExtensions)
