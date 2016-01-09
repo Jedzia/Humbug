@@ -1,4 +1,5 @@
 #include "stdafx.h"
+//
 #include "HumbugFileLoader.h"
 #include <HumbugLib/LogManager.h>
 #include <HumbugShared/VFS/zfsystem.h>
@@ -17,7 +18,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 
 #   define HumbugFileLoader_ERRNO    errno
 
-    void slurp(std::string& data, const std::string& filename, bool is_binary = false)
+    static void slurp(std::string& data, const std::string& filename, bool is_binary = false)
     {
         //std::ios_base::openmode openmode = ios::ate | ios::in;
         //if (is_binary)
@@ -38,7 +39,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         file.close();
     }
 
-    void slurp2(std::string& data, const std::string& filename, bool is_binary = false)
+    static void slurp2(std::string& data, const std::string& filename, bool is_binary = false)
     {
         //std::ios_base::openmode openmode = ios::ate | ios::in;
         //if (is_binary)
@@ -68,8 +69,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 		izfstream file(filename.c_str());
 		bufsize = PrepareRead(fsys, filename, file);
         //std::vector<char> data;
-        SDL_RWops* imgmem = NULL;
-        SDL_Surface *sdlsurface=NULL;
+        SDL_RWops* imgmem;
 
         if (! file)
         {
@@ -80,25 +80,20 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
             HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadImg-slurp5]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
-            return NULL;
         }
-        else
-        {
-            //data.clear();
-            //data.resize(fsize);
-            data = new char[bufsize];
-            file.read(&data[0], bufsize);
-	        imgmem = SDL_RWFromMem(&data[0], bufsize);
-
-            //sdlsurface = IMG_Load_RW(imgmem, 1);
-        }
+        
+        //data.clear();
+        //data.resize(fsize);
+        data = new char[bufsize];
+        file.read(&data[0], bufsize);
+        imgmem = SDL_RWFromMem(&data[0], bufsize);
 
         file.close();
         return imgmem;
     }
 
-	int PrepareRead( const filesystem &fsys, const std::string &filename, izfstream &file )
-	{
+    static int PrepareRead( const filesystem &fsys, const std::string &filename, izfstream &file )
+    {
 		int bufsize;
 		//std::string xxx = file.FullFilePath();
 		if(file.Zipped())
@@ -116,12 +111,12 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 		return bufsize;
 	}
 
-	char* LoadChar(const filesystem& fsys, const std::string& filename, int& bufsize)
+    static char* LoadChar(const filesystem& fsys, const std::string& filename, int& bufsize)
 	{
 		izfstream file(filename.c_str());
 		bufsize = PrepareRead(fsys, filename, file);
 
-		char* data = NULL;
+		char* data;
 		if (! file)
 		{
 			//std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
@@ -131,15 +126,12 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 			HUMBUG_FILELOADER_THROW(
 				FileLoaderException("[HumbugFileLoader::LoadChar]", filename,
 				boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
-			return NULL;
 		}
-		else
-		{
-			data = new char[bufsize];
-			file.read(&data[0], bufsize);
-		}
+	    
+        data = new char[bufsize];
+	    file.read(&data[0], bufsize);
 
-		file.close();
+	    file.close();
 		return data;
 	}
 
@@ -156,25 +148,22 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
             HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadImg-imgmem]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
-            return NULL;
         }
-        else
-        {
-            //data.clear();
-            //data.resize(fsize);
-            //SDL_LoadBMP_RW(imgmem, 1);
-	            sdlsurface = IMG_Load_RW(imgmem, 1);
-            //SDL_FreeRW(imgmem);
-            delete[] data;
-            if (!sdlsurface) {
-                //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
-                // load a internal error image.
-					const char *imgMsg = IMG_GetError();
+        
+        //data.clear();
+        //data.resize(fsize);
+        //SDL_LoadBMP_RW(imgmem, 1);
+        sdlsurface = IMG_Load_RW(imgmem, 1);
+        //SDL_FreeRW(imgmem);
+        delete[] data;
+        if (!sdlsurface) {
+            //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
+            // load a internal error image.
+            const char *imgMsg = IMG_GetError();
 
-                HUMBUG_FILELOADER_THROW(
-                    FileLoaderException(std::string("[HumbugFileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
-                // generic_category
-            }
+            HUMBUG_FILELOADER_THROW(
+                FileLoaderException(std::string("[HumbugFileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
+            // generic_category
         }
 
         return sdlsurface;
@@ -186,7 +175,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         TTF_Font* font;
 		int bufsize;
         SDL_RWops* imgmem = LoadData(fsys, filename, bufsize);
-        FileLoadingInfo *flinfo = NULL;
+        FileLoadingInfo *flinfo;
 
         if (! imgmem)
         {
@@ -194,31 +183,27 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
             HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadFont]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
-            return NULL;
         }
-        else
-        {
-            //data.clear();
-            //data.resize(fsize);
-	            font = TTF_OpenFontRW(imgmem, 1, ptsize);
-            flinfo = new FileLoadingInfo(filename, font, imgmem, data, bufsize);
-            //SDL_FreeRW(imgmem);
-            //delete[] data;
-            if (!font) {
-                //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
-                // load a internal error image.
-				HUMBUG_FILELOADER_THROW(
-	                    FileLoaderException(std::string("[HumbugFileLoader::LoadFont]: '" ) + filename + "' " + TTF_GetError(), 1));
-                // generic_category
-            }
-
+        
+        //data.clear();
+        //data.resize(fsize);
+        font = TTF_OpenFontRW(imgmem, 1, ptsize);
+        flinfo = new FileLoadingInfo(filename, font, imgmem, data, bufsize);
+        //SDL_FreeRW(imgmem);
+        //delete[] data;
+        if (!font) {
+            //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
+            // load a internal error image.
+            HUMBUG_FILELOADER_THROW(
+                FileLoaderException(std::string("[HumbugFileLoader::LoadFont]: '" ) + filename + "' " + TTF_GetError(), 1));
+            // generic_category
         }
 
         return flinfo;
 
     };
 
-    SDL_Surface* LoadImgXX(const filesystem& fsys, const std::string& filename)
+    static SDL_Surface* LoadImgXX(const filesystem& fsys, const std::string& filename)
     {
 		izfstream file(filename.c_str());
 		int fsize = PrepareRead(fsys, filename, file);
@@ -231,26 +216,23 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
             HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadImg-slurp5]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
-            return NULL;
         }
-        else
-        {
-            //data.clear();
-            //data.resize(fsize);
-            char* data = new char[fsize];
-            file.read(&data[0], fsize);
+        
+        //data.clear();
+        //data.resize(fsize);
+        char* data = new char[fsize];
+        file.read(&data[0], fsize);
 
-	            SDL_RWops* imgmem = SDL_RWFromMem(&data[0], fsize);
-	            sdlsurface = IMG_Load_RW(imgmem, 1);
-            delete[] data;
-            if (!sdlsurface) {
-                //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
-                // load a internal error image.
-	                HUMBUG_FILELOADER_THROW(
-	                    FileLoaderException(std::string("[HumbugFileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
+        SDL_RWops* imgmem = SDL_RWFromMem(&data[0], fsize);
+        sdlsurface = IMG_Load_RW(imgmem, 1);
+        delete[] data;
+        if (!sdlsurface) {
+            //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
+            // load a internal error image.
+            HUMBUG_FILELOADER_THROW(
+                FileLoaderException(std::string("[HumbugFileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
 
-                // generic_category
-            }
+            // generic_category
         }
 
         file.close();
@@ -388,49 +370,6 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
     //m_pvSurfaces.push_back(new FileLoadingInfo(filename, m_pLastSurface));
     return surface;
 }
-
-//void HumbugFileLoader::FreeLast()
-//{
-//    //boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
-//	// LOGSTREAM << "HumbugFileLoader freeing '" << current->Name() << "'";
-//	LOGSTREAM << "HumbugFileLoader freeing 'FreeLast'";
-//    //std::string nase = f->Name();
-//
-//    if (GetLastLoaded() == "")
-//    {
-//		return;
-//        //SDL_FreeSurface(m_pLastSurface);
-//    }
-//
-//    boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(GetLastLoaded());
-//	if (rexs1 != m_resMap.end())
-//	{
-//		FileLoadingInfo& finf = *(rexs1->second);
-//		LOGSTREAM << "HumbugFileLoader FreeLast found Cached '" << finf << "'";
-//	}
-//	else
-//        LOGSTREAM << "HumbugFileLoader FreeLast NOT found Cached '" << GetLastLoaded() << "' atom.";
-//}
-
-//void HumbugFileLoader::Free( const std::string& name )
-//{
-//	LOGSTREAM << "HumbugFileLoader freeing '" << name << "'";
-//
-//    /*surfacevector::pointer result = NULL;
-//    surfacevector::iterator end = m_pvSurfaces.end();
-//    for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
-//    {
-//        FileLoadingInfo& current = (*it);
-//        if (current.Name().compare(name))
-//        {
-//			//LOGSTREAM << "HumbugFileLoader freeing '" << current.Name() << "'";
-//			LOGSTREAM << "HumbugFileLoader freeing '" << current << "'";
-//            m_pvSurfaces.erase(it);
-//            result = &current;
-//        }
-//    }*/
-//    // LOGSTREAM << result->Name();
-//}
 
 TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, std::string  location )
 {

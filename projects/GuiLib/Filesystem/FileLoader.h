@@ -8,7 +8,6 @@
 
 #define STRX(x) #x
 #define STR(x) STRX(x)
-//#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("[") + __FILE__ + "]-> " + __FUNCTION__)
 #define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + "(" +  STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOADASSTRING(fname) LoadAsString(fname, std::string("") + __FILE__  + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
@@ -25,7 +24,7 @@ public:
     FileLoadingInfo(const std::string name, SDL_Surface* surface);
     FileLoadingInfo(const std::string name, TTF_Font* font, SDL_RWops* area, char *data, int fsize);
 	FileLoadingInfo(const std::string name, char *data, int fsize = 0);
- ~FileLoadingInfo();
+    ~FileLoadingInfo();
 
     std::string Name() const { return m_strName; }
     void Name(std::string val) { m_strName = val; }
@@ -76,12 +75,8 @@ public:
     virtual ~FileLoader();
     const char* language(int x) const;
 
-    // Placeholder
     virtual FileLoadingInfo& Load(const std::string & filename, std::string location) = 0;
     virtual std::string LoadAsString(const std::string & filename, std::string location) = 0;
-
-    // Loads a image from the package or filesystem.
-    // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
     virtual SDL_Surface* LoadImg(const std::string & filename, std::string location) = 0;
     virtual TTF_Font* LoadFont(const std::string & filename, int ptsize, std::string  location ) = 0;
     void Free(const std::string& name);
