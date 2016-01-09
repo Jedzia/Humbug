@@ -13,26 +13,19 @@ public:
 
     HumbugFileLoader(const std::string & basepath);
     ~HumbugFileLoader();
-    const char* language(int x) const;
 
     // Placeholder
-	FileLoadingInfo& Load(const std::string & filename, std::string location);
-	std::string LoadAsString(const std::string & filename, std::string location);
+    FileLoadingInfo& Load(const std::string & filename, std::string location) override;
+    std::string LoadAsString(const std::string & filename, std::string location) override;
 
     // Loads a image from the package or filesystem.
     // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
-    SDL_Surface* LoadImg(const std::string & filename, std::string location) ;
-    TTF_Font* LoadFont(const std::string & filename, int ptsize, std::string  location ) ;
-    void Free(const std::string& name);
-    void FreeLast();
+    SDL_Surface* LoadImg(const std::string & filename, std::string location) override;
+    TTF_Font* LoadFont(const std::string & filename, int ptsize, std::string  location ) override;
+    //void Free(const std::string& name);
+    //void FreeLast();
 
 private:
-
-    std::string m_pBasepath;
-	std::string m_pLastLoaded;
-    typedef boost::ptr_vector<FileLoadingInfo> surfacevector;
-    //surfacevector m_pvSurfaces;
-	boost::ptr_map<std::string, FileLoadingInfo> m_resMap;
 
     struct HumbugFileLoaderImpl;
     boost::scoped_ptr<HumbugFileLoaderImpl> pimpl_;

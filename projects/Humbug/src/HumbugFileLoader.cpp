@@ -261,7 +261,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 };
 
 HumbugFileLoader::HumbugFileLoader(const std::string & basepath)
-: FileLoader(basepath), pimpl_(new HumbugFileLoader::HumbugFileLoaderImpl), m_pBasepath(basepath), m_pLastLoaded("")
+: FileLoader(basepath), pimpl_(new HumbugFileLoader::HumbugFileLoaderImpl)
 {
 	 using namespace humbuglib;
      dbgOut(__FUNCTION__);
@@ -278,11 +278,6 @@ HumbugFileLoader::~HumbugFileLoader(void)
 
 }
 
-const char* HumbugFileLoader::language(int x) const
-{
-    return "AsciiDoc";
-}
-
 std::string HumbugFileLoader::LoadAsString(const std::string & filename, std::string location)
 {
 	std::string tmp;
@@ -297,13 +292,13 @@ std::string HumbugFileLoader::LoadAsString(const std::string & filename, std::st
 	else
 		LOGSTREAM << "HumbugFileLoader LoadAsString '" << filename << "' " << location;
 
-	filesystem fsys(m_pBasepath.c_str(), "zip", true);
+    filesystem fsys(GetBasepathCstr(), "zip", true);
 	LOGSTREAM << fsys;
 
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
 
-	m_pLastLoaded = filename;
+	SetLastLoaded(filename);
 	int bufsize;
 	char *data = pimpl_->LoadChar(fsys, filename, bufsize);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, data, bufsize);
@@ -329,14 +324,14 @@ FileLoadingInfo& HumbugFileLoader::Load(const std::string & filename, std::strin
 	else
 		LOGSTREAM << "HumbugFileLoader Load '" << filename << "' " << location;
 
-	filesystem fsys(m_pBasepath.c_str(), "zip", true);
+    filesystem fsys(GetBasepathCstr(), "zip", true);
 	LOGSTREAM << fsys;
 
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
 
-	m_pLastLoaded = filename;
-	int bufsize;
+    SetLastLoaded(filename);
+    int bufsize;
 	char *data = pimpl_->LoadChar(fsys, filename, bufsize);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, data, bufsize);
 	flInfo->setLoc(location);
@@ -377,13 +372,13 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
 		}
 	}*/
 
-	filesystem fsys(m_pBasepath.c_str(), "zip", true);
+    filesystem fsys(GetBasepathCstr(), "zip", true);
 	LOGSTREAM << fsys;
 
 	// Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)
 
 
-	m_pLastLoaded = filename;
+    SetLastLoaded(filename);
     SDL_Surface *surface = pimpl_->LoadImg(fsys, filename);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, surface);
 	flInfo->setLoc(location);
@@ -394,48 +389,48 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
     return surface;
 }
 
-void HumbugFileLoader::FreeLast()
-{
-    //boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
-	// LOGSTREAM << "HumbugFileLoader freeing '" << current->Name() << "'";
-	LOGSTREAM << "HumbugFileLoader freeing 'FreeLast'";
-    //std::string nase = f->Name();
+//void HumbugFileLoader::FreeLast()
+//{
+//    //boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
+//	// LOGSTREAM << "HumbugFileLoader freeing '" << current->Name() << "'";
+//	LOGSTREAM << "HumbugFileLoader freeing 'FreeLast'";
+//    //std::string nase = f->Name();
+//
+//    if (GetLastLoaded() == "")
+//    {
+//		return;
+//        //SDL_FreeSurface(m_pLastSurface);
+//    }
+//
+//    boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(GetLastLoaded());
+//	if (rexs1 != m_resMap.end())
+//	{
+//		FileLoadingInfo& finf = *(rexs1->second);
+//		LOGSTREAM << "HumbugFileLoader FreeLast found Cached '" << finf << "'";
+//	}
+//	else
+//        LOGSTREAM << "HumbugFileLoader FreeLast NOT found Cached '" << GetLastLoaded() << "' atom.";
+//}
 
-    if (m_pLastLoaded == "")
-    {
-		return;
-        //SDL_FreeSurface(m_pLastSurface);
-    }
-
-	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(m_pLastLoaded);
-	if (rexs1 != m_resMap.end())
-	{
-		FileLoadingInfo& finf = *(rexs1->second);
-		LOGSTREAM << "HumbugFileLoader FreeLast found Cached '" << finf << "'";
-	}
-	else
-		LOGSTREAM << "HumbugFileLoader FreeLast NOT found Cached '" << m_pLastLoaded << "' atom.";
-}
-
-void HumbugFileLoader::Free( const std::string& name )
-{
-	LOGSTREAM << "HumbugFileLoader freeing '" << name << "'";
-
-    /*surfacevector::pointer result = NULL;
-    surfacevector::iterator end = m_pvSurfaces.end();
-    for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
-    {
-        FileLoadingInfo& current = (*it);
-        if (current.Name().compare(name))
-        {
-			//LOGSTREAM << "HumbugFileLoader freeing '" << current.Name() << "'";
-			LOGSTREAM << "HumbugFileLoader freeing '" << current << "'";
-            m_pvSurfaces.erase(it);
-            result = &current;
-        }
-    }*/
-    // LOGSTREAM << result->Name();
-}
+//void HumbugFileLoader::Free( const std::string& name )
+//{
+//	LOGSTREAM << "HumbugFileLoader freeing '" << name << "'";
+//
+//    /*surfacevector::pointer result = NULL;
+//    surfacevector::iterator end = m_pvSurfaces.end();
+//    for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+//    {
+//        FileLoadingInfo& current = (*it);
+//        if (current.Name().compare(name))
+//        {
+//			//LOGSTREAM << "HumbugFileLoader freeing '" << current.Name() << "'";
+//			LOGSTREAM << "HumbugFileLoader freeing '" << current << "'";
+//            m_pvSurfaces.erase(it);
+//            result = &current;
+//        }
+//    }*/
+//    // LOGSTREAM << result->Name();
+//}
 
 TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, std::string  location )
 {
@@ -474,7 +469,7 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 		}
 	}*/
 
-	filesystem fsys(m_pBasepath.c_str(), "zip", true);
+    filesystem fsys(GetBasepathCstr(), "zip", true);
     LOGSTREAM << fsys;
 
     // Try to open a zipped file (Careful! The openmode is always 'ios::in | ios::binary'.)

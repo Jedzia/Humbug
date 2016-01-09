@@ -73,30 +73,44 @@ class FileLoader {
 public:
 
     FileLoader(const std::string & basepath);
-    ~FileLoader();
+    virtual ~FileLoader();
     const char* language(int x) const;
 
     // Placeholder
-	FileLoadingInfo& Load(const std::string & filename, std::string location);
-	std::string LoadAsString(const std::string & filename, std::string location);
+    virtual FileLoadingInfo& Load(const std::string & filename, std::string location) = 0;
+    virtual std::string LoadAsString(const std::string & filename, std::string location) = 0;
 
     // Loads a image from the package or filesystem.
     // Remember to use SDL_FreeSurface( surface ) to release the allocated memory.
-    SDL_Surface* LoadImg(const std::string & filename, std::string location) ;
-    TTF_Font* LoadFont(const std::string & filename, int ptsize, std::string  location ) ;
+    virtual SDL_Surface* LoadImg(const std::string & filename, std::string location) = 0;
+    virtual TTF_Font* LoadFont(const std::string & filename, int ptsize, std::string  location ) = 0;
     void Free(const std::string& name);
     void FreeLast();
+
+protected:
+
+    const char * GetBasepathCstr() const
+    {
+        return m_pBasepath.c_str();
+    }
+
+    std::string GetLastLoaded() const
+    {
+        return m_pLastLoaded;
+    }
+
+    void SetLastLoaded(const std::string m_p_last_loaded)
+    {
+        m_pLastLoaded = m_p_last_loaded;
+    }
+
+    boost::ptr_map<std::string, FileLoadingInfo> m_resMap;
 
 private:
 
     std::string m_pBasepath;
 	std::string m_pLastLoaded;
     typedef boost::ptr_vector<FileLoadingInfo> surfacevector;
-    //surfacevector m_pvSurfaces;
-	boost::ptr_map<std::string, FileLoadingInfo> m_resMap;
-
-    struct FileLoaderImpl;
-    boost::scoped_ptr<FileLoaderImpl> pimpl_;
 };
 
 // File loader exceptions
