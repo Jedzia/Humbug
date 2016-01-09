@@ -202,6 +202,13 @@ SOURCE_GROUP(GuiSources FILES ${GuiLib_GUI_sources})
 SOURCE_GROUP(CompHeaders FILES ${GuiLib_Component_headers})
 SOURCE_GROUP(CompSources FILES ${GuiLib_Component_sources})
 
+
+SET(GuiLib_documents
+		Readme.md
+		docs/!DevelNotes.txt
+)
+SOURCE_GROUP(Docs FILES ${GuiLib_documents})
+
 SET(LIBRARY_TYPE STATIC)
 ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
 
@@ -215,6 +222,7 @@ ADD_LIBRARY_X(GuiLib ${LIBRARY_TYPE}
         ${GuiLib_sources}
 		${GuiLib_GuiConsole_headers}
 		${GuiLib_GuiConsole_sources}
+		${GuiLib_documents}
 )
 
 

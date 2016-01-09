@@ -22,7 +22,7 @@
 
 namespace gob {
 	GameObject::GameObject(std::string name)
-	  : m_name(name){
+	  : i(0), m_name(name){
       dbgOut(__FUNCTION__);
   }
 

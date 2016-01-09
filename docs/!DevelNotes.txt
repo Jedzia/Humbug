@@ -1,4 +1,16 @@
 
+-X-X-X-X- Sa, 09 Jan 2016 00:48:35 -----------------------------------------------------------
+Todo: Integrate 
+SET(GuiLib_documents
+		Readme.md
+		docs/!DevelNotes.txt
+)
+SOURCE_GROUP(Docs FILES ${GuiLib_documents})
+
+(from E:\Projects\C++\Humbug\projects\GuiLib\CMakeLists.txt)
+into ADD_LIBRARY_X macro to enforce the usage of docs and Readme
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Mo, 04 Jan 2016 14:56:47 -----------------------------------------------------------
 TestLevel with CSeamlessImage needs a camera that can be positioned via WASD keys like in BlaScreen::OnEvent
 see       m_pKeyHandler2 = new PlayerKeys(400, 200);

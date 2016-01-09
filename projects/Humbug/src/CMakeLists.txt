@@ -157,6 +157,11 @@ SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
 
+SET(Humbug_documents
+		../Readme.md
+		../docs/!DevelNotes.txt
+)
+SOURCE_GROUP(Docs FILES ${Humbug_documents})
 
 # Move to bindings
 SET(_GUI_DEP )
@@ -171,6 +176,7 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 
         ${Humbug_headers}
         ${Humbug_sources} 
+		${Humbug_documents}
 )
 
 

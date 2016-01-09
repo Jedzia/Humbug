@@ -172,7 +172,7 @@ namespace humbug {
      * @return TODO
      */
     void TestLevel::OnIdle(int ticks){
-        m_pKeyHandler->HookIdle(ticks, 1.0f);
+        m_pKeyHandler->HookIdle(ticks, 1.0f); 
         //m_pScroller->Scroll(4);
         //m_pSprMgr->OnIdle(ticks);
     }
