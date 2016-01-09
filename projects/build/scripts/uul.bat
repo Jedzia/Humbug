@@ -35,8 +35,17 @@ GOTO ende
 
 :indentFile
 echo Indenting one file %1
+REM see http://stackoverflow.com/questions/18981106/is-it-possible-to-validate-a-file-extension-using-a-bat-file
+for /f "delims=" %%a  in ("%1") do set "Extension=%%~xa"
+if /i "%Extension%"==".cpp" goto indentFileCPP
 "%~dp0indenters/uncrustify.exe" -f "%1" -c "%CFGDIR%/uncrustify.cfg" -o indentoutput.tmp
 IF %ERRORLEVEL% NEQ 0 GOTO error
+GOTO indentFileCPPende
+:indentFileCPP
+"%~dp0indenters/uncrustify.exe" -f "%1" -c "%CFGDIR%/uncrustify-cpp.cfg" -o indentoutput.tmp
+IF %ERRORLEVEL% NEQ 0 GOTO error
+
+:indentFileCPPende
 move /Y indentoutput.tmp "%1"
 
 

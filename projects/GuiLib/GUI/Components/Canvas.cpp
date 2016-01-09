@@ -65,18 +65,10 @@ CCanvas::~CCanvas ( ){
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
-/** CCanvas, GetSurface:
- *  Detailed description.
- *  @return TODO
- */
 SDL_Surface * CCanvas::GetSurface() const {
     return ( m_pSurface );
 }
 
-/** CCanvas, GetTexture:
- *  Detailed description.
- *  @return TODO
- */
 SDL_Texture * CCanvas::GetTexture(){
     // Lazy Texture
     if (m_pTexture == nullptr) {
@@ -92,11 +84,6 @@ SDL_Texture * CCanvas::GetTexture(){
     return m_pTexture;
 }
 
-/** CCanvas, SetSurface:
- *  Detailed description.
- *  @param pSurface TODO
- * @return TODO
- */
 void CCanvas::SetSurface(SDL_Surface* pSurface){
     if (!pSurface) {
         return;
@@ -112,11 +99,6 @@ void CCanvas::SetSurface(SDL_Surface* pSurface){
     m_pSurface = pSurface;
 }
 
-/** CCanvas, SetWindow:
- *  Detailed description.
- *  @param pWindow TODO
- * @return TODO
- */
 void CCanvas::SetWindow(SDL_Window* pWindow){
     m_pWindow = pWindow;
 
@@ -127,10 +109,6 @@ void CCanvas::SetWindow(SDL_Window* pWindow){
     }
 }
 
-/** CCanvas, GetRenderer:
- *  Detailed description.
- *  @return TODO
- */
 SDL_Renderer * CCanvas::GetRenderer() const {
     if (this->m_pRenderer) {
         return m_pRenderer;
@@ -140,13 +118,6 @@ SDL_Renderer * CCanvas::GetRenderer() const {
     }
 }
 
-/** CCanvas, UpdateTexture:
- *  Detailed description.
- *  @param source TODO
- * @param srcRect TODO
- * @param dstRect TODO
- * @return TODO
- */
 void CCanvas::UpdateTexture(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     if ( !GetTexture() || !source->GetSurface() ) {
         return;
@@ -157,11 +128,6 @@ void CCanvas::UpdateTexture(CCanvas* source, const SDL_Rect* srcRect, const SDL_
     //SDL_RenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, UpdateTexture:
- *  Draw the underlying surface to the texture. You should use texture only functions.
- *  @param srcRect source area
- * @param dstRect target area
- */
 void CCanvas::UpdateTexture(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     if ( !GetTexture() || !GetSurface() ) {
         return;
@@ -172,17 +138,6 @@ void CCanvas::UpdateTexture(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     //SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, RenderCopy:
- *  Use this function to copy a portion of the texture to the main window rendering target. If no
- *texture is
- *  present, one is created. As there is only one rendering target at the moment, this is the same
- *as calling
- *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
- *  @param source The source canvas to get the texture from.
- *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
- * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the
- *texture will be stretched to fill the given rectangle
- */
 void CCanvas::RenderCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
     if ( !source->GetTexture() ) {
         return;
@@ -194,13 +149,6 @@ void CCanvas::RenderCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rec
     SDL_RenderCopy(GetRenderer(), source->GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, RenderCopy:
- *  Use this function to copy a portion of the texture to the main window rendering target.
- *  @param source The source texture to render.
- *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
- * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the
- *texture will be stretched to fill the given rectangle
- */
 void CCanvas::RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
     //        if (!m_pRenderer) {
     //            return;
@@ -212,27 +160,10 @@ void CCanvas::RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SD
     SDL_RenderCopy(GetRenderer(), texture, srcRect, dstRect);
 }
 
-/** CCanvas, RenderCopy:
- *  Use this function to copy a portion of the texture to the main window rendering target. If no
- *texture is
- *  present, one is created. As there is only one rendering target at the moment, this is the same
- *as calling
- *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
- *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
- * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the
- *texture will be stretched to fill the given rectangle
- */
 void CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     SDL_RenderCopy(GetRenderer(), GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, Render:
- *  Detailed description.
- *  @param source TODO
- * @param srcRect TODO
- * @param dstRect TODO
- * @return TODO
- */
 void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
 //        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
 //            return;
@@ -243,26 +174,12 @@ void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* d
     RenderCopy(GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, Render:
- *  Detailed description.
- *  @param source TODO
- * @param srcRect TODO
- * @param dstRect TODO
- * @return TODO
- */
 void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source);
     SDL_UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
     RenderCopy(GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, Render:
- *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and
- *finally RenderCopy.
- *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
- * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the
- *texture will be stretched to fill the given rectangle
- */
 void CCanvas::MainUpdateAndRenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     // this works only for the main canvas
     if (!m_pRenderer) {
@@ -274,16 +191,6 @@ void CCanvas::MainUpdateAndRenderCopy(const SDL_Rect* srcRect, const SDL_Rect* d
     RenderCopy(GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, MainRenderCopyTo:
- *  Use this function to copy a portion of the texture to the main window rendering target. If no
- *texture is
- *  present, one is created. As there is only one rendering target at the moment, this is the same
- *as calling
- *  CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
- *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
- * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the
- *texture will be stretched to fill the given rectangle
- */
 void CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     // Todo: all Render** should check the exit codes
     // see: https://wiki.libsdl.org/SDL_RenderCopy
@@ -298,39 +205,26 @@ void CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect)
     //SDL_RenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
 }
 
-/** CCanvas, MainRenderFinal:
- *  Detailed description.
- *  @return TODO
- */
 void CCanvas::MainRenderFinal(){
     SDL_RenderPresent( CApplication::GetApplication()->GetMainCanvas()->GetRenderer() );
 }
 
-/** Brief description of CCanvas, MainRenderClear
- *  Detailed description.
- *  @return TODO
- */
 void CCanvas::MainRenderClear(){
     SDL_RenderClear( CApplication::GetApplication()->GetMainCanvas()->GetRenderer() );
 }
 
-void CCanvas::SetTextureColorMod(SDL_Color sdl_color) const
-{
-    if (!m_pTexture)
-    {
+void CCanvas::SetTextureColorMod(SDL_Color sdl_color) const {
+    if (!m_pTexture) {
         return;
     }
 
     // SDL_SetTextureColorMod(GetTexture(), 128, 255, 255);
     SDL_SetTextureColorMod(m_pTexture, sdl_color.r, sdl_color.g, sdl_color.b);
-    // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more information. 
+    // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
+    // information.
     // Todo: check error info, like in all of these calls ...
 }
 
-/** CCanvas, Lock:
- *  Detailed description.
- *  @return TODO
- */
 bool CCanvas::Lock ( ) const {
     /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
         if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
@@ -344,10 +238,6 @@ bool CCanvas::Lock ( ) const {
     return ( true );
 }
 
-/** CCanvas, Unlock:
- *  Detailed description.
- *  @return TODO
- */
 void CCanvas::Unlock ( ) const {
     //MainUpdateAndRenderCopy();
 //    if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
@@ -355,12 +245,6 @@ void CCanvas::Unlock ( ) const {
 //    }
 }
 
-/** CCanvas, GetPixel:
- *  Detailed description.
- *  @param x TODO
- * @param y TODO
- * @return TODO
- */
 CColor CCanvas::GetPixel ( int x, int y ){
     Uint32 color = 0;
     int position = y * GetSurface ( )->pitch + GetSurface ( )->format->BytesPerPixel * x;
@@ -372,13 +256,6 @@ CColor CCanvas::GetPixel ( int x, int y ){
     return ( col );
 }
 
-/** CCanvas, SetPixel:
- *  Detailed description.
- *  @param x TODO
- * @param y TODO
- * @param color TODO
- * @return TODO
- */
 void CCanvas::SetPixel ( int x, int y, CColor& color ){
     int position = y * GetSurface ( )->pitch + GetSurface ( )->format->BytesPerPixel * x;
     char* buffer = static_cast<char *>(GetSurface ( )->pixels);
@@ -387,36 +264,19 @@ void CCanvas::SetPixel ( int x, int y, CColor& color ){
     memcpy ( buffer, &col, GetSurface ( )->format->BytesPerPixel );
 }
 
-/** CCanvas, GetWidth:
- *  Detailed description.
- *  @return TODO
- */
 int CCanvas::GetWidth ( ) const {
     return ( GetSurface ( )->w );
 }
 
-/** CCanvas, GetHeight:
- *  Detailed description.
- *  @return TODO
- */
 int CCanvas::GetHeight ( ) const {
     return ( GetSurface ( )->h );
 }
 
-/** CCanvas, GetDimension:
- *  Detailed description.
- *  @return TODO
- */
 CRectangle CCanvas::GetDimension ( ) const {
     CRectangle rect( 0, 0, GetWidth( ), GetHeight( ) );
     return rect;
 }
 
-/** CCanvas, AddUpdateRect:
- *  Detailed description.
- *  @param UpdateRect TODO
- * @return TODO
- */
 void CCanvas::AddUpdateRect ( const CRectangle& UpdateRect ){
     SDL_Rect* pRect = NULL;
     pRect = new SDL_Rect;
@@ -427,10 +287,6 @@ void CCanvas::AddUpdateRect ( const CRectangle& UpdateRect ){
     m_lstUpdateRects.push_back ( pRect );
 }
 
-/** CCanvas, ClearUpdateRects:
- *  Detailed description.
- *  @return TODO
- */
 void CCanvas::ClearUpdateRects ( ){
     list < SDL_Rect * >::iterator iter;
     SDL_Rect* pRect;
@@ -445,10 +301,6 @@ void CCanvas::ClearUpdateRects ( ){
     }
 }
 
-/** CCanvas, UpdateRects:
- *  Detailed description.
- *  @return TODO
- */
 void CCanvas::UpdateRects ( ){
     list < SDL_Rect * >::iterator iter;
     SDL_Rect* pRect;
@@ -469,30 +321,17 @@ void CCanvas::UpdateRects ( ){
     ClearUpdateRects ( );
 }     // UpdateRects
 
-/** CCanvas, Flip:
- *  Detailed description.
- *  @return TODO
- */
 bool CCanvas::Flip ( ){
     //SDL_RenderPresent(m_pRenderer);
     //return SDL_Flip(GetSurface()) == 0;
     return true;
 }
 
-/** CCanvas, SetColorKey:
- *  Detailed description.
- *  @param color TODO
- * @return TODO
- */
 bool CCanvas::SetColorKey ( CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.R ( ), color.G ( ), color.B ( ) );
     return (SDL_SetColorKey(GetSurface(), SDL_TRUE, col) == 0);
 }
 
-/** CCanvas, GetColorKey:
- *  Detailed description.
- *  @return TODO
- */
 CColor CCanvas::GetColorKey ( ) const {
     throw new std::exception("Fuck !");
 //
@@ -502,19 +341,10 @@ CColor CCanvas::GetColorKey ( ) const {
 //    return ( color );
 }
 
-/** CCanvas, ClearColorKey:
- *  Detailed description.
- *  @return TODO
- */
 bool CCanvas::ClearColorKey ( ){
     return ( SDL_SetColorKey ( GetSurface ( ), 0, 0 ) == 0 );
 }
 
-/** CCanvas, SetClipRect:
- *  Detailed description.
- *  @param pRect TODO
- * @return TODO
- */
 void CCanvas::SetClipRect ( CRectangle* pRect ){
     if ( pRect ) {
         SDL_SetClipRect ( GetSurface ( ), *pRect );
@@ -524,44 +354,23 @@ void CCanvas::SetClipRect ( CRectangle* pRect ){
     }
 }
 
-/** CCanvas, GetClipRect:
- *  Detailed description.
- *  @return TODO
- */
 CRectangle CCanvas::GetClipRect ( ){
     SDL_Rect rect;
     SDL_GetClipRect ( GetSurface ( ), &rect );
     return ( rect );
 }
 
-/** CCanvas, FillRect:
- *  Detailed description.
- *  @param rect TODO
- * @param color TODO
- * @return TODO
- */
 bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
     return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
 }
 
-/** CCanvas, RenderFillRect:
- *  Detailed description.
- *  @param rect TODO
- * @param color TODO
- * @return TODO
- */
 bool CCanvas::RenderFillRect(CRectangle& rect, const CColor& color){
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
     int ret = SDL_SetRenderDrawColor( GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA() );
     return SDL_RenderFillRect(GetRenderer(), rect);
 }
 
-/** CCanvas, Clear:
- *  Detailed description.
- *  @param color TODO
- * @return TODO
- */
 bool CCanvas::Clear ( const CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
 
@@ -574,31 +383,12 @@ bool CCanvas::Clear ( const CColor& color ){
     return ( SDL_FillRect ( GetSurface ( ), NULL, col ) == 0 );
 }
 
-/** CCanvas, Blit:
- *  Detailed description.
- *  @param rectDst TODO
- * @param cnvSrc TODO
- * @param rectSrc TODO
- * @return TODO
- */
 bool CCanvas::Blit ( const CRectangle& rectDst, const CCanvas& cnvSrc, const CRectangle& rectSrc ) const {
     CRectangle rectDst2 = rectDst;
     CRectangle rectSrc2 = rectSrc;
     return ( SDL_BlitSurface ( cnvSrc.GetSurface ( ), rectSrc2, GetSurface ( ), rectDst2 ) == 0 );
 }
 
-/** CCanvas, CreateRGB:
- *  Detailed description.
- *  @param flags TODO
- * @param width TODO
- * @param height TODO
- * @param depth TODO
- * @param Rmask TODO
- * @param Gmask TODO
- * @param Bmask TODO
- * @param Amask TODO
- * @return TODO
- */
 CCanvas * CCanvas::CreateRGB ( Uint32 flags, int width, int height, int depth, Uint32 Rmask,
         Uint32 Gmask, Uint32 Bmask,
         Uint32 Amask){
@@ -609,13 +399,6 @@ CCanvas * CCanvas::CreateRGB ( Uint32 flags, int width, int height, int depth, U
     return ( pCanvas );
 }
 
-/** CCanvas, CreateRGBCompatible:
- *  Detailed description.
- *  @param flags TODO
- * @param width TODO
- * @param height TODO
- * @return TODO
- */
 CCanvas * CCanvas::CreateRGBCompatible ( Uint32 flags, int width, int height ){
     // throw new std::exception("Fuck !");
     //auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
@@ -625,21 +408,11 @@ CCanvas * CCanvas::CreateRGBCompatible ( Uint32 flags, int width, int height ){
                      format->Bmask, format->Amask ) );
 }
 
-/** CCanvas, LoadBMP:
- *  Detailed description.
- *  @param sFileName TODO
- * @return TODO
- */
 CCanvas * CCanvas::LoadBMP ( string sFileName ){
     SDL_Surface* pSurface = SDL_LoadBMP ( sFileName.c_str ( ) );
     return ( new CCanvas ( pSurface, true ) );
 }
 
-/** CCanvas, LoadBMPCompatible:
- *  Detailed description.
- *  @param sFileName TODO
- * @return TODO
- */
 CCanvas * CCanvas::LoadBMPCompatible ( string sFileName ){
     //throw new std::exception("Fuck !");
     SDL_Surface* pSurface = SDL_LoadBMP( sFileName.c_str() );
@@ -662,10 +435,6 @@ CColor CCanvas::MatchColor ( CColor color ){
     return ( color );
 }
 
-/** CCanvas, Invalidate:
- *  Detailed description.
- *  @return TODO
- */
 void CCanvas::Invalidate(){
     AddUpdateRect( GetDimension() );
 }
