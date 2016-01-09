@@ -131,6 +131,10 @@ namespace humbug {
         m_Loader.FreeLast();
         m_pSeamlessImage->SetLoader(&m_Loader);
 
+
+        // m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
+        m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
+
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
@@ -186,6 +190,7 @@ namespace humbug {
 
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Lock();
+        //m_pMainCanvas->MainRenderClear();
 
         // m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension());
         m_pBackground->RenderCopy();
@@ -222,12 +227,17 @@ namespace humbug {
         CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
         CRectangle srcDims( 0, 0, 600, 200);
         //m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
+        m_pScrollText->GetCanvas()->SetTextureColorMod(fcol);
         m_pScrollText->RenderPut(m_pMainCanvas, dstDims, srcDims );
         m_pMainCanvas->AddUpdateRect(dstDims);
         xxx++;
 
         testbutton->Invalidate();
         testbutton->Draw();
+
+        m_pBlue->SetTextureColorMod(fcol);
+        m_pBlue->RenderCopy(nullptr, CRectangle(300,300,256,256));
+
 
         coldelta++;
 

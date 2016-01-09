@@ -113,10 +113,18 @@ public:
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
     void MainRenderCopyTo(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
-
     static void MainRenderFinal();
 
     static void MainRenderClear();
+
+    /** Use this function to set an additional color value multiplied into render copy operations. 
+    *  When this texture is rendered, during the copy operation each source color channel is modulated by the appropriate color value according to the following formula:
+    *  "srcC = srcC * (color / 255)"
+    *  Color modulation is not always supported by the renderer; it will return -1 if color modulation is not supported. 
+    *  Does nothing if no texture is instantiated.
+    *  @param sdl_color the color values multiplied into copy operations. Only r,g and b are used.
+    */
+    void SetTextureColorMod(SDL_Color sdl_color) const;
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const;

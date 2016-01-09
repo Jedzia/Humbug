@@ -28,7 +28,6 @@ public:
 
     CText(TTF_Font *font, std::string text, CColor textcolor = CColor::Black());
     ~CText();
-
     // Todo: "const boost::function<void" does not work under gcc
     // typedef const boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
     typedef boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
@@ -38,6 +37,8 @@ public:
     void RenderPut(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
 	void Put(CCanvas *canvas, const CRectangle& dstRect) const;
     void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
+    void Dings(SDL_Color sdl_color);
+
     CCanvas * GetCanvas() const { return m_pText.get(); }
 
     CColor Color() const
