@@ -284,7 +284,7 @@ std::string HumbugFileLoader::LoadAsString(const std::string & filename, std::st
 	int bufsize;
 	char *data = pimpl_->LoadChar(fsys, filename, bufsize);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, data, bufsize);
-	flInfo->setLoc(location);
+	flInfo->SetLocation(location);
 	std::string fname(filename);
 	m_resMap.insert(fname, flInfo);
 
@@ -316,7 +316,7 @@ FileLoadingInfo& HumbugFileLoader::Load(const std::string & filename, std::strin
     int bufsize;
 	char *data = pimpl_->LoadChar(fsys, filename, bufsize);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, data, bufsize);
-	flInfo->setLoc(location);
+	flInfo->SetLocation(location);
 	std::string fname(filename);
 	m_resMap.insert(fname, flInfo);
 
@@ -345,9 +345,9 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
 		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
 		{
 			FileLoadingInfo& current = (*it);
-			if (current.Name().compare(filename))
+			if (current.SetName().compare(filename))
 			{
-				//LOGSTREAM << "HumbugFileLoader freeing '" << current.Name() << "'";
+				//LOGSTREAM << "HumbugFileLoader freeing '" << current.SetName() << "'";
 				LOGSTREAM << "HumbugFileLoader LoadImg in Cache '" << current << "'";
 				result = &current;
 			}
@@ -363,7 +363,7 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
     SetLastLoaded(filename);
     SDL_Surface *surface = pimpl_->LoadImg(fsys, filename);
 	FileLoadingInfo* flInfo = new FileLoadingInfo(filename, surface);
-	flInfo->setLoc(location);
+	flInfo->SetLocation(location);
 	std::string fname(filename);
 	m_resMap.insert(fname, flInfo);
 
@@ -398,9 +398,9 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
 		{
 			FileLoadingInfo& current = (*it);
-			if (current.Name().compare(filename))
+			if (current.SetName().compare(filename))
 			{
-				//LOGSTREAM << "HumbugFileLoader freeing '" << current.Name() << "'";
+				//LOGSTREAM << "HumbugFileLoader freeing '" << current.SetName() << "'";
 				LOGSTREAM << "HumbugFileLoader LoadFont in Cache '" << current << "'";
 				result = &current;
 				break;
@@ -415,7 +415,7 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 
     //TTF_Font* m_pLastFont = pimpl_->LoadFont(fsys, filename, ptsize);
     FileLoadingInfo* flInfo = pimpl_->LoadFont(fsys, filename, ptsize);
-	flInfo->setLoc(location);
+	flInfo->SetLocation(location);
 
 	//m_pvSurfaces.push_back(flInfo);
 	//m_resMap.insert(std::string(filename), flInfo);
@@ -430,6 +430,6 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 	//boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs2 = m_resMap.find(filename + "dadsad");
 
 
-    return flInfo->Font();
+    return flInfo->GetFont();
 }
 

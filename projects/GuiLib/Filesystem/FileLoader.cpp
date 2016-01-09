@@ -6,7 +6,6 @@
  *
  * \brief      This file contains the definition of
  *             the FileLoader.cpp class.
- * \folder     $(folder)
  * \file       FileLoader.cpp
  * \date       2013-11-22
  * \author     Jedzia.
@@ -68,8 +67,8 @@ FileLoadingInfo& FileLoadingInfo::operator--( int ){
 }
 
 std::ostream& operator<<( std::ostream& o, const FileLoadingInfo& r ){
-    return o << "FileLoadingInfo[ (" << r.Refcount() << ")Name='" << r.Name() << "', Loc=" << r.Loc() <<
-           ", Font=" << r.Font() << ", rWops=" << r.m_pArea
+    return o << "FileLoadingInfo[ (" << r.GetRefcount() << ")Name='" << r.GetName() << "', Loc=" << r.GetLocation() <<
+           ", Font=" << r.GetFont() << ", rWops=" << r.m_pArea
              <<
            " ]";
 }
@@ -82,20 +81,28 @@ FileLoader::FileLoader(const std::string & basepath)
     LogManager::getSingleton().stream() << "Logging from Stream.";
 }
 
+/// <summary>
+/// Finalizes an instance of the <see cref="FileLoader"/> class.
+/// </summary>
 FileLoader::~FileLoader(void){
     dbgOut(__FUNCTION__);
     humbuglib::LogManager::getSingleton().stream() << __FUNCTION__ << " Logging from Stream.";
 }
 
+/// <summary>
+/// Dummy test method.
+/// </summary>
+/// <param name="x">The x.</param>
+/// <returns>const char *.</returns>
 const char * FileLoader::language(int x) const {
     return "AsciiDoc";
 }
 
 void FileLoader::FreeLast(){
     //boost::ptr_vector<FileLoadingInfo>::auto_type current(m_pvSurfaces.pop_back());
-    // LOGSTREAM << "FileLoader freeing '" << current->Name() << "'";
+    // LOGSTREAM << "FileLoader freeing '" << current->GetName() << "'";
     LOGSTREAM << "FileLoader freeing 'FreeLast'";
-    //std::string nase = f->Name();
+    //std::string nase = f->GetName();
 
     if (m_pLastLoaded == "") {
         return;
@@ -113,11 +120,6 @@ void FileLoader::FreeLast(){
     }
 } // FileLoader::FreeLast
 
-/** FileLoader, Free:
- *  Detailed description.
- *  @param name TODO
- * @return TODO
- */
 void FileLoader::Free( const std::string& name ){
     LOGSTREAM << "FileLoader freeing by name (OOPS not implemented...) '" << name << "'";
 
@@ -126,21 +128,17 @@ void FileLoader::Free( const std::string& name ){
        for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
        {
         FileLoadingInfo& current = (*it);
-        if (current.Name().compare(name))
+        if (current.GetName().compare(name))
         {
-                        //LOGSTREAM << "FileLoader freeing '" << current.Name() << "'";
+                        //LOGSTREAM << "FileLoader freeing '" << current.GetName() << "'";
                         LOGSTREAM << "FileLoader freeing '" << current << "'";
             m_pvSurfaces.erase(it);
             result = &current;
         }
        }*/
-    // LOGSTREAM << result->Name();
+    // LOGSTREAM << result->GetName();
 }
 
-/** FileLoaderException, what:
- *  Detailed description.
- *  @return TODO
- */
 const char * FileLoaderException::what() const throw(){
     if ( !m_imp_ptr.get() ) {
         return boost::system::system_error::what();
