@@ -36,7 +36,23 @@ public:
 	char * Data() const { return m_pData; }
 	int Size() const { return m_fsize; }
 
-	FileLoadingInfo& operator ++(int);
+
+    SDL_Surface* GetSurface() const
+    {
+        return m_pSurface;
+    }
+
+    char* GetData() const
+    {
+        return m_pData;
+    }
+
+    int GetFileSize() const
+    {
+        return m_fsize;
+    }
+
+    FileLoadingInfo& operator ++(int);
 	FileLoadingInfo& operator --(int);
 private:
 	std::string m_strName;

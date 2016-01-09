@@ -7,7 +7,8 @@
 //#include "windows.h"
 //#include <build/cmake/include/debug.h>
 //
-#include "Filesystem/FileLoader.h"
+#include "HumbugFileLoader.h"
+//#include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
 #include "GUI/Components/Rectangle.h"
@@ -198,7 +199,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	//fl.reset(new FileLoader("E:/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
 
 	std::string appDir = AppGB::Instance().AppDir();
-	fl.reset(new FileLoader(appDir + "base_data"));
+	fl.reset(new HumbugFileLoader(appDir + "base_data"));
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     try

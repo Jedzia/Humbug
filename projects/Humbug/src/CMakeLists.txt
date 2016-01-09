@@ -99,6 +99,8 @@ SET(Humbug_headers
 		${Humbug_MyGUI_headers}
 		${Humbug_Level_headers}
 
+		HumbugFileLoader.h
+
 		Input/PlayerKeys.h
 		Input/PlayerKeys2.h
 		Input/PlayerKeys3.h
@@ -114,6 +116,7 @@ SET(Humbug_sources
 		Input/PlayerKeys2.cpp
 		Input/PlayerKeys3.cpp
 
+		HumbugFileLoader.cpp
 	    main.cpp 
 	    Project/ProjectModel.cpp
 )
