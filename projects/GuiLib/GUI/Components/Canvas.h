@@ -98,6 +98,14 @@ public:
     */
     void RenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
+    /** RenderCopy with point offset:
+    *  Use this function to copy the full texture to the main window rendering target. If no texture is
+    *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
+    *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  @param offset the location where to render the canvas.
+    */
+    void RenderCopy(const CPoint& offset);
+
     /** CCanvas, MainUpdateAndRenderCopy:
     *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
@@ -124,7 +132,7 @@ public:
     *  Does nothing if no texture is instantiated.
     *  @param sdl_color the color values multiplied into copy operations. Only r,g and b are used.
     */
-    void SetTextureColorMod(SDL_Color sdl_color) const;
+    void SetTextureColorMod(const CColor& color) const;
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const;
@@ -169,7 +177,7 @@ public:
     CColor GetColorKey ( ) const;
 
     //clear the color key
-    bool ClearColorKey ( );
+    bool ClearColorKey ( ) const;
 
     //set the clipping rectangle
     void SetClipRect ( CRectangle* pRect );

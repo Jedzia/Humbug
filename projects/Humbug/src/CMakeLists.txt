@@ -192,6 +192,7 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    ${Humbug_Artwork_WORKDIR}/Intro/
 	    #${Humbug_Artwork_WORKDIR}/Screens/
 	    ${Humbug_Artwork_WORKDIR}/Images/
+	    ${Humbug_Artwork_WORKDIR}/Text/
 		#${PROJECT_SOURCE_DIR}/Icons/blue.png
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    #${Humbug_Artwork_WORKDIR}/footer.png

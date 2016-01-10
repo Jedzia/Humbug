@@ -164,7 +164,13 @@ void CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
     SDL_RenderCopy(GetRenderer(), GetTexture(), srcRect, dstRect);
 }
 
-void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+    void CCanvas::RenderCopy(const CPoint& offset)
+    {
+        CRectangle sdl_rect = GetDimension() + offset;
+        RenderCopy(NULL, sdl_rect);
+    }
+
+    void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
 //        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
 //            return;
 //        }
@@ -213,13 +219,13 @@ void CCanvas::MainRenderClear(){
     SDL_RenderClear( CApplication::GetApplication()->GetMainCanvas()->GetRenderer() );
 }
 
-void CCanvas::SetTextureColorMod(SDL_Color sdl_color) const {
+void CCanvas::SetTextureColorMod(const CColor& sdl_color) const {
     if (!m_pTexture) {
         return;
     }
 
     // SDL_SetTextureColorMod(GetTexture(), 128, 255, 255);
-    SDL_SetTextureColorMod(m_pTexture, sdl_color.r, sdl_color.g, sdl_color.b);
+    SDL_SetTextureColorMod(m_pTexture, sdl_color.GetR(), sdl_color.GetG(), sdl_color.GetB());
     // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
     // information.
     // Todo: check error info, like in all of these calls ...
@@ -329,19 +335,26 @@ bool CCanvas::Flip ( ){
 
 bool CCanvas::SetColorKey ( CColor& color ){
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.R ( ), color.G ( ), color.B ( ) );
-    return (SDL_SetColorKey(GetSurface(), SDL_TRUE, col) == 0);
+    SetTextureColorMod(color);
+    int result = SDL_SetColorKey(GetSurface(), SDL_TRUE, col);
+    return (result == 0);
 }
 
 CColor CCanvas::GetColorKey ( ) const {
-    throw new std::exception("Fuck !");
-//
-//    Uint32 col = GetSurface ( )->format->colorkey;
-//    CColor color;
-//    SDL_GetRGB ( col, GetSurface ( )->format, &color.R ( ), &color.G ( ), &color.B ( ) );
-//    return ( color );
+    Uint32 col;
+    Uint32 result = SDL_GetColorKey(GetSurface(), &col);
+    CColor color;
+    SDL_GetRGB ( col, GetSurface ( )->format, &color.R ( ), &color.G ( ), &color.B ( ) );
+    return ( color );
 }
 
-bool CCanvas::ClearColorKey ( ){
+bool CCanvas::ClearColorKey ( ) const
+{
+    if (m_pTexture)
+    {
+        SDL_SetTextureColorMod(m_pTexture, 255, 255, 255);
+    }
+
     return ( SDL_SetColorKey ( GetSurface ( ), 0, 0 ) == 0 );
 }
 
