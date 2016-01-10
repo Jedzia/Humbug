@@ -135,6 +135,7 @@ namespace humbug {
         // m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
         m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
+        m_pBanding1.reset(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextGray03.png")));
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
@@ -195,7 +196,7 @@ namespace humbug {
         // m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension());
         m_pBackground->RenderCopy();
         CRectangle frect(700, 500, 185, 185);
-        SDL_Color* wavemap = ColorData::Instance()->Wavemap();
+        static SDL_Color* wavemap = ColorData::Instance()->Wavemap();
         int index = (coldelta * 2 & 63);
 
         //static CPoint sp(-480, 110);
@@ -220,14 +221,15 @@ namespace humbug {
 
         //m_pMainCanvas->FillRect( frect, mcol );
         SDL_Color& fcol = wavemap[index];
-        m_pMainCanvas->RenderFillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
+        CColor sdl_color = CColor(fcol.r, fcol.g, fcol.b, fcol.a);
+        m_pMainCanvas->RenderFillRect( frect, sdl_color );
         m_pMainCanvas->AddUpdateRect(frect);
 
         static int xxx = 0;
         CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
         CRectangle srcDims( 0, 0, 600, 200);
         //m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
-        m_pScrollText->GetCanvas()->SetTextureColorMod(fcol);
+        m_pScrollText->GetCanvas()->SetTextureColorMod(sdl_color);
         m_pScrollText->RenderPut(m_pMainCanvas, dstDims, srcDims );
         m_pMainCanvas->AddUpdateRect(dstDims);
         xxx++;
@@ -235,9 +237,14 @@ namespace humbug {
         testbutton->Invalidate();
         testbutton->Draw();
 
-        m_pBlue->SetTextureColorMod(fcol);
+        m_pBlue->SetTextureColorMod(sdl_color);
+        //m_pBlue->ClearColorKey();
         m_pBlue->RenderCopy(nullptr, CRectangle(300,300,256,256));
 
+        CColor bannercolor(sdl_color);
+        bannercolor.SetR(255 - coldelta);
+        m_pBanding1->SetTextureColorMod(bannercolor);
+        m_pBanding1->RenderCopy(CPoint(40, 550));
 
         coldelta++;
 
