@@ -85,7 +85,8 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 		# ImageMagick part
 		# convert -layers merge infile.psd outfile.png
 		SET(Build_Image_CMD ${IMAGEMAGICK_CONVERT_EXECUTABLE})
-		SET(Build_Image_OPTIONS -layers merge)
+		#SET(Build_Image_OPTIONS -layers merge)
+		SET(Build_Image_OPTIONS -background transparent -flatten)
 		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
 		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_file_fullpath}\"")
 		#SET(Build_Image_ARGUMENTS "${_image_source_file}")
