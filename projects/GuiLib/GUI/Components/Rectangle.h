@@ -110,8 +110,9 @@ public:
 	//arithmetic operators
 	CRectangle operator + ( const CPoint& pt ) ;
 	CRectangle operator - ( const CPoint& pt ) ;
-	CRectangle operator + ( CRectangle& rc ) ;
+    CRectangle operator + ( CRectangle& rc ) ;
 	CRectangle operator - ( CRectangle& rc ) ;
+    CRectangle operator/  (float div);
 
 	//comparisons
 	bool operator == ( CRectangle& rc ) ;

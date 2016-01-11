@@ -267,6 +267,21 @@ CRectangle CRectangle::operator - ( const CPoint& pt )
 	return ( result ) ;
 }
 
+CRectangle CRectangle::operator / (float div)
+{
+    int left1, top1, right1, bottom1;
+    int left2, top2, right2, bottom2;
+
+
+    left1 = X();
+    top1 = Y();
+    right1 = W() / div;
+    bottom1 = H() / div;
+
+    CRectangle result(left1, top1, right1, bottom1);
+    return result;
+}
+
 CRectangle CRectangle::operator + ( CRectangle& rc )
 {
 	int left1 , top1 , right1, bottom1 ;
