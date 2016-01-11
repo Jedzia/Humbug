@@ -33,7 +33,7 @@ CRectangle::CRectangle ( SDL_Rect rc )
 	Set ( rc.x , rc.y , rc.w , rc.h ) ;
 }
 
-CRectangle::CRectangle ( SDL_Rect* prc )
+CRectangle::CRectangle ( const SDL_Rect* prc )
 //: pimpl_(new CRectangle::CRectangleImpl)
 {
 	Set ( prc->x , prc->y , prc->w , prc->h ) ;

@@ -35,7 +35,7 @@ public:
 	//copy from SDL_Rect
 	CRectangle ( SDL_Rect rc ) ;
 	//copy from SDL_Rect*
-	CRectangle ( SDL_Rect* prc ) ;
+	CRectangle ( const SDL_Rect* prc ) ;
 	//copy from another CRectangle
 	CRectangle ( const CRectangle& rc ) ;
 	virtual ~CRectangle ( ) ;

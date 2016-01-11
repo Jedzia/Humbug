@@ -51,7 +51,8 @@ namespace humbug {
 
     public:
 
-        CanvasStripeRenderer(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
+        // this little bastard should render colored stripes when ready.
+        explicit CanvasStripeRenderer(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
         {
         }
 
@@ -60,12 +61,27 @@ namespace humbug {
         {
             m_iFrames++;
 
-            CRectangle dstRect(mdata.dstRect->x, mdata.dstRect->y, mdata.dstRect->w, mdata.dstRect->h);
-            dstRect.X() += m_iFrames % 5;
-            dstRect.Y() += m_iFrames % 5;
+            CRectangle dstRect(mdata.dstRect);
+            if (m_iFrames % 3 == 0)
+            {
+                // jitter arround
+                dstRect.X() += m_iSteps / 2 - rand() % m_iSteps;
+                //dstRect.X() += m_iFrames % 5;
+                dstRect.Y() += m_iSteps / 2 - rand() % m_iSteps;
+                //dstRect.Y() += m_iFrames % 5;
+            }
 
+            if (rand() % 12 > 9)
+            {
+                // flicker
+                CColor bannercolor = CColor::White();
+                target->SetTextureColorMod(bannercolor);
+            }
+            
             target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
             //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
+
+            // prevent rendering the target canvas again.
             mdata.isHandled = true;
         }
     };
@@ -165,7 +181,7 @@ namespace humbug {
         m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
         m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextGray03.png")), true));
-        CanvasStripeRenderer stripeModifier;
+        CanvasStripeRenderer stripeModifier(16);
         m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
