@@ -36,6 +36,7 @@
 #include <GUI/Visual/EventHandler.h>
 #include "../Input/PlayerKeys3.h"
 #include "HumbugShared/GameObjects/Player.h"
+#include "GUI/DebugOverlay.h"
 
 
 namespace humbug {
@@ -96,12 +97,19 @@ namespace humbug {
         int m_iFrames;
         int m_iSteps;
         SDL_Color cmap[256];
+        TTF_Font* m_pDebugFont;
 
     public:
 
         // this little bastard should render colored stripes when ready.
-        explicit CanvasStripeRenderer(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
+        explicit CanvasStripeRenderer(int steps = 16) 
+            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(nullptr)
         {
+        }
+
+        void SetDebugFont(TTF_Font* debugFont)
+        {
+            m_pDebugFont = debugFont;
         }
 
         static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target, const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color)
@@ -145,6 +153,15 @@ namespace humbug {
             float clock = degrees / PI;
             int corrector = 64 + sin(radians) * 64;
             int stepcheck = stepsize + sin(((m_iFrames * 2 % 180)+180)*PI / 180.0f) * stepsize;
+
+            if (m_pDebugFont)
+            {
+                std::ostringstream labelText;
+                //labelText << "deg(" << diffx << ", " << diffy << ")";
+                labelText << "deg(" << degrees << ")";
+                CText label(m_pDebugFont, (labelText.str()), CColor::DarkRed());
+                label.RenderPut(source, CRectangle(20,100,0,0));
+            }
 
             for (size_t i = 0; i < stepsize; i++)
             {
@@ -236,6 +253,9 @@ namespace humbug {
         // Master()->GetMainCanvas();
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
 
+        m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1));
+
+
         testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0, 0, 160,
                         40), 21345, "Change Direction", true);
         testbutton->SetPosition( CPoint(800, 30) );
@@ -279,6 +299,7 @@ namespace humbug {
         //m_pBanding1->DstRect().H() *= 2;
         m_pBanding1->Scale(0.6f);
         CanvasStripeRenderer stripeModifier(16);
+        stripeModifier.SetDebugFont(m_pArialfont);
         m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
         
         m_pBanding2.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
@@ -327,6 +348,7 @@ namespace humbug {
      * @return TODO
      */
     void TestLevel::OnIdle(int ticks){
+        m_pOverlay->IdleSetVars(ticks);
         m_pKeyHandler->HookIdle(ticks, 1.0f); 
         //m_pScroller->Scroll(4);
         //m_pSprMgr->OnIdle(ticks);
@@ -340,6 +362,7 @@ namespace humbug {
         static int coldelta = 0;
 
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+        
         m_pMainCanvas->Lock();
         //m_pMainCanvas->MainRenderClear();
 
@@ -387,8 +410,8 @@ namespace humbug {
             xxx = 0;
         }
 
-        testbutton->Invalidate();
-        testbutton->Draw();
+        //testbutton->Invalidate();
+        //testbutton->Draw();
 
         m_pBlue->SetTextureColorMod(sdl_color);
         //m_pBlue->ClearColorKey();
@@ -411,6 +434,7 @@ namespace humbug {
             coldelta = 0;
         }
 
+        m_pOverlay->OnDraw();
         m_pMainCanvas->Unlock();
     } // OnDraw
 

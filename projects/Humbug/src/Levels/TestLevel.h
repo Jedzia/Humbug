@@ -39,6 +39,7 @@ namespace gui {
 class FileLoader;
 
 namespace humbug {
+    class DebugOverlay;
     class PlayerKeys3;
 
   namespace levels {
@@ -64,6 +65,7 @@ public:
         Uint8 x;
         gui::components::CColor mcol;
         TTF_Font* m_pArialfont;
+        boost::scoped_ptr<DebugOverlay> m_pOverlay;
         boost::shared_ptr<gui::components::CCanvas> m_pBackground;
         boost::shared_ptr<gui::components::CCanvas> m_pBlue;
         boost::shared_ptr<gui::components::CImage> m_pBanding1;

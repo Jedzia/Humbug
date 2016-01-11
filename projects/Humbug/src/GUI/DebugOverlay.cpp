@@ -98,8 +98,8 @@ namespace humbug {
 
 	  CRectangle txtDims = text.GetCanvas()->GetDimension();
 	  CRectangle dstDims = globalPosition;
-	  pCanvas->FillRect(txtDims, m_colBack);
-	  text.Put(pCanvas, dstDims, txtDims );
+	  pCanvas->RenderFillRect(txtDims, m_colBack);
+	  text.RenderPut(pCanvas, dstDims, txtDims );
 
 	  pCanvas->AddUpdateRect(dstDims);
 
