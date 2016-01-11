@@ -34,6 +34,8 @@ public:
 	//blit image onto a canvas
 	void Put ( CCanvas* pcnvDest , const CPoint& ptDst ) ;
     void RenderPut(CCanvas* pcnvDest, const CPoint& ptDst);
+    void Scale(float factor);
+    void Scale(float wFactor, float hFactor);
 };
 
 } // namespace components
