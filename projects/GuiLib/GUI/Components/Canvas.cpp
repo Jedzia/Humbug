@@ -27,7 +27,7 @@ namespace components {
 using namespace std;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
+    : m_bOwner(false), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr){
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
@@ -35,7 +35,7 @@ CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
 }
 
 CCanvas::CCanvas ( SDL_Window* pWindow )
-    : m_bOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
+    : m_bOwner(false), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr){
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
@@ -43,20 +43,24 @@ CCanvas::CCanvas ( SDL_Window* pWindow )
 }
 
 CCanvas::~CCanvas ( ){
-    ClearUpdateRects ( );
+    // Clean up
+    ClearUpdateRects();
+
+    if (m_pTexture) {
+        if (m_bTextureOwner && m_pTexture) {
+            SDL_DestroyTexture(m_pTexture);
+            m_pTexture = nullptr;
+        }
+    }
 
     // do not Clean up when used as parameter
     if (m_bIsParameterClass) {
         return;
     }
 
-    // Clean up
-    if (m_pTexture) {
-        SDL_DestroyTexture(m_pTexture);
-    }
-
     if (m_pRenderer) {
         SDL_DestroyRenderer(m_pRenderer);
+        m_pRenderer = nullptr;
     }
 
     if (m_pWindow) {
@@ -90,6 +94,7 @@ SDL_Texture * CCanvas::GetTexture(){
             m_pTexture = SDL_CreateTextureFromSurface(
                     CApplication::GetApplication()->GetMainCanvas()->m_pRenderer, m_pSurface);
         }
+        m_bTextureOwner = true;
     }
 
     return m_pTexture;
@@ -100,13 +105,6 @@ void CCanvas::SetSurface(SDL_Surface* pSurface){
         return;
     }
 
-    //m_pSurface = SDL_CreateRGBSurfaceFrom() pSurface;
-    //m_pSurface = SDL_CreateRGBSurfaceFrom(pSurface->pixels,);
-    //auto mc = CApplication::GetApplication()->GetMainCanvas();
-    //auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
-    //if (surface)
-    //m_pSurface = SDL_ConvertSurfaceFormat(pSurface, surface->format->format, 0);
-    //else
     m_pSurface = pSurface;
 }
 
@@ -158,19 +156,9 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CR
     if ( !source->m_vecRendererVault.empty() ) {
         CCanvasRendererStorage::const_iterator end = source->m_vecRendererVault.end();
         CCanvasRenderModifierData mdata(srcRect, dstRect);
-        /*CCanvas tempTarget(this->GetSurface());
-        tempTarget.m_bIsParameterClass = true;
-        tempTarget.m_pRenderer = GetRenderer();
-        tempTarget.m_pTexture = source->GetTexture();*/
-        //tempTarget.m_pTexture = SDL_CreateTextureFromSurface(this->GetRenderer(), source->GetSurface());
-        //tempTarget.m_pTexture = NULL;
-
         for (CCanvasRendererStorage::const_iterator it = source->m_vecRendererVault.begin(); it < end; it++)
         {
-            //(*it)(&tempTarget, const_cast<CCanvas *>(this), mdata);
             (*it)(source, const_cast<CCanvas *>(this), mdata);
-            //(*it)(source, const_cast<CCanvas *>(&tempTarget), mdata);
-            //(*it)(this, const_cast<CCanvas *>(source), mdata);
         }
 
         if (mdata.isHandled) {
@@ -195,10 +183,6 @@ void CCanvas::RenderCopy(const CPoint& offset){
 }
 
 void CCanvas::Render(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect){
-//        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
-//            return;
-//        }
-
     m_pTexture = SDL_CreateTextureFromSurface( GetRenderer(), source->GetSurface() );
     UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
     RenderCopy(GetTexture(), srcRect, dstRect);

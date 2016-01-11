@@ -50,6 +50,7 @@ private:
 
 
     bool m_bOwner;
+    bool m_bTextureOwner;
     bool m_bIsParameterClass;
 
 protected:
@@ -164,7 +165,7 @@ public:
     *  When this texture is rendered, during the copy operation each source color channel is modulated by the appropriate color value according to the following formula:
     *  "srcC = srcC * (color / 255)"
     *  Color modulation is not always supported by the renderer; it will return -1 if color modulation is not supported. 
-    *  Does nothing if no texture is instantiated.
+    *  A new texture is instantiated when there is no one.
     *  @param sdl_color the color values multiplied into copy operations. Only r,g and b are used.
     */
     void SetTextureColorMod(const CColor& color);
