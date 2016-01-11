@@ -43,7 +43,7 @@ namespace humbug {
     using namespace gui::components;
     using namespace gui;
     
-    class CanvasStripeRenderer {
+    class CanvasStripeRendererOld {
         int m_iBoatcols;
         int m_iFrames;
         int m_iSteps;
@@ -52,7 +52,7 @@ namespace humbug {
     public:
 
         // this little bastard should render colored stripes when ready.
-        explicit CanvasStripeRenderer(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
+        explicit CanvasStripeRendererOld(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
         {
         }
 
@@ -85,6 +85,91 @@ namespace humbug {
             
             target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, &dstRect);
             //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
+
+            // prevent rendering the target canvas again.
+            mdata.isHandled = true;
+        }
+    };
+
+    class CanvasStripeRenderer {
+        int m_iBoatcols;
+        int m_iFrames;
+        int m_iSteps;
+        SDL_Color cmap[256];
+
+    public:
+
+        // this little bastard should render colored stripes when ready.
+        explicit CanvasStripeRenderer(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
+        {
+        }
+
+        static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target, CRectangle dstRect, CRectangle srcRect, CColor color)
+        {
+            target->SetTextureColorMod(color);
+            target->FinalRenderCopy(source->GetTexture(), &srcRect, &dstRect);
+        }
+
+        void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
+            gui::components::CCanvasRenderModifierData& mdata)
+        {
+            m_iFrames++;
+
+            if (!mdata.dstRect)
+            {
+                return;
+            }
+
+            CRectangle dstRect(*mdata.dstRect);
+            CRectangle srcRect(source->GetDimension());
+
+            CColor color1 = CColor::White();
+            //CColor color1 = CColor::Red();
+            CColor color2 = CColor::Green();
+
+            /*if (m_iFrames % 16 > 8)
+            {
+                color1 = CColor::Green();
+                color2 = CColor::Red();
+            }*/
+
+            const int stepsize = 16;
+            const int colorstep = 256 / stepsize;
+            srcRect.H() /= stepsize;
+            dstRect.H() /= stepsize;
+
+
+            int degrees = (m_iFrames * 8 % 360);
+            const float PI = 3.14159265f;
+            float radians = degrees*PI / 180.0f;
+            float clock = degrees / PI;
+            int corrector = 64 + sin(radians) * 64;
+            int stepcheck = stepsize + sin(((m_iFrames * 2 % 180)+180)*PI / 180.0f) * stepsize;
+
+            for (size_t i = 0; i < stepsize; i++)
+            {
+                //int newColor = (colorstep * ((i * 8 + -m_iFrames / colorstep) % stepsize)) % 255;
+                int newColorStep = (colorstep / 2 * i) + 1;
+                int newColor = corrector + newColorStep;
+                newColor = newColor > 255 ? 255 : newColor;
+                newColor = newColor < 0 ? 0 : newColor;
+
+                int newGreen = 25;
+                //if ((m_iFrames % (i + 1)) > stepsize / 2)
+                if (stepcheck == i)
+                {
+                    newGreen ^= m_iFrames;
+                }
+                color2 = CColor(newColor, newGreen, 25);
+                Render(source, target, dstRect, srcRect, color2);
+                srcRect.Y() += srcRect.H();
+                dstRect.Y() += dstRect.H();
+
+            }
+
+            //srcRect.Y() += srcRect.H();
+            //dstRect.Y() += dstRect.H();
+            //Render(source, target, dstRect, srcRect, color2);
 
             // prevent rendering the target canvas again.
             mdata.isHandled = true;
@@ -185,7 +270,7 @@ namespace humbug {
         // m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
         m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
-        m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextGray03.png")), true));
+        m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
         CanvasStripeRenderer stripeModifier(16);
         m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -299,7 +384,7 @@ namespace humbug {
 
         CColor bannercolor(sdl_color);
         bannercolor.SetR(255 - coldelta);
-        m_pBanding1->GetCanvas()->SetTextureColorMod(bannercolor);
+        //m_pBanding1->GetCanvas()->SetTextureColorMod(bannercolor);
         m_pBanding1->GetCanvas()->RenderCopy(CPoint(40, 550));
         //m_pBanding1->RenderPut(m_pMainCanvas, CPoint(40, 550));
 
