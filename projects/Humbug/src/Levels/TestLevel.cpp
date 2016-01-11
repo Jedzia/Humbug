@@ -64,7 +64,13 @@ namespace humbug {
         {
             m_iFrames++;
 
-            target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, mdata.dstRect);
+            CRectangle dstRect(mdata.dstRect->x, mdata.dstRect->y, mdata.dstRect->w, mdata.dstRect->h);
+            dstRect.X() += 50;
+            dstRect.Y() += 50;
+
+            target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
+            //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
+            //mdata.isHandled = true;
         }
     };
 

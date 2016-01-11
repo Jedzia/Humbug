@@ -14,9 +14,10 @@ namespace components {
     {
         const SDL_Rect* srcRect;
         const SDL_Rect* dstRect;
+        bool isHandled;
 
         CCanvasRenderModifierData(const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
-            : srcRect(srcRect), dstRect(dstRect)
+            : srcRect(srcRect), dstRect(dstRect), isHandled(false)
         {
 
         };
@@ -37,7 +38,7 @@ private:
 
 
 private:
-    void CanvasRenderCopy(SDL_Renderer* rendrer, SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
+    void CanvasRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
     void SetWindow(SDL_Window* pWindow);
     SDL_Renderer * GetRenderer() const;
 
@@ -48,6 +49,7 @@ private:
 
 
     bool m_bOwner;
+    bool m_bIsParameterClass;
 
 protected:
 
@@ -92,9 +94,12 @@ public:
 
     void UpdateTexture(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
 
-    /** CCanvas, RenderCopy:
-    *  Use this function to copy a portion of the texture to the main window rendering target. If no texture at the source is
-    *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
+    /** RenderCopy source to this canvas
+    *  Use this function to copy a portion of the texture to this rendering target. If no texture at the source is
+    *  present, one is created. All modifiers of the source CCanvas are executed. If the modifiers return isHandled
+    *  as true, then no CanvasRenderCopy is called, so the modifier has to handle the rendering.
+    * 
+    *  As there is only one rendering target at the moment, this is the same as calling
     *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
     *  @param source The source canvas to get the texture from.
     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
@@ -127,6 +132,9 @@ public:
     */
     void RenderCopy(const CPoint& offset);
 
+    /** Final Render step.
+    *  Calls SDL_RenderCopy.
+    */
     void FinalRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
 
     /** CCanvas, MainUpdateAndRenderCopy:
