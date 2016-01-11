@@ -55,7 +55,7 @@ struct SimpleScreen::SimpleScreenImpl {
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-    gui::components::CImage* m_pBlue;
+    boost::scoped_ptr<gui::components::CImage> m_pBlue;
     prv::EyeMover eyemover;
 
 
@@ -73,7 +73,7 @@ struct SimpleScreen::SimpleScreenImpl {
             " iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat"
             " non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", CColor::Red()));
 
-        m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
+        m_pBlue.reset(new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true));
     }
 
     void init(CCanvas* canvas)
