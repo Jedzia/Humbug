@@ -80,7 +80,7 @@ namespace humbug {
             {
                 // flicker
                 CColor bannercolor = CColor::White();
-                target->SetTextureColorMod(bannercolor);
+                source->SetTextureColorMod(bannercolor);
             }
             
             target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, &dstRect);
@@ -106,7 +106,7 @@ namespace humbug {
 
         static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target, const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color)
         {
-            target->SetTextureColorMod(color);
+            source->SetTextureColorMod(color);
             target->FinalRenderCopy(source->GetTexture(), &srcRect, &dstRect);
         }
 
@@ -379,7 +379,7 @@ namespace humbug {
         CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
         CRectangle srcDims(0 + xxx, 0, 600, 200 - xxx);
         //m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
-        m_pScrollText->GetCanvas()->SetTextureColorMod(sdl_color);
+//        m_pScrollText->GetCanvas()->SetTextureColorMod(sdl_color);
         m_pScrollText->RenderPut(m_pMainCanvas, dstDims, srcDims );
         m_pMainCanvas->AddUpdateRect(dstDims);
         xxx++;

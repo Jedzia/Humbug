@@ -167,7 +167,7 @@ public:
     *  Does nothing if no texture is instantiated.
     *  @param sdl_color the color values multiplied into copy operations. Only r,g and b are used.
     */
-    void SetTextureColorMod(const CColor& color) const;
+    void SetTextureColorMod(const CColor& color);
 
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const;

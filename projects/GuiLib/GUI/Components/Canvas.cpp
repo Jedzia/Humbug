@@ -158,18 +158,18 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CR
     if ( !source->m_vecRendererVault.empty() ) {
         CCanvasRendererStorage::const_iterator end = source->m_vecRendererVault.end();
         CCanvasRenderModifierData mdata(srcRect, dstRect);
-        CCanvas tempTarget(this->GetSurface());
+        /*CCanvas tempTarget(this->GetSurface());
         tempTarget.m_bIsParameterClass = true;
         tempTarget.m_pRenderer = GetRenderer();
-        tempTarget.m_pTexture = source->GetTexture();
+        tempTarget.m_pTexture = source->GetTexture();*/
         //tempTarget.m_pTexture = SDL_CreateTextureFromSurface(this->GetRenderer(), source->GetSurface());
         //tempTarget.m_pTexture = NULL;
 
         for (CCanvasRendererStorage::const_iterator it = source->m_vecRendererVault.begin(); it < end; it++)
         {
             //(*it)(&tempTarget, const_cast<CCanvas *>(this), mdata);
-            //(*it)(source, const_cast<CCanvas *>(this), mdata);
-            (*it)(source, const_cast<CCanvas *>(&tempTarget), mdata);
+            (*it)(source, const_cast<CCanvas *>(this), mdata);
+            //(*it)(source, const_cast<CCanvas *>(&tempTarget), mdata);
             //(*it)(this, const_cast<CCanvas *>(source), mdata);
         }
 
@@ -276,12 +276,14 @@ void CCanvas::MainRenderClear(){
     SDL_RenderClear( CApplication::GetApplication()->GetMainCanvas()->GetRenderer() );
 }
 
-void CCanvas::SetTextureColorMod(const CColor& sdl_color) const {
-    if (!m_pTexture) {
+void CCanvas::SetTextureColorMod(const CColor& sdl_color) {
+    /*if (!m_pTexture) {
+        // for testing, remove later. 
+        throw std::runtime_error("no texture available");
         return;
-    }
+    }*/
 
-    SDL_SetTextureColorMod( m_pTexture, sdl_color.GetR(), sdl_color.GetG(), sdl_color.GetB() );
+    SDL_SetTextureColorMod( GetTexture(), sdl_color.GetR(), sdl_color.GetG(), sdl_color.GetB() );
     // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
     // information.
     // Todo: check error info, like in all of these calls ...
