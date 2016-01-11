@@ -72,8 +72,8 @@ CCanvas::~CCanvas ( ){
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CCanvas::AddModifier(CCanvasRenderModifier updfunc){
-    m_vecRenderModifierVault.push_back(updfunc);
+void CCanvas::AddModifier(CCanvasRenderer updfunc){
+    m_vecRendererVault.push_back(updfunc);
 }
 
 SDL_Surface * CCanvas::GetSurface() const {
@@ -156,10 +156,10 @@ void CCanvas::RenderPutCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_
 
     CCanvasRenderModifierData mdata(srcRect, dstRect);
 
-    if ( !source->m_vecRenderModifierVault.empty() ) {
-        CCanvasRenderModifierStorage::const_iterator end = source->m_vecRenderModifierVault.end();
+    if ( !source->m_vecRendererVault.empty() ) {
+        CCanvasRendererStorage::const_iterator end = source->m_vecRendererVault.end();
 
-        for (CCanvasRenderModifierStorage::const_iterator it = source->m_vecRenderModifierVault.begin(); it < end; it++)
+        for (CCanvasRendererStorage::const_iterator it = source->m_vecRendererVault.begin(); it < end; it++)
         {
             (*it)(source, const_cast<CCanvas *>(this), mdata);
             //(*it)(this, const_cast<CCanvas *>(source), mdata);
@@ -212,16 +212,16 @@ void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rec
 void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
     // all RenderCopy calls flow here
 
-    if ( !m_vecRenderModifierVault.empty() ) {
+    if ( !m_vecRendererVault.empty() ) {
         CCanvasRenderModifierData mdata(srcRect, dstRect);
         CCanvas source( this->GetSurface() );
         source.m_bIsParameterClass = true;
         source.m_pRenderer = GetRenderer();
         source.m_pTexture = texture;
 
-        CCanvasRenderModifierStorage::const_iterator end = m_vecRenderModifierVault.end();
+        CCanvasRendererStorage::const_iterator end = m_vecRendererVault.end();
 
-        for (CCanvasRenderModifierStorage::const_iterator it = m_vecRenderModifierVault.begin(); it < end; it++)
+        for (CCanvasRendererStorage::const_iterator it = m_vecRendererVault.begin(); it < end; it++)
         {
             (*it)(&source, const_cast<CCanvas *>(this), mdata);
         }

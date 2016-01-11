@@ -26,8 +26,8 @@ namespace components {
 //CCanvas class
 class CCanvas {
 public:
-    typedef boost::function<void(CCanvas* source, const CCanvas *target, CCanvasRenderModifierData& mdata)> CCanvasRenderModifier;
-    void AddModifier(CCanvasRenderModifier updfunc);
+    typedef boost::function<void(CCanvas* source, const CCanvas *target, CCanvasRenderModifierData& mdata)> CCanvasRenderer;
+    void AddModifier(CCanvasRenderer updfunc);
 private:
     // remove them
     // Render from other Canvas
@@ -44,8 +44,8 @@ private:
 
     //a list of update rectangles
     std::list < SDL_Rect * > m_lstUpdateRects;
-    typedef std::vector<CCanvasRenderModifier> CCanvasRenderModifierStorage;
-    CCanvasRenderModifierStorage m_vecRenderModifierVault;
+    typedef std::vector<CCanvasRenderer> CCanvasRendererStorage;
+    CCanvasRendererStorage m_vecRendererVault;
 
 
     bool m_bOwner;

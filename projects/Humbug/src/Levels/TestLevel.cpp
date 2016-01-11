@@ -43,7 +43,7 @@ namespace humbug {
     using namespace gui::components;
     using namespace gui;
     
-    class CanvasStripeRender {
+    class CanvasStripeRenderer {
         int m_iBoatcols;
         int m_iFrames;
         int m_iSteps;
@@ -51,11 +51,7 @@ namespace humbug {
 
     public:
 
-        CanvasStripeRender(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
-        {
-        }
-
-        ~CanvasStripeRender()
+        CanvasStripeRenderer(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
         {
         }
 
@@ -65,12 +61,12 @@ namespace humbug {
             m_iFrames++;
 
             CRectangle dstRect(mdata.dstRect->x, mdata.dstRect->y, mdata.dstRect->w, mdata.dstRect->h);
-            dstRect.X() += 50;
-            dstRect.Y() += 50;
+            dstRect.X() += m_iFrames % 5;
+            dstRect.Y() += m_iFrames % 5;
 
             target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
             //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
-            //mdata.isHandled = true;
+            mdata.isHandled = true;
         }
     };
 
@@ -169,7 +165,7 @@ namespace humbug {
         m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
         m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextGray03.png")), true));
-        CanvasStripeRender stripeModifier;
+        CanvasStripeRenderer stripeModifier;
         m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
