@@ -155,14 +155,21 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CR
         return;
     }
 
-    CCanvasRenderModifierData mdata(srcRect, dstRect);
-
     if ( !source->m_vecRendererVault.empty() ) {
         CCanvasRendererStorage::const_iterator end = source->m_vecRendererVault.end();
+        CCanvasRenderModifierData mdata(srcRect, dstRect);
+        CCanvas tempTarget(this->GetSurface());
+        tempTarget.m_bIsParameterClass = true;
+        tempTarget.m_pRenderer = GetRenderer();
+        tempTarget.m_pTexture = source->GetTexture();
+        //tempTarget.m_pTexture = SDL_CreateTextureFromSurface(this->GetRenderer(), source->GetSurface());
+        //tempTarget.m_pTexture = NULL;
 
         for (CCanvasRendererStorage::const_iterator it = source->m_vecRendererVault.begin(); it < end; it++)
         {
-            (*it)(source, const_cast<CCanvas *>(this), mdata);
+            //(*it)(&tempTarget, const_cast<CCanvas *>(this), mdata);
+            //(*it)(source, const_cast<CCanvas *>(this), mdata);
+            (*it)(source, const_cast<CCanvas *>(&tempTarget), mdata);
             //(*it)(this, const_cast<CCanvas *>(source), mdata);
         }
 

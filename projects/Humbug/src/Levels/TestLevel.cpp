@@ -104,7 +104,7 @@ namespace humbug {
         {
         }
 
-        static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target, CRectangle dstRect, CRectangle srcRect, CColor color)
+        static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target, const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color)
         {
             target->SetTextureColorMod(color);
             target->FinalRenderCopy(source->GetTexture(), &srcRect, &dstRect);
@@ -161,6 +161,8 @@ namespace humbug {
                     newGreen ^= m_iFrames;
                 }
                 color2 = CColor(newColor, newGreen, 25);
+                
+                //CRectangle src_rect(*mdata.srcRect);
                 Render(source, target, dstRect, srcRect, color2);
                 srcRect.Y() += srcRect.H();
                 dstRect.Y() += dstRect.H();
@@ -250,6 +252,7 @@ namespace humbug {
         //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
         //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
         m_pBackground.reset( new CCanvas( tmpfsurf ) );
+        //m_pBackground->GetTexture();
 
         //CCanvas tmpCanvas( tmpfsurf );
         m_Loader.FreeLast();
@@ -270,9 +273,19 @@ namespace humbug {
         // m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
         m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
+        //m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), CRectangle(0, 0, 400, 200), true, CPoint(150,50)));
         m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
+        //m_pBanding1->DstRect().Y() -= 200;
+        //m_pBanding1->DstRect().H() *= 2;
+        m_pBanding1->Scale(0.6f);
         CanvasStripeRenderer stripeModifier(16);
         m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
+        
+        m_pBanding2.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
+        m_pBanding2->GetCanvas()->AddModifier(stripeModifier);
+
+        
+        
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
@@ -385,8 +398,12 @@ namespace humbug {
         CColor bannercolor(sdl_color);
         bannercolor.SetR(255 - coldelta);
         //m_pBanding1->GetCanvas()->SetTextureColorMod(bannercolor);
-        m_pBanding1->GetCanvas()->RenderCopy(CPoint(40, 550));
-        //m_pBanding1->RenderPut(m_pMainCanvas, CPoint(40, 550));
+        //m_pBanding1->GetCanvas()->RenderCopy(CPoint(40, 550));
+        m_pBanding1->RenderPut(m_pMainCanvas, CPoint(40, 550));
+        //m_pBanding1->RenderPut(m_pBackground.get(), CPoint(40, 550));
+        
+        m_pBanding2->RenderPut(m_pBackground.get(), CPoint(140, 250));
+        //m_pBanding2->RenderPut(m_pMainCanvas, CPoint(140, 250));
 
         coldelta++;
 
