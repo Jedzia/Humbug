@@ -101,7 +101,7 @@ namespace gui {
         GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
         if (m_bUsesSDL2Render)
         {
-            GetCanvas()->RenderCopy(m_pcnvText, rcSrc, rcDst);
+            GetCanvas()->RenderPutCopy(m_pcnvText, rcSrc, rcDst);
             //GetCanvas()->UpdateTexture(m_pcnvText, rcSrc, rcDst);
             //GetCanvas()->UpdateTexture(m_pcnvText);
         }

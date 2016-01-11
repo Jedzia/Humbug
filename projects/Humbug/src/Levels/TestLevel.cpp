@@ -26,6 +26,7 @@
 #include <GUI/Components/Image.h>
 #include <GUI/Components/Rectangle.h>
 #include <GUI/Components/SeamlessImage.h>
+#include <GUI/Components/Image.h>
 #include <GUI/Components/Text.h>
 #include <GUI/Components/TextScroller.h>
 #include <GUI/Controls/Button.h>
@@ -41,6 +42,32 @@ namespace humbug {
   namespace levels {
     using namespace gui::components;
     using namespace gui;
+    
+    class CanvasStripeRender {
+        int m_iBoatcols;
+        int m_iFrames;
+        int m_iSteps;
+        SDL_Color cmap[256];
+
+    public:
+
+        CanvasStripeRender(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
+        {
+        }
+
+        ~CanvasStripeRender()
+        {
+        }
+
+        void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
+            gui::components::CCanvasRenderModifierData& mdata)
+        {
+            m_iFrames++;
+
+            target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, mdata.dstRect);
+        }
+    };
+
 
     struct TestLevel::TestLevelImpl {
         //prv::EyeMover eyemover;
@@ -135,7 +162,9 @@ namespace humbug {
         // m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
         m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
-        m_pBanding1.reset(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextGray03.png")));
+        m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextGray03.png")), true));
+        CanvasStripeRender stripeModifier;
+        m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
         //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
         m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
@@ -227,12 +256,15 @@ namespace humbug {
 
         static int xxx = 0;
         CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
-        CRectangle srcDims( 0, 0, 600, 200);
+        CRectangle srcDims(0 + xxx, 0, 600, 200 - xxx);
         //m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
         m_pScrollText->GetCanvas()->SetTextureColorMod(sdl_color);
         m_pScrollText->RenderPut(m_pMainCanvas, dstDims, srcDims );
         m_pMainCanvas->AddUpdateRect(dstDims);
         xxx++;
+        if (xxx > 128) {
+            xxx = 0;
+        }
 
         testbutton->Invalidate();
         testbutton->Draw();
@@ -243,8 +275,9 @@ namespace humbug {
 
         CColor bannercolor(sdl_color);
         bannercolor.SetR(255 - coldelta);
-        m_pBanding1->SetTextureColorMod(bannercolor);
-        m_pBanding1->RenderCopy(CPoint(40, 550));
+        m_pBanding1->GetCanvas()->SetTextureColorMod(bannercolor);
+        m_pBanding1->GetCanvas()->RenderCopy(CPoint(40, 550));
+        //m_pBanding1->RenderPut(m_pMainCanvas, CPoint(40, 550));
 
         coldelta++;
 

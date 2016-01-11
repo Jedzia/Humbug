@@ -1,6 +1,9 @@
 
 -X-X-X-X- So, 10 Jan 2016 00:27:39 -----------------------------------------------------------
-Todo: Canvas.h docs
+Todo: Canvas.h  CImage docs
+make a list of what the components are used for.
+like 
+CImage -> easy to use Canvas with Renderput( CPoint destination) ... 1:1 render)
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Sa, 09 Jan 2016 00:48:35 -----------------------------------------------------------

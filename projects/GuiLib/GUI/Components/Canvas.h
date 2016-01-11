@@ -10,8 +10,23 @@
 
 namespace gui {
 namespace components {
+    struct CCanvasRenderModifierData
+    {
+        const SDL_Rect* srcRect;
+        const SDL_Rect* dstRect;
+
+        CCanvasRenderModifierData(const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
+            : srcRect(srcRect), dstRect(dstRect)
+        {
+
+        };
+    };
+
 //CCanvas class
 class CCanvas {
+public:
+    typedef boost::function<void(CCanvas* source, const CCanvas *target, CCanvasRenderModifierData& mdata)> CCanvasRenderModifier;
+    void AddModifier(CCanvasRenderModifier updfunc);
 private:
     // remove them
     // Render from other Canvas
@@ -22,12 +37,15 @@ private:
 
 
 private:
+    void CanvasRenderCopy(SDL_Renderer* rendrer, SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
+    void SetWindow(SDL_Window* pWindow);
+    SDL_Renderer * GetRenderer() const;
 
     //a list of update rectangles
     std::list < SDL_Rect * > m_lstUpdateRects;
-    void SetWindow(SDL_Window* pWindow);
+    typedef std::vector<CCanvasRenderModifier> CCanvasRenderModifierStorage;
+    CCanvasRenderModifierStorage m_vecRenderModifierVault;
 
-    SDL_Renderer * GetRenderer() const;
 
     bool m_bOwner;
 
@@ -40,7 +58,6 @@ protected:
     SDL_Renderer* m_pRenderer;
 
 public:
-
     //constructor
     // Note: takes ownership of the pSurface pointer that gets deleted, when this instance is
     // destroyed.
@@ -53,6 +70,10 @@ public:
     // getter for the SDL_Surface*
     SDL_Surface * GetSurface() const;
 
+    /// <summary>
+    /// Gets the texture or creates if not exists.
+    /// </summary>
+    /// <returns>the texture of this canvas.</returns>
     SDL_Texture * GetTexture();
 
     // setter for the SDL_Surface*
@@ -79,7 +100,7 @@ public:
     *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
     * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderCopy(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
+    void RenderPutCopy(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
 
     /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target.
@@ -105,6 +126,8 @@ public:
     *  @param offset the location where to render the canvas.
     */
     void RenderCopy(const CPoint& offset);
+
+    void FinalRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
 
     /** CCanvas, MainUpdateAndRenderCopy:
     *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.

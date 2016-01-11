@@ -90,7 +90,7 @@ void PlayerKeys3::HookEventloop( SDL_Event* keyevent ){
 
     //if (!m_bAccumulate)
     float mul = 1;
-    m_direction = GVector2D::Zero();
+    //m_direction = GVector2D::Zero();
 
     if ( m_KeyboardHandler.IsPressed(SDLK_a) || m_KeyboardHandler.IsPressed(SDLK_LEFT) ) {
         m_direction = m_direction + GVector2D::Left() * mul;

@@ -213,7 +213,7 @@ void CControl::Draw()
 		//blit
         if(m_ptIsDirty){
             if (m_bUsesSDL2Render)
-                pParent->GetCanvas()->RenderCopy(GetCanvas(), rcSrc, rcDst);
+                pParent->GetCanvas()->RenderPutCopy(GetCanvas(), rcSrc, rcDst);
             else
                 pParent->GetCanvas()->Blit(rcDst, *GetCanvas(), rcSrc);
             m_ptIsDirty = false;
