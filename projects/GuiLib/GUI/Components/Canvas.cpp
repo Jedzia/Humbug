@@ -135,28 +135,19 @@ void CCanvas::UpdateTexture(CCanvas* source, const CRectangle* srcRect, const CR
     }
 
     UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
-    //CanvasRenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
-    //CanvasRenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
 }
 
-    int CCanvas::UpdateTexture(SDL_Texture* texture, const CRectangle* rect, const void* pixels, int pitch)
-    {
-        const SDL_Rect* sdl_rect = NULL;
-        if (rect)
-        {
-            sdl_rect = rect->SDLRectCP();
-        }
-        return SDL_UpdateTexture(texture, sdl_rect, pixels, pitch);
-    }
+int CCanvas::UpdateTexture(SDL_Texture* texture, const CRectangle* rect, const void* pixels, int pitch){
+    const SDL_Rect* sdl_rect = rect ? rect->SDLRectCP() : NULL;
+    return SDL_UpdateTexture(texture, sdl_rect, pixels, pitch);
+}
 
-    void CCanvas::UpdateTexture(const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::UpdateTexture(const CRectangle* srcRect, const CRectangle* dstRect){
     if ( !GetTexture() || !GetSurface() ) {
         return;
     }
 
     UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
-    //CanvasRenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
-    //CanvasRenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
 }
 
 void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect) const {
@@ -184,13 +175,6 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CR
 } // CCanvas::RenderPutCopy
 
 void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
-    //        if (!m_pRenderer) {
-    //            return;
-    //        }
-
-    //SDL_RenderClear(this->m_pRenderer);
-    //Draw the texture
-    //SDL_UpdateTexture(texture, srcRect, GetSurface()->pixels, GetSurface()->pitch);
     CanvasRenderCopy(texture, srcRect, dstRect);
 }
 
@@ -245,23 +229,12 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, 
     FinalRenderCopy(texture, srcRect, dstRect);
 } // CCanvas::CanvasRenderCopy
 
-void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const
-{
+void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
     // all RenderCopy calls flow here
-    const SDL_Rect* sdl_src_rect = NULL;
-    if (srcRect)
-    {
-        sdl_src_rect = srcRect->SDLRectCP();
-    }
-
-    const SDL_Rect* sdl_dst_rect = NULL;
-    if (dstRect)
-    {
-        sdl_dst_rect = dstRect->SDLRectCP();
-    }
-
+    const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
+    const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
-    }
+}
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* srcRect, const CRectangle* dstRect){
     // this works only for the main canvas
@@ -301,7 +274,6 @@ void CCanvas::SetTextureColorMod(const CColor& sdl_color) const {
         return;
     }
 
-    // SDL_SetTextureColorMod(GetTexture(), 128, 255, 255);
     SDL_SetTextureColorMod( m_pTexture, sdl_color.GetR(), sdl_color.GetG(), sdl_color.GetB() );
     // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
     // information.
