@@ -29,6 +29,11 @@ public:
         return m_rect;
     }
 
+    const SDL_Rect* SDLRectCP() const
+    {
+        return &m_rect;
+    }
+
     //constructors--direct member assignment
 	CRectangle ( int x = 0 , int y = 0 , int w = 0 , int h = 0 ) ;
 	CRectangle ( CPoint xy , CPoint wh ) ;

@@ -179,7 +179,7 @@ namespace gui {
                     int y = static_cast<int>(ceil(h * diffy));
                     CRectangle diffrec2 = diffrec + CPoint(x, y);
                     //pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
-                    pcnvDest->RenderPutCopy(GetCanvas(), painton, diffrec2);
+                    pcnvDest->RenderPutCopy(GetCanvas(), &painton, &diffrec2);
 
                     if (m_pLoader)
                     {

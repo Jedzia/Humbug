@@ -61,7 +61,12 @@ namespace humbug {
         {
             m_iFrames++;
 
-            CRectangle dstRect(mdata.dstRect);
+            if (!mdata.dstRect)
+            {
+                return;
+            }
+
+            CRectangle dstRect(*mdata.dstRect);
             if (m_iFrames % 3 == 0)
             {
                 // jitter arround
@@ -78,7 +83,7 @@ namespace humbug {
                 target->SetTextureColorMod(bannercolor);
             }
             
-            target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
+            target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, &dstRect);
             //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
 
             // prevent rendering the target canvas again.
@@ -289,7 +294,8 @@ namespace humbug {
 
         m_pBlue->SetTextureColorMod(sdl_color);
         //m_pBlue->ClearColorKey();
-        m_pBlue->RenderCopy(nullptr, CRectangle(300,300,256,256));
+        CRectangle sdl_rect = CRectangle(300,300,256,256);
+        m_pBlue->RenderCopy(nullptr, &sdl_rect);
 
         CColor bannercolor(sdl_color);
         bannercolor.SetR(255 - coldelta);

@@ -12,11 +12,11 @@ namespace gui {
 namespace components {
     struct CCanvasRenderModifierData
     {
-        const SDL_Rect* srcRect;
-        const SDL_Rect* dstRect;
+        const CRectangle* srcRect;
+        const CRectangle* dstRect;
         bool isHandled;
 
-        CCanvasRenderModifierData(const SDL_Rect* srcRect, const SDL_Rect* dstRect) 
+        CCanvasRenderModifierData(const CRectangle* srcRect, const CRectangle* dstRect)
             : srcRect(srcRect), dstRect(dstRect), isHandled(false)
         {
 
@@ -31,14 +31,14 @@ public:
 private:
     // remove them
     // Render from other Canvas
-    void Render(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void Render(CCanvas* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
 
     // Render from a surface
-    void Render(SDL_Surface* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void Render(SDL_Surface* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
 
 
 private:
-    void CanvasRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
+    void CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const;
     void SetWindow(SDL_Window* pWindow);
     SDL_Renderer * GetRenderer() const;
 
@@ -90,9 +90,11 @@ public:
      *  @param srcRect source area
      * @param dstRect target area
      */
-    void UpdateTexture(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void UpdateTexture(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
 
-    void UpdateTexture(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void UpdateTexture(CCanvas* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+
+    static int UpdateTexture(SDL_Texture * texture, const CRectangle * rect, const void *pixels, int pitch);
 
     /** RenderCopy source to this canvas
     *  Use this function to copy a portion of the texture to this rendering target. If no texture at the source is
@@ -100,34 +102,34 @@ public:
     *  as true, then no CanvasRenderCopy is called, so the modifier has to handle the rendering.
     * 
     *  As there is only one rendering target at the moment, this is the same as calling
-    *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect).
     *  @param source The source canvas to get the texture from.
-    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
-    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    *  @param srcRect the source CRectangle structure or NULL for the entire texture
+    * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderPutCopy(CCanvas* source, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
+    void RenderPutCopy(CCanvas* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL) const;
 
     /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target.
     *  @param source The source texture to render.
-    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
-    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    *  @param srcRect the source CRectangle structure or NULL for the entire texture
+    * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL) const;
+    void RenderCopy(SDL_Texture* texture, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL) const;
 
     /** CCanvas, RenderCopy:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
-    *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
-    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
-    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    *  CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect).
+    *  @param srcRect the source CRectangle structure or NULL for the entire texture
+    * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void RenderCopy(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
 
     /** RenderCopy with point offset:
     *  Use this function to copy the full texture to the main window rendering target. If no texture is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
-    *  CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
+    *  CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect).
     *  @param offset the location where to render the canvas.
     */
     void RenderCopy(const CPoint& offset);
@@ -135,23 +137,23 @@ public:
     /** Final Render step.
     *  Calls SDL_RenderCopy.
     */
-    void FinalRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const;
+    void FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const;
 
     /** CCanvas, MainUpdateAndRenderCopy:
     *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
-    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
-    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    *  @param srcRect the source CRectangle structure or NULL for the entire texture
+    * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void MainUpdateAndRenderCopy(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void MainUpdateAndRenderCopy(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
 
     /** CCanvas, MainRenderCopyTo:
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
     *  present, one is created. As there is only one rendering target at the moment, this is the same as calling
-    *  CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect).
-    *  @param srcRect the source SDL_Rect structure or NULL for the entire texture
-    * @param dstRect the destination SDL_Rect structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
+    *  CCanvas::RenderCopy(const CRectangle* srcRect, const CRectangle* dstRect).
+    *  @param srcRect the source CRectangle structure or NULL for the entire texture
+    * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void MainRenderCopyTo(const SDL_Rect* srcRect = NULL, const SDL_Rect* dstRect = NULL);
+    void MainRenderCopyTo(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
     static void MainRenderFinal();
 
     static void MainRenderClear();

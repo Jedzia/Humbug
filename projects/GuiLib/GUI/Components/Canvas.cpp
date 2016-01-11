@@ -129,27 +129,37 @@ SDL_Renderer * CCanvas::GetRenderer() const {
     }
 }
 
-void CCanvas::UpdateTexture(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+void CCanvas::UpdateTexture(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect){
     if ( !GetTexture() || !source->GetSurface() ) {
         return;
     }
 
-    SDL_UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
+    UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
     //CanvasRenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
     //CanvasRenderCopy(this->m_pRenderer, source->GetTexture(), srcRect, dstRect);
 }
 
-void CCanvas::UpdateTexture(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+    int CCanvas::UpdateTexture(SDL_Texture* texture, const CRectangle* rect, const void* pixels, int pitch)
+    {
+        const SDL_Rect* sdl_rect = NULL;
+        if (rect)
+        {
+            sdl_rect = rect->SDLRectCP();
+        }
+        return SDL_UpdateTexture(texture, sdl_rect, pixels, pitch);
+    }
+
+    void CCanvas::UpdateTexture(const CRectangle* srcRect, const CRectangle* dstRect){
     if ( !GetTexture() || !GetSurface() ) {
         return;
     }
 
-    SDL_UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
+    UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
     //CanvasRenderCopy(this->m_pRenderer, m_pTexture, srcRect, dstRect);
     //CanvasRenderCopy(this->m_pRenderer, GetTexture(), srcRect, dstRect);
 }
 
-void CCanvas::RenderPutCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
+void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect) const {
     if ( !source->GetTexture() ) {
         return;
     }
@@ -173,7 +183,7 @@ void CCanvas::RenderPutCopy(CCanvas* source, const SDL_Rect* srcRect, const SDL_
     CanvasRenderCopy(source->GetTexture(), srcRect, dstRect);
 } // CCanvas::RenderPutCopy
 
-void CCanvas::RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
+void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
     //        if (!m_pRenderer) {
     //            return;
     //        }
@@ -184,32 +194,33 @@ void CCanvas::RenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SD
     CanvasRenderCopy(texture, srcRect, dstRect);
 }
 
-void CCanvas::RenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+void CCanvas::RenderCopy(const CRectangle* srcRect, const CRectangle* dstRect){
     CanvasRenderCopy(GetTexture(), srcRect, dstRect);
 }
 
 void CCanvas::RenderCopy(const CPoint& offset){
     CRectangle sdl_rect = GetDimension() + offset;
-    RenderCopy(NULL, sdl_rect);
+    RenderCopy(NULL, &sdl_rect);
 }
 
-void CCanvas::Render(CCanvas* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+void CCanvas::Render(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect){
 //        if ( /*!m_pRenderer ||*/ !GetTexture() ) {
 //            return;
 //        }
 
     m_pTexture = SDL_CreateTextureFromSurface( GetRenderer(), source->GetSurface() );
-    SDL_UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
+    UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
     RenderCopy(GetTexture(), srcRect, dstRect);
 }
 
-void CCanvas::Render(SDL_Surface* source, const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+void CCanvas::Render(SDL_Surface* source, const CRectangle* srcRect, const CRectangle* dstRect){
     m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source);
-    SDL_UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
+    const SDL_Rect* sdl_src_rect = NULL;
+    UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
     RenderCopy(GetTexture(), srcRect, dstRect);
 }
 
-void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
+void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
     // all RenderCopy calls flow here
 
     if ( !m_vecRendererVault.empty() ) {
@@ -234,23 +245,36 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, co
     FinalRenderCopy(texture, srcRect, dstRect);
 } // CCanvas::CanvasRenderCopy
 
-void CCanvas::FinalRenderCopy(SDL_Texture* texture, const SDL_Rect* srcRect, const SDL_Rect* dstRect) const {
+void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const
+{
     // all RenderCopy calls flow here
-    SDL_RenderCopy(GetRenderer(), texture, srcRect, dstRect);
-}
+    const SDL_Rect* sdl_src_rect = NULL;
+    if (srcRect)
+    {
+        sdl_src_rect = srcRect->SDLRectCP();
+    }
 
-void CCanvas::MainUpdateAndRenderCopy(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+    const SDL_Rect* sdl_dst_rect = NULL;
+    if (dstRect)
+    {
+        sdl_dst_rect = dstRect->SDLRectCP();
+    }
+
+    SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
+    }
+
+void CCanvas::MainUpdateAndRenderCopy(const CRectangle* srcRect, const CRectangle* dstRect){
     // this works only for the main canvas
     if (!m_pRenderer) {
         return;
     }
 
     //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
-    SDL_UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);
+    UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);
     RenderCopy(GetTexture(), srcRect, dstRect);
 }
 
-void CCanvas::MainRenderCopyTo(const SDL_Rect* srcRect, const SDL_Rect* dstRect){
+void CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect){
     // Todo: all Render** should check the exit codes
     // see: https://wiki.libsdl.org/SDL_RenderCopy
     // Return Value
