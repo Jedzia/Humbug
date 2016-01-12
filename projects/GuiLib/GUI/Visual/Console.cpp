@@ -254,6 +254,12 @@ namespace gui {
       if (pimpl_->m_pConsole->Visible != CON_CLOSED) {
           CON_DrawConsole(pimpl_->m_pConsole);
           m_pScreen->AddUpdateRect(m_crDimensions);
+          components::CRectangle sdl_rect = components::CRectangle(
+              pimpl_->m_pConsole->DispX, 
+              pimpl_->m_pConsole->DispY,
+              pimpl_->m_pConsole->ConsoleSurface->w, 
+              pimpl_->m_pConsole->RaiseOffset);
+          m_pScreen->MainUpdateAndRenderCopy(&sdl_rect, &sdl_rect);
       }
   }
 
