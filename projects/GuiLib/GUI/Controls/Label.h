@@ -2,16 +2,15 @@
 /*!
  * This file is part of Humbug, the strangest game ever.
  * License details can be found in the file COPYING.
- * Copyright (c) 2012, EvePanix. All rights reserved.
+ * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
  *             the Label.h class.
- * \folder     $(folder)
  * \file       Label.h
- * \date       2012-07-10
+ * \date       2016-01-09
  * \author     Jedzia.
  *
- * modified    2012-07-10, Jedzia
+ * modified    2016-01-09, Jedzia
  */
 /*---------------------------------------------------------*/
 #ifndef LABEL_H__
@@ -20,84 +19,101 @@
 #include "../Components/Color.h"
 #include "Control.h"
 #include "SDL_ttf.h"
-#include <string>
 
 namespace gui {
-    class GuiFontMetrics;
-    namespace controls {
-    using gui::components::CColor;
-//CLabel class
-//abstracts a ui Label
-    class CLabel : public CControl {
-private:
+class GuiFontMetrics;
+namespace controls {
+/** @class CLabel:
+*  abstracts a ui Label.
+*/
+class CLabel : public CControl {
+    //caption for Label
+    std::string m_sCaption;
+    //colors for Label
+    components::CColor m_colFace;
+    components::CColor m_colText;
+    components::CColor m_colHilite;
+    components::CColor m_colShadow;
+    //canvas for text
+    boost::shared_ptr<components::CCanvas> m_pcnvText;
+    //pressed state
+    bool m_bPressed;
+    //Label font
+    static TTF_Font* s_LabelFont;
+    static GuiFontMetrics* s_FontMetrics;
 
-        //caption for Label
-        std::string m_sCaption;
-        //colors for Label
-        CColor m_colFace;
-        CColor m_colText;
-        CColor m_colHilite;
-        CColor m_colShadow;
-        //canvas for text
-        boost::shared_ptr<components::CCanvas> m_pcnvText;
-        //pressed state
-        bool m_bPressed;
-		//Label font
-        static TTF_Font* s_LabelFont;
-        static GuiFontMetrics* s_FontMetrics;
+    /** CreateTextCanvas:
+    *  Detailed description.
+    *  @param sCaption TODO
+    *  @param rcDimensions TODO
+    *  @param colText TODO
+    */
+    components::CRectangle CreateTextCanvas(const std::string& sCaption,
+            const components::CRectangle& rcDimensions,
+            const components::CColor& colText);
 
-        components::CRectangle CreateTextCanvas(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
-        static components::CRectangle CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
-    public:
+    static components::CRectangle CalculateDimensions(const std::string& sCaption,
+            const components::CRectangle& rcDimensions,
+            const components::CColor& colText);
 
-        /** Initializes a new instance of the <see cref="CLabel"/> class.
-        *  Detailed description.
-        *  @param pParent The parent control of the label.
-        *  @param rcDimensions The dimensions of the label. If the width or height are lesser than 1 the size is determined via the text
-        *                      and the font.
-        *  @param id The unique control identifier.
-        *  @param sCaption The caption of the label.
-        *  @param usesSDL2Render Set to true if the label should use SDL2 rendering techniques. (Obsolete later, as this is a transition to SDL2).
-        *  @param colFace The controls face color.
-        *  @param colText The text color.
-        *  @param colHilite The controls hilight color.
-        *  @param colShadow The controls shadow color.
-        */
-        CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, bool usesSDL2Render = false,
-        gui::components::CColor colFace = CColor(192, 192, 192), CColor colText = CColor(0, 0, 0),
-        CColor colHilite = CColor(255, 255, 255), CColor colShadow = CColor(128, 128, 128) );
-        //destruction
-        virtual ~CLabel();
+public:
 
-        CLabel(const CLabel& that) = delete;
+    /** Initializes a new instance of the <see cref="CLabel"/> class.
+     *  Detailed description.
+     *  @param pParent The parent control of the label.
+     *  @param rcDimensions The dimensions of the label. If the width or height are lesser than 1
+     *                      the size is determined via the text and the font.
+     *  @param id The unique control identifier.
+     *  @param sCaption The caption of the label.
+     *  @param usesSDL2Render Set to true if the label should use SDL2 rendering techniques.
+     *                        (Obsolete later, as this is a transition to SDL2).
+     *  @param colFace The controls face color.
+     *  @param colText The text color.
+     *  @param colHilite The controls hilight color.
+     *  @param colShadow The controls shadow color.
+     */
+    CLabel( CControl* pParent, components::CRectangle rcDimensions, Uint32 id, std::string sCaption,
+            bool usesSDL2Render = false,
+            components::CColor colFace = components::CColor(192, 192, 192), components::CColor colText = components::CColor(0, 0, 0),
+            components::CColor colHilite = components::CColor(255, 255, 255), components::CColor colShadow = components::CColor(128, 128, 128));
+    //destruction
+    virtual ~CLabel();
 
-		bool IsPressed() const { return m_bPressed; }
+    CLabel(const CLabel& that) = delete;
 
-		//customize redrawing
-        void OnDraw() override;
+    /** Brief description of CLabel, IsPressed
+     *  Detailed description.
+     *  @return TODO
+     */
+    bool IsPressed() const { return m_bPressed; }
 
-        /*//left label handlers
-        virtual bool OnLLabelDown(Uint16 x, Uint16 y);
+    //customize redrawing
+    void OnDraw() override;
 
-        virtual bool OnLLabelUp(Uint16 x, Uint16 y);*/
+    /*//left label handlers
+       virtual bool OnLLabelDown(Uint16 x, Uint16 y);
 
-        Uint16 GetWidth() override;
-        Uint16 GetHeight() override;
-        //set caption
-        void SetCaption(const std::string& sCaption);
+       virtual bool OnLLabelUp(Uint16 x, Uint16 y);*/
 
-        //get caption
-        std::string GetCaption();
+    Uint16 GetWidth() override;
 
-        //set label font
-        static void SetLabelFont(TTF_Font* pFont);
+    Uint16 GetHeight() override;
 
-        static TTF_Font * GetLabelFont();
+    //set caption
+    void SetCaption(const std::string& sCaption);
 
-        //message for clicking label
-        static MSGID MSGID_LabelClick; //parm1=id
-    };
-  } // namespace controls
+    //get caption
+    std::string GetCaption() const;
+
+    //set label font
+    static void SetLabelFont(TTF_Font* pFont);
+
+    static TTF_Font * GetLabelFont();
+
+    //message for clicking label
+    static MSGID MSGID_LabelClick;     //parm1=id
+};
+}   // namespace controls
 } // namespace gui
 
 #endif // #ifndef BUTTON_H__
