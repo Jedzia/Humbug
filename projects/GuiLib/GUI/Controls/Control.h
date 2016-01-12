@@ -142,9 +142,9 @@ public:
         gui::components::CPoint GetPosition();
 
         //get width and height
-        Uint16 GetWidth();
+        virtual Uint16 GetWidth();
 
-        Uint16 GetHeight();
+        virtual Uint16 GetHeight();
 
         //get edges in global coords
         Uint16 GetLeft();

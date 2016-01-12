@@ -26,6 +26,9 @@ namespace gui {
 	  class CImage;
 	  class CText;
   }
+  namespace controls {
+      class CLabel;
+  }
 }
 class FileLoader;
 
@@ -40,13 +43,16 @@ public:
       ~DebugOverlay();
 
       //void Draw();
-	  void OnDraw();
+	  void OnDraw() override;
 	  void IdleSetVars(int ticks);
+      int AddTextLabel();
+      void SetTextLabelText(int id, const std::string& text);
 
-      virtual bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle);
+      bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle) override;
 
 private:
-
+        
+      static int LabelId;
       void Init(gui::controls::CControl* pParent);
 
       gui::components::CRectangle InitRect(const FileLoader& loader);
@@ -55,6 +61,9 @@ private:
       const FileLoader& m_pLoader;
 	  TTF_Font* m_pDebugfont;
 	  boost::scoped_ptr<gui::components::CText> m_pTextA;
+      
+      boost::ptr_map<int, gui::controls::CLabel> m_mLabels;
+      int m_iLastAutoLabelPosition;
 
       //CCanvas* m_pCanvas;
       //CPoint dst;

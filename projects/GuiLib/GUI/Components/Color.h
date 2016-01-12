@@ -23,6 +23,16 @@ public:
 	//destructor
 	virtual ~CColor();
 
+    const SDL_Color* SDLColorCP() const
+    {
+        return &m_Color;
+    }
+
+    SDL_Color SDLColor() const
+    {
+        return m_Color;
+    }
+
 	//get rgb
 	Uint8 GetR() const;
 	Uint8 GetG() const;

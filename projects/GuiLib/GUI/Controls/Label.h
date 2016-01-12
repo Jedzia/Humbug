@@ -38,31 +38,47 @@ private:
         CColor m_colHilite;
         CColor m_colShadow;
         //canvas for text
-        gui::components::CCanvas* m_pcnvText;
+        boost::shared_ptr<components::CCanvas> m_pcnvText;
         //pressed state
         bool m_bPressed;
 		//Label font
         static TTF_Font* s_LabelFont;
+        components::CRectangle CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
+    public:
 
-public:
-
-        //construction
-    CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, bool usesSDL2Render = false,
+        /** Initializes a new instance of the <see cref="CLabel"/> class.
+        *  Detailed description.
+        *  @param pParent The parent control of the label.
+        *  @param rcDimensions The dimensions of the label. If the width or height are lesser than 1 the size is determined via the text
+        *                      and the font.
+        *  @param id The unique control identifier.
+        *  @param sCaption The caption of the label.
+        *  @param usesSDL2Render Set to true if the label should use SDL2 rendering techniques. (Obsolete later, as this is a transition to SDL2).
+        *  @param colFace The controls face color.
+        *  @param colText The text color.
+        *  @param colHilite The controls hilight color.
+        *  @param colShadow The controls shadow color.
+        */
+        CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, bool usesSDL2Render = false,
         gui::components::CColor colFace = CColor(192, 192, 192), CColor colText = CColor(0, 0, 0),
         CColor colHilite = CColor(255, 255, 255), CColor colShadow = CColor(128, 128, 128) );
         //destruction
         virtual ~CLabel();
 
+        CLabel(const CLabel& that) = delete;
+
 		bool IsPressed() const { return m_bPressed; }
 
 		//customize redrawing
-        virtual void OnDraw();
+        void OnDraw() override;
 
         /*//left label handlers
         virtual bool OnLLabelDown(Uint16 x, Uint16 y);
 
         virtual bool OnLLabelUp(Uint16 x, Uint16 y);*/
 
+        Uint16 GetWidth() override;
+        Uint16 GetHeight() override;
         //set caption
         void SetCaption(std::string sCaption);
 

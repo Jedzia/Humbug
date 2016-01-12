@@ -100,7 +100,11 @@ namespace humbug {
         SDL_Color cmap[256];
         TTF_Font* m_pDebugFont;
         DebugOverlay* m_pDovl;
-        controls::CLabel *label1;
+        //controls::CLabel* label1;
+        boost::shared_ptr<controls::CLabel> label1;
+        boost::shared_ptr<controls::CLabel> label2;
+        int label3;
+        int label4;
 
     public:
 
@@ -115,9 +119,18 @@ namespace humbug {
                     controls::CLabel::SetLabelFont(debugFont);
                 }
 
-                label1 = new controls::CLabel(debug_overlay, CRectangle(80, 440, 200, 40), 123, "Rotzbock", true);
-                label1->SetPosition(CPoint(80, 400));
-                m_pDovl->AddChild(label1);
+                label3 = m_pDovl->AddTextLabel();
+                label4 = m_pDovl->AddTextLabel();
+
+                label1.reset( new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", true, CColor::Black(), CColor::White()));
+                Uint16 height = label1->GetHeight();
+                label1->SetPosition(CPoint(0, height));
+                m_pDovl->AddChild(label1.get());
+
+                label2.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 124, "Label 2", true, CColor::Black(), CColor::White()));
+                height += label2->GetHeight();
+                label2->SetPosition(CPoint(0, height));
+                m_pDovl->AddChild(label2.get());
             }
         }
 
@@ -163,14 +176,14 @@ namespace humbug {
             int corrector = 64 + sin(radians) * 64;
             int stepcheck = stepsize + sin(((m_iFrames * 2 % 180)+180)*PI / 180.0f) * stepsize;
 
-            if (m_pDebugFont)
+            /*if (m_pDebugFont)
             {
                 std::ostringstream labelText;
                 //labelText << "deg(" << diffx << ", " << diffy << ")";
                 labelText << "deg(" << degrees << ")";
                 CText label(m_pDebugFont, (labelText.str()), CColor::DarkRed());
                 label.RenderPut(source, CRectangle(20,100,0,0));
-            }
+            }*/
 
             if (label1)
             {
@@ -178,6 +191,21 @@ namespace humbug {
                 labelText << "rad(" << radians << ")";
                 label1->SetCaption(labelText.str());
             }
+            
+            /*if (label1)
+            {
+                std::ostringstream labelText;
+                labelText << "deg(" << degrees << ")";
+                label2->SetCaption(labelText.str());
+            }*/
+
+            if (false)
+            {
+                std::ostringstream labelText;
+                labelText << "deg(" << degrees << ")";
+                m_pDovl->SetTextLabelText(label3, labelText.str());
+            }
+
 
             for (size_t i = 0; i < stepsize; i++)
             {
@@ -282,6 +310,13 @@ namespace humbug {
         //m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf",
         // 30);
         m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 30);
+        if (!controls::CLabel::GetLabelFont())
+        {
+            controls::CLabel::SetLabelFont(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 16));
+        }
+
+
+
         mcol = CColor::White();
         SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TestScreenBg.png") );
 

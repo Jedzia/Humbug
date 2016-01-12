@@ -20,14 +20,18 @@
 #include "GUI/Components/Text.h"
 
 #include "DebugOverlay.h"
+#include <GuiLib/GUI/Controls/Label.h>
 
 using namespace gui::components;
+using namespace gui::controls;
 
 namespace humbug {
 //#include <build/cmake/include/debug.h>
 
+ int DebugOverlay::LabelId = 6000;
+
   DebugOverlay::DebugOverlay(FileLoader& m_Loader, CControl* pParent, Uint32 id) :
-      CControl(pParent, CRectangle(0,0,200,100), id),
+      CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16),
       m_pLoader(m_Loader){
       dbgOut(__FUNCTION__);
 
@@ -40,7 +44,7 @@ namespace humbug {
 
 	  m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 12);
 
-      tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, GetWidth(), GetHeight() );
+      tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
       SDL_SetSurfaceAlphaMod(tmpcanvas->GetSurface(), 122);
       
 	  //footerImage->Put( GetCanvas(), CPoint(0, 0) );
@@ -144,4 +148,35 @@ namespace humbug {
 	  m_ticks = ticks;
   }
 
+    int DebugOverlay::AddTextLabel()
+    {
+        if (!CLabel::GetLabelFont())
+        {
+            CLabel::SetLabelFont(m_pDebugfont);
+        }
+
+        int id = LabelId;
+        LabelId++;
+
+        std::ostringstream labelText;
+        labelText << "AddTextLabel " << id << "";
+
+        CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), true, CColor::Black(), CColor::White());
+        m_mLabels.insert(id, label1);
+        
+        Uint16 height = label1->GetHeight();
+        label1->SetPosition(CPoint(100, m_iLastAutoLabelPosition));
+        m_iLastAutoLabelPosition += height;
+
+        this->AddChild(label1);
+
+        return id;
+    }
+
+    void DebugOverlay::SetTextLabelText(int id, const std::string& text)
+    {
+        //CLabel& label = m_mLabels[id];
+        CLabel& label = m_mLabels.at(id);
+        label.SetCaption(text);
+    }
 }
