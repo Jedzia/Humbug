@@ -23,7 +23,8 @@
 #include <string>
 
 namespace gui {
-  namespace controls {
+    class GuiFontMetrics;
+    namespace controls {
     using gui::components::CColor;
 //CLabel class
 //abstracts a ui Label
@@ -43,6 +44,8 @@ private:
         bool m_bPressed;
 		//Label font
         static TTF_Font* s_LabelFont;
+        static GuiFontMetrics* s_FontMetrics;
+
         components::CRectangle CreateTextCanvas(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
         static components::CRectangle CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
     public:

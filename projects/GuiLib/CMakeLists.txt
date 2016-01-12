@@ -55,6 +55,8 @@ SET(GuiLib_OTHER_sources
 )
 
 SET(GuiLib_GUI_headers
+		GUI/GuiFontMetrics.h
+
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
 		GUI/Visual/MessageHandler.h
@@ -66,6 +68,8 @@ SET(GuiLib_GUI_headers
 		GUI/Visual/Console.h
 )
 SET(GuiLib_GUI_sources
+		GUI/GuiFontMetrics.cpp
+
 		GUI/Visual/Application.cpp
 		GUI/Visual/EventHandler.cpp
 		GUI/Visual/MessageHandler.cpp

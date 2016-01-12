@@ -3,12 +3,14 @@
 //////////////////////////////////////////////////////////////////////
 #include "../../stdafx.h"
 #include "Label.h"
+#include "GUI/GuiFontMetrics.h"
 
 namespace gui {
   namespace controls {
     MSGID CLabel::MSGID_LabelClick = CMessageHandler::GetNextMSGID(); //parm1=id
 //label font
     TTF_Font * CLabel::s_LabelFont = NULL;
+    GuiFontMetrics* CLabel::s_FontMetrics = NULL;
 
     components::CRectangle CLabel::CreateTextCanvas(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText)
       {
@@ -32,15 +34,7 @@ namespace gui {
       components::CRectangle CLabel::CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText)
       {
           if (sCaption != "" && s_LabelFont != NULL) {
-              const char *ctext = sCaption.c_str();
-              int width, height;
-
-              if ((TTF_SizeUTF8(s_LabelFont, ctext, &width, &height) < 0) || !width) {
-                  // Todo: TTF_SetError("Text has zero width");
-                  return rcDimensions;
-              }
-
-              return components::CRectangle(0, 0, width, height);
+              return s_FontMetrics->CalculateDimensions(sCaption);
           }
 
           return rcDimensions;
@@ -211,6 +205,13 @@ namespace gui {
     void CLabel::SetLabelFont(TTF_Font* pFont){
         //set the label font
         s_LabelFont = pFont;
+
+        if (s_FontMetrics)
+        {
+            delete s_FontMetrics;
+        }
+
+        s_FontMetrics = new GuiFontMetrics(pFont);
     }
 
     /** CLabel, GetLabelFont:
