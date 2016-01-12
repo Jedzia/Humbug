@@ -27,7 +27,7 @@ namespace components {
 using namespace std;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(false), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
+    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr){
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
@@ -35,7 +35,7 @@ CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
 }
 
 CCanvas::CCanvas ( SDL_Window* pWindow )
-    : m_bOwner(false), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
+    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr){
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
