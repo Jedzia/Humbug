@@ -83,6 +83,15 @@ namespace humbug {
    *  @return TODO
    */
   void DebugOverlay::OnDraw(){
+      /*Child
+      std::list<CControl*>::iterator iter;
+      for (iter = m_lstChildren.begin(); iter != m_lstChildren.end(); iter++)
+      {
+          //grab item from list
+          CControl* pChild = (*iter);
+          //draw
+          pChild->Draw();
+      }*/
 
 	  CCanvas *pCanvas = GetParent()->GetCanvas();
 	  CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );

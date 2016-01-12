@@ -405,7 +405,7 @@ void CTestEventHandler::OnIdle(int ticks){
 
 
     //m_pHud->Invalidate();
-    CControl::Redraw();
+//    CControl::Redraw();
 
     //m_pHud->Draw();
     //PutBlue();

@@ -37,6 +37,7 @@
 #include "../Input/PlayerKeys3.h"
 #include "HumbugShared/GameObjects/Player.h"
 #include "GUI/DebugOverlay.h"
+#include <GUI/Controls/Label.h>
 
 
 namespace humbug {
@@ -98,18 +99,26 @@ namespace humbug {
         int m_iSteps;
         SDL_Color cmap[256];
         TTF_Font* m_pDebugFont;
+        DebugOverlay* m_pDovl;
+        controls::CLabel *label1;
 
     public:
 
         // this little bastard should render colored stripes when ready.
-        explicit CanvasStripeRenderer(int steps = 16) 
-            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(nullptr)
+        explicit CanvasStripeRenderer(int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
+            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), label1(nullptr)
         {
-        }
+            if (debug_overlay && debugFont)
+            {
+                if (!controls::CLabel::GetLabelFont())
+                {
+                    controls::CLabel::SetLabelFont(debugFont);
+                }
 
-        void SetDebugFont(TTF_Font* debugFont)
-        {
-            m_pDebugFont = debugFont;
+                label1 = new controls::CLabel(debug_overlay, CRectangle(80, 440, 200, 40), 123, "Rotzbock", true);
+                label1->SetPosition(CPoint(80, 400));
+                m_pDovl->AddChild(label1);
+            }
         }
 
         static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target, const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color)
@@ -161,6 +170,13 @@ namespace humbug {
                 labelText << "deg(" << degrees << ")";
                 CText label(m_pDebugFont, (labelText.str()), CColor::DarkRed());
                 label.RenderPut(source, CRectangle(20,100,0,0));
+            }
+
+            if (label1)
+            {
+                std::ostringstream labelText;
+                labelText << "rad(" << radians << ")";
+                label1->SetCaption(labelText.str());
             }
 
             for (size_t i = 0; i < stepsize; i++)
@@ -241,7 +257,7 @@ namespace humbug {
 
     using gui::controls::CControl;
 
-    gui::controls::CButton* testbutton;
+    //gui::controls::CButton* testbutton;
 
     /** $(class), OnInit:
      *  Detailed description.
@@ -256,9 +272,9 @@ namespace humbug {
         m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1));
 
 
-        testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0, 0, 160,
+        /*testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0, 0, 160,
                         40), 21345, "Change Direction", true);
-        testbutton->SetPosition( CPoint(800, 30) );
+        testbutton->SetPosition( CPoint(800, 30) );*/
 
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -298,8 +314,7 @@ namespace humbug {
         //m_pBanding1->DstRect().Y() -= 200;
         //m_pBanding1->DstRect().H() *= 2;
         m_pBanding1->Scale(0.6f);
-        CanvasStripeRenderer stripeModifier(16);
-        stripeModifier.SetDebugFont(m_pArialfont);
+        CanvasStripeRenderer stripeModifier(16, m_pArialfont, m_pOverlay.get());
         m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
         
         m_pBanding2.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
@@ -362,7 +377,6 @@ namespace humbug {
         static int coldelta = 0;
 
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-        
         m_pMainCanvas->Lock();
         //m_pMainCanvas->MainRenderClear();
 
@@ -434,7 +448,8 @@ namespace humbug {
             coldelta = 0;
         }
 
-        m_pOverlay->OnDraw();
+        //m_pOverlay->OnDraw();
+        CControl::Redraw();
         m_pMainCanvas->Unlock();
     } // OnDraw
 
@@ -449,9 +464,9 @@ namespace humbug {
         mcol.SetG( rand() );
         mcol.SetB( rand() );
 
-        if (testbutton->IsPressed()) {
+        /*if (testbutton->IsPressed()) {
             m_pKeyHandler->Reset();
-        }
+        }*/
 
         //m_iUpdateTimes++;
     }

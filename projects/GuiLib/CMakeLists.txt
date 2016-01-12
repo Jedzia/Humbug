@@ -94,6 +94,7 @@ SET(GuiLib_Component_headers
 
 		GUI/Controls/Control.h
 		GUI/Controls/Button.h
+		GUI/Controls/Label.h
 
 		GUI/Sprite/Sprite.h
 		GUI/Sprite/SpriteManager.h
@@ -120,6 +121,7 @@ SET(GuiLib_Component_sources
 
 		GUI/Controls/Control.cpp
 		GUI/Controls/Button.cpp
+		GUI/Controls/Label.cpp
 
 		GUI/Sprite/Sprite.cpp
 		GUI/Sprite/SpriteManager.cpp

@@ -224,7 +224,7 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, c
     // all RenderCopy calls flow here
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
-    SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
+    int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
 }
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* srcRect, const CRectangle* dstRect){
