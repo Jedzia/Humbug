@@ -100,9 +100,8 @@ namespace humbug {
         SDL_Color cmap[256];
         TTF_Font* m_pDebugFont;
         DebugOverlay* m_pDovl;
-        //controls::CLabel* label1;
         boost::shared_ptr<controls::CLabel> label1;
-        boost::shared_ptr<controls::CLabel> label2;
+        int label2;
         int label3;
         int label4;
 
@@ -110,7 +109,7 @@ namespace humbug {
 
         // this little bastard should render colored stripes when ready.
         explicit CanvasStripeRenderer(int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
-            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), label1(nullptr)
+            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), label1(nullptr), label2(0), label3(0), label4(0)
         {
             if (debug_overlay && debugFont)
             {
@@ -119,18 +118,17 @@ namespace humbug {
                     controls::CLabel::SetLabelFont(debugFont);
                 }
 
-                label3 = m_pDovl->AddTextLabel();
-                label4 = m_pDovl->AddTextLabel();
-
-                label1.reset( new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", true, CColor::Black(), CColor::White()));
+                // manual label creation
+                label1.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", true, CColor::Black(), CColor::White()));
                 Uint16 height = label1->GetHeight();
                 label1->SetPosition(CPoint(0, height));
                 m_pDovl->AddChild(label1.get());
 
-                label2.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 124, "Label 2", true, CColor::Black(), CColor::White()));
-                height += label2->GetHeight();
-                label2->SetPosition(CPoint(0, height));
-                m_pDovl->AddChild(label2.get());
+                // automatic labels
+                label2 = m_pDovl->AddTextLabel();
+                label3 = m_pDovl->AddTextLabel();
+                label4 = m_pDovl->AddTextLabel();
+
             }
         }
 
@@ -138,6 +136,17 @@ namespace humbug {
         {
             source->SetTextureColorMod(color);
             target->FinalRenderCopy(source->GetTexture(), &srcRect, &dstRect);
+        }
+
+        template<typename T>
+        void PrintLabel(const int& id, const char* title, const T& degrees) const
+        {
+            if (id)
+            {
+                std::ostringstream labelText;
+                labelText << title << "(" << degrees << ")";
+                m_pDovl->SetTextLabelText(id, labelText.str());
+            }
         }
 
         void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
@@ -191,20 +200,10 @@ namespace humbug {
                 labelText << "rad(" << radians << ")";
                 label1->SetCaption(labelText.str());
             }
-            
-            if (label2)
-            {
-                std::ostringstream labelText;
-                labelText << "deg(" << degrees << ")";
-                label2->SetCaption(labelText.str());
-            }
 
-            if (label3)
-            {
-                std::ostringstream labelText;
-                labelText << "deg(" << degrees << ")";
-                m_pDovl->SetTextLabelText(label3, labelText.str());
-            }
+            PrintLabel(label2, "rad", radians);
+            PrintLabel(label3, "deg", degrees);
+            PrintLabel(label4, "clock", clock);
 
 
             for (size_t i = 0; i < stepsize; i++)

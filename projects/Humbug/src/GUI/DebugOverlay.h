@@ -58,7 +58,6 @@ public:
       *  Use this method to set the text of a label, created by AddTextLabel().
       *  @param id The identifikation number of the text label.
       *  @param text The new caption of the label.
-      *  @return a unique identifier of the label. This id can be used by functions like SetTextLabelText.
       */
       void SetTextLabelText(int id, const std::string& text);
 
