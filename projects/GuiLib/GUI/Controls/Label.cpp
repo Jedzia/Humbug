@@ -10,7 +10,7 @@ namespace gui {
 //label font
     TTF_Font * CLabel::s_LabelFont = NULL;
 
-    components::CRectangle CLabel::CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText)
+    components::CRectangle CLabel::CreateTextCanvas(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText)
       {
           //set the caption
           //m_pcnvText = NULL;
@@ -29,18 +29,35 @@ namespace gui {
           return rcDimensions;
     }
 
+      components::CRectangle CLabel::CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText)
+      {
+          if (sCaption != "" && s_LabelFont != NULL) {
+              const char *ctext = sCaption.c_str();
+              int width, height;
+
+              if ((TTF_SizeUTF8(s_LabelFont, ctext, &width, &height) < 0) || !width) {
+                  // Todo: TTF_SetError("Text has zero width");
+                  return rcDimensions;
+              }
+
+              return components::CRectangle(0, 0, width, height);
+          }
+
+          return rcDimensions;
+      }
+
       // ReSharper disable once CppPossiblyUninitializedMember
     CLabel::CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, bool usesSDL2Render,
             gui::components::CColor colFace, gui::components::CColor colText, gui::components::CColor colHilite,
             gui::components::CColor colShadow) :
-        CControl(pParent, components::CRectangle(0,0,100,100), id, true, usesSDL2Render),
+            CControl(pParent, CalculateDimensions(sCaption, rcDimensions, colText), id, true, usesSDL2Render),
             m_bPressed(false)
     {
     dbgOut(__FUNCTION__);
 //        //set the caption
 //        SetCaption(sCaption);
         m_sCaption = sCaption;
-        CalculateDimensions(sCaption, rcDimensions, colText);
+        CreateTextCanvas(sCaption, rcDimensions, colText);
         //set the colors
         m_colFace = colFace;
         m_colText = colText;
@@ -163,7 +180,7 @@ namespace gui {
       }
 
       //set caption
-    void CLabel::SetCaption(std::string sCaption){
+    void CLabel::SetCaption(const std::string& sCaption){
         //delete any existing text canvas
         /*if(m_pcnvText) {
             delete m_pcnvText;
@@ -173,7 +190,7 @@ namespace gui {
         //set the caption
         m_sCaption = sCaption;
 
-        components::CRectangle dim = CalculateDimensions(sCaption, components::CRectangle(), m_colText);
+        components::CRectangle dim = CreateTextCanvas(sCaption, components::CRectangle(), m_colText);
         
         /*return;
         //create text canvas

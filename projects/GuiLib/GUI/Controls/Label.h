@@ -43,7 +43,8 @@ private:
         bool m_bPressed;
 		//Label font
         static TTF_Font* s_LabelFont;
-        components::CRectangle CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
+        components::CRectangle CreateTextCanvas(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
+        static components::CRectangle CalculateDimensions(const std::string& sCaption, const gui::components::CRectangle& rcDimensions, const gui::components::CColor& colText);
     public:
 
         /** Initializes a new instance of the <see cref="CLabel"/> class.
@@ -80,7 +81,7 @@ private:
         Uint16 GetWidth() override;
         Uint16 GetHeight() override;
         //set caption
-        void SetCaption(std::string sCaption);
+        void SetCaption(const std::string& sCaption);
 
         //get caption
         std::string GetCaption();

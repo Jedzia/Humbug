@@ -192,14 +192,14 @@ namespace humbug {
                 label1->SetCaption(labelText.str());
             }
             
-            /*if (label1)
+            if (label2)
             {
                 std::ostringstream labelText;
                 labelText << "deg(" << degrees << ")";
                 label2->SetCaption(labelText.str());
-            }*/
+            }
 
-            if (false)
+            if (label3)
             {
                 std::ostringstream labelText;
                 labelText << "deg(" << degrees << ")";
