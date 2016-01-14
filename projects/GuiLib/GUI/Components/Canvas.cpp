@@ -273,7 +273,7 @@ void CCanvas::SetTextureColorMod(const CColor& sdl_color) {
     // Todo: check error info, like in all of these calls ...
 }
 
-bool CCanvas::Lock ( ) const {
+    bool CCanvas::Lock ( ) const {
     /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
         if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
             return ( true );
@@ -398,7 +398,8 @@ bool CCanvas::ClearColorKey ( ) const {
     return ( SDL_SetColorKey ( GetSurface ( ), 0, 0 ) == 0 );
 }
 
-void CCanvas::SetClipRect ( CRectangle* pRect ){
+void CCanvas::SetClipRect ( CRectangle* pRect ) const
+{
     if ( pRect ) {
         SDL_SetClipRect ( GetSurface ( ), *pRect );
     }
@@ -407,29 +408,49 @@ void CCanvas::SetClipRect ( CRectangle* pRect ){
     }
 }
 
-CRectangle CCanvas::GetClipRect ( ){
+CRectangle CCanvas::GetClipRect ( ) const
+{
     SDL_Rect rect;
     SDL_GetClipRect ( GetSurface ( ), &rect );
     return ( rect );
 }
 
-bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ){
+bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ) const
+{
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
     return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
 }
 
-bool CCanvas::RenderFillRect(CRectangle& rect, const CColor& color){
+bool CCanvas::RenderFillRect(CRectangle& rect, const CColor* color) const
+{
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
-    int ret = SDL_SetRenderDrawColor( GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA() );
-    return SDL_RenderFillRect(GetRenderer(), rect);
+    int ret = 0;
+    if (color)
+    {
+        ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+    }
+
+    ret = SDL_RenderFillRect(GetRenderer(), rect);
+    return true;
 }
 
-bool CCanvas::Clear ( const CColor& color ){
+void CCanvas::RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const
+{
+    if (color)
+    {
+        SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+    }
+
+    SDL_RenderDrawLine(GetRenderer(), pStart.GetX(), pStart.GetY(), pEnd.GetX(), pEnd.GetY());
+}
+
+bool CCanvas::Clear(const CColor& color) const
+{
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
 
     if (m_pTexture) {
         CRectangle dimension = GetDimension();
-        RenderFillRect(dimension, color);
+        RenderFillRect(dimension, &color);
         //SDL_RenderClear(GetRenderer());
     }
 

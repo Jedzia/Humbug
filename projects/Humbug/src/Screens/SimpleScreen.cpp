@@ -205,9 +205,11 @@ void SimpleScreen::OnDraw(){
 
     int i = x % 24;
     auto rect = CRectangle(i * 10, i * 10, 120, 120);
-    m_pBackground->RenderFillRect(rect, CColor(fcol.r, fcol.g, fcol.b));
+    CColor color1 = CColor(fcol.r, fcol.g, fcol.b);
+    m_pBackground->RenderFillRect(rect, &color1);
     CRectangle sdl_rect = rect + CPoint(200, 200);
-    m_pDrawCanvas->RenderFillRect( sdl_rect, CColor(fcol.r, 255 - fcol.g, fcol.b) );
+    CColor color2 = CColor(fcol.r, 255 - fcol.g, fcol.b);
+    m_pDrawCanvas->RenderFillRect( sdl_rect, &color2 );
 
     /*CRectangle screenrect = m_pBackground->GetDimension();
     CPoint sp(220, 240);

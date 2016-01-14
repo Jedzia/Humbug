@@ -166,7 +166,7 @@ public:
     *  "srcC = srcC * (color / 255)"
     *  Color modulation is not always supported by the renderer; it will return -1 if color modulation is not supported. 
     *  A new texture is instantiated when there is no one.
-    *  @param sdl_color the color values multiplied into copy operations. Only r,g and b are used.
+    *  @param color the color values multiplied into copy operations. Only r,g and b are used.
     */
     void SetTextureColorMod(const CColor& color);
 
@@ -216,18 +216,26 @@ public:
     bool ClearColorKey ( ) const;
 
     //set the clipping rectangle
-    void SetClipRect ( CRectangle* pRect );
+    void SetClipRect ( CRectangle* pRect ) const;
 
     //get the clipping rectangle
-    CRectangle GetClipRect ( );
+    CRectangle GetClipRect ( ) const;
 
     //solid color fill fill a rectangle
-    bool FillRect ( CRectangle& rect, const CColor& color );
+    bool FillRect ( CRectangle& rect, const CColor& color ) const;
 
-    bool RenderFillRect(CRectangle& rect, const CColor& color);
+    bool RenderFillRect(CRectangle& rect, const CColor* color) const;
+
+    /** Render a Line.
+    *  Use this function to draw a line on the canvas rendering target.
+    *  @param pStart The start point of the line.
+    *  @param pEnd The end point of the line.
+    *  @param color The drawing color of the line or NULL if no color change is wanted.
+    */
+    void RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const;
 
     //clear entire surface to a color
-    bool Clear ( const CColor& color );
+    bool Clear ( const CColor& color ) const;
 
     //blit to this surface from another surface
     bool Blit ( const CRectangle& rectDst, const CCanvas& cnvSrc, const CRectangle& rectSrc ) const;

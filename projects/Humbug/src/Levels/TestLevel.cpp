@@ -22,22 +22,23 @@
 #include "boost/lambda/lambda.hpp"
 #include <cstdlib>
 //
-#include <Filesystem/FileLoader.h>
-#include <GUI/Components/Image.h>
+#include <GuiLib/Filesystem/FileLoader.h>
+#include <GuiLib/GUI/Components/Image.h>
 #include <GUI/Components/Rectangle.h>
-#include <GUI/Components/SeamlessImage.h>
-#include <GUI/Components/Image.h>
-#include <GUI/Components/Text.h>
-#include <GUI/Components/TextScroller.h>
-#include <GUI/Controls/Button.h>
-#include <GUI/Data/ColorData.h>
-#include <GUI/Sprite/Sprite.h>
-#include <GUI/Sprite/SpriteManager.h>
-#include <GUI/Visual/EventHandler.h>
+#include <GuiLib/GUI/Components/SeamlessImage.h>
+#include <GuiLib/GUI/Components/Image.h>
+#include <GuiLib/GUI/Components/Text.h>
+#include <GuiLib/GUI/Components/TextScroller.h>
+#include <GuiLib/GUI/Controls/Button.h>
+#include <GuiLib/GUI/Data/ColorData.h>
+#include <GuiLib/GUI/Sprite/Sprite.h>
+#include <GuiLib/GUI/Sprite/SpriteManager.h>
+#include <GuiLib/GUI/Visual/EventHandler.h>
 #include "../Input/PlayerKeys3.h"
 #include "HumbugShared/GameObjects/Player.h"
 #include "GUI/DebugOverlay.h"
-#include <GUI/Controls/Label.h>
+#include <GuiLib/GUI/Controls/Label.h>
+#include <GuiLib/GUI/Components/Shapes/Line.h>
 
 
 namespace humbug {
@@ -149,6 +150,11 @@ namespace humbug {
             }
         }
 
+        float norm(float ceiling, float floor, float max, float min, float input)
+        {
+            return 1.0f;
+        }
+
         void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
             gui::components::CCanvasRenderModifierData& mdata)
         {
@@ -205,6 +211,11 @@ namespace humbug {
             PrintLabel(label3, "deg", degrees);
             PrintLabel(label4, "clock", clock);
 
+            CColor color = CColor::LightGreen();
+            //target->RenderDrawLine(CPoint(20, 100 + degrees), CPoint(220, 100 + degrees), &color);
+            SLine::RenderDrawLine(target, CPoint(20, 100 + degrees), CPoint(220, 100 + degrees), &color);
+            CRectangle rect = CRectangle(20, 100 + degrees, 100, 20);
+            target->RenderFillRect(rect, &color);
 
             for (size_t i = 0; i < stepsize; i++)
             {
@@ -240,13 +251,26 @@ namespace humbug {
 
 
     struct TestLevel::TestLevelImpl {
+    private:
         //prv::EyeMover eyemover;
         //prv::WormMover wormmover;
         int x;
+        TestLevel* host;
+
+    public:
+        explicit TestLevelImpl(TestLevel* host)
+            : x(0), host{host}
+        {
+        }
+
+        void Draw()
+        {
+            auto aaaa = host->m_pBackground->GetDimension();
+        }
     };
 
     TestLevel::TestLevel( FileLoader& loader, gui::components::CCanvas* background) :
-        pimpl_(new TestLevel::TestLevelImpl ),
+        pimpl_(new TestLevel::TestLevelImpl(this) ),
         Screen(background, true),
         m_Loader(loader),
         m_pArialfont(NULL),
@@ -443,7 +467,7 @@ namespace humbug {
         //m_pMainCanvas->FillRect( frect, mcol );
         SDL_Color& fcol = wavemap[index];
         CColor sdl_color = CColor(fcol.r, fcol.g, fcol.b, fcol.a);
-        m_pMainCanvas->RenderFillRect( frect, sdl_color );
+        m_pMainCanvas->RenderFillRect( frect, &sdl_color );
         m_pMainCanvas->AddUpdateRect(frect);
 
         static int xxx = 0;
@@ -475,6 +499,9 @@ namespace humbug {
         
         m_pBanding2->RenderPut(m_pBackground.get(), CPoint(140, 250));
         //m_pBanding2->RenderPut(m_pMainCanvas, CPoint(140, 250));
+
+
+        pimpl_->Draw();
 
         coldelta++;
 

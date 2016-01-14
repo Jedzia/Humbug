@@ -182,7 +182,8 @@ void StartScreen::OnDraw(){
 
     //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
-    m_pMainCanvas->RenderFillRect( frect, CColor(fcol.r, fcol.g, fcol.b) );
+    CColor color = CColor(fcol.r, fcol.g, fcol.b);
+    m_pMainCanvas->RenderFillRect( frect, &color );
     m_pMainCanvas->AddUpdateRect(frect);
 
     coldelta++;
