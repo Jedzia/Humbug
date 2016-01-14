@@ -273,20 +273,25 @@ void CCanvas::SetTextureColorMod(const CColor& sdl_color) {
     // Todo: check error info, like in all of these calls ...
 }
 
-    bool CCanvas::Lock ( ) const {
-    /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
-        if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
-            return ( true );
-        }
-        else {
-            return ( false );
-        }
-       }*/
-
-    return ( true );
+void CCanvas::SetRenderDrawBlendMode(BlendMode mode) const
+{
+    SDL_SetRenderDrawBlendMode(GetRenderer(), static_cast<SDL_BlendMode>(mode));
 }
 
-void CCanvas::Unlock ( ) const {
+bool CCanvas::Lock() const {
+    /*if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
+    if ( SDL_LockSurface ( GetSurface ( ) ) == 0 ) {
+    return ( true );
+    }
+    else {
+    return ( false );
+    }
+    }*/
+
+    return (true);
+}
+
+void CCanvas::Unlock() const {
     //MainUpdateAndRenderCopy();
 //    if ( SDL_MUSTLOCK ( GetSurface ( ) ) ) {
 //        SDL_UnlockSurface ( GetSurface ( ) );
@@ -421,6 +426,38 @@ bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ) const
     return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
 }
 
+void CCanvas::RenderDrawPoint(const CPoint& coordinates, const CColor* color) const
+{
+    if (color)
+    {
+        SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+    }
+
+    SDL_RenderDrawPoint(GetRenderer(), coordinates.GetX(), coordinates.GetY());
+}
+
+void CCanvas::RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const
+{
+    if (color)
+    {
+        SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+    }
+
+    SDL_RenderDrawLine(GetRenderer(), pStart.GetX(), pStart.GetY(), pEnd.GetX(), pEnd.GetY());
+}
+
+bool CCanvas::RenderDrawRect(CRectangle& rect, const CColor* color) const
+{
+    int ret = 0;
+    if (color)
+    {
+        ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+    }
+
+    ret = SDL_RenderDrawRect(GetRenderer(), rect);
+    return true;
+}
+
 bool CCanvas::RenderFillRect(CRectangle& rect, const CColor* color) const
 {
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
@@ -432,16 +469,6 @@ bool CCanvas::RenderFillRect(CRectangle& rect, const CColor* color) const
 
     ret = SDL_RenderFillRect(GetRenderer(), rect);
     return true;
-}
-
-void CCanvas::RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const
-{
-    if (color)
-    {
-        SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
-    }
-
-    SDL_RenderDrawLine(GetRenderer(), pStart.GetX(), pStart.GetY(), pEnd.GetX(), pEnd.GetY());
 }
 
 bool CCanvas::Clear(const CColor& color) const

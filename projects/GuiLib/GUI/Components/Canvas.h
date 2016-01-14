@@ -23,6 +23,22 @@ namespace components {
         };
     };
 
+typedef enum
+{
+    BLENDMODE_NONE = 0x00000000,     /**< no blending
+                                            dstRGBA = srcRGBA */
+                                             
+    BLENDMODE_BLEND = 0x00000001,    /**< alpha blending
+                                            dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
+                                            dstA = srcA + (dstA * (1-srcA)) */
+    BLENDMODE_ADD = 0x00000002,      /**< additive blending
+                                            dstRGB = (srcRGB * srcA) + dstRGB
+                                            dstA = dstA */
+    BLENDMODE_MOD = 0x00000004       /**< color modulate
+                                            dstRGB = srcRGB * dstRGB
+                                            dstA = dstA */
+} BlendMode;
+
 //CCanvas class
 class CCanvas {
 public:
@@ -170,6 +186,12 @@ public:
     */
     void SetTextureColorMod(const CColor& color);
 
+    /** Set drawing blend mode.
+    *  Use this function to set the blend mode used for drawing operations (Fill and Line). 
+    *  @param mode the BlendMode to use for blending.
+    */
+    void SetRenderDrawBlendMode(BlendMode mode) const;
+
     //lock and unlock ( for direct pixel access )
     bool Lock ( ) const;
 
@@ -224,7 +246,12 @@ public:
     //solid color fill fill a rectangle
     bool FillRect ( CRectangle& rect, const CColor& color ) const;
 
-    bool RenderFillRect(CRectangle& rect, const CColor* color) const;
+    /** Render a Point.
+    *  Use this function to draw a point on the current rendering target.
+    *  @param coordinates The x and y coordinates of the point.
+    *  @param color The drawing color of the point or NULL if no color change is wanted.
+    */
+    void RenderDrawPoint(const CPoint& coordinates, const CColor* color) const;
 
     /** Render a Line.
     *  Use this function to draw a line on the canvas rendering target.
@@ -233,6 +260,20 @@ public:
     *  @param color The drawing color of the line or NULL if no color change is wanted.
     */
     void RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const;
+
+    /** Draw a rectangle.
+    *  Use this function to draw a rectangle on the current rendering target. 
+    *  @param rect a CRectangle representing the rectangle to draw.
+    *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
+    */
+    bool RenderDrawRect(CRectangle& rect, const CColor* color) const;
+
+    /** Fill a rectangle.
+    *  Use this function to fill a rectangle on the current rendering target with the drawing color. 
+    *  @param rect a CRectangle representing the rectangle to draw.
+    *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
+    */
+    bool RenderFillRect(CRectangle& rect, const CColor* color) const;
 
     //clear entire surface to a color
     bool Clear ( const CColor& color ) const;
