@@ -231,9 +231,6 @@ namespace humbug {
                 //cs.Reset();
             }
 
-            //cs.AddDatapoint(CPoint(rdegrees, rdegrees));
-            cs.AddDatapoint(CPoint(degrees, degrees));
-            cs.RenderPut(target);
 
             for (size_t i = 0; i < stepsize; i++)
             {
@@ -242,6 +239,8 @@ namespace humbug {
                 int newColor = corrector + newColorStep;
                 newColor = newColor > 255 ? 255 : newColor;
                 newColor = newColor < 0 ? 0 : newColor;
+
+                cs.AddDatapoint(CPoint(degrees+i, newColor));
 
                 int newGreen = 25;
                 //if ((m_iFrames % (i + 1)) > stepsize / 2)
@@ -257,6 +256,10 @@ namespace humbug {
                 dstRect.Y() += dstRect.H();
 
             }
+
+            //cs.AddDatapoint(CPoint(rdegrees, rdegrees));
+            //cs.AddDatapoint(CPoint(degrees, stepcheck));
+            cs.RenderPut(target);
 
             //srcRect.Y() += srcRect.H();
             //dstRect.Y() += dstRect.H();

@@ -60,9 +60,9 @@ void CCoordSystem::RenderPut(const CCanvas* target) const {
                       CPoint coordinates = CPoint(p.GetX(), m_iHeight - p.GetY());
                       if (lastpSet)
                       {
-                          auto p_start = lastp + m_Offset;
-                          target->RenderDrawLine(p_start, coordinates + m_Offset, &color3);
+                          target->RenderDrawLine(lastp + m_Offset, coordinates + m_Offset, &color3);
                       }
+
                       target->RenderDrawPoint(coordinates + m_Offset, &color);
                       lastp = coordinates;
                       lastpSet = true;
