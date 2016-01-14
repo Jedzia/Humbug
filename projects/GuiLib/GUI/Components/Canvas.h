@@ -25,18 +25,24 @@ namespace components {
 
 typedef enum
 {
-    BLENDMODE_NONE = 0x00000000,     /**< no blending
-                                            dstRGBA = srcRGBA */
+    /**< no blending
+     dstRGBA = srcRGBA */
+    BLENDMODE_NONE = 0x00000000,     
                                              
-    BLENDMODE_BLEND = 0x00000001,    /**< alpha blending
-                                            dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
-                                            dstA = srcA + (dstA * (1-srcA)) */
-    BLENDMODE_ADD = 0x00000002,      /**< additive blending
-                                            dstRGB = (srcRGB * srcA) + dstRGB
-                                            dstA = dstA */
-    BLENDMODE_MOD = 0x00000004       /**< color modulate
-                                            dstRGB = srcRGB * dstRGB
-                                            dstA = dstA */
+    /**< alpha blending
+     dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
+     dstA = srcA + (dstA * (1-srcA)) */
+    BLENDMODE_BLEND = 0x00000001,    
+                                     
+    /**< additive blending
+     dstRGB = (srcRGB * srcA) + dstRGB
+     dstA = dstA */
+    BLENDMODE_ADD = 0x00000002,      
+                                     
+    /**< color modulate
+     dstRGB = srcRGB * dstRGB
+     dstA = dstA */
+    BLENDMODE_MOD = 0x00000004       
 } BlendMode;
 
 //CCanvas class

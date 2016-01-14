@@ -211,11 +211,14 @@ namespace humbug {
             PrintLabel(label3, "deg", degrees);
             PrintLabel(label4, "clock", clock);
 
+            target->SetRenderDrawBlendMode(BLENDMODE_NONE);
             CColor color = CColor::LightGreen();
             //target->RenderDrawLine(CPoint(20, 100 + degrees), CPoint(220, 100 + degrees), &color);
             SLine::RenderDrawLine(target, CPoint(20, 100 + degrees), CPoint(220, 100 + degrees), &color);
+            target->SetRenderDrawBlendMode(BLENDMODE_MOD);
             CRectangle rect = CRectangle(20, 100 + degrees, 100, 20);
             target->RenderFillRect(rect, &color);
+            target->SetRenderDrawBlendMode(BLENDMODE_NONE);
 
             for (size_t i = 0; i < stepsize; i++)
             {
