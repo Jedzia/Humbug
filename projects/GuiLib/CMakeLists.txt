@@ -90,6 +90,7 @@ SET(GuiLib_Component_headers
 		GUI/Components/Image.h
 		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
+		GUI/Components/CoordSystem.h
 
 		GUI/Components/Shapes/Line.h
 
@@ -119,6 +120,7 @@ SET(GuiLib_Component_sources
 		GUI/Components/Image.cpp
 		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
+		GUI/Components/CoordSystem.cpp
 
 		GUI/Components/Shapes/Line.cpp
 		

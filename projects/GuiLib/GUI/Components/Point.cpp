@@ -229,16 +229,22 @@ CPoint CPoint::operator / ( int scalar )
 }
 
 //comparison
-bool CPoint::operator == ( CPoint& pt )
+bool CPoint::operator == ( const CPoint& pt ) const
 {
 	//check for equality
-	return ( X ( ) == pt.X ( ) && Y ( ) == pt.Y ( ) ) ;
+    return (GetX() == pt.GetX() && GetY() == pt.GetY());
 }
 
-bool CPoint::operator != ( CPoint& pt )
+bool CPoint::operator != ( CPoint& pt ) const
 {
 	//check for inequality
 	return ( !( ( *this ) == pt ) ) ;
+}
+
+bool CPoint::operator < (const CPoint& pt) const
+{
+    //check for equality
+    return (GetX() < pt.GetX() && GetY() < pt.GetY());
 }
 
 CPoint CPoint::Offset( int x , int y )

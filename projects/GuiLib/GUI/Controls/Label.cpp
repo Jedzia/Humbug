@@ -66,6 +66,11 @@ CLabel::CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint
 CLabel::~CLabel(){
     //set caption to nothing
     SetCaption("");
+    if (s_FontMetrics) {
+        // Hmmm, delete the static here?
+        delete s_FontMetrics;
+        s_FontMetrics = NULL;
+    }
     dbgOut(__FUNCTION__);
 }
 
@@ -214,6 +219,7 @@ void CLabel::SetLabelFont(TTF_Font* pFont){
 
     if (s_FontMetrics) {
         delete s_FontMetrics;
+        s_FontMetrics = NULL;
     }
 
     s_FontMetrics = new GuiFontMetrics(pFont);

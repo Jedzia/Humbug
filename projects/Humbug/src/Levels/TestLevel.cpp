@@ -39,6 +39,7 @@
 #include "GUI/DebugOverlay.h"
 #include <GuiLib/GUI/Controls/Label.h>
 #include <GuiLib/GUI/Components/Shapes/Line.h>
+#include <GuiLib/GUI/Components/CoordSystem.h>
 
 
 namespace humbug {
@@ -105,12 +106,13 @@ namespace humbug {
         int label2;
         int label3;
         int label4;
+        CCoordSystem cs;
 
     public:
 
         // this little bastard should render colored stripes when ready.
         explicit CanvasStripeRenderer(int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
-            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), label1(nullptr), label2(0), label3(0), label4(0)
+            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), label1(nullptr), label2(0), label3(0), label4(0), cs("Coords", 400, 400, 0)
         {
             if (debug_overlay && debugFont)
             {
@@ -184,6 +186,7 @@ namespace humbug {
             dstRect.H() /= stepsize;
 
 
+            int rdegrees = (m_iFrames % 360);
             int degrees = (m_iFrames * 8 % 360);
             const float PI = 3.14159265f;
             float radians = degrees*PI / 180.0f;
@@ -211,6 +214,7 @@ namespace humbug {
             PrintLabel(label3, "deg", degrees);
             PrintLabel(label4, "clock", clock);
 
+            // CCoordSystem ?
             target->SetRenderDrawBlendMode(BLENDMODE_NONE);
             CColor color = CColor::LightGreen();
             //target->RenderDrawLine(CPoint(20, 100 + degrees), CPoint(220, 100 + degrees), &color);
@@ -219,6 +223,16 @@ namespace humbug {
             CRectangle rect = CRectangle(20, 100 + degrees, 100, 20);
             target->RenderFillRect(rect, &color);
             target->SetRenderDrawBlendMode(BLENDMODE_NONE);
+
+
+            if (rdegrees == 0)
+            {
+                //cs.Reset();
+            }
+
+            //cs.AddDatapoint(CPoint(rdegrees, rdegrees));
+            cs.AddDatapoint(CPoint(degrees, degrees));
+            cs.RenderPut(target);
 
             for (size_t i = 0; i < stepsize; i++)
             {

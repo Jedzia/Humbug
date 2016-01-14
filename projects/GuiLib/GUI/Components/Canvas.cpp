@@ -420,10 +420,10 @@ CRectangle CCanvas::GetClipRect ( ) const
     return ( rect );
 }
 
-bool CCanvas::FillRect ( CRectangle& rect, const CColor& color ) const
+bool CCanvas::FillRect(const  CRectangle& rect, const CColor& color) const
 {
     Uint32 col = SDL_MapRGB ( GetSurface ( )->format, color.GetR ( ), color.GetG ( ), color.GetB ( ) );
-    return ( SDL_FillRect ( GetSurface ( ), rect, col ) == 0 );
+    return (SDL_FillRect(GetSurface(), rect.SDLRectCP(), col) == 0);
 }
 
 void CCanvas::RenderDrawPoint(const CPoint& coordinates, const CColor* color) const
@@ -446,7 +446,7 @@ void CCanvas::RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CCo
     SDL_RenderDrawLine(GetRenderer(), pStart.GetX(), pStart.GetY(), pEnd.GetX(), pEnd.GetY());
 }
 
-bool CCanvas::RenderDrawRect(CRectangle& rect, const CColor* color) const
+bool CCanvas::RenderDrawRect(const CRectangle& rect, const CColor* color) const
 {
     int ret = 0;
     if (color)
@@ -454,11 +454,11 @@ bool CCanvas::RenderDrawRect(CRectangle& rect, const CColor* color) const
         ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
     }
 
-    ret = SDL_RenderDrawRect(GetRenderer(), rect);
+    ret = SDL_RenderDrawRect(GetRenderer(), rect.SDLRectCP());
     return true;
 }
 
-bool CCanvas::RenderFillRect(CRectangle& rect, const CColor* color) const
+bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor* color) const
 {
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
     int ret = 0;
@@ -467,7 +467,7 @@ bool CCanvas::RenderFillRect(CRectangle& rect, const CColor* color) const
         ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
     }
 
-    ret = SDL_RenderFillRect(GetRenderer(), rect);
+    ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
     return true;
 }
 

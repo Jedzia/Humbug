@@ -250,7 +250,7 @@ public:
     CRectangle GetClipRect ( ) const;
 
     //solid color fill fill a rectangle
-    bool FillRect ( CRectangle& rect, const CColor& color ) const;
+    bool FillRect(const CRectangle& rect, const CColor& color) const;
 
     /** Render a Point.
     *  Use this function to draw a point on the current rendering target.
@@ -272,14 +272,14 @@ public:
     *  @param rect a CRectangle representing the rectangle to draw.
     *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
     */
-    bool RenderDrawRect(CRectangle& rect, const CColor* color) const;
+    bool RenderDrawRect(const CRectangle& rect, const CColor* color) const;
 
     /** Fill a rectangle.
     *  Use this function to fill a rectangle on the current rendering target with the drawing color. 
     *  @param rect a CRectangle representing the rectangle to draw.
     *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
     */
-    bool RenderFillRect(CRectangle& rect, const CColor* color) const;
+    bool RenderFillRect(const CRectangle& rect, const CColor* color) const;
 
     //clear entire surface to a color
     bool Clear ( const CColor& color ) const;

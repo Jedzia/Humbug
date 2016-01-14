@@ -63,9 +63,9 @@ public:
 	CPoint operator / ( int scalar ) ;
 
 	//comparison
-	bool operator == ( CPoint& pt ) ;
-	bool operator != ( CPoint& pt ) ;
-
+	bool operator == ( const CPoint& pt ) const;
+	bool operator != ( CPoint& pt ) const;
+    bool operator<(const CPoint& pt) const;
 };
 
 CPoint operator * ( int scalar , CPoint& pt ) ;
