@@ -91,6 +91,8 @@ SET(GuiLib_Component_headers
 		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
 
+		GUI/Components/Shapes/Line.h
+
 		GUI/Components/Text.h
 		GUI/Components/TextScroller.h
 
@@ -118,6 +120,8 @@ SET(GuiLib_Component_sources
 		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
 
+		GUI/Components/Shapes/Line.cpp
+		
 		GUI/Components/Text.cpp
 		GUI/Components/TextScroller.cpp
 

@@ -1,4 +1,17 @@
 
+-X-X-X-X- Do, 14 Jan 2016 01:31:18 -----------------------------------------------------------
+char names: pippa and felicity
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 13 Jan 2016 03:34:05 -----------------------------------------------------------
+Todo
+Scrolling Text 
+	x from left to right
+	- from top to bottom
+	- star wars
+hookable das sich einklinken laesst vom screen und automatisch in draw, idle und update mit keyboard usw. eingebunden wird	
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Di, 12 Jan 2016 02:26:18 -----------------------------------------------------------
 Todo
 
