@@ -20,14 +20,8 @@
 
 namespace gui {
 namespace components {
-void CCoordSystem::RenderAxis(const CCanvas* target) const {
-    CColor color = CColor::LightRed();
-    SLine::RenderDrawLine(target, CPoint(0, m_iHeight), CPoint(m_iHeight, m_iWidth), &color);
-    SLine::RenderDrawLine(target, CPoint(0, 0), CPoint(0, m_iHeight), &color);
-}
-
-CCoordSystem::CCoordSystem(const char* title, int width, int height, Uint32 flags) : m_pTitle(title), m_iWidth(width),
-    m_iHeight(height), m_uFlags(flags), m_LastPoint(0,0)
+CCoordSystem::CCoordSystem(const char* title, int width, int height, const CPoint& offset, Uint32 flags) : m_pTitle(title), m_iWidth(width),
+m_iHeight(height), m_uFlags(flags), m_LastPoint(0, 0), m_Offset(offset)
 {}
 
 CCoordSystem::~CCoordSystem() {
@@ -46,7 +40,14 @@ void CCoordSystem::AddDatapoint(const CPoint& point){
     std::set<CPoint>::_Pairib ins = m_vPoints.insert(point);
 }
 
+void CCoordSystem::RenderAxis(const CCanvas* target) const {
+    CColor color = CColor::LightRed();
+    SLine::RenderDrawLine(target, CPoint(0, m_iHeight).Add(m_Offset), CPoint(m_iHeight, m_iWidth).Add(m_Offset), &color);
+    SLine::RenderDrawLine(target, CPoint(0, 0).Add(m_Offset), CPoint(0, m_iHeight).Add(m_Offset), &color);
+}
+
 void CCoordSystem::RenderPut(const CCanvas* target) const {
+
     RenderAxis(target);
     const CColor color = CColor::Cyan();
     const CColor color3 = CColor::LightCyan();
@@ -59,9 +60,10 @@ void CCoordSystem::RenderPut(const CCanvas* target) const {
                       CPoint coordinates = CPoint(p.GetX(), m_iHeight - p.GetY());
                       if (lastpSet)
                       {
-                          target->RenderDrawLine(lastp, coordinates, &color3);
+                          auto p_start = lastp + m_Offset;
+                          target->RenderDrawLine(p_start, coordinates + m_Offset, &color3);
                       }
-                      target->RenderDrawPoint(coordinates, &color);
+                      target->RenderDrawPoint(coordinates + m_Offset, &color);
                       lastp = coordinates;
                       lastpSet = true;
                   }
@@ -77,7 +79,7 @@ void CCoordSystem::RenderPut(const CCanvas* target) const {
         xy.X() -= 4;
         xy.Y() -= 4;
         auto rect = CRectangle(xy, wh);
-        target->RenderFillRect(rect, &color2);
+        target->RenderFillRect(rect + m_Offset, &color2);
     }
 }
 }   // namespace components

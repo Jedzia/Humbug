@@ -112,7 +112,8 @@ namespace humbug {
 
         // this little bastard should render colored stripes when ready.
         explicit CanvasStripeRenderer(int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
-            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), label1(nullptr), label2(0), label3(0), label4(0), cs("Coords", 400, 400, 0)
+            : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay), 
+            label1(nullptr), label2(0), label3(0), label4(0), cs("Coords", 400, 400, CPoint(100, 100))
         {
             if (debug_overlay && debugFont)
             {

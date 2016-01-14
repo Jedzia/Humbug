@@ -92,7 +92,7 @@ CPoint& CPoint::Move ( int dx , int dy )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::Add ( CPoint& pt )
+CPoint& CPoint::Add ( const CPoint& pt )
 {
 	//add point to this point
 	( *this ) += pt ;
@@ -138,11 +138,11 @@ CPoint& CPoint::operator = ( CPoint& pt )
 	return ( *this ) ;
 }
 
-CPoint& CPoint::operator += ( CPoint& pt )
+CPoint& CPoint::operator += ( const CPoint& pt )
 {
 	//add to x and y
-	X ( ) += pt.X ( ) ;
-	Y ( ) += pt.Y ( ) ;
+	X ( ) += pt.GetX ( ) ;
+	Y ( ) += pt.GetY ( ) ;
 	//return this point
 	return ( *this ) ;
 }
@@ -188,11 +188,10 @@ CPoint CPoint::operator + ( )
 	return ( *this ) ;
 }
 
-CPoint CPoint::operator + ( CPoint& pt )
+CPoint CPoint::operator + ( const CPoint& pt ) const
 {
 	//add points together
-	CPoint result ;
-	result = ( *this ) ;
+	CPoint result(GetX(), GetY()) ;
 	result += pt ;
 	//return new point
 	return ( result ) ;

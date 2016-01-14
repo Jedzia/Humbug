@@ -16,11 +16,12 @@ class CCoordSystem
     //std::vector<CPoint> m_vPoints;
     std::set<CPoint> m_vPoints;
     CPoint m_LastPoint;
+    CPoint m_Offset;
 
     void RenderAxis(const CCanvas* target) const;
 public:
     //constructor
-    CCoordSystem(const char * title, int width, int height, Uint32 flags);
+    CCoordSystem(const char * title, int width, int height, const CPoint& offset = CPoint(0,0), Uint32 flags = 0);
     //destructor
     virtual ~CCoordSystem ( ) ;
 

@@ -36,7 +36,7 @@ public:
 
 	//move
 	CPoint& Move ( int dx , int dy ) ;
-	CPoint& Add ( CPoint& pt ) ;
+	CPoint& Add ( const CPoint& pt ) ;
 	CPoint& Subtract ( CPoint& pt ) ;
 
 	//scale
@@ -45,10 +45,10 @@ public:
 	//distance
 	int Distance ( CPoint& pt ) ;
 
-	//operators
+	//operators TODO: fix const ref for all 
 	//assignment
 	CPoint& operator = ( CPoint& pt ) ;
-	CPoint& operator += ( CPoint& pt ) ;
+	CPoint& operator += ( const CPoint& pt ) ;
 	CPoint& operator -= ( CPoint& pt ) ;
 	CPoint& operator *= ( int scalar ) ;
 	CPoint& operator /= ( int scalar ) ;
@@ -57,7 +57,7 @@ public:
 	CPoint operator - ( ) ;
 	CPoint operator + ( ) ;
 
-	CPoint operator + ( CPoint& pt ) ;
+	CPoint operator + ( const CPoint& pt ) const;
 	CPoint operator - ( CPoint& pt ) ;
 	CPoint operator * ( int scalar ) ;
 	CPoint operator / ( int scalar ) ;
