@@ -105,7 +105,7 @@ namespace humbug {
 	  CColor m_colText = CColor::White();
 	  CColor m_colBack = CColor::Black();
 	  std::ostringstream outstring;
-	  outstring << "Ticks: " << m_ticks;
+	  outstring << "FPS: " << gui::CApplication::GetFPS() << ", Ticks: " << m_ticks;
 
 	  CText text(m_pDebugfont, outstring.str(), m_colText);
 

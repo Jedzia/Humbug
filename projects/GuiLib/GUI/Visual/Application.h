@@ -78,6 +78,11 @@ public:
     static Uint32 ShownFrames() { return m_iShownFrames; }
 	static int FramesCap() { return m_iFramesCap; }
 
+    static int GetFPS()
+    {
+        return m_iShownFrames;
+    }
+
 private:
     // Frames per second
     static int m_iFramesCap;
