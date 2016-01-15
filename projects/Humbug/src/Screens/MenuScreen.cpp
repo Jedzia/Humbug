@@ -30,6 +30,7 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
+#include <GuiLib/GUI/Controls/LineMenu.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -51,55 +52,28 @@ MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
     m_pScrollText(NULL),
     m_pScroller(NULL),
     m_pSprMgr(new CSpriteManager){
-    //,m_pSprEye(NULL),
-    //m_pSprWormler(NULL)
     dbgOut(__FUNCTION__ << " " << this);
 }
 
 MenuScreen::~MenuScreen(void){
-    //delete m_pScrollText;
-    //delete m_pScroller;
-    //delete m_pBackground;
-    //delete m_pSprWormler;
-    //delete m_pSprEye;
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-/*GroupId MenuScreen::GetGroupID()
-   {
-    static GroupId grpID = CreateNextGroupID();
-    return grpID;
-    //throw std::exception("The method or operation is not implemented.");
-   }*/
 bool MenuScreen::OnInit( int argc, char* argv[] ){
-    // Master()->GetMainCanvas();
-    CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1,
-    // "MenuScreen"));
-    m_pOverlay.reset( new DebugOverlay(m_Loader, NULL, 1, "MenuScreen") );
+    m_pLineMenu.reset( new LineMenu(m_Loader, NULL, 1, "MenuScreen") );
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
 
-    //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
-    //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
-    // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
+    
     SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/MenuScreenBg.png") );
-
-    //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-    //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-    //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-    //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
     m_pBackground.reset( new CCanvas( tmpfsurf ) );
-
-    //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
 
-    //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-    //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-    m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
-
-    //"\r\n"
     CColor m_colText = CColor::White();
     std::ostringstream outstring;
     outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
@@ -131,7 +105,7 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
 }   // OnInit
 
 void MenuScreen::OnIdle(int ticks){
-    m_pOverlay->IdleSetVars(ticks);
+    m_pLineMenu->IdleSetVars(ticks);
     //m_pScroller->Scroll(4);
     //m_pSprMgr->OnIdle(ticks);
 }
@@ -142,14 +116,11 @@ void MenuScreen::OnDraw(){
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     m_pMainCanvas->Lock();
 
-    //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground,
-    // m_pBackground->GetDimension() );
     m_pBackground->RenderCopy();
     CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
 
-    //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
     m_pMainCanvas->RenderFillRect( frect, &color );
@@ -165,8 +136,7 @@ void MenuScreen::OnDraw(){
         coldelta = 0;
     }
 
-    //controls::CControl::Redraw();
-    m_pOverlay->Draw();
+    m_pLineMenu->Draw();
     m_pMainCanvas->Unlock();
 }   // OnDraw
 
