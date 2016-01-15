@@ -15,167 +15,164 @@
  */
 /*---------------------------------------------------------*/
 #include "../../stdafx.h"
+//
 #include "LineMenu.h"
-#include "../../Filesystem/FileLoader.h"
-#include "../../GUI/Components/Image.h"
-#include "../../GUI/Components/Text.h"
+//
 #include "Label.h"
 
 using namespace gui::components;
 using namespace gui::controls;
 
-namespace humbug {
+namespace gui {
+namespace components {
 //#include <build/cmake/include/debug.h>
 
- int LineMenu::LabelId = 6000;
+int LineMenu::LabelId = 6000;
 
- LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
-     CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16), m_sName(name),
-      m_pLoader(m_Loader){
-      dbgOut(__FUNCTION__);
+LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
+    CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16), m_sName(name),
+    m_pLoader(m_Loader){
+    dbgOut(__FUNCTION__);
 
-      //Init(pParent);
-      //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-      //footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
+    //Init(pParent);
+    //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    //footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
 
-      // BringToFront();
-      //SetMouseHover(this);
+    // BringToFront();
+    //SetMouseHover(this);
 
-	  m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 36);
+    m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 36);
 
-      m_tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
-      SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
+    m_tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
+    SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
 
-	  //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
-      //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
-      //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);
-	  //CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
-	  //pParent->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
-      //Invalidate();
-  }
+    //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
+    //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
+    //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);
+    //CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
+    //pParent->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
+    //Invalidate();
+}
 
-  LineMenu::~LineMenu(void){
-      //delete m_pFooterImage;
-      delete m_tmpcanvas;
-      dbgOut(__FUNCTION__);
-  }
+LineMenu::~LineMenu(void){
+    //delete m_pFooterImage;
+    delete m_tmpcanvas;
+    dbgOut(__FUNCTION__);
+}
 
-  /** LineMenu, Init:
-   *  Detailed description.
-   *  @param pParent TODO
-   * @return TODO
-   */
-  void LineMenu::Init(CControl* pParent){}
+/** LineMenu, Init:
+ *  Detailed description.
+ *  @param pParent TODO
+ * @return TODO
+ */
+void LineMenu::Init(CControl* pParent){}
 
-  /** LineMenu, InitRect:
-   *  Detailed description.
-   *  @param loader TODO
-   * @return TODO
-   */
-  CRectangle LineMenu::InitRect(const FileLoader& loader){
-      /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
-         LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
-         //CControl::set
-         m_pFooterImage = new CImage( footer );
-         dst = CPoint( 0, GetCanvas()->GetHeight( ) - footer->GetHeight( ) );*/
-      return CRectangle(0, 0, 1024, 354);
-  }
+/** LineMenu, InitRect:
+ *  Detailed description.
+ *  @param loader TODO
+ * @return TODO
+ */
+CRectangle LineMenu::InitRect(const FileLoader& loader){
+    /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
+       LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
+       //CControl::set
+       m_pFooterImage = new CImage( footer );
+       dst = CPoint( 0, GetCanvas()->GetHeight( ) - footer->GetHeight( ) );*/
+    return CRectangle(0, 0, 1024, 354);
+}
 
-  /** LineMenu, OnDraw:
-   *  Detailed description.
-   *  @return TODO
-   */
-  void LineMenu::OnDraw(){
-      /*Child
-      std::list<CControl*>::iterator iter;
-      for (iter = m_lstChildren.begin(); iter != m_lstChildren.end(); iter++)
-      {
-          //grab item from list
-          CControl* pChild = (*iter);
-          //draw
-          pChild->Draw();
-      }*/
+/** LineMenu, OnDraw:
+ *  Detailed description.
+ *  @return TODO
+ */
+void LineMenu::OnDraw(){
+    /*Child
+       std::list<CControl*>::iterator iter;
+       for (iter = m_lstChildren.begin(); iter != m_lstChildren.end(); iter++)
+       {
+       //grab item from list
+       CControl* pChild = (*iter);
+       //draw
+       pChild->Draw();
+       }*/
 
-	  CCanvas *pCanvas = GetCanvas();
-	  CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
-	  CRectangle ownDimensions = GetCanvas()->GetDimension();
+    CCanvas* pCanvas = GetCanvas();
+    CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
+    CRectangle ownDimensions = GetCanvas()->GetDimension();
 
+    CColor m_colText = CColor::White();
+    CColor m_colBack = CColor::Black();
+    std::ostringstream outstring;
+    outstring << "[" << m_sName << "] FPS: " << gui::CApplication::ShownFrames() << ", Ticks: " << m_ticks;
 
-	  CColor m_colText = CColor::White();
-	  CColor m_colBack = CColor::Black();
-	  std::ostringstream outstring;
-	  outstring << "[" << m_sName << "] FPS: " << gui::CApplication::GetFPS() << ", Ticks: " << m_ticks;
+    CText text(m_pDebugfont, outstring.str(), m_colText);
 
-	  CText text(m_pDebugfont, outstring.str(), m_colText);
+    CRectangle txtDims = text.GetCanvas()->GetDimension();
+    CRectangle dstDims = globalPosition;
+    pCanvas->RenderFillRect(txtDims, &m_colBack);
+    text.RenderPut(pCanvas, dstDims, txtDims);
 
-	  CRectangle txtDims = text.GetCanvas()->GetDimension();
-	  CRectangle dstDims = globalPosition;
-	  pCanvas->RenderFillRect(txtDims, &m_colBack);
-	  text.RenderPut(pCanvas, dstDims, txtDims );
+    pCanvas->AddUpdateRect(dstDims);
 
-	  pCanvas->AddUpdateRect(dstDims);
+    //CControl::OnDraw();
+}         // OnDraw
 
-	  //CControl::OnDraw();
-  } // OnDraw
+/** LineMenu, OnMouseMove:
+ *  Detailed description.
+ *  @param x TODO
+ * @param y TODO
+ * @param relx TODO
+ * @param rely TODO
+ * @param bLeft TODO
+ * @param bRight TODO
+ * @param bMiddle TODO
+ * @return TODO
+ */
+bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
+        bool bMiddle){
+    bool res = CControl::OnMouseMove(x, y, relx, rely, bLeft, bRight, bMiddle);
 
-  /** LineMenu, OnMouseMove:
-   *  Detailed description.
-   *  @param x TODO
-   * @param y TODO
-   * @param relx TODO
-   * @param rely TODO
-   * @param bLeft TODO
-   * @param bRight TODO
-   * @param bMiddle TODO
-   * @return TODO
-   */
-  bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
-          bool bMiddle){
-      bool res = CControl::OnMouseMove( x, y, relx, rely, bLeft, bRight, bMiddle);
-
-      //if(GetMouseHover()==NULL) SetMouseHover(this);
-      /*if(HasMouseHover())
-          {
-                  //clear to light gray
-                  GetCanvas()->FillRect(CRectangle(0,0,GetWidth(),GetHeight()),CColor(155,255,155));
-         }*/
-      return res;
-  }
-
-  void LineMenu::IdleSetVars( int ticks )
-  {
-	  m_ticks = ticks;
-  }
-
-    int LineMenu::AddTextLabel()
-    {
-        if (!CLabel::GetLabelFont())
+    //if(GetMouseHover()==NULL) SetMouseHover(this);
+    /*if(HasMouseHover())
         {
-            CLabel::SetLabelFont(m_pDebugfont);
-        }
+        //clear to light gray
+        GetCanvas()->FillRect(CRectangle(0,0,GetWidth(),GetHeight()),CColor(155,255,155));
+        }*/
+    return res;
+}
 
-        int id = LabelId;
-        LabelId++;
+void LineMenu::IdleSetVars(int ticks){
+    m_ticks = ticks;
+}
 
-        std::ostringstream labelText;
-        labelText << "AddTextLabel " << id << "";
-
-        CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), true, CColor::Black(), CColor::White());
-        m_mLabels.insert(id, label1);
-
-        Uint16 height = label1->GetHeight();
-        label1->SetPosition(CPoint(100, m_iLastAutoLabelPosition));
-        m_iLastAutoLabelPosition += height;
-
-        this->AddChild(label1);
-
-        return id;
+int LineMenu::AddTextLabel(){
+    if ( !CLabel::GetLabelFont() ) {
+        CLabel::SetLabelFont(m_pDebugfont);
     }
 
-    void LineMenu::SetTextLabelText(int id, const std::string& text)
-    {
-        //CLabel& label = m_mLabels[id];
-        CLabel& label = m_mLabels.at(id);
-        label.SetCaption(text);
-    }
+    int id = LabelId;
+    LabelId++;
+
+    std::ostringstream labelText;
+    labelText << "AddTextLabel " << id << "";
+
+    CLabel* label1 = new CLabel( this, CRectangle(0, 0, -1, -1), id, labelText.str(), true,
+            CColor::Black(), CColor::White() );
+    m_mLabels.insert(id, label1);
+
+    Uint16 height = label1->GetHeight();
+    label1->SetPosition( CPoint(100, m_iLastAutoLabelPosition) );
+    m_iLastAutoLabelPosition += height;
+
+    this->AddChild(label1);
+
+    return id;
+} // LineMenu::AddTextLabel
+
+void LineMenu::SetTextLabelText(int id, const std::string& text){
+    //CLabel& label = m_mLabels[id];
+    CLabel& label = m_mLabels.at(id);
+    label.SetCaption(text);
+}
+}
 }
