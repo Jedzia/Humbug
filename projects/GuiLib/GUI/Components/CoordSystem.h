@@ -27,6 +27,11 @@ public:
 
     void Reset();
     void AddDatapoint(const CPoint& point);
+    
+    int NumDatapoints() const
+    {
+        return m_vPoints.size();
+    }
 
     /** Render a Line.
         *  Use this function to draw a line on the specified rendering target.

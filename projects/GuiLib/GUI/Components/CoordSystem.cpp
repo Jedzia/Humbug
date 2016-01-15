@@ -52,25 +52,24 @@ void CCoordSystem::RenderPut(const CCanvas* target) const {
     const CColor color = CColor::Cyan();
     const CColor color3 = CColor::LightCyan();
 
-    auto size = m_vPoints.size();
     CPoint lastp;
     bool lastpSet = false;
     std::for_each(m_vPoints.begin(), m_vPoints.end(), [&](const CPoint &p)
                   {
-                      CPoint coordinates = CPoint(p.GetX(), m_iHeight - p.GetY());
+                      CPoint coordinates = CPoint(p.GetX(), m_iHeight - p.GetY()) + m_Offset;
                       if (lastpSet)
                       {
-                          target->RenderDrawLine(lastp + m_Offset, coordinates + m_Offset, &color3);
+                          target->RenderDrawLine(coordinates, lastp, &color3);
                       }
 
-                      target->RenderDrawPoint(coordinates + m_Offset, &color);
+                      target->RenderDrawPoint(coordinates, &color);
                       lastp = coordinates;
                       lastpSet = true;
                   }
     );
 
     const CColor color2 = CColor::DarkRed();
-    if (size > 0)
+    if (NumDatapoints() > 0)
     {
         CPoint coordinates = CPoint(m_LastPoint.GetX(), m_iHeight - m_LastPoint.GetY());
         //target->RenderDrawPoint(coordinates, &color2);

@@ -243,7 +243,8 @@ bool CPoint::operator != ( CPoint& pt ) const
 bool CPoint::operator < (const CPoint& pt) const
 {
     //check for equality
-    return (GetX() < pt.GetX() && GetY() < pt.GetY());
+    //return (GetX() < pt.GetX() || GetY() < pt.GetY());
+    return (GetX() < pt.GetX());
 }
 
 CPoint CPoint::Offset( int x , int y )

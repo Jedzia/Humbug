@@ -106,6 +106,7 @@ namespace humbug {
         int label2;
         int label3;
         int label4;
+        int label5;
         CCoordSystem cs;
 
     public:
@@ -132,6 +133,7 @@ namespace humbug {
                 label2 = m_pDovl->AddTextLabel();
                 label3 = m_pDovl->AddTextLabel();
                 label4 = m_pDovl->AddTextLabel();
+                label5 = m_pDovl->AddTextLabel();
 
             }
         }
@@ -240,8 +242,6 @@ namespace humbug {
                 newColor = newColor > 255 ? 255 : newColor;
                 newColor = newColor < 0 ? 0 : newColor;
 
-                cs.AddDatapoint(CPoint(degrees+i, newColor));
-
                 int newGreen = 25;
                 //if ((m_iFrames % (i + 1)) > stepsize / 2)
                 if (stepcheck == i)
@@ -256,6 +256,9 @@ namespace humbug {
                 dstRect.Y() += dstRect.H();
 
             }
+
+            cs.AddDatapoint(CPoint(degrees, corrector));
+            PrintLabel(label5, "Datapoints", cs.NumDatapoints());
 
             //cs.AddDatapoint(CPoint(rdegrees, rdegrees));
             //cs.AddDatapoint(CPoint(degrees, stepcheck));
