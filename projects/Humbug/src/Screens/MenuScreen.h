@@ -17,13 +17,13 @@
 #define HUMBUG_SCREENS_MenuScreen_H
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <GuiLib/GUI/Components/Screen.h>
+#include <GuiLib/GUI/Controls/LineMenu.h>
 
 class FileLoader;
 namespace gui {
 class CSprite;
 class CSpriteManager;
 namespace components {
-    class LineMenu;
     class CCanvas;
 class CText;
 class CTextScroller;
@@ -77,9 +77,10 @@ public:
 
 private:
 
+    virtual void MenuSelectionChanged(int selectedLabel) const;
+
     struct MenuScreenImpl;
     boost::scoped_ptr<MenuScreenImpl> pimpl_;
-
     FileLoader& m_Loader;
     Uint8 x;
     gui::components::CColor mcol;
@@ -88,6 +89,7 @@ private:
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
     boost::scoped_ptr<gui::components::LineMenu> m_pLineMenu;
+    gui::components::LineMenu::menu_changed_connection_t m_connection;
 
     int label1;
     int label2;

@@ -30,7 +30,6 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
-#include <GuiLib/GUI/Controls/LineMenu.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -45,7 +44,7 @@ struct MenuScreen::MenuScreenImpl {
 };
 
 MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
-    pimpl_(new MenuScreen::MenuScreenImpl ),
+    pimpl_(new MenuScreenImpl ),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
@@ -56,6 +55,7 @@ MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
 }
 
 MenuScreen::~MenuScreen(void){
+    m_pLineMenu->disconnect(m_connection);
     dbgOut(__FUNCTION__ << " " << this);
 }
 
@@ -66,6 +66,8 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
     label2 = m_pLineMenu->AddTextLabel();
     label3 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
+
+    m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
@@ -152,5 +154,10 @@ void MenuScreen::OnUpdate(){
 void MenuScreen::OnEvent(SDL_Event* pEvent)
 {
     m_pLineMenu->HookEventloop(pEvent);
+}
+
+void MenuScreen::MenuSelectionChanged(int selectedLabel) const
+{
+    dbgOut(__FUNCTION__ << "SelectedLabel: "  << selectedLabel << " (" << this << ").");
 }
 }

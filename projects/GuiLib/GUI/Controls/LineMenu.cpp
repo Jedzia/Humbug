@@ -160,13 +160,17 @@ void LineMenu::HookEventloop(SDL_Event* keyevent){
     case SDLK_s:
         NavigateDown();
         break;
+    case SDLK_RETURN:
+    case SDLK_e:
+        m_sigMenuChanged(m_iSelectedLabel);
+        break;
     default:
         break;
     }       // switch
 } // LineMenu::HookEventloop
 
 int LineMenu::AddTextLabel(){
-    //if ( !CLabel::GetLabelFont() ) {
+    //if ( !CLabel::GetLabelFont() ) { 
     //}
     CRectangle globalPosition = GetCanvas()->GetDimension();
     CRectangle ownDimensions = globalPosition.Pad(m_rPadding);

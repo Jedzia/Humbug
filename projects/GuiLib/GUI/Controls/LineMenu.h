@@ -23,19 +23,32 @@
 #include "../../GUI/Components/Text.h"
 #include "Control.h"
 #include "Label.h"
+#include "../Detail/Signals.h"
 
 namespace gui {
 namespace components {
-/** @class LineMenu:
+/** @class LineMenu: 
  *  Detailed description.
  *
  */
-class LineMenu : public controls::CControl {
+class LineMenu : public controls::CControl { 
 public:
+    typedef bs::signal<void(int selectedLabel)>  menu_changed_signal_t;
+    typedef bs::connection  menu_changed_connection_t;
 
     // LineMenu(const FileLoader& loader, CCanvas* pCanvas);
     LineMenu(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name, const CRectangle& dimensions, const CRectangle& padding);
     ~LineMenu();
+
+    menu_changed_connection_t connect(menu_changed_signal_t::slot_function_type subscriber)
+    {
+        return m_sigMenuChanged.connect(subscriber);
+    }
+
+    void disconnect(menu_changed_connection_t subscriber)
+    {
+        subscriber.disconnect();
+    }
 
     void OnDraw() override;
 
@@ -77,6 +90,7 @@ private:
 
     CRectangle InitRect(const FileLoader& loader);
 
+    menu_changed_signal_t m_sigMenuChanged;
     //canvas used by window
     const FileLoader& m_pLoader;
     TTF_Font* m_pDebugfont;
