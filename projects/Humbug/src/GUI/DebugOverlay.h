@@ -19,12 +19,10 @@
 
 #include "GUI/Components/Canvas.h"
 #include "GUI/Controls/Control.h"
-#include <string>
+
 namespace gui {
   namespace components {
-	  class CCanvas;
 	  class CImage;
-	  class CText;
   }
   namespace controls {
       class CLabel;
@@ -37,7 +35,7 @@ namespace humbug {
 public:
 
       // DebugOverlay(const FileLoader& loader, CCanvas* pCanvas);
-      DebugOverlay(FileLoader& loader, gui::controls::CControl* pParent, Uint32 id, const std::string& name);
+      DebugOverlay(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name);
       ~DebugOverlay();
 
 	  void OnDraw() override;

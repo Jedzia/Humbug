@@ -25,6 +25,7 @@
 using namespace gui::components;
 using namespace gui::controls;
 
+// Todo: this can be moved to GuiLib. (arial font loading, etc, should be parameterizable)
 namespace humbug {
 //#include <build/cmake/include/debug.h>
 
@@ -105,7 +106,7 @@ namespace humbug {
 	  CColor m_colText = CColor::White();
 	  CColor m_colBack = CColor::Black();
 	  std::ostringstream outstring;
-	  outstring << "[" << m_sName << "] FPS: " << gui::CApplication::GetFPS() << ", Ticks: " << m_ticks;
+      outstring << "[" << m_sName << "] FPS: " << gui::CApplication::ShownFrames() << ", Ticks: " << m_ticks;
 
 	  CText text(m_pDebugfont, outstring.str(), m_colText);
 
