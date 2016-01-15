@@ -124,11 +124,10 @@ void MenuScreen::OnDraw(){
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
     m_pMainCanvas->RenderFillRect( frect, &color );
-    m_pMainCanvas->AddUpdateRect(frect);
 
     CRectangle dstDims( 0, 0, 200, 200);
     m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
-    m_pMainCanvas->AddUpdateRect(dstDims);
+    //m_pMainCanvas->AddUpdateRect(dstDims);
 
     coldelta++;
 

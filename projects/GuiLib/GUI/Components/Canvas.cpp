@@ -331,6 +331,7 @@ CRectangle CCanvas::GetDimension ( ) const {
 }
 
 void CCanvas::AddUpdateRect ( const CRectangle& UpdateRect ){
+    return;
     SDL_Rect* pRect = NULL;
     pRect = new SDL_Rect;
     pRect->x = UpdateRect.GetX();

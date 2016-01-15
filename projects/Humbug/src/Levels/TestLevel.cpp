@@ -487,13 +487,13 @@ namespace humbug {
         }*/
 
         //m_pMainCanvas->AddUpdateRect( m_pSprite->SprImage()->SrcRect() );
-        m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
+        //m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
 
         //m_pMainCanvas->FillRect( frect, mcol );
         SDL_Color& fcol = wavemap[index];
         CColor sdl_color = CColor(fcol.r, fcol.g, fcol.b, fcol.a);
         m_pMainCanvas->RenderFillRect( frect, &sdl_color );
-        m_pMainCanvas->AddUpdateRect(frect);
+        //m_pMainCanvas->AddUpdateRect(frect);
 
         static int xxx = 0;
         CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
@@ -501,7 +501,7 @@ namespace humbug {
         //m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
 //        m_pScrollText->GetCanvas()->SetTextureColorMod(sdl_color);
         m_pScrollText->RenderPut(m_pMainCanvas, dstDims, srcDims );
-        m_pMainCanvas->AddUpdateRect(dstDims);
+        //m_pMainCanvas->AddUpdateRect(dstDims);
         xxx++;
         if (xxx > 128) {
             xxx = 0;

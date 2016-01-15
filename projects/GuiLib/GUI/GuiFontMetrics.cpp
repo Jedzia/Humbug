@@ -29,7 +29,7 @@ CRectangle GuiFontMetrics::CalculateDimensions(const std::string& text) const {
         const char* ctext = text.c_str();
         int width, height;
 
-        if ( (TTF_SizeUTF8(m_pFont, ctext, &width, &height) < 0) || !width ) {
+        if ((TTF_SizeText(m_pFont, ctext, &width, &height) < 0) || !width) {
             // Todo: TTF_SetError("Text has zero width");
             return CRectangle();
         }

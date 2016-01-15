@@ -115,7 +115,7 @@ namespace humbug {
 	  pCanvas->RenderFillRect(txtDims, &m_colBack);
 	  text.RenderPut(pCanvas, dstDims, txtDims );
 
-	  pCanvas->AddUpdateRect(dstDims);
+	  //pCanvas->AddUpdateRect(dstDims);
 
 	  //CControl::OnDraw();
   } // OnDraw

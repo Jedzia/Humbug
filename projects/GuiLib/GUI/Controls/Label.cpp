@@ -7,20 +7,22 @@
 
 namespace gui {
 namespace controls {
+using namespace components;
+
 MSGID CLabel::MSGID_LabelClick = CMessageHandler::GetNextMSGID();     //parm1=id
 //label font
 //TTF_Font * CLabel::m_pLabelFont = NULL;
 //GuiFontMetrics * CLabel::m_pFontMetrics = NULL;
 
-components::CRectangle CLabel::CreateTextCanvas(const std::string& sCaption,
-        const gui::components::CRectangle& rcDimensions,
-        const gui::components::CColor& colText){
+CRectangle CLabel::CreateTextCanvas(const std::string& sCaption,
+        const CRectangle& rcDimensions,
+        const CColor& colText){
     //set the caption
     //m_pcnvText = NULL;
     if (sCaption != "" && m_pLabelFont != NULL) {
         // Todo: when no font ... throw? ... or warn?
         m_pcnvText.reset(
-                new components::CCanvas(TTF_RenderText_Blended( m_pLabelFont, sCaption.c_str(), colText.SDLColor() ),
+                new CCanvas(TTF_RenderText_Blended( m_pLabelFont, sCaption.c_str(), colText.SDLColor() ),
                         true) );
     }
 
@@ -32,9 +34,9 @@ components::CRectangle CLabel::CreateTextCanvas(const std::string& sCaption,
     return rcDimensions;
 }
 
-components::CRectangle CLabel::CalculateDimensions(const std::string& sCaption,
-        const gui::components::CRectangle& rcDimensions,
-        const gui::components::CColor& colText,
+CRectangle CLabel::CalculateDimensions(const std::string& sCaption,
+        const CRectangle& rcDimensions,
+        const CColor& colText,
         TTF_Font* labelFont) const
 {
     GuiFontMetrics fm(labelFont);
@@ -47,10 +49,10 @@ components::CRectangle CLabel::CalculateDimensions(const std::string& sCaption,
 }
 
 // ReSharper disable once CppPossiblyUninitializedMember
-CLabel::CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, TTF_Font* labelFont,
+CLabel::CLabel(CControl* pParent, CRectangle rcDimensions, Uint32 id, std::string sCaption, TTF_Font* labelFont,
         bool usesSDL2Render,
-        gui::components::CColor colFace, gui::components::CColor colText, gui::components::CColor colHilite,
-        gui::components::CColor colShadow) :
+        CColor colFace, CColor colText, CColor colHilite,
+        CColor colShadow) :
         CControl(pParent, CalculateDimensions(sCaption, rcDimensions, colText, labelFont), id, true, usesSDL2Render), m_pLabelFont(labelFont),
     m_bPressed(false){
     dbgOut(__FUNCTION__);
@@ -80,7 +82,7 @@ void CLabel::OnDraw(){
     //lock the surface
     GetCanvas()->Lock();
 
-    gui::components::CRectangle rcDst, rcSrc;
+    CRectangle rcDst, rcSrc;
     //set destination rectangle
     rcDst.Set( GetPosition().GetX(), GetPosition().GetY(), GetWidth(), GetHeight() );
     //set source rectangle
@@ -98,7 +100,7 @@ void CLabel::OnDraw(){
             // parent to draw.
             auto wid = GetWidth();
             auto hei = GetHeight();
-            components::CRectangle sdl_rect = GetCanvas()->GetDimension();
+            CRectangle sdl_rect = GetCanvas()->GetDimension();
             //GetCanvas()->RenderFillRect(sdl_rect, CColor::Red());
             //GetCanvas()->FillRect(rcDst, CColor::Red());
         }
@@ -145,7 +147,7 @@ void CLabel::OnDraw(){
     //GetCanvas()->FillRect(CRectangle(0,0,100,100), CColor::Blue());
 
     // remove the next line, just for testing
-    GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
+    //GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
 
     if (m_bUsesSDL2Render) {
         GetCanvas()->RenderPutCopy(m_pcnvText.get(), &rcSrc, &rcDst);
@@ -192,7 +194,7 @@ void CLabel::SetCaption(const std::string& sCaption){
     //set the caption
     m_sCaption = sCaption;
 
-    components::CRectangle dim = CreateTextCanvas(sCaption, components::CRectangle(), m_colText);
+    CRectangle dim = CreateTextCanvas(sCaption, CRectangle(), m_colText);
 
     /*return;
        //create text canvas

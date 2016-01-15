@@ -49,8 +49,6 @@ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std
     //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
     //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
     //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);
-    //CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
-    //pParent->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
     //Invalidate();
 }
 
@@ -111,8 +109,6 @@ void LineMenu::OnDraw(){
     CRectangle dstDims = globalPosition;
     pCanvas->RenderFillRect(txtDims, &m_colBack);
     text.RenderPut(pCanvas, dstDims, txtDims);
-
-    pCanvas->AddUpdateRect(dstDims);
 
     //CControl::OnDraw();
 }         // OnDraw
