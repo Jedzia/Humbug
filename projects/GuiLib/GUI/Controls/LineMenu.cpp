@@ -146,9 +146,8 @@ void LineMenu::IdleSetVars(int ticks){
 }
 
 int LineMenu::AddTextLabel(){
-    if ( !CLabel::GetLabelFont() ) {
-        CLabel::SetLabelFont(m_pDebugfont);
-    }
+    //if ( !CLabel::GetLabelFont() ) {
+    //}
 
     int id = LabelId;
     LabelId++;
@@ -156,7 +155,7 @@ int LineMenu::AddTextLabel(){
     std::ostringstream labelText;
     labelText << "AddTextLabel " << id << "";
 
-    CLabel* label1 = new CLabel( this, CRectangle(0, 0, -1, -1), id, labelText.str(), true,
+    CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), m_pDebugfont, true,
             CColor::Black(), CColor::White() );
     m_mLabels.insert(id, label1);
 

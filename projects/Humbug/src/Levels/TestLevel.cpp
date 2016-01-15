@@ -118,13 +118,13 @@ namespace humbug {
         {
             if (debug_overlay && debugFont)
             {
-                if (!controls::CLabel::GetLabelFont())
+                /*if (!controls::CLabel::GetLabelFont())
                 {
                     controls::CLabel::SetLabelFont(debugFont);
-                }
+                }*/
 
                 // manual label creation
-                label1.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", true, CColor::Black(), CColor::White()));
+                label1.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", debugFont, true, CColor::Black(), CColor::White()));
                 Uint16 height = label1->GetHeight();
                 label1->SetPosition(CPoint(0, height));
                 m_pDovl->AddChild(label1.get());
@@ -358,10 +358,10 @@ namespace humbug {
         //m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf",
         // 30);
         m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 30);
-        if (!controls::CLabel::GetLabelFont())
+        /*if (!controls::CLabel::GetLabelFont())
         {
             controls::CLabel::SetLabelFont(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 16));
-        }
+        }*/
 
 
 

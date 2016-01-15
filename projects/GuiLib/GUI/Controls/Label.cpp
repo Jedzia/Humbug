@@ -9,18 +9,18 @@ namespace gui {
 namespace controls {
 MSGID CLabel::MSGID_LabelClick = CMessageHandler::GetNextMSGID();     //parm1=id
 //label font
-TTF_Font * CLabel::s_LabelFont = NULL;
-GuiFontMetrics * CLabel::s_FontMetrics = NULL;
+//TTF_Font * CLabel::m_pLabelFont = NULL;
+//GuiFontMetrics * CLabel::m_pFontMetrics = NULL;
 
 components::CRectangle CLabel::CreateTextCanvas(const std::string& sCaption,
         const gui::components::CRectangle& rcDimensions,
         const gui::components::CColor& colText){
     //set the caption
     //m_pcnvText = NULL;
-    if (sCaption != "" && s_LabelFont != NULL) {
+    if (sCaption != "" && m_pLabelFont != NULL) {
         // Todo: when no font ... throw? ... or warn?
         m_pcnvText.reset(
-                new components::CCanvas(TTF_RenderText_Blended( s_LabelFont, sCaption.c_str(), colText.SDLColor() ),
+                new components::CCanvas(TTF_RenderText_Blended( m_pLabelFont, sCaption.c_str(), colText.SDLColor() ),
                         true) );
     }
 
@@ -34,20 +34,24 @@ components::CRectangle CLabel::CreateTextCanvas(const std::string& sCaption,
 
 components::CRectangle CLabel::CalculateDimensions(const std::string& sCaption,
         const gui::components::CRectangle& rcDimensions,
-        const gui::components::CColor& colText){
-    if (sCaption != "" && s_LabelFont != NULL) {
-        return s_FontMetrics->CalculateDimensions(sCaption);
+        const gui::components::CColor& colText,
+        TTF_Font* labelFont) const
+{
+    GuiFontMetrics fm(labelFont);
+
+    if (sCaption != "" && m_pLabelFont != NULL) {
+        return fm.CalculateDimensions(sCaption);
     }
 
     return rcDimensions;
 }
 
 // ReSharper disable once CppPossiblyUninitializedMember
-CLabel::CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption,
+CLabel::CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, std::string sCaption, TTF_Font* labelFont,
         bool usesSDL2Render,
         gui::components::CColor colFace, gui::components::CColor colText, gui::components::CColor colHilite,
         gui::components::CColor colShadow) :
-    CControl(pParent, CalculateDimensions(sCaption, rcDimensions, colText), id, true, usesSDL2Render),
+        CControl(pParent, CalculateDimensions(sCaption, rcDimensions, colText, labelFont), id, true, usesSDL2Render), m_pLabelFont(labelFont),
     m_bPressed(false){
     dbgOut(__FUNCTION__);
 //        //set the caption
@@ -66,11 +70,6 @@ CLabel::CLabel(CControl* pParent, gui::components::CRectangle rcDimensions, Uint
 CLabel::~CLabel(){
     //set caption to nothing
     SetCaption("");
-    if (s_FontMetrics) {
-        // Hmmm, delete the static here?
-        delete s_FontMetrics;
-        s_FontMetrics = NULL;
-    }
     dbgOut(__FUNCTION__);
 }
 
@@ -197,10 +196,10 @@ void CLabel::SetCaption(const std::string& sCaption){
 
     /*return;
        //create text canvas
-       if(m_sCaption!="" && s_LabelFont!=NULL) {
+       if(m_sCaption!="" && m_pLabelFont!=NULL) {
         // Todo: when no font ... throw? ... or warn?
         m_pcnvText =
-            new gui::components::CCanvas( TTF_RenderText_Blended(s_LabelFont, m_sCaption.c_str(),
+            new gui::components::CCanvas( TTF_RenderText_Blended(m_pLabelFont, m_sCaption.c_str(),
                m_colText) );
        }*/
 }
@@ -215,23 +214,17 @@ std::string CLabel::GetCaption() const
 //set label font
 void CLabel::SetLabelFont(TTF_Font* pFont){
     //set the label font
-    s_LabelFont = pFont;
-
-    if (s_FontMetrics) {
-        delete s_FontMetrics;
-        s_FontMetrics = NULL;
-    }
-
-    s_FontMetrics = new GuiFontMetrics(pFont);
+    m_pLabelFont = pFont;
 }
 
 /** CLabel, GetLabelFont:
  *  Detailed description.
  *  @return TODO
  */
-TTF_Font * CLabel::GetLabelFont(){
+TTF_Font * CLabel::GetLabelFont() const
+{
     //return buton font
-    return(s_LabelFont);
+    return(m_pLabelFont);
 }
 }   // namespace controls
 } // namespace gui

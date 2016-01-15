@@ -151,10 +151,10 @@ namespace humbug {
 
     int DebugOverlay::AddTextLabel()
     {
-        if (!CLabel::GetLabelFont())
+        /*if (!CLabel::GetLabelFont())
         {
-            CLabel::SetLabelFont(m_pDebugfont);
-        }
+            //CLabel::SetLabelFont(m_pDebugfont);
+        }*/
 
         int id = LabelId;
         LabelId++;
@@ -162,7 +162,7 @@ namespace humbug {
         std::ostringstream labelText;
         labelText << "AddTextLabel " << id << "";
 
-        CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), true, CColor::Black(), CColor::White());
+        CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), m_pDebugfont, true, CColor::Black(), CColor::White());
         m_mLabels.insert(id, label1);
         
         Uint16 height = label1->GetHeight();

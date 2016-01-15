@@ -21,7 +21,6 @@
 #include "SDL_ttf.h"
 
 namespace gui {
-class GuiFontMetrics;
 namespace controls {
 /** @class CLabel:
 *  abstracts a ui Label.
@@ -39,8 +38,7 @@ class CLabel : public CControl {
     //pressed state
     bool m_bPressed;
     //Label font
-    static TTF_Font* s_LabelFont;
-    static GuiFontMetrics* s_FontMetrics;
+    TTF_Font* m_pLabelFont;
 
     /** CreateTextCanvas:
     *  Detailed description.
@@ -52,9 +50,10 @@ class CLabel : public CControl {
             const components::CRectangle& rcDimensions,
             const components::CColor& colText);
 
-    static components::CRectangle CalculateDimensions(const std::string& sCaption,
+    components::CRectangle CalculateDimensions(const std::string& sCaption,
             const components::CRectangle& rcDimensions,
-            const components::CColor& colText);
+            const components::CColor& colText,
+            TTF_Font* labelFont) const;
 
 public:
 
@@ -72,7 +71,7 @@ public:
      *  @param colHilite The controls hilight color.
      *  @param colShadow The controls shadow color.
      */
-    CLabel( CControl* pParent, components::CRectangle rcDimensions, Uint32 id, std::string sCaption,
+    CLabel(CControl* pParent, components::CRectangle rcDimensions, Uint32 id, std::string sCaption, TTF_Font* labelFont,
             bool usesSDL2Render = false,
             components::CColor colFace = components::CColor(192, 192, 192), components::CColor colText = components::CColor(0, 0, 0),
             components::CColor colHilite = components::CColor(255, 255, 255), components::CColor colShadow = components::CColor(128, 128, 128));
@@ -106,9 +105,9 @@ public:
     std::string GetCaption() const;
 
     //set label font
-    static void SetLabelFont(TTF_Font* pFont);
+    void SetLabelFont(TTF_Font* pFont);
 
-    static TTF_Font * GetLabelFont();
+    TTF_Font * GetLabelFont() const;
 
     //message for clicking label
     static MSGID MSGID_LabelClick;     //parm1=id
