@@ -37,7 +37,7 @@ namespace humbug {
 public:
 
       // DebugOverlay(const FileLoader& loader, CCanvas* pCanvas);
-      DebugOverlay(FileLoader& loader, gui::controls::CControl* pParent, Uint32 id);
+      DebugOverlay(FileLoader& loader, gui::controls::CControl* pParent, Uint32 id, const std::string& name);
       ~DebugOverlay();
 
 	  void OnDraw() override;
@@ -82,6 +82,7 @@ private:
       //CPoint dst;
       //DebugOverlayBackground* m_pBackground;
       // CCanvas* footer;
+      std::string m_sName;
       gui::components::CImage* footerImage;
       bool oldstate;
       gui::components::CCanvas* tmpcanvas;

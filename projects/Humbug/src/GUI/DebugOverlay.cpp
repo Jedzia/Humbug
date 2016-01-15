@@ -30,8 +30,8 @@ namespace humbug {
 
  int DebugOverlay::LabelId = 6000;
 
-  DebugOverlay::DebugOverlay(FileLoader& m_Loader, CControl* pParent, Uint32 id) :
-      CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16),
+ DebugOverlay::DebugOverlay(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
+     CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16), m_sName(name),
       m_pLoader(m_Loader){
       dbgOut(__FUNCTION__);
 
@@ -51,7 +51,7 @@ namespace humbug {
       //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
       //GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
 	  //CControl::GetMainControl()->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
-	  pParent->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
+	  //pParent->GetCanvas()->AddUpdateRect( CRectangle(0, 0, 1024, 768) );
       //Invalidate();
   }
 
@@ -97,7 +97,7 @@ namespace humbug {
           pChild->Draw();
       }*/
 
-	  CCanvas *pCanvas = GetParent()->GetCanvas();
+	  CCanvas *pCanvas = GetCanvas();
 	  CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
 	  CRectangle ownDimensions = GetCanvas()->GetDimension();
 
@@ -105,7 +105,7 @@ namespace humbug {
 	  CColor m_colText = CColor::White();
 	  CColor m_colBack = CColor::Black();
 	  std::ostringstream outstring;
-	  outstring << "FPS: " << gui::CApplication::GetFPS() << ", Ticks: " << m_ticks;
+	  outstring << "[" << m_sName << "] FPS: " << gui::CApplication::GetFPS() << ", Ticks: " << m_ticks;
 
 	  CText text(m_pDebugfont, outstring.str(), m_colText);
 
@@ -116,7 +116,7 @@ namespace humbug {
 
 	  pCanvas->AddUpdateRect(dstDims);
 
-	  CControl::OnDraw();
+	  //CControl::OnDraw();
   } // OnDraw
 
   /** DebugOverlay, OnMouseMove:

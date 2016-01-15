@@ -69,12 +69,13 @@ public:
     TestHookable();
     virtual ~TestHookable();
 
-    void OnIdle(int ticks);
-    virtual GroupId GetGroupID();
+    GroupId GetGroupID() override;
 
-    virtual void OnConnect();
+    void OnIdle(int ticks) override;
 
-    virtual void OnDisconnect();
+    void OnConnect() override;
+
+    void OnDisconnect() override;
 
 protected:
 private:

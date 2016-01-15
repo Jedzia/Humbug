@@ -73,7 +73,8 @@ MenuScreen::~MenuScreen(void){
 bool MenuScreen::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    m_pOverlay.reset( new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1) );
+    //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1, "MenuScreen"));
+    m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "MenuScreen"));
 
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -162,7 +163,8 @@ void MenuScreen::OnDraw(){
         coldelta = 0;
     }
 
-    controls::CControl::Redraw();
+    //controls::CControl::Redraw();
+    m_pOverlay->Draw();
     m_pMainCanvas->Unlock();
 }   // OnDraw
 

@@ -344,7 +344,8 @@ namespace humbug {
         // Master()->GetMainCanvas();
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
 
-        m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1));
+        //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1, "TestLevel"));
+        m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "TestLevel"));
 
 
         /*testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0, 0, 160,
@@ -534,7 +535,7 @@ namespace humbug {
         }
 
         //m_pOverlay->OnDraw();
-        CControl::Redraw();
+        m_pOverlay->Draw();
         m_pMainCanvas->Unlock();
     } // OnDraw
 

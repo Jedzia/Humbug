@@ -458,7 +458,8 @@ private:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Clear( CColor::Black() );
 
-        m_pOverlay.reset( new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1) );
+        //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1, "LevelA"));
+        m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "LevelA"));
 
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
