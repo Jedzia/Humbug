@@ -15,8 +15,8 @@
 /*---------------------------------------------------------*/
 #ifndef HUMBUG_SCREENS_Template_H
 #define HUMBUG_SCREENS_Template_H
-#include "GUI/Components/Screen.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
+#include <GuiLib/GUI/Components/Screen.h>
 
 class FileLoader;
 namespace gui {

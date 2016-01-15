@@ -13,24 +13,25 @@
  * modified    2016-01-09, Jedzia
  */
 /*---------------------------------------------------------*/
-#include "MenuScreen.h"
 #include "stdafx.h"
-
-//#include <build/cmake/include/debug.h>
+//
+#include "MenuScreen.h"
+//
+#include "../GUI/DebugOverlay.h"
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
-//
-#include "Filesystem/FileLoader.h"
-#include "GUI/Components/Rectangle.h"
-#include "GUI/Components/Text.h"
-#include "GUI/Components/TextScroller.h"
-#include "GUI/Data/ColorData.h"
-#include "GUI/Sprite/Sprite.h"
-#include "GUI/Sprite/SpriteManager.h"
-#include "GUI/Visual/EventHandler.h"
+#include <GuiLib/Filesystem/FileLoader.h>
+#include <GuiLib/GUI/Components/Rectangle.h>
+#include <GuiLib/GUI/Components/Text.h>
+#include <GuiLib/GUI/Components/TextScroller.h>
 #include <GuiLib/GUI/Controls/Control.h>
-#include <Humbug/src/GUI/DebugOverlay.h>
+#include <GuiLib/GUI/Data/ColorData.h>
+#include <GuiLib/GUI/Sprite/Sprite.h>
+#include <GuiLib/GUI/Sprite/SpriteManager.h>
+#include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
+//
+//#include <build/cmake/include/debug.h>
 
 using namespace gui::components;
 using namespace gui;
@@ -73,8 +74,9 @@ MenuScreen::~MenuScreen(void){
 bool MenuScreen::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1, "MenuScreen"));
-    m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "MenuScreen"));
+    //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1,
+    // "MenuScreen"));
+    m_pOverlay.reset( new DebugOverlay(m_Loader, NULL, 1, "MenuScreen") );
 
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
