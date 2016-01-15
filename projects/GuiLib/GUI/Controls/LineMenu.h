@@ -5,21 +5,21 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the DebugOverlay.h class.
+ *             the LineMenu.h class.
  * \folder     $(folder)
- * \file       DebugOverlay.h
+ * \file       LineMenu.h
  * \date       2012-07-10
  * \author     Jedzia.
  *
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef GUI_DebugOverlay_H
-#define GUI_DebugOverlay_H
+#ifndef GUI_LineMenu_H
+#define GUI_LineMenu_H
 
-#include "GUI/Components/Canvas.h"
-#include "GUI/Controls/Control.h"
-#include <string>
+#include "../../GUI/Components/Canvas.h"
+#include "../../GUI/Controls/Control.h"
+
 namespace gui {
   namespace components {
 	  class CCanvas;
@@ -33,15 +33,15 @@ namespace gui {
 class FileLoader;
 
 namespace humbug {
-  class DebugOverlay : public gui::controls::CControl {
+  class LineMenu : public gui::controls::CControl {
 public:
 
-      // DebugOverlay(const FileLoader& loader, CCanvas* pCanvas);
-      DebugOverlay(FileLoader& loader, gui::controls::CControl* pParent, Uint32 id, const std::string& name);
-      ~DebugOverlay();
+      // LineMenu(const FileLoader& loader, CCanvas* pCanvas);
+      LineMenu(FileLoader& loader, gui::controls::CControl* pParent, Uint32 id, const std::string& name);
+      ~LineMenu();
 
 	  void OnDraw() override;
-      
+
       /** Idle update.
       *  Call during the idle method of your display loop.
       *  @param ticks Use this to pass the ticks parameter of the idle loop.
@@ -64,7 +64,7 @@ public:
       bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle) override;
 
 private:
-        
+
       static int LabelId;
       void Init(gui::controls::CControl* pParent);
 
@@ -74,21 +74,21 @@ private:
       const FileLoader& m_pLoader;
 	  TTF_Font* m_pDebugfont;
 	  boost::scoped_ptr<gui::components::CText> m_pTextA;
-      
+
       boost::ptr_map<int, gui::controls::CLabel> m_mLabels;
       int m_iLastAutoLabelPosition;
 
       //CCanvas* m_pCanvas;
       //CPoint dst;
-      //DebugOverlayBackground* m_pBackground;
+      //LineMenuBackground* m_pBackground;
       // CCanvas* footer;
       std::string m_sName;
-      gui::components::CImage* m_pFooterImage;
-      bool m_bOldstate;
-      gui::components::CCanvas* m_pTmpCanvas;
-      bool m_bFlank;
+      gui::components::CImage* footerImage;
+      bool oldstate;
+      gui::components::CCanvas* m_tmpcanvas;
+      bool flank;
 	  int m_ticks;
   };
 }
 
-#endif // GUI_DebugOverlay_H
+#endif // GUI_LineMenu_H

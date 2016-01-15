@@ -5,22 +5,21 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the DebugOverlay.cpp class.
+ *             the LineMenu.cpp class.
  * \folder     $(folder)
- * \file       DebugOverlay.cpp
+ * \file       LineMenu.cpp
  * \date       2012-07-10
  * \author     Jedzia.
  *
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#include "../stdafx.h"
-#include "Filesystem/FileLoader.h"
-#include "GUI/Components/Image.h"
-#include "GUI/Components/Text.h"
-
-#include "DebugOverlay.h"
-#include <GuiLib/GUI/Controls/Label.h>
+#include "../../stdafx.h"
+#include "LineMenu.h"
+#include "../../Filesystem/FileLoader.h"
+#include "../../GUI/Components/Image.h"
+#include "../../GUI/Components/Text.h"
+#include "Label.h"
 
 using namespace gui::components;
 using namespace gui::controls;
@@ -28,9 +27,9 @@ using namespace gui::controls;
 namespace humbug {
 //#include <build/cmake/include/debug.h>
 
- int DebugOverlay::LabelId = 6000;
+ int LineMenu::LabelId = 6000;
 
- DebugOverlay::DebugOverlay(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
+ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
      CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16), m_sName(name),
       m_pLoader(m_Loader){
       dbgOut(__FUNCTION__);
@@ -42,11 +41,11 @@ namespace humbug {
       // BringToFront();
       //SetMouseHover(this);
 
-	  m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 12);
+	  m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 36);
 
-      m_pTmpCanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
-      SDL_SetSurfaceAlphaMod(m_pTmpCanvas->GetSurface(), 122);
-      
+      m_tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
+      SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
+
 	  //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
       //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
       //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);
@@ -55,25 +54,25 @@ namespace humbug {
       //Invalidate();
   }
 
-  DebugOverlay::~DebugOverlay(void){
+  LineMenu::~LineMenu(void){
       //delete m_pFooterImage;
-      delete m_pTmpCanvas;
+      delete m_tmpcanvas;
       dbgOut(__FUNCTION__);
   }
 
-  /** DebugOverlay, Init:
+  /** LineMenu, Init:
    *  Detailed description.
    *  @param pParent TODO
    * @return TODO
    */
-  void DebugOverlay::Init(CControl* pParent){}
+  void LineMenu::Init(CControl* pParent){}
 
-  /** DebugOverlay, InitRect:
+  /** LineMenu, InitRect:
    *  Detailed description.
    *  @param loader TODO
    * @return TODO
    */
-  CRectangle DebugOverlay::InitRect(const FileLoader& loader){
+  CRectangle LineMenu::InitRect(const FileLoader& loader){
       /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
          LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
          //CControl::set
@@ -82,11 +81,11 @@ namespace humbug {
       return CRectangle(0, 0, 1024, 354);
   }
 
-  /** DebugOverlay, OnDraw:
+  /** LineMenu, OnDraw:
    *  Detailed description.
    *  @return TODO
    */
-  void DebugOverlay::OnDraw(){
+  void LineMenu::OnDraw(){
       /*Child
       std::list<CControl*>::iterator iter;
       for (iter = m_lstChildren.begin(); iter != m_lstChildren.end(); iter++)
@@ -119,7 +118,7 @@ namespace humbug {
 	  //CControl::OnDraw();
   } // OnDraw
 
-  /** DebugOverlay, OnMouseMove:
+  /** LineMenu, OnMouseMove:
    *  Detailed description.
    *  @param x TODO
    * @param y TODO
@@ -130,7 +129,7 @@ namespace humbug {
    * @param bMiddle TODO
    * @return TODO
    */
-  bool DebugOverlay::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
+  bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
           bool bMiddle){
       bool res = CControl::OnMouseMove( x, y, relx, rely, bLeft, bRight, bMiddle);
 
@@ -143,12 +142,12 @@ namespace humbug {
       return res;
   }
 
-  void DebugOverlay::IdleSetVars( int ticks )
+  void LineMenu::IdleSetVars( int ticks )
   {
 	  m_ticks = ticks;
   }
 
-    int DebugOverlay::AddTextLabel()
+    int LineMenu::AddTextLabel()
     {
         if (!CLabel::GetLabelFont())
         {
@@ -163,7 +162,7 @@ namespace humbug {
 
         CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), true, CColor::Black(), CColor::White());
         m_mLabels.insert(id, label1);
-        
+
         Uint16 height = label1->GetHeight();
         label1->SetPosition(CPoint(100, m_iLastAutoLabelPosition));
         m_iLastAutoLabelPosition += height;
@@ -173,7 +172,7 @@ namespace humbug {
         return id;
     }
 
-    void DebugOverlay::SetTextLabelText(int id, const std::string& text)
+    void LineMenu::SetTextLabelText(int id, const std::string& text)
     {
         //CLabel& label = m_mLabels[id];
         CLabel& label = m_mLabels.at(id);

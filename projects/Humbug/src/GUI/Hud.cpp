@@ -103,7 +103,7 @@ namespace humbug {
       /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
          LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
          //CControl::set
-         footerImage = new CImage( footer );
+         m_pFooterImage = new CImage( footer );
          dst = CPoint( 0, GetCanvas()->GetHeight( ) - footer->GetHeight( ) );*/
       return CRectangle(0, 0, 1024, 354);
   }
@@ -115,14 +115,14 @@ namespace humbug {
   void Hud::OnDraw(){
       /*
          CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
-         flank = true;
-         bool checkSwitch = HasMouseHover() ^ flank;
+         m_bFlank = true;
+         bool checkSwitch = HasMouseHover() ^ m_bFlank;
 
-         //footerImage->Put( GetCanvas(), dst );
-         if( checkSwitch &&  oldstate == false) {
+         //m_pFooterImage->Put( GetCanvas(), dst );
+         if( checkSwitch &&  m_bOldstate == false) {
           //clear to light gray
           CRectangle& ownDimensions = GetCanvas()->GetDimension();
-          GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
+          GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);
 
           //GetCanvas()->FillRect( CRectangle( 0, 0, GetWidth(), GetHeight() ), CColor(155, 255,
              155)
@@ -131,9 +131,9 @@ namespace humbug {
           Invalidate();
           //m_ptIsDirty = true;
          }
-         else if(!checkSwitch &&  oldstate == true)   {
-          //SDL_SetSurfaceAlphaMod(footerImage->GetCanvas()->GetSurface(), 44);
-          footerImage->Put( GetCanvas(), CPoint(0, 0) );
+         else if(!checkSwitch &&  m_bOldstate == true)   {
+          //SDL_SetSurfaceAlphaMod(m_pFooterImage->GetCanvas()->GetSurface(), 44);
+          m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
 
           //GetParent()->Update();
           int dreck = this->GetWidth();
@@ -153,12 +153,12 @@ namespace humbug {
          if(m_ptIsDirty) {
           int abc = 123;
 
-          //footerImage->Put( GetCanvas(), CPoint(0, 0) );
+          //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
           //CControl::GetMainControl()->GetCanvas()->AddUpdateRect(CRectangle(0,0,1024,768));
           //m_ptIsDirty = false;
          }
 
-         oldstate = checkSwitch;*/
+         m_bOldstate = checkSwitch;*/
       CControl::OnDraw();
   } // OnDraw
 
