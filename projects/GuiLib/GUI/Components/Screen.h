@@ -42,7 +42,13 @@ public:
 
     //virtual bool OnInit( int argc,char* argv[] );
 protected:
-    bool OnInit( int argc,char* argv[] ) override;
+    /** Initialization frame-loop.
+    *  Is called once on initialization.
+    *  @param argc Dummy parameter.
+    * @param argv Dummy parameter.
+    * @return true on success.
+    */
+    bool OnInit(int argc, char* argv[]) override;
 private:
     GroupId GetGroupID() override;
 

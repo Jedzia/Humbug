@@ -27,6 +27,7 @@
 #include "Screens/BlaScreen.h"
 #include "Screens/LuaScreen.h"
 #include "Screens/HopperScreen.h"
+#include "Screens/MenuScreen.h"
 #include "Levels/TestLevel.h"
 #include "Levels/LevelA.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
@@ -251,7 +252,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             fl->FreeLast();
 
             int fontsize = 48;
-			CPoint sp(220, 240);
+			CPoint sp(120, 140);
 			TTF_Font *iarial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
 
 			const char *lines[] = { 
@@ -263,7 +264,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 				"Press '6' for: LuaScreen",
 				"Press '7' for: HopperScreen",
 				"Press '8' for: LevelA",
-                "Press '9' for: SimpleScreen"
+                "Press '9' for: SimpleScreen",
+                "Press '0' for: MenuScreen"
             };
 
             for (int i = 0; i < sizeof(lines) / sizeof(const char *); i++)
@@ -350,6 +352,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	HookMgr()->RegisterHookable("Hopper", HookCreatorPtr(new ScreenCreator<HopperScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Simple", HookCreatorPtr(new ScreenCreator<SimpleScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Menu", HookCreatorPtr(new ScreenCreator<MenuScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->EnableHookable("StartScreen");
 	//HookMgr()->EnableHookable("TestScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
@@ -561,6 +564,10 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     else if (sym == SDLK_9)   {
         //
         HookMgr()->EnableHookable("Simple");
+    }
+    else if (sym == SDLK_0)   {
+        //
+        HookMgr()->EnableHookable("Menu");
     }
 
 } // OnKeyDown

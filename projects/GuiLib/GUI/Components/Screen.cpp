@@ -48,12 +48,6 @@ GroupId Screen::GetGroupID(){
     //throw std::exception("The method or operation is not implemented.");
 }
 
-/** Screen, OnInit:
- *  Detailed description.
- *  @param argc TODO
- * @param argv TODO
- * @return TODO
- */
 bool Screen::OnInit( int argc, char* argv[] ){
     //Screen *screen = static_cast<Screen *>(hook);
     bool result = Hookable::OnInit(argc, argv);

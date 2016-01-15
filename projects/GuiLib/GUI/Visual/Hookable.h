@@ -26,6 +26,10 @@ public:
     //initialization
     virtual bool OnInit(int argc,char* argv[]);
 
+    /** Idle frame-loop.
+    *  Is called once per frame, before OnDraw().
+    *  @param ticks frame ticks counter.
+    */
     virtual void OnIdle(int ticks) = 0;
     friend class HookableManager;
 
