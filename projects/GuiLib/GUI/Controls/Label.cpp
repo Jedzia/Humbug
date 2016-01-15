@@ -228,5 +228,16 @@ TTF_Font * CLabel::GetLabelFont() const
     //return buton font
     return(m_pLabelFont);
 }
+
+components::CColor CLabel::GetTextColor() const
+{
+    return m_colText;
+}
+
+void CLabel::SetTextColor(const components::CColor color)
+{
+    m_colText = color;
+    CRectangle dim = CreateTextCanvas(m_sCaption, CRectangle(), m_colText);
+}
 }   // namespace controls
 } // namespace gui

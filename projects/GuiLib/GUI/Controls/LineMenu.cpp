@@ -28,9 +28,11 @@ namespace components {
 //#include <build/cmake/include/debug.h>
 
 int LineMenu::LabelId = 6000;
+const int LABELFONTSIZE = 32;
 
-LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
-    CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16), m_sName(name),
+LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name,
+        const CRectangle& dimensions, const CRectangle& padding) :
+        CControl(pParent, dimensions, id), m_iLastAutoLabelPosition(0), m_sName(name), m_rPadding(padding), m_iSelectedLabel(LabelId),
     m_pLoader(m_Loader){
     dbgOut(__FUNCTION__);
 
@@ -41,7 +43,7 @@ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std
     // BringToFront();
     //SetMouseHover(this);
 
-    m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 36);
+    m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", LABELFONTSIZE);
 
     m_tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
     SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
@@ -101,7 +103,7 @@ void LineMenu::OnDraw(){
     CColor m_colText = CColor::White();
     CColor m_colBack = CColor::Black();
     std::ostringstream outstring;
-    outstring << "[" << m_sName << "] FPS: " << gui::CApplication::ShownFrames() << ", Ticks: " << m_ticks;
+    outstring << "[" << m_sName << "] FPS: " << gui::CApplication::ShownFrames() << ", Ticks: " << m_iTicks;
 
     CText text(m_pDebugfont, outstring.str(), m_colText);
 
@@ -138,12 +140,36 @@ bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bL
 }
 
 void LineMenu::IdleSetVars(int ticks){
-    m_ticks = ticks;
+    m_iTicks = ticks;
 }
+
+void LineMenu::HookEventloop(SDL_Event* keyevent){
+    //m_KeyboardHandler.HandleKeyboardEvent(keyevent);
+
+    //if (keyevent->type != SDL_KEYDOWN && keyevent->type != SDL_KEYUP) {
+    if (keyevent->type != SDL_KEYDOWN) {
+        return;
+    }
+
+    switch (keyevent->key.keysym.sym) {
+    case SDLK_UP:
+    case SDLK_w:
+        NavigateUp();
+        break;
+    case SDLK_DOWN:
+    case SDLK_s:
+        NavigateDown();
+        break;
+    default:
+        break;
+    }       // switch
+} // LineMenu::HookEventloop
 
 int LineMenu::AddTextLabel(){
     //if ( !CLabel::GetLabelFont() ) {
     //}
+    CRectangle globalPosition = GetCanvas()->GetDimension();
+    CRectangle ownDimensions = globalPosition.Pad(m_rPadding);
 
     int id = LabelId;
     LabelId++;
@@ -151,13 +177,13 @@ int LineMenu::AddTextLabel(){
     std::ostringstream labelText;
     labelText << "AddTextLabel " << id << "";
 
-    CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelText.str(), m_pDebugfont, true,
+    CLabel* label1 = new CLabel( this, CRectangle(0, 0, -1, -1), id, labelText.str(), m_pDebugfont, true,
             CColor::Black(), CColor::White() );
     m_mLabels.insert(id, label1);
 
     Uint16 height = label1->GetHeight();
-    label1->SetPosition( CPoint(100, m_iLastAutoLabelPosition) );
-    m_iLastAutoLabelPosition += height;
+    label1->SetPosition( CPoint(ownDimensions.GetX(), ownDimensions.GetX() + m_iLastAutoLabelPosition) );
+    m_iLastAutoLabelPosition += height + LABELFONTSIZE;
 
     this->AddChild(label1);
 
@@ -169,5 +195,43 @@ void LineMenu::SetTextLabelText(int id, const std::string& text){
     CLabel& label = m_mLabels.at(id);
     label.SetCaption(text);
 }
+
+void LineMenu::NavigateDown()
+{
+    auto search = m_mLabels.find(m_iSelectedLabel + 1);
+    if (search != m_mLabels.end())
+    {
+        auto search1 = m_mLabels.find(m_iSelectedLabel);
+        if (search1 != m_mLabels.end())
+        {
+            CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
+            labelD.SetTextColor(CColor::Blue());
+        }
+
+        m_iSelectedLabel++;
+        CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
+        labelD.SetTextColor(CColor::Red());
+    }
+}
+
+void LineMenu::NavigateUp()
+{
+    auto search = m_mLabels.find(m_iSelectedLabel - 1);
+    if (search != m_mLabels.end())
+    {
+        auto search1 = m_mLabels.find(m_iSelectedLabel);
+        if (search1 != m_mLabels.end())
+        {
+            CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
+            //labelD.SetCaption("Moooooo");
+            labelD.SetTextColor(CColor::Blue());
+        }
+
+        m_iSelectedLabel--;
+        CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
+        labelD.SetTextColor(CColor::Red());
+    }
+}
+
 }
 }

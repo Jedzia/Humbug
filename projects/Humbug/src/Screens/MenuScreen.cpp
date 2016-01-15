@@ -60,11 +60,12 @@ MenuScreen::~MenuScreen(void){
 }
 
 bool MenuScreen::OnInit( int argc, char* argv[] ){
-    m_pLineMenu.reset( new LineMenu(m_Loader, NULL, 1, "MenuScreen") );
-    m_pLineMenu->AddTextLabel();
-    m_pLineMenu->AddTextLabel();
-    m_pLineMenu->AddTextLabel();
-    m_pLineMenu->AddTextLabel();
+    m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", Master()->GetMainCanvas()->GetDimension(), CRectangle(100, 100, 100, 100)));
+    //m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", CRectangle(0, 0, 200, 100)));
+    label1 = m_pLineMenu->AddTextLabel();
+    label2 = m_pLineMenu->AddTextLabel();
+    label3 = m_pLineMenu->AddTextLabel();
+    label4 = m_pLineMenu->AddTextLabel();
 
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
@@ -126,7 +127,7 @@ void MenuScreen::OnDraw(){
     m_pMainCanvas->RenderFillRect( frect, &color );
 
     CRectangle dstDims( 0, 0, 200, 200);
-    m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
+    //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
     //m_pMainCanvas->AddUpdateRect(dstDims);
 
     coldelta++;
@@ -146,5 +147,10 @@ void MenuScreen::OnUpdate(){
     mcol.SetG( rand() );
     mcol.SetB( rand() );
     //m_iUpdateTimes++;
+}
+
+void MenuScreen::OnEvent(SDL_Event* pEvent)
+{
+    m_pLineMenu->HookEventloop(pEvent);
 }
 }

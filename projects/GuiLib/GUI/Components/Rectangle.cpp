@@ -371,6 +371,27 @@ bool CRectangle::operator != ( CRectangle& rc )
 	return ( !( ( *this ) == rc ) );
 }
 
+CRectangle CRectangle::Subtract(const CRectangle& rc) const
+{
+    CRectangle result(*this);
+    result.X() -= rc.GetX();
+    result.Y() -= rc.GetY();
+    result.W() -= rc.GetW();
+    result.H() -= rc.GetH();
+    return result;
+}
+
+CRectangle CRectangle::Pad(const CRectangle& rc) const
+{
+    CRectangle result(*this);
+    result.X() += rc.GetX();
+    result.Y() += rc.GetY();
+    result.W() -= rc.GetW();
+    result.H() -= rc.GetH();
+    return result;
+}
+
+
 CRectangle operator + ( CPoint& pt , CRectangle& rc )
 {
 	CRectangle result = rc ;

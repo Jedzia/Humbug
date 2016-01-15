@@ -109,6 +109,8 @@ public:
 
     TTF_Font * GetLabelFont() const;
 
+    components::CColor GetTextColor() const;
+    void SetTextColor(const components::CColor color);
     //message for clicking label
     static MSGID MSGID_LabelClick;     //parm1=id
 };

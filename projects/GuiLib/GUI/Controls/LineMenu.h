@@ -34,10 +34,16 @@ class LineMenu : public controls::CControl {
 public:
 
     // LineMenu(const FileLoader& loader, CCanvas* pCanvas);
-    LineMenu(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name);
+    LineMenu(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name, const CRectangle& dimensions, const CRectangle& padding);
     ~LineMenu();
 
     void OnDraw() override;
+
+    /** EventLoop update.
+        *  Call during the event-loop method of your screen.
+        *  @param pEvent Use this to pass the event parameter of the event loop.
+        */
+    void HookEventloop(SDL_Event* pEvent);
 
     /** Idle update.
      *  Call during the idle method of your display loop.
@@ -58,6 +64,9 @@ public:
      *  @param text The new caption of the label.
      */
     void SetTextLabelText(int id, const std::string& text);
+
+    void NavigateUp();
+    void NavigateDown();
 
     bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle) override;
 
@@ -81,11 +90,13 @@ private:
     //LineMenuBackground* m_pBackground;
     // CCanvas* footer;
     std::string m_sName;
-    CImage* footerImage;
-    bool oldstate;
+    CRectangle m_rPadding;
+    //CImage* footerImage;
+    bool m_bOldstate;
     CCanvas* m_tmpcanvas;
-    bool flank;
-    int m_ticks;
+    bool m_bFlank;
+    int m_iTicks;
+    int m_iSelectedLabel;
 };
 }
 }

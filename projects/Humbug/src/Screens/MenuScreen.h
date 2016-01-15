@@ -70,6 +70,11 @@ public:
     */
     void OnUpdate() override;
 
+    /** Update event-loop.
+    *  Override to handle SDL events.
+    */
+    void OnEvent(SDL_Event* pEvent) override;
+
 private:
 
     struct MenuScreenImpl;
@@ -83,6 +88,13 @@ private:
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
     boost::scoped_ptr<gui::components::LineMenu> m_pLineMenu;
+
+    int label1;
+    int label2;
+    int label3;
+    int label4;
+    int label5;
+
 };
 }
 

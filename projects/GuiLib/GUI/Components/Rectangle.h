@@ -124,6 +124,8 @@ public:
 	CPoint Wrap ( CPoint pt ) ;
 
     friend std::ostream& operator<<(std::ostream& o, const CRectangle& r);
+    CRectangle Subtract(const CRectangle& rc) const;
+    CRectangle Pad(const CRectangle& rc) const;
 };
 
 //add/subtract point and rectangle
