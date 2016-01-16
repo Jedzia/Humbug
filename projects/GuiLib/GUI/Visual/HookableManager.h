@@ -78,13 +78,18 @@ public:
     // Switch the Hookable with the given key to status event-processing ON.
     void EnableHookable(const std::string& key);
     // Switch the Hookable with the given key to status event-processing OFF.
-    void DisableHookable(const std::string& key);
+    void DisableHookable(const std::string& key = "");
 
     // Cleanup all registered and instantiated Hookables.
     void Close();
 
     void Test1();
     void Test2();
+
+    bool IsHookActive() const
+    {
+        return m_pActiveHook != NULL;
+    }
 
 private:
 

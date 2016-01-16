@@ -220,12 +220,12 @@ void CApplication::OnIdle(int ticks)
 {
 	//by default, do nothing
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
-    m_sigOnIdle(ticks);
+    RaiseOnIdle(ticks);
 	// std::cout << "---APP After m_sigOnIdle---" << std::endl;
 
     //m_pMainCanvas->MainRenderClear();
 
-	m_sigOnDraw();
+	RaiseOnDraw();
 	// std::cout << "---APP After m_sigOnDraw---" << std::endl;
 	if (m_pConsole)
 		m_pConsole->Draw();
@@ -241,7 +241,7 @@ void CApplication::OnIdle(int ticks)
 //update loop
 void CApplication::Update()
 {
-    m_sigOnUpdate();
+    RaiseOnUpdate();
     //SDL_Delay( 1 );
 
 }
@@ -337,7 +337,7 @@ int CApplication::Execute(int argc,char* argv[])
 			if(event.type==SDL_QUIT) break;
 			//event occurred
 			GetApplication()->OnEvent(&event);
-			GetApplication()->m_sigOnEvent(&event);
+			GetApplication()->RaiseOnEvent(&event);
 		}
 		else
 		{
@@ -411,22 +411,22 @@ CApplication* CApplication::GetApplication()
 	return(s_pTheApplication);
 }
 
-bs::connection CApplication::ConnectOnIdle( const slot_type_idle& s )
+bs::connection CMaster::ConnectOnIdle(const slot_type_idle& s)
 {
     return m_sigOnIdle.connect( s );
 }
 
-bs::connection CApplication::ConnectOnDraw( const slot_type_event& s )
+bs::connection CMaster::ConnectOnDraw(const slot_type_event& s)
 {
     return m_sigOnDraw.connect( s );
 }
 
-bs::connection CApplication::ConnectOnUpdate( const slot_type_event& s )
+bs::connection CMaster::ConnectOnUpdate(const slot_type_event& s)
 {
     return m_sigOnUpdate.connect( s );
 }
 
-bs::connection CApplication::ConnectOnEvent( const slot_type_sdlevent& s )
+bs::connection CMaster::ConnectOnEvent(const slot_type_sdlevent& s)
 {
 	return m_sigOnEvent.connect( s );
 }

@@ -120,23 +120,16 @@ void SubmenuA::OnIdle(int ticks){
 void SubmenuA::OnDraw(){
     static int coldelta = 0;
 
-    //CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    //m_pMainCanvas->Lock();
-
-    //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground,
-    // m_pBackground->GetDimension() );
     m_pBackground->RenderCopy();
-    CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
 
-    //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
+    CRectangle frect(60, 180, 80, 80);
     m_pBackground->RenderFillRect( frect, &color );
 
     CRectangle dstDims( 0, 0, 200, 200);
-    //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims);
     m_pScroller->Render();
 
     coldelta++;

@@ -131,6 +131,17 @@ void HookableManager::EnableHookable( const std::string& key )
 
 void HookableManager::DisableHookable( const std::string& key )
 {
+    if (key.empty())
+    {
+        // empty key means disconnect current active hook
+        if (m_pActiveHook)
+        {
+            m_pActiveHook->Disconnect();
+            m_pActiveHook = NULL;
+        }
+        return;
+    }
+
     Hookable* hookable = GetHookable(key);
     hookable->Disconnect();
     if (hookable == m_pActiveHook)

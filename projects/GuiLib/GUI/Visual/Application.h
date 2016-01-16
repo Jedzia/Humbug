@@ -6,47 +6,94 @@
 #include "MessageHandler.h"
 #include "../Detail/Signals.h"
 #include "../Components/MainCanvas.h"
+#define slots
 
 union SDL_Event;
 
 namespace gui {
 
 class CConsole;
-class SdlForwarder
-{
-	int bla;
-};
 
+/** @class CMaster:
+*  Represents a master event provider.
+*  This component provides OnIdle, OnDraw, OnUpdate and OnEvent signals and the ability to
+*  connect to them via the corresponding ConnectXXX methods and to raise them with the
+*  RaiseXXX methods.
+*/
 class CMaster
 {
+    // * * * * * * * * * * * * * * * * * * * *
+    // * signal type definitions and signals *
+    // * * * * * * * * * * * * * * * * * * * *
+
+    typedef bs::signal<void(int)> signal_type_idle;
+    typedef bs::signal<void()> signal_type_event;
+    typedef bs::signal<void(SDL_Event*)> signal_type_sdlevent;
+
+    signal_type_event m_sigOnUpdate;
+    signal_type_idle m_sigOnIdle;
+    signal_type_event m_sigOnDraw;
+    signal_type_sdlevent m_sigOnEvent;
+
 public:
+    /// <summary>
+    /// Finalizes an instance of the <see cref="CMaster"/> class.
+    /// </summary>
     virtual ~CMaster()
     {
     }
 
-    typedef bs::signal<void(int)> signal_type_idle;
-    typedef signal_type_idle::slot_type slot_type_idle;
-    virtual bs::connection ConnectOnIdle(const slot_type_idle& s) = 0;
-
-    // signal types
-    typedef bs::signal<void()> signal_type_event;
-    typedef signal_type_event::slot_type slot_type_event;
-    virtual bs::connection ConnectOnDraw(const slot_type_event& s) = 0;
-    virtual bs::connection ConnectOnUpdate(const slot_type_event& s) = 0;
-    
-    //SDL_Event* pEvent
-    typedef bs::signal<void(SDL_Event*)> signal_type_sdlevent;
-    typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
-    virtual bs::connection ConnectOnEvent(const slot_type_sdlevent& s) = 0;
-
-
-
-
-
-
-    // virtual bool OnInit(int argc, char* argv[]) = 0;
+    /** Retrieve the hosting canvas.
+    *  Use this to get the parent/to-paint-on object like the MainCanvas or a
+    *  Screen hosting subscreens.
+    *  @return the parent or hosting canvas. This should never be null (see. HookableManager(CMaster* master) ).
+    */
     virtual gui::components::CMainCanvas* GetMainCanvas() const = 0;
 
+
+    // * * * * * * * * * * * * * * * * * * *
+    // * slots and connectors              *
+    // * * * * * * * * * * * * * * * * * * *
+    typedef signal_type_idle::slot_type slot_type_idle;
+    bs::connection ConnectOnIdle(const slot_type_idle& s);
+
+    typedef signal_type_event::slot_type slot_type_event;
+    bs::connection ConnectOnDraw(const slot_type_event& s);
+    bs::connection ConnectOnUpdate(const slot_type_event& s);
+    
+    typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
+    bs::connection ConnectOnEvent(const slot_type_sdlevent& s);
+
+protected:
+    /** Raise the Idle event.
+    *  @param ticks The ticks parameter forwarded to the OnIdle() event.
+    */
+    void RaiseOnIdle(int ticks)
+    {
+        m_sigOnIdle(ticks);
+    }
+
+    /** Raise the Draw event.
+    */
+    void RaiseOnDraw()
+    {
+        m_sigOnDraw();
+    }
+
+    /** Raise the Update event.
+    */
+    void RaiseOnUpdate()
+    {
+        m_sigOnUpdate();
+    }
+
+    /** Raise the Event-Loop event.
+    *  @param sdl_event The SDL_Event parameter forwarded to the OnEvent() event.
+    */
+    void RaiseOnEvent(SDL_Event* sdl_event)
+    {
+        m_sigOnEvent(sdl_event);
+    }
 };
 
 class CConnectable
@@ -90,10 +137,10 @@ public:
 	{ return m_pMainCanvas; }
 
     // Signal handling
-    bs::connection ConnectOnIdle(const slot_type_idle& s) override;
+    /*bs::connection ConnectOnIdle(const slot_type_idle& s) override;
     bs::connection ConnectOnDraw(const slot_type_event& s) override;
     bs::connection ConnectOnUpdate(const slot_type_event& s) override;
-    bs::connection ConnectOnEvent(const slot_type_sdlevent& s) override;
+    bs::connection ConnectOnEvent(const slot_type_sdlevent& s) override;*/
 
 	//initialization
 	virtual bool OnInit(int argc,char* argv[]);
@@ -128,11 +175,6 @@ private:
     static CApplication* s_pTheApplication;
     //last ticks
     static Uint32 m_uiFPSLastTime;
-
-    signal_type_event m_sigOnUpdate;
-    signal_type_idle m_sigOnIdle;
-	signal_type_event m_sigOnDraw;
-	signal_type_sdlevent m_sigOnEvent;
 
     //set singleton pointer
     static void SetApplication(CApplication* pTheApp);

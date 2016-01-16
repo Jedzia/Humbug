@@ -164,6 +164,9 @@ void LineMenu::HookEventloop(SDL_Event* keyevent){
     case SDLK_e:
         m_sigMenuChanged(m_iSelectedLabel);
         break;
+    case SDLK_BACKSPACE:
+        m_sigMenuChanged(-1);
+        break;
     default:
         break;
     }       // switch

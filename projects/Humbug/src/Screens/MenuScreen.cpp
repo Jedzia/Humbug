@@ -44,15 +44,20 @@ struct MenuScreen::MenuScreenImpl {
     int x;
 };
 
-MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
+    gui::components::CMainCanvas* MenuScreen::GetMainCanvas() const
+    {
+        return Master()->GetMainCanvas();
+    }
+
+    MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
     pimpl_(new MenuScreenImpl ),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL),
-    //m_HookMgr(new HookableManager(this),
-    m_HookMgr(new HookableManager(NULL)),
+    m_HookMgr(new HookableManager(this)),
+    //m_HookMgr(new HookableManager(NULL)),
     m_pSprMgr(new CSpriteManager){
     dbgOut(__FUNCTION__ << " " << this);
 }
@@ -120,6 +125,12 @@ void MenuScreen::OnIdle(int ticks){
 }
 
 void MenuScreen::OnDraw(){
+    if (HookMgr()->IsHookActive())
+    {
+        RaiseOnDraw();
+        return;
+    }
+
     static int coldelta = 0;
 
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
@@ -146,6 +157,7 @@ void MenuScreen::OnDraw(){
 
     m_pLineMenu->Draw();
     m_pMainCanvas->Unlock();
+
 }   // OnDraw
 
 void MenuScreen::OnUpdate(){
@@ -164,7 +176,19 @@ void MenuScreen::OnEvent(SDL_Event* pEvent)
 
 void MenuScreen::MenuSelectionChanged(int selectedLabel) const
 {
-    dbgOut(__FUNCTION__ << "SelectedLabel: "  << selectedLabel << " (" << this << ").");
-    HookMgr()->EnableHookable("6000");
+    if (selectedLabel == -1)
+    {
+        HookMgr()->DisableHookable();
+    }
+    else if (selectedLabel == 6000)
+    {
+        HookMgr()->EnableHookable("6000");
+    }
+    else if (selectedLabel == 6000)
+    {
+        HookMgr()->EnableHookable("6001");
+    }
+
+    dbgOut(__FUNCTION__ << "SelectedLabel: " << selectedLabel << " (" << this << ").");
 }
 }

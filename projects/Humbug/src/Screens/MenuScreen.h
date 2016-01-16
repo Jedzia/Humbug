@@ -35,14 +35,16 @@ class DebugOverlay;
 /** @class MenuScreen:
  *  A one page static Page (Screen) with a selection menu.
  */
-class MenuScreen : public gui::components::Screen {
+class MenuScreen : public gui::components::Screen, public gui::CMaster {
 public:
 
+    gui::components::CMainCanvas* GetMainCanvas() const override;
+
     /** Initializes a new instance of the <see cref="MenuScreen"/> class.
-    *  Detailed description.
-    *  @param loader File loading facility.
-    *  @param background the background canvas used by this Screen.
-    */
+        *  Detailed description.
+        *  @param loader File loading facility.
+        *  @param background the background canvas used by this Screen.
+        */
     MenuScreen(FileLoader& loader, gui::components::CCanvas* background);
     ~MenuScreen();
 
