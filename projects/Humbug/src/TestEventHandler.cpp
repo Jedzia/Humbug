@@ -35,6 +35,7 @@
 #include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Text.h"
 #include "Screens/SimpleScreen.h"
+#include "Screens/MenuScreen/SubmenuA.h"
 
 namespace humbug {
 
@@ -345,7 +346,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
+    //HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator < SubmenuA> (*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Bla", HookCreatorPtr(new ScreenCreator<BlaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Tiles", HookCreatorPtr(new ScreenCreator<TileScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Lua", HookCreatorPtr(new ScreenCreator<LuaScreen>(*fl, m_pMainCanvas)));

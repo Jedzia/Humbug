@@ -15,7 +15,7 @@ public:
 	~HookBinder();
 };
 
-HookableManager::HookableManager(CEventHandler* master)
+HookableManager::HookableManager(CMaster* master)
 : m_pMaster(master), m_pActiveHook(NULL)
 {
          //dbgOut(__FUNCTION__);
@@ -121,7 +121,7 @@ void HookableManager::EnableHookable( const std::string& key )
     {
         m_pActiveHook->Disconnect();
         m_pActiveHook = NULL;
-        m_pMaster->GetMainCanvas()->AddUpdateRect(m_pMaster->GetMainCanvas()->GetDimension());
+        //m_pMaster->GetMainCanvas()->AddUpdateRect(m_pMaster->GetMainCanvas()->GetDimension());
     }
 
     Hookable* hookable = GetHookable(key);

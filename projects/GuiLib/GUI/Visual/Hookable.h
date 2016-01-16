@@ -7,8 +7,7 @@
 #include <boost/noncopyable.hpp>
 
 namespace gui {
-
-class CEventHandler;
+    class CMaster;
 
 //message id
 typedef int GroupId;
@@ -41,7 +40,7 @@ protected:
     virtual GroupId GetGroupID();
 
     static GroupId CreateNextGroupID();
-    CEventHandler* Master() const { return m_pMaster; }
+    CMaster* Master() const { return m_pMaster; }
     void Connect(/*Hookable* controller*/);
     void Disconnect();
 
@@ -49,13 +48,13 @@ protected:
     virtual void OnDisconnect() = 0;
 
 private:
-    void Init(CEventHandler *Master, Hookable *controller);
+    void Init(CMaster *Master, Hookable *controller);
 
 	//static boost::ptr_vector<Hookable> m_pvHooks;
     //static Hookable* m_pController;
     struct HookableImpl;
     boost::scoped_ptr<HookableImpl> pimpl_;
-    CEventHandler *m_pMaster;
+    CMaster *m_pMaster;
     Hookable *m_pController;
     static GroupId s_NextGrpID;
 

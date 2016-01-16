@@ -25,8 +25,7 @@
 #include <string>
 
 namespace gui {
-
-class HookCreator {
+    class HookCreator {
 public:
     /*HookCreator()
     {
@@ -60,7 +59,8 @@ typedef boost::shared_ptr<HookCreator> HookCreatorPtr;
 class HookableManager {
 public:
 
-    HookableManager(CEventHandler* master);
+    //HookableManager(CEventHandler* master);
+    HookableManager(CMaster* master);
     ~HookableManager();
 
     // Register a factory hook-type creator.
@@ -88,7 +88,7 @@ public:
 
 private:
 
-    CEventHandler* m_pMaster;
+    CMaster* m_pMaster;
 
     //typedef std::map<std::string, Hookable*> HookDictionary;
     typedef boost::ptr_map<std::string, Hookable> HookDictionary;

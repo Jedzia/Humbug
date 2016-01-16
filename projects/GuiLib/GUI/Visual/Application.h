@@ -17,24 +17,64 @@ class SdlForwarder
 	int bla;
 };
 
+class CMaster
+{
+public:
+    virtual ~CMaster()
+    {
+    }
+
+    typedef bs::signal<void(int)> signal_type_idle;
+    typedef signal_type_idle::slot_type slot_type_idle;
+    virtual bs::connection ConnectOnIdle(const slot_type_idle& s) = 0;
+
+    // signal types
+    typedef bs::signal<void()> signal_type_event;
+    typedef signal_type_event::slot_type slot_type_event;
+    virtual bs::connection ConnectOnDraw(const slot_type_event& s) = 0;
+    virtual bs::connection ConnectOnUpdate(const slot_type_event& s) = 0;
+    
+    //SDL_Event* pEvent
+    typedef bs::signal<void(SDL_Event*)> signal_type_sdlevent;
+    typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
+    virtual bs::connection ConnectOnEvent(const slot_type_sdlevent& s) = 0;
+
+
+
+
+
+
+    // virtual bool OnInit(int argc, char* argv[]) = 0;
+    virtual gui::components::CMainCanvas* GetMainCanvas() const = 0;
+
+};
+
+class CConnectable
+{
+public:
+    virtual ~CConnectable()
+    {
+    }
+
+    typedef bs::signal<void(int, char**)> signal_type_init;
+    typedef signal_type_init::slot_type slot_type_init;
+
+    //typedef bs::signal<void(SDL_Keycode sym, Uint16 mod)> signal_type_keydown;
+    //typedef signal_type_keydown::slot_type slot_type_keydown;
+
+    virtual bs::connection ConnectOnInit(const slot_type_init& s) = 0;
+    //virtual bs::connection ConnectOnKeyDown(const slot_type_keydown& s) = 0;
+
+};
+
 /*
 	==CApplication==
 	Singleton.
 	Base class for all other application classes.
 */
-class CApplication : public CMessageHandler
+class CApplication : public CMessageHandler, public CConnectable, public CMaster
 {
 public:
-    // signal types
-	typedef bs::signal<void()> signal_type_event;
-    typedef signal_type_event::slot_type slot_type_event;
-
-	//SDL_Event* pEvent
-	typedef bs::signal<void(SDL_Event*)> signal_type_sdlevent;
-	typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
-
-	typedef bs::signal<void(int)> signal_type_idle;
-    typedef signal_type_idle::slot_type slot_type_idle;
 
 	// bool OnInit(int argc,char* argv[])
 	typedef bs::signal<void(int, char**)> signal_type_init;
@@ -46,13 +86,14 @@ public:
 	//destructor
 	virtual ~CApplication();
 
-	gui::components::CMainCanvas* GetMainCanvas() const { return m_pMainCanvas; }
+	gui::components::CMainCanvas* GetMainCanvas() const override
+	{ return m_pMainCanvas; }
 
     // Signal handling
-    bs::connection ConnectOnIdle(const slot_type_idle& s);
-	bs::connection ConnectOnDraw(const slot_type_event& s);
-	bs::connection ConnectOnUpdate(const slot_type_event& s);
-	bs::connection ConnectOnEvent(const slot_type_sdlevent& s);
+    bs::connection ConnectOnIdle(const slot_type_idle& s) override;
+    bs::connection ConnectOnDraw(const slot_type_event& s) override;
+    bs::connection ConnectOnUpdate(const slot_type_event& s) override;
+    bs::connection ConnectOnEvent(const slot_type_sdlevent& s) override;
 
 	//initialization
 	virtual bool OnInit(int argc,char* argv[]);

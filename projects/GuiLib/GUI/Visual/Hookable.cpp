@@ -143,7 +143,7 @@ GroupId Hookable::GetGroupID()
     return grpID;
 }
 
-void Hookable::Init(CEventHandler* master, Hookable* controller)
+void Hookable::Init(CMaster* master, Hookable* controller)
 {
 
     if (m_bIsInitialized)

@@ -8,7 +8,6 @@ namespace gui {
 
 class HookableManager;
 
-
 /*
 	==CEventHandler==
 	Event dispatching application class
@@ -69,7 +68,8 @@ public:
 
     virtual void OnExiting();
 
-    bs::connection ConnectOnInit(const slot_type_init& s) {
+    bs::connection ConnectOnInit(const slot_type_init& s) override
+    {
          return m_sigOnInit.connect( s );
     }
 	bs::connection ConnectOnKeyDown(const slot_type_keydown& s) {
