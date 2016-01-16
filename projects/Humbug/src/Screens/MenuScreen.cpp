@@ -30,6 +30,7 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
+#include "MenuScreen/SubmenuA.h"
 //
 //#include <build/cmake/include/debug.h>
 
@@ -50,6 +51,8 @@ MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL),
+    //m_HookMgr(new HookableManager(this),
+    m_HookMgr(new HookableManager(NULL)),
     m_pSprMgr(new CSpriteManager){
     dbgOut(__FUNCTION__ << " " << this);
 }
@@ -101,6 +104,9 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
         "";
 
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
+
+    HookMgr()->RegisterHookable("6000", HookCreatorPtr(new ScreenCreator < SubmenuA>(m_Loader, m_pBackground.get())));
+
 
     return Screen::OnInit(argc, argv);
 
@@ -159,5 +165,6 @@ void MenuScreen::OnEvent(SDL_Event* pEvent)
 void MenuScreen::MenuSelectionChanged(int selectedLabel) const
 {
     dbgOut(__FUNCTION__ << "SelectedLabel: "  << selectedLabel << " (" << this << ").");
+    HookMgr()->EnableHookable("6000");
 }
 }

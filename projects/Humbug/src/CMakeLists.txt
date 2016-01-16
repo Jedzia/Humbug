@@ -65,6 +65,8 @@ SET(Humbug_MyGUI_headers
 		Screens/TileScreen.h
 		Screens/SimpleScreen.h
 		Screens/MenuScreen.h
+		Screens/MenuScreen/SubmenuA.h
+
 		Screens/WavyTextFloat.h
 )
 SET(Humbug_MyGUI_sources 
@@ -84,6 +86,8 @@ SET(Humbug_MyGUI_sources
 		Screens/TileScreen.cpp
 		Screens/SimpleScreen.cpp
 		Screens/MenuScreen.cpp
+		Screens/MenuScreen/SubmenuA.cpp
+
 		Screens/WavyTextFloat.cpp
 )
 

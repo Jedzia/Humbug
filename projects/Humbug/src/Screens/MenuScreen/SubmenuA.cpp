@@ -5,8 +5,8 @@
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the Template.cpp class.
- * \file       Template.cpp
+ *             the SubmenuA.cpp class.
+ * \file       SubmenuA.cpp
  * \date       2016-01-09
  * \author     Jedzia.
  *
@@ -15,9 +15,9 @@
 /*---------------------------------------------------------*/
 #include "stdafx.h"
 //
-#include "Template.h"
+#include "SubmenuA.h"
 //
-#include "../GUI/DebugOverlay.h"
+#include "../../GUI/DebugOverlay.h"
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 #include <GuiLib/Filesystem/FileLoader.h>
@@ -37,14 +37,14 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
-struct Template::TemplateImpl {
+struct SubmenuA::SubmenuAImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
     int x;
 };
 
-Template::Template( FileLoader& loader, CCanvas* background) :
-    pimpl_(new Template::TemplateImpl ),
+SubmenuA::SubmenuA( FileLoader& loader, CCanvas* background) :
+    pimpl_(new SubmenuA::SubmenuAImpl ),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
@@ -56,7 +56,7 @@ Template::Template( FileLoader& loader, CCanvas* background) :
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-Template::~Template(void){
+SubmenuA::~SubmenuA(void){
     //delete m_pScrollText;
     //delete m_pScroller;
     //delete m_pBackground;
@@ -65,47 +65,29 @@ Template::~Template(void){
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-/*GroupId Template::GetGroupID()
+/*GroupId SubmenuA::GetGroupID()
    {
     static GroupId grpID = CreateNextGroupID();
     return grpID;
     //throw std::exception("The method or operation is not implemented.");
    }*/
-bool Template::OnInit( int argc, char* argv[] ){
+bool SubmenuA::OnInit( int argc, char* argv[] ){
     // Master()->GetMainCanvas();
-    CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1,
-    // "Template"));
-    m_pOverlay.reset( new DebugOverlay(m_Loader, NULL, 1, "Template") );
+    //CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
 
-    //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
-    //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
-    // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
-    SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TemplateBg.png") );
-
-    //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-    //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-    //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-    //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
+    
+    SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/MenuScreen/SubmenuABg.png") );
     m_pBackground.reset( new CCanvas( tmpfsurf ) );
-
-    //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
 
-    //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-    //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-    //m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
-
-    //"\r\n"
-    CColor m_colText = CColor::White();
+    CColor m_colText = CColor::Black();
     std::ostringstream outstring;
     outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
     outstring << " ";
 
-    //std::string pstr;
     outstring <<
         "Error error C2248: 'boost::noncopyable_::noncopyable::noncopyable' : cannot access private member "
               <<
@@ -124,23 +106,22 @@ bool Template::OnInit( int argc, char* argv[] ){
         "";
 
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
+    m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 600), 800));
 
     return Screen::OnInit(argc, argv);
 
     //return true;
 }   // OnInit
 
-void Template::OnIdle(int ticks){
-    m_pOverlay->IdleSetVars(ticks);
-    //m_pScroller->Scroll(4);
-    //m_pSprMgr->OnIdle(ticks);
+void SubmenuA::OnIdle(int ticks){
+    m_pScroller->Scroll(4);
 }
 
-void Template::OnDraw(){
+void SubmenuA::OnDraw(){
     static int coldelta = 0;
 
-    CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    m_pMainCanvas->Lock();
+    //CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+    //m_pMainCanvas->Lock();
 
     //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground,
     // m_pBackground->GetDimension() );
@@ -152,12 +133,11 @@ void Template::OnDraw(){
     //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
-    m_pMainCanvas->RenderFillRect( frect, &color );
-    //m_pMainCanvas->AddUpdateRect(frect);
+    m_pBackground->RenderFillRect( frect, &color );
 
     CRectangle dstDims( 0, 0, 200, 200);
-    m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
-    //m_pMainCanvas->AddUpdateRect(dstDims);
+    //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims);
+    m_pScroller->Render();
 
     coldelta++;
 
@@ -165,12 +145,10 @@ void Template::OnDraw(){
         coldelta = 0;
     }
 
-    //controls::CControl::Redraw();
-    m_pOverlay->Draw();
-    m_pMainCanvas->Unlock();
+    //m_pMainCanvas->Unlock();
 }   // OnDraw
 
-void Template::OnUpdate(){
+void SubmenuA::OnUpdate(){
     Screen::OnUpdate();
     x += 1 + (rand() << 21);
     mcol.SetR( rand() );

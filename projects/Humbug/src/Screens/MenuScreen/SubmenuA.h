@@ -5,46 +5,44 @@
 * Copyright (c) 2013, EvePanix. All rights reserved.
 *
 * \brief      This file contains the definition of
-*             the MenuScreen.h class.
-* \file       MenuScreen.h
+*             the SubmenuA.h class.
+* \file       SubmenuA.h
 * \date       2016-01-09
 * \author     Jedzia.
 *
 * modified    2016-01-09, Jedzia
 */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_SCREENS_MenuScreen_H
-#define HUMBUG_SCREENS_MenuScreen_H
+#ifndef HUMBUG_SCREENS_SubmenuA_H
+#define HUMBUG_SCREENS_SubmenuA_H
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <GuiLib/GUI/Components/Screen.h>
-#include <GuiLib/GUI/Controls/LineMenu.h>
 
 class FileLoader;
 namespace gui {
 class CSprite;
 class CSpriteManager;
 namespace components {
-    class CCanvas;
+class CCanvas;
 class CText;
 class CTextScroller;
 }
 }
 
 namespace humbug {
-class DebugOverlay;
-/** @class MenuScreen:
+/** @class SubmenuA:
  *  A one page static Page (Screen) with a selection menu.
  */
-class MenuScreen : public gui::components::Screen {
+class SubmenuA : public gui::components::Screen {
 public:
 
-    /** Initializes a new instance of the <see cref="MenuScreen"/> class.
+    /** Initializes a new instance of the <see cref="SubmenuA"/> class.
     *  Detailed description.
     *  @param loader File loading facility.
     *  @param background the background canvas used by this Screen.
     */
-    MenuScreen(FileLoader& loader, gui::components::CCanvas* background);
-    ~MenuScreen();
+    SubmenuA(FileLoader& loader, gui::components::CCanvas* background);
+    ~SubmenuA();
 
     /** Initialization frame-loop.
     *  Is called once on initialization.
@@ -70,17 +68,11 @@ public:
     */
     void OnUpdate() override;
 
-    /** Update event-loop.
-    *  Override to handle SDL events.
-    */
-    void OnEvent(SDL_Event* pEvent) override;
-
 private:
 
-    virtual void MenuSelectionChanged(int selectedLabel) const;
+    struct SubmenuAImpl;
+    boost::scoped_ptr<SubmenuAImpl> pimpl_;
 
-    struct MenuScreenImpl;
-    boost::scoped_ptr<MenuScreenImpl> pimpl_;
     FileLoader& m_Loader;
     Uint8 x;
     gui::components::CColor mcol;
@@ -88,20 +80,7 @@ private:
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-    boost::scoped_ptr<gui::components::LineMenu> m_pLineMenu;
-    gui::components::LineMenu::menu_changed_connection_t m_connection;
-
-    boost::scoped_ptr<gui::HookableManager> m_HookMgr;
-    gui::HookableManager* HookMgr() const { return m_HookMgr.get(); }
-
-
-    int label1;
-    int label2;
-    int label3;
-    int label4;
-    int label5;
-
 };
 }
 
-#endif // ifndef HUMBUG_SCREENS_MenuScreen_H
+#endif // ifndef HUMBUG_SCREENS_SubmenuA_H
