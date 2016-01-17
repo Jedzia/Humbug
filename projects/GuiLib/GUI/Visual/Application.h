@@ -54,14 +54,50 @@ public:
     // * * * * * * * * * * * * * * * * * * *
     // * slots and connectors              *
     // * * * * * * * * * * * * * * * * * * *
+
+
+    /** Idle slot declaration.
+    *  This type of slot is used by the ConnectOnIdle(const slot_type_idle& s) connector method.
+    */
     typedef signal_type_idle::slot_type slot_type_idle;
+    
+    /** Connect to the Idle event of this instance.
+    *  Provides public access to hook onto the Idle event of this instance.
+    *  Example, bla bla.
+    *  @param s The function to invoke when the Idle event is raised.
+    *  @return the signal-slot connection object of the Idle event.
+    */
     bs::connection ConnectOnIdle(const slot_type_idle& s);
 
+
+    /** Event slot declaration.
+    *  This type of slot is used by the ConnectOnDraw(const slot_type_event& s) and ConnectOnUpdate(const slot_type_event&) connector methods.
+    */
     typedef signal_type_event::slot_type slot_type_event;
+    
+    /** Connect to the Draw event of this instance.
+    *  Provides public access to hook onto the Draw event of this instance.
+    *  @param s The function to invoke when the Draw event is raised.
+    *  @return the signal-slot connection object of the Draw event.
+    */
     bs::connection ConnectOnDraw(const slot_type_event& s);
+    /** Connect to the Update event of this instance.
+    *  Provides public access to hook onto the Update event of this instance.
+    *  @param s The function to invoke when the Update event is raised.
+    *  @return the signal-slot connection object of the Update event.
+    */
     bs::connection ConnectOnUpdate(const slot_type_event& s);
     
+
+    /** Eventloop slot declaration.
+    *  This type of slot is used by the ConnectOnEvent(const slot_type_sdlevent& s) connector methods.
+    */
     typedef signal_type_sdlevent::slot_type slot_type_sdlevent;
+    /** Connect to the Eventloop event of this instance.
+    *  Provides public access to hook onto the Eventloop event of this instance.
+    *  @param s The function to invoke when the Eventloop event is raised.
+    *  @return the signal-slot connection object of the Eventloop event.
+    */
     bs::connection ConnectOnEvent(const slot_type_sdlevent& s);
 
 protected:
