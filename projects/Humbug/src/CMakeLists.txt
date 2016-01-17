@@ -64,8 +64,10 @@ SET(Humbug_MyGUI_headers
 		Screens/HighscoreScreen.h
 		Screens/TileScreen.h
 		Screens/SimpleScreen.h
+
 		Screens/MenuScreen.h
 		Screens/MenuScreen/SubmenuA.h
+		#Screens/MenuScreen/SubmenuB.h
 
 		Screens/WavyTextFloat.h
 )
@@ -85,8 +87,10 @@ SET(Humbug_MyGUI_sources
 		Screens/HighscoreScreen.cpp
 		Screens/TileScreen.cpp
 		Screens/SimpleScreen.cpp
+
 		Screens/MenuScreen.cpp
 		Screens/MenuScreen/SubmenuA.cpp
+		#Screens/MenuScreen/SubmenuB.cpp
 
 		Screens/WavyTextFloat.cpp
 )
@@ -156,6 +160,9 @@ ENDIF(SDLIMAGE_FOUND)
 IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
+
+# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
+ADD_DEFINITIONS("/wd4996")
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
 

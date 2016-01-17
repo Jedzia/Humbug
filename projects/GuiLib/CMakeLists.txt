@@ -204,6 +204,9 @@ IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
 
+# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
+ADD_DEFINITIONS("/wd4996")
+
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" GuiLib_sources)
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
