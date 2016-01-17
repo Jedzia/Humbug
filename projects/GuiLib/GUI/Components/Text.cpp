@@ -47,7 +47,7 @@ CText::~CText(){
     //dbgOut(__FUNCTION__);
 }
 
-void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect) const {
+void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect) const {
     RenderPut( canvas, dstRect, GetCanvas()->GetDimension() );
 }
 
@@ -68,7 +68,7 @@ void CText::ApplyModifiers() const {
     m_pText->Unlock();
 }
 
-void CText::RenderPut(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) const {
+void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) const {
     ApplyModifiers();
 
     CRectangle dest(dstRect);
