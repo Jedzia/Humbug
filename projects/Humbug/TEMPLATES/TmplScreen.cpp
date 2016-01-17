@@ -124,6 +124,7 @@ bool Template::OnInit( int argc, char* argv[] ){
         "";
 
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
+    m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 600), 800));
 
     return Screen::OnInit(argc, argv);
 
@@ -156,8 +157,9 @@ void Template::OnDraw(){
     //m_pMainCanvas->AddUpdateRect(frect);
 
     CRectangle dstDims( 0, 0, 200, 200);
-    m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
+    //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
     //m_pMainCanvas->AddUpdateRect(dstDims);
+    m_pScroller->Render();
 
     coldelta++;
 

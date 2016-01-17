@@ -67,7 +67,7 @@ SET(Humbug_MyGUI_headers
 
 		Screens/MenuScreen.h
 		Screens/MenuScreen/SubmenuA.h
-		#Screens/MenuScreen/SubmenuB.h
+		Screens/MenuScreen/SubmenuB.h
 
 		Screens/WavyTextFloat.h
 )
@@ -90,7 +90,7 @@ SET(Humbug_MyGUI_sources
 
 		Screens/MenuScreen.cpp
 		Screens/MenuScreen/SubmenuA.cpp
-		#Screens/MenuScreen/SubmenuB.cpp
+		Screens/MenuScreen/SubmenuB.cpp
 
 		Screens/WavyTextFloat.cpp
 )

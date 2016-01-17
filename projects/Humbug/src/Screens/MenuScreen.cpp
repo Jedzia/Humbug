@@ -31,6 +31,7 @@
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
 #include "MenuScreen/SubmenuA.h"
+#include "MenuScreen/SubmenuB.h"
 //
 //#include <build/cmake/include/debug.h>
 
@@ -111,6 +112,7 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
 
     HookMgr()->RegisterHookable("6000", HookCreatorPtr(new ScreenCreator < SubmenuA>(m_Loader, m_pBackground.get())));
+    HookMgr()->RegisterHookable("6001", HookCreatorPtr(new ScreenCreator < SubmenuB>(m_Loader, m_pBackground.get())));
 
 
     return Screen::OnInit(argc, argv);
@@ -122,6 +124,7 @@ void MenuScreen::OnIdle(int ticks){
     m_pLineMenu->IdleSetVars(ticks);
     //m_pScroller->Scroll(4);
     //m_pSprMgr->OnIdle(ticks);
+    RaiseOnIdle(ticks);
 }
 
 void MenuScreen::OnDraw(){
@@ -167,11 +170,14 @@ void MenuScreen::OnUpdate(){
     mcol.SetG( rand() );
     mcol.SetB( rand() );
     //m_iUpdateTimes++;
+
+    RaiseOnUpdate();
 }
 
 void MenuScreen::OnEvent(SDL_Event* pEvent)
 {
     m_pLineMenu->HookEventloop(pEvent);
+    RaiseOnEvent(pEvent);
 }
 
 void MenuScreen::MenuSelectionChanged(int selectedLabel) const
@@ -184,7 +190,7 @@ void MenuScreen::MenuSelectionChanged(int selectedLabel) const
     {
         HookMgr()->EnableHookable("6000");
     }
-    else if (selectedLabel == 6000)
+    else if (selectedLabel == 6001)
     {
         HookMgr()->EnableHookable("6001");
     }
