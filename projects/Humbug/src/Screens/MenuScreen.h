@@ -31,7 +31,8 @@ class CTextScroller;
 }
 
 namespace humbug {
-class DebugOverlay;
+    class InfoText;
+    class DebugOverlay;
 /** @class MenuScreen:
  *  A one page static Page (Screen) with a selection menu.
  */
@@ -91,6 +92,7 @@ private:
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
     boost::scoped_ptr<gui::components::LineMenu> m_pLineMenu;
+    boost::scoped_ptr<InfoText> m_pInfoText;
     gui::components::LineMenu::menu_changed_connection_t m_connection;
 
     boost::scoped_ptr<gui::HookableManager> m_HookMgr;

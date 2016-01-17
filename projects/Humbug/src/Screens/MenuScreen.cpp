@@ -68,11 +68,41 @@ MenuScreen::~MenuScreen(void){
     dbgOut(__FUNCTION__ << " " << this);
 }
 
+class InfoText
+{
+    TTF_Font* m_pFont;
+    CRectangle m_rectPaint;
+    boost::scoped_ptr<gui::components::CText> m_pInfoText1;
+    boost::scoped_ptr<gui::components::CText> m_pInfoText2;
+
+public:
+    InfoText(TTF_Font* font, const CRectangle& paintDimensions) : m_pFont(font), m_rectPaint(paintDimensions)
+    {
+        CColor m_colText = CColor::Black();
+        std::ostringstream outstring;
+        outstring << "This screen shows how to display a simple Submenu. (" << gui::CApplication::ShownFrames();
+        outstring << ")";
+        m_pInfoText1.reset(new CText(m_pFont, outstring.str(), m_colText));
+        m_pInfoText2.reset(new CText(m_pFont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
+
+    }
+    
+    ~InfoText(){}
+
+    void Draw(const CCanvas* canvas)
+    {
+        m_pInfoText1->RenderPut(canvas, m_rectPaint);
+        //m_pInfoText2->RenderPut(canvas, m_rectPaint + CPoint(0, m_pInfoText1->GetCanvas()->GetDimension().GetH()));
+        m_pInfoText2->RenderPut(canvas, m_rectPaint + m_pInfoText1->VerticalSpacing());
+    }
+
+};
+
 bool MenuScreen::OnInit( int argc, char* argv[] ){
     m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", Master()->GetMainCanvas()->GetDimension(), CRectangle(100, 100, 100, 100)));
     //m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", CRectangle(0, 0, 200, 100)));
-    label1 = m_pLineMenu->AddTextLabel();
-    label2 = m_pLineMenu->AddTextLabel();
+    label1 = m_pLineMenu->AddTextLabel("Sub Menu A");
+    label2 = m_pLineMenu->AddTextLabel("Sub Menu B");
     label3 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
 
@@ -109,10 +139,12 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
         "Humbug" << "\r\n" <<
         "";
 
-    m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
+    m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
+    
+    m_pInfoText.reset(new InfoText(m_pArialfont, Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60,600,60,40))));
 
-    HookMgr()->RegisterHookable("6000", HookCreatorPtr(new ScreenCreator < SubmenuA>(m_Loader, m_pBackground.get())));
-    HookMgr()->RegisterHookable("6001", HookCreatorPtr(new ScreenCreator < SubmenuB>(m_Loader, m_pBackground.get())));
+    HookMgr()->RegisterHookable("SubmenuA", HookCreatorPtr(new ScreenCreator < SubmenuA>(m_Loader, m_pBackground.get())));
+    HookMgr()->RegisterHookable("SubmenuB", HookCreatorPtr(new ScreenCreator < SubmenuB>(m_Loader, m_pBackground.get())));
 
 
     return Screen::OnInit(argc, argv);
@@ -136,8 +168,8 @@ void MenuScreen::OnDraw(){
 
     static int coldelta = 0;
 
-    CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
-    m_pMainCanvas->Lock();
+    //CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+    //m_pMainCanvas->Lock();
 
     m_pBackground->RenderCopy();
     CRectangle frect(700, 500, 185, 185);
@@ -146,7 +178,7 @@ void MenuScreen::OnDraw(){
 
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
-    m_pMainCanvas->RenderFillRect( frect, &color );
+    m_pBackground->RenderFillRect(frect, &color);
 
     CRectangle dstDims( 0, 0, 200, 200);
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
@@ -159,8 +191,10 @@ void MenuScreen::OnDraw(){
     }
 
     m_pLineMenu->Draw();
-    m_pMainCanvas->Unlock();
+    m_pInfoText->Draw(m_pBackground.get());
 
+
+    //m_pMainCanvas->Unlock();
 }   // OnDraw
 
 void MenuScreen::OnUpdate(){
@@ -186,13 +220,13 @@ void MenuScreen::MenuSelectionChanged(int selectedLabel) const
     {
         HookMgr()->DisableHookable();
     }
-    else if (selectedLabel == 6000)
+    else if (selectedLabel == label1)
     {
-        HookMgr()->EnableHookable("6000");
+        HookMgr()->EnableHookable("SubmenuA");
     }
-    else if (selectedLabel == 6001)
+    else if (selectedLabel == label2)
     {
-        HookMgr()->EnableHookable("6001");
+        HookMgr()->EnableHookable("SubmenuB");
     }
 
     dbgOut(__FUNCTION__ << "SelectedLabel: " << selectedLabel << " (" << this << ").");
