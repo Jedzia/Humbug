@@ -40,6 +40,8 @@ public:
     void Dings(SDL_Color sdl_color);
 
     CCanvas * GetCanvas() const { return m_pText.get(); }
+    CPoint VerticalSpacing() const;
+    CPoint HorizontalSpacing() const;
 
     CColor Color() const
     {

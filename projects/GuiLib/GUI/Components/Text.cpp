@@ -92,7 +92,17 @@ void CText::Put(CCanvas* canvas, const CRectangle& dstRect) const {
 void CText::Dings(SDL_Color sdl_color)
 {}
 
-void CText::SetColor(const CColor textcolor){
+    CPoint CText::VerticalSpacing() const
+    {
+        return CPoint(0, GetCanvas()->GetDimension().GetH());
+    }
+
+    CPoint CText::HorizontalSpacing() const
+    {
+        return CPoint(GetCanvas()->GetDimension().GetW(), 0);
+    }
+
+    void CText::SetColor(const CColor textcolor){
     //return;
     if (m_pRenderText) {
         SDL_FreeSurface(m_pRenderText);
