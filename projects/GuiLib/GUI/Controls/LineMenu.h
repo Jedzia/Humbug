@@ -66,10 +66,11 @@ public:
 
     /** Create a text label and add it to the overlay.
      *  Creates a new text label with the specified text and adds it to the debug overlay.
+     *  @param text The optional caption of the label. If not specified, an auto-generated text is used.
      *  @return a unique identifier of the label. This id can be used by functions like
      *SetTextLabelText.
      */
-    int AddTextLabel();
+    int AddTextLabel(const std::string& text = "");
 
     /** Sets the text of a label.
      *  Use this method to set the text of a label, created by AddTextLabel().

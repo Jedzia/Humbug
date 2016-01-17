@@ -172,7 +172,7 @@ void LineMenu::HookEventloop(SDL_Event* keyevent){
     }       // switch
 } // LineMenu::HookEventloop
 
-int LineMenu::AddTextLabel(){
+int LineMenu::AddTextLabel(const std::string& text){
     //if ( !CLabel::GetLabelFont() ) { 
     //}
     CRectangle globalPosition = GetCanvas()->GetDimension();
@@ -181,11 +181,17 @@ int LineMenu::AddTextLabel(){
     int id = LabelId;
     LabelId++;
 
-    std::ostringstream labelText;
-    labelText << "AddTextLabel " << id << "";
+    std::string labelTextString = text;
 
-    CLabel* label1 = new CLabel( this, CRectangle(0, 0, -1, -1), id, labelText.str(), m_pDebugfont, true,
-            CColor::Black(), CColor::White() );
+    if (labelTextString.empty())
+    {
+        std::ostringstream labelText;
+        labelText << "AddTextLabel " << id << "";
+        labelTextString = labelText.str();
+    }
+
+    CLabel* label1 = new CLabel( this, CRectangle(0, 0, -1, -1), id, labelTextString, m_pDebugfont, true,
+        CColor::Black(), CColor::Blue());
     m_mLabels.insert(id, label1);
 
     Uint16 height = label1->GetHeight();
@@ -193,6 +199,9 @@ int LineMenu::AddTextLabel(){
     m_iLastAutoLabelPosition += height + LABELFONTSIZE;
 
     this->AddChild(label1);
+    
+    NavigateDown();
+    NavigateUp();
 
     return id;
 } // LineMenu::AddTextLabel
