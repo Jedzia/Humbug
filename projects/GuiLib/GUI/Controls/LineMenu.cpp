@@ -143,11 +143,24 @@ void LineMenu::IdleSetVars(int ticks){
     m_iTicks = ticks;
 }
 
-void LineMenu::HookEventloop(SDL_Event* keyevent){
+void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit){
     //m_KeyboardHandler.HandleKeyboardEvent(keyevent);
 
     //if (keyevent->type != SDL_KEYDOWN && keyevent->type != SDL_KEYUP) {
     if (keyevent->type != SDL_KEYDOWN) {
+        return;
+    }
+
+    if (onlyRecognizeQuit)
+    {
+        switch (keyevent->key.keysym.sym) {
+        case SDLK_BACKSPACE:
+        case SDLK_q:
+            m_sigMenuChanged(-1);
+            break;
+        default:
+            break;
+        }       // switch
         return;
     }
 
@@ -165,6 +178,7 @@ void LineMenu::HookEventloop(SDL_Event* keyevent){
         m_sigMenuChanged(m_iSelectedLabel);
         break;
     case SDLK_BACKSPACE:
+    case SDLK_q:
         m_sigMenuChanged(-1);
         break;
     default:

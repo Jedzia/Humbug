@@ -70,20 +70,27 @@ MenuScreen::~MenuScreen(void){
 
 class InfoText
 {
-    TTF_Font* m_pFont;
+    TTF_Font* m_pTextFont;
+    TTF_Font* m_pKeysFont;
     CRectangle m_rectPaint;
     boost::scoped_ptr<gui::components::CText> m_pInfoText1;
     boost::scoped_ptr<gui::components::CText> m_pInfoText2;
+    boost::scoped_ptr<gui::components::CText> m_pInfoText3;
+    boost::scoped_ptr<gui::components::CText> m_pInfoText4;
+    boost::scoped_ptr<gui::components::CText> m_pInfoText5;
 
 public:
-    InfoText(TTF_Font* font, const CRectangle& paintDimensions) : m_pFont(font), m_rectPaint(paintDimensions)
+    InfoText(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions)
     {
         CColor m_colText = CColor::Black();
         std::ostringstream outstring;
         outstring << "This screen shows how to display a simple Submenu. (" << gui::CApplication::ShownFrames();
         outstring << ")";
-        m_pInfoText1.reset(new CText(m_pFont, outstring.str(), m_colText));
-        m_pInfoText2.reset(new CText(m_pFont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
+        m_pInfoText1.reset(new CText(m_pTextFont, outstring.str(), m_colText));
+        m_pInfoText2.reset(new CText(m_pTextFont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
+        m_pInfoText3.reset(new CText(m_pKeysFont, "     K    J      w    s  "));
+        m_pInfoText4.reset(new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.", m_colText));
+        m_pInfoText5.reset(new CText(m_pKeysFont, " L  e         U     q  "));
 
     }
     
@@ -91,9 +98,16 @@ public:
 
     void Draw(const CCanvas* canvas)
     {
-        m_pInfoText1->RenderPut(canvas, m_rectPaint);
-        //m_pInfoText2->RenderPut(canvas, m_rectPaint + CPoint(0, m_pInfoText1->GetCanvas()->GetDimension().GetH()));
-        m_pInfoText2->RenderPut(canvas, m_rectPaint + m_pInfoText1->VerticalSpacing());
+        CRectangle rect = m_rectPaint;
+        m_pInfoText1->RenderPut(canvas, rect);
+        rect += m_pInfoText1->VerticalSpacing();
+        m_pInfoText2->RenderPut(canvas, rect);
+        rect += m_pInfoText2->VerticalSpacing();
+        m_pInfoText3->RenderPut(canvas, rect);
+        rect += m_pInfoText3->VerticalSpacing();
+        m_pInfoText4->RenderPut(canvas, rect);
+        rect += m_pInfoText4->VerticalSpacing();
+        m_pInfoText5->RenderPut(canvas, rect);
     }
 
 };
@@ -141,11 +155,13 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
 
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     
-    m_pInfoText.reset(new InfoText(m_pArialfont, Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60,600,60,40))));
+    auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
+    m_pInfoText.reset(new InfoText(m_pArialfont, keysfont, Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
 
     HookMgr()->RegisterHookable("SubmenuA", HookCreatorPtr(new ScreenCreator < SubmenuA>(m_Loader, m_pBackground.get())));
     HookMgr()->RegisterHookable("SubmenuB", HookCreatorPtr(new ScreenCreator < SubmenuB>(m_Loader, m_pBackground.get())));
 
+    // this->AddExclusiveKeyfilters(SDLK_1, SDLK_2) etc.
 
     return Screen::OnInit(argc, argv);
 
@@ -162,6 +178,7 @@ void MenuScreen::OnIdle(int ticks){
 void MenuScreen::OnDraw(){
     if (HookMgr()->IsHookActive())
     {
+        // When in submenu no draw other than the sub-screens should occur.
         RaiseOnDraw();
         return;
     }
@@ -210,7 +227,7 @@ void MenuScreen::OnUpdate(){
 
 void MenuScreen::OnEvent(SDL_Event* pEvent)
 {
-    m_pLineMenu->HookEventloop(pEvent);
+    m_pLineMenu->HookEventloop(pEvent, HookMgr()->IsHookActive());
     RaiseOnEvent(pEvent);
 }
 
@@ -220,7 +237,14 @@ void MenuScreen::MenuSelectionChanged(int selectedLabel) const
     {
         HookMgr()->DisableHookable();
     }
-    else if (selectedLabel == label1)
+
+    // When in submenu no selection other than the "back" key should occur.
+    if (HookMgr()->IsHookActive())
+    {
+        return;
+    }
+
+    if (selectedLabel == label1)
     {
         HookMgr()->EnableHookable("SubmenuA");
     }

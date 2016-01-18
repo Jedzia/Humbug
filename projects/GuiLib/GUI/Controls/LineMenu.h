@@ -56,7 +56,7 @@ public:
         *  Call during the event-loop method of your screen.
         *  @param pEvent Use this to pass the event parameter of the event loop.
         */
-    void HookEventloop(SDL_Event* pEvent);
+    void HookEventloop(SDL_Event* pEvent, bool onlyRecognizeQuit = false);
 
     /** Idle update.
      *  Call during the idle method of your display loop.
