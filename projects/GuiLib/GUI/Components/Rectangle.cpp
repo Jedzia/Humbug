@@ -391,6 +391,73 @@ CRectangle CRectangle::Pad(const CRectangle& rc) const
     return result;
 }
 
+CPoint CRectangle::Position(const CompassRose& value) const
+{
+    CPoint result = CPoint((GetX(), GetY()));
+    switch (value)
+    {
+    case CompassRose::Origin:
+        {
+            CPoint p = CPoint(GetX() + GetW() / 2, GetY() + GetH() / 2);
+            result = p;
+            break;
+        }
+    case CompassRose::N:
+        {
+            CPoint p = CPoint(GetX() + GetW() / 2, GetY());
+            result = p;
+            break;
+    }
+    case CompassRose::NE:
+        {
+            CPoint p = CPoint(GetX() + GetW(), GetY());
+            result = p;
+            break;
+    }
+    case CompassRose::E:
+        {
+            CPoint p = CPoint((GetX() + GetW()), GetY() + GetH() / 2);
+            result = p;
+            break;
+    }
+    case CompassRose::SE:
+        {
+            CPoint p = CPoint(GetX() + GetW(), GetY() + GetH());
+            result = p;
+            break;
+    }
+    case CompassRose::S:
+        {
+            CPoint p = CPoint(GetX() + GetW() / 2, GetY() + GetH());
+            result = p;
+            break;
+    }
+    case CompassRose::SW:
+        {
+            CPoint p = CPoint(GetX(), GetY() + GetH());
+            result = p;
+            break;
+    }
+    case CompassRose::W:
+        {
+            CPoint p = CPoint(GetX(), GetY() + GetH() / 2);
+            result = p;
+            break;
+    }
+    case CompassRose::NW:
+        {
+            CPoint p = CPoint(GetX(), GetY());
+            result = p;
+            break;
+    }
+    case CompassRose::CompassRose_END:
+    default:
+        assert(false);
+        return CPoint();
+    }
+
+    return result;
+}
 
 CRectangle operator + ( CPoint& pt , CRectangle& rc )
 {

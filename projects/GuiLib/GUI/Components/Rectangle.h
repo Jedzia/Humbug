@@ -15,6 +15,7 @@ typedef int_t	int;*/
 namespace gui {
 namespace components {
 
+
 //CRectangle--abstract an SDL_Rect
 class CRectangle
 {
@@ -24,6 +25,21 @@ private:
 	boost::scoped_ptr<CRectangleImpl> pimpl_;*/
 	SDL_Rect m_rect;
 public:
+
+    enum class CompassRose
+    {
+        Origin,
+        N,
+        NE,
+        E,
+        SE,
+        S,
+        SW,
+        W,
+        NW,
+        CompassRose_END
+    };
+
     SDL_Rect SDLRect() const
     {
         return m_rect;
@@ -126,6 +142,7 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const CRectangle& r);
     CRectangle Subtract(const CRectangle& rc) const;
     CRectangle Pad(const CRectangle& rc) const;
+    CPoint Position(const CompassRose& value) const;
 };
 
 //add/subtract point and rectangle
