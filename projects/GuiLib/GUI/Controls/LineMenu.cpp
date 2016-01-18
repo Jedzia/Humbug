@@ -107,16 +107,6 @@ void LineMenu::OnDraw(){
 
     //CRectangle paddedDimensions = canvasDimensions.Pad(m_rPadding);
     CRectangle paddedDimensions = globalPosition.Pad(m_rPadding);
-/*
-    pCanvas->RenderDrawLine(CPoint(paddedDimensions.GetX(), paddedDimensions.GetY()),
-       CPoint(paddedDimensions.GetX(), paddedDimensions.GetH()), &m_colBack);
-    pCanvas->RenderDrawLine(CPoint(paddedDimensions.GetX(), paddedDimensions.GetY()),
-       CPoint(paddedDimensions.GetW(), paddedDimensions.GetY()), &m_colBack);
-    pCanvas->RenderDrawLine(CPoint(paddedDimensions.GetX(), paddedDimensions.GetH()),
-       CPoint(paddedDimensions.GetW(), paddedDimensions.GetH()), &m_colBack);
-    pCanvas->RenderDrawLine(CPoint(paddedDimensions.GetW(), paddedDimensions.GetY()),
-       CPoint(paddedDimensions.GetW(), paddedDimensions.GetH()), &m_colBack);
- */
 
     DrawRect(pCanvas, globalPosition, m_colBack);
     DrawRect( pCanvas, paddedDimensions, CColor::Red() );

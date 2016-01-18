@@ -148,7 +148,7 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
     lineMenuRect.Y() += 100;
     lineMenuRect.H() -= 600;
 */
-    CRectangle lineMenuRect(100,100,800,400);
+    CRectangle lineMenuRect(100,100,800,300);
     m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect /*- CPoint(400, 400)*/,
                     CRectangle(10, 10, 10, 10) ) );
     //m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", CRectangle(0, 0, 200, 100)));

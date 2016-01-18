@@ -386,8 +386,8 @@ CRectangle CRectangle::Pad(const CRectangle& rc) const
     CRectangle result(*this);
     result.X() += rc.GetX();
     result.Y() += rc.GetY();
-    result.W() -= rc.GetW();
-    result.H() -= rc.GetH();
+    result.W() -= rc.GetW() + rc.GetX();
+    result.H() -= rc.GetH() + rc.GetY();
     return result;
 }
 
