@@ -18,6 +18,8 @@
 #include "MenuScreen.h"
 //
 #include "../GUI/DebugOverlay.h"
+#include "MenuScreen/SubmenuA.h"
+#include "MenuScreen/SubmenuB.h"
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 #include <GuiLib/Filesystem/FileLoader.h>
@@ -30,8 +32,6 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
-#include "MenuScreen/SubmenuA.h"
-#include "MenuScreen/SubmenuB.h"
 //
 //#include <build/cmake/include/debug.h>
 
@@ -45,19 +45,18 @@ struct MenuScreen::MenuScreenImpl {
     int x;
 };
 
-    gui::components::CMainCanvas* MenuScreen::GetMainCanvas() const
-    {
-        return Master()->GetMainCanvas();
-    }
+gui::components::CMainCanvas * MenuScreen::GetMainCanvas() const {
+    return Master()->GetMainCanvas();
+}
 
-    MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
+MenuScreen::MenuScreen( FileLoader& loader, CCanvas* background) :
     pimpl_(new MenuScreenImpl ),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL),
-    m_HookMgr(new HookableManager(this)),
+    m_HookMgr( new HookableManager(this) ),
     //m_HookMgr(new HookableManager(NULL)),
     m_pSprMgr(new CSpriteManager){
     dbgOut(__FUNCTION__ << " " << this);
@@ -68,8 +67,13 @@ MenuScreen::~MenuScreen(void){
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-class InfoText
-{
+/** @class InfoText:
+ *  Detailed description.
+ *  @return TODO
+ */
+class InfoText {
+    int m_iFrames;
+    int m_iInitFrame;
     TTF_Font* m_pTextFont;
     TTF_Font* m_pKeysFont;
     CRectangle m_rectPaint;
@@ -78,54 +82,87 @@ class InfoText
     boost::scoped_ptr<gui::components::CText> m_pInfoText3;
     boost::scoped_ptr<gui::components::CText> m_pInfoText4;
     boost::scoped_ptr<gui::components::CText> m_pInfoText5;
+    typedef float seconds;
+
+    seconds GetTime() const {
+        return (m_iFrames - m_iInitFrame) / 30.0f;
+    }
+
+#define FROMTIME(x) if ( GetTime() > (x) ) {
+#define ENDTIMEBLOCK \
+    }
 
 public:
-    InfoText(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions)
-    {
+
+    InfoText(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
+        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions){
         CColor m_colText = CColor::Black();
         std::ostringstream outstring;
         outstring << "This screen shows how to display a simple Submenu. (" << gui::CApplication::ShownFrames();
         outstring << ")";
-        m_pInfoText1.reset(new CText(m_pTextFont, outstring.str(), m_colText));
-        m_pInfoText2.reset(new CText(m_pTextFont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
-        m_pInfoText3.reset(new CText(m_pKeysFont, "     K    J      w    s  "));
-        m_pInfoText4.reset(new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.", m_colText));
-        m_pInfoText5.reset(new CText(m_pKeysFont, " L  e         U     q  "));
-
+        m_pInfoText1.reset( new CText(m_pTextFont, outstring.str(), m_colText) );
+        m_pInfoText2.reset( new CText(m_pTextFont,
+                        "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText) );
+        m_pInfoText3.reset( new CText(m_pKeysFont, "     K    J      w    s  ") );
+        m_pInfoText4.reset( new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.",
+                        m_colText) );
+        m_pInfoText5.reset( new CText(m_pKeysFont, " L  e         U     q  ") );
     }
-    
     ~InfoText(){}
 
-    void Draw(const CCanvas* canvas)
-    {
+    void Draw(const CCanvas* canvas) const {
         CRectangle rect = m_rectPaint;
         m_pInfoText1->RenderPut(canvas, rect);
+        FROMTIME(0.25f)
         rect += m_pInfoText1->VerticalSpacing();
         m_pInfoText2->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+        FROMTIME(0.5f)
         rect += m_pInfoText2->VerticalSpacing();
         m_pInfoText3->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+        FROMTIME(0.75f)
         rect += m_pInfoText3->VerticalSpacing();
         m_pInfoText4->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+        FROMTIME(1.0f)
         rect += m_pInfoText4->VerticalSpacing();
         m_pInfoText5->RenderPut(canvas, rect);
-    }
+        ENDTIMEBLOCK
+    } // Draw
 
+    void Idle(int ticks){
+        if (!m_iInitFrame) {
+            m_iInitFrame = ticks;
+        }
+
+        m_iFrames = ticks;
+    }
 };
 
 bool MenuScreen::OnInit( int argc, char* argv[] ){
-    m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", Master()->GetMainCanvas()->GetDimension(), CRectangle(100, 100, 100, 100)));
+/*
+    CRectangle lineMenuRect = Master()->GetMainCanvas()->GetDimension();
+    lineMenuRect.X() += 100;
+    lineMenuRect.W() -= 400;
+    lineMenuRect.Y() += 100;
+    lineMenuRect.H() -= 600;
+*/
+    CRectangle lineMenuRect(100,100,800,400);
+    m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect /*- CPoint(400, 400)*/,
+                    CRectangle(10, 10, 10, 10) ) );
     //m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", CRectangle(0, 0, 200, 100)));
     label1 = m_pLineMenu->AddTextLabel("Sub Menu A");
     label2 = m_pLineMenu->AddTextLabel("Sub Menu B");
     label3 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
 
-    m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
+    m_connection = m_pLineMenu->connect( boost::bind(&MenuScreen::MenuSelectionChanged, this, _1) );
 
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
-    
+
     SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/MenuScreenBg.png") );
     m_pBackground.reset( new CCanvas( tmpfsurf ) );
     m_Loader.FreeLast();
@@ -153,13 +190,16 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
         "Humbug" << "\r\n" <<
         "";
 
-    m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
-    
-    auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
-    m_pInfoText.reset(new InfoText(m_pArialfont, keysfont, Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
+    m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
 
-    HookMgr()->RegisterHookable("SubmenuA", HookCreatorPtr(new ScreenCreator < SubmenuA>(m_Loader, m_pBackground.get())));
-    HookMgr()->RegisterHookable("SubmenuB", HookCreatorPtr(new ScreenCreator < SubmenuB>(m_Loader, m_pBackground.get())));
+    auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
+    m_pInfoText.reset( new InfoText( m_pArialfont, keysfont,
+                    Master()->GetMainCanvas()->GetDimension().Pad( CRectangle(60, 500, 60, 40) ) ) );
+
+    HookMgr()->RegisterHookable( "SubmenuA",
+            HookCreatorPtr( new ScreenCreator < SubmenuA>( m_Loader, m_pBackground.get() ) ) );
+    HookMgr()->RegisterHookable( "SubmenuB",
+            HookCreatorPtr( new ScreenCreator < SubmenuB>( m_Loader, m_pBackground.get() ) ) );
 
     // this->AddExclusiveKeyfilters(SDLK_1, SDLK_2) etc.
 
@@ -170,14 +210,14 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
 
 void MenuScreen::OnIdle(int ticks){
     m_pLineMenu->IdleSetVars(ticks);
+    m_pInfoText->Idle(ticks);
     //m_pScroller->Scroll(4);
     //m_pSprMgr->OnIdle(ticks);
     RaiseOnIdle(ticks);
 }
 
 void MenuScreen::OnDraw(){
-    if (HookMgr()->IsHookActive())
-    {
+    if ( HookMgr()->IsHookActive() ) {
         // When in submenu no draw other than the sub-screens should occur.
         RaiseOnDraw();
         return;
@@ -189,13 +229,13 @@ void MenuScreen::OnDraw(){
     //m_pMainCanvas->Lock();
 
     m_pBackground->RenderCopy();
-    CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
 
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
-    m_pBackground->RenderFillRect(frect, &color);
+    CRectangle frect(700, 120, 185, 185);
+    m_pBackground->RenderFillRect(frect, &color); 
 
     CRectangle dstDims( 0, 0, 200, 200);
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
@@ -208,8 +248,7 @@ void MenuScreen::OnDraw(){
     }
 
     m_pLineMenu->Draw();
-    m_pInfoText->Draw(m_pBackground.get());
-
+    m_pInfoText->Draw( m_pBackground.get() );
 
     //m_pMainCanvas->Unlock();
 }   // OnDraw
@@ -225,34 +264,28 @@ void MenuScreen::OnUpdate(){
     RaiseOnUpdate();
 }
 
-void MenuScreen::OnEvent(SDL_Event* pEvent)
-{
-    m_pLineMenu->HookEventloop(pEvent, HookMgr()->IsHookActive());
+void MenuScreen::OnEvent(SDL_Event* pEvent){
+    m_pLineMenu->HookEventloop( pEvent, HookMgr()->IsHookActive() );
     RaiseOnEvent(pEvent);
 }
 
-void MenuScreen::MenuSelectionChanged(int selectedLabel) const
-{
-    if (selectedLabel == -1)
-    {
+void MenuScreen::MenuSelectionChanged(int selectedLabel) const {
+    if (selectedLabel == -1) {
         HookMgr()->DisableHookable();
     }
 
     // When in submenu no selection other than the "back" key should occur.
-    if (HookMgr()->IsHookActive())
-    {
+    if ( HookMgr()->IsHookActive() ) {
         return;
     }
 
-    if (selectedLabel == label1)
-    {
+    if (selectedLabel == label1) {
         HookMgr()->EnableHookable("SubmenuA");
     }
-    else if (selectedLabel == label2)
-    {
+    else if (selectedLabel == label2) {
         HookMgr()->EnableHookable("SubmenuB");
     }
 
     dbgOut(__FUNCTION__ << "SelectedLabel: " << selectedLabel << " (" << this << ").");
-}
+} // MenuScreen::MenuSelectionChanged
 }

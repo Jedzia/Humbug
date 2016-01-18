@@ -86,27 +86,19 @@ public:
 
 private:
 
-    static int LabelId;
     void Init(CControl* pParent);
-
     CRectangle InitRect(const FileLoader& loader);
+    static void DrawRect(CCanvas* canvas, const CRectangle& dimensions, const CColor& color);
 
+    static int LabelId;
     menu_changed_signal_t m_sigMenuChanged;
-    //canvas used by window
     const FileLoader& m_pLoader;
     TTF_Font* m_pDebugfont;
     boost::scoped_ptr<CText> m_pTextA;
-
     boost::ptr_map<int, controls::CLabel> m_mLabels;
     int m_iLastAutoLabelPosition;
-
-    //CCanvas* m_pCanvas;
-    //CPoint dst;
-    //LineMenuBackground* m_pBackground;
-    // CCanvas* footer;
     std::string m_sName;
     CRectangle m_rPadding;
-    //CImage* footerImage;
     bool m_bOldstate;
     CCanvas* m_tmpcanvas;
     bool m_bFlank;
