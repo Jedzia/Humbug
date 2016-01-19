@@ -265,6 +265,29 @@ void MenuScreen::OnUpdate(){
 void MenuScreen::OnEvent(SDL_Event* pEvent){
     m_pLineMenu->HookEventloop(pEvent, HookMgr()->IsHookActive());
     RaiseOnEvent(pEvent);
+
+    if (pEvent->type != SDL_KEYDOWN) {
+        return;
+    }
+
+    switch (pEvent->key.keysym.sym) {
+    case SDLK_r:
+    {
+        auto rect = m_pLineMenu->GetOffset();
+        rect.Y()--;
+        m_pLineMenu->SetOffset(rect);
+    }
+        break;
+    case SDLK_f:
+    {
+        auto rect = m_pLineMenu->GetOffset();
+        rect.Y()++;
+        m_pLineMenu->SetOffset(rect);
+    }
+    break;
+    default:
+        break;
+    }
 }
 
 void MenuScreen::MenuSelectionChanged(int selectedLabel) const {

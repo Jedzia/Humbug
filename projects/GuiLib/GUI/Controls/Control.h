@@ -38,9 +38,11 @@ private:
         //list of windows to close
         static std::list<CControl *> s_lstClose;
         //canvas used by window
-        gui::components::CCanvas* m_pCanvas;
+        components::CCanvas* m_pCanvas;
         //position
-        gui::components::CPoint m_ptPosition;
+        components::CPoint m_ptPosition;
+        //offsetfor scrolling
+        components::CRectangle m_rectOffset;
         //id
         Uint32 m_ID;
         //static pointer to main control
@@ -57,12 +59,14 @@ protected:
         bool m_ptIsDirty;
         bool m_bUsesSDL2Render;
 
-public:
+    public:
+
+        components::CRectangle GetOffset() const;
 
         //master control constructor
-        explicit CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render = false);
+        explicit CControl(components::CCanvas* pCanvas, bool usesSDL2Render = false);
         //child control constructor
-        CControl(CControl* pParent, gui::components::CRectangle rcDimensions, Uint32 id, bool invalidate = true, bool usesSDL2Render = false);
+        CControl(CControl* pParent, components::CRectangle rcDimensions, Uint32 id, bool invalidate = true, bool usesSDL2Render = false);
         //destructor
         virtual ~CControl();
         //set parent
@@ -139,7 +143,10 @@ public:
         static bool FilterEvent(SDL_Event* pEvent);
 
         //get position
-        gui::components::CPoint GetPosition();
+        components::CPoint GetPosition();
+
+        // set offset for scrolling
+        void SetOffset(const components::CRectangle& m_rect_offset);
 
         //get width and height
         virtual Uint16 GetWidth();
@@ -156,10 +163,10 @@ public:
         Uint16 GetBottom();
 
         //set position
-        void SetPosition(gui::components::CPoint ptPosition);
+        void SetPosition(components::CPoint ptPosition);
 
         //get canvas
-        gui::components::CCanvas * GetCanvas();
+        components::CCanvas * GetCanvas();
 
         //get main control
         static CControl * GetMainControl();

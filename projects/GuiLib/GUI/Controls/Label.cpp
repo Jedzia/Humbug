@@ -153,19 +153,25 @@ void CLabel::OnDraw(){
         auto parent = GetParent();
         if (parent)
         {
+            rcDst -= parent->GetOffset();
             auto text = GetCaption();
-            Uint16 parDim = parent->GetLeft();
-            Uint16 dim = GetLeft();
 
-            auto parenlabelPos = parent->GetPosition();
-            auto labelPos = GetPosition();
 
             CRectangle parenglobalPosition(parent->GetLeft(), parent->GetTop(), parent->GetWidth(), parent->GetHeight());
-            CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
+            //CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
+            CRectangle globalPosition = rcDst;
+            //parenglobalPosition -= parent->GetOffset();
+            //globalPosition -= parent->GetOffset();
 
             CRectangle glInter(globalPosition);
             //glInter.H() += GetHeight() * 2;
-            CRectangle correctionRect = parenglobalPosition + CPoint(0, GetHeight());
+            //CRectangle correctionRect = parenglobalPosition + CPoint(0, GetHeight());
+            //CRectangle correctionRect = parenglobalPosition - CPoint(0, GetHeight());
+            CRectangle correctionRect = parenglobalPosition;
+            correctionRect.Y() += GetHeight() ;
+            correctionRect.H() -= GetHeight() * 2;
+            //correctionRect.Y() += GetHeight() * 2;
+
             glInter.Intersect(correctionRect);
 
             if (glInter == CRectangle())

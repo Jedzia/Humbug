@@ -239,6 +239,24 @@ void LineMenu::NavigateDown(){
         m_iSelectedLabel++;
         CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
         labelD.SetTextColor( CColor::Red() );
+
+        CRectangle parenglobalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
+        CRectangle labelPosition(labelD.GetLeft(), labelD.GetTop(), labelD.GetWidth(), labelD.GetHeight());
+        
+        CRectangle glInter(labelPosition);
+        CRectangle correctionRect = parenglobalPosition + CPoint(0, labelD.GetHeight());
+        glInter.Intersect(correctionRect);
+
+        if (glInter == CRectangle())
+        {
+            CColor color = CColor::LightRed();
+            //GetCanvas()->RenderDrawRect(globalPosition, &color);
+            CRectangle offset = GetOffset();
+            offset += CPoint(0, labelPosition.GetH());
+            SetOffset(offset);
+            //GetCanvas()->RenderDrawRect(labelPosition, &color);
+        }
+
     }
 }
 

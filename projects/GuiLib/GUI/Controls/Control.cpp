@@ -21,7 +21,17 @@ CControl* CControl::s_pMouseFocus(NULL);
 //mouse hovering
 CControl* CControl::s_pMouseHover(NULL);
 
-//master control constructor
+components::CRectangle CControl::GetOffset() const
+{
+    return m_rectOffset;
+}
+
+void CControl::SetOffset(const components::CRectangle& m_rect_offset)
+{
+    m_rectOffset = m_rect_offset;
+}
+
+    //master control constructor
 CControl::CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render) :
 m_lstChildren(0), 
 m_bUsesSDL2Render(usesSDL2Render),
@@ -463,7 +473,8 @@ bool CControl::FilterEvent(SDL_Event* pEvent)
 gui::components::CPoint CControl::GetPosition()
 {
 	//return position
-	return(m_ptPosition);
+    return(m_ptPosition);
+    //return(m_ptPosition + GetOffset());
 }
 
 //get width and height
