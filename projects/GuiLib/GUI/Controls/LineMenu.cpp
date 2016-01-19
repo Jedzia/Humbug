@@ -34,7 +34,7 @@ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std
         const CRectangle& dimensions, const CRectangle& padding) :
     CControl(pParent, dimensions, id), m_iLastAutoLabelPosition(0), m_sName(name), m_rPadding(padding),
     m_iSelectedLabel(LabelId),
-    m_pLoader(m_Loader){
+    m_pLoader(m_Loader) {
     dbgOut(__FUNCTION__);
 
     //Init(pParent);
@@ -46,7 +46,7 @@ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std
 
     m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", LABELFONTSIZE);
 
-    m_tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
+    m_tmpcanvas = GetCanvas()->CreateRGBCompatible(NULL, CControl::GetWidth(), CControl::GetHeight());
     SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
 
     //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
@@ -55,15 +55,15 @@ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std
     //Invalidate();
 }
 
-LineMenu::~LineMenu(void){
+LineMenu::~LineMenu(void) {
     //delete m_pFooterImage;
     delete m_tmpcanvas;
     dbgOut(__FUNCTION__);
 }
 
-void LineMenu::Init(CControl* pParent){}
+void LineMenu::Init(CControl* pParent) {}
 
-CRectangle LineMenu::InitRect(const FileLoader& loader){
+CRectangle LineMenu::InitRect(const FileLoader& loader) {
     /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
        LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
        //CControl::set
@@ -72,14 +72,14 @@ CRectangle LineMenu::InitRect(const FileLoader& loader){
     return CRectangle(0, 0, 1024, 354);
 }
 
-void LineMenu::DrawRect(CCanvas* pCanvas, const CRectangle& r, const CColor& c){
+void LineMenu::DrawRect(CCanvas* pCanvas, const CRectangle& r, const CColor& c) {
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::NW), r.Position(CRectangle::CompassRose::SW), &c);
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::SW), r.Position(CRectangle::CompassRose::SE), &c);
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::SE), r.Position(CRectangle::CompassRose::NE), &c);
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::NE), r.Position(CRectangle::CompassRose::NW), &c);
 }
 
-void LineMenu::OnDraw(){
+void LineMenu::OnDraw() {
     /*Child
        std::list<CControl*>::iterator iter;
        for (iter = m_lstChildren.begin(); iter != m_lstChildren.end(); iter++)
@@ -92,33 +92,37 @@ void LineMenu::OnDraw(){
 
     CCanvas* pCanvas = GetCanvas();
     CRectangle canvasDimensions = GetCanvas()->GetDimension();
-    CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
+    CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
     CRectangle ownDimensions = GetCanvas()->GetDimension();
 
     CColor m_colText = CColor::White();
     CColor m_colBack = CColor::Black();
     std::ostringstream outstring;
     outstring << "[" << m_sName << "] FPS: " << gui::CApplication::ShownFrames() << ", Ticks: " << m_iTicks;
-
     CText text(m_pDebugfont, outstring.str(), m_colText);
-
     CRectangle txtDims = text.GetCanvas()->GetDimension();
     CRectangle dstDims = canvasDimensions;
+    pCanvas->RenderFillRect(txtDims, &m_colBack);
+    text.RenderPut(pCanvas, dstDims, txtDims);
+
+    std::ostringstream outstring2;
+    outstring2 << " Off: " << GetOffset() << ", Sel: " << m_iSelectedLabel;
+    CText text2(m_pDebugfont, outstring2.str(), m_colText);
+    CRectangle txtDims2 = text2.GetCanvas()->GetDimension();
+    CRectangle dstDims2 = canvasDimensions + CPoint(0, 40);
+    text2.RenderPut(pCanvas, dstDims2, txtDims2);
 
     //CRectangle paddedDimensions = canvasDimensions.Pad(m_rPadding);
     CRectangle paddedDimensions = globalPosition.Pad(m_rPadding);
 
     DrawRect(pCanvas, globalPosition, m_colBack);
-    DrawRect( pCanvas, paddedDimensions, CColor::Red() );
-
-    pCanvas->RenderFillRect(txtDims, &m_colBack);
-    text.RenderPut(pCanvas, dstDims, txtDims);
+    DrawRect(pCanvas, paddedDimensions, CColor::Red());
 
     //CControl::OnDraw();
 }         // OnDraw
 
 bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
-        bool bMiddle){
+        bool bMiddle) {
     bool res = CControl::OnMouseMove(x, y, relx, rely, bLeft, bRight, bMiddle);
 
     //if(GetMouseHover()==NULL) SetMouseHover(this);
@@ -133,20 +137,20 @@ bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bL
 void LineMenu::CalculateBounds()
 {}
 
-void LineMenu::IdleSetVars(int ticks){
+void LineMenu::IdleSetVars(int ticks) {
     m_iTicks = ticks;
 }
 
-void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit){
+void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
     //m_KeyboardHandler.HandleKeyboardEvent(keyevent);
 
     //if (keyevent->type != SDL_KEYDOWN && keyevent->type != SDL_KEYUP) {
-    if (keyevent->type != SDL_KEYDOWN) {
+    if(keyevent->type != SDL_KEYDOWN) {
         return;
     }
 
-    if (onlyRecognizeQuit) {
-        switch (keyevent->key.keysym.sym) {
+    if(onlyRecognizeQuit) {
+        switch(keyevent->key.keysym.sym) {
         case SDLK_BACKSPACE:
         case SDLK_q:
             m_sigMenuChanged(-1);
@@ -157,7 +161,7 @@ void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit){
         return;
     }
 
-    switch (keyevent->key.keysym.sym) {
+    switch(keyevent->key.keysym.sym) {
     case SDLK_UP:
     case SDLK_w:
         NavigateUp();
@@ -179,10 +183,10 @@ void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit){
     }       // switch
 } // LineMenu::HookEventloop
 
-int LineMenu::AddTextLabel(const std::string& text){
+int LineMenu::AddTextLabel(const std::string& text) {
     //if ( !CLabel::GetLabelFont() ) {
     //}
-    CRectangle globalPosition( GetLeft(), GetTop(), GetWidth(), GetHeight() );
+    CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
     //CRectangle globalPosition = GetCanvas()->GetDimension();
     CRectangle ownDimensions = globalPosition.Pad(m_rPadding);
 
@@ -191,18 +195,18 @@ int LineMenu::AddTextLabel(const std::string& text){
 
     std::string labelTextString = text;
 
-    if ( labelTextString.empty() ) {
+    if(labelTextString.empty()) {
         std::ostringstream labelText;
         labelText << "AddTextLabel " << id << "";
         labelTextString = labelText.str();
     }
 
-    CLabel* label1 = new CLabel( this, CRectangle(0, 0, -1, -1), id, labelTextString, m_pDebugfont, true,
-            CColor::Black(), CColor::Blue() );
+    CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelTextString, m_pDebugfont, true,
+            CColor::Black(), CColor::Blue());
     m_mLabels.insert(id, label1);
 
     Uint16 height = label1->GetHeight();
-    label1->SetPosition( CPoint(ownDimensions.GetX(), ownDimensions.GetX() + m_iLastAutoLabelPosition) );
+    label1->SetPosition(CPoint(ownDimensions.GetX(), ownDimensions.GetX() + m_iLastAutoLabelPosition));
     m_iLastAutoLabelPosition += height + LABELFONTSIZE;
 
     this->AddChild(label1);
@@ -213,69 +217,68 @@ int LineMenu::AddTextLabel(const std::string& text){
     return id;
 } // LineMenu::AddTextLabel
 
-void LineMenu::SetTextLabelText(int id, const std::string& text){
+void LineMenu::SetTextLabelText(int id, const std::string& text) {
     //CLabel& label = m_mLabels[id];
     CLabel& label = m_mLabels.at(id);
     label.SetCaption(text);
 }
 
-void LineMenu::NavigateDown(){
+void LineMenu::NavigateDown() {
     auto search = m_mLabels.find(m_iSelectedLabel + 1);
 
-    if ( search != m_mLabels.end() ) {
+    if(search != m_mLabels.end()) {
         auto search1 = m_mLabels.find(m_iSelectedLabel);
 
-        if ( search1 != m_mLabels.end() ) {
+        if(search1 != m_mLabels.end()) {
             CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
-            labelD.SetTextColor( CColor::Blue() );
+            labelD.SetTextColor(CColor::Blue());
         }
 
         m_iSelectedLabel++;
         CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
-        labelD.SetTextColor( CColor::Red() );
+        labelD.SetTextColor(CColor::Red());
 
         /*CRectangle parenglobalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
-        CRectangle labelPosition(labelD.GetLeft(), labelD.GetTop(), labelD.GetWidth(), labelD.GetHeight());
-        
-        CRectangle glInter(labelPosition);
-        CRectangle correctionRect = parenglobalPosition + CPoint(0, labelD.GetHeight());
-        glInter.Intersect(correctionRect);*/
+           CRectangle labelPosition(labelD.GetLeft(), labelD.GetTop(), labelD.GetWidth(),
+              labelD.GetHeight());
+
+           CRectangle glInter(labelPosition);
+           CRectangle correctionRect = parenglobalPosition + CPoint(0, labelD.GetHeight());
+           glInter.Intersect(correctionRect);*/
 
         //if (glInter == CRectangle())
-        if (labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle())
-        {
-            CColor color = CColor::LightRed();
-            //GetCanvas()->RenderDrawRect(globalPosition, &color);
+        CRectangle intersects = labelD.Intersects(labelD.VisibleArea() - GetOffset());
+
+        if(intersects == CRectangle()) {
             CRectangle offset = GetOffset();
-            offset += CPoint(0, labelD.GetHeight());
+            offset += CPoint(0, labelD.GetHeight() * 2);
             SetOffset(offset);
-            //GetCanvas()->RenderDrawRect(labelPosition, &color);
         }
-
     }
-}
+} // LineMenu::NavigateDown
 
-void LineMenu::NavigateUp(){
+void LineMenu::NavigateUp() {
     auto search = m_mLabels.find(m_iSelectedLabel - 1);
 
-    if ( search != m_mLabels.end() ) {
+    if(search != m_mLabels.end()) {
         auto search1 = m_mLabels.find(m_iSelectedLabel);
 
-        if ( search1 != m_mLabels.end() ) {
+        if(search1 != m_mLabels.end()) {
             CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
             //labelD.SetCaption("Moooooo");
-            labelD.SetTextColor( CColor::Blue() );
+            labelD.SetTextColor(CColor::Blue());
         }
 
         m_iSelectedLabel--;
         CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
-        labelD.SetTextColor( CColor::Red() );
+        labelD.SetTextColor(CColor::Red());
 
-        if (labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle())
-        {
-            CColor color = CColor::LightRed();
+        auto vis = VisibleArea();
+        CRectangle intersects = labelD.Intersects(labelD.VisibleArea() - GetOffset());
+
+        if(intersects == CRectangle()) {
             CRectangle offset = GetOffset();
-            offset -= CPoint(0, labelD.GetHeight());
+            offset -= CPoint(0, labelD.GetHeight() * 2);
             SetOffset(offset);
         }
     }
