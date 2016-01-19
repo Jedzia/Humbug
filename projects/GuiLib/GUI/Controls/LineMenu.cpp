@@ -19,6 +19,7 @@
 #include "LineMenu.h"
 //
 #include "Label.h"
+#include <boost/foreach.hpp>
 
 using namespace gui::components;
 using namespace gui::controls;
@@ -118,6 +119,47 @@ void LineMenu::OnDraw() {
     DrawRect(pCanvas, globalPosition, m_colBack);
     DrawRect(pCanvas, paddedDimensions, CColor::Red());
 
+    std::string hello("Hello, world!");
+
+    bool overflowDown = false;
+    bool overflowUp = false;
+    BOOST_FOREACH(auto ch, m_mLabels)
+    {
+        const CLabel& labelD = *ch.second;
+        if (labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle()) {
+
+            if (m_iSelectedLabel < ch.first)
+            {
+                overflowDown = true;
+            }
+            if (m_iSelectedLabel > ch.first)
+            {
+                overflowUp = true;
+            }
+            //break;
+        }
+    }
+
+    /*if (GetOffset().GetY() > 0)
+    {
+        overflowDown = true;
+
+    }*/
+
+    if (overflowDown)
+    {
+        //pCanvas->RenderFillRect(paddedDimensions - CRectangle(40,40,40,40), &m_colBack);
+        CRectangle downrect = CRectangle(-30, -30, 30, 30) + paddedDimensions.Position(CRectangle::CompassRose::SE);
+        //downrect += paddedDimensions.Position(CRectangle::CompassRose::SE);
+        //CRectangle rect = paddedDimensions;
+        pCanvas->RenderFillRect(downrect, &m_colBack);
+    }
+
+    if (overflowUp)
+    {
+        CRectangle downrect = CRectangle(-30, 0, 30, 30) + paddedDimensions.Position(CRectangle::CompassRose::NE);
+        pCanvas->RenderFillRect(downrect, &m_colBack);
+    }
     //CControl::OnDraw();
 }         // OnDraw
 
