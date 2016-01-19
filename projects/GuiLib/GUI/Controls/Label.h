@@ -77,7 +77,7 @@ public:
             components::CColor colHilite = components::CColor(255, 255, 255), components::CColor colShadow = components::CColor(128, 128, 128));
     //destruction
     virtual ~CLabel();
-
+    //components::CRectangle Intersects(const components::CRectangle& rcDst) override;
     CLabel(const CLabel& that) = delete;
 
     /** Brief description of CLabel, IsPressed

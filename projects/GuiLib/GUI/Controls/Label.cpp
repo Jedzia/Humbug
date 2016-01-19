@@ -75,16 +75,33 @@ CLabel::~CLabel(){
     dbgOut(__FUNCTION__);
 }
 
-//customize redrawing
+/*CRectangle CLabel::Intersects(const CRectangle& paintDestination)
+{
+    auto parent = GetParent();
+    if (!parent)
+    {
+        return paintDestination;
+    }
+
+    CRectangle glInter = paintDestination;
+    CRectangle correctionRect(parent->GetLeft(), parent->GetTop(), parent->GetWidth(), parent->GetHeight());
+
+    correctionRect.Y() += GetHeight() ;
+    correctionRect.H() -= GetHeight() * 2;
+
+    glInter.Intersect(correctionRect);
+
+    return glInter;
+}*/
+
+    //customize redrawing
 void CLabel::OnDraw(){
     //clear out the surface
     GetCanvas()->Clear(m_colFace);
     //lock the surface
     GetCanvas()->Lock();
 
-    CRectangle rcDst, rcSrc;
-    //set destination rectangle
-    rcDst.Set( GetPosition().GetX(), GetPosition().GetY(), GetWidth(), GetHeight() );
+    CRectangle rcDst = VisibleArea(), rcSrc;
     //set source rectangle
     rcSrc.Copy(rcDst);
     rcSrc.SetX(0);
@@ -156,34 +173,12 @@ void CLabel::OnDraw(){
             rcDst -= parent->GetOffset();
             auto text = GetCaption();
 
-
-            CRectangle parenglobalPosition(parent->GetLeft(), parent->GetTop(), parent->GetWidth(), parent->GetHeight());
-            //CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
-            CRectangle globalPosition = rcDst;
-            //parenglobalPosition -= parent->GetOffset();
-            //globalPosition -= parent->GetOffset();
-
-            CRectangle glInter(globalPosition);
-            //glInter.H() += GetHeight() * 2;
-            //CRectangle correctionRect = parenglobalPosition + CPoint(0, GetHeight());
-            //CRectangle correctionRect = parenglobalPosition - CPoint(0, GetHeight());
-            CRectangle correctionRect = parenglobalPosition;
-            correctionRect.Y() += GetHeight() ;
-            correctionRect.H() -= GetHeight() * 2;
-            //correctionRect.Y() += GetHeight() * 2;
-
-            glInter.Intersect(correctionRect);
-
-            if (glInter == CRectangle())
+            if (Intersects(rcDst) == CRectangle())
             {
                 CColor color = CColor::LightYellow();
-                //GetCanvas()->RenderDrawRect(globalPosition, &color);
                 GetCanvas()->RenderDrawRect(rcDst, &color);
                 return;
             }
-
-            int x = 0;
-            x++;
         }
         //GetCanvas()->UpdateTexture(m_pcnvText, rcSrc, rcDst);
         //GetCanvas()->UpdateTexture(m_pcnvText);

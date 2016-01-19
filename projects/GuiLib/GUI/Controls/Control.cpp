@@ -26,11 +26,6 @@ components::CRectangle CControl::GetOffset() const
     return m_rectOffset;
 }
 
-void CControl::SetOffset(const components::CRectangle& m_rect_offset)
-{
-    m_rectOffset = m_rect_offset;
-}
-
     //master control constructor
 CControl::CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render) :
 m_lstChildren(0), 
@@ -470,11 +465,40 @@ bool CControl::FilterEvent(SDL_Event* pEvent)
 }
 
 //get position
-gui::components::CPoint CControl::GetPosition()
+gui::components::CPoint CControl::GetPosition() const
 {
 	//return position
     return(m_ptPosition);
     //return(m_ptPosition + GetOffset());
+}
+
+components::CRectangle CControl::VisibleArea()
+{
+    return components::CRectangle(GetPosition().GetX(), GetPosition().GetY(), GetWidth(), GetHeight());
+}
+
+void CControl::SetOffset(const components::CRectangle& m_rect_offset)
+{
+    m_rectOffset = m_rect_offset;
+}
+
+components::CRectangle CControl::Intersects(const components::CRectangle& paintDestination)
+{
+    auto parent = GetParent();
+    if (!parent)
+    {
+        return paintDestination;
+    }
+
+    components::CRectangle glInter = paintDestination;
+    components::CRectangle correctionRect(parent->GetLeft(), parent->GetTop(), parent->GetWidth(), parent->GetHeight());
+
+    correctionRect.Y() += GetHeight();
+    correctionRect.H() -= GetHeight() * 2;
+
+    glInter.Intersect(correctionRect);
+
+    return glInter;
 }
 
 //get width and height

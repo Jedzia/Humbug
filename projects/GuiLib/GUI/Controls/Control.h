@@ -143,10 +143,15 @@ protected:
         static bool FilterEvent(SDL_Event* pEvent);
 
         //get position
-        components::CPoint GetPosition();
+        components::CPoint GetPosition() const;
+        
+        // get visible area for the painter.
+        virtual components::CRectangle VisibleArea();
 
         // set offset for scrolling
         void SetOffset(const components::CRectangle& m_rect_offset);
+        // get visual bounds check
+        virtual components::CRectangle Intersects(const components::CRectangle& rcDst);
 
         //get width and height
         virtual Uint16 GetWidth();

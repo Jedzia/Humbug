@@ -85,7 +85,6 @@ public:
     bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle) override;
 protected:
     void CalculateBounds();
-    CRectangle VisibleArea();
 
 private:
 
