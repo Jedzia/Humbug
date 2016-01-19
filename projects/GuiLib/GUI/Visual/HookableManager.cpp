@@ -1,9 +1,10 @@
 #include "stdafx.h"
+//
 #include "HookableManager.h"
 #include <stdexcept>
 #include <utility>
 #include "EventHandler.h"
-
+//
 //#include <build/cmake/include/debug.h>
 
 namespace gui {

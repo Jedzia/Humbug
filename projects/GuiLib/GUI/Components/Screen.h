@@ -1,9 +1,7 @@
 #ifndef HUMBUG_GUI_COMPONENTS_SCREEN_H
 #define HUMBUG_GUI_COMPONENTS_SCREEN_H
-#include "../Visual/Application.h"
 #include "../Visual/Hookable.h"
 #include "../Visual/HookableManager.h"
-#include "../Visual/MessageHandler.h"
 //#include "GUI/Components/MainCanvas.h"
 #include "../Components/Canvas.h"
 #include "../Detail/Signals.h"
@@ -26,7 +24,8 @@ public:
     ScreenCreator(FileLoader& loader, CCanvas *background)
         : m_loader(loader), m_background(background)
     {};
-    Hookable* Create(){
+    Hookable* Create() override
+    {
         return new T(m_loader, m_background);
     }
 };

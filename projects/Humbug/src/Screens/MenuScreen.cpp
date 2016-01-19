@@ -164,7 +164,8 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
     mcol = CColor::White();
 
     SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/MenuScreenBg.png") );
-    m_pBackground.reset( new CCanvas( tmpfsurf ) );
+    //m_pBackground.reset(new CCanvas(tmpfsurf));
+    m_pBackground = boost::make_shared<CCanvas>(tmpfsurf);
     m_Loader.FreeLast();
 
     CColor m_colText = CColor::White();
@@ -196,10 +197,8 @@ bool MenuScreen::OnInit( int argc, char* argv[] ){
     m_pInfoText.reset( new InfoText( m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad( CRectangle(60, 500, 60, 40) ) ) );
 
-    HookMgr()->RegisterHookable( "SubmenuA",
-            HookCreatorPtr( new ScreenCreator < SubmenuA>( m_Loader, m_pBackground.get() ) ) );
-    HookMgr()->RegisterHookable( "SubmenuB",
-            HookCreatorPtr( new ScreenCreator < SubmenuB>( m_Loader, m_pBackground.get() ) ) );
+    HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
+    HookMgr()->RegisterHookable("SubmenuB", boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
 
     // this->AddExclusiveKeyfilters(SDLK_1, SDLK_2) etc.
 

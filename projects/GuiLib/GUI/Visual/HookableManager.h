@@ -22,7 +22,6 @@
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <map>
-#include <string>
 
 namespace gui {
     class HookCreator {
@@ -49,9 +48,10 @@ public:
     {
         dbgOut(__FUNCTION__ << " (" << this << ")");
     };*/
-   Hookable* Create(){
+   Hookable* Create() override
+   {
         return new T;
-    }
+   }
 };
 
 typedef boost::shared_ptr<HookCreator> HookCreatorPtr;
