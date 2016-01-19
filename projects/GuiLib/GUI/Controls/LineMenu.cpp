@@ -207,8 +207,8 @@ int LineMenu::AddTextLabel(const std::string& text){
 
     this->AddChild(label1);
 
-    NavigateDown();
-    NavigateUp();
+    //NavigateDown();
+    //NavigateUp();
 
     return id;
 } // LineMenu::AddTextLabel
@@ -234,19 +234,20 @@ void LineMenu::NavigateDown(){
         CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
         labelD.SetTextColor( CColor::Red() );
 
-        CRectangle parenglobalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
+        /*CRectangle parenglobalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
         CRectangle labelPosition(labelD.GetLeft(), labelD.GetTop(), labelD.GetWidth(), labelD.GetHeight());
         
         CRectangle glInter(labelPosition);
         CRectangle correctionRect = parenglobalPosition + CPoint(0, labelD.GetHeight());
-        glInter.Intersect(correctionRect);
+        glInter.Intersect(correctionRect);*/
 
-        if (glInter == CRectangle())
+        //if (glInter == CRectangle())
+        if (labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle())
         {
             CColor color = CColor::LightRed();
             //GetCanvas()->RenderDrawRect(globalPosition, &color);
             CRectangle offset = GetOffset();
-            offset += CPoint(0, labelPosition.GetH());
+            offset += CPoint(0, labelD.GetHeight());
             SetOffset(offset);
             //GetCanvas()->RenderDrawRect(labelPosition, &color);
         }
@@ -269,6 +270,14 @@ void LineMenu::NavigateUp(){
         m_iSelectedLabel--;
         CLabel& labelD = m_mLabels.at(m_iSelectedLabel);
         labelD.SetTextColor( CColor::Red() );
+
+        if (labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle())
+        {
+            CColor color = CColor::LightRed();
+            CRectangle offset = GetOffset();
+            offset -= CPoint(0, labelD.GetHeight());
+            SetOffset(offset);
+        }
     }
 } // LineMenu::NavigateUp
 }

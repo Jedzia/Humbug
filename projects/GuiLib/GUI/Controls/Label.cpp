@@ -173,6 +173,7 @@ void CLabel::OnDraw(){
             rcDst -= parent->GetOffset();
             auto text = GetCaption();
 
+            // Todo: Visual intersection checking. Or better use a scrollable parent canvas control?
             if (Intersects(rcDst) == CRectangle())
             {
                 CColor color = CColor::LightYellow();

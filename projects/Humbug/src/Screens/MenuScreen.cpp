@@ -155,6 +155,8 @@ bool MenuScreen::OnInit(int argc, char* argv[]){
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
+    label4 = m_pLineMenu->AddTextLabel();
+    label4 = m_pLineMenu->AddTextLabel();
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 
