@@ -150,9 +150,38 @@ void CLabel::OnDraw(){
     //GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
 
     if (m_bUsesSDL2Render) {
-        GetCanvas()->RenderPutCopy(m_pcnvText.get(), &rcSrc, &rcDst);
+        auto parent = GetParent();
+        if (parent)
+        {
+            auto text = GetCaption();
+            Uint16 parDim = parent->GetLeft();
+            Uint16 dim = GetLeft();
+
+            auto parenlabelPos = parent->GetPosition();
+            auto labelPos = GetPosition();
+
+            CRectangle parenglobalPosition(parent->GetLeft(), parent->GetTop(), parent->GetWidth(), parent->GetHeight());
+            CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
+
+            CRectangle glInter(globalPosition);
+            //glInter.H() += GetHeight() * 2;
+            CRectangle correctionRect = parenglobalPosition + CPoint(0, GetHeight());
+            glInter.Intersect(correctionRect);
+
+            if (glInter == CRectangle())
+            {
+                CColor color = CColor::LightYellow();
+                //GetCanvas()->RenderDrawRect(globalPosition, &color);
+                GetCanvas()->RenderDrawRect(rcDst, &color);
+                return;
+            }
+
+            int x = 0;
+            x++;
+        }
         //GetCanvas()->UpdateTexture(m_pcnvText, rcSrc, rcDst);
         //GetCanvas()->UpdateTexture(m_pcnvText);
+        GetCanvas()->RenderPutCopy(m_pcnvText.get(), &rcSrc, &rcDst);
     }
     else {
         GetCanvas()->Blit(rcDst, *m_pcnvText, rcSrc);
