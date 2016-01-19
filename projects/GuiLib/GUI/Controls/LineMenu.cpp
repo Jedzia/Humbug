@@ -130,6 +130,15 @@ bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bL
     return res;
 }
 
+CRectangle LineMenu::VisibleArea()
+{
+    CRectangle result;
+    return result;
+}
+
+void LineMenu::CalculateBounds()
+{}
+
 void LineMenu::IdleSetVars(int ticks){
     m_iTicks = ticks;
 }
