@@ -192,7 +192,8 @@ void CLabel::OnDraw(){
     //Invalidate();
 }     // OnDraw
 
-Uint16 CLabel::GetWidth(){
+Uint16 CLabel::GetWidth() const
+{
     if (m_pcnvText) {
         return m_pcnvText->GetWidth();
     }
@@ -205,7 +206,8 @@ Uint16 CLabel::GetWidth(){
 /// Gets the height.
 /// </summary>
 /// <returns>Uint16.</returns>
-Uint16 CLabel::GetHeight(){
+Uint16 CLabel::GetHeight() const
+{
     if (m_pcnvText) {
         return m_pcnvText->GetHeight();
     }

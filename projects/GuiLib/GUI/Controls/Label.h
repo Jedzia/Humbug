@@ -94,9 +94,9 @@ public:
 
        virtual bool OnLLabelUp(Uint16 x, Uint16 y);*/
 
-    Uint16 GetWidth() override;
+    Uint16 GetWidth() const override;
 
-    Uint16 GetHeight() override;
+    Uint16 GetHeight() const override;
 
     //set caption
     void SetCaption(const std::string& sCaption);

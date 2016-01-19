@@ -73,7 +73,7 @@ protected:
         void SetParent(CControl* pmhNewParent);
 
         //get parent
-        CControl * GetParent();
+        CControl * GetParent() const;
 
         //has parent?
         bool HasParent();
@@ -146,32 +146,32 @@ protected:
         components::CPoint GetPosition() const;
         
         // get visible area for the painter.
-        virtual components::CRectangle VisibleArea();
+        virtual components::CRectangle VisibleArea() const;
 
         // set offset for scrolling
         void SetOffset(const components::CRectangle& m_rect_offset);
         // get visual bounds check
-        virtual components::CRectangle Intersects(const components::CRectangle& rcDst);
+        virtual components::CRectangle Intersects(const components::CRectangle& rcDst) const;
 
         //get width and height
-        virtual Uint16 GetWidth();
+        virtual Uint16 GetWidth() const;
 
-        virtual Uint16 GetHeight();
+        virtual Uint16 GetHeight() const;
 
         //get edges in global coords
-        Uint16 GetLeft();
+        Uint16 GetLeft() const;
 
-        Uint16 GetRight();
+        Uint16 GetRight() const;
 
-        Uint16 GetTop();
+        Uint16 GetTop() const;
 
-        Uint16 GetBottom();
+        Uint16 GetBottom() const;
 
         //set position
         void SetPosition(components::CPoint ptPosition);
 
         //get canvas
-        components::CCanvas * GetCanvas();
+        components::CCanvas * GetCanvas() const;
 
         //get main control
         static CControl * GetMainControl();

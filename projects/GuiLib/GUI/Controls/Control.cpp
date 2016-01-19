@@ -472,7 +472,7 @@ gui::components::CPoint CControl::GetPosition() const
     //return(m_ptPosition + GetOffset());
 }
 
-components::CRectangle CControl::VisibleArea()
+components::CRectangle CControl::VisibleArea() const
 {
     return components::CRectangle(GetPosition().GetX(), GetPosition().GetY(), GetWidth(), GetHeight());
 }
@@ -482,7 +482,7 @@ void CControl::SetOffset(const components::CRectangle& m_rect_offset)
     m_rectOffset = m_rect_offset;
 }
 
-components::CRectangle CControl::Intersects(const components::CRectangle& paintDestination)
+components::CRectangle CControl::Intersects(const components::CRectangle& paintDestination) const
 {
     auto parent = GetParent();
     if (!parent)
@@ -502,20 +502,20 @@ components::CRectangle CControl::Intersects(const components::CRectangle& paintD
 }
 
 //get width and height
-Uint16 CControl::GetWidth()
+Uint16 CControl::GetWidth() const
 {
 	//return canvas width
 	return(GetCanvas()->GetWidth());
 }
 
-Uint16 CControl::GetHeight()
+Uint16 CControl::GetHeight() const
 {
 	//return canvas height
 	return(GetCanvas()->GetHeight());
 }
 
 //get edges in global coords
-Uint16 CControl::GetLeft()
+Uint16 CControl::GetLeft() const
 {
 	//get parent
 	CControl* pParent=(GetParent());
@@ -532,7 +532,7 @@ Uint16 CControl::GetLeft()
 	}
 }
 
-Uint16 CControl::GetRight()
+Uint16 CControl::GetRight() const
 {
 	//get parent
 	CControl* pParent=(GetParent());
@@ -549,7 +549,7 @@ Uint16 CControl::GetRight()
 	}
 }
 
-Uint16 CControl::GetTop()
+Uint16 CControl::GetTop() const
 {
 	//get parent
 	CControl* pParent=(GetParent());
@@ -566,7 +566,7 @@ Uint16 CControl::GetTop()
 	}
 }
 
-Uint16 CControl::GetBottom()
+Uint16 CControl::GetBottom() const
 {
 	//get parent
 	CControl* pParent=(GetParent());
@@ -591,7 +591,7 @@ void CControl::SetPosition(gui::components::CPoint ptPosition)
 }
 
 //get canvas
-gui::components::CCanvas* CControl::GetCanvas()
+gui::components::CCanvas* CControl::GetCanvas() const
 {
 	//get the canvas
 	return(m_pCanvas);
@@ -688,7 +688,7 @@ void CControl::SetParent(CControl* pmhNewParent)
 }
 
 //get parent
-CControl* CControl::GetParent()
+CControl* CControl::GetParent() const
 {
 	//return parent
 	return(m_pParent);
