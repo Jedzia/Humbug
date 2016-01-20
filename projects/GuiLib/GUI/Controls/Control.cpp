@@ -21,11 +21,6 @@ CControl* CControl::s_pMouseFocus(NULL);
 //mouse hovering
 CControl* CControl::s_pMouseHover(NULL);
 
-components::CRectangle CControl::GetOffset() const
-{
-    return m_rectOffset;
-}
-
     //master control constructor
 CControl::CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render) :
 m_lstChildren(0), 
@@ -475,6 +470,15 @@ gui::components::CPoint CControl::GetPosition() const
 components::CRectangle CControl::VisibleArea() const
 {
     return components::CRectangle(GetPosition().GetX(), GetPosition().GetY(), GetWidth(), GetHeight());
+}
+
+/*components::CRectangle& CControl::Offset() {
+    return this->m_rectOffset;
+}*/
+
+components::CRectangle CControl::GetOffset() const
+{
+    return m_rectOffset;
 }
 
 void CControl::SetOffset(const components::CRectangle& m_rect_offset)

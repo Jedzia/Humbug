@@ -81,7 +81,6 @@ public:
 
     void NavigateUp();
     void NavigateDown();
-
     bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle) override;
 protected:
     void CalculateBounds();
@@ -91,6 +90,7 @@ private:
     void Init(CControl* pParent);
     CRectangle InitRect(const FileLoader& loader);
     static void DrawRect(CCanvas* canvas, const CRectangle& dimensions, const CColor& color);
+    CPoint CalculateStepValue(const controls::CLabel& labelD) const;
 
     static int LabelId;
     menu_changed_signal_t m_sigMenuChanged;
@@ -108,6 +108,8 @@ private:
     int m_iSelectedLabel;
 
     int m_iScrollPosition;
+    int m_iWantedOffset;
+    int m_iMoveOffset;
 };
 }
 }

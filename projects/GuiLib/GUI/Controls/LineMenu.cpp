@@ -33,9 +33,9 @@ const int LABELFONTSIZE = 32;
 
 LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name,
         const CRectangle& dimensions, const CRectangle& padding) :
-    CControl(pParent, dimensions, id), m_iLastAutoLabelPosition(0), m_sName(name), m_rPadding(padding),
-    m_iSelectedLabel(LabelId),
-    m_pLoader(m_Loader) {
+    CControl(pParent, dimensions, id), m_pLoader(m_Loader), m_iLastAutoLabelPosition(0), m_sName(name),
+    m_rPadding(padding), m_iWantedOffset(0), m_iMoveOffset(0),
+    m_iSelectedLabel(LabelId) {
     dbgOut(__FUNCTION__);
 
     //Init(pParent);
@@ -126,28 +126,27 @@ void LineMenu::OnDraw() {
     BOOST_FOREACH(auto ch, m_mLabels)
     {
         const CLabel& labelD = *ch.second;
-        if (labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle()) {
 
-            if (m_iSelectedLabel < ch.first)
-            {
+        if(labelD.Intersects(labelD.VisibleArea() - GetOffset()) == CRectangle()) {
+            if(m_iSelectedLabel < ch.first) {
                 overflowDown = true;
             }
-            if (m_iSelectedLabel > ch.first)
-            {
+
+            if(m_iSelectedLabel > ch.first) {
                 overflowUp = true;
             }
+
             //break;
         }
     }
 
     /*if (GetOffset().GetY() > 0)
-    {
+       {
         overflowDown = true;
 
-    }*/
+       }*/
 
-    if (overflowDown)
-    {
+    if(overflowDown) {
         //pCanvas->RenderFillRect(paddedDimensions - CRectangle(40,40,40,40), &m_colBack);
         CRectangle downrect = CRectangle(-30, -30, 30, 30) + paddedDimensions.Position(CRectangle::CompassRose::SE);
         //downrect += paddedDimensions.Position(CRectangle::CompassRose::SE);
@@ -155,11 +154,11 @@ void LineMenu::OnDraw() {
         pCanvas->RenderFillRect(downrect, &m_colBack);
     }
 
-    if (overflowUp)
-    {
+    if(overflowUp) {
         CRectangle downrect = CRectangle(-30, 0, 30, 30) + paddedDimensions.Position(CRectangle::CompassRose::NE);
         pCanvas->RenderFillRect(downrect, &m_colBack);
     }
+
     //CControl::OnDraw();
 }         // OnDraw
 
@@ -181,6 +180,32 @@ void LineMenu::CalculateBounds()
 
 void LineMenu::IdleSetVars(int ticks) {
     m_iTicks = ticks;
+
+    const int scrollSpeed = 5;
+    // SetOffset(GetOffset() + CalculateStepValue(labelD));
+    CRectangle currentOffset = GetOffset();
+    if (m_iWantedOffset > m_iMoveOffset)
+    {
+        m_iMoveOffset += scrollSpeed;
+    }
+    else if (m_iWantedOffset < m_iMoveOffset)
+    {
+        m_iMoveOffset -= scrollSpeed;
+    }
+    //while (m_iWantedOffset != m_iMoveOffset)
+    {
+        if (m_iWantedOffset > m_iMoveOffset)
+        {
+            m_iMoveOffset += 1;
+        }
+        else if (m_iWantedOffset < m_iMoveOffset)
+        {
+            m_iMoveOffset -= 1;
+        }
+    }
+    //CRectangle offset = CRectangle(currentOffset.GetX(), currentOffset.GetY() + m_iMoveOffset, currentOffset.GetW(), currentOffset.GetH());
+    CRectangle offset = CRectangle(currentOffset.GetX(), m_iMoveOffset, currentOffset.GetW(), currentOffset.GetH());
+    SetOffset(offset);
 }
 
 void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
@@ -243,8 +268,13 @@ int LineMenu::AddTextLabel(const std::string& text) {
         labelTextString = labelText.str();
     }
 
+    CColor color = CColor::Blue();
+    if (m_mLabels.size() == 0)
+    {
+        color = CColor::Red();
+    }
     CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelTextString, m_pDebugfont, true,
-            CColor::Black(), CColor::Blue());
+            CColor::Black(), color);
     m_mLabels.insert(id, label1);
 
     Uint16 height = label1->GetHeight();
@@ -266,6 +296,11 @@ void LineMenu::SetTextLabelText(int id, const std::string& text) {
 }
 
 void LineMenu::NavigateDown() {
+    if (m_iWantedOffset != m_iMoveOffset)
+    {
+        return;
+    }
+
     auto search = m_mLabels.find(m_iSelectedLabel + 1);
 
     if(search != m_mLabels.end()) {
@@ -292,14 +327,27 @@ void LineMenu::NavigateDown() {
         CRectangle intersects = labelD.Intersects(labelD.VisibleArea() - GetOffset());
 
         if(intersects == CRectangle()) {
-            CRectangle offset = GetOffset();
-            offset += CPoint(0, labelD.GetHeight() * 2);
-            SetOffset(offset);
+            /*CRectangle offset = GetOffset();
+               offset += CPoint(0, labelD.GetHeight() * 2);
+               SetOffset(offset);*/
+            m_iWantedOffset += CalculateStepValue(labelD).GetY();
+            //SetOffset(GetOffset() + CalculateStepValue(labelD));
+            
+            //GetOffset() += CPoint(0, labelD.GetHeight() * 2);
         }
     }
 } // LineMenu::NavigateDown
 
+CPoint LineMenu::CalculateStepValue(const CLabel& label) const {
+    return CPoint(0, label.GetHeight() * 2);
+}
+
 void LineMenu::NavigateUp() {
+    if (m_iWantedOffset != m_iMoveOffset)
+    {
+        return;
+    }
+
     auto search = m_mLabels.find(m_iSelectedLabel - 1);
 
     if(search != m_mLabels.end()) {
@@ -319,9 +367,12 @@ void LineMenu::NavigateUp() {
         CRectangle intersects = labelD.Intersects(labelD.VisibleArea() - GetOffset());
 
         if(intersects == CRectangle()) {
-            CRectangle offset = GetOffset();
-            offset -= CPoint(0, labelD.GetHeight() * 2);
-            SetOffset(offset);
+            //SetOffset(GetOffset() - CalculateStepValue(labelD));
+            m_iWantedOffset -= CalculateStepValue(labelD).GetY();
+            
+            /*CRectangle offset = GetOffset();
+               offset -= CPoint(0, labelD.GetHeight() * 2);
+               SetOffset(offset);*/
         }
     }
 } // LineMenu::NavigateUp

@@ -61,8 +61,6 @@ protected:
 
     public:
 
-        components::CRectangle GetOffset() const;
-
         //master control constructor
         explicit CControl(components::CCanvas* pCanvas, bool usesSDL2Render = false);
         //child control constructor
@@ -148,8 +146,15 @@ protected:
         // get visible area for the painter.
         virtual components::CRectangle VisibleArea() const;
 
+        /*// get scrolling offset reference
+        components::CRectangle& Offset();*/
+
+        // get scrolling offset
+        components::CRectangle GetOffset() const;
+
         // set offset for scrolling
         void SetOffset(const components::CRectangle& m_rect_offset);
+
         // get visual bounds check
         virtual components::CRectangle Intersects(const components::CRectangle& rcDst) const;
 
