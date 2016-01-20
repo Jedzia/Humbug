@@ -55,8 +55,8 @@ MenuScreen::MenuScreen(FileLoader& loader, CCanvas* background) :
     m_Loader(loader),
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
-    m_pScroller(NULL),
-    m_HookMgr(new HookableManager(this)),
+    m_pScroller(NULL), m_iFrames(0),
+    m_HookMgr(new HookableManager(this)), 
     //m_HookMgr(new HookableManager(NULL)),
     m_pSprMgr(new CSpriteManager){
     dbgOut(__FUNCTION__ << " " << this);
@@ -138,6 +138,28 @@ public:
     }
 };
 
+class MenuScreen::DingensPainter {
+    int x;
+    const MenuScreen* m_pHost;
+
+public:
+    explicit DingensPainter(const MenuScreen* host)
+        : x(0), m_pHost(host)
+    {
+    }
+
+    void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param){
+        x++;
+
+        const int varX = 1;
+        auto pos = pChild->GetPosition();
+        pChild->SetPosition(CPoint(pos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), pos.GetY()));
+        pChild->Draw();
+        pChild->SetPosition(pos);
+        param.SetDrawn(true);
+    }
+};
+
 bool MenuScreen::OnInit(int argc, char* argv[]){
 /*
     CRectangle lineMenuRect = Master()->GetMainCanvas()->GetDimension();
@@ -157,6 +179,10 @@ bool MenuScreen::OnInit(int argc, char* argv[]){
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
+
+    //DingensPainter stripeModifier(16, m_pArialfont, m_pOverlay.get());
+    DingensPainter stripeModifier(this);
+    m_pLineMenu->AddChildPainter(stripeModifier);
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 
@@ -209,6 +235,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]){
 }   // OnInit
 
 void MenuScreen::OnIdle(int ticks){
+    m_iFrames = ticks;
     m_pLineMenu->IdleSetVars(ticks);
     m_pInfoText->Idle(ticks);
     //m_pScroller->Scroll(4);

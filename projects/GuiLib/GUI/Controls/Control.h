@@ -2,16 +2,15 @@
 /*!
  * This file is part of Humbug, the strangest game ever.
  * License details can be found in the file COPYING.
- * Copyright (c) 2012, EvePanix. All rights reserved.
+ * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
  *             the Control.h class.
- * \folder     $(folder)
  * \file       Control.h
- * \date       2012-07-10
+ * \date       2016-01-09
  * \author     Jedzia.
  *
- * modified    2012-07-10, Jedzia
+ * modified    2016-01-09, Jedzia
  */
 /*---------------------------------------------------------*/
 #ifndef CONTROL_H__
@@ -23,36 +22,43 @@
 #include <list>
 
 namespace gui {
-  namespace controls {
-      class CControl;
+namespace controls {
+/** @class CControl:
+ *  Detailed description.
+ *  @return TODO
+ */
+class CControl;
 
-      //CControl class
+//CControl class
 //abstracts a user interface control
 
-    class ControlPainterParameters {
-        bool m_bDrawn;
+class ControlPainterParameters {
+    bool m_bDrawn;
 
-    public:
-        explicit ControlPainterParameters()
-            : m_bDrawn(false)
-        {
-        }
+public:
 
+    explicit ControlPainterParameters()
+        : m_bDrawn(false)
+    {}
 
-        bool IsDrawn() const
-        {
-            return m_bDrawn;
-        }
+    /** Brief description of ControlPainterParameters, IsDrawn
+     *  Detailed description.
+     *  @return TODO
+     */
+    bool IsDrawn() const {
+        return m_bDrawn;
+    }
+    /** Brief description of ControlPainterParameters, SetDrawn
+     *  Detailed description.
+     *  @param drawn TODO
+     */
+    void SetDrawn(const bool drawn){
+        m_bDrawn = drawn;
+    }
+    //__declspec(property(get = IsDrawn, put = SetDrawn)) bool MBxDrawn;
+};
 
-        void SetDrawn(const bool drawn)
-        {
-            m_bDrawn = drawn;
-        }
-
-        //__declspec(property(get = IsDrawn, put = SetDrawn)) bool MBxDrawn;
-    };
-
-    class ControlPainter {
+/*    class ControlPainter {
         const CControl& parent;
         CControl* pChild;
 
@@ -68,192 +74,199 @@ namespace gui {
         {
         }
 
-        virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param) = 0;
-    };
+        virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
+           param) = 0;
+    };*/
 
-    class CControl {
-private:
+class CControl {
+    typedef boost::function<void (const CControl& parent, CControl * pChild, ControlPainterParameters& param)> ControlPainter;
+    typedef std::vector<ControlPainter> ControlPainterStorage;
+    ControlPainterStorage m_vecChildrenPainter;
 
-        //parent
-        CControl* m_pParent;
-        //list of child controls
-        std::list<CControl *> m_lstChildren;
-        //list of windows to bring to front
-        static std::list<CControl *> s_lstUpdate;
-        //list of windows to close
-        static std::list<CControl *> s_lstClose;
-        //canvas used by window
-        components::CCanvas* m_pCanvas;
-        //position
-        components::CPoint m_ptPosition;
-        //offsetfor scrolling
-        components::CRectangle m_rectOffset;
-        //id
-        Uint32 m_ID;
-        //static pointer to main control
-        static CControl* s_pMainControl;
-        //keyboard focus
-        static CControl* s_pKeyboardFocus;
-        //mouse focus
-        static CControl* s_pMouseFocus;
-        //mouse hovering
-        static CControl* s_pMouseHover;
+    //parent
+    CControl* m_pParent;
+    //list of child controls
+    std::list<CControl *> m_lstChildren;
+    //list of windows to bring to front
+    static std::list<CControl *> s_lstUpdate;
+    //list of windows to close
+    static std::list<CControl *> s_lstClose;
+    //canvas used by window
+    components::CCanvas* m_pCanvas;
+    //position
+    components::CPoint m_ptPosition;
+    //offsetfor scrolling
+    components::CRectangle m_rectOffset;
+    //id
+    Uint32 m_ID;
+    //static pointer to main control
+    static CControl* s_pMainControl;
+    //keyboard focus
+    static CControl* s_pKeyboardFocus;
+    //mouse focus
+    static CControl* s_pMouseFocus;
+    //mouse hovering
+    static CControl* s_pMouseHover;
 
 protected:
 
-        bool m_ptIsDirty;
-        bool m_bUsesSDL2Render;
+    bool m_ptIsDirty;
+    bool m_bUsesSDL2Render;
 
-    public:
+public:
 
-        //master control constructor
-        explicit CControl(components::CCanvas* pCanvas, bool usesSDL2Render = false);
-        //child control constructor
-        CControl(CControl* pParent, components::CRectangle rcDimensions, Uint32 id, bool invalidate = true, bool usesSDL2Render = false);
-        //destructor
-        virtual ~CControl();
-        //set parent
-        void SetParent(CControl* pmhNewParent);
+    //master control constructor
+    explicit CControl(components::CCanvas* pCanvas, bool usesSDL2Render = false);
+    //child control constructor
+    CControl(CControl* pParent, components::CRectangle rcDimensions, Uint32 id, bool invalidate = true, bool usesSDL2Render = false);
+    //destructor
+    virtual ~CControl();
+    //set parent
+    void SetParent(CControl* pmhNewParent);
 
-        //get parent
-        CControl * GetParent() const;
+    //get parent
+    CControl * GetParent() const;
 
-        //has parent?
-        bool HasParent();
+    //has parent?
+    bool HasParent();
 
-        //set ID
-        void SetID(Uint32 id);
+    //set ID
+    void SetID(Uint32 id);
 
-        //get id
-        Uint32 GetID();
+    //get id
+    Uint32 GetID();
 
-        //send message
-        bool SendMessageQ(MSGID MsgID, MSGPARM Parm1 = NULL, MSGPARM Parm2 = NULL, MSGPARM Parm3 = NULL,
-                MSGPARM Parm4 = NULL);
+    //send message
+    bool SendMessageQ(MSGID MsgID, MSGPARM Parm1 = NULL, MSGPARM Parm2 = NULL, MSGPARM Parm3 = NULL,
+            MSGPARM Parm4 = NULL);
 
-        //process message(virtual)
-        virtual bool OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSGPARM Parm3, MSGPARM Parm4);
+    //process message(virtual)
+    virtual bool OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSGPARM Parm3, MSGPARM Parm4);
 
-        //add child handler
-        void AddChild(CControl* pControl);
+    //add child handler
+    void AddChild(CControl* pControl);
 
-        //remove child handler
-        void RemoveChild(CControl* pControl);
+    //remove child handler
+    void RemoveChild(CControl* pControl);
 
-        //bring to front
-        void BringToFront();
+    //bring to front
+    void BringToFront();
 
-        //close
-        void Close();
+    //close
+    void Close();
 
-        //update all
-        static void Update();
+    //update all
+    static void Update();
 
-        //redraw entire system
-        static void Redraw();
-        
-        virtual void DrawChild(const CControl& parent, CControl* pChild);
-        //draw control
-        void Draw();
-        void Invalidate();
+    //redraw entire system
+    static void Redraw();
 
-        //customize redrawing
-        virtual void OnDraw();
+    void AddChildPainter(ControlPainter updfunc);
 
-        //event handling
-        virtual bool OnEvent(SDL_Event* pEvent);
+    virtual void DrawChild(const CControl& parent, CControl* pChild) const;
 
-        //keyboard events
-        virtual bool OnKeyDown(SDL_Keycode sym, Uint16 mod);
+    //draw control
+    void Draw();
 
-        virtual bool OnKeyUp(SDL_Keycode sym, Uint16 mod);
+    void Invalidate();
 
-        //mouse events
-        virtual bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle);
+    //customize redrawing
+    virtual void OnDraw();
 
-        virtual bool OnLButtonDown(Uint16 x, Uint16 y);
+    //event handling
+    virtual bool OnEvent(SDL_Event* pEvent);
 
-        virtual bool OnLButtonUp(Uint16 x, Uint16 y);
+    //keyboard events
+    virtual bool OnKeyDown(SDL_Keycode sym, Uint16 mod);
 
-        virtual bool OnRButtonDown(Uint16 x, Uint16 y);
+    virtual bool OnKeyUp(SDL_Keycode sym, Uint16 mod);
 
-        virtual bool OnRButtonUp(Uint16 x, Uint16 y);
+    //mouse events
+    virtual bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle);
 
-        virtual bool OnMButtonDown(Uint16 x, Uint16 y);
+    virtual bool OnLButtonDown(Uint16 x, Uint16 y);
 
-        virtual bool OnMButtonUp(Uint16 x, Uint16 y);
+    virtual bool OnLButtonUp(Uint16 x, Uint16 y);
 
-        //static event filter
-        static bool FilterEvent(SDL_Event* pEvent);
+    virtual bool OnRButtonDown(Uint16 x, Uint16 y);
 
-        //get position
-        components::CPoint GetPosition() const;
-        
-        // get visible area for the painter.
-        virtual components::CRectangle VisibleArea() const;
+    virtual bool OnRButtonUp(Uint16 x, Uint16 y);
 
-        /*// get scrolling offset reference
-        components::CRectangle& Offset();*/
+    virtual bool OnMButtonDown(Uint16 x, Uint16 y);
 
-        // get scrolling offset
-        components::CRectangle GetOffset() const;
+    virtual bool OnMButtonUp(Uint16 x, Uint16 y);
 
-        // set offset for scrolling
-        void SetOffset(const components::CRectangle& m_rect_offset);
+    //static event filter
+    static bool FilterEvent(SDL_Event* pEvent);
 
-        // get visual bounds check
-        virtual components::CRectangle Intersects(const components::CRectangle& rcDst) const;
+    //get position
+    components::CPoint GetPosition() const;
 
-        //get width and height
-        virtual Uint16 GetWidth() const;
+    // get visible area for the painter.
+    virtual components::CRectangle VisibleArea() const;
 
-        virtual Uint16 GetHeight() const;
+    /*// get scrolling offset reference
+       components::CRectangle& Offset();*/
 
-        //get edges in global coords
-        Uint16 GetLeft() const;
+    // get scrolling offset
+    components::CRectangle GetOffset() const;
 
-        Uint16 GetRight() const;
+    // set offset for scrolling
+    void SetOffset(const components::CRectangle& m_rect_offset);
 
-        Uint16 GetTop() const;
+    // get visual bounds check
+    virtual components::CRectangle Intersects(const components::CRectangle& rcDst) const;
 
-        Uint16 GetBottom() const;
+    //get width and height
+    virtual Uint16 GetWidth() const;
 
-        //set position
-        void SetPosition(components::CPoint ptPosition);
+    virtual Uint16 GetHeight() const;
 
-        //get canvas
-        components::CCanvas * GetCanvas() const;
+    //get edges in global coords
+    Uint16 GetLeft() const;
 
-        //get main control
-        static CControl * GetMainControl();
+    Uint16 GetRight() const;
 
-        //get keyboard focus control
-        static CControl * GetKeyboardFocus();
+    Uint16 GetTop() const;
 
-        //set keyboard focus control
-        static void SetKeyboardFocus(CControl* pControl);
+    Uint16 GetBottom() const;
 
-        //get mouse focus control
-        static CControl * GetMouseFocus();
+    //set position
+    void SetPosition(components::CPoint ptPosition);
 
-        //set mouse focus control
-        static void SetMouseFocus(CControl* pControl);
+    //get canvas
+    components::CCanvas * GetCanvas() const;
 
-        //get mouse hover control
-        static CControl * GetMouseHover();
+    //get main control
+    static CControl * GetMainControl();
 
-        //set mouse focus control
-        static void SetMouseHover(CControl* pControl);
+    //get keyboard focus control
+    static CControl * GetKeyboardFocus();
 
-        //check for focuses
-        bool IsMainControl();
+    //set keyboard focus control
+    static void SetKeyboardFocus(CControl* pControl);
 
-        bool HasKeyboardFocus();
+    //get mouse focus control
+    static CControl * GetMouseFocus();
 
-        bool HasMouseFocus();
+    //set mouse focus control
+    static void SetMouseFocus(CControl* pControl);
 
-        bool HasMouseHover();
-    };
-  } // namespace controls
+    //get mouse hover control
+    static CControl * GetMouseHover();
+
+    //set mouse focus control
+    static void SetMouseHover(CControl* pControl);
+
+    //check for focuses
+    bool IsMainControl();
+
+    bool HasKeyboardFocus();
+
+    bool HasMouseFocus();
+
+    bool HasMouseHover();
+};
+}   // namespace controls
 } // namespace gui
 #endif //

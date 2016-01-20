@@ -341,8 +341,10 @@ CPoint LineMenu::CalculateStepValue(const CLabel& label) const {
     return CPoint(0, label.GetHeight() * 2);
 }
 
-void LineMenu::DrawChild(const CControl& parent, CControl* pChild)
+void LineMenu::DrawChild(const CControl& parent, CControl* pChild) const
 {
+    CControl::DrawChild(parent, pChild);
+    return;
     const int varX = 1;
     auto pos = pChild->GetPosition();
     //pChild->SetPosition(CPoint(pos.GetX() + (varX - (rand() % (2 * varX))), pos.GetY()));

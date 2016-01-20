@@ -79,6 +79,7 @@ public:
     void OnEvent(SDL_Event* pEvent) override;
 
 private:
+    class DingensPainter;
 
     virtual void MenuSelectionChanged(int selectedLabel) const;
 
@@ -86,6 +87,7 @@ private:
     boost::scoped_ptr<MenuScreenImpl> pimpl_;
     FileLoader& m_Loader;
     Uint8 x;
+    int m_iFrames;
     gui::components::CColor mcol;
     boost::shared_ptr<gui::components::CCanvas> m_pBackground;
     boost::scoped_ptr<gui::components::CText> m_pScrollText;

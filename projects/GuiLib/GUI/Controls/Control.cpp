@@ -179,9 +179,30 @@ void CControl::Redraw()
     GetMainControl()->Draw();
 }
 
-void CControl::DrawChild(const CControl& parent, CControl* pChild)
+void CControl::AddChildPainter(ControlPainter updfunc)
 {
-    pChild->Draw();
+    m_vecChildrenPainter.push_back(updfunc);
+}
+
+void CControl::DrawChild(const CControl& parent, CControl* pChild) const
+{
+    ControlPainterParameters param;
+    if (!m_vecChildrenPainter.empty()) {
+
+        ControlPainterStorage::const_iterator end = m_vecChildrenPainter.end();
+
+        for (ControlPainterStorage::const_iterator it = m_vecChildrenPainter.begin(); it < end; it++)
+        {
+            (*it)(parent, pChild, param);
+        }
+
+        /*if (param.IsDrawn()) {
+            return;
+        }*/
+    }
+
+    if (!param.IsDrawn())
+        pChild->Draw();
 }
 
     //draw control
