@@ -31,6 +31,7 @@
 #include <GuiLib/GUI/Sprite/Sprite.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
+#include <boost/foreach.hpp>
 #include <cstdlib>
 //
 //#include <build/cmake/include/debug.h>
@@ -138,6 +139,97 @@ public:
     }
 };
 
+/** @class InfoText:
+ *  Detailed description.
+ *  @return TODO
+ */
+class InfoText2 {
+    int m_iFrames;
+    int m_iInitFrame;
+    TTF_Font* m_pTextFont;
+    TTF_Font* m_pKeysFont;
+    CRectangle m_rectPaint;
+    boost::ptr_vector<CText> m_pvecInfoTexts;
+    typedef float seconds;
+
+    seconds GetTime() const {
+        return (m_iFrames - m_iInitFrame) / 30.0f;
+    }
+#define FROMTIME(x) if(GetTime() > (x)) {
+#define ENDTIMEBLOCK \
+    }
+
+public:
+
+    InfoText2(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
+        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {
+        CColor m_colText = CColor::Black();
+        std::ostringstream outstring;
+        outstring << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
+        outstring << ")";
+
+        m_pvecInfoTexts.push_back(new CText(m_pTextFont, outstring.str(), m_colText));
+        m_pvecInfoTexts.push_back(new CText(m_pTextFont,
+                        "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
+        m_pvecInfoTexts.push_back(new CText(m_pKeysFont, "     K    J      w    s  "));
+        m_pvecInfoTexts.push_back(new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.",
+                        m_colText));
+        //m_pvecInfoTexts.push_back(new CText(m_pKeysFont, " L  e         U     q  "));
+
+        //auto dings = boost::make_shared<CText>(m_pKeysFont, " L  e         U     q  ");
+        CText *xxx = makeCText<CText>(m_pKeysFont, " L  e         U     q  ");
+        //m_pvecInfoTexts.push_back(dings.get());
+    }
+    ~InfoText2() {}
+
+    void Draw(const CCanvas* canvas) const {
+        CRectangle rect = m_rectPaint;
+
+        float time = 0.25f;
+        BOOST_FOREACH(const CText &text, m_pvecInfoTexts)
+        {
+            FROMTIME(time)
+            text.RenderPut(canvas, rect);
+            rect += text.VerticalSpacing();
+            ENDTIMEBLOCK
+            time += 0.25f;
+        }
+    } // Draw
+    void Idle(int ticks) {
+        if(!m_iInitFrame) {
+            m_iInitFrame = ticks;
+        }
+
+        m_iFrames = ticks;
+    }
+
+    //typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ... args){
+
+    template<class T, class Arg1, class ... Args>
+    typename T * makeCText(Arg1 && arg1, Args && ... args){
+        //auto painter = boost::make_shared<T>(arg1, args ...);
+        //auto painter2 = std::allocate_shared<T>(arg1, args ...);
+        //painter.reset();
+        //OwnChildPainter(painter);
+        //auto p = new CText(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
+        auto p = new T(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
+        m_pvecInfoTexts.push_back(p);
+        return p;
+    }
+
+    template<class T, class Arg1, class ... Args>
+    typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ... args){
+        //auto painter = boost::make_shared<T>(arg1, args ...);
+        //auto painter2 = std::allocate_shared<T>(arg1, args ...);
+        //painter.reset();
+        //OwnChildPainter(painter);
+        //auto p = new CText(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
+        auto p = boost::make_shared<T>(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
+        return p;
+    }
+
+};
+
 /** @class MenuScreen:
  *  Detailed description.
  *  @param parent TODO
@@ -163,7 +255,7 @@ class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
         e++;
         //param.SetDrawn(true);
         CColor sdl_color = CColor::DarkMagenta();
-        pChild->GetCanvas()->RenderFillRect(CRectangle(333+e, 333, 55, 55), &sdl_color);
+        pChild->GetCanvas()->RenderFillRect(CRectangle(333 + e, 333, 55, 55), &sdl_color);
     }
     void AfterDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
         static int e = 0;
@@ -175,28 +267,22 @@ public:
 
     explicit DingensPainter(const MenuScreen* host)
         : DetailedControlPainter(), x(0), k(0), m_pHost(host)
-    {
-        
-    }
-
+    {}
     virtual ~DingensPainter()
-    {
-        
-    }
-
+    {}
     void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param) {
         int rnd = 4 - (rand() % 4);
-        x+=rnd;
+        x += rnd;
         k++;
 
         //auto label = static_cast<controls::CLabel>(pChild);
-        auto label = dynamic_cast<controls::CLabel*>(pChild);
-        if (label)
-        {
+        auto label = dynamic_cast<controls::CLabel *>(pChild);
+
+        if(label) {
             CColor cl = label->GetTextColor();
             CColor clred = CColor::Red();
-            if (cl != clred)
-            {
+
+            if(cl != clred) {
                 //int rdegrees = (m_pHost->m_iFrames + r % 360);
                 int degrees = (m_pHost->m_iFrames) * 8 % 360;
                 const float PI = 3.14159265f;
@@ -209,33 +295,25 @@ public:
                 //CColor color(c, c, c | 0xa0, c);
                 CColor color(corrector, corrector, corrector | 0xa0, corrector);
                 //const int kfac = parent.GetNumChildren();
-                //CColor color((k % kfac) * 32 + corrector, (k % kfac) * 32, (k % kfac) * 32 | 0xa0, corrector);
+                //CColor color((k % kfac) * 32 + corrector, (k % kfac) * 32, (k % kfac) * 32 | 0xa0,
+                // corrector);
                 label->SetTextColor(color);
             }
+
             //pChild->GetCanvas()->SetColorKey(color);
         }
-        
+
         const int varX = 1;
         //CPoint lastPos = pChild->GetPosition();
-        //pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY()));
+        //pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4),
+        // lastPos.GetY()));
         //pChild->Draw();
         //pChild->SetPosition(lastPos);
         //param.SetDrawn(true);
-   
+
         CColor sdl_color = CColor::DarkMagenta();
         pChild->GetCanvas()->RenderFillRect(CRectangle(333 + x, 333, 55, 55), &sdl_color);
-    }
-
-//    template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not_array< T >::type static make_shared(Arg1 && arg1, Args && ... args)
-//    {
-//        return boost::make_shared< T >(arg1, args...);
-//    }
-
-    template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not_array< T >::type static make_shared(Arg1 && arg1, Args && ... args)
-    {
-        return boost::make_shared< T >(arg1, args...);
-    }
-
+    } // ()
 };
 
 bool MenuScreen::OnInit(int argc, char* argv[]) {
@@ -262,13 +340,12 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     DingensPainter painter(this);
     //m_pLineMenu->AddChildPainter(boost::ref(painter)); // uses ref, object must be valid
     m_pLineMenu->AddChildPainter(painter); // performs copy
-    
+
     //m_pLineMenu->OwnChildPainter(new DingensPainter(this));
     //m_pLineMenu->OwnChildPainter(boost::make_shared<DingensPainter>(this));
     //m_pLineMenu->OwnChildPainter(DingensPainter::make_shared<DingensPainter>(this));
-    
+
     m_pLineMenu->OwnChildPainter<DingensPainter>(this);
-    
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 
@@ -307,7 +384,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
 
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
-    m_pInfoText.reset(new InfoText(m_pArialfont, keysfont,
+    m_pInfoText.reset(new InfoText2(m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
