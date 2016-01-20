@@ -5,9 +5,9 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the LineMenu.cpp class.
+ *             the CLineMenu.cpp class.
  * \folder     $(folder)
- * \file       LineMenu.cpp
+ * \file       CLineMenu.cpp
  * \date       2012-07-10
  * \author     Jedzia.
  *
@@ -29,10 +29,10 @@ namespace gui {
 namespace components {
 //#include <build/cmake/include/debug.h>
 
-int LineMenu::LabelId = 6000;
+int CLineMenu::LabelId = 6000;
 const int LABELFONTSIZE = 32;
 
-LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name,
+CLineMenu::CLineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name,
         const CRectangle& dimensions, const CRectangle& padding) :
     CControl(pParent, dimensions, id), m_pLoader(m_Loader), m_iLastAutoLabelPosition(0), m_sName(name),
     m_rPadding(padding), m_iWantedOffset(0), m_iMoveOffset(0),
@@ -57,15 +57,15 @@ LineMenu::LineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std
     //Invalidate();
 }
 
-LineMenu::~LineMenu(void) {
+CLineMenu::~CLineMenu(void) {
     //delete m_pFooterImage;
     delete m_tmpcanvas;
     dbgOut(__FUNCTION__);
 }
 
-void LineMenu::Init(CControl* pParent) {}
+void CLineMenu::Init(CControl* pParent) {}
 
-CRectangle LineMenu::InitRect(const FileLoader& loader) {
+CRectangle CLineMenu::InitRect(const FileLoader& loader) {
     /*footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
        LOGSTREAM << "The rect: |" << footer->GetDimension() << "|ends" << std::endl;
        //CControl::set
@@ -74,14 +74,14 @@ CRectangle LineMenu::InitRect(const FileLoader& loader) {
     return CRectangle(0, 0, 1024, 354);
 }
 
-void LineMenu::DrawRect(CCanvas* pCanvas, const CRectangle& r, const CColor& c) {
+void CLineMenu::DrawRect(CCanvas* pCanvas, const CRectangle& r, const CColor& c) {
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::NW), r.Position(CRectangle::CompassRose::SW), &c);
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::SW), r.Position(CRectangle::CompassRose::SE), &c);
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::SE), r.Position(CRectangle::CompassRose::NE), &c);
     pCanvas->RenderDrawLine(r.Position(CRectangle::CompassRose::NE), r.Position(CRectangle::CompassRose::NW), &c);
 }
 
-void LineMenu::OnDraw() {
+void CLineMenu::OnDraw() {
     /*Child
        std::list<CControl*>::iterator iter;
        for (iter = m_lstChildren.begin(); iter != m_lstChildren.end(); iter++)
@@ -163,7 +163,7 @@ void LineMenu::OnDraw() {
     //CControl::OnDraw();
 }         // OnDraw
 
-bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
+bool CLineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight,
         bool bMiddle) {
     bool res = CControl::OnMouseMove(x, y, relx, rely, bLeft, bRight, bMiddle);
 
@@ -176,10 +176,10 @@ bool LineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bL
     return res;
 }
 
-void LineMenu::CalculateBounds()
+void CLineMenu::CalculateBounds()
 {}
 
-void LineMenu::IdleSetVars(int ticks) {
+void CLineMenu::IdleSetVars(int ticks) {
     m_iTicks = ticks;
 
     const int scrollSpeed = 5;
@@ -206,9 +206,9 @@ void LineMenu::IdleSetVars(int ticks) {
     // currentOffset.GetW(), currentOffset.GetH());
     CRectangle offset = CRectangle(currentOffset.GetX(), m_iMoveOffset, currentOffset.GetW(), currentOffset.GetH());
     SetOffset(offset);
-} // LineMenu::IdleSetVars
+} // CLineMenu::IdleSetVars
 
-void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
+void CLineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
     //m_KeyboardHandler.HandleKeyboardEvent(keyevent);
 
     //if (keyevent->type != SDL_KEYDOWN && keyevent->type != SDL_KEYUP) {
@@ -248,9 +248,9 @@ void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
     default:
         break;
     }       // switch
-} // LineMenu::HookEventloop
+} // CLineMenu::HookEventloop
 
-int LineMenu::AddTextLabel(const std::string& text) {
+int CLineMenu::AddTextLabel(const std::string& text) {
     //if ( !CLabel::GetLabelFont() ) {
     //}
     CRectangle globalPosition(GetLeft(), GetTop(), GetWidth(), GetHeight());
@@ -288,15 +288,15 @@ int LineMenu::AddTextLabel(const std::string& text) {
     //NavigateUp();
 
     return id;
-} // LineMenu::AddTextLabel
+} // CLineMenu::AddTextLabel
 
-void LineMenu::SetTextLabelText(int id, const std::string& text) {
+void CLineMenu::SetTextLabelText(int id, const std::string& text) {
     //CLabel& label = m_mLabels[id];
     CLabel& label = m_mLabels.at(id);
     label.SetCaption(text);
 }
 
-void LineMenu::NavigateDown() {
+void CLineMenu::NavigateDown() {
     if(m_iWantedOffset != m_iMoveOffset) {
         return;
     }
@@ -336,13 +336,13 @@ void LineMenu::NavigateDown() {
             //GetOffset() += CPoint(0, labelD.GetHeight() * 2);
         }
     }
-} // LineMenu::NavigateDown
+} // CLineMenu::NavigateDown
 
-CPoint LineMenu::CalculateStepValue(const CLabel& label) const {
+CPoint CLineMenu::CalculateStepValue(const CLabel& label) const {
     return CPoint(0, label.GetHeight() * 2);
 }
 
-void LineMenu::DrawChild(const CControl& parent, CControl* pChild) const
+void CLineMenu::DrawChild(const CControl& parent, CControl* pChild) const
 {
     CControl::DrawChild(parent, pChild);
     return;
@@ -358,7 +358,7 @@ void LineMenu::DrawChild(const CControl& parent, CControl* pChild) const
     pChild->SetPosition(pos);
 }
 
-void LineMenu::NavigateUp() {
+void CLineMenu::NavigateUp() {
     if(m_iWantedOffset != m_iMoveOffset) {
         return;
     }
@@ -390,6 +390,6 @@ void LineMenu::NavigateUp() {
                SetOffset(offset);*/
         }
     }
-} // LineMenu::NavigateUp
+} // CLineMenu::NavigateUp
 }
 }

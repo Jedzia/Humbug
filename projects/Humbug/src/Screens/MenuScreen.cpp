@@ -234,7 +234,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
  */
     // Todo: derive a ScrollingLineMenu
     CRectangle lineMenuRect(100, 100, 800, 300);
-    m_pLineMenu.reset(new LineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect, CRectangle(10, 10, 10, 10)));
+    m_pLineMenu.reset(new CLineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect, CRectangle(10, 10, 10, 10)));
     label1 = m_pLineMenu->AddTextLabel("Sub Menu A");
     label2 = m_pLineMenu->AddTextLabel("Sub Menu B");
     label3 = m_pLineMenu->AddTextLabel();

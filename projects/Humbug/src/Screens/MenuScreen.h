@@ -94,9 +94,9 @@ private:
     boost::scoped_ptr<gui::components::CText> m_pScrollText;
     boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
     boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-    boost::scoped_ptr<gui::components::LineMenu> m_pLineMenu;
+    boost::scoped_ptr<gui::components::CLineMenu> m_pLineMenu;
     boost::scoped_ptr<InfoText2> m_pInfoText;
-    gui::components::LineMenu::menu_changed_connection_t m_connection;
+    gui::components::CLineMenu::menu_changed_connection_t m_connection;
 
     boost::scoped_ptr<gui::HookableManager> m_HookMgr;
     gui::HookableManager* HookMgr() const { return m_HookMgr.get(); }

@@ -5,9 +5,9 @@
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the LineMenu.h class.
+ *             the CLineMenu.h class.
  * \folder     $(folder)
- * \file       LineMenu.h
+ * \file       CLineMenu.h
  * \date       2012-07-10
  * \author     Jedzia.
  *
@@ -27,18 +27,18 @@
 
 namespace gui {
 namespace components {
-/** @class LineMenu: 
+/** @class CLineMenu: 
  *  Detailed description.
  *
  */
-class LineMenu : public controls::CControl { 
+class CLineMenu : public controls::CControl { 
 public:
     typedef bs::signal<void(int selectedLabel)>  menu_changed_signal_t;
     typedef bs::connection  menu_changed_connection_t;
 
-    // LineMenu(const FileLoader& loader, CCanvas* pCanvas);
-    LineMenu(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name, const CRectangle& dimensions, const CRectangle& padding);
-    ~LineMenu();
+    // CLineMenu(const FileLoader& loader, CCanvas* pCanvas);
+    CLineMenu(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name, const CRectangle& dimensions, const CRectangle& padding);
+    ~CLineMenu();
 
     menu_changed_connection_t connect(menu_changed_signal_t::slot_function_type subscriber)
     {
