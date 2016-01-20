@@ -51,7 +51,7 @@ MenuScreen::MenuScreen(FileLoader& loader, CCanvas* background) :
     m_Loader(loader),
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
-    m_pScroller(NULL), m_iFrames(0),
+    m_pScroller(NULL),
     m_HookMgr(new HookableManager(this)), m_pDebugfont(NULL),
     //m_HookMgr(new HookableManager(NULL)),
     m_pSprMgr(new CSpriteManager) {
@@ -151,12 +151,12 @@ class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
     }
     void DrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
         const int varX = 1;
-        auto x1 = (varX - cos(m_pHost->m_iFrames / 6.0f) * 4);
-        auto y1 = (varX - sin(m_pHost->m_iFrames / 6.0f) * 4);
+        auto x1 = (varX - cos(m_pHost->GetTicks() / 6.0f) * 4);
+        auto y1 = (varX - sin(m_pHost->GetTicks() / 6.0f) * 4);
         pChild->SetPosition(CPoint(lastPos.GetX() + x1, lastPos.GetY() + y1));
         //param.SetDrawn(true);
         CColor sdl_color = CColor::LightMagenta();
-        auto x2 = (varX - sin(m_pHost->m_iFrames / 6.0f) * 32);
+        auto x2 = (varX - sin(m_pHost->GetTicks() / 6.0f) * 32);
         auto rect = CRectangle(333 - x2, 393, 55, 55);
         //pChild->GetCanvas()->RenderFillRect(rect, &sdl_color);
         CText text(m_pHost->m_pDebugfont, __FUNCTION__, sdl_color);
@@ -189,13 +189,13 @@ public:
 
             if(cl != clred) {
                 //int rdegrees = (m_pHost->m_iFrames + r % 360);
-                int degrees = (m_pHost->m_iFrames) * 8 % 360;
+                int degrees = (m_pHost->GetTicks()) * 8 % 360;
                 const float PI = 3.14159265f;
                 float radians = degrees * PI / 180.0f;
                 float clock = degrees / PI;
                 int corrector = 64 + sin(radians) * 64;
 
-                int sval = cos(m_pHost->m_iFrames / 6.0f) * 4;
+                int sval = cos(m_pHost->GetTicks() / 6.0f) * 4;
                 int c = x % 200;
                 //CColor color(c, c, c | 0xa0, c);
                 CColor color(corrector, corrector, corrector | 0xa0, corrector);
@@ -298,7 +298,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pInfoText->makeCText<CText>(m_pArialfont, "Enter or [e] selects and Backspace or [q] moves back.", m_colText);
     m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
 
-    m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)->FlyTo(CPoint(512, 200));
+    m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)->FlyTo(CPoint(512, 200), this);
 
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
@@ -312,7 +312,6 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
 }   // OnInit
 
 void MenuScreen::OnIdle(int ticks) {
-    m_iFrames = ticks;
     m_pLineMenu->IdleSetVars(ticks);
     m_pInfoText->Idle(ticks);
     //m_pScroller->Scroll(4);

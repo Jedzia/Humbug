@@ -47,8 +47,10 @@ protected:
     virtual void OnConnect(/*Hookable* controller*/) = 0;
     virtual void OnDisconnect() = 0;
 
+    int GetTicks() const;
 private:
     void Init(CMaster *Master, Hookable *controller);
+    void HandleIdle(int ticks);
 
 	//static boost::ptr_vector<Hookable> m_pvHooks;
     //static Hookable* m_pController;
@@ -60,6 +62,7 @@ private:
 
     GroupId m_grpID;
     bool m_bIsInitialized;
+    int m_iTicks;
 };
 
 class TestHookable : public Hookable
