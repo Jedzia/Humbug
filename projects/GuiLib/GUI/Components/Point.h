@@ -1,6 +1,7 @@
 //sentinel
 #ifndef __GUI_COMPONENTS_POINT_H__
 #define __GUI_COMPONENTS_POINT_H__
+#include <boost/numeric/ublas/vector.hpp>
 
 namespace gui {
 namespace components {
@@ -66,6 +67,9 @@ public:
 	bool operator == ( const CPoint& pt ) const;
 	bool operator != ( CPoint& pt ) const;
     bool operator<(const CPoint& pt) const;
+
+    // conversion
+    operator boost::numeric::ublas::vector<double> () const;
 };
 
 CPoint operator * ( int scalar , CPoint& pt ) ;
