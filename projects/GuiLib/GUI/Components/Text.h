@@ -8,7 +8,8 @@
 #include <boost/function.hpp>
 
 namespace gui {
-namespace components {
+    class Hookable;
+    namespace components {
 
 class CCanvas;
 
@@ -16,11 +17,13 @@ struct CTextModifierData
 {
     int DeltaX;
     int DeltaY;
-    CRectangle& dest;
     CRectangle& src;
+    CRectangle& dest;
+    Hookable *hookable;
+    bool markedForDeletion;
 
     CTextModifierData(CRectangle& src_rect, CRectangle& dst_rect)
-        : dest{ dst_rect }, src{ src_rect }, DeltaX(0), DeltaY(0)
+        : DeltaX(0), DeltaY(0), src{ src_rect }, dest{ dst_rect }, hookable(nullptr), markedForDeletion(false)
     {
     }
 };
@@ -36,11 +39,11 @@ public:
     typedef boost::function<void (const CCanvas* ,CText *text, CTextModifierData& mdata)> TextModifier;
     //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
     void AddModifier(TextModifier updfunc);
-    void FlyTo(CPoint c_point) ;
-    void RenderPut(const CCanvas *canvas, const CRectangle& dstRect) const;
-    void RenderPut(const CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
-	void Put(CCanvas *canvas, const CRectangle& dstRect) const;
-    void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
+    void FlyTo(CPoint c_point, Hookable *hookable = NULL);
+    void RenderPut(const CCanvas *canvas, const CRectangle& dstRect);
+    void RenderPut(const CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect);
+	void Put(CCanvas *canvas, const CRectangle& dstRect);
+    void Put(CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect);
     void Dings(SDL_Color sdl_color);
 
     CCanvas * GetCanvas() const { return m_pText.get(); }
@@ -55,7 +58,7 @@ public:
     void SetColor(const CColor m_col_text);
 
 private:
-    void ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) const;
+    void ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect);
     void RunModifiers(CCanvas *textcanvas) const;
 
     TTF_Font *m_pFont;

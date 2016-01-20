@@ -19,16 +19,10 @@
 #include "Canvas.h"
 #include "Text.h"
 
-#include <GuiLib/GUI/Visual/Application.h>
 #include <boost/math/constants/constants.hpp>
-#include <boost/math_fwd.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
-#include <boost/numeric/ublas/vector_proxy.hpp>
-#include <boost/numeric/ublas/vector_sparse.hpp>
+#include <GuiLib/GUI/Visual/Hookable.h>
 
 /*#include <gmtl/Matrix.h>
 #include <gmtl/Vec.h>
@@ -61,11 +55,11 @@ CText::~CText() {
     //dbgOut(__FUNCTION__);
 }
 
-void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect) const {
+void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect) {
     RenderPut(canvas, dstRect, GetCanvas()->GetDimension());
 }
 
-void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) const {
+void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
     m_pText->Lock();
 
     CTextModifierData mdata(srcRect, dstRect);
@@ -76,13 +70,20 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) const {
         for(TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end; it++)
         {
             (*it)(m_pText.get(), const_cast<CText *>(this), mdata);
+            if (mdata.markedForDeletion)
+            {
+                //m_vecModifierVault.pop_back();
+                //TextModifierStorage::iterator ex;
+                m_vecModifierVault.erase(it);
+                mdata.markedForDeletion = false;
+            }
         }
     }
 
     m_pText->Unlock();
 }
 
-void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) const {
+void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) {
     CRectangle dest(dstRect);
     CRectangle src(srcRect);
     dest.SetW(srcRect.GetW());
@@ -93,7 +94,7 @@ void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CR
     m_pText->RenderCopy(&src, &dest);
 }
 
-void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) const {
+void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) {
     CRectangle dest(dstRect);
     CRectangle src(srcRect);
     ApplyModifiers(src, dest);
@@ -102,7 +103,7 @@ void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& sr
     canvas->AddUpdateRect(dest);
 }     // CText::Put
 
-void CText::Put(CCanvas* canvas, const CRectangle& dstRect) const {
+void CText::Put(CCanvas* canvas, const CRectangle& dstRect) {
     Put(canvas, dstRect, GetCanvas()->GetDimension());
 }
 
@@ -329,7 +330,7 @@ public:
     } // ()
 };
 
-void CText::FlyTo(CPoint c_point) {
+void CText::FlyTo(CPoint c_point, Hookable *hookable) {
     //auto bla = *this;
     //AddModifier(NULL);
     //return NULL;
