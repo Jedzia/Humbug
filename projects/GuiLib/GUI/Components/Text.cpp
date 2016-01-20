@@ -65,17 +65,19 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
     CTextModifierData mdata(srcRect, dstRect);
 
     if(!m_vecModifierVault.empty()) {
-        TextModifierStorage::const_iterator end = m_vecModifierVault.end();
+        TextModifierStorage::iterator end = m_vecModifierVault.end();
 
-        for(TextModifierStorage::const_iterator it = m_vecModifierVault.begin(); it < end; it++)
+        for(TextModifierStorage::iterator it = m_vecModifierVault.begin(); it < end; ++it)
         {
-            (*it)(m_pText.get(), const_cast<CText *>(this), mdata);
+            (*it)(m_pText.get(), this, mdata);
             if (mdata.markedForDeletion)
             {
                 //m_vecModifierVault.pop_back();
                 //TextModifierStorage::iterator ex;
                 m_vecModifierVault.erase(it);
                 mdata.markedForDeletion = false;
+                // Todo: better fill a deleter list and erase after loop.
+                break;
             }
         }
     }
@@ -283,11 +285,14 @@ class Mover2 {
     CPoint destination;
     double x;
     double y;
+    Hookable* hookable;
+    int startTicks;
+    int endTicks;
 
 public:
 
-    explicit Mover2(const CPoint& destination)
-        : destination{destination}, x(0), y(0)
+    explicit Mover2(const CPoint& destination, Hookable* hookable)
+        : destination{ destination }, x(0), y(0), hookable{ hookable }, startTicks(0), endTicks(0)
     {}
 
     static vector<double> normalizedDirection(
@@ -300,8 +305,23 @@ public:
     void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) {
         auto color = CColor::DarkGray();
         target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
-
-        text->SetColor(color);
+        if (hookable)
+        {
+            int ticks = hookable->GetTicks();
+            if (!startTicks)
+            {
+                startTicks = ticks;
+            }
+            
+            color.SetR(ticks % 255);
+            text->SetColor(color);
+            
+            if (ticks - startTicks < 200)
+            {
+                return;
+            }
+        }        
+        
         //float r = 564.345f;
         //using namespace boost::math::double_constants;
         //auto xxx = pi * r * r;
@@ -311,20 +331,37 @@ public:
         vector<double> vB(static_cast<CPoint>(mdata.dest));
         vector<double> vresult = normalizedDirection(vA, vB);
 
-        if (mdata.dest.GetX() + x <= destination.GetX() - vresult[0]) {
+        if (mdata.dest.GetX() + x < destination.GetX() - vresult[0]) {
             x += vresult[0];
         }
-        else if (mdata.dest.GetX() + x >= destination.GetX() + vresult[0]) {
+        else if (mdata.dest.GetX() + x > destination.GetX() + vresult[0]) {
             x -= vresult[0];
         }
 
-        if (mdata.dest.GetY() - y <= destination.GetY() + vresult[1]) {
+        if (mdata.dest.GetY() - y < destination.GetY() + vresult[1]) {
             y += vresult[1];
         }
-        else if (mdata.dest.GetY() - y >= destination.GetY() - vresult[1]) {
+        else if (mdata.dest.GetY() - y > destination.GetY() - vresult[1]) {
             y -= vresult[1];
         }
-
+        CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 1);
+        if (actual == destination)
+        {
+            if (hookable)
+            {
+                int ticks = hookable->GetTicks();
+                if (!endTicks && (ticks - startTicks > 200))
+                {
+                    endTicks = ticks;
+                }
+                if ((ticks - endTicks) < 200)
+                {
+                    return;
+                }
+            }
+            mdata.state++;
+            mdata.markedForDeletion = true;
+        }
         mdata.dest.X() += ceil(x);
         mdata.dest.Y() -= ceil(y);
     } // ()
@@ -334,7 +371,7 @@ void CText::FlyTo(CPoint c_point, Hookable *hookable) {
     //auto bla = *this;
     //AddModifier(NULL);
     //return NULL;
-    Mover2 mover(c_point);
+    Mover2 mover(c_point, hookable);
     //GetCanvas()->AddModifier(mover);
     AddModifier(mover);
 }

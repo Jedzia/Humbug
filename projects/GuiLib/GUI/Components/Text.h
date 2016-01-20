@@ -21,9 +21,10 @@ struct CTextModifierData
     CRectangle& dest;
     Hookable *hookable;
     bool markedForDeletion;
+    int state;
 
     CTextModifierData(CRectangle& src_rect, CRectangle& dst_rect)
-        : DeltaX(0), DeltaY(0), src{ src_rect }, dest{ dst_rect }, hookable(nullptr), markedForDeletion(false)
+        : DeltaX(0), DeltaY(0), src{ src_rect }, dest{ dst_rect }, hookable(nullptr), markedForDeletion(false), state(1)
     {
     }
 };

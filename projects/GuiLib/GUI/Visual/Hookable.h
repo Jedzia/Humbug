@@ -30,6 +30,9 @@ public:
     *  @param ticks frame ticks counter.
     */
     virtual void OnIdle(int ticks) = 0;
+
+    int GetTicks() const;
+
     friend class HookableManager;
 
 protected:
@@ -47,7 +50,6 @@ protected:
     virtual void OnConnect(/*Hookable* controller*/) = 0;
     virtual void OnDisconnect() = 0;
 
-    int GetTicks() const;
 private:
     void Init(CMaster *Master, Hookable *controller);
     void HandleIdle(int ticks);
