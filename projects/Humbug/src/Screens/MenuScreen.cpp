@@ -20,6 +20,7 @@
 #include "../GUI/DebugOverlay.h"
 #include "MenuScreen/SubmenuA.h"
 #include "MenuScreen/SubmenuB.h"
+#include "InfoText.h"
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 #include <GuiLib/Filesystem/FileLoader.h>
@@ -139,96 +140,6 @@ public:
     }
 };
 
-/** @class InfoText:
- *  Detailed description.
- *  @return TODO
- */
-class InfoText2 {
-    int m_iFrames;
-    int m_iInitFrame;
-    TTF_Font* m_pTextFont;
-    TTF_Font* m_pKeysFont;
-    CRectangle m_rectPaint;
-    boost::ptr_vector<CText> m_pvecInfoTexts;
-    typedef float seconds;
-
-    seconds GetTime() const {
-        return (m_iFrames - m_iInitFrame) / 30.0f;
-    }
-#define FROMTIME(x) if(GetTime() > (x)) {
-#define ENDTIMEBLOCK \
-    }
-
-public:
-
-    InfoText2(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
-        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {
-        CColor m_colText = CColor::Black();
-        std::ostringstream outstring;
-        outstring << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
-        outstring << ")";
-
-        m_pvecInfoTexts.push_back(new CText(m_pTextFont, outstring.str(), m_colText));
-        m_pvecInfoTexts.push_back(new CText(m_pTextFont,
-                        "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
-        m_pvecInfoTexts.push_back(new CText(m_pKeysFont, "     K    J      w    s  "));
-        m_pvecInfoTexts.push_back(new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.",
-                        m_colText));
-        //m_pvecInfoTexts.push_back(new CText(m_pKeysFont, " L  e         U     q  "));
-
-        //auto dings = boost::make_shared<CText>(m_pKeysFont, " L  e         U     q  ");
-        CText *xxx = makeCText<CText>(m_pKeysFont, " L  e         U     q  ");
-        //m_pvecInfoTexts.push_back(dings.get());
-    }
-    ~InfoText2() {}
-
-    void Draw(const CCanvas* canvas) const {
-        CRectangle rect = m_rectPaint;
-
-        float time = 0.25f;
-        BOOST_FOREACH(const CText &text, m_pvecInfoTexts)
-        {
-            FROMTIME(time)
-            text.RenderPut(canvas, rect);
-            rect += text.VerticalSpacing();
-            ENDTIMEBLOCK
-            time += 0.25f;
-        }
-    } // Draw
-    void Idle(int ticks) {
-        if(!m_iInitFrame) {
-            m_iInitFrame = ticks;
-        }
-
-        m_iFrames = ticks;
-    }
-
-    //typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ... args){
-
-    template<class T, class Arg1, class ... Args>
-    typename T * makeCText(Arg1 && arg1, Args && ... args){
-        //auto painter = boost::make_shared<T>(arg1, args ...);
-        //auto painter2 = std::allocate_shared<T>(arg1, args ...);
-        //painter.reset();
-        //OwnChildPainter(painter);
-        //auto p = new CText(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
-        auto p = new T(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
-        m_pvecInfoTexts.push_back(p);
-        return p;
-    }
-
-    template<class T, class Arg1, class ... Args>
-    typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ... args){
-        //auto painter = boost::make_shared<T>(arg1, args ...);
-        //auto painter2 = std::allocate_shared<T>(arg1, args ...);
-        //painter.reset();
-        //OwnChildPainter(painter);
-        //auto p = new CText(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
-        auto p = boost::make_shared<T>(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args)...);
-        return p;
-    }
-
-};
 
 /** @class MenuScreen:
  *  Detailed description.
@@ -268,8 +179,10 @@ public:
     explicit DingensPainter(const MenuScreen* host)
         : DetailedControlPainter(), x(0), k(0), m_pHost(host)
     {}
+
     virtual ~DingensPainter()
     {}
+
     void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param) {
         int rnd = 4 - (rand() % 4);
         x += rnd;
@@ -386,6 +299,15 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
     m_pInfoText.reset(new InfoText2(m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
+    m_colText = CColor::Black();
+    std::ostringstream outstring2;
+    outstring2 << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
+    outstring2 << ")";
+    m_pInfoText->makeCText<CText>(m_pArialfont, outstring2.str(), m_colText);
+    m_pInfoText->makeCText<CText>(m_pArialfont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText);
+    m_pInfoText->makeCText<CText>(keysfont, "     K    J      w    s  ");
+    m_pInfoText->makeCText<CText>(m_pArialfont, "Enter or [e] selects and Backspace or [q] moves back.", m_colText);
+    m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
     HookMgr()->RegisterHookable("SubmenuB", boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
