@@ -158,9 +158,11 @@ class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
     void DrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
         static int e = 0;
         const int varX = 1;
-        pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY()));
+        pChild->SetPosition(CPoint(lastPos.GetX() + (varX - cos(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4)));
         e++;
         //param.SetDrawn(true);
+        CColor sdl_color = CColor::DarkMagenta();
+        pChild->GetCanvas()->RenderFillRect(CRectangle(333+e, 333, 55, 55), &sdl_color);
     }
     void AfterDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
         static int e = 0;
@@ -190,6 +192,9 @@ public:
         //pChild->Draw();
         //pChild->SetPosition(lastPos);
         //param.SetDrawn(true);
+   
+        CColor sdl_color = CColor::DarkMagenta();
+        pChild->GetCanvas()->RenderFillRect(CRectangle(333 + x, 333, 55, 55), &sdl_color);
     }
 };
 
@@ -214,9 +219,20 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     label4 = m_pLineMenu->AddTextLabel();
 
     //DingensPainter stripeModifier(16, m_pArialfont, m_pOverlay.get());
-    //DingensPainter stripeModifier(this);
-    //m_pLineMenu->AddChildPainter(stripeModifier);
-    m_pLineMenu->AddChildPainter(new DingensPainter(this));
+    //static DingensPainter painter(this);
+    //DingensPainter painter(this);
+    //m_pLineMenu->AddChildPainter(boost::ref(painter)); // uses ref, object must be valid
+    //m_pLineMenu->AddChildPainter(painter); // performs copy
+    //m_pLineMenu->AddChildPainter(new DingensPainter(this));
+    //m_pLineMenu->AddChildPainterX(&painter);
+    
+    m_pLineMenu->OwnChildPainter(boost::make_shared<DingensPainter>(this));
+    
+    //m_pLineMenu->AddChildPainterX2(new DingensPainter(this));
+    //m_pLineMenu->AddChildPainterX2(&painter);
+    
+    //m_pLineMenu->make_shared<DingensPainter>(this);
+    //auto sss = boost::make_shared<DingensPainter>(this);
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 

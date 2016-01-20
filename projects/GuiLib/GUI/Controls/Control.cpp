@@ -205,6 +205,21 @@ void CControl::AddChildPainter(ControlPainter updfunc) {
 //        }
 //    }
 
+    if (!m_vecChildrenDPainter2.empty()) {
+        // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();
+        auto end = m_vecChildrenDPainter2.end();
+        for (auto it = m_vecChildrenDPainter2.begin(); it < end; ++it)
+        {
+            DetailedControlPainter *painter = *it;
+
+            painter->BeforeDrawChild(parent, pChild, param);
+            if (!param.IsDrawn()) {
+                painter->DrawChild(parent, pChild, param);
+            }
+            painter->AfterDrawChild(parent, pChild, param);
+        }
+    }
+
 
     if (!m_vecChildrenDPainter.empty()) {
         // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();

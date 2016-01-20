@@ -19,6 +19,7 @@
 #include "../Components/Canvas.h"
 #include "../Visual/MessageHandler.h"
 #include <list>
+#include <boost/smart_ptr/make_shared_object.hpp>
 
 namespace gui {
 namespace controls {
@@ -107,6 +108,7 @@ class CControl {
     //typedef boost::ptr_vector<DetailedControlPainter> DetailedControlPainterStorage;
     typedef std::vector<ObjectPtr> DetailedControlPainterStorage;
     DetailedControlPainterStorage m_vecChildrenDPainter;
+    std::vector<DetailedControlPainter*> m_vecChildrenDPainter2;
 
     //parent
     CControl* m_pParent;
@@ -192,8 +194,10 @@ public:
     //redraw entire system
     static void Redraw();
 
+    // add a children control painter via functor.
     void AddChildPainter(ControlPainter updfunc);
 
+    // add a children control painter. takes ownership
     void AddChildPainter(DetailedControlPainter* painter)
     {
         boost::shared_ptr<DetailedControlPainter> p(painter);
@@ -202,6 +206,18 @@ public:
         //m_vecChildrenDPainter.push_back(&p);
         //m_vecChildrenDPainter.push_back(boost::make_shared<DetailedControlPainter>(painter));
         //m_vecChildrenDPainter.push_back(painter);
+    }
+    
+    // add a children control painter. takes ownership
+    void OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter)
+    {
+        m_vecChildrenDPainter.push_back(painter);
+    }
+
+    // test, remove
+    void AddChildPainterX2(DetailedControlPainter* painter)
+    {
+        m_vecChildrenDPainter2.push_back(painter);
     }
 
     virtual void DrawChild(const CControl& parent, CControl* pChild) const;

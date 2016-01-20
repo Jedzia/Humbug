@@ -145,6 +145,11 @@ public:
             label5 = m_pDovl->AddTextLabel();
         }
     }
+    ~CanvasStripeRenderer()
+    {
+        
+    }
+
     static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target,
             const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color){
         source->SetTextureColorMod(color);
