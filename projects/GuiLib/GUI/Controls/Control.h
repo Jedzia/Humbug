@@ -17,21 +17,19 @@
 #define CONTROL_H__
 
 #include "../Components/Canvas.h"
-#include "../Visual/Application.h"
 #include "../Visual/MessageHandler.h"
 #include <list>
 
 namespace gui {
 namespace controls {
-/** @class CControl:
- *  Detailed description.
- *  @return TODO
- */
 class CControl;
 
 //CControl class
 //abstracts a user interface control
 
+/** @class ControlPainterParameters:
+ *  Detailed description.
+ */
 class ControlPainterParameters {
     bool m_bDrawn;
 
@@ -78,6 +76,9 @@ public:
            param) = 0;
     };*/
 
+/** @class CControl:
+ *  Detailed description.
+ */
 class CControl {
     typedef boost::function<void (const CControl& parent, CControl * pChild, ControlPainterParameters& param)> ControlPainter;
     typedef std::vector<ControlPainter> ControlPainterStorage;
@@ -124,17 +125,23 @@ public:
     //set parent
     void SetParent(CControl* pmhNewParent);
 
-    //get parent
+    /** Get parent control.
+     *  Gets the parent of this instance.
+     *  @return the parent of this control or NULL if no parent exists.
+     */
     CControl * GetParent() const;
 
     //has parent?
-    bool HasParent();
+    bool HasParent() const;
 
-    //set ID
+    /** Set ID.
+     *  Sets the identification number of this instance.
+     *  @param id the ID to set.
+     */
     void SetID(Uint32 id);
 
     //get id
-    Uint32 GetID();
+    Uint32 GetID() const;
 
     //send message
     bool SendMessageQ(MSGID MsgID, MSGPARM Parm1 = NULL, MSGPARM Parm2 = NULL, MSGPARM Parm3 = NULL,
@@ -259,13 +266,13 @@ public:
     static void SetMouseHover(CControl* pControl);
 
     //check for focuses
-    bool IsMainControl();
+    bool IsMainControl() const;
 
-    bool HasKeyboardFocus();
+    bool HasKeyboardFocus() const;
 
-    bool HasMouseFocus();
+    bool HasMouseFocus() const;
 
-    bool HasMouseHover();
+    bool HasMouseHover() const;
 };
 }   // namespace controls
 } // namespace gui

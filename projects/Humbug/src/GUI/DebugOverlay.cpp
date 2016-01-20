@@ -21,6 +21,7 @@
 
 #include "DebugOverlay.h"
 #include <GuiLib/GUI/Controls/Label.h>
+#include <GuiLib/GUI/Visual/Application.h>
 
 using namespace gui::components;
 using namespace gui::controls;

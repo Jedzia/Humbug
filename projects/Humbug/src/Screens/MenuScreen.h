@@ -18,6 +18,7 @@
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <GuiLib/GUI/Components/Screen.h>
 #include <GuiLib/GUI/Controls/LineMenu.h>
+#include <GuiLib/GUI/Visual/Application.h>
 
 class FileLoader;
 namespace gui {

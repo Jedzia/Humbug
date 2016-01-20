@@ -20,6 +20,7 @@
 //
 #include "Label.h"
 #include <boost/foreach.hpp>
+#include "../../GUI/Visual/Application.h"
 
 using namespace gui::components;
 using namespace gui::controls;
