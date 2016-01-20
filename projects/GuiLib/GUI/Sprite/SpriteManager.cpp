@@ -55,7 +55,7 @@ public:
 
   void CSpriteManager::OnDraw(){
       SprStorage::iterator end = m_pvSprites.end();
-      for (SprStorage::iterator it = m_pvSprites.begin(); it < end; it++)
+      for (SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
       {
           SpriteShrp sprite = it->Sprite();
           sprite->Draw();
@@ -64,7 +64,7 @@ public:
 
   void CSpriteManager::OnIdle( int ticks ){
       SprStorage::iterator end = m_pvSprites.end();
-      for (SprStorage::iterator it = m_pvSprites.begin(); it < end; it++)
+      for (SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
       {
           //SpriteShrp sprite = it->Sprite();
           //dbgOut(__FUNCTION__ << " " << &it);
@@ -75,7 +75,7 @@ public:
     void CSpriteManager::Render()
     {
         SprStorage::iterator end = m_pvSprites.end();
-        for (SprStorage::iterator it = m_pvSprites.begin(); it < end; it++)
+        for (SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
         {
             SpriteShrp sprite = it->Sprite();
             sprite->Render();

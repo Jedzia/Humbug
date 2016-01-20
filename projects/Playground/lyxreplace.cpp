@@ -41,7 +41,7 @@ Das ist Mathe: $\\sqrt{25*22}$ + $\\sum e\\frac{o^{2}}{\\pi}*22_{\\beta}...in\\,
 	
 	string::iterator it;
 	int count = 0;
-	for( it = output.begin(); it != output.end(); it++ ) {
+	for( it = output.begin(); it != output.end(); ++it ) {
 		if(*it == '\n') {
 			count = 0;
 		}

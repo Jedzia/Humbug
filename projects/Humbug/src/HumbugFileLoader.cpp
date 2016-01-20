@@ -342,7 +342,7 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
 	{
 		surfacevector::pointer result = NULL;
 		surfacevector::iterator end = m_pvSurfaces.end();
-		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; ++it)
 		{
 			FileLoadingInfo& current = (*it);
 			if (current.SetName().compare(filename))
@@ -395,7 +395,7 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 	{
 		surfacevector::pointer result = NULL;
 		surfacevector::iterator end = m_pvSurfaces.end();
-		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+		for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; ++it)
 		{
 			FileLoadingInfo& current = (*it);
 			if (current.SetName().compare(filename))

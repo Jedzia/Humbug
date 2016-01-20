@@ -125,7 +125,7 @@ void FileLoader::Free( const std::string& name ){
 
     /*surfacevector::pointer result = NULL;
        surfacevector::iterator end = m_pvSurfaces.end();
-       for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; it++)
+       for (surfacevector::iterator it = m_pvSurfaces.begin(); it < end ; ++it)
        {
         FileLoadingInfo& current = (*it);
         if (current.GetName().compare(name))
