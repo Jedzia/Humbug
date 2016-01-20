@@ -223,16 +223,10 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     //DingensPainter painter(this);
     //m_pLineMenu->AddChildPainter(boost::ref(painter)); // uses ref, object must be valid
     //m_pLineMenu->AddChildPainter(painter); // performs copy
-    //m_pLineMenu->AddChildPainter(new DingensPainter(this));
-    //m_pLineMenu->AddChildPainterX(&painter);
     
+    //m_pLineMenu->OwnChildPainter(new DingensPainter(this));
     m_pLineMenu->OwnChildPainter(boost::make_shared<DingensPainter>(this));
     
-    //m_pLineMenu->AddChildPainterX2(new DingensPainter(this));
-    //m_pLineMenu->AddChildPainterX2(&painter);
-    
-    //m_pLineMenu->make_shared<DingensPainter>(this);
-    //auto sss = boost::make_shared<DingensPainter>(this);
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 

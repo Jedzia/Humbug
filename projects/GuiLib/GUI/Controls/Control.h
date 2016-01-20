@@ -100,15 +100,11 @@ public:
 class CControl {
     typedef boost::function<void (const CControl& parent, CControl * pChild, ControlPainterParameters& param)> ControlPainter;
     typedef std::vector<ControlPainter> ControlPainterStorage;
-    ControlPainterStorage m_vecChildrenPainter;
+    ControlPainterStorage m_vecChildrenFuncPainter;
 
-    typedef boost::shared_ptr<DetailedControlPainter> ObjectPtr;
-
-    //typedef boost::ptr_vector<ObjectPtr> DetailedControlPainterStorage;
-    //typedef boost::ptr_vector<DetailedControlPainter> DetailedControlPainterStorage;
-    typedef std::vector<ObjectPtr> DetailedControlPainterStorage;
-    DetailedControlPainterStorage m_vecChildrenDPainter;
-    std::vector<DetailedControlPainter*> m_vecChildrenDPainter2;
+    typedef boost::shared_ptr<DetailedControlPainter> DetailedControlPainterPtr;
+    typedef std::vector<DetailedControlPainterPtr> DetailedControlPainterStorage;
+    DetailedControlPainterStorage m_vecChildrenDetailPainter;
 
     //parent
     CControl* m_pParent;
@@ -198,27 +194,10 @@ public:
     void AddChildPainter(ControlPainter updfunc);
 
     // add a children control painter. takes ownership
-    void AddChildPainter(DetailedControlPainter* painter)
-    {
-        boost::shared_ptr<DetailedControlPainter> p(painter);
-        m_vecChildrenDPainter.push_back(p);
+    void OwnChildPainter(DetailedControlPainter* painter);
 
-        //m_vecChildrenDPainter.push_back(&p);
-        //m_vecChildrenDPainter.push_back(boost::make_shared<DetailedControlPainter>(painter));
-        //m_vecChildrenDPainter.push_back(painter);
-    }
-    
     // add a children control painter. takes ownership
-    void OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter)
-    {
-        m_vecChildrenDPainter.push_back(painter);
-    }
-
-    // test, remove
-    void AddChildPainterX2(DetailedControlPainter* painter)
-    {
-        m_vecChildrenDPainter2.push_back(painter);
-    }
+    void OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter);
 
     virtual void DrawChild(const CControl& parent, CControl* pChild) const;
 

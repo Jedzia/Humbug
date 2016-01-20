@@ -145,6 +145,7 @@ public:
             label5 = m_pDovl->AddTextLabel();
         }
     }
+   
     ~CanvasStripeRenderer()
     {
         
@@ -397,7 +398,8 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
 
     m_pBanding2.reset( new CImage(new CCanvas( m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png") ), true) );
-    m_pBanding2->GetCanvas()->AddModifier(stripeModifier);
+    static CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
+    m_pBanding2->GetCanvas()->AddModifier(boost::ref(stripeModifier2));
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());

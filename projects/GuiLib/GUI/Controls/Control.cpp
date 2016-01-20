@@ -182,78 +182,36 @@ void CControl::Redraw() {
 }
 
 void CControl::AddChildPainter(ControlPainter updfunc) {
-    m_vecChildrenPainter.push_back(updfunc);
+    m_vecChildrenFuncPainter.push_back(updfunc);
 }
 
+void CControl::OwnChildPainter(DetailedControlPainter* painter) {
+    boost::shared_ptr<DetailedControlPainter> p(painter);
+    m_vecChildrenDetailPainter.push_back(p);
+}
 
-    void CControl::DrawChild(const CControl& parent, CControl* pChild) const {
+void CControl::OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter) {
+    m_vecChildrenDetailPainter.push_back(painter);
+}
+
+void CControl::DrawChild(const CControl& parent, CControl* pChild) const {
     ControlPainterParameters param;
 
-//    if (!m_vecChildrenDPainter.empty()) {
-//       // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();
-//        auto end = m_vecChildrenDPainter.end();
-//        //DetailedControlPainterStorage::iterator it = m_vecChildrenDPainter.begin();
-//        //auto it = static_cast<DetailedControlPainterStorage::iterator>(m_vecChildrenDPainter.begin());
-//        auto it = m_vecChildrenDPainter.begin();
-//        for (it = m_vecChildrenDPainter.begin(); it < end; ++it)
-//        {
-//            std::_Simple_types<DetailedControlPainter>::value_type detailed_control_painter = (*it);
-//            detailed_control_painter.BeforeDrawChild(parent, pChild, param);
-//            /*if (!param.IsDrawn()) {
-//                (*it).DrawChild(parent, pChild, param);
-//            }*/
-//        }
-//    }
+    BOOST_FOREACH(DetailedControlPainterPtr painter, m_vecChildrenDetailPainter)
+    {
+        painter->BeforeDrawChild(parent, pChild, param);
 
-    if (!m_vecChildrenDPainter2.empty()) {
-        // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();
-        auto end = m_vecChildrenDPainter2.end();
-        for (auto it = m_vecChildrenDPainter2.begin(); it < end; ++it)
-        {
-            DetailedControlPainter *painter = *it;
-
-            painter->BeforeDrawChild(parent, pChild, param);
-            if (!param.IsDrawn()) {
-                painter->DrawChild(parent, pChild, param);
-            }
-            painter->AfterDrawChild(parent, pChild, param);
+        if(!param.IsDrawn()) {
+            painter->DrawChild(parent, pChild, param);
         }
     }
 
+    if(!m_vecChildrenFuncPainter.empty()) {
+        ControlPainterStorage::const_iterator end = m_vecChildrenFuncPainter.end();
 
-    if (!m_vecChildrenDPainter.empty()) {
-        // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();
-        auto end = m_vecChildrenDPainter.end();
-        for (auto it = m_vecChildrenDPainter.begin(); it < end; ++it)
+        for(ControlPainterStorage::const_iterator it = m_vecChildrenFuncPainter.begin(); it < end; ++it)
         {
-            DetailedControlPainter *painter = it->get();
-            //boost::shared_ptr<DetailedControlPainter> painter = *it;
-            //(*it)->BeforeDrawChild(parent, pChild, param);
-
-            //it->get()->BeforeDrawChild(parent, pChild, param);
-            //painter.BeforeDrawChild(parent, pChild, param);
-            //boost::shared_ptr<DetailedControlPainter>  pai(kack);
-            //boost::shared_ptr<DetailedControlPainter>  pai(&(*it));
-            //pai->BeforeDrawChild(parent, pChild, param);
-            
-            painter->BeforeDrawChild(parent, pChild, param);
-            if (!param.IsDrawn()) {
-                painter->DrawChild(parent, pChild, param);
-            }
-        }
-    }
-
-
-    if(!m_vecChildrenPainter.empty()) {
-        ControlPainterStorage::const_iterator end = m_vecChildrenPainter.end();
-
-        for(ControlPainterStorage::const_iterator it = m_vecChildrenPainter.begin(); it < end; ++it)
-        {
-            //const std::_Container_base12 *eee = it._Getcont();
-            const ControlPainterStorage::const_iterator::value_type function = (*it);
-            int abc;
-            auto tar = function.contains(abc);
-            function(parent, pChild, param);
+            (*it)(parent, pChild, param);
         }
         /*if (param.IsDrawn()) {
             return;
@@ -264,32 +222,10 @@ void CControl::AddChildPainter(ControlPainter updfunc) {
         pChild->Draw();
     }
 
-    if (!m_vecChildrenDPainter.empty()) {
-        auto end = m_vecChildrenDPainter.end();
-        for (auto it = m_vecChildrenDPainter.begin(); it < end; ++it)
-        {
-            DetailedControlPainter *painter = it->get();
-            painter->AfterDrawChild(parent, pChild, param);
-        }
-    }
-
-    /*BOOST_FOREACH(const DetailedControlPainter& ch, m_vecChildrenDPainter)
+    BOOST_FOREACH(DetailedControlPainterPtr painter, m_vecChildrenDetailPainter)
     {
-
-    }*/
-
-//    if (!m_vecChildrenDPainter.empty()) {
-//        boost::ptr_vector<DetailedControlPainter>::iterator end = m_vecChildrenDPainter.end();
-//
-//        for (boost::ptr_vector<DetailedControlPainter>::iterator it = m_vecChildrenDPainter.begin(); it < end; ++it)
-//        {
-//            (*it).AfterDrawChild(parent, pChild, param);
-//        }
-//
-//        /*if (param.IsDrawn()) {
-//        return;
-//        } */
-//    }
+        painter->AfterDrawChild(parent, pChild, param);
+    }
 } // CControl::DrawChild
 
 //draw control
@@ -787,26 +723,22 @@ void CControl::SetMouseHover(CControl* pControl) {
 }
 
 //check for focuses
-bool CControl::IsMainControl() const
-{
+bool CControl::IsMainControl() const {
     //check if this is main control
     return(this == GetMainControl());
 }
 
-bool CControl::HasKeyboardFocus() const
-{
+bool CControl::HasKeyboardFocus() const {
     //check if this has keyboard focus
     return(this == GetKeyboardFocus());
 }
 
-bool CControl::HasMouseFocus() const
-{
+bool CControl::HasMouseFocus() const {
     //check if this has mouse focus
     return(this == GetMouseFocus());
 }
 
-bool CControl::HasMouseHover() const
-{
+bool CControl::HasMouseHover() const {
     //check if this has mouse hovering
     return(this == GetMouseHover());
 }
@@ -834,8 +766,7 @@ CControl * CControl::GetParent() const {
 }
 
 //has parent?
-bool CControl::HasParent() const
-{
+bool CControl::HasParent() const {
     //check for non-null parent
     return(GetParent() != NULL);
 }
@@ -868,8 +799,7 @@ void CControl::SetID(Uint32 id) {
 }
 
 //get id
-Uint32 CControl::GetID() const
-{
+Uint32 CControl::GetID() const {
     return(m_ID);
 }
 } // namespace controls
