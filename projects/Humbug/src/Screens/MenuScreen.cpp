@@ -21,19 +21,13 @@
 #include "MenuScreen/SubmenuA.h"
 #include "MenuScreen/SubmenuB.h"
 #include "InfoText.h"
-#include "boost/function.hpp"
-#include "boost/lambda/lambda.hpp"
 #include <GuiLib/Filesystem/FileLoader.h>
 #include <GuiLib/GUI/Components/Rectangle.h>
 #include <GuiLib/GUI/Components/Text.h>
 #include <GuiLib/GUI/Components/TextScroller.h>
 #include <GuiLib/GUI/Controls/Control.h>
 #include <GuiLib/GUI/Data/ColorData.h>
-#include <GuiLib/GUI/Sprite/Sprite.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
-#include <GuiLib/GUI/Visual/EventHandler.h>
-#include <boost/foreach.hpp>
-#include <cstdlib>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -58,7 +52,7 @@ MenuScreen::MenuScreen(FileLoader& loader, CCanvas* background) :
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL), m_iFrames(0),
-    m_HookMgr(new HookableManager(this)),
+    m_HookMgr(new HookableManager(this)), m_pDebugfont(NULL),
     //m_HookMgr(new HookableManager(NULL)),
     m_pSprMgr(new CSpriteManager) {
     dbgOut(__FUNCTION__ << " " << this);
@@ -88,9 +82,6 @@ class InfoText {
 
     seconds GetTime() const {
         return (m_iFrames - m_iInitFrame) / 30.0f;
-    }
-#define FROMTIME(x) if(GetTime() > (x)) {
-#define ENDTIMEBLOCK \
     }
 
 public:
@@ -153,24 +144,25 @@ class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
     const MenuScreen* m_pHost;
     CPoint lastPos;
 
+    // overloads of the DetailedControlPainter
     void BeforeDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
-        static int e = 0;
-        e++;
-        //param.SetDrawn(true);
-        lastPos = pChild->GetPosition();
+        CPoint c_point = pChild->GetPosition();
+        lastPos = c_point;
     }
     void DrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
-        static int e = 0;
         const int varX = 1;
-        pChild->SetPosition(CPoint(lastPos.GetX() + (varX - cos(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4)));
-        e++;
+        auto x1 = (varX - cos(m_pHost->m_iFrames / 6.0f) * 4);
+        auto y1 = (varX - sin(m_pHost->m_iFrames / 6.0f) * 4);
+        pChild->SetPosition(CPoint(lastPos.GetX() + x1, lastPos.GetY() + y1));
         //param.SetDrawn(true);
-        CColor sdl_color = CColor::DarkMagenta();
-        pChild->GetCanvas()->RenderFillRect(CRectangle(333 + e, 333, 55, 55), &sdl_color);
+        CColor sdl_color = CColor::LightMagenta();
+        auto x2 = (varX - sin(m_pHost->m_iFrames / 6.0f) * 32);
+        auto rect = CRectangle(333 - x2, 393, 55, 55);
+        //pChild->GetCanvas()->RenderFillRect(rect, &sdl_color);
+        CText text(m_pHost->m_pDebugfont, __FUNCTION__, sdl_color);
+        text.RenderPut(parent.GetCanvas(), rect);
     }
     void AfterDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
-        static int e = 0;
-        e++;
         //param.SetDrawn(true);
         pChild->SetPosition(lastPos);
     }
@@ -230,6 +222,9 @@ public:
 };
 
 bool MenuScreen::OnInit(int argc, char* argv[]) {
+    TTF_Font* m_pArialfont;
+    m_pDebugfont = m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
+
 /*
     CRectangle lineMenuRect = Master()->GetMainCanvas()->GetDimension();
     lineMenuRect.X() += 100;
@@ -248,22 +243,16 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
-
     //static DingensPainter painter(this);
     DingensPainter painter(this);
     //m_pLineMenu->AddChildPainter(boost::ref(painter)); // uses ref, object must be valid
     m_pLineMenu->AddChildPainter(painter); // performs copy
-
-    //m_pLineMenu->OwnChildPainter(new DingensPainter(this));
-    //m_pLineMenu->OwnChildPainter(boost::make_shared<DingensPainter>(this));
-    //m_pLineMenu->OwnChildPainter(DingensPainter::make_shared<DingensPainter>(this));
-
-    m_pLineMenu->OwnChildPainter<DingensPainter>(this);
-
+    //m_pLineMenu->MakeChildPainter(new DingensPainter(this));
+    //m_pLineMenu->MakeChildPainter(boost::make_shared<DingensPainter>(this));
+    //m_pLineMenu->MakeChildPainter(DingensPainter::make_shared<DingensPainter>(this));
+    m_pLineMenu->MakeChildPainter<DingensPainter>(this);
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 
-    TTF_Font* m_pArialfont;
-    m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
 
     SDL_Surface* tmpfsurf = (m_Loader.FL_LOADIMG("Intro/MenuScreenBg.png"));

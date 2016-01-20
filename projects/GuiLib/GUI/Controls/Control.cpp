@@ -185,12 +185,12 @@ void CControl::AddChildPainter(ControlPainter updfunc) {
     m_vecChildrenFuncPainter.push_back(updfunc);
 }
 
-void CControl::OwnChildPainter(DetailedControlPainter* painter) {
+void CControl::MakeChildPainter(DetailedControlPainter* painter) {
     boost::shared_ptr<DetailedControlPainter> p(painter);
     m_vecChildrenDetailPainter.push_back(p);
 }
 
-void CControl::OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter) {
+void CControl::MakeChildPainter(boost::shared_ptr<DetailedControlPainter> painter) {
     m_vecChildrenDetailPainter.push_back(painter);
 }
 

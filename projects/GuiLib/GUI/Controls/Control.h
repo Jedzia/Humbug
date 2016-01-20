@@ -207,16 +207,16 @@ public:
     void AddChildPainter(ControlPainter updfunc);
 
     // add a children control painter. takes ownership
-    void OwnChildPainter(DetailedControlPainter* painter);
+    void MakeChildPainter(DetailedControlPainter* painter);
 
     // add a children control painter. takes ownership
-    void OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter);
+    void MakeChildPainter(boost::shared_ptr<DetailedControlPainter> painter);
 
     // make and add a children control painter.
     template<class T, class Arg1, class ... Args>
-    typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ... args){
+    typename boost::detail::sp_if_not_array<T>::type MakeChildPainter(Arg1 && arg1, Args && ... args){
         auto painter = boost::make_shared<T>(arg1, args ...);
-        OwnChildPainter(painter);
+        MakeChildPainter(painter);
         return painter;
     }
     virtual void DrawChild(const CControl& parent, CControl* pChild) const;

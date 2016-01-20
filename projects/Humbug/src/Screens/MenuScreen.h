@@ -100,7 +100,7 @@ private:
 
     boost::scoped_ptr<gui::HookableManager> m_HookMgr;
     gui::HookableManager* HookMgr() const { return m_HookMgr.get(); }
-
+    TTF_Font* m_pDebugfont;
 
     int label1;
     int label2;
