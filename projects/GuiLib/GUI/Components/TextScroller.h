@@ -30,21 +30,21 @@ namespace components {
 class CTextScroller {
 public:
 
-    CTextScroller(CCanvas* dstCanvas, const CText& text, CPoint textPosition, int windowWidth);
+    CTextScroller(CCanvas* dstCanvas, CText& text, CPoint textPosition, int windowWidth);
     ~CTextScroller();
 
     void Draw() const;
 
     void Scroll(int deltaX);
 
-    void Render() const;
+    void Render();
 
 private:
 
     void PrepareDraw(CRectangle& textDims, CRectangle& dstDims) const;
 
     CCanvas* m_rDstCanvas;
-    const CText& m_rctText;
+    CText& m_rctText;
     CPoint m_cpTextPosition;
     int m_iWindowWidth;
 

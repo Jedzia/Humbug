@@ -23,7 +23,7 @@
 
 namespace gui {
 namespace components {
-CTextScroller::CTextScroller( CCanvas* dstCanvas, const CText& text, CPoint textPosition,
+CTextScroller::CTextScroller( CCanvas* dstCanvas, CText& text, CPoint textPosition,
         int windowWidth ) :
     m_rDstCanvas(dstCanvas),
     m_rctText(text),
@@ -91,7 +91,7 @@ void CTextScroller::PrepareDraw(CRectangle& textDims, CRectangle& dstDims) const
  *  Detailed description.
  *  @return TODO
  */
-void CTextScroller::Render() const
+void CTextScroller::Render()
 {
     CRectangle textDims, dstDims;
     PrepareDraw(textDims, dstDims);

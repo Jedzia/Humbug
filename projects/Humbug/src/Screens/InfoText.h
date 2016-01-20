@@ -54,11 +54,11 @@ public:
      *  Detailed description.
      *  @param canvas TODO
      */
-    void Draw(const gui::components::CCanvas* canvas) const {
+    void Draw(const gui::components::CCanvas* canvas) {
         gui::components::CRectangle rect = m_rectPaint;
 
         float time = 0.25f;
-        BOOST_FOREACH(const gui::components::CText & text, m_pvecInfoTexts)
+        BOOST_FOREACH(gui::components::CText & text, m_pvecInfoTexts)
         {
             FROMTIME(time)
             text.RenderPut(canvas, rect);
