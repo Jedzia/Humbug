@@ -66,10 +66,10 @@ public:
         gui::components::CColor mcol;
         TTF_Font* m_pArialfont;
         boost::scoped_ptr<DebugOverlay> m_pOverlay;
-        boost::shared_ptr<gui::components::CCanvas> m_pBackground;
-        boost::shared_ptr<gui::components::CCanvas> m_pBlue;
-        boost::shared_ptr<gui::components::CImage> m_pBanding1;
-        boost::shared_ptr<gui::components::CImage> m_pBanding2;
+        boost::scoped_ptr<gui::components::CCanvas> m_pBackground;
+        boost::scoped_ptr<gui::components::CCanvas> m_pBlue;
+        boost::scoped_ptr<gui::components::CImage> m_pBanding1;
+        boost::scoped_ptr<gui::components::CImage> m_pBanding2;
         boost::scoped_ptr<gui::components::CText> m_pScrollText;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
