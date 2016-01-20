@@ -56,13 +56,13 @@ MenuScreen::MenuScreen(FileLoader& loader, CCanvas* background) :
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL), m_iFrames(0),
-    m_HookMgr(new HookableManager(this)), 
+    m_HookMgr(new HookableManager(this)),
     //m_HookMgr(new HookableManager(NULL)),
-    m_pSprMgr(new CSpriteManager){
+    m_pSprMgr(new CSpriteManager) {
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-MenuScreen::~MenuScreen(void){
+MenuScreen::~MenuScreen(void) {
     m_pLineMenu->disconnect(m_connection);
     dbgOut(__FUNCTION__ << " " << this);
 }
@@ -87,14 +87,14 @@ class InfoText {
     seconds GetTime() const {
         return (m_iFrames - m_iInitFrame) / 30.0f;
     }
-#define FROMTIME(x) if(GetTime() > (x)){
+#define FROMTIME(x) if(GetTime() > (x)) {
 #define ENDTIMEBLOCK \
     }
 
 public:
 
     InfoText(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
-        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions){
+        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {
         CColor m_colText = CColor::Black();
         std::ostringstream outstring;
         outstring << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
@@ -107,7 +107,7 @@ public:
                         m_colText));
         m_pInfoText5.reset(new CText(m_pKeysFont, " L  e         U     q  "));
     }
-    ~InfoText(){}
+    ~InfoText() {}
 
     void Draw(const CCanvas* canvas) const {
         CRectangle rect = m_rectPaint;
@@ -129,8 +129,8 @@ public:
         m_pInfoText5->RenderPut(canvas, rect);
         ENDTIMEBLOCK
     } // Draw
-    void Idle(int ticks){
-        if(!m_iInitFrame){
+    void Idle(int ticks) {
+        if(!m_iInitFrame) {
             m_iInitFrame = ticks;
         }
 
@@ -138,29 +138,62 @@ public:
     }
 };
 
-class MenuScreen::DingensPainter {
+/** @class MenuScreen:
+ *  Detailed description.
+ *  @param parent TODO
+ *  @param pChild TODO
+ *  @param param TODO
+ */
+class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
     int x;
     const MenuScreen* m_pHost;
+    CPoint lastPos;
 
+    void BeforeDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
+        static int e = 0;
+        e++;
+        //param.SetDrawn(true);
+        lastPos = pChild->GetPosition();
+    }
+    void DrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
+        static int e = 0;
+        const int varX = 1;
+        pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY()));
+        e++;
+        //param.SetDrawn(true);
+    }
+    void AfterDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
+        static int e = 0;
+        e++;
+        //param.SetDrawn(true);
+        pChild->SetPosition(lastPos);
+    }
 public:
+
     explicit DingensPainter(const MenuScreen* host)
-        : x(0), m_pHost(host)
+        : DetailedControlPainter(), x(0), m_pHost(host)
     {
+        
     }
 
-    void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param){
+    virtual ~DingensPainter()
+    {
+        
+    }
+
+    void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param) {
         x++;
 
         const int varX = 1;
-        auto pos = pChild->GetPosition();
-        pChild->SetPosition(CPoint(pos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), pos.GetY()));
-        pChild->Draw();
-        pChild->SetPosition(pos);
-        param.SetDrawn(true);
+        CPoint lastPos = pChild->GetPosition();
+        pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY()));
+        //pChild->Draw();
+        //pChild->SetPosition(lastPos);
+        //param.SetDrawn(true);
     }
 };
 
-bool MenuScreen::OnInit(int argc, char* argv[]){
+bool MenuScreen::OnInit(int argc, char* argv[]) {
 /*
     CRectangle lineMenuRect = Master()->GetMainCanvas()->GetDimension();
     lineMenuRect.X() += 100;
@@ -181,8 +214,9 @@ bool MenuScreen::OnInit(int argc, char* argv[]){
     label4 = m_pLineMenu->AddTextLabel();
 
     //DingensPainter stripeModifier(16, m_pArialfont, m_pOverlay.get());
-    DingensPainter stripeModifier(this);
-    m_pLineMenu->AddChildPainter(stripeModifier);
+    //DingensPainter stripeModifier(this);
+    //m_pLineMenu->AddChildPainter(stripeModifier);
+    m_pLineMenu->AddChildPainter(new DingensPainter(this));
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
 
@@ -234,7 +268,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]){
     //return true;
 }   // OnInit
 
-void MenuScreen::OnIdle(int ticks){
+void MenuScreen::OnIdle(int ticks) {
     m_iFrames = ticks;
     m_pLineMenu->IdleSetVars(ticks);
     m_pInfoText->Idle(ticks);
@@ -243,8 +277,8 @@ void MenuScreen::OnIdle(int ticks){
     RaiseOnIdle(ticks);
 }
 
-void MenuScreen::OnDraw(){
-    if(HookMgr()->IsHookActive()){
+void MenuScreen::OnDraw() {
+    if(HookMgr()->IsHookActive()) {
         // When in submenu no draw other than the sub-screens should occur.
         RaiseOnDraw();
         return;
@@ -270,7 +304,7 @@ void MenuScreen::OnDraw(){
 
     coldelta++;
 
-    if(coldelta > 64){
+    if(coldelta > 64) {
         coldelta = 0;
     }
 
@@ -280,7 +314,7 @@ void MenuScreen::OnDraw(){
     //m_pMainCanvas->Unlock();
 }   // OnDraw
 
-void MenuScreen::OnUpdate(){
+void MenuScreen::OnUpdate() {
     Screen::OnUpdate();
     x += 1 + (rand() << 21);
     mcol.SetR(rand());
@@ -291,48 +325,48 @@ void MenuScreen::OnUpdate(){
     RaiseOnUpdate();
 }
 
-void MenuScreen::OnEvent(SDL_Event* pEvent){
+void MenuScreen::OnEvent(SDL_Event* pEvent) {
     m_pLineMenu->HookEventloop(pEvent, HookMgr()->IsHookActive());
     RaiseOnEvent(pEvent);
 
-    if (pEvent->type != SDL_KEYDOWN) {
+    if(pEvent->type != SDL_KEYDOWN) {
         return;
     }
 
-    switch (pEvent->key.keysym.sym) {
+    switch(pEvent->key.keysym.sym) {
     case SDLK_r:
     {
         auto rect = m_pLineMenu->GetOffset();
         rect.Y()--;
         m_pLineMenu->SetOffset(rect);
-    }
         break;
+    }
     case SDLK_f:
     {
         auto rect = m_pLineMenu->GetOffset();
         rect.Y()++;
         m_pLineMenu->SetOffset(rect);
-    }
-    break;
-    default:
         break;
     }
-}
+    default:
+        break;
+    } // switch
+} // MenuScreen::OnEvent
 
 void MenuScreen::MenuSelectionChanged(int selectedLabel) const {
-    if(selectedLabel == -1){
+    if(selectedLabel == -1) {
         HookMgr()->DisableHookable();
     }
 
     // When in submenu no selection other than the "back" key should occur.
-    if(HookMgr()->IsHookActive()){
+    if(HookMgr()->IsHookActive()) {
         return;
     }
 
-    if(selectedLabel == label1){
+    if(selectedLabel == label1) {
         HookMgr()->EnableHookable("SubmenuA");
     }
-    else if(selectedLabel == label2){
+    else if(selectedLabel == label2) {
         HookMgr()->EnableHookable("SubmenuB");
     }
 

@@ -56,25 +56,42 @@ public:
     //__declspec(property(get = IsDrawn, put = SetDrawn)) bool MBxDrawn;
 };
 
-/*    class ControlPainter {
-        const CControl& parent;
-        CControl* pChild;
-
-    protected:
-        ~ControlPainter()
-        {
-        }
+    class DetailedControlPainter {
+        //const CControl& parent;
+        //CControl* pChild;
 
     public:
-        ControlPainter(const CControl& parent, CControl* const p_child)
-            : parent{parent},
-              pChild{p_child}
+        DetailedControlPainter()
+        //DetailedControlPainter(const CControl& parent, CControl* const p_child)
+            //: parent{parent}, pChild{p_child}
         {
         }
 
-        virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
-           param) = 0;
-    };*/
+        virtual ~DetailedControlPainter()
+        {
+        }
+
+        virtual void BeforeDrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
+                                     param) 
+        {
+        }
+
+        virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param) = 0;
+        /*virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param)
+        {
+            
+        }*/
+
+        virtual void AfterDrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
+            param) 
+        {
+        }
+
+        /*inline DetailedControlPainter* new_clone(const DetailedControlPainter& c)
+        {
+            return NULL;
+        }*/
+    };
 
 /** @class CControl:
  *  Detailed description.
@@ -83,6 +100,13 @@ class CControl {
     typedef boost::function<void (const CControl& parent, CControl * pChild, ControlPainterParameters& param)> ControlPainter;
     typedef std::vector<ControlPainter> ControlPainterStorage;
     ControlPainterStorage m_vecChildrenPainter;
+
+    typedef boost::shared_ptr<DetailedControlPainter> ObjectPtr;
+
+    //typedef boost::ptr_vector<ObjectPtr> DetailedControlPainterStorage;
+    //typedef boost::ptr_vector<DetailedControlPainter> DetailedControlPainterStorage;
+    typedef std::vector<ObjectPtr> DetailedControlPainterStorage;
+    DetailedControlPainterStorage m_vecChildrenDPainter;
 
     //parent
     CControl* m_pParent;
@@ -169,6 +193,16 @@ public:
     static void Redraw();
 
     void AddChildPainter(ControlPainter updfunc);
+
+    void AddChildPainter(DetailedControlPainter* painter)
+    {
+        boost::shared_ptr<DetailedControlPainter> p(painter);
+        m_vecChildrenDPainter.push_back(p);
+
+        //m_vecChildrenDPainter.push_back(&p);
+        //m_vecChildrenDPainter.push_back(boost::make_shared<DetailedControlPainter>(painter));
+        //m_vecChildrenDPainter.push_back(painter);
+    }
 
     virtual void DrawChild(const CControl& parent, CControl* pChild) const;
 

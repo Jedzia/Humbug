@@ -18,6 +18,7 @@
 #include "Control.h"
 //
 #include "../../GUI/Visual/Application.h"
+#include <boost/foreach.hpp>
 
 namespace gui {
 namespace controls {
@@ -184,15 +185,60 @@ void CControl::AddChildPainter(ControlPainter updfunc) {
     m_vecChildrenPainter.push_back(updfunc);
 }
 
-void CControl::DrawChild(const CControl& parent, CControl* pChild) const {
+
+    void CControl::DrawChild(const CControl& parent, CControl* pChild) const {
     ControlPainterParameters param;
+
+//    if (!m_vecChildrenDPainter.empty()) {
+//       // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();
+//        auto end = m_vecChildrenDPainter.end();
+//        //DetailedControlPainterStorage::iterator it = m_vecChildrenDPainter.begin();
+//        //auto it = static_cast<DetailedControlPainterStorage::iterator>(m_vecChildrenDPainter.begin());
+//        auto it = m_vecChildrenDPainter.begin();
+//        for (it = m_vecChildrenDPainter.begin(); it < end; ++it)
+//        {
+//            std::_Simple_types<DetailedControlPainter>::value_type detailed_control_painter = (*it);
+//            detailed_control_painter.BeforeDrawChild(parent, pChild, param);
+//            /*if (!param.IsDrawn()) {
+//                (*it).DrawChild(parent, pChild, param);
+//            }*/
+//        }
+//    }
+
+
+    if (!m_vecChildrenDPainter.empty()) {
+        // DetailedControlPainterStorage::iterator end = m_vecChildrenDPainter.end();
+        auto end = m_vecChildrenDPainter.end();
+        for (auto it = m_vecChildrenDPainter.begin(); it < end; ++it)
+        {
+            DetailedControlPainter *painter = it->get();
+            //boost::shared_ptr<DetailedControlPainter> painter = *it;
+            //(*it)->BeforeDrawChild(parent, pChild, param);
+
+            //it->get()->BeforeDrawChild(parent, pChild, param);
+            //painter.BeforeDrawChild(parent, pChild, param);
+            //boost::shared_ptr<DetailedControlPainter>  pai(kack);
+            //boost::shared_ptr<DetailedControlPainter>  pai(&(*it));
+            //pai->BeforeDrawChild(parent, pChild, param);
+            
+            painter->BeforeDrawChild(parent, pChild, param);
+            if (!param.IsDrawn()) {
+                painter->DrawChild(parent, pChild, param);
+            }
+        }
+    }
+
 
     if(!m_vecChildrenPainter.empty()) {
         ControlPainterStorage::const_iterator end = m_vecChildrenPainter.end();
 
-        for(ControlPainterStorage::const_iterator it = m_vecChildrenPainter.begin(); it < end; it++)
+        for(ControlPainterStorage::const_iterator it = m_vecChildrenPainter.begin(); it < end; ++it)
         {
-            (*it)(parent, pChild, param);
+            //const std::_Container_base12 *eee = it._Getcont();
+            const ControlPainterStorage::const_iterator::value_type function = (*it);
+            int abc;
+            auto tar = function.contains(abc);
+            function(parent, pChild, param);
         }
         /*if (param.IsDrawn()) {
             return;
@@ -202,6 +248,33 @@ void CControl::DrawChild(const CControl& parent, CControl* pChild) const {
     if(!param.IsDrawn()) {
         pChild->Draw();
     }
+
+    if (!m_vecChildrenDPainter.empty()) {
+        auto end = m_vecChildrenDPainter.end();
+        for (auto it = m_vecChildrenDPainter.begin(); it < end; ++it)
+        {
+            DetailedControlPainter *painter = it->get();
+            painter->AfterDrawChild(parent, pChild, param);
+        }
+    }
+
+    /*BOOST_FOREACH(const DetailedControlPainter& ch, m_vecChildrenDPainter)
+    {
+
+    }*/
+
+//    if (!m_vecChildrenDPainter.empty()) {
+//        boost::ptr_vector<DetailedControlPainter>::iterator end = m_vecChildrenDPainter.end();
+//
+//        for (boost::ptr_vector<DetailedControlPainter>::iterator it = m_vecChildrenDPainter.begin(); it < end; ++it)
+//        {
+//            (*it).AfterDrawChild(parent, pChild, param);
+//        }
+//
+//        /*if (param.IsDrawn()) {
+//        return;
+//        } */
+//    }
 } // CControl::DrawChild
 
 //draw control
