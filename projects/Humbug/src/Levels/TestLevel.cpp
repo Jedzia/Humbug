@@ -117,14 +117,16 @@ class CanvasStripeRenderer {
     int label3;
     int label4;
     int label5;
+    int label6;
     CCoordSystem cs;
-
+    static int renderNum;
 public:
 
     // this little bastard should render colored stripes when ready.
     explicit CanvasStripeRenderer(int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
         : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay),
         label1(nullptr), label2(0), label3(0), label4(0), cs( "Coords", 400, 400, CPoint(100, 100) ){
+        renderNum++;
         if (debug_overlay && debugFont) {
             /*if (!controls::CLabel::GetLabelFont())
                {
@@ -135,7 +137,7 @@ public:
             label1.reset( new controls::CLabel( debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", debugFont,
                             true, CColor::Black(), CColor::White() ) );
             Uint16 height = label1->GetHeight();
-            label1->SetPosition( CPoint(0, height) );
+            label1->SetPosition( CPoint(300, height) );
             m_pDovl->AddChild( label1.get() );
 
             // automatic labels
@@ -143,9 +145,10 @@ public:
             label3 = m_pDovl->AddTextLabel();
             label4 = m_pDovl->AddTextLabel();
             label5 = m_pDovl->AddTextLabel();
+            label6 = m_pDovl->AddTextLabel();
         }
     }
-   
+
     ~CanvasStripeRenderer()
     {
         
@@ -160,7 +163,7 @@ public:
     void PrintLabel(const int& id, const char* title, const T& degrees) const {
         if (id) {
             std::ostringstream labelText;
-            labelText << title << "(" << degrees << ")";
+            labelText << "{" << renderNum << "}" << title << "(" << degrees << ")";
             m_pDovl->SetTextLabelText( id, labelText.str() );
         }
     }
@@ -271,6 +274,8 @@ public:
         mdata.isHandled = true;
     } // ()
 };
+
+int CanvasStripeRenderer::renderNum = 0;
 
 struct TestLevel::TestLevelImpl {
 private:
@@ -398,8 +403,10 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
 
     m_pBanding2.reset( new CImage(new CCanvas( m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png") ), true) );
-    static CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
-    m_pBanding2->GetCanvas()->AddModifier(boost::ref(stripeModifier2));
+    //CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
+    //static CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
+    //m_pBanding2->GetCanvas()->AddModifier(boost::ref(stripeModifier2));
+    m_pBanding2->GetCanvas()->AddModifier(stripeModifier);
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());

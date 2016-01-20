@@ -146,6 +146,7 @@ public:
  */
 class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
     int x;
+    int k;
     const MenuScreen* m_pHost;
     CPoint lastPos;
 
@@ -173,7 +174,7 @@ class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
 public:
 
     explicit DingensPainter(const MenuScreen* host)
-        : DetailedControlPainter(), x(0), m_pHost(host)
+        : DetailedControlPainter(), x(0), k(0), m_pHost(host)
     {
         
     }
@@ -184,11 +185,39 @@ public:
     }
 
     void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param) {
-        x++;
+        int rnd = 4 - (rand() % 4);
+        x+=rnd;
+        k++;
 
+        //auto label = static_cast<controls::CLabel>(pChild);
+        auto label = dynamic_cast<controls::CLabel*>(pChild);
+        if (label)
+        {
+            CColor cl = label->GetTextColor();
+            CColor clred = CColor::Red();
+            if (cl != clred)
+            {
+                //int rdegrees = (m_pHost->m_iFrames + r % 360);
+                int degrees = (m_pHost->m_iFrames) * 8 % 360;
+                const float PI = 3.14159265f;
+                float radians = degrees * PI / 180.0f;
+                float clock = degrees / PI;
+                int corrector = 64 + sin(radians) * 64;
+
+                int sval = cos(m_pHost->m_iFrames / 6.0f) * 4;
+                int c = x % 200;
+                //CColor color(c, c, c | 0xa0, c);
+                CColor color(corrector, corrector, corrector | 0xa0, corrector);
+                //const int kfac = parent.GetNumChildren();
+                //CColor color((k % kfac) * 32 + corrector, (k % kfac) * 32, (k % kfac) * 32 | 0xa0, corrector);
+                label->SetTextColor(color);
+            }
+            //pChild->GetCanvas()->SetColorKey(color);
+        }
+        
         const int varX = 1;
-        CPoint lastPos = pChild->GetPosition();
-        pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY()));
+        //CPoint lastPos = pChild->GetPosition();
+        //pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4), lastPos.GetY()));
         //pChild->Draw();
         //pChild->SetPosition(lastPos);
         //param.SetDrawn(true);
@@ -196,6 +225,17 @@ public:
         CColor sdl_color = CColor::DarkMagenta();
         pChild->GetCanvas()->RenderFillRect(CRectangle(333 + x, 333, 55, 55), &sdl_color);
     }
+
+//    template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not_array< T >::type static make_shared(Arg1 && arg1, Args && ... args)
+//    {
+//        return boost::make_shared< T >(arg1, args...);
+//    }
+
+    template< class T, class Arg1, class... Args > typename boost::detail::sp_if_not_array< T >::type static make_shared(Arg1 && arg1, Args && ... args)
+    {
+        return boost::make_shared< T >(arg1, args...);
+    }
+
 };
 
 bool MenuScreen::OnInit(int argc, char* argv[]) {
@@ -218,14 +258,16 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     label4 = m_pLineMenu->AddTextLabel();
     label4 = m_pLineMenu->AddTextLabel();
 
-    //DingensPainter stripeModifier(16, m_pArialfont, m_pOverlay.get());
     //static DingensPainter painter(this);
-    //DingensPainter painter(this);
+    DingensPainter painter(this);
     //m_pLineMenu->AddChildPainter(boost::ref(painter)); // uses ref, object must be valid
-    //m_pLineMenu->AddChildPainter(painter); // performs copy
+    m_pLineMenu->AddChildPainter(painter); // performs copy
     
     //m_pLineMenu->OwnChildPainter(new DingensPainter(this));
-    m_pLineMenu->OwnChildPainter(boost::make_shared<DingensPainter>(this));
+    //m_pLineMenu->OwnChildPainter(boost::make_shared<DingensPainter>(this));
+    //m_pLineMenu->OwnChildPainter(DingensPainter::make_shared<DingensPainter>(this));
+    
+    m_pLineMenu->OwnChildPainter<DingensPainter>(this);
     
 
     m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));

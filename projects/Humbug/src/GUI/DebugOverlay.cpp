@@ -33,7 +33,7 @@ namespace humbug {
  int DebugOverlay::LabelId = 6000;
 
  DebugOverlay::DebugOverlay(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name) :
-     CControl(pParent, CRectangle(0, 0, 200, 100), id), m_iLastAutoLabelPosition(16), m_sName(name),
+     CControl(pParent, CRectangle(0, 0, 800, 160), id), m_iLastAutoLabelPosition(16), m_sName(name),
       m_pLoader(m_Loader){
       dbgOut(__FUNCTION__);
 

@@ -18,8 +18,8 @@
 
 #include "../Components/Canvas.h"
 #include "../Visual/MessageHandler.h"
-#include <list>
 #include <boost/smart_ptr/make_shared_object.hpp>
+#include <list>
 
 namespace gui {
 namespace controls {
@@ -57,42 +57,50 @@ public:
     //__declspec(property(get = IsDrawn, put = SetDrawn)) bool MBxDrawn;
 };
 
-    class DetailedControlPainter {
-        //const CControl& parent;
-        //CControl* pChild;
+/** @class DetailedControlPainter:
+ *  Detailed description.
+ */
+class DetailedControlPainter {
+    //const CControl& parent;
+    //CControl* pChild;
 
-    public:
-        DetailedControlPainter()
-        //DetailedControlPainter(const CControl& parent, CControl* const p_child)
-            //: parent{parent}, pChild{p_child}
-        {
-        }
+public:
 
-        virtual ~DetailedControlPainter()
-        {
-        }
+    DetailedControlPainter()
+    //DetailedControlPainter(const CControl& parent, CControl* const p_child)
+    //: parent{parent}, pChild{p_child}
+    {}
 
-        virtual void BeforeDrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
-                                     param) 
-        {
-        }
+    virtual ~DetailedControlPainter()
+    {}
 
-        virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param) = 0;
-        /*virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param)
-        {
-            
-        }*/
+    /** Brief description of DetailedControlPainter, BeforeDrawChild
+     *  Detailed description.
+     *  @param parent TODO
+     *  @param pChild TODO
+     *  @param param TODO
+     */
+    virtual void BeforeDrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
+            param)
+    {}
 
-        virtual void AfterDrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
-            param) 
-        {
-        }
+    virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param) = 0;
 
-        /*inline DetailedControlPainter* new_clone(const DetailedControlPainter& c)
-        {
-            return NULL;
-        }*/
-    };
+    /** Brief description of DetailedControlPainter, AfterDrawChild
+     *  Detailed description.
+     *  @param parent TODO
+     *  @param pChild TODO
+     *  @param param TODO
+     */
+    virtual void AfterDrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters&
+            param)
+    {}
+
+    /*inline DetailedControlPainter* new_clone(const DetailedControlPainter& c)
+       {
+        return NULL;
+       }*/
+};
 
 /** @class CControl:
  *  Detailed description.
@@ -184,6 +192,11 @@ public:
     //close
     void Close();
 
+    std::list<CControl*>::size_type GetNumChildren() const
+    {
+        return m_lstChildren.size();
+    }
+
     //update all
     static void Update();
 
@@ -199,6 +212,13 @@ public:
     // add a children control painter. takes ownership
     void OwnChildPainter(boost::shared_ptr<DetailedControlPainter> painter);
 
+    // make and add a children control painter.
+    template<class T, class Arg1, class ... Args>
+    typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ... args){
+        auto painter = boost::make_shared<T>(arg1, args ...);
+        OwnChildPainter(painter);
+        return painter;
+    }
     virtual void DrawChild(const CControl& parent, CControl* pChild) const;
 
     //draw control
