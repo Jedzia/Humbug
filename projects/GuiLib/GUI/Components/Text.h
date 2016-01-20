@@ -16,11 +16,13 @@ struct CTextModifierData
 {
     int DeltaX;
     int DeltaY;
+    CRectangle& dest;
+    CRectangle& src;
 
-    CTextModifierData() : DeltaX(0), DeltaY(0)
+    CTextModifierData(CRectangle& src_rect, CRectangle& dst_rect)
+        : dest{ dst_rect }, src{ src_rect }, DeltaX(0), DeltaY(0)
     {
-
-    };
+    }
 };
 
 class CText {
@@ -28,11 +30,13 @@ public:
 
     CText(TTF_Font *font, std::string text, CColor textcolor = CColor::Black());
     ~CText();
+    
     // Todo: "const boost::function<void" does not work under gcc
     // typedef const boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
-    typedef boost::function<void (const CCanvas* ,const CText *text, CTextModifierData& mdata)> TextModifier;
+    typedef boost::function<void (const CCanvas* ,CText *text, CTextModifierData& mdata)> TextModifier;
     //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
     void AddModifier(TextModifier updfunc);
+    void FlyTo(CPoint c_point) ;
     void RenderPut(const CCanvas *canvas, const CRectangle& dstRect) const;
     void RenderPut(const CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect) const;
 	void Put(CCanvas *canvas, const CRectangle& dstRect) const;
@@ -51,7 +55,7 @@ public:
     void SetColor(const CColor m_col_text);
 
 private:
-    void ApplyModifiers() const;
+    void ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) const;
     void RunModifiers(CCanvas *textcanvas) const;
 
     TTF_Font *m_pFont;

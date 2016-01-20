@@ -282,7 +282,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
         "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" << "\t" << "48" << "\t" <<
         "Humbug" << "\r\n" <<
         "";
-
+     
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
 
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
@@ -297,6 +297,9 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pInfoText->makeCText<CText>(keysfont, "     K    J      w    s  ");
     m_pInfoText->makeCText<CText>(m_pArialfont, "Enter or [e] selects and Backspace or [q] moves back.", m_colText);
     m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
+
+    m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)->FlyTo(CPoint(512, 200));
+
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
     HookMgr()->RegisterHookable("SubmenuB", boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
