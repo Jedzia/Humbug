@@ -24,8 +24,53 @@
 
 namespace gui {
   namespace controls {
-//CControl class
+      class CControl;
+
+      //CControl class
 //abstracts a user interface control
+
+    class ControlPainterParameters {
+        bool m_bDrawn;
+
+    public:
+        explicit ControlPainterParameters()
+            : m_bDrawn(false)
+        {
+        }
+
+
+        bool IsDrawn() const
+        {
+            return m_bDrawn;
+        }
+
+        void SetDrawn(const bool drawn)
+        {
+            m_bDrawn = drawn;
+        }
+
+        //__declspec(property(get = IsDrawn, put = SetDrawn)) bool MBxDrawn;
+    };
+
+    class ControlPainter {
+        const CControl& parent;
+        CControl* pChild;
+
+    protected:
+        ~ControlPainter()
+        {
+        }
+
+    public:
+        ControlPainter(const CControl& parent, CControl* const p_child)
+            : parent{parent},
+              pChild{p_child}
+        {
+        }
+
+        virtual void DrawChild(const CControl& parent, CControl* pChild, ControlPainterParameters& param) = 0;
+    };
+
     class CControl {
 private:
 
@@ -106,7 +151,8 @@ protected:
 
         //redraw entire system
         static void Redraw();
-
+        
+        virtual void DrawChild(const CControl& parent, CControl* pChild);
         //draw control
         void Draw();
         void Invalidate();

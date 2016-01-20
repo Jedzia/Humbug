@@ -179,7 +179,12 @@ void CControl::Redraw()
     GetMainControl()->Draw();
 }
 
-//draw control
+void CControl::DrawChild(const CControl& parent, CControl* pChild)
+{
+    pChild->Draw();
+}
+
+    //draw control
 void CControl::Draw()
 {
     // Todo: when using textures, they should be (re)generated at ctor or invalidation.
@@ -196,7 +201,8 @@ void CControl::Draw()
 		//grab item from list
 		CControl* pChild=(*iter);
 		//draw
-		pChild->Draw();
+        const CControl& parent = *this;
+	    DrawChild(parent, pChild);
 	}
 	//update parent
 	CControl* pParent=GetParent();

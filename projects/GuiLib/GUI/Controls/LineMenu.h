@@ -91,6 +91,7 @@ private:
     CRectangle InitRect(const FileLoader& loader);
     static void DrawRect(CCanvas* canvas, const CRectangle& dimensions, const CColor& color);
     CPoint CalculateStepValue(const controls::CLabel& labelD) const;
+    void DrawChild(const CControl& parent, CControl* pChild) override;
 
     static int LabelId;
     menu_changed_signal_t m_sigMenuChanged;

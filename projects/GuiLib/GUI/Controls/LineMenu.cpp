@@ -184,29 +184,28 @@ void LineMenu::IdleSetVars(int ticks) {
     const int scrollSpeed = 5;
     // SetOffset(GetOffset() + CalculateStepValue(labelD));
     CRectangle currentOffset = GetOffset();
-    if (m_iWantedOffset > m_iMoveOffset)
-    {
+
+    if(m_iWantedOffset > m_iMoveOffset) {
         m_iMoveOffset += scrollSpeed;
     }
-    else if (m_iWantedOffset < m_iMoveOffset)
-    {
+    else if(m_iWantedOffset < m_iMoveOffset) {
         m_iMoveOffset -= scrollSpeed;
     }
+
     //while (m_iWantedOffset != m_iMoveOffset)
     {
-        if (m_iWantedOffset > m_iMoveOffset)
-        {
+        if(m_iWantedOffset > m_iMoveOffset) {
             m_iMoveOffset += 1;
         }
-        else if (m_iWantedOffset < m_iMoveOffset)
-        {
+        else if(m_iWantedOffset < m_iMoveOffset) {
             m_iMoveOffset -= 1;
         }
     }
-    //CRectangle offset = CRectangle(currentOffset.GetX(), currentOffset.GetY() + m_iMoveOffset, currentOffset.GetW(), currentOffset.GetH());
+    //CRectangle offset = CRectangle(currentOffset.GetX(), currentOffset.GetY() + m_iMoveOffset,
+    // currentOffset.GetW(), currentOffset.GetH());
     CRectangle offset = CRectangle(currentOffset.GetX(), m_iMoveOffset, currentOffset.GetW(), currentOffset.GetH());
     SetOffset(offset);
-}
+} // LineMenu::IdleSetVars
 
 void LineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
     //m_KeyboardHandler.HandleKeyboardEvent(keyevent);
@@ -269,10 +268,11 @@ int LineMenu::AddTextLabel(const std::string& text) {
     }
 
     CColor color = CColor::Blue();
-    if (m_mLabels.size() == 0)
-    {
+
+    if(m_mLabels.size() == 0) {
         color = CColor::Red();
     }
+
     CLabel* label1 = new CLabel(this, CRectangle(0, 0, -1, -1), id, labelTextString, m_pDebugfont, true,
             CColor::Black(), color);
     m_mLabels.insert(id, label1);
@@ -296,8 +296,7 @@ void LineMenu::SetTextLabelText(int id, const std::string& text) {
 }
 
 void LineMenu::NavigateDown() {
-    if (m_iWantedOffset != m_iMoveOffset)
-    {
+    if(m_iWantedOffset != m_iMoveOffset) {
         return;
     }
 
@@ -332,7 +331,7 @@ void LineMenu::NavigateDown() {
                SetOffset(offset);*/
             m_iWantedOffset += CalculateStepValue(labelD).GetY();
             //SetOffset(GetOffset() + CalculateStepValue(labelD));
-            
+
             //GetOffset() += CPoint(0, labelD.GetHeight() * 2);
         }
     }
@@ -342,9 +341,22 @@ CPoint LineMenu::CalculateStepValue(const CLabel& label) const {
     return CPoint(0, label.GetHeight() * 2);
 }
 
+void LineMenu::DrawChild(const CControl& parent, CControl* pChild)
+{
+    const int varX = 1;
+    auto pos = pChild->GetPosition();
+    //pChild->SetPosition(CPoint(pos.GetX() + (varX - (rand() % (2 * varX))), pos.GetY()));
+    pChild->SetPosition(CPoint(pos.GetX() + (varX - sin(m_iTicks / 6.0f)*4), pos.GetY()));
+    // call painters
+    ControlPainterParameters param;
+    // painter.Draw(parent, pChild, param)
+    // if(!param.IsDrawn())
+    CControl::DrawChild(parent, pChild);
+    pChild->SetPosition(pos);
+}
+
 void LineMenu::NavigateUp() {
-    if (m_iWantedOffset != m_iMoveOffset)
-    {
+    if(m_iWantedOffset != m_iMoveOffset) {
         return;
     }
 
@@ -369,7 +381,7 @@ void LineMenu::NavigateUp() {
         if(intersects == CRectangle()) {
             //SetOffset(GetOffset() - CalculateStepValue(labelD));
             m_iWantedOffset -= CalculateStepValue(labelD).GetY();
-            
+
             /*CRectangle offset = GetOffset();
                offset -= CPoint(0, labelD.GetHeight() * 2);
                SetOffset(offset);*/
