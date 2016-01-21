@@ -350,10 +350,13 @@ public:
             if (hookable)
             {
                 int ticks = hookable->GetTicks();
-                if (!endTicks && (ticks - startTicks > 200))
+                if (!endTicks && startTicks)
                 {
                     endTicks = ticks;
                 }
+                
+                mdata.dest.X() += ceil(x);
+                mdata.dest.Y() -= ceil(y);
                 if ((ticks - endTicks) < 200)
                 {
                     return;
