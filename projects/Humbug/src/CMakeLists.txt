@@ -65,6 +65,7 @@ SET(Humbug_MyGUI_headers
 		Screens/TileScreen.h
 		Screens/SimpleScreen.h
 
+		Screens/InfoText.h
 		Screens/MenuScreen.h
 		Screens/MenuScreen/SubmenuA.h
 		Screens/MenuScreen/SubmenuB.h

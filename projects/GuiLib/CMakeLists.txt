@@ -83,6 +83,8 @@ SET(GuiLib_GUI_sources
 
 # Component set (Canvas, Controls, etc.)
 SET(GuiLib_Component_headers
+		Timing.h
+		
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
 		GUI/Components/Color.h

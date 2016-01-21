@@ -16,10 +16,11 @@
 //
 #include "stdafx.h"
 //
-#include "Canvas.h"
 #include "Text.h"
-
-#include <GuiLib/GUI/Visual/Hookable.h>
+//
+#include "../../Timing.h"
+#include "../Visual/Hookable.h"
+#include "Canvas.h"
 #include <boost/math/constants/constants.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
@@ -274,92 +275,6 @@ void CText::AddModifier(TextModifier updfunc) {
 //};
 using namespace boost::numeric::ublas;
 
-/** @class Timing:
- *  Detailed description.
- *
- */
-class Timing {
-public:
-
-    typedef float seconds;
-    typedef boost::function<int (void)> UpdateTimeFunc;
-    typedef boost::function<bool (seconds time)> UnaryTimeCheckFunc;
-
-private:
-
-    UpdateTimeFunc m_fncUpdateTime;
-    int m_iTicks;
-    int m_iStartTicks;
-    UnaryTimeCheckFunc m_fncLastCheck;
-    seconds m_timeLastCheck;
-
-    void UpdateTimeFunction() {
-        if(!m_fncUpdateTime) {
-            return;
-        }
-
-        UpdateIdle(m_fncUpdateTime());
-    }
-public:
-
-    static const int FRAMESPERSECOND = 30;
-
-    explicit Timing(UpdateTimeFunc updateFunction = NULL)
-        : Timing(0, updateFunction)
-    {}
-
-    explicit Timing(int startupTicks = 0, UpdateTimeFunc updateFunction = NULL)
-        : m_fncUpdateTime(updateFunction), m_iTicks(0), m_iStartTicks(startupTicks), m_fncLastCheck(NULL), m_timeLastCheck(0)
-    {}
-
-    static seconds Convert(int ticks) {
-        seconds result = static_cast<seconds>(ticks) / static_cast<seconds>(FRAMESPERSECOND);
-        return result;
-    }
-    void Reset(int ticks = 0) {
-        m_iStartTicks = ticks;
-    }
-    void UpdateIdle(int ticks) {
-        if(!m_iStartTicks) {
-            m_iStartTicks = ticks;
-        }
-
-        m_iTicks = ticks;
-    }
-    int TicksSinceStart() const {
-        return m_iTicks - m_iStartTicks;
-    }
-    seconds SecondsSinceStart() const {
-        return Convert(TicksSinceStart());
-    }
-    bool IsBefore(seconds time) {
-        UpdateTimeFunction();
-        m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsBefore, boost::ref(*this), _1);
-        seconds now = SecondsSinceStart();
-        return now < time;
-    }
-    bool IsAfter(seconds time) {
-        UpdateTimeFunction();
-        m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1);
-        seconds now = SecondsSinceStart();
-        return now > time;
-    }
-    bool IsAt(seconds time) {
-        UpdateTimeFunction();
-        m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsAt, boost::ref(*this), _1);
-        seconds now = SecondsSinceStart();
-        return now == time;
-    }
-    operator bool() const
-    {
-        bool result = m_fncLastCheck(m_timeLastCheck);
-        return result;
-    }
-};
-
 /** @class Mover2:
  *  Detailed description.
  *  @param vA TODO
@@ -381,6 +296,7 @@ class Mover2 {
 
         return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
     }
+
 public:
 
     explicit Mover2(const CPoint& destination, Hookable* hookable)
@@ -393,6 +309,7 @@ public:
         auto vdir = vA - vB;
         return (vdir) / norm_2(vdir) * 2.0;
     }
+
     void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) {
         using namespace boost::numeric::ublas;
         auto color = CColor::DarkGray();
