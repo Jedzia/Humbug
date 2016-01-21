@@ -275,6 +275,35 @@ void CText::AddModifier(TextModifier updfunc) {
 //};
 using namespace boost::numeric::ublas;
 
+class Timing
+{
+    int m_iTicks;
+    int m_iStartTicks;
+    typedef float seconds;
+
+public:
+    static const int FRAMESPERSECOND = 30;
+
+    explicit Timing(int m_i_start_ticks = 0)
+        : m_iTicks(0), m_iStartTicks{ m_i_start_ticks }
+    {
+    }
+
+    void Idle(int ticks) {
+        if (!m_iStartTicks) {
+            m_iStartTicks = ticks;
+        }
+
+        m_iTicks = ticks;
+    }
+
+    static seconds Convert(int ticks)
+    {
+        seconds result = static_cast<seconds>(ticks) / static_cast<seconds>(FRAMESPERSECOND);
+        return result;
+    }
+};
+
 /** @class Mover2:
  *  Detailed description.
  *  @param vA TODO
@@ -303,6 +332,7 @@ public:
         return (vdir) / norm_2(vdir) * 2.0;
     }
     void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) {
+        using namespace boost::numeric::ublas;
         auto color = CColor::DarkGray();
         target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
         if (hookable)
