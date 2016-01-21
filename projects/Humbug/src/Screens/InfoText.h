@@ -25,8 +25,8 @@ namespace humbug {
  *  @return TODO
  */
 class InfoText2 {
-    int m_iFrames;
-    int m_iInitFrame;
+    int m_iTicks;
+    int m_iStartTicks;
     TTF_Font* m_pTextFont;
     TTF_Font* m_pKeysFont;
     gui::components::CRectangle m_rectPaint;
@@ -38,7 +38,7 @@ class InfoText2 {
      *  @return TODO
      */
     seconds GetTime() const {
-        return (m_iFrames - m_iInitFrame) / 30.0f;
+        return (m_iTicks - m_iStartTicks) / 30.0f;
     }
 #define FROMTIME(x) if(GetTime() > (x)) {
 #define ENDTIMEBLOCK \
@@ -46,8 +46,9 @@ class InfoText2 {
 
 public:
 
-    InfoText2(TTF_Font* textFont, TTF_Font* keysFont, const gui::components::CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
+    InfoText2(TTF_Font* textFont, TTF_Font* keysFont, const gui::components::CRectangle& paintDimensions) : m_iTicks(0), m_iStartTicks(0),
         m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {}
+
     ~InfoText2() {}
 
     /** Brief description of InfoText2, Draw
@@ -71,12 +72,12 @@ public:
      *  Detailed description.
      *  @param ticks TODO
      */
-    void Idle(int ticks) {
-        if(!m_iInitFrame) {
-            m_iInitFrame = ticks;
+    void UpdateIdle(int ticks) {
+        if(!m_iStartTicks) {
+            m_iStartTicks = ticks;
         }
 
-        m_iFrames = ticks;
+        m_iTicks = ticks;
     }
     //typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ...
     // args){
@@ -93,7 +94,6 @@ public:
         m_pvecInfoTexts.push_back(p);
         return p;
     }
-
     /*template<class T, class Arg1, class ... Args>
        typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ...
        args){

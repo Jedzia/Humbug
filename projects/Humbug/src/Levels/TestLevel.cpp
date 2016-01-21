@@ -78,9 +78,9 @@ public:
         if (m_iFrames % 3 == 0) {
             // jitter arround
             dstRect.X() += m_iSteps / 2 - rand() % m_iSteps;
-            //dstRect.X() += m_iFrames % 5;
+            //dstRect.X() += m_iTicks % 5;
             dstRect.Y() += m_iSteps / 2 - rand() % m_iSteps;
-            //dstRect.Y() += m_iFrames % 5;
+            //dstRect.Y() += m_iTicks % 5;
         }
 
         if (rand() % 12 > 9) {
@@ -185,7 +185,7 @@ public:
         //CColor color1 = CColor::Red();
         CColor color2 = CColor::Green();
 
-        /*if (m_iFrames % 16 > 8)
+        /*if (m_iTicks % 16 > 8)
            {
             color1 = CColor::Green();
             color2 = CColor::Red();
@@ -239,7 +239,7 @@ public:
 
         for (size_t i = 0; i < stepsize; i++)
         {
-            //int newColor = (colorstep * ((i * 8 + -m_iFrames / colorstep) % stepsize)) % 255;
+            //int newColor = (colorstep * ((i * 8 + -m_iTicks / colorstep) % stepsize)) % 255;
             int newColorStep = (colorstep / 2 * i) + 1;
             int newColor = corrector + newColorStep;
             newColor = newColor > 255 ? 255 : newColor;
@@ -247,7 +247,7 @@ public:
 
             int newGreen = 25;
 
-            //if ((m_iFrames % (i + 1)) > stepsize / 2)
+            //if ((m_iTicks % (i + 1)) > stepsize / 2)
             if (stepcheck == i) {
                 newGreen ^= m_iFrames;
             }

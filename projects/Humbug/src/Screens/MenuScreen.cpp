@@ -188,7 +188,7 @@ public:
             CColor clred = CColor::Red();
 
             if(cl != clred) {
-                //int rdegrees = (m_pHost->m_iFrames + r % 360);
+                //int rdegrees = (m_pHost->m_iTicks + r % 360);
                 int degrees = (m_pHost->GetTicks()) * 8 % 360;
                 const float PI = 3.14159265f;
                 float radians = degrees * PI / 180.0f;
@@ -210,7 +210,7 @@ public:
 
         const int varX = 1;
         //CPoint lastPos = pChild->GetPosition();
-        //pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iFrames / 6.0f) * 4),
+        //pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iTicks / 6.0f) * 4),
         // lastPos.GetY()));
         //pChild->Draw();
         //pChild->SetPosition(lastPos);
@@ -312,8 +312,8 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
 }   // OnInit
 
 void MenuScreen::OnIdle(int ticks) {
-    m_pLineMenu->IdleSetVars(ticks);
-    m_pInfoText->Idle(ticks);
+    m_pLineMenu->UpdateIdle(ticks);
+    m_pInfoText->UpdateIdle(ticks);
     //m_pScroller->Scroll(4);
     //m_pSprMgr->OnIdle(ticks);
     RaiseOnIdle(ticks);

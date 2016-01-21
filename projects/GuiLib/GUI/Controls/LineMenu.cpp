@@ -179,7 +179,7 @@ bool CLineMenu::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool b
 void CLineMenu::CalculateBounds()
 {}
 
-void CLineMenu::IdleSetVars(int ticks) {
+void CLineMenu::UpdateIdle(int ticks) {
     m_iTicks = ticks;
 
     const int scrollSpeed = 5;
@@ -206,7 +206,7 @@ void CLineMenu::IdleSetVars(int ticks) {
     // currentOffset.GetW(), currentOffset.GetH());
     CRectangle offset = CRectangle(currentOffset.GetX(), m_iMoveOffset, currentOffset.GetW(), currentOffset.GetH());
     SetOffset(offset);
-} // CLineMenu::IdleSetVars
+} // CLineMenu::UpdateIdle
 
 void CLineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
     //m_KeyboardHandler.HandleKeyboardEvent(keyevent);

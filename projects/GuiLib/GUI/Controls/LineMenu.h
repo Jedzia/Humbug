@@ -62,7 +62,7 @@ public:
      *  Call during the idle method of your display loop.
      *  @param ticks Use this to pass the ticks parameter of the idle loop.
      */
-    void IdleSetVars(int ticks);
+    void UpdateIdle(int ticks);
 
     /** Create a text label and add it to the overlay.
      *  Creates a new text label with the specified text and adds it to the debug overlay.
