@@ -19,14 +19,14 @@
 #include "Canvas.h"
 #include "Text.h"
 
+#include <GuiLib/GUI/Visual/Hookable.h>
 #include <boost/math/constants/constants.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/vector_expression.hpp>
-#include <GuiLib/GUI/Visual/Hookable.h>
 
 /*#include <gmtl/Matrix.h>
-#include <gmtl/Vec.h>
-#include <gmtl/gmtl.h>*/
+   #include <gmtl/Vec.h>
+ #include <gmtl/gmtl.h>*/
 
 //#include "../Data/ColorData.h"
 
@@ -70,8 +70,8 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
         for(TextModifierStorage::iterator it = m_vecModifierVault.begin(); it < end; ++it)
         {
             (*it)(m_pText.get(), this, mdata);
-            if (mdata.markedForDeletion)
-            {
+
+            if(mdata.markedForDeletion) {
                 //m_vecModifierVault.pop_back();
                 //TextModifierStorage::iterator ex;
                 m_vecModifierVault.erase(it);
@@ -83,7 +83,7 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
     }
 
     m_pText->Unlock();
-}
+} // CText::ApplyModifiers
 
 void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) {
     CRectangle dest(dstRect);
@@ -164,7 +164,6 @@ void CText::RunModifiers(CCanvas* textcanvas) const {
 void CText::AddModifier(TextModifier updfunc) {
     m_vecModifierVault.push_back(updfunc);
 }
-
 
 ///** @class Mover:
 //*  Detailed description.
@@ -275,31 +274,88 @@ void CText::AddModifier(TextModifier updfunc) {
 //};
 using namespace boost::numeric::ublas;
 
-class Timing
-{
+/** @class Timing:
+ *  Detailed description.
+ *
+ */
+class Timing {
+public:
+
+    typedef float seconds;
+    typedef boost::function<int (void)> UpdateTimeFunc;
+    typedef boost::function<bool (seconds time)> UnaryTimeCheckFunc;
+
+private:
+
+    UpdateTimeFunc m_fncUpdateTime;
     int m_iTicks;
     int m_iStartTicks;
-    typedef float seconds;
+    UnaryTimeCheckFunc m_fncLastCheck;
+    seconds m_timeLastCheck;
 
+    void UpdateTimeFunction() {
+        if(!m_fncUpdateTime) {
+            return;
+        }
+
+        UpdateIdle(m_fncUpdateTime());
+    }
 public:
+
     static const int FRAMESPERSECOND = 30;
 
-    explicit Timing(int m_i_start_ticks = 0)
-        : m_iTicks(0), m_iStartTicks{ m_i_start_ticks }
-    {
-    }
+    explicit Timing(UpdateTimeFunc updateFunction = NULL)
+        : Timing(0, updateFunction)
+    {}
 
-    void Idle(int ticks) {
-        if (!m_iStartTicks) {
+    explicit Timing(int startupTicks = 0, UpdateTimeFunc updateFunction = NULL)
+        : m_fncUpdateTime(updateFunction), m_iTicks(0), m_iStartTicks(startupTicks), m_fncLastCheck(NULL), m_timeLastCheck(0)
+    {}
+
+    static seconds Convert(int ticks) {
+        seconds result = static_cast<seconds>(ticks) / static_cast<seconds>(FRAMESPERSECOND);
+        return result;
+    }
+    void Reset(int ticks = 0) {
+        m_iStartTicks = ticks;
+    }
+    void UpdateIdle(int ticks) {
+        if(!m_iStartTicks) {
             m_iStartTicks = ticks;
         }
 
         m_iTicks = ticks;
     }
-
-    static seconds Convert(int ticks)
+    int TicksSinceStart() const {
+        return m_iTicks - m_iStartTicks;
+    }
+    seconds SecondsSinceStart() const {
+        return Convert(TicksSinceStart());
+    }
+    bool IsBefore(seconds time) {
+        UpdateTimeFunction();
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing::IsBefore, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now < time;
+    }
+    bool IsAfter(seconds time) {
+        UpdateTimeFunction();
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now > time;
+    }
+    bool IsAt(seconds time) {
+        UpdateTimeFunction();
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing::IsAt, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now == time;
+    }
+    operator bool() const
     {
-        seconds result = static_cast<seconds>(ticks) / static_cast<seconds>(FRAMESPERSECOND);
+        bool result = m_fncLastCheck(m_timeLastCheck);
         return result;
     }
 };
@@ -315,19 +371,25 @@ class Mover2 {
     double x;
     double y;
     Hookable* hookable;
-    int startTicks;
-    int endTicks;
+    Timing timingStart;
+    Timing timingEnd;
 
+    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable) {
+        if(!hookable) {
+            return NULL;
+        }
+
+        return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
+    }
 public:
 
     explicit Mover2(const CPoint& destination, Hookable* hookable)
-        : destination{ destination }, x(0), y(0), hookable{ hookable }, startTicks(0), endTicks(0)
+        : destination(destination), x(0), y(0), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable))
     {}
 
     static vector<double> normalizedDirection(
             const vector<double>& vA,
             const vector<double>& vB) {
-
         auto vdir = vA - vB;
         return (vdir) / norm_2(vdir) * 2.0;
     }
@@ -335,23 +397,21 @@ public:
         using namespace boost::numeric::ublas;
         auto color = CColor::DarkGray();
         target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
-        if (hookable)
-        {
+
+        if(hookable) {
             int ticks = hookable->GetTicks();
-            if (!startTicks)
-            {
-                startTicks = ticks;
-            }
-            
-            color.SetR(ticks % 255);
+            //timingStart.UpdateIdle(ticks);
+
+            color.SetR(0xa0 | ticks % 255);
+            color.SetG(0x5f & ticks % 255);
+            color.SetB(ticks % 255);
             text->SetColor(color);
-            
-            if (ticks - startTicks < 200)
-            {
+
+            if(timingStart.IsBefore(2.0f)) {
                 return;
             }
-        }        
-        
+        }
+
         //float r = 564.345f;
         //using namespace boost::math::double_constants;
         //auto xxx = pi * r * r;
@@ -361,46 +421,47 @@ public:
         vector<double> vB(static_cast<CPoint>(mdata.dest));
         vector<double> vresult = normalizedDirection(vA, vB);
 
-        if (mdata.dest.GetX() + x < destination.GetX() - vresult[0]) {
+        if(mdata.dest.GetX() + x < destination.GetX() - vresult[0]) {
             x += vresult[0];
         }
-        else if (mdata.dest.GetX() + x > destination.GetX() + vresult[0]) {
+        else if(mdata.dest.GetX() + x > destination.GetX() + vresult[0]) {
             x -= vresult[0];
         }
 
-        if (mdata.dest.GetY() - y < destination.GetY() + vresult[1]) {
+        if(mdata.dest.GetY() - y < destination.GetY() + vresult[1]) {
             y += vresult[1];
         }
-        else if (mdata.dest.GetY() - y > destination.GetY() - vresult[1]) {
+        else if(mdata.dest.GetY() - y > destination.GetY() - vresult[1]) {
             y -= vresult[1];
         }
+
         CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 1);
-        if (actual == destination)
-        {
-            if (hookable)
-            {
-                int ticks = hookable->GetTicks();
-                if (!endTicks && startTicks)
-                {
-                    endTicks = ticks;
-                }
-                
+
+        if(actual == destination) {
+            if(hookable) {
+                /*if (!timingStart)
+                   {
+                    //timingEnd.UpdateIdle(hookable->GetTicks());
+                   }*/
+
                 mdata.dest.X() += ceil(x);
                 mdata.dest.Y() -= ceil(y);
-                if ((ticks - endTicks) < 200)
-                {
+
+                if(timingEnd.IsBefore(2.0f)) {
                     return;
                 }
             }
+
             mdata.state++;
             mdata.markedForDeletion = true;
         }
+
         mdata.dest.X() += ceil(x);
         mdata.dest.Y() -= ceil(y);
     } // ()
 };
 
-void CText::FlyTo(CPoint c_point, Hookable *hookable) {
+void CText::FlyTo(CPoint c_point, Hookable* hookable) {
     //auto bla = *this;
     //AddModifier(NULL);
     //return NULL;
