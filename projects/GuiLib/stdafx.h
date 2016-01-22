@@ -73,6 +73,11 @@
 	#include <boost/archive/binary_iarchive.hpp>
 	#include <boost/archive/binary_oarchive.hpp>
 
+    #include <boost/math/constants/constants.hpp>
+    #include <boost/numeric/ublas/io.hpp>
+    #include <boost/numeric/ublas/vector.hpp>
+    #include <boost/numeric/ublas/vector_expression.hpp>
+
 #endif //USE_LIB_BOOST
 
 #define DEBUG_MEMORY_SUMMARY_ON_EXIT 1

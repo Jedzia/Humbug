@@ -74,6 +74,11 @@
 	#include <boost/iostreams/stream.hpp>
 	#include <boost/archive/binary_iarchive.hpp>
 
+    #include <boost/math/constants/constants.hpp>
+    #include <boost/numeric/ublas/io.hpp>
+    #include <boost/numeric/ublas/vector.hpp>
+    #include <boost/numeric/ublas/vector_expression.hpp>
+
 #endif //USE_LIB_BOOST
 
 #include <lua.hpp>
