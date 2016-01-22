@@ -10,8 +10,9 @@
 namespace gui {
     class Hookable;
     namespace components {
+        class CText;
 
-class CCanvas;
+        class CCanvas;
 
 struct CTextModifierData
 {
@@ -29,6 +30,30 @@ struct CTextModifierData
     }
 };
 
+class Animator {
+public:
+    explicit Animator() : nextAnimator(nullptr), x(0), y(0)
+    {
+    }
+
+    virtual ~Animator()
+    {
+        if (nextAnimator)
+        {
+            delete nextAnimator;
+        }
+    }
+
+    virtual void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) = 0;
+
+    Animator* nextAnimator;
+    Animator* FlyTo(CPoint c_point, Hookable* hookable);
+
+    double x;
+    double y;
+};
+
+
 class CText {
 public:
 
@@ -40,7 +65,8 @@ public:
     typedef boost::function<void (const CCanvas* ,CText *text, CTextModifierData& mdata)> TextModifier;
     //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
     void AddModifier(TextModifier updfunc);
-    void FlyTo(CPoint c_point, Hookable *hookable = NULL);
+    void AddModifier(Animator* animator);
+    Animator* FlyTo(CPoint c_point, Hookable *hookable = NULL);
     void RenderPut(const CCanvas *canvas, const CRectangle& dstRect);
     void RenderPut(const CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect);
 	void Put(CCanvas *canvas, const CRectangle& dstRect);
@@ -60,6 +86,7 @@ public:
 
 private:
     void ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect);
+    void ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect);
     void RunModifiers(CCanvas *textcanvas) const;
 
     TTF_Font *m_pFont;
@@ -69,6 +96,8 @@ private:
     boost::scoped_ptr<CCanvas> m_pText;
     typedef std::vector<TextModifier> TextModifierStorage;
     TextModifierStorage m_vecModifierVault;
+    typedef boost::ptr_vector<Animator> AnimatorStorage;
+    AnimatorStorage m_vecAnimatorVault;
     SDL_Surface* m_pRenderText;
 };
 

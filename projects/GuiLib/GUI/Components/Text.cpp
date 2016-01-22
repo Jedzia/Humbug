@@ -86,6 +86,42 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
     m_pText->Unlock();
 } // CText::ApplyModifiers
 
+void CText::ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect) {
+    m_pText->Lock();
+
+    CTextModifierData mdata(srcRect, dstRect);
+
+    if(!m_vecAnimatorVault.empty()) {
+        AnimatorStorage::iterator end = m_vecAnimatorVault.end();
+
+        for(AnimatorStorage::iterator it = m_vecAnimatorVault.begin(); it < end; ++it)
+        {
+            (*it)(m_pText.get(), this, mdata);
+
+            if(mdata.markedForDeletion) {
+                Animator* savedAnimator = (*it).nextAnimator;
+
+                if(savedAnimator) {
+                    //savedAnimator->x = (*it).x;
+                    //savedAnimator->y = (*it).y;
+                    (*it).nextAnimator = NULL;
+                    m_vecAnimatorVault.erase(it);
+                    mdata.markedForDeletion = false;
+                    AddModifier(savedAnimator);
+                    break;
+                }
+
+                m_vecAnimatorVault.erase(it);
+                mdata.markedForDeletion = false;
+                // Todo: better fill a deleter list and erase after loop.
+                break;
+            }
+        }
+    }
+
+    m_pText->Unlock();
+} // CText::ApplyAnimators
+
 void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) {
     CRectangle dest(dstRect);
     CRectangle src(srcRect);
@@ -93,6 +129,7 @@ void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CR
     dest.SetH(srcRect.GetH());
 
     ApplyModifiers(src, dest);
+    ApplyAnimators(src, dest);
 
     m_pText->RenderCopy(&src, &dest);
 }
@@ -101,6 +138,7 @@ void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& sr
     CRectangle dest(dstRect);
     CRectangle src(srcRect);
     ApplyModifiers(src, dest);
+    ApplyAnimators(src, dest);
 
     canvas->Blit(dest, *m_pText, src);
     canvas->AddUpdateRect(dest);
@@ -164,6 +202,10 @@ void CText::RunModifiers(CCanvas* textcanvas) const {
 
 void CText::AddModifier(TextModifier updfunc) {
     m_vecModifierVault.push_back(updfunc);
+}
+
+void CText::AddModifier(Animator* animator) {
+    m_vecAnimatorVault.push_back(animator);
 }
 
 ///** @class Mover:
@@ -275,16 +317,22 @@ void CText::AddModifier(TextModifier updfunc) {
 //};
 using namespace boost::numeric::ublas;
 
+/** @class SinusoidWobbler:
+ *  Detailed description.
+ *  @param hookable TODO
+ *  @return TODO
+ */
+class SinusoidWobbler {
+};
+
 /** @class Mover2:
  *  Detailed description.
  *  @param vA TODO
  *  @param vB TODO
  *  @return TODO
  */
-class Mover2 {
+class Mover2 : public Animator {
     CPoint destination;
-    double x;
-    double y;
     Hookable* hookable;
     Timing timingStart;
     Timing timingEnd;
@@ -300,20 +348,31 @@ class Mover2 {
 public:
 
     explicit Mover2(const CPoint& destination, Hookable* hookable)
-        : destination(destination), x(0), y(0), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable))
-    {}
+        : destination(destination), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)) {
+    }
+
+    ~Mover2() {
+        int ix = 0;
+        ix++;
+    }
 
     static vector<double> normalizedDirection(
             const vector<double>& vA,
-            const vector<double>& vB) {
+            const vector<double>& vB, double speed) {
         auto vdir = vA - vB;
-        return (vdir) / norm_2(vdir) * 2.0;
+        return (vdir) / norm_2(vdir) * speed;
     }
 
-    void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) {
+    void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) override {
         using namespace boost::numeric::ublas;
         auto color = CColor::DarkGray();
         target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
+
+        const double speed = 8.0f;
+        if(nextAnimator) {
+            int r = 0;
+            r++;
+        }
 
         if(hookable) {
             int ticks = hookable->GetTicks();
@@ -324,7 +383,9 @@ public:
             color.SetB(ticks % 255);
             text->SetColor(color);
 
-            if(timingStart.IsBefore(2.0f)) {
+            if(timingStart.IsBefore(1.0f)) {
+                mdata.dest.X() += ceil(x);
+                mdata.dest.Y() -= ceil(y);
                 return;
             }
         }
@@ -333,10 +394,12 @@ public:
         //using namespace boost::math::double_constants;
         //auto xxx = pi * r * r;
 
-        unit_vector<double> vUnit(2);
+        unit_vector<double> vUnit((2));
         vector<double> vA(destination);
-        vector<double> vB(static_cast<CPoint>(mdata.dest));
-        vector<double> vresult = normalizedDirection(vA, vB);
+        CPoint dest(mdata.dest.GetX() + x, mdata.dest.GetY() - y);
+        vector<double> vB(dest);
+        //vector<double> vB(static_cast<CPoint>(mdata.dest));
+        vector<double> vresult = normalizedDirection(vA, vB, speed);
 
         if(mdata.dest.GetX() + x < destination.GetX() - vresult[0]) {
             x += vresult[0];
@@ -352,9 +415,17 @@ public:
             y -= vresult[1];
         }
 
-        CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 1);
+        /*CPoint actual3 = CPoint(mdata.dest.GetX() + x + 0, mdata.dest.GetY() - y - 0);
+        CPoint actual2 = CPoint(mdata.dest.GetX() + x + 0, mdata.dest.GetY() - y - 1);
+        CPoint actual4 = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 0);
+        CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 1);*/
 
-        if(actual == destination) {
+
+        const int speedInt = static_cast<int>(speed);
+        bool xcomp = mdata.dest.GetX() + x - speedInt < destination.GetX() && mdata.dest.GetX() + x + speedInt > destination.GetX();
+        bool ycomp = mdata.dest.GetY() - y - speedInt < destination.GetY() && mdata.dest.GetY() - y + speedInt > destination.GetY();
+        if (xcomp && ycomp) {
+            //if (actual == destination || actual2 == destination || actual3 == destination || actual4 == destination) {
             if(hookable) {
                 /*if (!timingStart)
                    {
@@ -364,7 +435,7 @@ public:
                 mdata.dest.X() += ceil(x);
                 mdata.dest.Y() -= ceil(y);
 
-                if(timingEnd.IsBefore(2.0f)) {
+                if(timingEnd.IsBefore(1.0f)) {
                     return;
                 }
             }
@@ -373,23 +444,31 @@ public:
             mdata.markedForDeletion = true;
         }
 
-        mdata.dest.X() += ceil(x);
-        mdata.dest.Y() -= ceil(y);
+        mdata.dest.X() += round(x);
+        mdata.dest.Y() -= round(y);
     } // ()
 };
 
-void CText::FlyTo(CPoint c_point, Hookable* hookable) {
+Animator * CText::FlyTo(CPoint c_point, Hookable* hookable) {
     //auto bla = *this;
     //AddModifier(NULL);
     //return NULL;
-    Mover2 mover(c_point, hookable);
+    //Mover2 mover(c_point, hookable);
+    auto mover = new Mover2(c_point, hookable);
+
     //GetCanvas()->AddModifier(mover);
     AddModifier(mover);
+    return mover;
 }
 
-CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor              /*=
-                                                                                                  CColor::Black()*/
-        )
+Animator * Animator::FlyTo(CPoint c_point, Hookable* hookable) {
+    //Mover2 mover(c_point, hookable);
+    auto mover = new Mover2(c_point, hookable);
+    nextAnimator = mover;
+    return mover;
+}
+
+CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor)
 {}
 
 CTextParagraph::~CTextParagraph()
