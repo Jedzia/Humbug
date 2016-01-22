@@ -30,6 +30,7 @@ class InfoText2 {
     TTF_Font* m_pTextFont;
     TTF_Font* m_pKeysFont;
     gui::components::CRectangle m_rectPaint;
+    gui::components::CRectangle m_rectInitPos;
     boost::ptr_vector<gui::components::CText> m_pvecInfoTexts;
     typedef float seconds;
 
@@ -47,7 +48,7 @@ class InfoText2 {
 public:
 
     InfoText2(TTF_Font* textFont, TTF_Font* keysFont, const gui::components::CRectangle& paintDimensions) : m_iTicks(0), m_iStartTicks(0),
-        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {}
+        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions), m_rectInitPos(paintDimensions) {}
 
     ~InfoText2() {}
 
@@ -56,16 +57,18 @@ public:
      *  @param canvas TODO
      */
     void Draw(const gui::components::CCanvas* canvas) {
-        gui::components::CRectangle rect = m_rectPaint;
+        //gui::components::CRectangle rect = m_rectPaint;
 
         float time = 0.25f;
         BOOST_FOREACH(gui::components::CText & text, m_pvecInfoTexts)
         {
             FROMTIME(time)
-            text.RenderPut(canvas, rect);
-            rect += text.VerticalSpacing();
+            //text.SetPosition(rect);
+            //text.RenderPut(canvas, rect);
+            text.RenderPut(canvas);
+            //rect += text.VerticalSpacing();
             ENDTIMEBLOCK
-                time += 0.25f;
+            time += 0.25f;
         }
     }     // Draw
     /** Brief description of InfoText2, Idle
@@ -91,6 +94,8 @@ public:
         //auto p = new CText(boost::detail::sp_forward<Arg1>(arg1),
         // boost::detail::sp_forward<Args>(args)...);
         auto p = new T(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args) ...);
+        p->SetPosition(m_rectInitPos);
+        m_rectInitPos += p->VerticalSpacing();
         m_pvecInfoTexts.push_back(p);
         return p;
     }

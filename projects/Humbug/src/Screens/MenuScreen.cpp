@@ -299,7 +299,11 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
 
     m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)
-        ->FlyTo(CPoint(200, 200), this)->FlyTo(CPoint(100, 40), this)->FlyTo(CPoint(300, 440), this);
+        //->FlyTo(CPoint(200, 200), this)->FlyTo(CPoint(100, 40), this)->FlyTo(CPoint(300, 440), this);
+        ->FlyTo(CPoint(200, 200), this)->FlyTo(CPoint(300, 600), this)->FlyTo(CPoint(900, 40), this)
+        ->FlyTo(CPoint(300, 600), this)->FlyTo(CPoint(460, 700), this)
+        ->FlyTo(CPoint(20, 20), this)->FlyTo(CPoint(1024/2, 768/2), this);
+
 
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));

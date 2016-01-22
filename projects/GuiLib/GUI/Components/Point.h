@@ -16,8 +16,9 @@ private:
 public:
 	//constructor
 	CPoint ( int x = 0 , int y  = 0 ) ;
-	CPoint ( const CPoint& pt ) ;
-
+    CPoint(const CPoint& pt);
+    explicit CPoint(const boost::numeric::ublas::vector<double>& vec);
+    
 	//destructor
 	virtual ~CPoint ( ) ;
 
@@ -48,7 +49,7 @@ public:
 
 	//operators TODO: fix const ref for all 
 	//assignment
-	CPoint& operator = ( CPoint& pt ) ;
+	CPoint& operator = ( const CPoint& pt ) ;
 	CPoint& operator += ( const CPoint& pt ) ;
 	CPoint& operator -= ( CPoint& pt ) ;
 	CPoint& operator *= ( int scalar ) ;

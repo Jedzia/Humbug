@@ -31,6 +31,11 @@ CPoint::CPoint (const CPoint& pt) {
     SetY(pt.GetY());
 }
 
+CPoint::CPoint(const boost::numeric::ublas::vector<double>& vec) {
+    SetX(static_cast<int>(vec[0]));
+    SetY(static_cast<int>(vec[1]));
+}
+
 //destructor
 CPoint::~CPoint () {
     //do nothing
@@ -126,10 +131,10 @@ int CPoint::Distance (CPoint& pt) {
 
 //operators
 //assignment
-CPoint& CPoint::operator = (CPoint& pt) {
+CPoint& CPoint::operator = (const CPoint& pt) {
     //copy x and y
-    X() = pt.X();
-    Y() = pt.Y();
+    X() = pt.GetX();
+    Y() = pt.GetY();
     //return this point
     return (*this);
 }

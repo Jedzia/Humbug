@@ -57,7 +57,7 @@ public:
 class CText {
 public:
 
-    CText(TTF_Font *font, std::string text, CColor textcolor = CColor::Black());
+    CText(TTF_Font *font, std::string text, CColor textcolor = CColor::Black(), const CPoint& position = CPoint(0, 0));
     ~CText();
     
     // Todo: "const boost::function<void" does not work under gcc
@@ -67,6 +67,9 @@ public:
     void AddModifier(TextModifier updfunc);
     void AddModifier(Animator* animator);
     Animator* FlyTo(CPoint c_point, Hookable *hookable = NULL);
+    
+    // render, the only one that takes the position into account.
+    void RenderPut(const CCanvas *canvas);
     void RenderPut(const CCanvas *canvas, const CRectangle& dstRect);
     void RenderPut(const CCanvas *canvas, const CRectangle& dstRect, const CRectangle& srcRect);
 	void Put(CCanvas *canvas, const CRectangle& dstRect);
@@ -84,11 +87,29 @@ public:
 
     void SetColor(const CColor m_col_text);
 
+    CPoint GetPosition() const
+    {
+        return m_ptPosition;
+    }
+
+    void SetPosition(CPoint m_pt_position)
+    {
+        m_ptPosition = m_pt_position;
+    }
+
+    TTF_Font* GetFont() const
+    {
+        return m_pFont;
+    }
+
+    __declspec(property(get = MPFont, put = set_MPFont)) TTF_Font* MPFont;
+    __declspec(property(get = MPtPosition, put = set_MPtPosition)) CPoint MPtPosition;
 private:
     void ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect);
     void ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect);
     void RunModifiers(CCanvas *textcanvas) const;
 
+    CPoint m_ptPosition;
     TTF_Font *m_pFont;
     std::string m_strText;
     CColor m_colText;
