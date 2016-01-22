@@ -162,8 +162,13 @@ IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
 
-# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
-ADD_DEFINITIONS("/wd4996")
+if(CMAKE_GENERATOR MATCHES Visual*)
+	# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
+	ADD_DEFINITIONS("/wd4996")
+	# error C3859: virtual memory range for PCH exceeded; please recompile with a command line option of '-Zm118' or greater
+	# fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
+	ADD_DEFINITIONS("-Zm118")
+endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
 
