@@ -18,6 +18,9 @@ public:
 	CPoint ( int x = 0 , int y  = 0 ) ;
     CPoint(const CPoint& pt);
     explicit CPoint(const boost::numeric::ublas::vector<double>& vec);
+    explicit CPoint(const boost::numeric::ublas::vector<long double>& vec);
+    explicit CPoint(const boost::numeric::ublas::vector<float>& vec);
+    explicit CPoint(const boost::numeric::ublas::vector<int>& vec);
     
 	//destructor
 	virtual ~CPoint ( ) ;
@@ -70,7 +73,10 @@ public:
     bool operator<(const CPoint& pt) const;
 
     // conversion
-    operator boost::numeric::ublas::vector<double> () const;
+    operator boost::numeric::ublas::vector<double>() const;
+    operator boost::numeric::ublas::vector<long double>() const;
+    operator boost::numeric::ublas::vector<float>() const;
+    operator boost::numeric::ublas::vector<int>() const;
 };
 
 CPoint operator * ( int scalar , CPoint& pt ) ;

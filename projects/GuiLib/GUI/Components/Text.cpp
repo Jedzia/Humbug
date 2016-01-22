@@ -391,8 +391,8 @@ public:
             text->SetColor(color);
 
             if(timingStart.IsBefore(1.0f)) {
-                mdata.dest.X() += ceil(x);
-                mdata.dest.Y() -= ceil(y);
+                mdata.dest.X() += static_cast<int>(ceil(x));
+                mdata.dest.Y() -= static_cast<int>(ceil(y));
                 return;
             }
         }
@@ -403,7 +403,7 @@ public:
 
         unit_vector<double> vUnit((2));
         vector<double> vA(destination);
-        CPoint dest(mdata.dest.GetX() + x, mdata.dest.GetY() - y);
+        CPoint dest(static_cast<int>(mdata.dest.GetX() + x), static_cast<int>(mdata.dest.GetY() - y));
         vector<double> vB(dest);
         //vector<double> vB(static_cast<CPoint>(mdata.dest));
         vector<double> vresult = normalizedDirection(vA, vB, speed);
@@ -440,8 +440,8 @@ public:
                    //timingEnd.UpdateIdle(hookable->GetTicks());
                    }*/
 
-                mdata.dest.X() += ceil(x);
-                mdata.dest.Y() -= ceil(y);
+                mdata.dest.X() += static_cast<int>(ceil(x));
+                mdata.dest.Y() -= static_cast<int>(ceil(y));
 
                 if(timingEnd.IsBefore(1.0f)) {
                     return;
@@ -452,11 +452,14 @@ public:
             mdata.markedForDeletion = true;
         }
 
-        mdata.dest.X() += round(x);
-        mdata.dest.Y() -= round(y);
+        mdata.dest.X() += static_cast<int>(round(x));
+        mdata.dest.Y() -= static_cast<int>(round(y));
     } // ()
 };
 
+
+typedef float vdouble;
+//typedef int vdouble;
 /** @class Mover3:
  *  Detailed description.
  *  @param vA TODO
@@ -464,15 +467,15 @@ public:
  *  @return TODO
  */
 class Mover3 : public Animator {
-    vector<double> origin;
-    vector<double> destination;
+    vector<vdouble> origin;
+    vector<vdouble> destination;
     Hookable* hookable;
     Timing timingStart;
     Timing timingEnd;
     bool hasFirstRun;
     bool destinationReached;
-    vector<double> current;
-    vector<double> delta;
+    vector<vdouble> current;
+    vector<vdouble> delta;
 
     static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable) {
         if(!hookable) {
@@ -494,21 +497,40 @@ public:
         ix++;
     }
 
-    static vector<double> normalizedDirection(
-            const vector<double>& vA,
-            const vector<double>& vB, double speed) {
+    static vector<vdouble> normalizedDirection(
+        const vector<vdouble>& vA,
+        const vector<vdouble>& vB, vdouble speed) {
         auto vdir = vA - vB;
-        return (vdir) / norm_2(vdir) * speed;
+        //return ((vdir) / round(norm_2(vdir))) * speed;
+        return ((vdir) / (round(norm_2(vdir / speed )) ));
     }
 
-    static vector<double> direction(
-            const vector<double>& vA,
-            const vector<double>& vB, double speed) {
+    static vector<vdouble> directionx(
+        const vector<vdouble>& vA,
+        const vector<vdouble>& vB, vdouble speed) {
         auto vdir = vA - vB;
         return vdir / speed / 8;
     }
+    static vector<vdouble> direction(
+         vector<vdouble> vA,
+        vector<vdouble> vB, vdouble speed) {
+        /*//vA[1] -= 1;
+        //auto vdir = (vA) - (vB);
+        vector<vdouble> vdir(2);
+        vdouble div = 200;
+        //vdir[0] = (vA[0] - vB[0]) / div;
+        //vdir[1] = (vA[1] - vB[1]) / div;
+        vdir = ((vA)-(vB)) / round(norm_2(vA - vB));
+        auto div2 = norm_2(vA-vB);*/
 
-    static bool CompareWithTolerance(vector<double> cur, vector<double> des, const double speedInt) {
+        auto vdir = vA - vB;
+        return vdir / speed / static_cast<vdouble>(8.0);
+
+        //return vdir ;
+        //return vdir / 2.0l;
+    }
+
+    static bool CompareWithTolerance(vector<vdouble> cur, vector<vdouble> des, const vdouble speedInt) {
         bool xcomp = cur[0] - speedInt < des[0] && cur[0] + speedInt > des[0];
         bool ycomp = cur[1] - speedInt < des[1] && cur[1] + speedInt > des[1];
         return xcomp || ycomp;
@@ -520,7 +542,7 @@ public:
         //target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
         target->RenderFillRect(CRectangle(CPoint(destination), CPoint(33, 33)), &color);
 
-        const double speed = 8.0f;
+        const vdouble speed = static_cast<vdouble>(8.0);
 
         if(nextAnimator) {
             int r = 0;
@@ -531,6 +553,7 @@ public:
             origin = text->GetPosition();
             current = text->GetPosition();
             delta = normalizedDirection(destination, origin, speed);
+            //delta = direction(destination, origin, speed);
             hasFirstRun = true;
         }
 
@@ -564,6 +587,7 @@ public:
         //vector<double> vB(origin);
         //vector<double> vB(static_cast<CPoint>(mdata.dest));
         //delta = normalizedDirection(destination, text->GetPosition(), speed);
+        
         //delta = direction(destination, text->GetPosition(), speed);
 
         std::ostringstream outstring1;
@@ -573,7 +597,8 @@ public:
         vresText1.RenderPut(target);
 
         if(!destinationReached) {
-            current = current + delta;
+            //current = current + delta;
+            current += delta;
         }
 
         //CPoint newPoint = CPoint(current[0], current[1]);
@@ -597,11 +622,12 @@ public:
 
         // CompareWithTolerance
         //const int speedInt = static_cast<int>(speed);
-        //const double speedInt = 0.02;
-        const double speedInt = 2.0;
+        const vdouble speedInt = static_cast<vdouble>(0.02);
+        //const vdouble speedInt = 1.0;
 
         if (CompareWithTolerance(current, destination, speedInt)) {
             destinationReached = true;
+            text->SetPosition(CPoint(current));
 
             //if (actual == destination || actual2 == destination || actual3 == destination ||
             // actual4 == destination) {
@@ -611,7 +637,7 @@ public:
                     //timingEnd.UpdateIdle(hookable->GetTicks());
                    }*/
 
-                if(timingEnd.IsBefore(5.0f)) {
+                if(timingEnd.IsBefore(2.0f)) {
                     return;
                 }
             }

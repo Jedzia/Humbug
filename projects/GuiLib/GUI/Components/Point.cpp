@@ -34,6 +34,29 @@ CPoint::CPoint (const CPoint& pt) {
 CPoint::CPoint(const boost::numeric::ublas::vector<double>& vec) {
     SetX(static_cast<int>(vec[0]));
     SetY(static_cast<int>(vec[1]));
+    //SetX(static_cast<int>(round(vec[0])));
+    //SetY(static_cast<int>(round(vec[1])));
+}
+
+CPoint::CPoint(const boost::numeric::ublas::vector<long double>& vec) {
+    SetX(static_cast<int>(vec[0]));
+    SetY(static_cast<int>(vec[1]));
+    //SetX(static_cast<int>(round(vec[0])));
+    //SetY(static_cast<int>(round(vec[1])));
+}
+
+CPoint::CPoint(const boost::numeric::ublas::vector<float>& vec) {
+    SetX(static_cast<int>(vec[0]));
+    SetY(static_cast<int>(vec[1]));
+    //SetX(static_cast<int>(round(vec[0])));
+    //SetY(static_cast<int>(round(vec[1])));
+}
+
+CPoint::CPoint(const boost::numeric::ublas::vector<int>& vec) {
+    SetX(static_cast<int>(vec[0]));
+    SetY(static_cast<int>(vec[1]));
+    //SetX(static_cast<int>(round(vec[0])));
+    //SetY(static_cast<int>(round(vec[1])));
 }
 
 //destructor
@@ -244,6 +267,37 @@ CPoint::operator boost::numeric::ublas::vector<double>() const
 
     return result;
 }
+
+CPoint::operator boost::numeric::ublas::vector<long double>() const
+{
+    using namespace boost::numeric::ublas;
+    vector<long double> result(2);
+    result[0] = GetX();
+    result[1] = GetY();
+
+    return result;
+}
+
+CPoint::operator boost::numeric::ublas::vector<float>() const
+{
+    using namespace boost::numeric::ublas;
+    vector<float> result(2);
+    result[0] = GetX();
+    result[1] = GetY();
+
+    return result;
+}
+
+CPoint::operator boost::numeric::ublas::vector<int>() const
+{
+    using namespace boost::numeric::ublas;
+    vector<int> result(2);
+    result[0] = GetX();
+    result[1] = GetY();
+
+    return result;
+}
+
 
 CPoint CPoint::Offset(int x, int y) {
     return CPoint(X() + x, Y() + y);
