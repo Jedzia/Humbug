@@ -514,8 +514,8 @@ private:
         CText* text = new CText(m_pArialfont, outstring.str(), m_colText);
 
         //const boost::function<void(CCanvas*, int)> textMo = mtextfloat;
-        //text->AddModifier(boost::ref( mtextfloat ));
-        text->AddModifier( WavyTextFloat(64) );
+        //text->AddAnimator(boost::ref( mtextfloat ));
+        text->AddAnimator( WavyTextFloat(64) );
         m_pScrollText.reset(text);
 
         // ### Tiles ###

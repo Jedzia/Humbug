@@ -21,10 +21,8 @@
 #include "../../Timing.h"
 #include "../Visual/Hookable.h"
 #include "Canvas.h"
-#include <boost/math/constants/constants.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_expression.hpp>
+#include "TextAnimator.h"
+#include "TextAnimatorImpl.h"
 
 /*#include <gmtl/Matrix.h>
    #include <gmtl/Vec.h>
@@ -69,7 +67,7 @@ void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect) {
 void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
     m_pText->Lock();
 
-    CTextModifierData mdata(srcRect, dstRect);
+    TextAnimatorData mdata(srcRect, dstRect);
 
     if(!m_vecModifierVault.empty()) {
         TextModifierStorage::iterator end = m_vecModifierVault.end();
@@ -94,7 +92,7 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
 void CText::ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect) {
     m_pText->Lock();
 
-    CTextModifierData mdata(srcRect, dstRect);
+    TextAnimatorData mdata(srcRect, dstRect);
 
     if(!m_vecAnimatorVault.empty()) {
         AnimatorStorage::iterator end = m_vecAnimatorVault.end();
@@ -103,7 +101,7 @@ void CText::ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect) {
         {
             (*it)(m_pText.get(), this, mdata);
             if(mdata.markedForDeletion) {
-                Animator* savedAnimator = (*it).nextAnimator;
+                TextAnimator* savedAnimator = (*it).nextAnimator;
 
                 if(savedAnimator) {
                     //savedAnimator->x = (*it).x;
@@ -111,7 +109,7 @@ void CText::ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect) {
                     (*it).nextAnimator = NULL;
                     m_vecAnimatorVault.erase(it);
                     mdata.markedForDeletion = false;
-                    AddModifier(savedAnimator);
+                    AddAnimator(savedAnimator);
                     break;
                 }
 
@@ -204,11 +202,11 @@ void CText::RunModifiers(CCanvas* textcanvas) const {
        }*/
 }
 
-void CText::AddModifier(TextModifier updfunc) {
+void CText::AddAnimator(TextModifierFunc updfunc) {
     m_vecModifierVault.push_back(updfunc);
 }
 
-void CText::AddModifier(Animator* animator) {
+void CText::AddAnimator(TextAnimator* animator) {
     m_vecAnimatorVault.push_back(animator);
 }
 
@@ -236,7 +234,7 @@ void CText::AddModifier(Animator* animator) {
 //        auto vdir = vA - vB;
 //        return (vdir) / norm_2(vdir) * 2.0;
 //    }
-//    void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) {
+//    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) {
 //        auto color = CColor::DarkGray();
 //        target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
 //        //mdata.dest.X()+=x;
@@ -256,12 +254,12 @@ void CText::AddModifier(Animator* animator) {
 //        //for (unsigned i = 0; i < v.size(); ++i)
 //        //   v(i) = i;
 //
-//        unit_vector<double> vUnit(2);
-//        vector<double> vA(2);
+//        unit_vector<double> vUnit(3);
+//        vector<double> vA(3);
 //        vA[0] = destination.GetX();
 //        vA[1] = destination.GetY();
 //
-//        vector<double> vB(2);
+//        vector<double> vB(3);
 //        vB[0] = mdata.dest.GetX();
 //        vB[1] = mdata.dest.GetY();
 //
@@ -335,7 +333,7 @@ class SinusoidWobbler {
  *  @param vB TODO
  *  @return TODO
  */
-class Mover2 : public Animator {
+class Mover2 : public TextAnimator {
     CPoint destination;
     Hookable* hookable;
     Timing timingStart;
@@ -368,7 +366,7 @@ public:
         return (vdir) / norm_2(vdir) * speed;
     }
 
-    void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) override {
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
         using namespace boost::numeric::ublas;
         auto color = CColor::DarkGray();
         target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
@@ -456,145 +454,19 @@ public:
     } // ()
 };
 
-#define DEBUGPRINT 1
-typedef float vdouble;
-//typedef int vdouble;
-/** @class TextMover:
- *  Detailed description.
- *  @param vA TODO
- *  @param vB TODO
- *  @return TODO
- */
-class TextMover : public Animator {
-    vector<vdouble> origin;
-    vector<vdouble> destination;
-    vdouble speed;
-    Hookable* hookable;
-    Timing timingStart;
-    Timing timingEnd;
-    bool hasFirstRun;
-    bool destinationReached;
-    vector<vdouble> current;
-    vector<vdouble> delta;
-
-    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable) {
-        if(!hookable) {
-            return NULL;
-        }
-
-        return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
-    }
-
-public:
-
-    explicit TextMover(const CPoint& destination, float speed, Hookable* hookable)
-        : destination(destination), speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)),
-        timingEnd(GetTimeUpdateFunction(hookable)), hasFirstRun(false), destinationReached(false) {
-    }
-
-    ~TextMover() {
-    }
-
-    static vector<vdouble> normalizedDirection(const vector<vdouble>& vA, const vector<vdouble>& vB, vdouble speed) {
-        auto vdir = vA - vB;
-        return ((vdir) / (round(norm_2(vdir / speed))));
-    }
-
-    static vector<vdouble> direction(
-            vector<vdouble> vA,
-            vector<vdouble> vB, vdouble speed) {
-        auto vdir = vA - vB;
-        return vdir / speed / static_cast<vdouble>(8.0);
-    }
-
-    static bool CompareWithTolerance(vector<vdouble> cur, vector<vdouble> des, const vdouble tolerance) {
-        bool xcomp = cur[0] - tolerance < des[0] && cur[0] + tolerance > des[0];
-        bool ycomp = cur[1] - tolerance < des[1] && cur[1] + tolerance > des[1];
-        return xcomp || ycomp;
-    }
-
-    void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) override {
-        using namespace boost::numeric::ublas;
-        auto color = CColor::DarkGray();
-        target->RenderFillRect(CRectangle(CPoint(destination), CPoint(33, 33)), &color);
-
-        if(!hasFirstRun) {
-            origin = text->GetPosition();
-            current = text->GetPosition();
-            delta = normalizedDirection(destination, origin, speed);
-            //delta = direction(destination, origin, speed);
-            hasFirstRun = true;
-        }
-
-        if(hookable) {
-            int ticks = hookable->GetTicks();
-
-            color.SetR(0xa0 | ticks % 255);
-            color.SetG(0x5f & ticks % 255);
-            color.SetB(ticks % 255);
-            text->SetColor(color);
-
-            if(timingStart.IsBefore(1.0f)) {
-                return;
-            }
-        }
-
-#if DEBUGPRINT
-        std::ostringstream outstring1;
-        outstring1 << "delta: " << delta << std::endl;
-        CPoint textPos = CPoint(400, 80);
-        CText vresText1(text->GetFont(), outstring1.str(), CColor::Black(), textPos);
-        vresText1.RenderPut(target);
-
-#endif
-
-        if(!destinationReached) {
-            current += delta;
-        }
-
-#if DEBUGPRINT
-        std::ostringstream outstring2;
-        outstring2 << "destination: " << destination << std::endl;
-        textPos += vresText1.VerticalSpacing();
-        CText vresText2(text->GetFont(), outstring2.str(), CColor::Black(), textPos);
-        vresText2.RenderPut(target);
-
-        std::ostringstream outstring3;
-        outstring3 << "current: " << current << std::endl;
-        textPos += vresText2.VerticalSpacing();
-        CText vresText3(text->GetFont(), outstring3.str(), CColor::Black(), textPos);
-        vresText3.RenderPut(target);
-#endif // if DEBUGPRINT
-
-        text->SetPosition(CPoint(current));
-
-        const vdouble tolerance = static_cast<vdouble>(0.02);
-        if(CompareWithTolerance(current, destination, tolerance)) {
-            destinationReached = true;
-
-            if(hookable && timingEnd.IsBefore(2.0f)) {
-                return;
-            }
-
-            mdata.state++;
-            mdata.markedForDeletion = true;
-        }
-    } // ()
-};
-
-Animator * CText::FlyTo(CPoint c_point, float speed, Hookable* hookable) {
+TextAnimator * CText::FlyTo(CPoint c_point, float speed, Hookable* hookable) {
     //auto bla = *this;
-    //AddModifier(NULL);
+    //AddAnimator(NULL);
     //return NULL;
     //TextMover mover(c_point, hookable);
     auto mover = new TextMover(c_point, speed, hookable);
 
-    //GetCanvas()->AddModifier(mover);
-    AddModifier(mover);
+    //GetCanvas()->AddAnimator(mover);
+    AddAnimator(mover);
     return mover;
 }
 
-Animator * Animator::FlyTo(CPoint c_point, float speed, Hookable* hookable) {
+TextAnimator * TextAnimator::FlyTo(CPoint c_point, float speed, Hookable* hookable) {
     //TextMover mover(c_point, hookable);
     auto mover = new TextMover(c_point, speed, hookable);
     nextAnimator = mover;

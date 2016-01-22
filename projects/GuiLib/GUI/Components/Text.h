@@ -25,49 +25,9 @@ class Hookable;
 namespace components {
 class CText;
 class CCanvas;
+struct TextAnimatorData;
+class TextAnimator;
 
-struct CTextModifierData
-{
-    int DeltaX;
-    int DeltaY;
-    CRectangle& src;
-    CRectangle& dest;
-    Hookable* hookable;
-    bool markedForDeletion;
-    int state;
-
-    CTextModifierData(CRectangle& src_rect, CRectangle& dst_rect)
-        : DeltaX(0), DeltaY(0), src{src_rect}, dest{dst_rect}, hookable(nullptr), markedForDeletion(false), state(1)
-    {}
-};
-
-/** @class Animator:
- *  Detailed description.
- *  @param target TODO
- *  @param text TODO
- *  @param mdata TODO
- *  @return TODO
- */
-class Animator {
-public:
-
-    explicit Animator() : nextAnimator(nullptr), x(0), y(0)
-    {}
-
-    virtual ~Animator(){
-        if(nextAnimator) {
-            delete nextAnimator;
-        }
-    }
-
-    virtual void operator()(const CCanvas* target, CText* text, CTextModifierData& mdata) = 0;
-
-    Animator* nextAnimator;
-    Animator * FlyTo(CPoint c_point, float speed = 1.0f, Hookable* hookable = NULL);
-
-    double x;
-    double y;
-};
 
 /** @class CText:
  *  Detailed description.
@@ -80,15 +40,15 @@ public:
     ~CText();
 
     // Todo: "const boost::function<void" does not work under gcc
-    // typedef const boost::function<void (const CCanvas* ,const CText *text, CTextModifierData&
-    // mdata)> TextModifier;
-    typedef boost::function<void (const CCanvas *, CText * text, CTextModifierData& mdata)> TextModifier;
+    // typedef const boost::function<void (const CCanvas* ,const CText *text, TextAnimatorData&
+    // mdata)> TextModifierFunc;
+    typedef boost::function<void (const CCanvas *, CText * text, TextAnimatorData& mdata)> TextModifierFunc;
     //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
-    void AddModifier(TextModifier updfunc);
+    void AddAnimator(TextModifierFunc updfunc);
 
-    void AddModifier(Animator* animator);
+    void AddAnimator(TextAnimator* animator);
 
-    Animator * FlyTo(CPoint c_point, float speed = 1.0f, Hookable* hookable = NULL);
+    TextAnimator * FlyTo(CPoint c_point, float speed = 1.0f, Hookable* hookable = NULL);
 
     // render, the only one that takes the position into account.
     void RenderPut(const CCanvas* canvas);
@@ -153,9 +113,9 @@ private:
     CColor m_colText;
     //CCanvas *m_pText;
     boost::scoped_ptr<CCanvas> m_pText;
-    typedef std::vector<TextModifier> TextModifierStorage;
+    typedef std::vector<TextModifierFunc> TextModifierStorage;
     TextModifierStorage m_vecModifierVault;
-    typedef boost::ptr_vector<Animator> AnimatorStorage;
+    typedef boost::ptr_vector<TextAnimator> AnimatorStorage;
     AnimatorStorage m_vecAnimatorVault;
     SDL_Surface* m_pRenderText;
 };

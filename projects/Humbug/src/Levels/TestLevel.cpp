@@ -405,7 +405,7 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     m_pBanding2.reset( new CImage(new CCanvas( m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png") ), true) );
     //CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
     //static CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
-    //m_pBanding2->GetCanvas()->AddModifier(boost::ref(stripeModifier2));
+    //m_pBanding2->GetCanvas()->AddAnimator(boost::ref(stripeModifier2));
     m_pBanding2->GetCanvas()->AddModifier(stripeModifier);
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());

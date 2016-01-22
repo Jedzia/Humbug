@@ -28,6 +28,7 @@
 #include <GuiLib/GUI/Controls/Control.h>
 #include <GuiLib/GUI/Data/ColorData.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
+#include <GuiLib/GUI/Components/TextAnimator.h>
 //
 //#include <build/cmake/include/debug.h>
 

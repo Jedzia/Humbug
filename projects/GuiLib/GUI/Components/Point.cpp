@@ -261,9 +261,10 @@ bool CPoint::operator < (const CPoint& pt) const {
 CPoint::operator boost::numeric::ublas::vector<double>() const
 {
     using namespace boost::numeric::ublas;
-    vector<double> result(2);
+    vector<double> result(3);
     result[0] = GetX();
     result[1] = GetY();
+    result[2] = 1.0;
 
     return result;
 }
@@ -271,9 +272,10 @@ CPoint::operator boost::numeric::ublas::vector<double>() const
 CPoint::operator boost::numeric::ublas::vector<long double>() const
 {
     using namespace boost::numeric::ublas;
-    vector<long double> result(2);
+    vector<long double> result(3);
     result[0] = GetX();
     result[1] = GetY();
+    result[2] = 1.0;
 
     return result;
 }
@@ -281,9 +283,10 @@ CPoint::operator boost::numeric::ublas::vector<long double>() const
 CPoint::operator boost::numeric::ublas::vector<float>() const
 {
     using namespace boost::numeric::ublas;
-    vector<float> result(2);
-    result[0] = GetX();
-    result[1] = GetY();
+    vector<float> result(3);
+    result[0] = static_cast<float>(GetX());
+    result[1] = static_cast<float>(GetY());
+    result[2] = 1.0f;
 
     return result;
 }
@@ -291,9 +294,10 @@ CPoint::operator boost::numeric::ublas::vector<float>() const
 CPoint::operator boost::numeric::ublas::vector<int>() const
 {
     using namespace boost::numeric::ublas;
-    vector<int> result(2);
+    vector<int> result(3);
     result[0] = GetX();
     result[1] = GetY();
+    result[2] = 1;
 
     return result;
 }

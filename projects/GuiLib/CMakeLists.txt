@@ -97,6 +97,8 @@ SET(GuiLib_Component_headers
 		GUI/Components/Shapes/Line.h
 
 		GUI/Components/Text.h
+		GUI/Components/TextAnimator.h
+		GUI/Components/TextAnimatorImpl.h
 		GUI/Components/TextScroller.h
 
 		GUI/Components/Screen.h
@@ -128,6 +130,7 @@ SET(GuiLib_Component_sources
 		GUI/Components/Shapes/Line.cpp
 		
 		GUI/Components/Text.cpp
+		GUI/Components/TextAnimator.cpp
 		GUI/Components/TextScroller.cpp
 
 		GUI/Components/Screen.cpp
