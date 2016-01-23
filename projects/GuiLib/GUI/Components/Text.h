@@ -19,6 +19,8 @@
 #include "Color.h"
 #include "Rectangle.h"
 #include "SDL_ttf.h"
+#include "BaseDrawable.h"
+
 
 namespace gui {
 class Hookable;
@@ -33,7 +35,7 @@ class TextAnimator;
  *  Detailed description.
  *  @param updfunc TODO
  */
-class CText {
+class CText : public BaseDrawable {
 public:
 
     /// <summary>

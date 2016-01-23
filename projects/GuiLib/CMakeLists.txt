@@ -84,6 +84,7 @@ SET(GuiLib_GUI_sources
 # Component set (Canvas, Controls, etc.)
 SET(GuiLib_Component_headers
 		Timing.h
+		GUI/Disposable.h
 		
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
@@ -94,8 +95,10 @@ SET(GuiLib_Component_headers
 		GUI/Components/MainCanvas.h
 		GUI/Components/CoordSystem.h
 
+		GUI/Components/Shape.h
 		GUI/Components/Shapes/Line.h
 
+		GUI/Components/BaseDrawable.h
 		GUI/Components/Text.h
 		GUI/Components/TextAnimator.h
 		GUI/Components/TextAnimatorImpl.h
@@ -118,6 +121,8 @@ SET(GuiLib_Component_headers
 		GUI/TileEngine/TileEngine.h
 )
 SET(GuiLib_Component_sources
+		GUI/Disposable.cpp
+
 		GUI/Components/Point.cpp
 		GUI/Components/Rectangle.cpp
 		GUI/Components/Color.cpp
@@ -127,8 +132,10 @@ SET(GuiLib_Component_sources
 		GUI/Components/MainCanvas.cpp
 		GUI/Components/CoordSystem.cpp
 
+		GUI/Components/Shape.cpp
 		GUI/Components/Shapes/Line.cpp
 		
+		GUI/Components/BaseDrawable.cpp
 		GUI/Components/Text.cpp
 		GUI/Components/TextAnimator.cpp
 		GUI/Components/TextScroller.cpp

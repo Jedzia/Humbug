@@ -239,7 +239,12 @@ TextAnimator * TextAnimator::FlyTo(CPoint c_point, float speed, Hookable* hookab
     return mover;
 }
 
-CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor)
+    TextAnimator* TextAnimator::FadeOut(CPoint destination, float speed, Hookable* hookable)
+    {
+        return NULL;
+    }
+
+    CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor)
 {}
 
 CTextParagraph::~CTextParagraph()

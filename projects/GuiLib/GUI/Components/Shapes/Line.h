@@ -22,6 +22,7 @@ namespace gui {
 namespace components {
 /** @class SLine:
  *  Aids in drawing lines to several targets. (At the time only CCanvas).
+ *  Todo: isn't deriving from CCanvas to heavy ? (alternative: derive from ../Shape.h, BaseShape)
  */
 class SLine : public CCanvas {
 public:

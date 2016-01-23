@@ -172,8 +172,8 @@ namespace gui {
                 {
                     //float diffx = windrose[i][0];
                     //float diffy = windrose[i][1];
-                    float diffx = xr;
-                    float diffy = yr;
+                    float diffx = static_cast<float>(xr);
+                    float diffy = static_cast<float>(yr);
 
                     int x = static_cast<int>(ceil(w * diffx));
                     int y = static_cast<int>(ceil(h * diffy));

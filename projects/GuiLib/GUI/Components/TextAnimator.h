@@ -91,6 +91,11 @@ public:
     */
     TextAnimator * FlyTo(CPoint destination, float speed = 1.0f, Hookable* hookable = NULL);
 
+    TextAnimator * Position(CPoint destination);
+
+    TextAnimator * FadeOut(CPoint destination, float speed = 1.0f, Hookable* hookable = NULL);
+    TextAnimator * FadeIn(CPoint destination, float speed = 1.0f, Hookable* hookable = NULL);
+
     /** If set the animator is added and called on the next run of the queue when this instance is being finalized/removed from the queue. */
     TextAnimator* nextAnimator;
     /** Storage item, x coordinate. */
