@@ -36,6 +36,13 @@ class TextAnimator;
 class CText {
 public:
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CText"/> class.
+    /// </summary>
+    /// <param name="font">The font.</param>
+    /// <param name="text">The text.</param>
+    /// <param name="textcolor">The textcolor.</param>
+    /// <param name="position">The position.</param>
     CText(TTF_Font* font, std::string text, CColor textcolor = CColor::Black(), const CPoint& position = CPoint(0, 0));
     ~CText();
 
@@ -43,59 +50,113 @@ public:
     // typedef const boost::function<void (const CCanvas* ,const CText *text, TextAnimatorData&
     // mdata)> TextModifierFunc;
     typedef boost::function<void (const CCanvas *, CText * text, TextAnimatorData& mdata)> TextModifierFunc;
-    //typedef const boost::function<void(CCanvas*, int)> TextModifierPtr;
+    
+    /** Add animator function.
+    *  Adds a function with the TextModifierFunc signature to the queue of this text.
+    *  @param updfunc The functor with the animation code.
+    */
     void AddAnimator(TextModifierFunc updfunc);
 
+    /** Add animator object.
+    *  Adds a TextAnimator to the queue of this text.
+    *  @param animator The animator object.
+    */
     void AddAnimator(TextAnimator* animator);
 
-    TextAnimator * FlyTo(CPoint c_point, float speed = 1.0f, Hookable* hookable = NULL);
+    /** Animate to position.
+    *  Translate the hosting object to the specified position and with specified speed.
+    *  @param destination The final point of the object to animate.
+    *  @param speed The speed of the translation.
+    *  @param hookable hosting object that provides access to Hookable::GetTicks() for timing purposes.
+    *  @return a new TextAnimator that can be used to build a method chain initialization.
+    *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f, this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
+    */
+    TextAnimator * MoveTo(CPoint point, float speed = 1.0f, Hookable* hookable = NULL);
 
-    // render, the only one that takes the position into account.
+    /** Render to canvas.
+    *  Render this instance to the specified canvas. The position is specified via the 
+    *  SetPosition(CPoint position) method.
+    *  @param canvas The render target.
+    */
     void RenderPut(const CCanvas* canvas);
 
+    /** Render to canvas.
+    *  Render this instance to the specified canvas.
+    *  @param canvas The render target.
+    *  @param dstRect The destination dimension. The complete size of the text is taken as source. 
+    */
     void RenderPut(const CCanvas* canvas, const CRectangle& dstRect);
 
+    /** Render to canvas.
+    *  Render this instance to the specified canvas.
+    *  @param canvas The render target.
+    *  @param dstRect The destination dimension.
+    *  @param srcRect The sector of the source text to render.
+    */
     void RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect);
 
+    /** Blit to canvas.
+    *  Blit this instance to the specified canvas.
+    *  @param canvas The blitting target.
+    *  @param dstRect The destination dimension. The complete size of the text is taken as source.
+    */
     void Put(CCanvas* canvas, const CRectangle& dstRect);
 
+    /** Blit to canvas.
+    *  Blit this instance to the specified canvas.
+    *  @param canvas The blitting target.
+    *  @param dstRect The destination dimension.
+    *  @param srcRect The sector of the source text to render.
+    */
     void Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect);
 
     void Dings(SDL_Color sdl_color);
 
-    /** Brief description of CText, GetCanvas
-     *  Detailed description.
-     *  @return TODO
+    /**  Get the canvas of this instance.
+     *  Gets the canvas of this text instance.
+     *  @return the text canvas.
      */
     CCanvas * GetCanvas() const { return m_pText.get(); }
 
+    /**  Get vertical expansion.
+    *  Gets the vertical space of this text.
+    *  @return the vertical size of the text.
+    */
     CPoint VerticalSpacing() const;
 
+    /**  Get horizontal expansion.
+    *  Gets the horizontal space of this text.
+    *  @return the horizontal size of the text.
+    */
     CPoint HorizontalSpacing() const;
 
-    /** Brief description of CText, Color
-     *  Detailed description.
-     *  @return TODO
+    /**  Get the text color.
+     *  Retrieves the value of the current text color.
+     *  @return the current value of the text color.
      */
-    CColor Color() const { return m_colText; }
+    CColor GetColor() const { return m_colText; }
 
-    void SetColor(const CColor m_col_text);
+    /**  Set the text color.
+    *  Sets the value of the current text color.
+    *  @param textcolor The value of the text color.
+    */
+    void SetColor(const CColor textcolor);
 
-    /** Brief description of CText, GetPosition
-     *  Detailed description.
-     *  @return TODO
+    /** Get current text Position.
+     *  Gets the current text position of this instance.
+     *  @return the point of the text position.
      */
     CPoint GetPosition() const { return m_ptPosition; }
 
-    /** Brief description of CText, SetPosition
-     *  Detailed description.
-     *  @param position TODO
-     */
+    /** Set text Position.
+    *  Sets the text position of this instance used by RenderPut(const CCanvas* canvas).
+    *  @param position The value of the text position.
+    */
     void SetPosition(CPoint position) { m_ptPosition = position; }
 
-    /** Brief description of CText, GetFont
-     *  Detailed description.
-     *  @return TODO
+    /**  Get the font.
+     *  Gets the font used by this text instance.
+     *  @return the text font.
      */
     TTF_Font * GetFont() const { return m_pFont; }
 
@@ -121,8 +182,7 @@ private:
 };
 
 /** @class CTextParagraph:
- *  Detailed description.
- *  $(javaparam)
+ *  Placeholder. No function at the moment.
  */
 class CTextParagraph {
 public:

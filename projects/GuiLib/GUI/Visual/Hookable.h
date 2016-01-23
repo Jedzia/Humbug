@@ -31,6 +31,10 @@ public:
     */
     virtual void OnIdle(int ticks) = 0;
 
+    /** Get timing ticks.
+    *  Retrieves the ticks (or FPS frames per second) run by the application.
+    *  @return The current ticks that are run by the application.
+    */
     int GetTicks() const;
 
     friend class HookableManager;

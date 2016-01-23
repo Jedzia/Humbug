@@ -300,8 +300,8 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
 
     m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)
-        //->FlyTo(CPoint(200, 200), this)->FlyTo(CPoint(100, 40), this)->FlyTo(CPoint(300, 440), this);
-        ->FlyTo(CPoint(200, 200), 4.0f, this)->FlyTo(CPoint(300, 600), 8.0f, this)->FlyTo(CPoint(900, 40), 12.0f, this)
+        //->MoveTo(CPoint(200, 200), this)->MoveTo(CPoint(100, 40), this)->MoveTo(CPoint(300, 440), this);
+        ->MoveTo(CPoint(200, 200), 4.0f, this)->FlyTo(CPoint(300, 600), 8.0f, this)->FlyTo(CPoint(900, 40), 12.0f, this)
         ->FlyTo(CPoint(300, 600), 16.0f, this)->FlyTo(CPoint(460, 700), 4.0f, this)
         ->FlyTo(CPoint(20, 20), 8.0f, this)->FlyTo(CPoint(1024 / 2, 768 / 2), 12.0f, this);
 
