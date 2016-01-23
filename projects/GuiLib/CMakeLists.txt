@@ -138,6 +138,7 @@ SET(GuiLib_Component_sources
 		GUI/Components/BaseDrawable.cpp
 		GUI/Components/Text.cpp
 		GUI/Components/TextAnimator.cpp
+		GUI/Components/TextAnimatorImpl.cpp
 		GUI/Components/TextScroller.cpp
 
 		GUI/Components/Screen.cpp

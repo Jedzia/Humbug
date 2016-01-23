@@ -15,45 +15,39 @@
 /*---------------------------------------------------------*/
 #pragma once
 #include "TextAnimator.h"
-#include <boost/math/constants/constants.hpp>
-#include <boost/numeric/ublas/io.hpp>
+#include "Timing.h"
 #include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_expression.hpp>
 
 namespace gui {
 namespace components {
-using namespace boost::numeric::ublas;
-
 #define DEBUGPRINT 1
 typedef float vdouble;
+typedef boost::numeric::ublas::vector<double> vector2d;
 
 /** @class TextMover:
- *  Implementation of a TextAnimator that can move a CText with specified speed to a specified CPoint.
+ *  Implementation of a TextAnimator that can move a CText with specified speed to a specified
+ *CPoint.
  */
 class TextMover : public TextAnimator {
-    vector<vdouble> origin;
-    vector<vdouble> destination;
+    vector2d origin;
+    vector2d destination;
     vdouble speed;
     Hookable* hookable;
     Timing timingStart;
     Timing timingEnd;
+    float timeIn;
+    float timeOut;
     bool hasFirstRun;
     bool destinationReached;
-    vector<vdouble> current;
-    vector<vdouble> delta;
+    vector2d current;
+    vector2d delta;
 
     /** Install timing function of the Hookable.
      *  Get the Timing::UpdateTimeFunc functor of the specified Hookable object.
      *  @param hookable The object with the timing function or NULL when not specified.
      *  @return the functor or NULL if no Hookable was specified.
      */
-    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable) {
-        if(!hookable) {
-            return NULL;
-        }
-
-        return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
-    }
+    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
 
 public:
 
@@ -62,10 +56,9 @@ public:
     /// </summary>
     /// <param name="destination">The destination point.</param>
     /// <param name="speed">The movement speed.</param>
-    /// <param name="hookable">The hosting hookable or NULL. This is essentially important for timing.</param>
-    explicit TextMover(const CPoint& destination, float speed, Hookable* hookable)
-        : destination(destination), speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)),
-        timingEnd(GetTimeUpdateFunction(hookable)), hasFirstRun(false), destinationReached(false) {}
+    /// <param name="hookable">The hosting hookable or NULL. This is essentially important for
+    // timing.</param>
+    explicit TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut);
 
     ~TextMover() {}
 
@@ -76,241 +69,70 @@ public:
      *  @param speed Multiplication factor of the result vector.
      *  @return  vA - vB / sqrt(length of  vA - vB) * speed.
      */
-    static vector<vdouble> normalizedDirection(const vector<vdouble>& vA, const vector<vdouble>& vB, vdouble speed) {
-        auto vdir = vA - vB;
-        // not rounding the unity vector length divider or dividing speed outside the norm_2() leads
-        // to precision errors.
-        return vdir / round(norm_2(vdir / speed));
-    }
+    static vector2d normalizedDirection(const vector2d& vA, const vector2d& vB, vdouble speed);
 
     /** Calculates the direction.
-    *  Calculate the direction vector between two points.
-    *  @param vA First point.
-    *  @param vB Second point.
-    *  @param speed Multiplication factor of the result vector.
-    *  @return ( vA - vB ) / speed / 8.
-    */
-    static vector<vdouble> direction(const vector<vdouble>& vA, const vector<vdouble>& vB, const vdouble speed) {
-        auto vdir = vA - vB;
-        return vdir / speed / static_cast<vdouble>(8.0);
-    }
+     *  Calculate the direction vector between two points.
+     *  @param vA First point.
+     *  @param vB Second point.
+     *  @param speed Multiplication factor of the result vector.
+     *  @return ( vA - vB ) / speed / 8.
+     */
+    static vector2d direction(const vector2d& vA, const vector2d& vB, const vdouble speed);
 
     /** Compares two vectors with tolerance for equality.
-     *  Determines whether two vectors are the same, with a tolerance value to specify the accuracy of the comparison.
+     *  Determines whether two vectors are the same, with a tolerance value to specify the accuracy
+     *of the comparison.
      *  @param a First comparision vector.
      *  @param b Second comparision vector.
      *  @param tolerance The margin (+/- tolerance) to accept when comparing for equality.
      *  @return \b true if equal or \b false if not.
      */
-    static bool CompareWithTolerance(const vector<vdouble>& a, const vector<vdouble>& b, const vdouble tolerance) {
-        bool xcomp = a[0] - tolerance<b[0] && a[0] + tolerance> b[0];
-        bool ycomp = a[1] - tolerance<b[1] && a[1] + tolerance> b[1];
-        return xcomp || ycomp;
-    }
+    static bool CompareWithTolerance(const vector2d& a, const vector2d& b, const vdouble tolerance);
 
     /** Loop functor, runs in the CText animator queue.
-    *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate CText objects.
-    *  @param target The target canvas to paint on.
-    *  @param text The CText object to modify.
-    *  @param mdata Parameters for all TextAnimator's in the transformation loop.
-    */
-    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
-        using namespace boost::numeric::ublas;
-        auto color = CColor::DarkGray();
-        target->RenderFillRect(CRectangle(CPoint(destination), CPoint(33, 33)), &color);
+     *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
+     *CText objects.
+     *  @param target The target canvas to paint on.
+     *  @param text The CText object to modify.
+     *  @param mdata Parameters for all TextAnimator's in the transformation loop.
+     */
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override;
 
-        if(!hasFirstRun) {
-            origin = text->GetPosition();
-            current = text->GetPosition();
-            delta = normalizedDirection(destination, origin, speed);
-            //delta = direction(destination, origin, speed);
-            hasFirstRun = true;
-        }
-
-        if(hookable) {
-            int ticks = hookable->GetTicks();
-
-            color.SetR(0xa0 | ticks % 255);
-            color.SetG(0x5f & ticks % 255);
-            color.SetB(ticks % 255);
-            text->SetColor(color);
-
-            if(timingStart.IsBefore(1.0f)) {
-                return;
-            }
-        }
-
-#if DEBUGPRINT
-        std::ostringstream outstring1;
-        outstring1 << "delta: " << delta << std::endl;
-        CPoint textPos = CPoint(400, 80);
-        CText vresText1(text->GetFont(), outstring1.str(), CColor::Black(), textPos);
-        vresText1.RenderPut(target);
-
-#endif
-
-        if(!destinationReached) {
-            current += delta;
-        }
-
-#if DEBUGPRINT
-        std::ostringstream outstring2;
-        outstring2 << "destination: " << destination << std::endl;
-        textPos += vresText1.VerticalSpacing();
-        CText vresText2(text->GetFont(), outstring2.str(), CColor::Black(), textPos);
-        vresText2.RenderPut(target);
-
-        std::ostringstream outstring3;
-        outstring3 << "current: " << current << std::endl;
-        textPos += vresText2.VerticalSpacing();
-        CText vresText3(text->GetFont(), outstring3.str(), CColor::Black(), textPos);
-        vresText3.RenderPut(target);
-#endif // if DEBUGPRINT
-
-        text->SetPosition(CPoint(current));
-
-        const vdouble tolerance = static_cast<vdouble>(0.02);
-        if(CompareWithTolerance(current, destination, tolerance)) {
-            destinationReached = true;
-
-            if(hookable && timingEnd.IsBefore(2.0f)) {
-                return;
-            }
-
-            mdata.state++;
-            mdata.markedForDeletion = true;
-        }
-    } // ()
+    // ()
 };
 
 /** @class Mover2:
-*  Old test implementation. Use TextMover.
-*/
+ *  Old test implementation. Use TextMover.
+ */
 class Mover2 : public TextAnimator {
     CPoint destination;
     Hookable* hookable;
     Timing timingStart;
     Timing timingEnd;
 
-    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable) {
-        if (!hookable) {
-            return NULL;
-        }
-
-        return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
-    }
+    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
 
 public:
 
-    explicit Mover2(const CPoint& destination, Hookable* hookable)
-        : destination(destination), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)),
-        timingEnd(GetTimeUpdateFunction(hookable)) {
-    }
+    explicit Mover2(const CPoint& destination, Hookable* hookable);
 
-    ~Mover2() {
-        int ix = 0;
-        ix++;
-    }
+    ~Mover2() {}
 
-    static vector<double> normalizedDirection(
-        const vector<double>& vA,
-        const vector<double>& vB, double speed) {
-        auto vdir = vA - vB;
-        return (vdir) / norm_2(vdir) * speed;
-    }
+    static vector2d normalizedDirection(
+            const vector2d& vA,
+            const vector2d& vB, double speed);
 
     /** Loop functor, runs in the CText animator queue.
-    *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate CText objects.
-    *  @param target The target canvas to paint on.
-    *  @param text The CText object to modify.
-    *  @param mdata Parameters for all TextAnimator's in the transformation loop.
-    */
-    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
-        using namespace boost::numeric::ublas;
-        auto color = CColor::DarkGray();
-        target->RenderFillRect(CRectangle(90, 90, 33, 33), &color);
+     *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
+     *CText objects.
+     *  @param target The target canvas to paint on.
+     *  @param text The CText object to modify.
+     *  @param mdata Parameters for all TextAnimator's in the transformation loop.
+     */
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override;
 
-        const double speed = 8.0f;
-
-        if (nextAnimator) {
-            int r = 0;
-            r++;
-        }
-
-        if (hookable) {
-            int ticks = hookable->GetTicks();
-            //timingStart.UpdateIdle(ticks);
-
-            color.SetR(0xa0 | ticks % 255);
-            color.SetG(0x5f & ticks % 255);
-            color.SetB(ticks % 255);
-            text->SetColor(color);
-
-            if (timingStart.IsBefore(1.0f)) {
-                mdata.dest.X() += static_cast<int>(ceil(x));
-                mdata.dest.Y() -= static_cast<int>(ceil(y));
-                return;
-            }
-        }
-
-        //float r = 564.345f;
-        //using namespace boost::math::double_constants;
-        //auto xxx = pi * r * r;
-
-        unit_vector<double> vUnit((2));
-        vector<double> vA(destination);
-        CPoint dest(static_cast<int>(mdata.dest.GetX() + x), static_cast<int>(mdata.dest.GetY() - y));
-        vector<double> vB(dest);
-        //vector<double> vB(static_cast<CPoint>(mdata.dest));
-        vector<double> vresult = normalizedDirection(vA, vB, speed);
-
-        if (mdata.dest.GetX() + x < destination.GetX() - vresult[0]) {
-            x += vresult[0];
-        }
-        else if (mdata.dest.GetX() + x > destination.GetX() + vresult[0]) {
-            x -= vresult[0];
-        }
-
-        if (mdata.dest.GetY() - y < destination.GetY() + vresult[1]) {
-            y += vresult[1];
-        }
-        else if (mdata.dest.GetY() - y > destination.GetY() - vresult[1]) {
-            y -= vresult[1];
-        }
-
-        /*CPoint actual3 = CPoint(mdata.dest.GetX() + x + 0, mdata.dest.GetY() - y - 0);
-        CPoint actual2 = CPoint(mdata.dest.GetX() + x + 0, mdata.dest.GetY() - y - 1);
-        CPoint actual4 = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 0);
-        CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 1);*/
-
-        const int speedInt = static_cast<int>(speed);
-        bool xcomp = mdata.dest.GetX() + x - speedInt<destination.GetX() && mdata.dest.GetX() + x + speedInt> destination.GetX();
-        bool ycomp = mdata.dest.GetY() - y - speedInt<destination.GetY() && mdata.dest.GetY() - y + speedInt> destination.GetY();
-
-        if (xcomp && ycomp) {
-            //if (actual == destination || actual2 == destination || actual3 == destination ||
-            // actual4 == destination) {
-            if (hookable) {
-                /*if (!timingStart)
-                {
-                //timingEnd.UpdateIdle(hookable->GetTicks());
-                }*/
-
-                mdata.dest.X() += static_cast<int>(ceil(x));
-                mdata.dest.Y() -= static_cast<int>(ceil(y));
-
-                if (timingEnd.IsBefore(1.0f)) {
-                    return;
-                }
-            }
-
-            mdata.state++;
-            mdata.markedForDeletion = true;
-        }
-
-        mdata.dest.X() += static_cast<int>(round(x));
-        mdata.dest.Y() -= static_cast<int>(round(y));
-    } // ()
+    // ()
 };
 
 ///** @class Mover:
@@ -420,7 +242,5 @@ public:
 //        mdata.dest.Y() -= ceil(y);
 //    } // ()
 //};
-
-
 }
 }
