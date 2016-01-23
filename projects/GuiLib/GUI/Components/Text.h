@@ -73,6 +73,7 @@ public:
      *  this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
      */
     TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, float timeIn = 1.0f, float timeOut = 1.0f);
+    TextAnimator * FadeIn(Hookable* hookable, float fadespeed = 1.0f);
 
     /** Render to canvas.
      *  Render this instance to the specified canvas. The position is specified via the

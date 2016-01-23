@@ -42,13 +42,6 @@ class TextMover : public TextAnimator {
     vector2d current;
     vector2d delta;
 
-    /** Install timing function of the Hookable.
-     *  Get the Timing::UpdateTimeFunc functor of the specified Hookable object.
-     *  @param hookable The object with the timing function or NULL when not specified.
-     *  @return the functor or NULL if no Hookable was specified.
-     */
-    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
-
 public:
 
     /// <summary>
@@ -59,8 +52,6 @@ public:
     /// <param name="hookable">The hosting hookable or NULL. This is essentially important for
     // timing.</param>
     explicit TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut);
-
-    ~TextMover() {}
 
     /** Calculates the normalized direction.
      *  Calculate the unity direction vector between two points.
@@ -111,13 +102,9 @@ class Mover2 : public TextAnimator {
     Timing timingStart;
     Timing timingEnd;
 
-    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
-
 public:
 
     explicit Mover2(const CPoint& destination, Hookable* hookable);
-
-    ~Mover2() {}
 
     static vector2d normalizedDirection(
             const vector2d& vA,
@@ -131,6 +118,45 @@ public:
      *  @param mdata Parameters for all TextAnimator's in the transformation loop.
      */
     void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override;
+
+    // ()
+};
+
+/** @class Mover2:
+*  Old test implementation. Use TextMover.
+*/
+class FadeInAnimator : public TextAnimator {
+    float fadeSpeed;
+    Hookable* hookable;
+    Timing timingStart;
+    Timing timingEnd;
+
+public:
+
+    explicit FadeInAnimator(Hookable* hookable, float fadeSpeed)
+        :fadeSpeed(fadeSpeed), hookable(hookable), timingStart(GetTimeUpdateFunction(
+        hookable)),
+        timingEnd(GetTimeUpdateFunction(hookable)) {
+    }
+
+    /** Loop functor, runs in the CText animator queue.
+    *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
+    *CText objects.
+    *  @param target The target canvas to paint on.
+    *  @param text The CText object to modify.
+    *  @param mdata Parameters for all TextAnimator's in the transformation loop.
+    */
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override
+    {
+        int i = 0;
+        i++;
+        if (timingStart.IsBefore(2)) {
+            return;
+        }
+
+
+
+    }
 
     // ()
 };

@@ -15,6 +15,7 @@
 /*---------------------------------------------------------*/
 #pragma once
 #include "Rectangle.h"
+#include <GuiLib/Timing.h>
 
 namespace gui {
 class Hookable;
@@ -58,6 +59,13 @@ struct TextAnimatorData
 class TextAnimator {
 public:
 
+    /** Install timing function of the Hookable.
+    *  Get the Timing::UpdateTimeFunc functor of the specified Hookable object.
+    *  @param hookable The object with the timing function or NULL when not specified.
+    *  @return the functor or NULL if no Hookable was specified.
+    */
+    static Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TextAnimator"/> class.
     /// </summary>
@@ -93,8 +101,8 @@ public:
 
     TextAnimator * Position(CPoint destination);
 
-    TextAnimator * FadeOut(CPoint destination, float speed = 1.0f, Hookable* hookable = NULL);
-    TextAnimator * FadeIn(CPoint destination, float speed = 1.0f, Hookable* hookable = NULL);
+    TextAnimator * FadeOut(Hookable* hookable, float fadespeed = 1.0f);
+    TextAnimator * FadeIn(Hookable* hookable, float fadespeed = 1.0f);
 
     /** If set the animator is added and called on the next run of the queue when this instance is being finalized/removed from the queue. */
     TextAnimator* nextAnimator;

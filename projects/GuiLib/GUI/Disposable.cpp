@@ -18,7 +18,10 @@
 #include "Disposable.h"
 
 namespace gui {
-void Disposable::Dispose() {
+    Disposable::Disposable(): m_bIsDisposed{false}
+    {}
+
+    void Disposable::Dispose() {
     m_bIsDisposed = true;
 }
 }

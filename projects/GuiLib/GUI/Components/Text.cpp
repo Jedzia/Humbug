@@ -14,11 +14,10 @@
  */
 /*---------------------------------------------------------*/
 //
-#include "stdafx.h"
+#include "../../stdafx.h"
 //
 #include "Text.h"
 //
-#include "../../Timing.h"
 #include "../Visual/Hookable.h"
 #include "Canvas.h"
 #include "TextAnimator.h"
@@ -232,15 +231,10 @@ TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, fl
     return mover;
 }
 
-TextAnimator * TextAnimator::FlyTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
-    //TextMover mover(c_point, hookable);
-    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
-    nextAnimator = mover;
+TextAnimator * CText::FadeIn(Hookable* hookable, float fadespeed) {
+    auto mover = new FadeInAnimator(hookable, fadespeed);
+    AddAnimator(mover);
     return mover;
-}
-
-TextAnimator * TextAnimator::FadeOut(CPoint destination, float speed, Hookable* hookable) {
-    return NULL;
 }
 
 CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor)

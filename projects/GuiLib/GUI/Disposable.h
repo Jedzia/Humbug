@@ -25,9 +25,7 @@ class Disposable {
 
 public:
 
-    explicit Disposable()
-        : m_bIsDisposed{false}
-    {}
+    explicit Disposable();
 
     virtual ~Disposable()    {    }
 
@@ -45,5 +43,4 @@ public:
         return m_bIsDisposed;
     }
 };
-
 }

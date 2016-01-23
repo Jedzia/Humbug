@@ -30,14 +30,6 @@ namespace gui {
 namespace components {
 using namespace boost::numeric::ublas;
 
-Timing::UpdateTimeFunc TextMover::GetTimeUpdateFunction(const Hookable* hookable) {
-    if(!hookable) {
-        return NULL;
-    }
-
-    return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
-}
-
 TextMover::TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut) : destination(destination),
     speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)),
     timingEnd(GetTimeUpdateFunction(hookable)), timeIn(timeIn), timeOut(timeOut), hasFirstRun(false), destinationReached(false) {
@@ -129,14 +121,6 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
         mdata.markedForDeletion = true;
     }
 } // ()
-
-Timing::UpdateTimeFunc Mover2::GetTimeUpdateFunction(const Hookable* hookable) {
-    if(!hookable) {
-        return NULL;
-    }
-
-    return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
-}
 
 Mover2::Mover2(const CPoint& destination, Hookable* hookable) : destination(destination), hookable(hookable), timingStart(GetTimeUpdateFunction(
                     hookable)),
