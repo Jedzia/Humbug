@@ -35,8 +35,7 @@ public:
      *  Detailed description.
      *
      */
-    virtual void Dispose()
-    {}
+    virtual void Dispose();
 
     /** Brief description of Disposable, IsDisposed
      *  Detailed description.
@@ -46,4 +45,5 @@ public:
         return m_bIsDisposed;
     }
 };
+
 }

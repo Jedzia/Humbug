@@ -20,7 +20,8 @@
 namespace gui {
 namespace components {
 /** @class BaseDrawable:
- *  Detailed description.
+ *  Base class for all items that draw on their member canvas.
+ *  See: BaseShape's are lightweight items that draw themselves to a CCanvas, but don't own a CCanvas.
  *  $(javaparam)
  */
 class BaseDrawable : public Disposable {
