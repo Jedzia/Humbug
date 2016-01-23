@@ -31,7 +31,8 @@ class InfoText2 {
     TTF_Font* m_pKeysFont;
     gui::components::CRectangle m_rectPaint;
     gui::components::CRectangle m_rectInitPos;
-    boost::ptr_vector<gui::components::CText> m_pvecInfoTexts;
+    typedef boost::ptr_vector<gui::components::CText> TextStorage;
+    TextStorage m_pvecInfoTexts;
     typedef float seconds;
 
     /** Brief description of InfoText2, GetTime
@@ -58,10 +59,18 @@ public:
      */
     void Draw(const gui::components::CCanvas* canvas) {
         //gui::components::CRectangle rect = m_rectPaint;
-
+        //std::vector<gui::components::CText*> removeList;
+        std::vector<TextStorage::iterator> removeList;
+        
         float time = 0.25f;
-        BOOST_FOREACH(gui::components::CText & text, m_pvecInfoTexts)
+        //int itpos = 0;
+        TextStorage::iterator end = m_pvecInfoTexts.end();
+        for (TextStorage::iterator it = m_pvecInfoTexts.begin(); it < end; ++it)
         {
+            gui::components::CText & text = (*it);
+
+        //BOOST_FOREACH(gui::components::CText & text, m_pvecInfoTexts)
+        //{
             FROMTIME(time)
             //text.SetPosition(rect);
             //text.RenderPut(canvas, rect);
@@ -69,8 +78,22 @@ public:
             //rect += text.VerticalSpacing();
             ENDTIMEBLOCK
             time += 0.25f;
+
+            if (text.IsDisposed())
+            {
+                TextStorage::iterator it2 = it;
+                removeList.push_back(it2);
+            }
+            //itpos++;
         }
-    }     // Draw
+
+        BOOST_FOREACH(TextStorage::iterator itpos, removeList)
+        {
+            m_pvecInfoTexts.release(itpos);
+        }
+    }    
+    
+    // Draw
     /** Brief description of InfoText2, Idle
      *  Detailed description.
      *  @param ticks TODO
