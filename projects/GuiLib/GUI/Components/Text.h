@@ -16,11 +16,10 @@
 #ifndef HUMBUG_GUI_COMPONENTS_TEXT_H
 #define HUMBUG_GUI_COMPONENTS_TEXT_H
 
+#include "BaseDrawable.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include "SDL_ttf.h"
-#include "BaseDrawable.h"
-
 
 namespace gui {
 class Hookable;
@@ -30,10 +29,8 @@ class CCanvas;
 struct TextAnimatorData;
 class TextAnimator;
 
-
 /** @class CText:
  *  Detailed description.
- *  @param updfunc TODO
  */
 class CText : public BaseDrawable {
 public:
@@ -52,64 +49,66 @@ public:
     // typedef const boost::function<void (const CCanvas* ,const CText *text, TextAnimatorData&
     // mdata)> TextModifierFunc;
     typedef boost::function<void (const CCanvas *, CText * text, TextAnimatorData& mdata)> TextModifierFunc;
-    
+
     /** Add animator function.
-    *  Adds a function with the TextModifierFunc signature to the queue of this text.
-    *  @param updfunc The functor with the animation code.
-    */
+     *  Adds a function with the TextModifierFunc signature to the queue of this text.
+     *  @param updfunc The functor with the animation code.
+     */
     void AddAnimator(TextModifierFunc updfunc);
 
     /** Add animator object.
-    *  Adds a TextAnimator to the queue of this text.
-    *  @param animator The animator object.
-    */
+     *  Adds a TextAnimator to the queue of this text.
+     *  @param animator The animator object.
+     */
     void AddAnimator(TextAnimator* animator);
 
     /** Animate to position.
-    *  Translate the hosting object to the specified position and with specified speed.
-    *  @param destination The final point of the object to animate.
-    *  @param speed The speed of the translation.
-    *  @param hookable hosting object that provides access to Hookable::GetTicks() for timing purposes.
-    *  @return a new TextAnimator that can be used to build a method chain initialization.
-    *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f, this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
-    */
-    TextAnimator * MoveTo(CPoint point, float speed = 1.0f, Hookable* hookable = NULL);
+     *  Translate the hosting object to the specified position and with specified speed.
+     *  @param destination The final point of the object to animate.
+     *  @param speed The speed of the translation.
+     *  @param hookable hosting object that provides access to Hookable::GetTicks() for timing
+     *  purposes.
+     *  @return a new TextAnimator that can be used to build a method chain initialization.
+     *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f,
+     *  this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
+     */
+    TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, float timeIn = 1.0f, float timeOut = 1.0f);
 
     /** Render to canvas.
-    *  Render this instance to the specified canvas. The position is specified via the 
-    *  SetPosition(CPoint position) method.
-    *  @param canvas The render target.
-    */
+     *  Render this instance to the specified canvas. The position is specified via the
+     *  SetPosition(CPoint position) method.
+     *  @param canvas The render target.
+     */
     void RenderPut(const CCanvas* canvas);
 
     /** Render to canvas.
-    *  Render this instance to the specified canvas.
-    *  @param canvas The render target.
-    *  @param dstRect The destination dimension. The complete size of the text is taken as source. 
-    */
+     *  Render this instance to the specified canvas.
+     *  @param canvas The render target.
+     *  @param dstRect The destination dimension. The complete size of the text is taken as source.
+     */
     void RenderPut(const CCanvas* canvas, const CRectangle& dstRect);
 
     /** Render to canvas.
-    *  Render this instance to the specified canvas.
-    *  @param canvas The render target.
-    *  @param dstRect The destination dimension.
-    *  @param srcRect The sector of the source text to render.
-    */
+     *  Render this instance to the specified canvas.
+     *  @param canvas The render target.
+     *  @param dstRect The destination dimension.
+     *  @param srcRect The sector of the source text to render.
+     */
     void RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect);
 
     /** Blit to canvas.
-    *  Blit this instance to the specified canvas.
-    *  @param canvas The blitting target.
-    *  @param dstRect The destination dimension. The complete size of the text is taken as source.
-    */
+     *  Blit this instance to the specified canvas.
+     *  @param canvas The blitting target.
+     *  @param dstRect The destination dimension. The complete size of the text is taken as source.
+     */
     void Put(CCanvas* canvas, const CRectangle& dstRect);
 
     /** Blit to canvas.
-    *  Blit this instance to the specified canvas.
-    *  @param canvas The blitting target.
-    *  @param dstRect The destination dimension.
-    *  @param srcRect The sector of the source text to render.
-    */
+     *  Blit this instance to the specified canvas.
+     *  @param canvas The blitting target.
+     *  @param dstRect The destination dimension.
+     *  @param srcRect The sector of the source text to render.
+     */
     void Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect);
 
     void Dings(SDL_Color sdl_color);
@@ -121,15 +120,15 @@ public:
     CCanvas * GetCanvas() const { return m_pText.get(); }
 
     /**  Get vertical expansion.
-    *  Gets the vertical space of this text.
-    *  @return the vertical size of the text.
-    */
+     *  Gets the vertical space of this text.
+     *  @return the vertical size of the text.
+     */
     CPoint VerticalSpacing() const;
 
     /**  Get horizontal expansion.
-    *  Gets the horizontal space of this text.
-    *  @return the horizontal size of the text.
-    */
+     *  Gets the horizontal space of this text.
+     *  @return the horizontal size of the text.
+     */
     CPoint HorizontalSpacing() const;
 
     /**  Get the text color.
@@ -139,9 +138,9 @@ public:
     CColor GetColor() const { return m_colText; }
 
     /**  Set the text color.
-    *  Sets the value of the current text color.
-    *  @param textcolor The value of the text color.
-    */
+     *  Sets the value of the current text color.
+     *  @param textcolor The value of the text color.
+     */
     void SetColor(const CColor textcolor);
 
     /** Get current text Position.
@@ -151,9 +150,9 @@ public:
     CPoint GetPosition() const { return m_ptPosition; }
 
     /** Set text Position.
-    *  Sets the text position of this instance used by RenderPut(const CCanvas* canvas).
-    *  @param position The value of the text position.
-    */
+     *  Sets the text position of this instance used by RenderPut(const CCanvas* canvas).
+     *  @param position The value of the text position.
+     */
     void SetPosition(CPoint position) { m_ptPosition = position; }
 
     /**  Get the font.

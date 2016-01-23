@@ -89,7 +89,7 @@ public:
     *  @return a new TextAnimator that can be used to build a method chain initialization.
     *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f, this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
     */
-    TextAnimator * FlyTo(CPoint destination, float speed = 1.0f, Hookable* hookable = NULL);
+    TextAnimator * FlyTo(CPoint destination, Hookable* hookable = NULL, float speed = 1.0f, float timeIn = 1.0f, float timeOut = 1.0f);
 
     TextAnimator * Position(CPoint destination);
 

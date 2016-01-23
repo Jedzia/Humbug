@@ -220,31 +220,30 @@ using namespace boost::numeric::ublas;
 class SinusoidWobbler {
 };
 
-TextAnimator * CText::MoveTo(CPoint c_point, float speed, Hookable* hookable) {
+TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
     //auto bla = *this;
     //AddAnimator(NULL);
     //return NULL;
     //TextMover mover(c_point, hookable);
-    auto mover = new TextMover(c_point, speed, hookable);
+    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
 
     //GetCanvas()->AddAnimator(mover);
     AddAnimator(mover);
     return mover;
 }
 
-TextAnimator * TextAnimator::FlyTo(CPoint c_point, float speed, Hookable* hookable) {
+TextAnimator * TextAnimator::FlyTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
     //TextMover mover(c_point, hookable);
-    auto mover = new TextMover(c_point, speed, hookable);
+    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
     nextAnimator = mover;
     return mover;
 }
 
-    TextAnimator* TextAnimator::FadeOut(CPoint destination, float speed, Hookable* hookable)
-    {
-        return NULL;
-    }
+TextAnimator * TextAnimator::FadeOut(CPoint destination, float speed, Hookable* hookable) {
+    return NULL;
+}
 
-    CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor)
+CTextParagraph::CTextParagraph(TTF_Font* font, std::string text, CColor textcolor)
 {}
 
 CTextParagraph::~CTextParagraph()

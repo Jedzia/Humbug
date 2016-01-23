@@ -301,10 +301,11 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
 
     m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)
         //->MoveTo(CPoint(200, 200), this)->MoveTo(CPoint(100, 40), this)->MoveTo(CPoint(300, 440), this);
-        ->MoveTo(CPoint(200, 200), 4.0f, this)->FlyTo(CPoint(300, 600), 8.0f, this)->FlyTo(CPoint(900, 40), 12.0f, this)
-        ->FlyTo(CPoint(300, 600), 16.0f, this)->FlyTo(CPoint(460, 700), 4.0f, this)
-        ->FlyTo(CPoint(20, 20), 8.0f, this)->FlyTo(CPoint(1024 / 2, 768 / 2), 12.0f, this);
+        ->MoveTo(CPoint(200, 200), this, 4.0f)->FlyTo(CPoint(300, 600), this, 8.0f)->FlyTo(CPoint(900, 40), this, 12.0f)
+        ->FlyTo(CPoint(300, 600), this, 16.0f)->FlyTo(CPoint(460, 700), this, 4.0f)
+        ->FlyTo(CPoint(20, 20), this, 8.0f)->FlyTo(CPoint(1024 / 2, 768 / 2), this, 12.0f);
 
+    m_pInfoText->makeCText<CText>(m_pArialfont, " ... to the moon.", m_colText)->MoveTo(CPoint(600, 320), this, 8.0f, 0.25f);
 
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
