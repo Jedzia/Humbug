@@ -267,10 +267,15 @@ void CCanvas::SetTextureColorMod(const CColor& sdl_color) {
         return;
     }*/
 
-    SDL_SetTextureColorMod( GetTexture(), sdl_color.GetR(), sdl_color.GetG(), sdl_color.GetB() );
-    // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
-    // information.
-    // Todo: check error info, like in all of these calls ...
+SDL_SetTextureColorMod( GetTexture(), sdl_color.GetR(), sdl_color.GetG(), sdl_color.GetB() );
+// Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
+// information.
+// Todo: check error info, like in all of these calls ...
+}
+
+void CCanvas::SetTextureAlphaMod(Uint8 alpha)
+{
+    SDL_SetTextureAlphaMod(GetTexture(), alpha);
 }
 
 void CCanvas::SetRenderDrawBlendMode(BlendMode mode) const

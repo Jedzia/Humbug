@@ -191,6 +191,15 @@ public:
     *  @param color the color values multiplied into copy operations. Only r,g and b are used.
     */
     void SetTextureColorMod(const CColor& color);
+    
+    /** Use this function to set an additional alpha value multiplied into render copy operations.
+    *  When this texture is rendered, during the copy operation the source alpha value is modulated by this alpha value according to the following formula: 
+    *  "srcA = srcA * (alpha / 255)"
+    *  Alpha modulation is not always supported by the renderer; it will return -1 if alpha modulation is not supported. 
+    *  A new texture is instantiated when there is no one.
+    *  @param alpha The source alpha value multiplied into copy operations.
+    */
+    void SetTextureAlphaMod(Uint8 alpha);
 
     /** Set drawing blend mode.
     *  Use this function to set the blend mode used for drawing operations (Fill and Line). 
