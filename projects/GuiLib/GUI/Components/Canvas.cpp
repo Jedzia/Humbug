@@ -16,12 +16,12 @@
 /*---------------------------------------------------------*/
 #include "../../stdafx.h"
 //
-#include <build/cmake/include/debug.h>
-#include <memory.h>
-//
 #include "Canvas.h"
+//
 #include <GuiLib/GUI/Visual/Application.h>
 #include <boost/foreach.hpp>
+//
+#include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
@@ -150,8 +150,11 @@ void CCanvas::UpdateTexture(const CRectangle* dstRect, const CRectangle* srcRect
     UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
 }
 
-bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage, CCanvas* source, const CCanvas* target, const CRectangle* dstRect, const CRectangle* srcRect) const
-{
+bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage,
+        CCanvas* source,
+        const CCanvas* target,
+        const CRectangle* dstRect,
+        const CRectangle* srcRect) const {
     if(!source->m_vecRendererVault.empty()) {
         std::vector<CCanvasRendererStorage::iterator> removeList;
 
@@ -159,18 +162,17 @@ bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage, CCanvas* source, c
         CRectangle rdstRect;
         CRectangle rsrcRect;
 
-        if (dstRect)
-        {
+        if(dstRect) {
             rdstRect = CRectangle(*dstRect);
         }
-        if (srcRect)
-        {
+
+        if(srcRect) {
             rsrcRect = CRectangle(*srcRect);
         }
 
         CCanvasRenderModifierData mdata(&rsrcRect, &rdstRect);
 
-        for (CCanvasRendererStorage::iterator it = storage.begin(); it < end; ++it)
+        for(CCanvasRendererStorage::iterator it = storage.begin(); it < end; ++it)
         {
             (*it)(source, const_cast<CCanvas *>(target), mdata);
             if(mdata.markedForDeletion) {
@@ -197,7 +199,7 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* dstRect, const CR
     }
 
     // canvas based renderer, source modifier
-    if (ApplyRenderers(source->m_vecRendererVault, source, this, dstRect, srcRect)) {
+    if(ApplyRenderers(source->m_vecRendererVault, source, this, dstRect, srcRect)) {
         return;
     }
 
@@ -242,20 +244,20 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
         source.m_pRenderer = GetRenderer();
         source.m_pTexture = texture;
 
-        if (ApplyRenderers(m_vecRendererVault, this, &source, dstRect, srcRect)) {
+        if(ApplyRenderers(m_vecRendererVault, this, &source, dstRect, srcRect)) {
             return;
         }
 
         /*CCanvasRendererStorage::iterator end = m_vecRendererVault.end();
 
-        for(CCanvasRendererStorage::iterator it = m_vecRendererVault.begin(); it < end; ++it)
-        {
+           for(CCanvasRendererStorage::iterator it = m_vecRendererVault.begin(); it < end; ++it)
+           {
             //(*it)(&source, const_cast<CCanvas *>(this), mdata);
             (*it)(this, const_cast<CCanvas *>(&source), mdata);
-        }
-        if(mdata.isHandled) {
+           }
+           if(mdata.isHandled) {
             return;
-        }*/
+           }*/
     }
 
     FinalRenderCopy(texture, dstRect, srcRect);
