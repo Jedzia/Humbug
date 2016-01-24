@@ -620,12 +620,10 @@ void TestLevel::OnDraw(){
     m_pBlue->SetTextureColorMod(sdl_color);
     //m_pBlue->ClearColorKey();
     CRectangle sdl_rect = CRectangle(300, 300, 256, 256);
-    CPoint point = CPoint(300, 300);
-    //m_pBlue->RenderCopy(nullptr, &sdl_rect);
-    //m_pBlue->RenderCopy(static_cast<CRectangle*>(nullptr), &sdl_rect);
+    //m_pBlue->RenderCopy(&sdl_rect, static_cast<CRectangle*>(nullptr));
     m_pBlue->RenderCopy(&sdl_rect);
+    //CPoint point = CPoint(300, 300);
     //m_pBlue->RenderCopy(point);
-    //m_pBlue->RenderCopy(&sdl_rect);
 
     CColor bannercolor(sdl_color);
     bannercolor.SetR(255 - coldelta);

@@ -64,20 +64,22 @@ private:
 
 
 private:
+
+    //a list of update rectangles
+    typedef std::vector<CCanvasRenderer> CCanvasRendererStorage;
+
     static int UpdateTexture(SDL_Texture * texture, const CRectangle * rect, const void *pixels, int pitch);
     void CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect);
+    bool ApplyRenderers(CCanvasRendererStorage& storage, CCanvas* source, const CCanvas* target, const CRectangle* dstRect, const CRectangle* srcRect) const;
+
     void SetWindow(SDL_Window* pWindow);
     SDL_Renderer * GetRenderer() const;
 
-    //a list of update rectangles
     std::list < SDL_Rect * > m_lstUpdateRects;
-    typedef std::vector<CCanvasRenderer> CCanvasRendererStorage;
-    CCanvasRendererStorage m_vecRendererVault;
-
-
     bool m_bOwner;
     bool m_bTextureOwner;
     bool m_bIsParameterClass;
+    CCanvasRendererStorage m_vecRendererVault;
 
 protected:
 
@@ -117,7 +119,6 @@ public:
      * @param dstRect target area
      */
     void UpdateTexture(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
-
     /** Update Texture from other canvas surface.
     *  Draw the underlying surface to the texture. You should use texture only functions.
     *  @param srcRect source area
