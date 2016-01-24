@@ -132,7 +132,7 @@ void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect, const CR
     ApplyModifiers(src, dest);
     ApplyAnimators(src, dest);
 
-    m_pText->RenderCopy(&src, &dest);
+    m_pText->RenderCopy(&dest, &src);
 }
 
 void CText::Put(CCanvas* canvas, const CRectangle& dstRect, const CRectangle& srcRect) {

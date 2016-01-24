@@ -89,7 +89,7 @@ public:
             source->SetTextureColorMod(bannercolor);
         }
 
-        target->FinalRenderCopy(source->GetTexture(), mdata.srcRect, &dstRect);
+        target->FinalRenderCopy(source->GetTexture(), &dstRect, mdata.srcRect);
         //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
 
         // prevent rendering the target canvas again.
@@ -157,7 +157,7 @@ public:
     static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target,
             const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color){
         source->SetTextureColorMod(color);
-        target->FinalRenderCopy(source->GetTexture(), &srcRect, &dstRect);
+        target->FinalRenderCopy(source->GetTexture(), &dstRect, &srcRect);
     }
     template<typename T>
     void PrintLabel(const int& id, const char* title, const T& degrees) const {
@@ -620,7 +620,12 @@ void TestLevel::OnDraw(){
     m_pBlue->SetTextureColorMod(sdl_color);
     //m_pBlue->ClearColorKey();
     CRectangle sdl_rect = CRectangle(300, 300, 256, 256);
-    m_pBlue->RenderCopy(nullptr, &sdl_rect);
+    CPoint point = CPoint(300, 300);
+    //m_pBlue->RenderCopy(nullptr, &sdl_rect);
+    //m_pBlue->RenderCopy(static_cast<CRectangle*>(nullptr), &sdl_rect);
+    m_pBlue->RenderCopy(&sdl_rect);
+    //m_pBlue->RenderCopy(point);
+    //m_pBlue->RenderCopy(&sdl_rect);
 
     CColor bannercolor(sdl_color);
     bannercolor.SetR(255 - coldelta);

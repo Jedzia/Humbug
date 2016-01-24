@@ -57,15 +57,15 @@ public:
 private:
     // remove them
     // Render from other Canvas
-    void Render(CCanvas* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void Render(CCanvas* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     // Render from a surface
-    void Render(SDL_Surface* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void Render(SDL_Surface* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
 
 private:
     static int UpdateTexture(SDL_Texture * texture, const CRectangle * rect, const void *pixels, int pitch);
-    void CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const;
+    void CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect);
     void SetWindow(SDL_Window* pWindow);
     SDL_Renderer * GetRenderer() const;
 
@@ -116,14 +116,14 @@ public:
      *  @param srcRect source area
      * @param dstRect target area
      */
-    void UpdateTexture(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void UpdateTexture(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** Update Texture from other canvas surface.
     *  Draw the underlying surface to the texture. You should use texture only functions.
     *  @param srcRect source area
     * @param dstRect target area
     */
-    void UpdateTexture(CCanvas* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void UpdateTexture(CCanvas* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy the texture from source to this canvas.
     *  Use this function to copy a portion of the texture to this rendering target. If no texture at the source is
@@ -136,7 +136,7 @@ public:
     *  @param srcRect the source CRectangle structure or NULL for the entire texture
     * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderPutCopy(CCanvas* source, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL) const;
+    void RenderPutCopy(CCanvas* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL) ;
 
     /** RenderCopy a texture.
     *  Use this function to copy a portion of the texture to the main window rendering target.
@@ -144,7 +144,7 @@ public:
     *  @param srcRect the source CRectangle structure or NULL for the entire texture
     * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderCopy(SDL_Texture* texture, const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL) const;
+    void RenderCopy(SDL_Texture* texture, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy the texture of this canvas.
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
@@ -153,7 +153,7 @@ public:
     *  @param srcRect the source CRectangle structure or NULL for the entire texture
     * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void RenderCopy(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void RenderCopy(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy the texture of this canvas with a point offset:
     *  Use this function to copy the full texture to the main window rendering target. If no texture is
@@ -166,14 +166,14 @@ public:
     /** Final Render step.
     *  Calls SDL_RenderCopy.
     */
-    void FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const;
+    void FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const;
 
     /** Update Texture from surface and RenderCopy to the main render target.
     *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and finally RenderCopy.
     *  @param srcRect the source CRectangle structure or NULL for the entire texture
     * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void MainUpdateAndRenderCopy(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void MainUpdateAndRenderCopy(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy to the main render target.
     *  Use this function to copy a portion of the texture to the main window rendering target. If no texture is
@@ -182,7 +182,7 @@ public:
     *  @param srcRect the source CRectangle structure or NULL for the entire texture
     * @param dstRect the destination CRectangle structure or NULL for the entire rendering target; the texture will be stretched to fill the given rectangle
     */
-    void MainRenderCopyTo(const CRectangle* srcRect = NULL, const CRectangle* dstRect = NULL);
+    void MainRenderCopyTo(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
     static void MainRenderFinal();
 
     static void MainRenderClear();

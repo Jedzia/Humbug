@@ -183,7 +183,7 @@ void CLabel::OnDraw(){
         }
         //GetCanvas()->UpdateTexture(m_pcnvText, rcSrc, rcDst);
         //GetCanvas()->UpdateTexture(m_pcnvText);
-        GetCanvas()->RenderPutCopy(m_pcnvText.get(), &rcSrc, &rcDst);
+        GetCanvas()->RenderPutCopy(m_pcnvText.get(), &rcDst, &rcSrc);
         //auto painter = LabelPainter(downrect, &m_colBack, overflowDown)
     }
     else {

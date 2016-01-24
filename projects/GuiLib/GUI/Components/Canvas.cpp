@@ -128,7 +128,7 @@ SDL_Renderer * CCanvas::GetRenderer() const {
     }
 }
 
-void CCanvas::UpdateTexture(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::UpdateTexture(CCanvas* source, const CRectangle* dstRect, const CRectangle* srcRect){
     if ( !GetTexture() || !source->GetSurface() ) {
         return;
     }
@@ -141,7 +141,7 @@ int CCanvas::UpdateTexture(SDL_Texture* texture, const CRectangle* rect, const v
     return SDL_UpdateTexture(texture, sdl_rect, pixels, pitch);
 }
 
-void CCanvas::UpdateTexture(const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::UpdateTexture(const CRectangle* dstRect, const CRectangle* srcRect){
     if ( !GetTexture() || !GetSurface() ) {
         return;
     }
@@ -149,70 +149,71 @@ void CCanvas::UpdateTexture(const CRectangle* srcRect, const CRectangle* dstRect
     UpdateTexture(GetTexture(), NULL, GetSurface()->pixels, GetSurface()->pitch);
 }
 
-void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect) const {
+void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* dstRect, const CRectangle* srcRect)  {
     if ( !source->GetTexture() ) {
         return;
     }
 
-    // canvas based renderer 
+    // canvas based renderer, source modifier
     if ( !source->m_vecRendererVault.empty() ) {
-        std::vector<CCanvasRendererStorage::const_iterator> removeList;
+        std::vector<CCanvasRendererStorage::iterator> removeList;
 
-        CCanvasRendererStorage::const_iterator end = source->m_vecRendererVault.end();
+        CCanvasRendererStorage::iterator end = source->m_vecRendererVault.end();
         CCanvasRenderModifierData mdata(srcRect, dstRect);
-        for (CCanvasRendererStorage::const_iterator it = source->m_vecRendererVault.begin(); it < end; ++it)
+        for (CCanvasRendererStorage::iterator it = source->m_vecRendererVault.begin(); it < end; ++it)
         {
             (*it)(source, const_cast<CCanvas *>(this), mdata);
             if (mdata.markedForDeletion) {
-                CCanvasRendererStorage::const_iterator it2 = it;
+                CCanvasRendererStorage::iterator it2 = it;
                 removeList.push_back(it2);
             }
         }
 
-        /*BOOST_FOREACH(CCanvasRendererStorage::iterator itpos, removeList)
+        BOOST_FOREACH(CCanvasRendererStorage::iterator itpos, removeList)
         {
-            m_vecRendererVault.erase(itpos);
-        }*/
+            source->m_vecRendererVault.erase(itpos);
+        }
 
         if (mdata.isHandled) {
             return;
         }
     }
 
-    CanvasRenderCopy(source->GetTexture(), srcRect, dstRect);
+    CanvasRenderCopy(source->GetTexture(), dstRect, srcRect);
 } // CCanvas::RenderPutCopy
 
-void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
-    CanvasRenderCopy(texture, srcRect, dstRect);
+void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) {
+    CanvasRenderCopy(texture, dstRect, srcRect);
 }
 
-void CCanvas::RenderCopy(const CRectangle* srcRect, const CRectangle* dstRect){
-    CanvasRenderCopy(GetTexture(), srcRect, dstRect);
+void CCanvas::RenderCopy(const CRectangle* dstRect, const CRectangle* srcRect){
+    CanvasRenderCopy(GetTexture(), dstRect, srcRect);
 }
 
 void CCanvas::RenderCopy(const CPoint& offset){
     CRectangle sdl_rect = GetDimension() + offset;
-    RenderCopy(NULL, &sdl_rect);
+    CanvasRenderCopy(GetTexture(), &sdl_rect, NULL);
+    //RenderCopy(static_cast<const CRectangle*>(NULL), &sdl_rect);
 }
 
-void CCanvas::Render(CCanvas* source, const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::Render(CCanvas* source, const CRectangle* dstRect, const CRectangle* srcRect){
     m_pTexture = SDL_CreateTextureFromSurface( GetRenderer(), source->GetSurface() );
     UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
-    RenderCopy(GetTexture(), srcRect, dstRect);
+    RenderCopy(GetTexture(), dstRect, srcRect);
 }
 
-void CCanvas::Render(SDL_Surface* source, const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::Render(SDL_Surface* source, const CRectangle* dstRect, const CRectangle* srcRect){
     m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source);
     const SDL_Rect* sdl_src_rect = NULL;
     UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
-    RenderCopy(GetTexture(), srcRect, dstRect);
+    RenderCopy(GetTexture(), dstRect, srcRect);
 }
 
-void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
+void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) {
     // all RenderCopy calls flow here
 
-    // should be texture based renderer
-    /*if ( !m_vecRendererVault.empty() ) {
+    // canvas based renderer, this instance modifier
+    if (!m_vecRendererVault.empty()) {
         CCanvasRenderModifierData mdata(srcRect, dstRect);
         CCanvas source( this->GetSurface() );
         source.m_bIsParameterClass = true;
@@ -229,19 +230,19 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, 
         if (mdata.isHandled) {
             return;
         }
-    }*/
+    }
 
-    FinalRenderCopy(texture, srcRect, dstRect);
+    FinalRenderCopy(texture, dstRect, srcRect);
 } // CCanvas::CanvasRenderCopy
 
-void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
+void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const {
     // all RenderCopy calls flow here
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
 }
 
-void CCanvas::MainUpdateAndRenderCopy(const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect){
     // this works only for the main canvas
     if (!m_pRenderer) {
         return;
@@ -249,16 +250,16 @@ void CCanvas::MainUpdateAndRenderCopy(const CRectangle* srcRect, const CRectangl
 
     //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
     UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);
-    RenderCopy(GetTexture(), srcRect, dstRect);
+    RenderCopy(GetTexture(), dstRect, srcRect);
 }
 
-void CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect){
+void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcRect){
     // Todo: all Render** should check the exit codes
     // see: https://wiki.libsdl.org/SDL_RenderCopy
     // Return Value
     // Returns 0 on success or a negative error code on failure; call SDL_GetError() for more
     // information.
-    CApplication::GetApplication()->GetMainCanvas()->RenderPutCopy(this, srcRect, dstRect);
+    CApplication::GetApplication()->GetMainCanvas()->RenderPutCopy(this, dstRect, srcRect);
 
     //SDL_UpdateTexture(m_pTexture, NULL, source->GetSurface()->pixels,
     // source->GetSurface()->pitch);

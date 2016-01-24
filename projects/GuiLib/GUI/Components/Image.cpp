@@ -56,7 +56,7 @@ void CImage::Put ( CCanvas* pcnvDest, const CPoint& ptDst ){
         DstRect() += ptDst;
         CCanvas* source = GetCanvas();
         source->GetTexture();
-        pcnvDest->RenderPutCopy(source, &SrcRect(), &DstRect());
+        pcnvDest->RenderPutCopy(source, &DstRect(), &SrcRect());
         DstRect() -= ptDst;
     }
 
