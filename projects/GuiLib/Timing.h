@@ -90,7 +90,8 @@ public:
      *  Detailed description.
      *  @return TODO
      */
-    int TicksSinceStart() const {
+    int TicksSinceStart() {
+        UpdateTimeFunction();
         return m_iTicks - m_iStartTicks;
     }
 
@@ -98,7 +99,7 @@ public:
      *  Detailed description.
      *  @return TODO
      */
-    seconds SecondsSinceStart() const {
+    seconds SecondsSinceStart() {
         return Convert(TicksSinceStart());
     }
 
@@ -108,7 +109,6 @@ public:
      *  @return TODO
      */
     bool IsBefore(seconds time) {
-        UpdateTimeFunction();
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsBefore, boost::ref(*this), _1);
         seconds now = SecondsSinceStart();
@@ -121,7 +121,6 @@ public:
      *  @return TODO
      */
     bool IsAfter(seconds time) {
-        UpdateTimeFunction();
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1);
         seconds now = SecondsSinceStart();
@@ -134,11 +133,17 @@ public:
      *  @return TODO
      */
     bool IsAt(seconds time) {
-        UpdateTimeFunction();
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsAt, boost::ref(*this), _1);
         seconds now = SecondsSinceStart();
         return now == time;
+    }
+
+    bool IsAtOrAfter(seconds time) {
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing::IsAtOrAfter, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now >= time;
     }
 
     operator bool() const
