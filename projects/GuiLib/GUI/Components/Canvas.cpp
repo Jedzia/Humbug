@@ -21,6 +21,7 @@
 //
 #include "Canvas.h"
 #include <GuiLib/GUI/Visual/Application.h>
+#include <boost/foreach.hpp>
 
 namespace gui {
 namespace components {
@@ -153,13 +154,25 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* srcRect, const CR
         return;
     }
 
+    // canvas based renderer 
     if ( !source->m_vecRendererVault.empty() ) {
+        std::vector<CCanvasRendererStorage::const_iterator> removeList;
+
         CCanvasRendererStorage::const_iterator end = source->m_vecRendererVault.end();
         CCanvasRenderModifierData mdata(srcRect, dstRect);
         for (CCanvasRendererStorage::const_iterator it = source->m_vecRendererVault.begin(); it < end; ++it)
         {
             (*it)(source, const_cast<CCanvas *>(this), mdata);
+            if (mdata.markedForDeletion) {
+                CCanvasRendererStorage::const_iterator it2 = it;
+                removeList.push_back(it2);
+            }
         }
+
+        /*BOOST_FOREACH(CCanvasRendererStorage::iterator itpos, removeList)
+        {
+            m_vecRendererVault.erase(itpos);
+        }*/
 
         if (mdata.isHandled) {
             return;
@@ -198,7 +211,8 @@ void CCanvas::Render(SDL_Surface* source, const CRectangle* srcRect, const CRect
 void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, const CRectangle* dstRect) const {
     // all RenderCopy calls flow here
 
-    if ( !m_vecRendererVault.empty() ) {
+    // should be texture based renderer
+    /*if ( !m_vecRendererVault.empty() ) {
         CCanvasRenderModifierData mdata(srcRect, dstRect);
         CCanvas source( this->GetSurface() );
         source.m_bIsParameterClass = true;
@@ -215,7 +229,7 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* srcRect, 
         if (mdata.isHandled) {
             return;
         }
-    }
+    }*/
 
     FinalRenderCopy(texture, srcRect, dstRect);
 } // CCanvas::CanvasRenderCopy
