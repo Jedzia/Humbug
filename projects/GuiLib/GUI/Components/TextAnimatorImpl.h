@@ -19,6 +19,7 @@
 #include "TextAnimator.h"
 #include "Timing.h"
 #include <boost/numeric/ublas/vector.hpp>
+#include "CanvasRendererImpl.h"
 
 namespace gui {
 namespace components {
@@ -172,17 +173,20 @@ public:
     };
 
 private:
-    Timing::seconds fadeInOutTime;
-    FadeMode fadeMode;
-    bool fadeOutRemovesText;
-    Timing::seconds stayTime;
-    Timing::seconds fadeOutTime;
-    float fadeDelta;
-    Hookable* hookable;
-    Timing tifadeInOut;
-    Timing timingEnd;
+    //Timing::seconds fadeInOutTime;
+    //FadeMode fadeMode;
+   // bool fadeOutRemovesText;
+    //Timing::seconds stayTime;
+    //Timing::seconds fadeOutTime;
+    //float fadeDelta;
+   // Hookable* hookable;
+   // Timing tifadeInOut;
+   // Timing timingEnd;
+    FadeInOutRenderer frender;
 
+    static FadeInOutRenderer::FadeMode TranslateMode(FadeInOutAnimator::FadeMode fadeMode);
 public:
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FadeInOutAnimator"/> class.
     /// </summary>
@@ -192,11 +196,7 @@ public:
     /// <param name="stayTime">The stay time. not implemented.</param>
     /// <param name="fadeOutTime">The fade out time. not implemented.</param>
     explicit FadeInOutAnimator(Hookable* hookable, Timing::seconds fadeInOutTime, FadeMode fadeMode = FadeMode::FadeIn, bool fadeOutRemovesText = false,
-            Timing::seconds stayTime = 1.0f, Timing::seconds fadeOutTime = 1.0f)
-        : fadeInOutTime(fadeInOutTime), fadeMode(fadeMode), fadeOutRemovesText(fadeOutRemovesText), stayTime(stayTime), fadeOutTime(fadeOutTime), hookable(hookable),
-        tifadeInOut(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)){
-        fadeDelta = 255.0f / Timing::FRAMESPERSECOND / fadeInOutTime;
-    }
+                               Timing::seconds stayTime = 1.0f, Timing::seconds fadeOutTime = 1.0f);
 
     /** Loop functor, runs in the CText animator queue.
      *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
@@ -205,47 +205,7 @@ public:
      *  @param text The CText object to modify.
      *  @param mdata Parameters for all TextAnimator's in the transformation loop.
      */
-    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
-        // recording: punch in, punch out
-
-        int alpha = 0;
-
-        switch(fadeMode)
-        {
-        case FadeMode::FadeIn:
-            alpha = static_cast<int>(round(tifadeInOut.TicksSinceStart() * fadeDelta));
-            if(alpha > 255) {
-                alpha = 255;
-            }
-
-            break;
-        case FadeMode::FadeOut:
-            alpha = static_cast<int>(round(255 - tifadeInOut.TicksSinceStart() * fadeDelta));
-            if(alpha < 0) {
-                alpha = 0;
-            }
-
-            break;
-        case FadeMode::FadeInOut:
-            break;
-        default:
-            assert(false);
-            break;
-        } // switch
-        
-        text->GetCanvas()->SetTextureAlphaMod(alpha);
-       
-        if(tifadeInOut.IsAtOrAfter(fadeInOutTime)) {
-            mdata.state++;
-            mdata.markedForDeletion = true;
-            if (fadeMode == FadeMode::FadeOut && fadeOutRemovesText)
-            {
-                text->Dispose();
-            }
-        }
-    } // ()
-
-    // ()
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override;
 };
 
 ///** @class Mover:

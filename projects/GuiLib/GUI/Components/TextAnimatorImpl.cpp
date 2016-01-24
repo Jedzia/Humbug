@@ -171,17 +171,17 @@ void Mover2::operator()(const CCanvas* target, CText* text, TextAnimatorData& md
     //vector2d vB(static_cast<CPoint>(mdata.dest));
     vector2d vresult = normalizedDirection(vA, vB, speed);
 
-    if (mdata.dstRect->GetX() + x < destination.GetX() - vresult[0]) {
+    if(mdata.dstRect->GetX() + x < destination.GetX() - vresult[0]) {
         x += vresult[0];
     }
-    else if (mdata.dstRect->GetX() + x > destination.GetX() + vresult[0]) {
+    else if(mdata.dstRect->GetX() + x > destination.GetX() + vresult[0]) {
         x -= vresult[0];
     }
 
-    if (mdata.dstRect->GetY() - y < destination.GetY() + vresult[1]) {
+    if(mdata.dstRect->GetY() - y < destination.GetY() + vresult[1]) {
         y += vresult[1];
     }
-    else if (mdata.dstRect->GetY() - y > destination.GetY() - vresult[1]) {
+    else if(mdata.dstRect->GetY() - y > destination.GetY() - vresult[1]) {
         y -= vresult[1];
     }
 
@@ -217,6 +217,75 @@ void Mover2::operator()(const CCanvas* target, CText* text, TextAnimatorData& md
 
     mdata.dstRect->X() += static_cast<int>(round(x));
     mdata.dstRect->Y() -= static_cast<int>(round(y));
+} // ()
+
+FadeInOutRenderer::FadeMode FadeInOutAnimator::TranslateMode(FadeMode fadeMode) {
+    
+    switch (fadeMode)
+    {
+    case FadeMode::FadeIn:
+        return FadeInOutRenderer::FadeMode::FadeIn;
+    case FadeMode::FadeOut:
+        return FadeInOutRenderer::FadeMode::FadeOut;
+    case FadeMode::FadeInOut:
+        return FadeInOutRenderer::FadeMode::FadeInOut;
+    default:
+        throw new std::runtime_error("no valid FadeInOutAnimator::TranslateMode enum.");
+    }
+}
+
+// ()
+FadeInOutAnimator::FadeInOutAnimator(Hookable* hookable,
+        Timing::seconds fadeInOutTime,
+        FadeMode fadeMode,
+        bool fadeOutRemovesText,
+        Timing::seconds stayTime,
+        Timing::seconds fadeOutTime) : 
+        //fadeInOutTime(fadeInOutTime), fadeMode(fadeMode), fadeOutRemovesText(fadeOutRemovesText), stayTime(
+          //  stayTime), fadeOutTime(fadeOutTime), hookable(hookable), tifadeInOut(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(
+            //hookable)),
+            frender(hookable, fadeInOutTime, TranslateMode(fadeMode), fadeOutRemovesText, stayTime, fadeOutTime) {
+    //fadeDelta = 255.0f / Timing::FRAMESPERSECOND / fadeInOutTime;
+}
+
+void FadeInOutAnimator::operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) {
+    // recording: punch in, punch out
+    frender(text->GetCanvas(), target, mdata);
+
+    /*int alpha = 0;
+
+    switch(fadeMode)
+    {
+    case FadeMode::FadeIn:
+        alpha = static_cast<int>(round(tifadeInOut.TicksSinceStart() * fadeDelta));
+        if(alpha > 255) {
+            alpha = 255;
+        }
+
+        break;
+    case FadeMode::FadeOut:
+        alpha = static_cast<int>(round(255 - tifadeInOut.TicksSinceStart() * fadeDelta));
+        if(alpha < 0) {
+            alpha = 0;
+        }
+
+        break;
+    case FadeMode::FadeInOut:
+        break;
+    default:
+        assert(false);
+        break;
+    }     // switch
+
+    text->GetCanvas()->SetTextureAlphaMod(alpha);
+
+    if(tifadeInOut.IsAtOrAfter(fadeInOutTime)) {
+        mdata.state++;
+        mdata.markedForDeletion = true;
+        if(fadeMode == FadeMode::FadeOut && fadeOutRemovesText) {
+            text->Dispose();
+        }
+    }*/
 } // ()
 }
 }
