@@ -299,15 +299,16 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pInfoText->makeCText<CText>(m_pArialfont, "Enter or [e] selects and Backspace or [q] moves back.", m_colText);
     m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
 
-    m_pInfoText->makeCText<CText>(m_pArialfont, "! Fly Around !", m_colText)
+    m_pInfoText->makeCText<CText>(m_pArialfont, "Let's fly away ", m_colText)
         //->MoveTo(CPoint(200, 200), this)->MoveTo(CPoint(100, 40), this)->MoveTo(CPoint(300, 440), this);
         ->MoveTo(CPoint(200, 200), this, 4.0f)->FlyTo(CPoint(300, 600), this, 8.0f)->FlyTo(CPoint(900, 40), this, 12.0f)
         ->FlyTo(CPoint(300, 600), this, 16.0f)->FlyTo(CPoint(460, 700), this, 4.0f)
         ->FlyTo(CPoint(20, 20), this, 8.0f)->FlyTo(CPoint(1024 / 2, 768 / 3), this, 12.0f);
 
     auto text = m_pInfoText->makeCText<CText>(m_pArialfont, " ... to the moon.", m_colText);
-    //text->MoveTo(CPoint(600, 320), this, 60.0f, 0.005f);
-    text->FadeIn(this, 0.5f)->Wait(this, 3)->FadeOut(this, 2.5f, true);
+    text->FadeIn(this, 4.0f)->Wait(this, 8)->FadeOut(this, 2.5f)->Wait(this, 15)->FadeIn(this, 4.5f);
+    text->MoveTo(CPoint(1024 / 2, 768 / 3 + 26), this, 4.0f, 0.005f);
+    //text->FadeIn(this, 0.5f)->Wait(this, 3)->FadeOut(this, 2.5f, true);
 
 
     HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));

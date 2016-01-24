@@ -73,7 +73,7 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
         color.SetR(0xa0 | ticks % 255);
         color.SetG(0x5f & ticks % 255);
         color.SetB(ticks % 255);
-        text->SetColor(color);
+        //text->SetColor(color);
 
         if(timingStart.IsBefore(timeIn)) {
             return;
