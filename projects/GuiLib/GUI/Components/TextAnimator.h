@@ -15,7 +15,8 @@
 /*---------------------------------------------------------*/
 #pragma once
 #include "Rectangle.h"
-#include <GuiLib/Timing.h>
+#include "Timing.h"
+#include "Canvas.h"
 
 namespace gui {
 class Hookable;
@@ -26,30 +27,22 @@ class CCanvas;
 /** @struct TextAnimatorData:
 *  Data used while drawing/modifying with TextAnimator's.
 */
-struct TextAnimatorData
+struct TextAnimatorData : CCanvasRenderModifierData
 {
     /** Storage item, relative x coordinate. */
     int DeltaX;
     /** Storage item, relative y coordinate. */
     int DeltaY;
-    /** contains the source rectangle. */
-    CRectangle& src;
-    /** contains the destination rectangle. */
-    CRectangle& dest;
     /** Reference to the calling hookable that provides access to gui::Hookable.GetTicks(). Can be null. */
     Hookable* hookable;
-    /** If set to true the TextAnimator will be removed and deleted from the execution queue. 
-     The TextAnimator::nextAnimator next animator is added and called on the next run of the queue. */
-    bool markedForDeletion;
-    int state;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextAnimatorData"/> struct.
     /// </summary>
     /// <param name="src_rect">The source rectangle.</param>
     /// <param name="dst_rect">The destination rectangle.</param>
-    TextAnimatorData(CRectangle& src_rect, CRectangle& dst_rect)
-        : DeltaX(0), DeltaY(0), src{src_rect}, dest{dst_rect}, hookable(nullptr), markedForDeletion(false), state(1)
+    TextAnimatorData(CRectangle*  src_rect, CRectangle* dst_rect)
+        : CCanvasRenderModifierData(src_rect, dstRect), DeltaX(0), DeltaY(0), hookable(nullptr)
     {}
 };
 

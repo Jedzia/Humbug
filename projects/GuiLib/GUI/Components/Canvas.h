@@ -12,16 +12,18 @@ namespace gui {
 namespace components {
     struct CCanvasRenderModifierData
     {
-        const CRectangle* srcRect;
-        const CRectangle* dstRect;
+        /** contains the source rectangle. */
+        CRectangle* srcRect;
+        /** contains the destination rectangle. */
+        CRectangle*  dstRect;
         bool isHandled;
         /** If set to true the TextAnimator will be removed and deleted from the execution queue.
         The TextAnimator::nextAnimator next animator is added and called on the next run of the queue. */
         bool markedForDeletion;
         int state;
 
-        CCanvasRenderModifierData(const CRectangle* srcRect, const CRectangle* dstRect)
-            : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(0)
+        CCanvasRenderModifierData(CRectangle* srcRect, CRectangle* dstRect)
+            : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(1)
         {
 
         };

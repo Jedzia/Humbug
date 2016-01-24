@@ -66,7 +66,7 @@ void CText::RenderPut(const CCanvas* canvas, const CRectangle& dstRect) {
 void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
     m_pText->Lock();
 
-    TextAnimatorData mdata(srcRect, dstRect);
+    TextAnimatorData mdata(&srcRect, &dstRect);
 
     if(!m_vecModifierVault.empty()) {
         TextModifierStorage::iterator end = m_vecModifierVault.end();
@@ -91,7 +91,7 @@ void CText::ApplyModifiers(CRectangle& srcRect, CRectangle& dstRect) {
 void CText::ApplyAnimators(CRectangle& srcRect, CRectangle& dstRect) {
     m_pText->Lock();
 
-    TextAnimatorData mdata(srcRect, dstRect);
+    TextAnimatorData mdata(&srcRect, &dstRect);
 
     if(!m_vecAnimatorVault.empty()) {
         AnimatorStorage::iterator end = m_vecAnimatorVault.end();

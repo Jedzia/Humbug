@@ -156,7 +156,19 @@ bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage, CCanvas* source, c
         std::vector<CCanvasRendererStorage::iterator> removeList;
 
         CCanvasRendererStorage::iterator end = storage.end();
-        CCanvasRenderModifierData mdata(srcRect, dstRect);
+        CRectangle rdstRect;
+        CRectangle rsrcRect;
+
+        if (dstRect)
+        {
+            rdstRect = CRectangle(*dstRect);
+        }
+        if (srcRect)
+        {
+            rsrcRect = CRectangle(*srcRect);
+        }
+
+        CCanvasRenderModifierData mdata(&rsrcRect, &rdstRect);
 
         for (CCanvasRendererStorage::iterator it = storage.begin(); it < end; ++it)
         {
@@ -225,7 +237,6 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
     // canvas based renderer, this instance modifier
 
     if(!m_vecRendererVault.empty()) {
-        CCanvasRenderModifierData mdata(srcRect, dstRect);
         CCanvas source(this->GetSurface());
         source.m_bIsParameterClass = true;
         source.m_pRenderer = GetRenderer();

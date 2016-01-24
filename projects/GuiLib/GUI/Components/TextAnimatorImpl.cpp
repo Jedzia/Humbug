@@ -154,8 +154,8 @@ void Mover2::operator()(const CCanvas* target, CText* text, TextAnimatorData& md
         text->SetColor(color);
 
         if(timingStart.IsBefore(1.0f)) {
-            mdata.dest.X() += static_cast<int>(ceil(x));
-            mdata.dest.Y() -= static_cast<int>(ceil(y));
+            mdata.dstRect->X() += static_cast<int>(ceil(x));
+            mdata.dstRect->Y() -= static_cast<int>(ceil(y));
             return;
         }
     }
@@ -166,33 +166,33 @@ void Mover2::operator()(const CCanvas* target, CText* text, TextAnimatorData& md
 
     unit_vector<double> vUnit((2));
     vector2d vA(destination);
-    CPoint dest(static_cast<int>(mdata.dest.GetX() + x), static_cast<int>(mdata.dest.GetY() - y));
+    CPoint dest(static_cast<int>(mdata.dstRect->GetX() + x), static_cast<int>(mdata.dstRect->GetY() - y));
     vector2d vB(dest);
     //vector2d vB(static_cast<CPoint>(mdata.dest));
     vector2d vresult = normalizedDirection(vA, vB, speed);
 
-    if(mdata.dest.GetX() + x < destination.GetX() - vresult[0]) {
+    if (mdata.dstRect->GetX() + x < destination.GetX() - vresult[0]) {
         x += vresult[0];
     }
-    else if(mdata.dest.GetX() + x > destination.GetX() + vresult[0]) {
+    else if (mdata.dstRect->GetX() + x > destination.GetX() + vresult[0]) {
         x -= vresult[0];
     }
 
-    if(mdata.dest.GetY() - y < destination.GetY() + vresult[1]) {
+    if (mdata.dstRect->GetY() - y < destination.GetY() + vresult[1]) {
         y += vresult[1];
     }
-    else if(mdata.dest.GetY() - y > destination.GetY() - vresult[1]) {
+    else if (mdata.dstRect->GetY() - y > destination.GetY() - vresult[1]) {
         y -= vresult[1];
     }
 
-    /*CPoint actual3 = CPoint(mdata.dest.GetX() + x + 0, mdata.dest.GetY() - y - 0);
-       CPoint actual2 = CPoint(mdata.dest.GetX() + x + 0, mdata.dest.GetY() - y - 1);
-       CPoint actual4 = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 0);
-       CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dest.GetY() - y - 1);*/
+    /*CPoint actual3 = CPoint(mdata.dest.GetX() + x + 0, mdata.dstRect.GetY() - y - 0);
+       CPoint actual2 = CPoint(mdata.dest.GetX() + x + 0, mdata.dstRect.GetY() - y - 1);
+       CPoint actual4 = CPoint(mdata.dest.GetX() + x + 1, mdata.dstRect.GetY() - y - 0);
+       CPoint actual = CPoint(mdata.dest.GetX() + x + 1, mdata.dstRect.GetY() - y - 1);*/
 
     const int speedInt = static_cast<int>(speed);
-    bool xcomp = mdata.dest.GetX() + x - speedInt<destination.GetX() && mdata.dest.GetX() + x + speedInt> destination.GetX();
-    bool ycomp = mdata.dest.GetY() - y - speedInt<destination.GetY() && mdata.dest.GetY() - y + speedInt> destination.GetY();
+    bool xcomp = mdata.dstRect->GetX() + x - speedInt<destination.GetX() && mdata.dstRect->GetX() + x + speedInt> destination.GetX();
+    bool ycomp = mdata.dstRect->GetY() - y - speedInt<destination.GetY() && mdata.dstRect->GetY() - y + speedInt> destination.GetY();
 
     if(xcomp && ycomp) {
         //if (actual == destination || actual2 == destination || actual3 == destination ||
@@ -203,8 +203,8 @@ void Mover2::operator()(const CCanvas* target, CText* text, TextAnimatorData& md
                //timingEnd.UpdateIdle(hookable->GetTicks());
                }*/
 
-            mdata.dest.X() += static_cast<int>(ceil(x));
-            mdata.dest.Y() -= static_cast<int>(ceil(y));
+            mdata.dstRect->X() += static_cast<int>(ceil(x));
+            mdata.dstRect->Y() -= static_cast<int>(ceil(y));
 
             if(timingEnd.IsBefore(1.0f)) {
                 return;
@@ -215,8 +215,8 @@ void Mover2::operator()(const CCanvas* target, CText* text, TextAnimatorData& md
         mdata.markedForDeletion = true;
     }
 
-    mdata.dest.X() += static_cast<int>(round(x));
-    mdata.dest.Y() -= static_cast<int>(round(y));
+    mdata.dstRect->X() += static_cast<int>(round(x));
+    mdata.dstRect->Y() -= static_cast<int>(round(y));
 } // ()
 }
 }
