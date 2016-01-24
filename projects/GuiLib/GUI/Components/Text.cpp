@@ -209,7 +209,12 @@ void CText::AddAnimator(TextAnimator* animator) {
     m_vecAnimatorVault.push_back(animator);
 }
 
-using namespace boost::numeric::ublas;
+TextAnimator* CText::Wait(Hookable* hookable, Timing::seconds waitTime)
+{
+    auto mover = new WaitingAnimator(hookable, waitTime);
+    AddAnimator(mover);
+    return mover;
+}
 
 /** @class SinusoidWobbler:
  *  Detailed description.
@@ -219,7 +224,7 @@ using namespace boost::numeric::ublas;
 class SinusoidWobbler {
 };
 
-TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
+TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut) {
     //auto bla = *this;
     //AddAnimator(NULL);
     //return NULL;
@@ -231,8 +236,14 @@ TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, fl
     return mover;
 }
 
-TextAnimator * CText::FadeIn(Hookable* hookable, float fadespeed) {
-    auto mover = new FadeInAnimator(hookable, fadespeed);
+TextAnimator * CText::FadeIn(Hookable* hookable, Timing::seconds fadeInTime) {
+    auto mover = new FadeInOutAnimator(hookable, fadeInTime);
+    AddAnimator(mover);
+    return mover;
+}
+
+TextAnimator * CText::FadeOut(Hookable* hookable, Timing::seconds fadeOutTime, bool fadeOutRemovesText) {
+    auto mover = new FadeInOutAnimator(hookable, fadeOutTime, FadeInOutAnimator::FadeMode::FadeOut, fadeOutRemovesText);
     AddAnimator(mover);
     return mover;
 }

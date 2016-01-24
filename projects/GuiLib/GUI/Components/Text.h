@@ -20,6 +20,7 @@
 #include "Color.h"
 #include "Rectangle.h"
 #include "SDL_ttf.h"
+#include "Timing.h"
 
 namespace gui {
 class Hookable;
@@ -62,6 +63,7 @@ public:
      */
     void AddAnimator(TextAnimator* animator);
 
+    TextAnimator * Wait(Hookable* hookable, Timing::seconds waitTime = 1.0f);
     /** Animate to position.
      *  Translate the hosting object to the specified position and with specified speed.
      *  @param destination The final point of the object to animate.
@@ -72,8 +74,9 @@ public:
      *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f,
      *  this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
      */
-    TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, float timeIn = 1.0f, float timeOut = 1.0f);
-    TextAnimator * FadeIn(Hookable* hookable, float fadespeed = 1.0f);
+    TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f);
+    TextAnimator * FadeIn(Hookable* hookable, Timing::seconds fadeInTime = 1.0f);
+    TextAnimator * FadeOut(Hookable* hookable, Timing::seconds fadeOutTime = 1.0f, bool fadeOutRemovesText = false);
 
     /** Render to canvas.
      *  Render this instance to the specified canvas. The position is specified via the

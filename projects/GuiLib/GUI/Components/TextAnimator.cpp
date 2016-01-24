@@ -30,6 +30,12 @@ Timing::UpdateTimeFunc TextAnimator::GetTimeUpdateFunction(const Hookable* hooka
     return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
 }
 
+TextAnimator * TextAnimator::Wait(Hookable* hookable, Timing::seconds waitTime) {
+    auto mover = new WaitingAnimator(hookable, waitTime);
+    nextAnimator = mover;
+    return mover;
+}
+
 TextAnimator * TextAnimator::FlyTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
     //TextMover mover(c_point, hookable);
     auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
@@ -37,12 +43,14 @@ TextAnimator * TextAnimator::FlyTo(CPoint c_point, Hookable* hookable, float spe
     return mover;
 }
 
-TextAnimator * TextAnimator::FadeOut(Hookable* hookable, float fadespeed) {
-    return NULL;
+TextAnimator * TextAnimator::FadeIn(Hookable* hookable, Timing::seconds fadeInTime) {
+    auto mover = new FadeInOutAnimator(hookable, fadeInTime);
+    nextAnimator = mover;
+    return mover;
 }
 
-TextAnimator * TextAnimator::FadeIn(Hookable* hookable, float fadespeed) {
-    auto mover = new FadeInAnimator(hookable, fadespeed);
+TextAnimator * TextAnimator::FadeOut(Hookable* hookable, Timing::seconds fadeOutTime, bool fadeOutRemovesText) {
+    auto mover = new FadeInOutAnimator(hookable, fadeOutTime, FadeInOutAnimator::FadeMode::FadeOut, fadeOutRemovesText);
     nextAnimator = mover;
     return mover;
 }

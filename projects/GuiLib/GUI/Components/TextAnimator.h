@@ -89,6 +89,8 @@ public:
     */
     virtual void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) = 0;
 
+    TextAnimator * Wait(Hookable* hookable, Timing::seconds waitTime = 1.0f);
+    
     /** Move to position.
     *  Translate the hosting object to the specified position and with specified speed.
     *  @param destination The final point of the object to animate.
@@ -97,12 +99,12 @@ public:
     *  @return a new TextAnimator that can be used to build a method chain initialization.
     *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f, this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
     */
-    TextAnimator * FlyTo(CPoint destination, Hookable* hookable = NULL, float speed = 1.0f, float timeIn = 1.0f, float timeOut = 1.0f);
+    TextAnimator * FlyTo(CPoint destination, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f);
 
     TextAnimator * Position(CPoint destination);
 
-    TextAnimator * FadeOut(Hookable* hookable, float fadespeed = 1.0f);
-    TextAnimator * FadeIn(Hookable* hookable, float fadespeed = 1.0f);
+    TextAnimator * FadeIn(Hookable* hookable, Timing::seconds fadeInTime = 1.0f);
+    TextAnimator * FadeOut(Hookable* hookable, Timing::seconds fadeOutTime = 1.0f, bool fadeOutRemovesText = false);
 
     /** If set the animator is added and called on the next run of the queue when this instance is being finalized/removed from the queue. */
     TextAnimator* nextAnimator;

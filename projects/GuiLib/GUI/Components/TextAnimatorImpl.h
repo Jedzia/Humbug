@@ -14,6 +14,8 @@
  */
 /*---------------------------------------------------------*/
 #pragma once
+#include "Canvas.h"
+#include "Text.h"
 #include "TextAnimator.h"
 #include "Timing.h"
 #include <boost/numeric/ublas/vector.hpp>
@@ -26,7 +28,7 @@ typedef boost::numeric::ublas::vector<double> vector2d;
 
 /** @class TextMover:
  *  Implementation of a TextAnimator that can move a CText with specified speed to a specified
- *CPoint.
+ * CPoint.
  */
 class TextMover : public TextAnimator {
     vector2d origin;
@@ -73,7 +75,7 @@ public:
 
     /** Compares two vectors with tolerance for equality.
      *  Determines whether two vectors are the same, with a tolerance value to specify the accuracy
-     *of the comparison.
+     * of the comparison.
      *  @param a First comparision vector.
      *  @param b Second comparision vector.
      *  @param tolerance The margin (+/- tolerance) to accept when comparing for equality.
@@ -83,7 +85,7 @@ public:
 
     /** Loop functor, runs in the CText animator queue.
      *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
-     *CText objects.
+     * CText objects.
      *  @param target The target canvas to paint on.
      *  @param text The CText object to modify.
      *  @param mdata Parameters for all TextAnimator's in the transformation loop.
@@ -112,7 +114,7 @@ public:
 
     /** Loop functor, runs in the CText animator queue.
      *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
-     *CText objects.
+     * CText objects.
      *  @param target The target canvas to paint on.
      *  @param text The CText object to modify.
      *  @param mdata Parameters for all TextAnimator's in the transformation loop.
@@ -122,41 +124,126 @@ public:
     // ()
 };
 
-/** @class Mover2:
-*  Old test implementation. Use TextMover.
+/** @class WaitingAnimator:
+*  Waits for a specified time before calling the child TextAnimator.
 */
-class FadeInAnimator : public TextAnimator {
-    float fadeSpeed;
+class WaitingAnimator : public TextAnimator {
+    Timing::seconds waitTime;
     Hookable* hookable;
     Timing timingStart;
-    Timing timingEnd;
 
 public:
-
-    explicit FadeInAnimator(Hookable* hookable, float fadeSpeed)
-        :fadeSpeed(fadeSpeed), hookable(hookable), timingStart(GetTimeUpdateFunction(
-        hookable)),
-        timingEnd(GetTimeUpdateFunction(hookable)) {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WaitingAnimator"/> class.
+    /// </summary>
+    /// <param name="hookable">The hookable.</param>
+    /// <param name="waitTime">The waiting time.</param>
+    explicit WaitingAnimator(Hookable* hookable, Timing::seconds waitTime)
+        : waitTime(waitTime), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)){
     }
 
     /** Loop functor, runs in the CText animator queue.
     *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
-    *CText objects.
+    * CText objects.
     *  @param target The target canvas to paint on.
     *  @param text The CText object to modify.
     *  @param mdata Parameters for all TextAnimator's in the transformation loop.
     */
-    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override
-    {
-        int i = 0;
-        i++;
-        if (timingStart.IsBefore(2)) {
-            return;
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
+        if (timingStart.IsAtOrAfter(waitTime)) {
+            mdata.state++;
+            mdata.markedForDeletion = true;
         }
+    } // ()
+
+    // ()
+};
 
 
+/** @class FadeInOutAnimator:
+ *  Old test implementation. Use TextMover.
+ */
+class FadeInOutAnimator : public TextAnimator {
+public:
+    enum class FadeMode {
+        FadeIn,
+        FadeOut,
+        FadeInOut
+    };
 
+private:
+    Timing::seconds fadeInOutTime;
+    FadeMode fadeMode;
+    bool fadeOutRemovesText;
+    Timing::seconds stayTime;
+    Timing::seconds fadeOutTime;
+    float fadeDelta;
+    Hookable* hookable;
+    Timing tifadeInOut;
+    Timing timingEnd;
+
+public:
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FadeInOutAnimator"/> class.
+    /// </summary>
+    /// <param name="hookable">The hookable.</param>
+    /// <param name="fadeInOutTime">The fade in time, or fade out time in FadeMode::FadeOut.</param>
+    /// <param name="fadeMode">The fade mode. Only FadeMode::FadeIn and FadeMode::FadeOut are implemented.</param>
+    /// <param name="stayTime">The stay time. not implemented.</param>
+    /// <param name="fadeOutTime">The fade out time. not implemented.</param>
+    explicit FadeInOutAnimator(Hookable* hookable, Timing::seconds fadeInOutTime, FadeMode fadeMode = FadeMode::FadeIn, bool fadeOutRemovesText = false,
+            Timing::seconds stayTime = 1.0f, Timing::seconds fadeOutTime = 1.0f)
+        : fadeInOutTime(fadeInOutTime), fadeMode(fadeMode), fadeOutRemovesText(fadeOutRemovesText), stayTime(stayTime), fadeOutTime(fadeOutTime), hookable(hookable),
+        tifadeInOut(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)){
+        fadeDelta = 255.0f / Timing::FRAMESPERSECOND / fadeInOutTime;
     }
+
+    /** Loop functor, runs in the CText animator queue.
+     *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
+     * CText objects.
+     *  @param target The target canvas to paint on.
+     *  @param text The CText object to modify.
+     *  @param mdata Parameters for all TextAnimator's in the transformation loop.
+     */
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
+        // recording: punch in, punch out
+
+        int alpha = 0;
+
+        switch(fadeMode)
+        {
+        case FadeMode::FadeIn:
+            alpha = static_cast<int>(round(tifadeInOut.TicksSinceStart() * fadeDelta));
+            if(alpha > 255) {
+                alpha = 255;
+            }
+
+            break;
+        case FadeMode::FadeOut:
+            alpha = static_cast<int>(round(255 - tifadeInOut.TicksSinceStart() * fadeDelta));
+            if(alpha < 0) {
+                alpha = 0;
+            }
+
+            break;
+        case FadeMode::FadeInOut:
+            break;
+        default:
+            assert(false);
+            break;
+        } // switch
+        
+        text->GetCanvas()->SetTextureAlphaMod(alpha);
+       
+        if(tifadeInOut.IsAtOrAfter(fadeInOutTime)) {
+            mdata.state++;
+            mdata.markedForDeletion = true;
+            if (fadeMode == FadeMode::FadeOut && fadeOutRemovesText)
+            {
+                text->Dispose();
+            }
+        }
+    } // ()
 
     // ()
 };
