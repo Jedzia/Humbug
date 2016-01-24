@@ -40,6 +40,7 @@
 #include <GuiLib/GUI/Sprite/Sprite.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
+#include <GuiLib/GUI/Components/CanvasRendererImpl.h>
 
 namespace humbug {
 namespace levels {
@@ -278,103 +279,6 @@ public:
 int CanvasStripeRenderer::renderNum = 0;
 
 
-/** @class FadeInOutAnimator:
-*  Old test implementation. Use TextMover.
-*/
-class FadeInOutAnimator /*: public TextAnimator*/ {
-public:
-    enum class FadeMode {
-        FadeIn,
-        FadeOut,
-        FadeInOut
-    };
-
-private:
-    Timing::seconds fadeInOutTime;
-    FadeMode fadeMode;
-    bool fadeOutRemovesText;
-    Timing::seconds stayTime;
-    Timing::seconds fadeOutTime;
-    float fadeDelta;
-    Hookable* hookable;
-    Timing tifadeInOut;
-    Timing timingEnd;
-
-    Timing::UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable) const
-    {
-        if (!hookable) {
-            return NULL;
-        }
-
-        return boost::bind(&Hookable::GetTicks, boost::ref(*hookable));
-    }
-
-public:
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FadeInOutAnimator"/> class.
-    /// </summary>
-    /// <param name="hookable">The hookable.</param>
-    /// <param name="fadeInOutTime">The fade in time, or fade out time in FadeMode::FadeOut.</param>
-    /// <param name="fadeMode">The fade mode. Only FadeMode::FadeIn and FadeMode::FadeOut are implemented.</param>
-    /// <param name="stayTime">The stay time. not implemented.</param>
-    /// <param name="fadeOutTime">The fade out time. not implemented.</param>
-    explicit FadeInOutAnimator(Hookable* hookable, Timing::seconds fadeInOutTime, FadeMode fadeMode = FadeMode::FadeIn, bool fadeOutRemovesText = false,
-        Timing::seconds stayTime = 1.0f, Timing::seconds fadeOutTime = 1.0f)
-        : fadeInOutTime(fadeInOutTime), fadeMode(fadeMode), fadeOutRemovesText(fadeOutRemovesText), stayTime(stayTime), fadeOutTime(fadeOutTime), hookable(hookable),
-        tifadeInOut(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)){
-        fadeDelta = 255.0f / Timing::FRAMESPERSECOND / fadeInOutTime;
-    }
-
-    /** Loop functor, runs in the CCanvas renderer queue.
-    *  Functor implementation of the CCanvas::CCanvasRenderer that is used to modify or animate
-    *  CCanvas objects.
-    *  @param target The target canvas to paint on.
-    *  @param source The CCanvas object to modify.
-    *  @param mdata Parameters for all Renderers in the transformation loop.
-    */
-    void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
-        gui::components::CCanvasRenderModifierData& mdata)  {
-        // recording: punch in, punch out
-
-        int alpha = 0;
-
-        switch (fadeMode)
-        {
-        case FadeMode::FadeIn:
-            alpha = static_cast<int>(round(tifadeInOut.TicksSinceStart() * fadeDelta));
-            if (alpha > 255) {
-                alpha = 255;
-            }
-
-            break;
-        case FadeMode::FadeOut:
-            alpha = static_cast<int>(round(255 - tifadeInOut.TicksSinceStart() * fadeDelta));
-            if (alpha < 0) {
-                alpha = 0;
-            }
-
-            break;
-        case FadeMode::FadeInOut:
-            break;
-        default:
-            assert(false);
-            break;
-        } // switch
-
-        source->SetTextureAlphaMod(alpha);
-
-        if (tifadeInOut.IsAtOrAfter(fadeInOutTime)) {
-            mdata.state++;
-            mdata.markedForDeletion = true;
-            if (fadeMode == FadeMode::FadeOut && fadeOutRemovesText)
-            {
-                //source->Dispose();
-            }
-        }
-    } // ()
-
-    // ()
-};
 
 struct TestLevel::TestLevelImpl {
 private:
@@ -506,7 +410,7 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     //static CanvasStripeRenderer stripeModifier2(16, m_pArialfont, m_pOverlay.get());
     //m_pBanding2->GetCanvas()->AddAnimator(boost::ref(stripeModifier2));
     m_pBanding2->GetCanvas()->AddModifier(stripeModifier);
-    FadeInOutAnimator fadeRenderer(this, 3.0f, FadeInOutAnimator::FadeMode::FadeIn);
+    FadeInOutRenderer fadeRenderer(this, 3.0f, FadeInOutRenderer::FadeMode::FadeIn);
     m_pBanding2->GetCanvas()->AddModifier(fadeRenderer);
 
 
