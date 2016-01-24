@@ -164,27 +164,7 @@ public:
 /** @class FadeInOutAnimator:
  *  Old test implementation. Use TextMover.
  */
-class FadeInOutAnimator : public TextAnimator {
-public:
-    enum class FadeMode {
-        FadeIn,
-        FadeOut,
-        FadeInOut
-    };
-
-private:
-    //Timing::seconds fadeInOutTime;
-    //FadeMode fadeMode;
-   // bool fadeOutRemovesText;
-    //Timing::seconds stayTime;
-    //Timing::seconds fadeOutTime;
-    //float fadeDelta;
-   // Hookable* hookable;
-   // Timing tifadeInOut;
-   // Timing timingEnd;
-    FadeInOutRenderer frender;
-
-    static FadeInOutRenderer::FadeMode TranslateMode(FadeInOutAnimator::FadeMode fadeMode);
+class FadeInOutAnimator : public TextAnimator, FadeInOutRenderer {
 public:
 
     /// <summary>

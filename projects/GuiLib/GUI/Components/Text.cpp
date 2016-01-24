@@ -243,7 +243,7 @@ TextAnimator * CText::FadeIn(Hookable* hookable, Timing::seconds fadeInTime) {
 }
 
 TextAnimator * CText::FadeOut(Hookable* hookable, Timing::seconds fadeOutTime, bool fadeOutRemovesText) {
-    auto mover = new FadeInOutAnimator(hookable, fadeOutTime, FadeInOutAnimator::FadeMode::FadeOut, fadeOutRemovesText);
+    auto mover = new FadeInOutAnimator(hookable, fadeOutTime, FadeInOutRenderer::FadeMode::FadeOut, fadeOutRemovesText);
     AddAnimator(mover);
     return mover;
 }

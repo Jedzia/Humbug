@@ -50,7 +50,7 @@ TextAnimator * TextAnimator::FadeIn(Hookable* hookable, Timing::seconds fadeInTi
 }
 
 TextAnimator * TextAnimator::FadeOut(Hookable* hookable, Timing::seconds fadeOutTime, bool fadeOutRemovesText) {
-    auto mover = new FadeInOutAnimator(hookable, fadeOutTime, FadeInOutAnimator::FadeMode::FadeOut, fadeOutRemovesText);
+    auto mover = new FadeInOutAnimator(hookable, fadeOutTime, FadeInOutRenderer::FadeMode::FadeOut, fadeOutRemovesText);
     nextAnimator = mover;
     return mover;
 }
