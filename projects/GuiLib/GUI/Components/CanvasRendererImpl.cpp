@@ -41,7 +41,7 @@ gui::components::FadeInOutRenderer::FadeInOutRenderer(Hookable* hookable,
     fadeDelta = 255.0f / Timing::FRAMESPERSECOND / fadeInOutTime;
 }
 
-void gui::components::FadeInOutRenderer::operator()(CCanvas* source, const CCanvas* target, CCanvasRenderModifierData& mdata) {
+void gui::components::FadeInOutRenderer::operator()(const CCanvas* target, CCanvas* source, CCanvasRenderModifierData& mdata) {
     // recording: punch in, punch out
 
     int alpha = 0;

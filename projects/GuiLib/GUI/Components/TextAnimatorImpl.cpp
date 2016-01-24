@@ -250,7 +250,7 @@ FadeInOutAnimator::FadeInOutAnimator(Hookable* hookable,
 
 void FadeInOutAnimator::operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) {
     // recording: punch in, punch out
-    frender(text->GetCanvas(), target, mdata);
+    frender(target, text->GetCanvas(), mdata);
 
     /*int alpha = 0;
 

@@ -54,7 +54,7 @@ typedef enum
 //CCanvas class
 class CCanvas {
 public:
-    typedef boost::function<void(CCanvas* source, const CCanvas *target, CCanvasRenderModifierData& mdata)> CCanvasRenderer;
+    typedef boost::function<void(const CCanvas *target, CCanvas* source, CCanvasRenderModifierData& mdata)> CCanvasRenderer;
     void AddModifier(CCanvasRenderer updfunc);
 private:
     // remove them

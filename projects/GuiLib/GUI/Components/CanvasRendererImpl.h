@@ -59,7 +59,7 @@ public:
      *  @param source The CCanvas object to modify.
      *  @param mdata Parameters for all Renderers in the transformation loop.
      */
-    void operator()(CCanvas* source, const CCanvas* target, CCanvasRenderModifierData& mdata);
+    void operator()(const CCanvas* target, CCanvas* source, CCanvasRenderModifierData& mdata);
 
 private:
 

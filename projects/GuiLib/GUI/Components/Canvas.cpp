@@ -174,7 +174,7 @@ bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage,
 
         for(CCanvasRendererStorage::iterator it = storage.begin(); it < end; ++it)
         {
-            (*it)(source, const_cast<CCanvas *>(target), mdata);
+            (*it)(target, const_cast<CCanvas *>(source), mdata);
             if(mdata.markedForDeletion) {
                 CCanvasRendererStorage::iterator it2 = it;
                 removeList.push_back(it2);

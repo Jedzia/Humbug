@@ -66,7 +66,7 @@ public:
     explicit CanvasStripeRendererOld(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
     {}
 
-    void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
+    void operator()(const gui::components::CCanvas* target, gui::components::CCanvas* source,
             gui::components::CCanvasRenderModifierData& mdata){
         m_iFrames++;
 
@@ -171,7 +171,7 @@ public:
     float norm(float ceiling, float floor, float max, float min, float input){
         return 1.0f;
     }
-    void operator()(gui::components::CCanvas* source, const gui::components::CCanvas* target,
+    void operator()(const gui::components::CCanvas* target, gui::components::CCanvas* source,
             gui::components::CCanvasRenderModifierData& mdata){
         m_iFrames++;
 
