@@ -104,10 +104,10 @@ CPoint& CPoint::Set (int x, int y) {
     return (*this);
 }
 
-CPoint& CPoint::Copy (CPoint& pt) {
+CPoint& CPoint::Copy(const CPoint& pt) {
     //copy x and y
-    X() = pt.X();
-    Y() = pt.Y();
+    X() = pt.GetX();
+    Y() = pt.GetY();
     //return this point
     return (*this);
 }
@@ -128,7 +128,7 @@ CPoint& CPoint::Add (const CPoint& pt) {
     return (*this);
 }
 
-CPoint& CPoint::Subtract (CPoint& pt) {
+CPoint& CPoint::Subtract(const CPoint& pt) {
     //subtract point from this point
     (*this) -= pt;
     //return this point
@@ -144,10 +144,10 @@ CPoint& CPoint::Scale (int scalar) {
 }
 
 //distance
-int CPoint::Distance (CPoint& pt) {
+int CPoint::Distance(const CPoint& pt) {
     //calculate distance
     int distance = X() * X() + Y() * Y();
-    distance = ( int ) sqrt((double)distance);
+    distance = static_cast<int >(sqrt(static_cast<double>(distance)));
     //return the distance
     return (distance);
 }
@@ -170,10 +170,10 @@ CPoint& CPoint::operator += (const CPoint& pt) {
     return (*this);
 }
 
-CPoint& CPoint::operator -= (CPoint& pt) {
+CPoint& CPoint::operator -= (const CPoint& pt) {
     //subtract x and y
-    X() -= pt.X();
-    Y() -= pt.Y();
+    X() -= pt.GetX();
+    Y() -= pt.GetY();
     //return this point
     return (*this);
 }
@@ -194,14 +194,15 @@ CPoint& CPoint::operator /= (int scalar) {
 }
 
 //unary
-CPoint CPoint::operator - () {
+CPoint CPoint::operator - () const
+{
     //unary negativeness--multiply by -1
     CPoint pt = (*this);
     pt *= -1;
     return (pt);
 }
 
-CPoint CPoint::operator + () {
+CPoint CPoint::operator + () const {
     //unary positiveness
     return (*this);
 }
@@ -214,16 +215,15 @@ CPoint CPoint::operator + (const CPoint& pt) const {
     return (result);
 }
 
-CPoint CPoint::operator - (CPoint& pt) {
+CPoint CPoint::operator - (const CPoint& pt) const {
     //subtract points
-    CPoint result;
-    result = (*this);
+    CPoint result(GetX(), GetY());
     result -= pt;
     //return new point
     return (result);
 }
 
-CPoint CPoint::operator * (int scalar) {
+CPoint CPoint::operator * (int scalar) const {
     //multiply point by scalar
     CPoint result;
     result = (*this);
@@ -232,22 +232,22 @@ CPoint CPoint::operator * (int scalar) {
     return (result);
 }
 
-CPoint CPoint::operator / (int scalar) {
+CPoint CPoint::operator / (int scalar) const {
     //divide by scalar
     CPoint result;
-    result = (*this);
+    result = *this;
     result /= scalar;
     //return new point
-    return (result);
+    return result;
 }
 
 //comparison
 bool CPoint::operator == (const CPoint& pt) const {
     //check for equality
-    return (GetX() == pt.GetX() && GetY() == pt.GetY());
+    return GetX() == pt.GetX() && GetY() == pt.GetY();
 }
 
-bool CPoint::operator != (CPoint& pt) const {
+bool CPoint::operator != (const CPoint& pt) const {
     //check for inequality
     return (!((*this) == pt));
 }
@@ -255,7 +255,7 @@ bool CPoint::operator != (CPoint& pt) const {
 bool CPoint::operator < (const CPoint& pt) const {
     //check for equality
     //return (GetX() < pt.GetX() || GetY() < pt.GetY());
-    return (GetX() < pt.GetX());
+    return GetX() < pt.GetX();
 }
 
 CPoint::operator boost::numeric::ublas::vector<double>() const
@@ -302,7 +302,6 @@ CPoint::operator boost::numeric::ublas::vector<int>() const
     return result;
 }
 
-
 CPoint CPoint::Offset(int x, int y) {
     return CPoint(X() + x, Y() + y);
 }
@@ -310,7 +309,7 @@ CPoint CPoint::Offset(int x, int y) {
 CPoint operator * (int scalar, CPoint& pt) {
     //scalar*pt rather than pt*scalar, still the same idea...
     CPoint result = pt * scalar;
-    return (result);
+    return result;
 }
 } // namespace components
 } // namespace gui
