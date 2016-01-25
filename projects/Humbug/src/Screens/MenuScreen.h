@@ -82,7 +82,7 @@ public:
 private:
     class DingensPainter;
 
-    virtual void MenuSelectionChanged(int selectedLabel) const;
+    virtual void MenuSelectionChanged(const std::string& selectedLabel) const;
 
     struct MenuScreenImpl;
     boost::scoped_ptr<MenuScreenImpl> pimpl_;
@@ -100,13 +100,6 @@ private:
     boost::scoped_ptr<gui::HookableManager> m_HookMgr;
     gui::HookableManager* HookMgr() const { return m_HookMgr.get(); }
     TTF_Font* m_pDebugfont;
-
-    int label1;
-    int label2;
-    int label3;
-    int label4;
-    int label5;
-
 };
 }
 

@@ -21,6 +21,7 @@
 #include "Label.h"
 #include <boost/foreach.hpp>
 #include "../../GUI/Visual/Application.h"
+#include "../../GUI/Visual/HookableManager.h"
 
 using namespace gui::components;
 using namespace gui::controls;
@@ -30,6 +31,7 @@ namespace components {
 //#include <build/cmake/include/debug.h>
 
 int CLineMenu::LabelId = 6000;
+std::string CLineMenu::BackSelected = "-1";
 const int LABELFONTSIZE = 32;
 
 CLineMenu::CLineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const std::string& name,
@@ -208,7 +210,25 @@ void CLineMenu::UpdateIdle(int ticks) {
     SetOffset(offset);
 } // CLineMenu::UpdateIdle
 
-void CLineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
+    void CLineMenu::RaiseMenuChanged(int id)
+    {
+        m_sigMenuChanged(id);
+    }
+
+    void CLineMenu::RaiseMenuSChanged(int id)
+    {
+        if (id == -1)
+        {
+            m_sigMenuSChanged(BackSelected);
+            return;
+        }
+
+        const std::string& label = m_mMapLabelToId[id];
+        m_sigMenuSChanged(label);
+    }
+
+
+    void CLineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
     //m_KeyboardHandler.HandleKeyboardEvent(keyevent);
 
     //if (keyevent->type != SDL_KEYDOWN && keyevent->type != SDL_KEYUP) {
@@ -220,7 +240,10 @@ void CLineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
         switch(keyevent->key.keysym.sym) {
         case SDLK_BACKSPACE:
         case SDLK_q:
-            m_sigMenuChanged(-1);
+            {
+                RaiseMenuChanged(-1);
+                RaiseMenuSChanged(-1);
+            }
             break;
         default:
             break;
@@ -239,11 +262,13 @@ void CLineMenu::HookEventloop(SDL_Event* keyevent, bool onlyRecognizeQuit) {
         break;
     case SDLK_RETURN:
     case SDLK_e:
-        m_sigMenuChanged(m_iSelectedLabel);
+        RaiseMenuChanged(m_iSelectedLabel);
+        RaiseMenuSChanged(m_iSelectedLabel);
         break;
     case SDLK_BACKSPACE:
     case SDLK_q:
-        m_sigMenuChanged(-1);
+        RaiseMenuChanged(-1);
+        RaiseMenuSChanged(-1);
         break;
     default:
         break;
@@ -289,6 +314,14 @@ int CLineMenu::AddTextLabel(const std::string& text) {
 
     return id;
 } // CLineMenu::AddTextLabel
+
+int CLineMenu::AddTextLabel(const std::string& text, HookableManager* hookmanager, HookCreatorPtr generator)
+{
+    int id = AddTextLabel(text);
+    hookmanager->RegisterHookable(text, generator);
+    m_mMapLabelToId.insert(std::make_pair(id, text));
+    return id;
+}
 
 void CLineMenu::SetTextLabelText(int id, const std::string& text) {
     //CLabel& label = m_mLabels[id];

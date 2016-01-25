@@ -24,6 +24,8 @@
 #include "Control.h"
 #include "Label.h"
 #include "../Detail/Signals.h"
+#include <boost/any.hpp>
+#include "../../GUI/Visual/HookableManager.h"
 
 namespace gui {
 namespace components {
@@ -33,8 +35,10 @@ namespace components {
  */
 class CLineMenu : public controls::CControl { 
 public:
+    static std::string BackSelected;
     typedef bs::signal<void(int selectedLabel)>  menu_changed_signal_t;
     typedef bs::connection  menu_changed_connection_t;
+    typedef bs::signal<void(const std::string& selectedLabel)>  menu_changedS_signal_t;
 
     // CLineMenu(const FileLoader& loader, CCanvas* pCanvas);
     CLineMenu(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name, const CRectangle& dimensions, const CRectangle& padding);
@@ -50,6 +54,11 @@ public:
         subscriber.disconnect();
     }
 
+    menu_changed_connection_t ConnectMenuSChanged(menu_changedS_signal_t::slot_function_type subscriber)
+    {
+        return m_sigMenuSChanged.connect(subscriber);
+    }
+
     void OnDraw() override;
 
     /** EventLoop update.
@@ -63,15 +72,26 @@ public:
      *  @param ticks Use this to pass the ticks parameter of the idle loop.
      */
     void UpdateIdle(int ticks);
-
-    /** Create a text label and add it to the overlay.
+  
+    /** Create a text label and add it as menu entry.
      *  Creates a new text label with the specified text and adds it to the debug overlay.
      *  @param text The optional caption of the label. If not specified, an auto-generated text is used.
      *  @return a unique identifier of the label. This id can be used by functions like
-     *SetTextLabelText.
+     *          SetTextLabelText.
      */
     int AddTextLabel(const std::string& text = "");
-
+   
+    /** Create a menu entry with corresponding HookableManager link.
+    *  Creates a new text label with the specified text and adds it to the menu system.
+    *  The HookableManager is initialized with the specified data.
+    *  @param text The caption of the label. This string is also used as key on calling the MenuSChanged signal.
+    *  @param hookmanager The hookmanager to use.
+    *  @param generator The Hookable generator function.
+    *  @return a unique identifier of the label. This id can be used by functions like
+    *          SetTextLabelText.
+    */
+    int AddTextLabel(const std::string& text, HookableManager* hookmanager, HookCreatorPtr generator);
+  
     /** Sets the text of a label.
      *  Use this method to set the text of a label, created by AddTextLabel().
      *  @param id The identifikation number of the text label.
@@ -92,13 +112,17 @@ private:
     static void DrawRect(CCanvas* canvas, const CRectangle& dimensions, const CColor& color);
     CPoint CalculateStepValue(const controls::CLabel& labelD) const;
     void DrawChild(const CControl& parent, CControl* pChild) const override;
+    void RaiseMenuChanged(int id);
+    void RaiseMenuSChanged(int id);
 
     static int LabelId;
     menu_changed_signal_t m_sigMenuChanged;
+    menu_changedS_signal_t m_sigMenuSChanged;
     const FileLoader& m_pLoader;
     TTF_Font* m_pDebugfont;
     boost::scoped_ptr<CText> m_pTextA;
     boost::ptr_map<int, controls::CLabel> m_mLabels;
+    std::map<int, std::string> m_mMapLabelToId;
     int m_iLastAutoLabelPosition;
     std::string m_sName;
     CRectangle m_rPadding;

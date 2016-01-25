@@ -226,34 +226,6 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     TTF_Font* m_pArialfont;
     m_pDebugfont = m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
 
-/*
-    CRectangle lineMenuRect = Master()->GetMainCanvas()->GetDimension();
-    lineMenuRect.X() += 100;
-    lineMenuRect.W() -= 400;
-    lineMenuRect.Y() += 100;
-    lineMenuRect.H() -= 600;
- */
-    // Todo: derive a ScrollingLineMenu
-    CRectangle lineMenuRect(100, 100, 800, 300);
-    m_pLineMenu.reset(new CLineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect, CRectangle(10, 10, 10, 10)));
-    label1 = m_pLineMenu->AddTextLabel("Sub Menu A");
-    label2 = m_pLineMenu->AddTextLabel("Sub Menu B");
-    label3 = m_pLineMenu->AddTextLabel();
-    label4 = m_pLineMenu->AddTextLabel();
-    label4 = m_pLineMenu->AddTextLabel();
-    label4 = m_pLineMenu->AddTextLabel();
-    label4 = m_pLineMenu->AddTextLabel();
-    label4 = m_pLineMenu->AddTextLabel();
-    //static DingensPainter painter(this);
-    DingensPainter painter(this);
-    //m_pLineMenu->AddChildPainter(boost::ref(painter)); // uses ref, object must be valid
-    m_pLineMenu->AddChildPainter(painter); // performs copy
-    //m_pLineMenu->MakeChildPainter(new DingensPainter(this));
-    //m_pLineMenu->MakeChildPainter(boost::make_shared<DingensPainter>(this));
-    //m_pLineMenu->MakeChildPainter(DingensPainter::make_shared<DingensPainter>(this));
-    m_pLineMenu->MakeChildPainter<DingensPainter>(this);
-    m_connection = m_pLineMenu->connect(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
-
     mcol = CColor::White();
 
     SDL_Surface* tmpfsurf = (m_Loader.FL_LOADIMG("Intro/MenuScreenBg.png"));
@@ -311,9 +283,22 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     //text->FadeIn(this, 0.5f)->Wait(this, 3)->FadeOut(this, 2.5f, true);
 
 
-    HookMgr()->RegisterHookable("SubmenuA", boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
-    HookMgr()->RegisterHookable("SubmenuB", boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
-
+    // Todo: derive a ScrollingLineMenu
+    CRectangle lineMenuRect(100, 100, 800, 300);
+    m_pLineMenu.reset(new CLineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect, CRectangle(10, 10, 10, 10)));
+    m_pLineMenu->AddTextLabel("Sub Menu A", HookMgr(), boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
+    m_pLineMenu->AddTextLabel("Sub Menu B", HookMgr(), boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    m_pLineMenu->AddTextLabel();
+    DingensPainter painter(this);
+    m_pLineMenu->AddChildPainter(painter); // performs copy
+    m_pLineMenu->MakeChildPainter<DingensPainter>(this);
+    m_connection = m_pLineMenu->ConnectMenuSChanged(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
+    
     // this->AddExclusiveKeyfilters(SDLK_1, SDLK_2) etc.
 
     return Screen::OnInit(argc, argv);
@@ -405,10 +390,21 @@ void MenuScreen::OnEvent(SDL_Event* pEvent) {
     } // switch
 } // MenuScreen::OnEvent
 
-void MenuScreen::MenuSelectionChanged(int selectedLabel) const {
-    if(selectedLabel == -1) {
+void MenuScreen::MenuSelectionChanged(const std::string&  selectedLabel) const {
+    if (selectedLabel == CLineMenu::BackSelected) {
         HookMgr()->DisableHookable();
+        return;
     }
+   
+    if (HookMgr()->IsHookActive() || selectedLabel.empty()) {
+        return;
+    }
+
+    HookMgr()->EnableHookable(selectedLabel);
+
+    /*    if (selectedLabel == -1) {
+            HookMgr()->DisableHookable();
+        }
 
     // When in submenu no selection other than the "back" key should occur.
     if(HookMgr()->IsHookActive()) {
@@ -420,7 +416,7 @@ void MenuScreen::MenuSelectionChanged(int selectedLabel) const {
     }
     else if(selectedLabel == label2) {
         HookMgr()->EnableHookable("SubmenuB");
-    }
+    }*/
 
     dbgOut(__FUNCTION__ << "SelectedLabel: " << selectedLabel << " (" << this << ").");
 } // MenuScreen::MenuSelectionChanged
