@@ -29,6 +29,7 @@
 #include <GuiLib/GUI/Data/ColorData.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Components/TextAnimator.h>
+#include "MenuScreen/TutorA1.h"
 //
 //#include <build/cmake/include/debug.h>
 
@@ -288,6 +289,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pLineMenu.reset(new CLineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect, CRectangle(10, 10, 10, 10)));
     m_pLineMenu->AddTextLabel("Sub Menu A", HookMgr(), boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
     m_pLineMenu->AddTextLabel("Sub Menu B", HookMgr(), boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
+    m_pLineMenu->AddTextLabel("Tutor Intro", HookMgr(), boost::make_shared<ScreenCreator<TutorA1>>(m_Loader, m_pBackground.get()));
     m_pLineMenu->AddTextLabel();
     m_pLineMenu->AddTextLabel();
     m_pLineMenu->AddTextLabel();
