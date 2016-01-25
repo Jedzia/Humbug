@@ -537,7 +537,7 @@ CCanvas * CCanvas::CreateRGB (Uint32 flags, int width, int height, int depth, Ui
 }
 
 CCanvas * CCanvas::CreateRGBCompatible (Uint32 flags, int width, int height) {
-    // throw new std::exception("Fuck !");
+    // throw std::exception("Fuck !");
     //auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
     auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();
     SDL_PixelFormat* format = surface->format;
@@ -551,7 +551,7 @@ CCanvas * CCanvas::LoadBMP (string sFileName) {
 }
 
 CCanvas * CCanvas::LoadBMPCompatible (string sFileName) {
-    //throw new std::exception("Fuck !");
+    //throw std::exception("Fuck !");
     SDL_Surface* pSurface = SDL_LoadBMP(sFileName.c_str());
     //SDL_Surface* pSurface2 = SDL_DisplayFormat(pSurface);
     auto surface = CApplication::GetApplication()->GetMainCanvas()->GetSurface();

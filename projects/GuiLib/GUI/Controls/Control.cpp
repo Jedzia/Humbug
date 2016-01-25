@@ -44,7 +44,7 @@ CControl::CControl(gui::components::CCanvas* pCanvas, bool usesSDL2Render) :
     dbgOut(__FUNCTION__);
 
     if(s_pMainControl) {
-        // throw new std::exception("CControl::CControl, already has a master control.");
+        // throw std::exception("CControl::CControl, already has a master control.");
     }
 
     //set the canvas

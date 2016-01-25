@@ -390,8 +390,7 @@ CPoint CRectangle::Position(const CompassRose& value) const {
 
     case CompassRose::CompassRose_END:
     default:
-        assert(false);
-        return CPoint();
+        throw std::runtime_error("Illegal CRectangle::CompassRose enum.");
     } // switch
 } // CRectangle::Position
 

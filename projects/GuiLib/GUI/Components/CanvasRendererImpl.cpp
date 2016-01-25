@@ -65,8 +65,7 @@ void gui::components::FadeInOutRenderer::operator()(const CCanvas* target, CCanv
     case FadeMode::FadeInOut:
         break;
     default:
-        assert(false);
-        break;
+        throw std::runtime_error("Illegal fade mode.");
     } // switch
 
     source->SetTextureAlphaMod(alpha);

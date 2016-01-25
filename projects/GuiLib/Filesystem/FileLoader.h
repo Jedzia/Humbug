@@ -23,11 +23,9 @@
 
 #define STRX(x) # x
 #define STR(x) STRX(x)
-#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + "(" + STR( \
-                __LINE__) + ") -> " + __FUNCTION__)
+#define FL_LOADFONT(fname, ptsize) LoadFont(fname, ptsize, std::string("") + __FILE__ + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOADIMG(fname) LoadImg(fname, std::string("") + __FILE__ + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
-#define FL_LOADASSTRING(fname) LoadAsString(fname, std::string("") + __FILE__ + "(" + STR( \
-                __LINE__) + ") -> " + __FUNCTION__)
+#define FL_LOADASSTRING(fname) LoadAsString(fname, std::string("") + __FILE__ + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 #define FL_LOAD(fname) Load(fname, std::string("") + __FILE__ + "(" + STR(__LINE__) + ") -> " + __FUNCTION__)
 
 struct SDL_Surface;
@@ -43,20 +41,20 @@ class FileLoadingInfo : public boost::noncopyable {
 public:
 
     /** Initializes a new instance of the FileLoadingInfo class with a SDL_Surface.
-    *  Creates a FileLoadingInfo of a SDL_Surface.
-    *  @param name The name of the FileLoadingInfo.
-    *  @param surface The surface to be stored.
-    */
+     *  Creates a FileLoadingInfo of a SDL_Surface.
+     *  @param name The name of the FileLoadingInfo.
+     *  @param surface The surface to be stored.
+     */
     FileLoadingInfo(const std::string name, SDL_Surface* surface);
 
     /** Initializes a new instance of the <see cref="FileLoadingInfo"/> class with a TTF_Font.
-    *  Creates a FileLoadingInfo of a TTF_Font.
-    *  @param name The name of the FileLoadingInfo.
-    *  @param font The font to be stored.
-    *  @param area The underlying SDL_RWops data.
-    *  @param data The underlying raw file data.
-    *  @param fsize The size of the \p data.
-    */
+     *  Creates a FileLoadingInfo of a TTF_Font.
+     *  @param name The name of the FileLoadingInfo.
+     *  @param font The font to be stored.
+     *  @param area The underlying SDL_RWops data.
+     *  @param data The underlying raw file data.
+     *  @param fsize The size of the \p data.
+     */
     FileLoadingInfo(const std::string name, TTF_Font* font, SDL_RWops* area, char* data, int fsize);
 
     /// <summary>
@@ -69,10 +67,10 @@ public:
 
     /// <summary>
     /// Finalizes an instance of the <see cref="FileLoadingInfo"/> class.
-    /// </summary>   
+    /// </summary>
     /// <remarks>
     /// Handles the destruction of the stored raw data.
-    /// </remarks>   
+    /// </remarks>
     ~FileLoadingInfo();
 
     /**  Gets the name.
@@ -94,44 +92,44 @@ public:
     TTF_Font * GetFont() const { return m_pFont; }
 
     /** Gets the debug location data.
-    *  Gets the Debug Helper Location of this instance.
-    *  @return the Debug Helper Location.
-    */
+     *  Gets the Debug Helper Location of this instance.
+     *  @return the Debug Helper Location.
+     */
     std::string GetLocation() const { return m_strLoc; }
 
     /** Sets the debug location data.
-    *  Sets the Debug Helper Location of this instance.
-    *  @param val TODO
+     *  Sets the Debug Helper Location of this instance.
+     *  @param val TODO
      */
     void SetLocation(std::string val) { m_strLoc = val; }
 
     /** Gets the reference count.
-    *  Gets the number of instances referencing this object.
-    *  @return the reference count.
+     *  Gets the number of instances referencing this object.
+     *  @return the reference count.
      */
     int GetRefcount() const { return m_refcount; }
 
     /** Gets the stored surface.
-    *  Gets the Surface data connected with this instance.
-    *  @return the connected SDL_Surface.
-    */
+     *  Gets the Surface data connected with this instance.
+     *  @return the connected SDL_Surface.
+     */
     SDL_Surface * GetSurface() const {
         return m_pSurface;
     }
 
     /** Gets the stored data.
-    *  Gets the raw underlying data connected with this instance. 
-    *  Often SDL_RWops or pure binary file data.
-    *  @return the raw SDL data.
-    */
+     *  Gets the raw underlying data connected with this instance.
+     *  Often SDL_RWops or pure binary file data.
+     *  @return the raw SDL data.
+     */
     char * GetData() const {
         return m_pData;
     }
 
     /** Gets the FileSize.
-    *  Gets the size of the stored data (of @GetData). 
-    *  @return the size of the stored data.
-    */
+     *  Gets the size of the stored data (of @GetData).
+     *  @return the size of the stored data.
+     */
     int GetFileSize() const {
         return m_fsize;
     }
@@ -252,7 +250,7 @@ protected:
     void SetLastLoaded(const std::string name){
         m_pLastLoaded = name;
     }
-    
+
     boost::ptr_map<std::string, FileLoadingInfo> m_resMap;
 
 private:
@@ -276,7 +274,7 @@ class FileLoaderException : public boost::system::system_error {
 public:
 
     // compiler generates copy constructor and copy assignment
-    FileLoaderException(            const std::string & what_arg, boost::system::error_code ec);
+    FileLoaderException(const std::string & what_arg, boost::system::error_code ec);
 
     FileLoaderException(
             const std::string & what_arg, const std::string& path1_arg,
@@ -286,12 +284,12 @@ public:
             const std::string & what_arg, const std::string& path1_arg,
             const std::string& path2_arg, boost::system::error_code ec);
 
-    FileLoaderException(            const std::string & what_arg, int ec);
+    FileLoaderException(const std::string & what_arg, int ec);
 
     ~FileLoaderException()
-    throw() {}
+    throw(){}
 
-    /** $(fclass), path1:
+    /** Brief description of FileLoaderException, path1
      *  Detailed description.
      *  @return TODO
      */
@@ -299,7 +297,8 @@ public:
         static const std::string empty_path;
         return m_imp_ptr.get() ? m_imp_ptr->m_path1 : empty_path;
     }
-    /** $(fclass), path2:
+
+    /** Brief description of FileLoaderException, path2
      *  Detailed description.
      *  @return TODO
      */
@@ -307,6 +306,7 @@ public:
         static const std::string empty_path;
         return m_imp_ptr.get() ? m_imp_ptr->m_path2 : empty_path;
     }
+
     const char * what() const
     throw(); // what
 
