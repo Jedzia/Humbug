@@ -124,7 +124,7 @@ class CanvasStripeRenderer {
 public:
 
     // this little bastard should render colored stripes when ready.
-    explicit CanvasStripeRenderer(int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
+    explicit CanvasStripeRenderer(FileLoader& loader, int steps = 16, TTF_Font* debugFont = NULL, DebugOverlay* debug_overlay = NULL)
         : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps), m_pDebugFont(debugFont), m_pDovl(debug_overlay),
         label1(nullptr), label2(0), label3(0), label4(0), cs( "Coords", 400, 400, CPoint(100, 100) ){
         renderNum++;
@@ -133,6 +133,7 @@ public:
                {
                 controls::CLabel::SetLabelFont(debugFont);
                }*/
+            cs.SetLoader(&loader);
 
             // manual label creation
             label1.reset( new controls::CLabel( debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", debugFont,
@@ -402,7 +403,7 @@ bool TestLevel::OnInit( int argc, char* argv[] ){
     //m_pBanding1->DstRect().Y() -= 200;
     //m_pBanding1->DstRect().H() *= 2;
     m_pBanding1->Scale(0.6f);
-    CanvasStripeRenderer stripeModifier( 16, m_pArialfont, m_pOverlay.get() );
+    CanvasStripeRenderer stripeModifier(m_Loader, 16, m_pArialfont, m_pOverlay.get());
     m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
 
     m_pBanding2.reset( new CImage(new CCanvas( m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png") ), true) );

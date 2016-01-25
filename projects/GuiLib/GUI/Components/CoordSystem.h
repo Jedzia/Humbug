@@ -3,6 +3,8 @@
 
 #include "Canvas.h"
 
+class FileLoader;
+
 namespace gui {
 namespace components {
 
@@ -17,8 +19,17 @@ class CCoordSystem
     std::set<CPoint> m_vPoints;
     CPoint m_LastPoint;
     CPoint m_Offset;
+    FileLoader* m_pLoader;
+    TTF_Font* m_pFont;
+    CPoint m_Max;
+    CPoint m_Min;
 
     void RenderAxis(const CCanvas* target) const;
+    void RenderText(const CCanvas* target) const;
+    void TrackMinMax(int x, int y);
+
+    FileLoader* Loader() const {  return m_pLoader; }
+
 public:
     //constructor
     CCoordSystem(const char * title, int width, int height, const CPoint& offset = CPoint(0,0), Uint32 flags = 0);
@@ -40,8 +51,9 @@ public:
         *  @param pEnd The end point of the line.
         *  @param color The drawing color of the line or NULL if no color change is wanted.
         */
-    void RenderPut(const CCanvas* target) const;
+    void RenderPut(const CCanvas* target);
 
+    void SetLoader(FileLoader* const loader);
 };
 
 } // namespace components
