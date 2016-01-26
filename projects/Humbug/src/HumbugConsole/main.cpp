@@ -31,6 +31,9 @@
 #include "ProgOptions.h"
 #include <GuiLib/GUI/Components/Point.h>
 #include <GuiLib/GUI/Components/Rectangle.h>
+#include <Humbug/src/HumbugFileLoader.h>
+#include <HumbugLib/src/HumbugLib/AppGB.h>
+#include <HumbugLib/src/HumbugLib/LogManager.h>
 //#include <HumbugShared/GB.h>
 //#include <HumbugShared/Project/ProcessProject.h>
 #ifdef WIN32
@@ -80,10 +83,25 @@ void testChars() {
 
 void SimulateInOut()
 {
+    humbuglib::LogManager *mLogManager;
+    if (humbuglib::LogManager::getSingletonPtr() == 0)
+    {
+        mLogManager = new humbuglib::LogManager();
+        mLogManager->createLog("log-console.txt", true, true);
+    }
+
+    //std::string exepath = AppGB::Instance().ExePath();
+    std::string appDir = AppGB::Instance().AppDir();
+    //fl.reset(new HumbugFileLoader(appDir + "base_data"));
+    HumbugFileLoader fl(appDir + "base_data");
+    auto str = fl.FL_LOADASSTRING("data/levels/LevelA/Map1.map");
+
     //gui::components::CPoint p1(0, 0);
     gui::components::CRectangle r1(10, 20, 33, 55);
     cout << "Simulate running" << std::endl;
     cout << r1 << std::endl;
+
+
 }
 
 int wmain(int ac, hchar_t* av[]) {

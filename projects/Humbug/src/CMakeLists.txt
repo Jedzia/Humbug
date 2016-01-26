@@ -304,12 +304,14 @@ INSTALL(FILES
 SET(HumbugConsole_headers 
 #        HumbugConsole/GB.h
         HumbugConsole/ProgOptions.h 
+		HumbugConsole/HumbugFileLoader.h
 #        HumbugConsole/ProcessProject.h 
 )
 
 SET(HumbugConsole_sources 
 #        HumbugConsole/GB.cpp 
         HumbugConsole/ProgOptions.cpp 
+		HumbugConsole/HumbugFileLoader.cpp
 #        HumbugConsole/ProcessProject.cpp 
         HumbugConsole/main.cpp 
 )

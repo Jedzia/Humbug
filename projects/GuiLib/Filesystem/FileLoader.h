@@ -16,6 +16,7 @@
 #ifndef HUMBUG_FS_FILELOADER_H
 #define HUMBUG_FS_FILELOADER_H
 #include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/system/system_error.hpp>
