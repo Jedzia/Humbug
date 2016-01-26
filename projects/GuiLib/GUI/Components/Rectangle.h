@@ -151,6 +151,7 @@ CRectangle operator - ( CPoint& pt , CRectangle& rc ) ;
 
 
 std::ostream& operator<<(std::ostream& o, const CRectangle& r);
+std::istream& operator>>(std::istream& s, CRectangle& r);
 
 } // namespace components
 } // namespace gui

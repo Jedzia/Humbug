@@ -444,5 +444,72 @@ std::ostream& operator<<(std::ostream& o, const CRectangle& r) {
            ", W=" << r.GetW() << ", H=" << r.GetH() <<
            " ]";
 }
+
+std::string ParseFromValue(std::string input, const std::string& front, const std::string& delim, int& value)
+{
+    std::string tmp2Start = input.substr(0, 2);
+    if (tmp2Start != front)
+    {
+        std::string message("Front '");
+        message += tmp2Start + "' != '" + front + "'.";
+        return message;
+    }
+    std::string tmp2End = input.substr(2, input.size() - 3);
+    if (tmp2End.length() < 1)
+    {
+        std::string message("value not found '");
+        message += input + "'.";
+        return message;
+    }
+
+    std::string tmp2delim = input.substr(input.size() - 1, 1);
+    if (tmp2delim != delim)
+    {
+        std::string message("delimiter(");
+        message += delim + ") not found. '" + input + "'.";
+        return message;
+    }
+
+    std::istringstream instream;
+    instream.str(tmp2End);
+    instream >> value;
+
+    return "";
+}
+
+    void CheckResult(std::string result)
+    {
+        if (!result.empty())
+        {
+            std::string message = "Error parsing CRectangle: ";
+            message += result;
+            throw std::runtime_error(message);
+        }
+    }
+
+    std::istream& operator>>(std::istream& s, CRectangle& r)
+{
+    std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+    s >> tmp1;
+    s >> tmp2;
+    s >> tmp3;
+    s >> tmp4;
+    s >> tmp5;
+    s >> tmp6;
+    //s >> tmp7;
+
+    if (tmp1 != "CRectangle[")
+    {
+        return s;
+    }
+
+    // X=10,
+    CheckResult(ParseFromValue(tmp2, "X=", ",", r.X()));
+    CheckResult(ParseFromValue(tmp3, "Y=", ",", r.Y()));
+    CheckResult(ParseFromValue(tmp4, "W=", ",", r.W()));
+    CheckResult(ParseFromValue(tmp5 + tmp6, "H=", "]", r.H()));
+
+    return s;
+}
 } // namespace components
 } // namespace gui

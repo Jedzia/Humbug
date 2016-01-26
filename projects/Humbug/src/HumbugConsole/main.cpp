@@ -83,6 +83,8 @@ void testChars() {
 
 void SimulateInOut()
 {
+    using namespace gui::components;
+
     humbuglib::LogManager *mLogManager;
     if (humbuglib::LogManager::getSingletonPtr() == 0)
     {
@@ -97,10 +99,20 @@ void SimulateInOut()
     auto str = fl.FL_LOADASSTRING("data/levels/LevelA/Map1.map");
 
     //gui::components::CPoint p1(0, 0);
-    gui::components::CRectangle r1(10, 20, 33, 55);
-    cout << "Simulate running" << std::endl;
-    cout << r1 << std::endl;
+    CRectangle r1(10, 20, 33, 55);
+    cout << "Simulate running" << endl;
+    cout << r1 << endl;
+    std::ostringstream outstring;
+    outstring << r1;
+    std::string outFromr1 = outstring.str();
 
+
+    std::istringstream instream;
+    instream.str(outFromr1);
+    CRectangle r2;
+    //std::cin >> r2;
+    instream >> r2;
+    cout << r2 << endl;
 
 }
 
@@ -152,6 +164,8 @@ int wmain(int ac, hchar_t* av[]) {
        //logstream << "debug message " <<
        //   (CPPSTRUCTZ_NAMESPACE::log4csz::logstream_manipulator)
        //   CPPSTRUCTZ_NAMESPACE::log4csz::logstream_base::endmsg;*/
+    try
+    {
     ProgOptions progOpts(ac, av);
 
     if ( progOpts.isDebugPrint() ) {
@@ -186,6 +200,11 @@ int wmain(int ac, hchar_t* av[]) {
 	
     // \Todo: Das Option-Setup mit den statischen Daten, wie Workpath und Template 
     // spezifischen Interna ( START + END ), sollte in eine extra Setup-Klasse.
+    }
+    catch (std::exception ex)
+    {
+        cout << ex.what() << endl;
+    }
 
     return 0;
 } // main
