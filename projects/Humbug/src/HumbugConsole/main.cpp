@@ -36,6 +36,13 @@
 #include <HumbugLib/src/HumbugLib/LogManager.h>
 //#include <HumbugShared/GB.h>
 //#include <HumbugShared/Project/ProcessProject.h>
+#include <locale>
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <vector>
+#include <sstream>
+
 #ifdef WIN32
   #  include <process.h>
 #endif
@@ -81,6 +88,41 @@ void testChars() {
     //std::cout << "[TEST] testOutput: " << testOutput << std::endl;
 }
 
+class my_ctype : public
+    std::ctype<char>
+{
+    mask my_table[table_size];
+public:
+    my_ctype(size_t refs = 0)
+        : std::ctype<char>(&my_table[0], false, refs)
+    {
+        std::copy_n(classic_table(), table_size, my_table);
+        //my_table['-'] = (mask)space;
+        //my_table['-'] = (mask)space;
+        my_table['\"'] = (mask)space;
+        my_table[' '] = (mask)alpha;
+    }
+};
+
+std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
+{
+    std::vector<std::string>   result;
+    std::string                line;
+    std::getline(str, line);
+
+    std::stringstream          lineStream(line);
+    std::string                cell;
+
+    while (std::getline(lineStream, cell, '"'))
+    {
+        if (!cell.empty())
+        {
+            result.push_back(cell);
+        }
+    }
+    return result;
+}
+
 void SimulateInOut()
 {
     using namespace gui::components;
@@ -113,6 +155,23 @@ void SimulateInOut()
     //std::cin >> r2;
     instream >> r2;
     cout << r2 << endl;
+
+    std::istringstream instream2;
+    instream2.str("\"Older Depp, Du.\"");
+    std::locale x(std::locale::classic(), new my_ctype);
+    instream2.imbue(x);
+
+    std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+    instream2 >> tmp1;
+    instream2 >> tmp2;
+    instream2 >> tmp3;
+    instream2 >> tmp4;
+    instream2 >> tmp5;
+
+    std::istringstream instream3;
+    instream3.str("\"Older Depp, Du.\" CRect[ Bozer");
+    auto spl2 = getNextLineAndSplitIntoTokens(instream3);
+
 
 }
 
