@@ -1,4 +1,4 @@
-set STD=Humbug
+set STD=HumbugShared
 @set CURDIR=%CD%
 
 @echo off
