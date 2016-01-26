@@ -1,4 +1,24 @@
 
+-X-X-X-X- Di, 26 Jan 2016 02:53:13 -----------------------------------------------------------
+MakeVFS or something should copy 
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Tutor\Images\Tutor\A1\Class Diagram Screen01.jpg
+to 
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Work\Images\Tutor\A1\Class Diagram Screen01.jpg
+
+means 
+	Artwork\Tutor\Images
+to 	Artwork\Work\Images\
+
+*******
+
+    tmpfsurf = m_Loader.FL_LOADIMG("Images/Tutor/A1/Class Diagram Screen01");
+should be able to auto-load "Images/Tutor/A1/Class Diagram Screen01.png"
+
+*******
+projects\build\cmake\Modules\PackageCreate.cmake
+winzip part is broken
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Mi, 20 Jan 2016 14:58:29 -----------------------------------------------------------
 Todo:
  - Timeline

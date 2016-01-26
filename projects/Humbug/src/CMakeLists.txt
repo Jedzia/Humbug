@@ -208,6 +208,8 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 SET(Pak01_PACKAGE_SOURCE_FILES 
 		${PROJECT_SOURCE_DIR}/Icons/
 	    ${Humbug_Artwork_DIR}/data/
+	    ${Humbug_Artwork_DIR}/Tutor/
+#	    ${Humbug_Artwork_DIR}/Tutor/Images
 		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
 	    ${Humbug_Artwork_WORKDIR}/Intro/
@@ -222,6 +224,10 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    ${Humbug_Artwork_DIR}/Tiles/gfx/Tiles1.bmp
 )
 CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
+#SET(Pak01x_PACKAGE_SOURCE_FILES 
+#	    ${Humbug_Artwork_DIR}/Tutor/Images
+#)
+#CREATEPACKAGE(Humbug MakeVFSx "${Pak01x_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
 #ADD_DEPENDENCIES(MakeVFS Artwork)
 
 SET(Pak02_PACKAGE_SOURCE_FILES 

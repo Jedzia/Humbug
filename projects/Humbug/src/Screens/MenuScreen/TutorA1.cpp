@@ -92,18 +92,20 @@ bool TutorA1::OnInit( int argc, char* argv[] ){
     //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
     //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
     m_pBackground.reset( new CCanvas( tmpfsurf ) );
+    m_Loader.FreeLast();
     FadeInOutRenderer fadeRenderer(this, 3.0f, FadeInOutRenderer::FadeMode::FadeIn, true);
     m_pBackground->AddModifier(fadeRenderer);
-
     //CCanvas tmpCanvas( tmpfsurf );
-    m_Loader.FreeLast();
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pMainCanvas->AddUpdateRect( m_pBackground->GetDimension() );
+    m_pClassDia01.reset(new CCanvas(m_Loader.FL_LOADIMG("Images/Tutor/A1/Class Diagram Screen01.png")));
+    m_Loader.FreeLast();
+
 
     //"\r\n"
-    CColor m_colText = CColor::White();
+    CColor m_colText = CColor::Black();
     std::ostringstream outstring;
     outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
     outstring << " ";
@@ -127,7 +129,9 @@ bool TutorA1::OnInit( int argc, char* argv[] ){
         "";
 
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
-    m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 600), 800));
+    m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 730), 800));
+
+    //m_Loader.FL_LOADASSTRING("lua/sprite1.lua");
 
     return Screen::OnInit(argc, argv);
 
@@ -150,6 +154,7 @@ void TutorA1::OnDraw(){
     //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground,
     // m_pBackground->GetDimension() );
     m_pBackground->RenderCopy();
+    m_pClassDia01->RenderCopy(CPoint(20, 220));
     CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
@@ -157,7 +162,7 @@ void TutorA1::OnDraw(){
     //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
-    m_pMainCanvas->RenderFillRect( frect, &color );
+    //m_pMainCanvas->RenderFillRect( frect, &color );
     //m_pMainCanvas->AddUpdateRect(frect);
 
     CRectangle dstDims( 0, 0, 200, 200);
