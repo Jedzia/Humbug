@@ -9,6 +9,7 @@
    generation tool.
  *********************************************************************/
 #include "HumbugConsole/stdafx.h"
+//#include <tchar.h>
 //#include <boost/cstdint.hpp>
 //const boost::uint32_t dreck=4;
 
@@ -28,6 +29,8 @@
 
 //#include <project.hxx>
 #include "ProgOptions.h"
+#include <GuiLib/GUI/Components/Point.h>
+#include <GuiLib/GUI/Components/Rectangle.h>
 //#include <HumbugShared/GB.h>
 //#include <HumbugShared/Project/ProcessProject.h>
 #ifdef WIN32
@@ -75,9 +78,27 @@ void testChars() {
     //std::cout << "[TEST] testOutput: " << testOutput << std::endl;
 }
 
-int main(int ac, char* av[]) {
-    //using namespace CPPSTRUCTZ_NAMESPACE::log4csz;
+void SimulateInOut()
+{
+    //gui::components::CPoint p1(0, 0);
+    gui::components::CRectangle r1(10, 20, 33, 55);
+    cout << "Simulate running" << std::endl;
+    cout << r1 << std::endl;
+}
 
+int wmain(int ac, hchar_t* av[]) {
+//    return 0;
+//}
+
+
+//#if WIN32xsf
+//int _tmain(int ac, _TCHAR** av) {
+//int _tmain(int ac, hchar_t** av) {
+//#else
+//int xwmain(int ac, char* av[]) {
+//#endif // 0 
+    //using namespace CPPSTRUCTZ_NAMESPACE::log4csz;
+     
     //using namespace CPPSTRUCTZ_NAMESPACE::support;
     //using namespace CPPSTRUCTZ_NAMESPACE::config;
 
@@ -124,6 +145,11 @@ int main(int ac, char* av[]) {
         //        Level::getInfo() );
     }
 
+    if (progOpts.isSimulate()) {
+        SimulateInOut();
+        return 0;
+    }
+
     if ( progOpts.isHelpRequested() ) {
         testChars();
         return 0;
@@ -137,8 +163,8 @@ int main(int ac, char* av[]) {
 	cout << endl;
 	cout << ">>> ";
 	
-	std::string s;
-	std::cin >> s;
+	//std::string s;
+	//std::cin >> s;
 	
     // \Todo: Das Option-Setup mit den statischen Daten, wie Workpath und Template 
     // spezifischen Interna ( START + END ), sollte in eine extra Setup-Klasse.

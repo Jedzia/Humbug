@@ -336,8 +336,9 @@ ADD_EXECUTABLE(HumbugConsole #WIN32
 )
 
 TargetLinkBoost(HumbugConsole "program_options")
-TargetLinkBoost(HumbugConsole "filesystem;system;regex")
+TargetLinkBoost(HumbugConsole "filesystem;system;regex;serialization")
 #TARGET_LINK_LIBRARIES(HumbugConsole CppStructz)
+TARGET_LINK_LIBRARIES(HumbugConsole GuiLib)
 TARGET_LINK_LIBRARIES(HumbugConsole HumbugShared)
 #Copy_DLL_To_Target(HumbugConsole CppStructz)
 IF(USE_NLS)
