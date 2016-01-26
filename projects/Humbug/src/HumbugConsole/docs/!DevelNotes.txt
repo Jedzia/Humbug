@@ -1,0 +1,8 @@
+
+-X-X-X-X- Di, 26 Jan 2016 22:40:05 -----------------------------------------------------------
+some thoughts about text parsing, syntax:
+
+    m_pInfoText->makeCText<CText>(m_pArialfont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText);
+
+CText Arial, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", DarkRed;
+-----------------------------------------------------------------------------------------------
