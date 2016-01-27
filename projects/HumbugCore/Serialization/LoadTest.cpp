@@ -1,26 +1,26 @@
 #include "../stdafx.h"
 #include "../stddefs.h"
 //
-#include "Template.h"
+#include "LoadTest.h"
 //
 //#include <build/cmake/include/debug.h>
 
 namespace humbug {
 namespace core {
-  Template::Template(){
+  LoadTest::LoadTest(){
       dbgOut(__FUNCTION__);
   }
 
-  Template::~Template(void){
+  LoadTest::~LoadTest(void){
       dbgOut(__FUNCTION__);
   }
 
-  /** Template, Language:
+  /** LoadTest, Language:
    *  Detailed description.
    *  @param x TODO
    * @return TODO
    */
-  const char * Template::Language(int x) const {
+  const char * LoadTest::Language(int x) const {
       return "AsciiDoc";
   }
 }

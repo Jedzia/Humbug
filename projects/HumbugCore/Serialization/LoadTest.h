@@ -7,25 +7,28 @@
 
 namespace humbug {
 namespace core {
-  class Template {
+  /** @class LoadTest:
+   *  Detailed description.
+   */
+  class LoadTest {
 public:
 
-      Template();
-      ~Template();
+      LoadTest();
+      ~LoadTest();
 
-      /** Template, Str:
+      /** LoadTest, Str:
        *  Detailed description.
        *  @return TODO
        */
       std::string Str() const { return str; }
 
-      /** Template, Str:
+      /** LoadTest, Str:
        *  Detailed description.
        *  @param val TODO
        */
       void Str(std::string val) { str = val; }
 
-      /** Template, Language:
+      /** LoadTest, Language:
        *  Detailed description.
        *  @param x TODO
        *  @return TODO

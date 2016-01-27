@@ -72,10 +72,12 @@ SET(HumbugCore_GameObject_sources
 
 SET(HumbugCore_Serialization_headers 
 	Serialization/Test.h
+	Serialization/LoadTest.h
 )
 
 SET(HumbugCore_Serialization_sources 
 	Serialization/Test.cpp
+	Serialization/LoadTest.cpp
 )
 
 
@@ -137,8 +139,8 @@ SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
 SOURCE_GROUP(Resources FILES ${HumbugCore_resfiles})
 SOURCE_GROUP(GameObject FILES ${HumbugCore_GameObject_headers})
 SOURCE_GROUP(GameObject FILES ${HumbugCore_GameObject_sources})
-SOURCE_GROUP(Serialization FILES ${HumbugCore_Serialization_headers})
-SOURCE_GROUP(Serialization FILES ${HumbugCore_Serialization_sources})
+SOURCE_GROUP(SerializationHeader FILES ${HumbugCore_Serialization_headers})
+SOURCE_GROUP(SerializationSources FILES ${HumbugCore_Serialization_sources})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${HumbugCore_headers})
 SOURCE_GROUP(TSources FILES ${HumbugCore_sources})
