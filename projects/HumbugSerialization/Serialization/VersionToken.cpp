@@ -22,14 +22,13 @@
 
 namespace humbug {
 namespace serialization {
-    using namespace std;
-VersionToken::VersionToken() : m_iMajor(-1), m_iMinor(-1), m_iBuild(-1), m_iRevision(-1)
-{
-    dbgOut(__FUNCTION__);
+using namespace std;
+VersionToken::VersionToken() : m_iMajor(-1), m_iMinor(-1), m_iBuild(-1), m_iRevision(-1) {
+    //dbgOut(__FUNCTION__);
 }
 
 VersionToken::~VersionToken(void) {
-    dbgOut(__FUNCTION__);
+    //dbgOut(__FUNCTION__);
 }
 
 const char * VersionToken::Language(int x) const {
@@ -40,13 +39,19 @@ ostream& operator<<(ostream& o, const VersionToken& obj) {
     return o;
 }
 
-class my_ctypePoint : public ctype<char>
-{
+/** @class my_ctypePoint:
+ *  Detailed description.
+ *  @param i TODO
+ *  @param obj TODO
+ *  @return TODO
+ */
+class my_ctypePoint : public ctype<char>{
     mask my_table[table_size];
+
 public:
+
     my_ctypePoint(size_t refs = 0)
-        : ctype<char>(&my_table[0], false, refs)
-    {
+        : ctype<char>(&my_table[0], false, refs) {
         copy_n(classic_table(), table_size, my_table);
         //my_table['-'] = (mask)space;
         //my_table['-'] = (mask)space;
@@ -62,60 +67,56 @@ istream& operator>>(istream& i, VersionToken& obj) {
     string tmp1, tmp2;
     i >> tmp1;
     transform(tmp1.begin(), tmp1.end(), tmp1.begin(), ::tolower);
-    if (tmp1 != "version")
-    {
+    if(tmp1 != "version") {
         string message = msgStart + "First argument is not like [V|v]ersion: '" + tmp1 + "'.";
         throw TokenParsingException(message);
     }
 
     i >> tmp2;
 
-    if (tmp2.empty())
-    {
+    if(tmp2.empty()) {
         string message = msgStart + "Version argument is empty. Should be in the form (Major.Minor.Build.Revision).";
         throw TokenParsingException(message);
     }
 
-    stringstream          iss(tmp2);
+    stringstream iss(tmp2);
     locale filterLocale(locale::classic(), new my_ctypePoint);
     iss.imbue(filterLocale);
 
-    vector<string> tokens{ istream_iterator<string>{iss},
-        istream_iterator<string>{} };
+    vector<string> tokens {
+        istream_iterator<string>{
+            iss
+        },
+        istream_iterator<string>{}
+    };
 
-    if (tokens.size() < 1)
-    {
+    if(tokens.size() < 1) {
         string message = msgStart + "Version argument is not valid. Should be in the form (Major.Minor.Build.Revision).";
         throw TokenParsingException(message);
     }
 
-    if (tokens.size() >= 1)
-    {
+    if(tokens.size() >= 1) {
         obj.m_iMajor = stoi(tokens[0]);
     }
-    
-    if (tokens.size() >= 2)
-    {
+
+    if(tokens.size() >= 2) {
         obj.m_iMinor = stoi(tokens[1]);
     }
-    
-    if (tokens.size() >= 3)
-    {
+
+    if(tokens.size() >= 3) {
         obj.m_iBuild = stoi(tokens[2]);
     }
-    
-    if (tokens.size() >= 4)
-    {
+
+    if(tokens.size() >= 4) {
         obj.m_iRevision = stoi(tokens[3]);
     }
 
-    if (tokens.size() >= 5)
-    {
+    if(tokens.size() >= 5) {
         string message = msgStart + "Version argument is not in the form (Major.Minor.Build.Revision): '" + tmp2 + "'.";
         throw TokenParsingException(message);
     }
 
     return i;
-}
+} // >>
 }
 }

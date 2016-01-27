@@ -13,11 +13,11 @@ namespace serialization {
     }
 
     Token::Token(){
-      dbgOut(__FUNCTION__);
+      //dbgOut(__FUNCTION__);
   }
 
   Token::~Token(void){
-      dbgOut(__FUNCTION__);
+      //dbgOut(__FUNCTION__);
   }
 
   /** Token, Language:

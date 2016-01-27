@@ -199,10 +199,27 @@ std::string ltrim(std::string str) {
     return std::regex_replace(str, std::regex("^\\s+"), std::string(""));
 }
 
+class CStopWatch
+{
+private:
+    clock_t start;
+    clock_t finish;
+
+public:
+    double GetDuration() { return (double)(finish - start) / CLOCKS_PER_SEC; }
+    void Start() { start = clock(); }
+    void Stop()  { finish = clock(); }
+
+}; // class CStopWatch
 
 void SimulateInOut()
 {
     using namespace gui::components;
+
+    cout << endl;
+    cout << endl;
+    cout << endl;
+    cout << "Start Simulate" << endl;
 
     humbuglib::LogManager *mLogManager;
     if (humbuglib::LogManager::getSingletonPtr() == 0)
@@ -319,36 +336,25 @@ void SimulateInOut()
             vec.push_back(val);
         }
     }
+ 
+    cout << endl;
+    cout << endl;
+    cout << "Version parse" << endl;
 
+    CStopWatch sw;
+    sw.Start();
+    //std::time()
+    for (size_t i = 0; i < 10000; i++)
         {
             std::istringstream instream3;
             instream3.str("Version 1.2.3.4");
-            //std::locale x(std::locale::classic(), new my_ctypeComma);
-            //instream3.imbue(x);
-
-            std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
             humbug::serialization::VersionToken vtok1;
             instream3 >> vtok1;
 
-            /*//std::string line = newstr;
-            std::string line;
-            getline(instream3, line);
-
-            std::vector<std::string> vec;
-            using namespace boost;
-            tokenizer<escaped_list_separator<char> > tk(
-                line, escaped_list_separator<char>('\\', ',', '\"'));
-            for (tokenizer<escaped_list_separator<char> >::iterator i(tk.begin());
-                i != tk.end(); ++i)
-            {
-                auto val = *i;
-                std::locale x(std::locale::classic(), new my_ctypeIgnore);
-                //lineStream.imbue(x);
-                trim(val, x);
-
-                vec.push_back(val);
-            }*/
         }
+    sw.Stop();
+    cout << "Time: " << sw.GetDuration() << endl;
+    cout << endl;
 
     // Todo: create a version class derived from a token class in the serializer lib
     //       that reads in versioned stuff from iostream.
