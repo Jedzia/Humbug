@@ -63,6 +63,7 @@ ADD_SUBDIRECTORY(HumbugShared)
 
 ADD_SUBDIRECTORY(GuiLib)
 ADD_SUBDIRECTORY(HumbugCore)
+ADD_SUBDIRECTORY(HumbugSerialization)
 ADD_SUBDIRECTORY(Humbug )
 ADD_SUBDIRECTORY(Playground)
 #ADD_SUBDIRECTORY(build/Templates/src/Templates)
