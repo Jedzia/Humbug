@@ -339,21 +339,24 @@ void SimulateInOut()
  
     cout << endl;
     cout << endl;
-    cout << "Version parse" << endl;
+    const int iMax = 10000;
+    const char* versionString = "Version 1.2.3.4";
+    cout << iMax << " * Version parse of '" << versionString << "'."  << endl;
 
     CStopWatch sw;
     sw.Start();
     //std::time()
-    for (size_t i = 0; i < 10000; i++)
+    humbug::serialization::VersionToken vtok1;
+    for (int i = 0; i < iMax; ++i)
         {
             std::istringstream instream3;
-            instream3.str("Version 1.2.3.4");
-            humbug::serialization::VersionToken vtok1;
+            instream3.str(versionString);
             instream3 >> vtok1;
-
         }
     sw.Stop();
     cout << "Time: " << sw.GetDuration() << endl;
+    cout << "VersionToken: " << vtok1 << endl;
+    cout << endl;
     cout << endl;
 
     // Todo: create a version class derived from a token class in the serializer lib

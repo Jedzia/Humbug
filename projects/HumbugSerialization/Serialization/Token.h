@@ -39,7 +39,7 @@ class Token {
 public:
 
     Token();
-    ~Token();
+    virtual ~Token();
 
     /** Token, Str:
      *  Detailed description.
@@ -58,7 +58,7 @@ public:
      *  @param x TODO
      *  @return TODO
      */
-    const char * Language(int x) const;
+    virtual const char * Language(int x) const;
 
 private:
 

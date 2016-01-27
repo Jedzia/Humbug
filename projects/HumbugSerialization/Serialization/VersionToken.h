@@ -33,24 +33,24 @@ public:
     VersionToken();
     ~VersionToken();
 
-    /** VersionToken, Str:
+    /** VersionToken, BlaStr:
      *  Detailed description.
      *  @return TODO
      */
-    std::string Str() const { return str; }
+    std::string BlaStr() const { return str; }
 
-    /** VersionToken, Str:
+    /** VersionToken, BlaStr:
      *  Detailed description.
      *  @param val TODO
      */
-    void Str(std::string val) { str = val; }
+    void BlaStr(std::string val) { str = val; }
 
     /** VersionToken, Language:
      *  Detailed description.
      *  @param x TODO
      *  @return TODO
      */
-    const char * Language(int x) const;
+    const char * Language(int x) const override;
 
 
     friend std::ostream& operator<<(std::ostream& o, const VersionToken& obj);

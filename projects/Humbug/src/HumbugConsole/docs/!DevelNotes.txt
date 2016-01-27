@@ -1,4 +1,8 @@
 
+-X-X-X-X- Mi, 27 Jan 2016 17:03:49 -----------------------------------------------------------
+msbuild Humbug.sln /m /v:n /p:Configuration=Release /t:HumbugConsole && Humbug\src\Release\HumbugConsole.exe -s
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Di, 26 Jan 2016 22:40:05 -----------------------------------------------------------
 some thoughts about text parsing, syntax:
 

@@ -36,6 +36,15 @@ const char * VersionToken::Language(int x) const {
 }
 
 ostream& operator<<(ostream& o, const VersionToken& obj) {
+    o << "Version ";
+    
+    o << obj.m_iMajor;
+    o << ".";
+    o << obj.m_iMinor;
+    o << ".";
+    o << obj.m_iBuild;
+    o << ".";
+    o << obj.m_iRevision;
     return o;
 }
 
@@ -80,7 +89,7 @@ istream& operator>>(istream& i, VersionToken& obj) {
     }
 
     stringstream iss(tmp2);
-    locale filterLocale(locale::classic(), new my_ctypePoint);
+    static locale filterLocale(locale::classic(), new my_ctypePoint);
     iss.imbue(filterLocale);
 
     vector<string> tokens {
@@ -90,28 +99,29 @@ istream& operator>>(istream& i, VersionToken& obj) {
         istream_iterator<string>{}
     };
 
-    if(tokens.size() < 1) {
+    size_t tokensize = tokens.size();
+    if(tokensize < 1) {
         string message = msgStart + "Version argument is not valid. Should be in the form (Major.Minor.Build.Revision).";
         throw TokenParsingException(message);
     }
 
-    if(tokens.size() >= 1) {
+    if (tokensize >= 1) {
         obj.m_iMajor = stoi(tokens[0]);
     }
 
-    if(tokens.size() >= 2) {
+    if(tokensize >= 2) {
         obj.m_iMinor = stoi(tokens[1]);
     }
 
-    if(tokens.size() >= 3) {
+    if(tokensize >= 3) {
         obj.m_iBuild = stoi(tokens[2]);
     }
 
-    if(tokens.size() >= 4) {
+    if(tokensize >= 4) {
         obj.m_iRevision = stoi(tokens[3]);
     }
 
-    if(tokens.size() >= 5) {
+    if(tokensize >= 5) {
         string message = msgStart + "Version argument is not in the form (Major.Minor.Build.Revision): '" + tmp2 + "'.";
         throw TokenParsingException(message);
     }
