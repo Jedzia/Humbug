@@ -17,6 +17,7 @@
 //#define LOGMANAGER_NOLOG 1
 #include <HumbugLib/LogManager.h>
 #include <HumbugCore/Serialization/Test.h>
+#include <iostream>
 
 using namespace humbug::core;
 

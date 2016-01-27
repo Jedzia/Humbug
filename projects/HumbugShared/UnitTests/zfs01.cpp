@@ -17,6 +17,7 @@
 #define LOGMANAGER_NOLOG 1
 //#include <HumbugLib/LogManager.h>
 #include <HumbugShared/VFS/zfsystem.h>
+#include <iostream>
 
 //
 //#include <build/cmake/include/debug.h>
