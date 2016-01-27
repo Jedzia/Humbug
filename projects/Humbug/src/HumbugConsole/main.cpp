@@ -44,6 +44,7 @@
 #include <sstream>
 #include <regex>
 #include <boost/algorithm/string.hpp>
+#include <HumbugSerialization/Serialization/VersionToken.h>
 
 #ifdef WIN32
   #  include <process.h>
@@ -318,6 +319,39 @@ void SimulateInOut()
             vec.push_back(val);
         }
     }
+
+        {
+            std::istringstream instream3;
+            instream3.str("Version 1.2.3.4");
+            //std::locale x(std::locale::classic(), new my_ctypeComma);
+            //instream3.imbue(x);
+
+            std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+            humbug::serialization::VersionToken vtok1;
+            instream3 >> vtok1;
+
+            /*//std::string line = newstr;
+            std::string line;
+            getline(instream3, line);
+
+            std::vector<std::string> vec;
+            using namespace boost;
+            tokenizer<escaped_list_separator<char> > tk(
+                line, escaped_list_separator<char>('\\', ',', '\"'));
+            for (tokenizer<escaped_list_separator<char> >::iterator i(tk.begin());
+                i != tk.end(); ++i)
+            {
+                auto val = *i;
+                std::locale x(std::locale::classic(), new my_ctypeIgnore);
+                //lineStream.imbue(x);
+                trim(val, x);
+
+                vec.push_back(val);
+            }*/
+        }
+
+    // Todo: create a version class derived from a token class in the serializer lib
+    //       that reads in versioned stuff from iostream.
 }
 
 int wmain(int ac, hchar_t* av[]) {

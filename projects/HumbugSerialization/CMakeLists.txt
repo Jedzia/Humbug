@@ -75,34 +75,30 @@ SET(HumbugSerialization_GameObject_sources
 SET(HumbugSerialization_Serialization_headers 
 	Serialization/Test.h
 	Serialization/LoadTest.h
+	Serialization/SerializationHelpers.h
+	Serialization/Token.h
+	Serialization/VersionToken.h
 )
 
 SET(HumbugSerialization_Serialization_sources 
 	Serialization/Test.cpp
 	Serialization/LoadTest.cpp
+	Serialization/SerializationHelpers.cpp
+	Serialization/Token.cpp
+	Serialization/VersionToken.cpp
 )
 
 
 SET(HumbugSerialization_headers 
 #	GB.h
-	
-#	VFS/fileio.h
-#	VFS/static_assert.h
-#	VFS/stdafx.h
-#	VFS/stdint.h
-#	VFS/zfsystem.h
-#	VFS/ziphdr.h
-#	VFS/zstream.h
-#	VFS/zstream_zlib.h
+
 #	Project/ProcessProjectPrivate.h
 )
 
 SET(HumbugSerialization_sources 
 #	GB.cpp
 
-#	VFS/zfsystem.cpp
-#	VFS/ziphdr.cpp
-#	VFS/zstream.cpp
+#	Project/ProcessProjectPrivate.cpp
 )
 
 #SET(HumbugSerialization_INCLUDE_DIR ${HumbugSerialization_IncludePath} CACHE PATH "HumbugSerialization include directory." FORCE)
