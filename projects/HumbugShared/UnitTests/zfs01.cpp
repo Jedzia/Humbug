@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE( test1 )
 	int bufsize = 0;
     izfstream file( filename.c_str() );
 
-    BOOST_CHECK( file != 0 );
+    BOOST_CHECK( file.is_open() != 0 );
     if (!file) {
         //LOGSTREAM << "ERROR: Cannot open file!";
         std::cout << "ERROR: Cannot open file!" << std::endl;

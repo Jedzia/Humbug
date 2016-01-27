@@ -16,9 +16,9 @@
 
 //#define LOGMANAGER_NOLOG 1
 #include <HumbugLib/LogManager.h>
-#include <HumbugCore/GameObjects/GVector2D.h>
+#include <HumbugCore/Serialization/Test.h>
 
-using namespace gob;
+using namespace humbug::core;
 
 struct MyConfig
 {
@@ -61,21 +61,9 @@ BOOST_AUTO_TEST_CASE( Vector2D_direction_test )
 	}*/
 
 
-	GVector2D vecUp = GVector2D::Up();
-	BOOST_CHECK( vecUp.x == 0.0f ) ;
-	BOOST_CHECK( vecUp.y == -1.0f ) ;
-
-	GVector2D vecDown = GVector2D::Down();
-	BOOST_CHECK( vecDown.x == 0.0f ) ;
-	BOOST_CHECK( vecDown.y == -1.0f ) ;
-
-	GVector2D vecLeft = GVector2D::Left();
-	BOOST_CHECK( vecLeft.x == 0.0f ) ;
-	BOOST_CHECK( vecLeft.y == -1.0f ) ;
-
-	GVector2D vecRight = GVector2D::Right();
-	BOOST_CHECK( vecRight.x == 0.0f ) ;
-	BOOST_CHECK( vecRight.y == -1.0f ) ;
+	Template testObject;
+    BOOST_CHECK( testObject.Str() == "");
+    BOOST_CHECK( testObject.Language(5) == "Bla");
 
 	//delete mLogManager;
 }
