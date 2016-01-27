@@ -42,6 +42,8 @@
 #include <iterator>
 #include <vector>
 #include <sstream>
+#include <regex>
+#include <boost/algorithm/string.hpp>
 
 #ifdef WIN32
   #  include <process.h>
@@ -88,32 +90,101 @@ void testChars() {
     //std::cout << "[TEST] testOutput: " << testOutput << std::endl;
 }
 
-class my_ctype : public
+class my_ctypeComma : public
     std::ctype<char>
 {
     mask my_table[table_size];
 public:
-    my_ctype(size_t refs = 0)
-        : std::ctype<char>(&my_table[0], false, refs)
+    my_ctypeComma(size_t refs = 0)
+        : ctype<char>(&my_table[0], false, refs)
     {
         std::copy_n(classic_table(), table_size, my_table);
         //my_table['-'] = (mask)space;
         //my_table['-'] = (mask)space;
-        my_table['\"'] = (mask)space;
-        my_table[' '] = (mask)alpha;
+        //my_table['\"'] = (mask)space;
+        //my_table[' '] = (mask)alpha;
+        my_table[','] = static_cast<mask>(blank);
+        my_table[';'] = static_cast<mask>(blank);
     }
 };
 
-std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
+class my_ctypeSpace : public
+    std::ctype<char>
+{
+    mask my_table[table_size];
+public:
+    my_ctypeSpace(size_t refs = 0)
+        : ctype<char>(&my_table[0], false, refs)
+    {
+        std::copy_n(classic_table(), table_size, my_table);
+        //my_table['-'] = (mask)space;
+        //my_table['-'] = (mask)space;
+        //my_table['\"'] = (mask)space;
+        my_table[' '] = (mask)alpha;
+        //my_table[','] = static_cast<mask>(blank);
+        //my_table[';'] = static_cast<mask>(space);
+    }
+};
+
+class my_ctypeIgnore : public
+    std::ctype<char>
+{
+    mask my_table[table_size];
+public:
+    my_ctypeIgnore(size_t refs = 0)
+        : ctype<char>(&my_table[0], false, refs)
+    {
+        std::copy_n(classic_table(), table_size, my_table);
+        //my_table['-'] = (mask)space;
+        //my_table['-'] = (mask)space;
+        //my_table['\"'] = (mask)space;
+        //my_table[' '] = static_cast<mask>(alpha);
+        my_table['"'] = static_cast<mask>(blank);
+        my_table[';'] = static_cast<mask>(blank);
+        //my_table[';'] = static_cast<mask>(space);
+    }
+};
+
+
+std::vector<std::string> getNextLineAndSplitIntoTokens2(std::istream& str, int maxNum = std::numeric_limits<int>::max())
 {
     std::vector<std::string>   result;
     std::string                line;
-    std::getline(str, line);
+    getline(str, line);
 
     std::stringstream          lineStream(line);
     std::string                cell;
 
-    while (std::getline(lineStream, cell, '"'))
+    std::locale x(std::locale::classic(), new my_ctypeIgnore);
+    //lineStream.imbue(x);
+
+    while (maxNum-- && getline(lineStream, cell, ','))
+    {
+        if (!cell.empty())
+        {
+            using namespace std;
+            using namespace boost::algorithm;
+            if (cell.find_first_of("\"") == 1)
+            {
+                string::size_type xx = cell.find_first_of("\"", 1);
+                int xxxx = 0;
+                xxxx++;
+            }
+            //trim_right(cell);
+            trim(cell, x);
+            result.push_back(cell);
+        }
+    }
+    return result;
+}
+
+std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str, int maxNum = 1)
+{
+    std::vector<std::string>   result;
+
+    std::string                cell;
+
+    while (maxNum-- && getline(str, cell, '"'))
     {
         if (!cell.empty())
         {
@@ -122,6 +193,11 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str)
     }
     return result;
 }
+
+std::string ltrim(std::string str) {
+    return std::regex_replace(str, std::regex("^\\s+"), std::string(""));
+}
+
 
 void SimulateInOut()
 {
@@ -156,24 +232,92 @@ void SimulateInOut()
     instream >> r2;
     cout << r2 << endl;
 
-    std::istringstream instream2;
-    instream2.str("\"Older Depp, Du.\"");
-    std::locale x(std::locale::classic(), new my_ctype);
-    instream2.imbue(x);
+    {
+        std::istringstream instream2;
+        instream2.str("\"Older Depp, Du.\"");
+        std::locale x(std::locale::classic(), new my_ctypeComma);
+        instream2.imbue(x);
 
-    std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
-    instream2 >> tmp1;
-    instream2 >> tmp2;
-    instream2 >> tmp3;
-    instream2 >> tmp4;
-    instream2 >> tmp5;
+        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+        instream2 >> tmp1;
+        instream2 >> tmp2;
+        instream2 >> tmp3;
+        instream2 >> tmp4;
+        instream2 >> tmp5;
+    }
 
-    std::istringstream instream3;
-    std::string newstr = "\"Older Depp, Du.\" CRect[ Bozer";
-    instream3.str(newstr);
-    auto spl2 = getNextLineAndSplitIntoTokens(instream3);
+    //std::string newstr = "CText Arial, \"Use the up and down arrow or[w] and[s] to move the menu cursor up and down.\", DarkRed;";
+    std::string newstr = "CText Arial, \"Use the up and down arrow, or[w] and[s] to move the menu cursor up and down.\", DarkRed;";
+    {
+        // Boost.StringAlgorithm or Boost.Tokenizer would help
+        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+        std::istringstream instream3;
+        instream3.str(newstr);
+        //std::locale x(std::locale::classic(), new my_ctypeComma);
+        //instream3.imbue(x);
 
+        instream3 >> tmp1;
+        //instream3 >> tmp2;
+        //instream3 >> tmp3;
 
+        auto spl2 = getNextLineAndSplitIntoTokens2(instream3);
+        auto spl3 = getNextLineAndSplitIntoTokens(instream3);
+        
+        instream3 >> tmp7;
+    }
+    {
+        std::string delimiters("\",;");
+        std::vector<std::string> parts;
+        split(parts, newstr, boost::is_any_of(delimiters));
+    }
+
+    {
+        std::istringstream instream4;
+        instream4.str(newstr);
+        std::string sin((std::istreambuf_iterator<char>(instream4)),
+        std::istreambuf_iterator<char>());
+        
+        //std::regex word_regex(",(?!(?<=(?:^|,)\s*\"(?:[^\"]|\"\"|\\\")*,)(?:[^\"]|\"\"|\\\")*\"\s*(?:,|$))");
+        std::regex word_regex(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+        auto what =
+            std::sregex_iterator(sin.begin(), sin.end(), word_regex);
+        auto wend = std::sregex_iterator();
+
+        std::vector<std::string> v;
+        for (; what != wend; ++what) {
+            std::smatch match = *what;
+            v.push_back(match.str());
+        }
+    }
+    
+    {
+        std::istringstream instream3;
+        instream3.str(newstr);
+        //std::locale x(std::locale::classic(), new my_ctypeComma);
+        //instream3.imbue(x);
+
+        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+        instream3 >> tmp1;
+
+        //std::string line = newstr;
+        std::string line;
+        getline(instream3, line);
+
+        std::vector<std::string> vec;
+        using namespace boost;
+        tokenizer<escaped_list_separator<char> > tk(
+            line, escaped_list_separator<char>('\\', ',', '\"'));
+        for (tokenizer<escaped_list_separator<char> >::iterator i(tk.begin());
+            i != tk.end(); ++i)
+        {
+            auto val = *i;
+            std::locale x(std::locale::classic(), new my_ctypeIgnore);
+            //lineStream.imbue(x);
+            trim(val, x);
+
+            vec.push_back(val);
+        }
+    }
 }
 
 int wmain(int ac, hchar_t* av[]) {
