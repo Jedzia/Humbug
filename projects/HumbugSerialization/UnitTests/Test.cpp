@@ -18,7 +18,7 @@
 #include <HumbugLib/LogManager.h>
 #include <HumbugSerialization/Serialization/Test.h>
 
-using namespace humbug::core;
+using namespace humbug::serialization;
 
 struct MyConfig
 {

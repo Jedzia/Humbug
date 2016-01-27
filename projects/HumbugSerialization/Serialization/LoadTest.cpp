@@ -6,7 +6,7 @@
 //#include <build/cmake/include/debug.h>
 
 namespace humbug {
-namespace core {
+namespace serialization {
   LoadTest::LoadTest(): i(0)
   {
       dbgOut(__FUNCTION__);

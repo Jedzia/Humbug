@@ -23,7 +23,7 @@
 //#include <build/cmake/include/debug.h>
 
 namespace humbug {
-namespace core {
+    namespace serialization {
 Template::Template() : i(0) {
     dbgOut(__FUNCTION__ << "Bla");
 }

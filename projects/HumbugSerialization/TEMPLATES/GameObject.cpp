@@ -6,7 +6,7 @@
 //#include <build/cmake/include/debug.h>
 
 namespace humbug {
-namespace core {
+namespace serialization {
   Template::Template(){
       dbgOut(__FUNCTION__);
   }

@@ -6,7 +6,7 @@
 //
 
 namespace humbug {
-namespace core {
+namespace serialization {
   class Template {
 public:
 

@@ -21,7 +21,7 @@
 //
 
 namespace humbug {
-namespace core {
+    namespace serialization {
 /** @class Template:
  *  Detailed description.
  *  @return TODO

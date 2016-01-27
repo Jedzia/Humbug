@@ -169,7 +169,8 @@ void SimulateInOut()
     instream2 >> tmp5;
 
     std::istringstream instream3;
-    instream3.str("\"Older Depp, Du.\" CRect[ Bozer");
+    std::string newstr = "\"Older Depp, Du.\" CRect[ Bozer";
+    instream3.str(newstr);
     auto spl2 = getNextLineAndSplitIntoTokens(instream3);
 
 
