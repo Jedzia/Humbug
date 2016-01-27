@@ -7,7 +7,12 @@
 
 namespace humbug {
 namespace serialization {
-  Token::Token(){
+    TokenParsingException::TokenParsingException(const std::string& what_arg)
+        : std::exception(what_arg.c_str())
+    {
+    }
+
+    Token::Token(){
       dbgOut(__FUNCTION__);
   }
 

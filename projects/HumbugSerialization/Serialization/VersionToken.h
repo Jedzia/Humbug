@@ -59,7 +59,10 @@ public:
 
 private:
 
-    int i;
+    int m_iMajor;
+    int m_iMinor;
+    int m_iBuild;
+    int m_iRevision;
     std::string str;
 };
 }
