@@ -178,4 +178,5 @@ TargetLinkBoost(HumbugCore "filesystem;system;regex")
 #ADD_DEPENDENCIES(HumbugCore CppStructz)
 ADD_PRECOMPILED_HEADER(HumbugCore stdafx.h stdafx.h.gch)
 
+ADD_SUBDIRECTORY( docs )
 ADD_SUBDIRECTORY( UnitTests )

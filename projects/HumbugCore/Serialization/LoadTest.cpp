@@ -7,7 +7,8 @@
 
 namespace humbug {
 namespace core {
-  LoadTest::LoadTest(){
+  LoadTest::LoadTest(): i(0)
+  {
       dbgOut(__FUNCTION__);
   }
 
