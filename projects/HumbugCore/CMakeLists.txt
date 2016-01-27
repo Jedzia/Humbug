@@ -27,6 +27,8 @@ INCLUDE (library)
 INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
 
+ENSURE_DOCS_ARE_PRESENT(HumbugCore_documents)
+
 SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
@@ -166,6 +168,7 @@ ADD_LIBRARY_X(HumbugCore ${LIBRARY_TYPE}
         ${res_outfiles} 
         ${moc_outfiles} 
         ${ui_outfiles}
+		${HumbugCore_documents}
 )
 
 TARGET_LINK_LIBRARIES(HumbugCore ${ZLIB_LIBRARY} )

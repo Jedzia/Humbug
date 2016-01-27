@@ -70,6 +70,17 @@ SOURCE_GROUP(Docs FILES ${GuiLib_documents})
 
 (from E:\Projects\C++\Humbug\projects\GuiLib\CMakeLists.txt)
 into ADD_LIBRARY_X macro to enforce the usage of docs and Readme
+
+This is now: 
+ENSURE_DOCS_ARE_PRESENT(HumbugCore_documents)
+and include the var HumbugCore_documents in
+
+ADD_LIBRARY_X(HumbugCore ${LIBRARY_TYPE}
+        stdafx.h
+		...
+		${HumbugCore_documents}
+)
+
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mo, 04 Jan 2016 14:56:47 -----------------------------------------------------------
