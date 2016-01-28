@@ -45,6 +45,7 @@
 #include <regex>
 #include <sstream>
 #include <vector>
+#include <iomanip>
 
 #ifdef WIN32
 #  include <process.h>
@@ -247,6 +248,7 @@ public:
         }
 
         std::string token;
+        std::string line;
         std::vector<linedataelement> data;
         bool isComment;
     };
@@ -276,12 +278,14 @@ public:
         std::string line;
         instream >> tmp1;
         trim(tmp1);
+        parsedLineData.line = tmp1;
         parsedLineData.token = tmp1;
         if (!tmp1.empty() && tmp1[0] == '#') {
             auto nc = instream.peek();
             getline(instream, line);
+            parsedLineData.line += line;
             trim(line);
-            cout << "Comment: " << line << endl;
+            //cout << "Comment: " << line << endl;
             parsedLineData.data.push_back(line);
             parsedLineData.isComment = true;
             return true;
@@ -294,7 +298,8 @@ public:
             return true;
         }*/
         //trim(line);
-        cout << "Line: " << line << endl;
+        //cout << "Line: " << line << endl;
+        parsedLineData.line += line;
 
         //std::vector<std::string> parsedLineData;
         tokenizer<escaped_list_separator<char>> tk(
@@ -344,8 +349,10 @@ public:
         {
             if (linedata.isComment)
             {
-
+                cout << "[" << setfill('0') << setw(3) << lnr << "]Comment: " << linedata.line << endl;
             }
+            else
+                cout << "[" << setfill('0') << setw(3) << lnr << "]Data   : (" << linedata.data.size() << ") " << linedata.line << endl;
 
             linedata.data.clear();
         }
