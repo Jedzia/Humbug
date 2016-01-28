@@ -349,10 +349,10 @@ public:
         {
             if (linedata.isComment)
             {
-                cout << "[" << setfill('0') << setw(3) << lnr << "]Comment: " << linedata.line << endl;
+                //dbgcOut("[" << setfill('0') << setw(3) << lnr << "]Comment: " << linedata.line);
             }
             else
-                cout << "[" << setfill('0') << setw(3) << lnr << "]Data   : (" << linedata.data.size() << ") " << linedata.line << endl;
+               //dbgcOut( "[" << setfill('0') << setw(3) << lnr << "]Data   : (" << linedata.data.size() << ") " << linedata.line);
 
             linedata.data.clear();
         }
@@ -504,9 +504,9 @@ void SimulateInOut() {
 
     cout << endl;
     cout << endl;
-    const int iMax = 10000;
+    const int iMax = 500;
     const char* versionString = "Version 1.2.3.4";
-    cout << iMax << " * Version parse of '" << versionString << "'." << endl;
+    stdcOut(iMax << " * Version parse of '" << versionString << "'.");
 
     CStopWatch sw;
     sw.Start();
@@ -515,9 +515,17 @@ void SimulateInOut() {
 
     for(int i = 0; i < iMax; ++i)
     {
-        std::istringstream instream3;
-        instream3.str(versionString);
-        instream3 >> vtok1;
+        //std::istringstream instream3;
+        //instream3.str(versionString);
+        //instream3 >> vtok1;
+        
+        
+        std::istringstream instreamCText2;
+        instreamCText2.str(str);
+        //instreamCText2.seekg(std::ios_base::beg);
+        InfoCTextLoader loader2;
+        instreamCText2 >> loader2;
+
     }
     sw.Stop();
     cout << "Time: " << sw.GetDuration() << endl;
