@@ -75,8 +75,8 @@ struct Foo { int a = 1; };
 struct Bar { int b = 2; };
 struct Baz { int c = 3; };
 
-//typedef boost::variant<Foo, Bar, Baz> variant_type;
-typedef boost::variant<Foo> variant_type;
+typedef boost::variant<Foo, Bar, Baz> variant_type;
+//typedef boost::variant<Foo> variant_type;
 
 template<typename T> variant_type createInst() {
     return variant_type(T());
@@ -88,17 +88,18 @@ typedef std::map<std::string, boost::function<variant_type()> > map_type;
 
 struct BaseFactory {
 
-    static boost::function<variant_type()> createInstance(std::string const& s) {
+    static variant_type createInstance(std::string const& s) {
+        //static boost::function<variant_type()> createInstance(std::string const& s) {
         map_type::iterator it = getMap()->find(s);
         if (it == getMap()->end())
             //return;
-           return 0;
+            return variant_type();
 
         //boost::function0<boost::variant<Foo, Bar, Baz>>::result_type re = it->second();
-        return it->second;
+        return it->second();
     }
 
-//protected:
+protected:
     static map_type * getMap() {
         // never delete'ed. (exist until program termination)
         // because we can't guarantee correct destruction order 
@@ -110,15 +111,17 @@ private:
     static map_type * map;
 };
 
+map_type * BaseFactory::map = 0;
+
 template<typename T>
 struct DerivedRegister : BaseFactory {
     DerivedRegister(std::string const& s)
     {
         //boost::function<variant_type()> function = &createInst<T>;
         //auto val = std::make_pair(s, function);
-        //getMap()->insert(std::make_pair(s, &createInst<T>));
+        getMap()->insert(std::make_pair(s, &createInst<T>));
         
-        getMap()->insert(std::pair<std::string, boost::function<variant_type()>>(s, &createInst<T>));
+        //getMap()->insert(std::pair<std::string, boost::function<variant_type()>>(s, &createInst<T>));
     }
 };
 
@@ -130,7 +133,7 @@ struct DerivedRegister : BaseFactory {
 void dingens()
 {
     DerivedRegister<Foo> reg1("Foo");
-    //DerivedRegister<Bar> reg2("Bar");
+    DerivedRegister<Bar> reg2("Bar");
     //DerivedRegister<Baz> reg3("Baz");
     //BaseFactory::getMap()->insert(std::make_pair("Foo", &createInst<Foo>));
     //BaseFactory::getMap()->insert(std::make_pair("Foo", &createInst<Foo>));
@@ -139,7 +142,10 @@ void dingens()
     auto factory = createInst<Foo>();
     //factory.
     auto x = factory.empty();
-    auto y = boost::get<Bar>(factory);;
+    auto y = boost::get<Foo>(factory);;
+
+    auto x1 = BaseFactory::createInstance("Bar");
+    auto y2 = boost::get<Bar>(x1);;
 
 
     boost::variant< int, std::string > v;
