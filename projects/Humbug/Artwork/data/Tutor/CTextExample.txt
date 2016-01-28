@@ -1,0 +1,21 @@
+InfoCText
+Version 1.2.3.4
+
+# This is a comment
+CText Arial, 24, "Use the up and down arrow, or[w] and[s] to move the menu cursor up and down.", DarkRed;
+#
+CText Arial, 30, "Second line.", Green;
+CText Arial, 31, "xSecond line.", Green;
+
+CText Comic, 12, "Third line after newline.", Green;
+
+# This is another comment
+
+CText Arial, 22, "Last data.", Blue;
+#
+#
+#
+
+
+#
+

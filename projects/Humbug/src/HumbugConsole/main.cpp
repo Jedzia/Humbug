@@ -36,18 +36,18 @@
 #include <HumbugLib/src/HumbugLib/LogManager.h>
 //#include <HumbugShared/GB.h>
 //#include <HumbugShared/Project/ProcessProject.h>
-#include <locale>
-#include <iostream>
-#include <algorithm>
-#include <iterator>
-#include <vector>
-#include <sstream>
-#include <regex>
-#include <boost/algorithm/string.hpp>
 #include <HumbugSerialization/Serialization/VersionToken.h>
+#include <algorithm>
+#include <boost/algorithm/string.hpp>
+#include <iostream>
+#include <iterator>
+#include <locale>
+#include <regex>
+#include <sstream>
+#include <vector>
 
 #ifdef WIN32
-  #  include <process.h>
+#  include <process.h>
 #endif
 //#include "CppStructz/filesystem/CszGlobals.h"
 //#include "CppStructz/config/ConfigString.h"
@@ -59,7 +59,7 @@ using std::cout;
 using std::endl;
 
 //ProjectModel *projectModel;
-void parseProject(){
+void parseProject() {
     /*QList<QTreeWidgetItem *> items;
        for (int i = 0; i < 10; ++i)
        {
@@ -79,7 +79,7 @@ void parseProject(){
     //projectModel->setRootNode(ProjectProcessor::test());
     //ProjectNode *xxx = ProjectProcessor::test();
     //if(projectModel != NULL)
-    //	delete projectModel;
+    //  delete projectModel;
     const std::string prjname =
         "D:/E/Projects/C++/Humbug/projects/Humbug/XSD/Nummer1.tmplproj";
 } // parseProject
@@ -91,14 +91,20 @@ void testChars() {
     //std::cout << "[TEST] testOutput: " << testOutput << std::endl;
 }
 
+/** @class my_ctypeComma:
+ *  Detailed description.
+ *  @param str TODO
+ *  @param maxNum TODO
+ *  @return TODO
+ */
 class my_ctypeComma : public
-    std::ctype<char>
-{
+                      std::ctype<char>{
     mask my_table[table_size];
+
 public:
+
     my_ctypeComma(size_t refs = 0)
-        : ctype<char>(&my_table[0], false, refs)
-    {
+        : ctype<char>(&my_table[0], false, refs) {
         std::copy_n(classic_table(), table_size, my_table);
         //my_table['-'] = (mask)space;
         //my_table['-'] = (mask)space;
@@ -109,14 +115,20 @@ public:
     }
 };
 
+/** @class my_ctypeSpace:
+ *  Detailed description.
+ *  @param str TODO
+ *  @param maxNum TODO
+ *  @return TODO
+ */
 class my_ctypeSpace : public
-    std::ctype<char>
-{
+                      std::ctype<char>{
     mask my_table[table_size];
+
 public:
+
     my_ctypeSpace(size_t refs = 0)
-        : ctype<char>(&my_table[0], false, refs)
-    {
+        : ctype<char>(&my_table[0], false, refs) {
         std::copy_n(classic_table(), table_size, my_table);
         //my_table['-'] = (mask)space;
         //my_table['-'] = (mask)space;
@@ -127,14 +139,20 @@ public:
     }
 };
 
+/** @class my_ctypeIgnore:
+ *  Detailed description.
+ *  @param str TODO
+ *  @param maxNum TODO
+ *  @return TODO
+ */
 class my_ctypeIgnore : public
-    std::ctype<char>
-{
+                       std::ctype<char>{
     mask my_table[table_size];
+
 public:
+
     my_ctypeIgnore(size_t refs = 0)
-        : ctype<char>(&my_table[0], false, refs)
-    {
+        : ctype<char>(&my_table[0], false, refs) {
         std::copy_n(classic_table(), table_size, my_table);
         //my_table['-'] = (mask)space;
         //my_table['-'] = (mask)space;
@@ -146,49 +164,44 @@ public:
     }
 };
 
-
-std::vector<std::string> getNextLineAndSplitIntoTokens2(std::istream& str, int maxNum = std::numeric_limits<int>::max())
-{
-    std::vector<std::string>   result;
-    std::string                line;
+std::vector<std::string> getNextLineAndSplitIntoTokens2(std::istream& str, int maxNum = std::numeric_limits<int>::max()) {
+    std::vector<std::string> result;
+    std::string line;
     getline(str, line);
 
-    std::stringstream          lineStream(line);
-    std::string                cell;
+    std::stringstream lineStream(line);
+    std::string cell;
 
     std::locale x(std::locale::classic(), new my_ctypeIgnore);
     //lineStream.imbue(x);
 
-    while (maxNum-- && getline(lineStream, cell, ','))
+    while(maxNum-- && getline(lineStream, cell, ','))
     {
-        if (!cell.empty())
-        {
-            using namespace std;
+        if(!cell.empty()) {
             using namespace boost::algorithm;
-            if (cell.find_first_of("\"") == 1)
-            {
+            using namespace std;
+            if(cell.find_first_of("\"") == 1) {
                 string::size_type xx = cell.find_first_of("\"", 1);
                 int xxxx = 0;
                 xxxx++;
             }
+
             //trim_right(cell);
             trim(cell, x);
             result.push_back(cell);
         }
     }
     return result;
-}
+} // getNextLineAndSplitIntoTokens2
 
-std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str, int maxNum = 1)
-{
-    std::vector<std::string>   result;
+std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str, int maxNum = 1) {
+    std::vector<std::string> result;
 
-    std::string                cell;
+    std::string cell;
 
-    while (maxNum-- && getline(str, cell, '"'))
+    while(maxNum-- && getline(str, cell, '"'))
     {
-        if (!cell.empty())
-        {
+        if(!cell.empty()) {
             result.push_back(cell);
         }
     }
@@ -196,24 +209,161 @@ std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str, int ma
 }
 
 std::string ltrim(std::string str) {
-    return std::regex_replace(str, std::regex("^\\s+"), std::string(""));
+    return regex_replace(str, std::regex("^\\s+"), std::string(""));
 }
 
-class CStopWatch
-{
+/** @class CStopWatch:
+ *  Detailed description.
+ *  @return TODO
+ */
+class CStopWatch {
 private:
+
     clock_t start;
     clock_t finish;
 
 public:
-    double GetDuration() { return (double)(finish - start) / CLOCKS_PER_SEC; }
-    void Start() { start = clock(); }
-    void Stop()  { finish = clock(); }
 
+    double GetDuration() { return (double)(finish - start) / CLOCKS_PER_SEC; }
+
+    void Start() { start = clock(); }
+
+    void Stop() { finish = clock(); }
 }; // class CStopWatch
 
-void SimulateInOut()
-{
+/** @class InfoCTextLoader:
+ *  Detailed description.
+ *  @return TODO
+ */
+class InfoCTextLoader {
+public:
+
+    typedef std::string linedataelement;
+
+    struct InfoCTextLoaderData
+    {
+        InfoCTextLoaderData(/*const linedataelement& data, const bool is_comment = false*/)
+            : /*data(data),*/ isComment(false) {
+        }
+
+        std::string token;
+        std::vector<linedataelement> data;
+        bool isComment;
+    };
+
+    typedef InfoCTextLoaderData linedatatype;
+
+    /** VersionToken, BlaStr:
+     *  Detailed description.
+     *  @return TODO
+     */
+    std::string BlaStr() const { return str; }
+
+    /** VersionToken, BlaStr:
+     *  Detailed description.
+     *  @param val TODO
+     */
+    void BlaStr(std::string val) { str = val; }
+
+    /** VersionToken, Language:
+     *  Detailed description.
+     *  @param x TODO
+     *  @return true if vector is not empty
+     */
+    static bool ReadAndSplitTextLineByComma(std::istream& instream, linedatatype& parsedLineData) {
+        using namespace boost;
+        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+        std::string line;
+        instream >> tmp1;
+        trim(tmp1);
+        parsedLineData.token = tmp1;
+        if (!tmp1.empty() && tmp1[0] == '#') {
+            auto nc = instream.peek();
+            getline(instream, line);
+            trim(line);
+            cout << "Comment: " << line << endl;
+            parsedLineData.data.push_back(line);
+            parsedLineData.isComment = true;
+            return true;
+        }
+        //std::string line = newstr;
+        getline(instream, line);
+        /*trim(line);
+        if(!line.empty() && line[0] == '#') {
+            parsedLineData.push_back(InfoCTextLoaderData ( line, true ));
+            return true;
+        }*/
+        //trim(line);
+        cout << "Line: " << line << endl;
+
+        //std::vector<std::string> parsedLineData;
+        tokenizer<escaped_list_separator<char>> tk(
+                line, escaped_list_separator<char>('\\', ',', '\"'));
+
+        for(tokenizer<escaped_list_separator<char>>::iterator i(tk.begin());
+            i != tk.end(); ++i)
+        {
+            auto val = *i;
+            static std::locale x(std::locale::classic(), new my_ctypeIgnore);
+            //lineStream.imbue(x);
+            trim(val, x);
+            parsedLineData.isComment = false;
+            parsedLineData.data.push_back(val);
+        }
+        return !parsedLineData.data.empty();
+    } // ReadAndSplitTextLineByComma
+
+    friend std::ostream& operator<<(std::ostream& o, const InfoCTextLoader& obj);
+
+    friend std::istream& operator>>(std::istream& i, InfoCTextLoader& obj) {
+        using namespace humbug::serialization;
+        using namespace std;
+
+        const string msgStart = "[std::istream>>InfoCTextLoader] ";
+
+        string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
+        VersionToken vtok1;
+
+        i >> tmp1;
+        if(tmp1 != "InfoCText") {
+            string message = msgStart + "First argument is not like <InfoCText>: '" + tmp1 + "'.";
+            throw TokenParsingException(message);
+        }
+
+        i >> vtok1;
+        //auto resultCtextLine = ReadAndSplitTextLineByComma(i);
+        linedatatype linedata;
+
+        /*while(ReadAndSplitTextLineByComma(i, vec))
+        {
+            // do something with the vec text
+            vec.clear();
+        }*/
+
+        for (size_t lnr = 1; ReadAndSplitTextLineByComma(i, linedata); lnr++)
+        {
+            if (linedata.isComment)
+            {
+
+            }
+
+            linedata.data.clear();
+        }
+
+        i >> tmp2;
+        i >> tmp3;
+        i >> tmp4;
+        i >> tmp5;
+
+        return i;
+    } // >>
+
+private:
+
+    std::string str;
+};
+
+void SimulateInOut() {
     using namespace gui::components;
 
     cout << endl;
@@ -221,9 +371,8 @@ void SimulateInOut()
     cout << endl;
     cout << "Start Simulate" << endl;
 
-    humbuglib::LogManager *mLogManager;
-    if (humbuglib::LogManager::getSingletonPtr() == 0)
-    {
+    humbuglib::LogManager* mLogManager;
+    if(humbuglib::LogManager::getSingletonPtr() == 0) {
         mLogManager = new humbuglib::LogManager();
         mLogManager->createLog("log-console.txt", true, true);
     }
@@ -232,7 +381,13 @@ void SimulateInOut()
     std::string appDir = AppGB::Instance().AppDir();
     //fl.reset(new HumbugFileLoader(appDir + "base_data"));
     HumbugFileLoader fl(appDir + "base_data");
-    auto str = fl.FL_LOADASSTRING("data/levels/LevelA/Map1.map");
+    //auto str = fl.FL_LOADASSTRING("data/levels/LevelA/Map1.map");
+    auto str = fl.FL_LOADASSTRING("data/Tutor/CTextExample.txt");
+    std::istringstream instreamCText;
+    instreamCText.str(str);
+
+    InfoCTextLoader loader;
+    instreamCText >> loader;
 
     //gui::components::CPoint p1(0, 0);
     CRectangle r1(10, 20, 33, 55);
@@ -241,7 +396,6 @@ void SimulateInOut()
     std::ostringstream outstring;
     outstring << r1;
     std::string outFromr1 = outstring.str();
-
 
     std::istringstream instream;
     instream.str(outFromr1);
@@ -264,8 +418,9 @@ void SimulateInOut()
         instream2 >> tmp5;
     }
 
-    //std::string newstr = "CText Arial, \"Use the up and down arrow or[w] and[s] to move the menu cursor up and down.\", DarkRed;";
-    std::string newstr = "CText Arial, \"Use the up and down arrow, or[w] and[s] to move the menu cursor up and down.\", DarkRed;";
+    //std::string newstr = "CText Arial, \"Use the up and down arrow or[w] and[s] to move the menu
+    // cursor up and down.\", DarkRed;";
+    std::string newstr = "CText Arial, 34, \"Use the up and down arrow, or[w] and[s] to move the menu cursor up and down.\", DarkRed;";
     {
         // Boost.StringAlgorithm or Boost.Tokenizer would help
         std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
@@ -280,7 +435,7 @@ void SimulateInOut()
 
         auto spl2 = getNextLineAndSplitIntoTokens2(instream3);
         auto spl3 = getNextLineAndSplitIntoTokens(instream3);
-        
+
         instream3 >> tmp7;
     }
     {
@@ -293,21 +448,23 @@ void SimulateInOut()
         std::istringstream instream4;
         instream4.str(newstr);
         std::string sin((std::istreambuf_iterator<char>(instream4)),
-        std::istreambuf_iterator<char>());
-        
-        //std::regex word_regex(",(?!(?<=(?:^|,)\s*\"(?:[^\"]|\"\"|\\\")*,)(?:[^\"]|\"\"|\\\")*\"\s*(?:,|$))");
+                std::istreambuf_iterator<char>());
+
+        //std::regex
+        // word_regex(",(?!(?<=(?:^|,)\s*\"(?:[^\"]|\"\"|\\\")*,)(?:[^\"]|\"\"|\\\")*\"\s*(?:,|$))");
         std::regex word_regex(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
         auto what =
             std::sregex_iterator(sin.begin(), sin.end(), word_regex);
         auto wend = std::sregex_iterator();
 
         std::vector<std::string> v;
-        for (; what != wend; ++what) {
+
+        for(; what != wend; ++what) {
             std::smatch match = *what;
             v.push_back(match.str());
         }
     }
-    
+
     {
         std::istringstream instream3;
         instream3.str(newstr);
@@ -323,9 +480,10 @@ void SimulateInOut()
 
         std::vector<std::string> vec;
         using namespace boost;
-        tokenizer<escaped_list_separator<char> > tk(
-            line, escaped_list_separator<char>('\\', ',', '\"'));
-        for (tokenizer<escaped_list_separator<char> >::iterator i(tk.begin());
+        tokenizer<escaped_list_separator<char>> tk(
+                line, escaped_list_separator<char>('\\', ',', '\"'));
+
+        for(tokenizer<escaped_list_separator<char>>::iterator i(tk.begin());
             i != tk.end(); ++i)
         {
             auto val = *i;
@@ -336,23 +494,24 @@ void SimulateInOut()
             vec.push_back(val);
         }
     }
- 
+
     cout << endl;
     cout << endl;
     const int iMax = 10000;
     const char* versionString = "Version 1.2.3.4";
-    cout << iMax << " * Version parse of '" << versionString << "'."  << endl;
+    cout << iMax << " * Version parse of '" << versionString << "'." << endl;
 
     CStopWatch sw;
     sw.Start();
     //std::time()
     humbug::serialization::VersionToken vtok1;
-    for (int i = 0; i < iMax; ++i)
-        {
-            std::istringstream instream3;
-            instream3.str(versionString);
-            instream3 >> vtok1;
-        }
+
+    for(int i = 0; i < iMax; ++i)
+    {
+        std::istringstream instream3;
+        instream3.str(versionString);
+        instream3 >> vtok1;
+    }
     sw.Stop();
     cout << "Time: " << sw.GetDuration() << endl;
     cout << "VersionToken: " << vtok1 << endl;
@@ -361,27 +520,25 @@ void SimulateInOut()
 
     // Todo: create a version class derived from a token class in the serializer lib
     //       that reads in versioned stuff from iostream.
-}
+} // SimulateInOut
 
 int wmain(int ac, hchar_t* av[]) {
 //    return 0;
 //}
-
 
 //#if WIN32xsf
 //int _tmain(int ac, _TCHAR** av) {
 //int _tmain(int ac, hchar_t** av) {
 //#else
 //int xwmain(int ac, char* av[]) {
-//#endif // 0 
+//#endif // 0
     //using namespace CPPSTRUCTZ_NAMESPACE::log4csz;
-     
+
     //using namespace CPPSTRUCTZ_NAMESPACE::support;
     //using namespace CPPSTRUCTZ_NAMESPACE::config;
 
-  
     //CPPSTRUCTZ_NAMESPACE::CszGlobals::Instance().init(ac,av);
- 
+
     /*LoggerPtr rootLogger = Logger::getRootLogger();
        rootLogger->debug("Schnauze !");
 
@@ -413,46 +570,45 @@ int wmain(int ac, hchar_t* av[]) {
        //   CPPSTRUCTZ_NAMESPACE::log4csz::logstream_base::endmsg;*/
     try
     {
-    ProgOptions progOpts(ac, av);
+        ProgOptions progOpts(ac, av);
 
-    if ( progOpts.isDebugPrint() ) {
-        //LogManager::getLoggerRepository()->setThreshold(
-        //        Level::getDebug() );
-    }
-    else {
-        //LogManager::getLoggerRepository()->setThreshold(
-        //        Level::getInfo() );
-    }
+        if(progOpts.isDebugPrint()) {
+            //LogManager::getLoggerRepository()->setThreshold(
+            //        Level::getDebug() );
+        }
+        else {
+            //LogManager::getLoggerRepository()->setThreshold(
+            //        Level::getInfo() );
+        }
 
-    if (progOpts.isSimulate()) {
-        SimulateInOut();
-        return 0;
-    }
+        if(progOpts.isSimulate()) {
+            SimulateInOut();
+            return 0;
+        }
 
-    if ( progOpts.isHelpRequested() ) {
-        testChars();
-        return 0;
-    }
+        if(progOpts.isHelpRequested()) {
+            testChars();
+            return 0;
+        }
 
-    if ( !progOpts.isValid() ) {
-        cout << "Program-Options error[" << progOpts.getResult() << "].\n";
-        return 1;
-    }
+        if(!progOpts.isValid()) {
+            cout << "Program-Options error[" << progOpts.getResult() << "].\n";
+            return 1;
+        }
 
-	cout << endl;
-	cout << ">>> ";
-	
-	//std::string s;
-	//std::cin >> s;
-	
-    // \Todo: Das Option-Setup mit den statischen Daten, wie Workpath und Template 
-    // spezifischen Interna ( START + END ), sollte in eine extra Setup-Klasse.
+        cout << endl;
+        cout << ">>> ";
+
+        //std::string s;
+        //std::cin >> s;
+
+        // \Todo: Das Option-Setup mit den statischen Daten, wie Workpath und Template
+        // spezifischen Interna ( START + END ), sollte in eine extra Setup-Klasse.
     }
-    catch (std::exception ex)
+    catch(std::exception ex)
     {
         cout << ex.what() << endl;
     }
 
     return 0;
 } // main
-

@@ -1,4 +1,11 @@
 
+-X-X-X-X- Do, 28 Jan 2016 10:05:28 -----------------------------------------------------------
+Todo:
+Statemachine
+Info:
+that term i searched was "ease in, ease out" ... for animation curves.
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Di, 26 Jan 2016 02:53:13 -----------------------------------------------------------
 MakeVFS or something should copy 
 E:\Projects\C++\Humbug\projects\Humbug\Artwork\Tutor\Images\Tutor\A1\Class Diagram Screen01.jpg
