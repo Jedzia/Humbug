@@ -78,6 +78,8 @@ SET(HumbugSerialization_Serialization_headers
 	Serialization/SerializationHelpers.h
 	Serialization/Token.h
 	Serialization/VersionToken.h
+
+	Serialization/InfoTextLoader.h
 )
 
 SET(HumbugSerialization_Serialization_sources 
@@ -86,6 +88,8 @@ SET(HumbugSerialization_Serialization_sources
 	Serialization/SerializationHelpers.cpp
 	Serialization/Token.cpp
 	Serialization/VersionToken.cpp
+
+	Serialization/InfoTextLoader.cpp
 )
 
 

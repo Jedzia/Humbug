@@ -39,17 +39,18 @@
 #include <HumbugSerialization/Serialization/VersionToken.h>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
+#include <boost/function.hpp>
+#include <boost/variant.hpp>
+#include <boost/variant/get.hpp>
+#include <boost/variant/variant.hpp>
+#include <iomanip>
 #include <iostream>
 #include <iterator>
 #include <locale>
 #include <regex>
 #include <sstream>
 #include <vector>
-#include <iomanip>
-#include <boost/function.hpp>
-#include <boost/variant.hpp>
-#include <boost/variant/variant.hpp>
-#include <boost/variant/get.hpp>
+#include <HumbugSerialization/Serialization/InfoTextLoader.h>
 
 #ifdef WIN32
 #  include <process.h>
@@ -62,98 +63,6 @@
 //using namespace CPPSTRUCTZ_NAMESPACE::text;
 using std::cout;
 using std::endl;
-#define REGISTER_DEC_TYPE(NAME) \
-    static DerivedRegister<NAME> reg
-
-#define REGISTER_DEF_TYPE(NAME) \
-    DerivedRegister<NAME> NAME::reg(#NAME)
-
-//struct Foo { int a = 1; REGISTER_DEC_TYPE("Foo"); };
-
-
-struct Foo { int a = 1; };
-struct Bar { int b = 2; };
-struct Baz { int c = 3; };
-
-typedef boost::variant<Foo, Bar, Baz> variant_type;
-//typedef boost::variant<Foo> variant_type;
-
-template<typename T> variant_type createInst() {
-    return variant_type(T());
-}
-
-//typedef std::map<std::string, variant_type(*)()> map_type;
-typedef std::map<std::string, boost::function<variant_type()> > map_type;
-
-
-struct BaseFactory {
-
-    static variant_type createInstance(std::string const& s) {
-        //static boost::function<variant_type()> createInstance(std::string const& s) {
-        map_type::iterator it = getMap()->find(s);
-        if (it == getMap()->end())
-            //return;
-            return variant_type();
-
-        //boost::function0<boost::variant<Foo, Bar, Baz>>::result_type re = it->second();
-        return it->second();
-    }
-
-protected:
-    static map_type * getMap() {
-        // never delete'ed. (exist until program termination)
-        // because we can't guarantee correct destruction order 
-        if (!map) { map = new map_type; }
-        return map;
-    }
-
-private:
-    static map_type * map;
-};
-
-map_type * BaseFactory::map = 0;
-
-template<typename T>
-struct DerivedRegister : BaseFactory {
-    DerivedRegister(std::string const& s)
-    {
-        //boost::function<variant_type()> function = &createInst<T>;
-        //auto val = std::make_pair(s, function);
-        getMap()->insert(std::make_pair(s, &createInst<T>));
-        
-        //getMap()->insert(std::pair<std::string, boost::function<variant_type()>>(s, &createInst<T>));
-    }
-};
-
-//void Foo::Bla()
-//{
-    //DerivedRegister<Foo> reg1("Foo");
-//}
-
-void dingens()
-{
-    DerivedRegister<Foo> reg1("Foo");
-    DerivedRegister<Bar> reg2("Bar");
-    //DerivedRegister<Baz> reg3("Baz");
-    //BaseFactory::getMap()->insert(std::make_pair("Foo", &createInst<Foo>));
-    //BaseFactory::getMap()->insert(std::make_pair("Foo", &createInst<Foo>));
-    //BaseFactory::getMap()->insert(std::pair<std::string, boost::function<variant_type()>>("Foo", &createInst<Foo>));
-
-    auto factory = createInst<Foo>();
-    //factory.
-    auto x = factory.empty();
-    auto y = boost::get<Foo>(factory);;
-
-    auto x1 = BaseFactory::createInstance("Bar");
-    auto y2 = boost::get<Bar>(x1);;
-
-
-    boost::variant< int, std::string > v;
-    v = "hello";
-    std::cout << v << std::endl;
-    std::string& str = boost::get<std::string>(v);
-    str += " world! ";
-}
 
 //ProjectModel *projectModel;
 void parseProject() {
@@ -236,74 +145,6 @@ public:
     }
 };
 
-/** @class my_ctypeIgnore:
- *  Detailed description.
- *  @param str TODO
- *  @param maxNum TODO
- *  @return TODO
- */
-class my_ctypeIgnore : public
-                       std::ctype<char>{
-    mask my_table[table_size];
-
-public:
-
-    my_ctypeIgnore(size_t refs = 0)
-        : ctype<char>(&my_table[0], false, refs) {
-        std::copy_n(classic_table(), table_size, my_table);
-        //my_table['-'] = (mask)space;
-        //my_table['-'] = (mask)space;
-        //my_table['\"'] = (mask)space;
-        //my_table[' '] = static_cast<mask>(alpha);
-        my_table['"'] = static_cast<mask>(blank);
-        my_table[';'] = static_cast<mask>(blank);
-        //my_table[';'] = static_cast<mask>(space);
-    }
-};
-
-std::vector<std::string> getNextLineAndSplitIntoTokens2(std::istream& str, int maxNum = std::numeric_limits<int>::max()) {
-    std::vector<std::string> result;
-    std::string line;
-    getline(str, line);
-
-    std::stringstream lineStream(line);
-    std::string cell;
-
-    std::locale x(std::locale::classic(), new my_ctypeIgnore);
-    //lineStream.imbue(x);
-
-    while(maxNum-- && getline(lineStream, cell, ','))
-    {
-        if(!cell.empty()) {
-            using namespace boost::algorithm;
-            using namespace std;
-            if(cell.find_first_of("\"") == 1) {
-                string::size_type xx = cell.find_first_of("\"", 1);
-                int xxxx = 0;
-                xxxx++;
-            }
-
-            //trim_right(cell);
-            trim(cell, x);
-            result.push_back(cell);
-        }
-    }
-    return result;
-} // getNextLineAndSplitIntoTokens2
-
-std::vector<std::string> getNextLineAndSplitIntoTokens(std::istream& str, int maxNum = 1) {
-    std::vector<std::string> result;
-
-    std::string cell;
-
-    while(maxNum-- && getline(str, cell, '"'))
-    {
-        if(!cell.empty()) {
-            result.push_back(cell);
-        }
-    }
-    return result;
-}
 
 std::string ltrim(std::string str) {
     return regex_replace(str, std::regex("^\\s+"), std::string(""));
@@ -328,147 +169,6 @@ public:
     void Stop() { finish = clock(); }
 }; // class CStopWatch
 
-/** @class InfoCTextLoader:
- *  Detailed description.
- *  @return TODO
- */
-class InfoCTextLoader {
-public:
-
-    typedef std::string linedataelement;
-
-    struct InfoCTextLoaderData
-    {
-        InfoCTextLoaderData(/*const linedataelement& data, const bool is_comment = false*/)
-            : /*data(data),*/ isComment(false) {
-        }
-
-        std::string token;
-        std::string line;
-        std::vector<linedataelement> data;
-        bool isComment;
-    };
-
-    typedef InfoCTextLoaderData linedatatype;
-
-    /** VersionToken, BlaStr:
-     *  Detailed description.
-     *  @return TODO
-     */
-    std::string BlaStr() const { return str; }
-
-    /** VersionToken, BlaStr:
-     *  Detailed description.
-     *  @param val TODO
-     */
-    void BlaStr(std::string val) { str = val; }
-
-    /** VersionToken, Language:
-     *  Detailed description.
-     *  @param x TODO
-     *  @return true if vector is not empty
-     */
-    static bool ReadAndSplitTextLineByComma(std::istream& instream, linedatatype& parsedLineData) {
-        using namespace boost;
-        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
-        std::string line;
-        instream >> tmp1;
-        trim(tmp1);
-        parsedLineData.line = tmp1;
-        parsedLineData.token = tmp1;
-        if (!tmp1.empty() && tmp1[0] == '#') {
-            auto nc = instream.peek();
-            getline(instream, line);
-            parsedLineData.line += line;
-            trim(line);
-            //cout << "Comment: " << line << endl;
-            parsedLineData.data.push_back(line);
-            parsedLineData.isComment = true;
-            return true;
-        }
-        //std::string line = newstr;
-        getline(instream, line);
-        /*trim(line);
-        if(!line.empty() && line[0] == '#') {
-            parsedLineData.push_back(InfoCTextLoaderData ( line, true ));
-            return true;
-        }*/
-        //trim(line);
-        //cout << "Line: " << line << endl;
-        parsedLineData.line += line;
-
-        //std::vector<std::string> parsedLineData;
-        tokenizer<escaped_list_separator<char>> tk(
-                line, escaped_list_separator<char>('\\', ',', '\"'));
-
-        for(tokenizer<escaped_list_separator<char>>::iterator i(tk.begin());
-            i != tk.end(); ++i)
-        {
-            auto val = *i;
-            static std::locale x(std::locale::classic(), new my_ctypeIgnore);
-            //lineStream.imbue(x);
-            trim(val, x);
-            parsedLineData.isComment = false;
-            parsedLineData.data.push_back(val);
-        }
-        return !parsedLineData.data.empty();
-    } // ReadAndSplitTextLineByComma
-
-    friend std::ostream& operator<<(std::ostream& o, const InfoCTextLoader& obj);
-
-    friend std::istream& operator>>(std::istream& i, InfoCTextLoader& obj) {
-        using namespace humbug::serialization;
-        using namespace std;
-
-        const string msgStart = "[std::istream>>InfoCTextLoader] ";
-
-        string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
-        VersionToken vtok1;
-
-        i >> tmp1;
-        if(tmp1 != "InfoCText") {
-            string message = msgStart + "First argument is not like <InfoCText>: '" + tmp1 + "'.";
-            throw TokenParsingException(message);
-        }
-
-        i >> vtok1;
-        //auto resultCtextLine = ReadAndSplitTextLineByComma(i);
-        linedatatype linedata;
-
-        /*while(ReadAndSplitTextLineByComma(i, vec))
-        {
-            // do something with the vec text
-            vec.clear();
-        }*/
-
-        for (size_t lnr = 1; ReadAndSplitTextLineByComma(i, linedata); lnr++)
-        {
-            if (linedata.isComment)
-            {
-                stdcOut("[" << setfill('0') << setw(3) << lnr << "]Comment: " << linedata.line);
-            }
-            else
-            {
-                stdcOut("[" << setfill('0') << setw(3) << lnr << "]Data   : (" << linedata.data.size() << ") " << linedata.line);
-                // parse the stuff
-            }
-
-            linedata.data.clear();
-        }
-
-        i >> tmp2;
-        i >> tmp3;
-        i >> tmp4;
-        i >> tmp5;
-
-        return i;
-    } // >>
-
-private:
-
-    std::string str;
-};
-
 void SimulateInOut() {
     using namespace gui::components;
 
@@ -492,7 +192,15 @@ void SimulateInOut() {
     std::istringstream instreamCText;
     instreamCText.str(str);
 
-    InfoCTextLoader loader;
+    humbug::serialization::InfoTextLoader loader;
+    loader.OnComment([](const humbug::serialization::InfoTextLoader::LinedataType& data)
+    {
+        stdcOut("[" << std::setfill('0') << std::setw(3) << 0 << "]Comment: " << data.line);
+    });
+    loader.OnParsed([](const humbug::serialization::InfoTextLoader::LinedataType& data)
+    {
+        stdcOut("[" << std::setfill('0') << std::setw(3) << 0 << "]Data   : (" << data.data.size() << ") " << data.line);
+    });
     instreamCText >> loader;
 
     //gui::components::CPoint p1(0, 0);
@@ -528,23 +236,6 @@ void SimulateInOut() {
     // cursor up and down.\", DarkRed;";
     std::string newstr = "CText Arial, 34, \"Use the up and down arrow, or[w] and[s] to move the menu cursor up and down.\", DarkRed;";
     {
-        // Boost.StringAlgorithm or Boost.Tokenizer would help
-        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
-        std::istringstream instream3;
-        instream3.str(newstr);
-        //std::locale x(std::locale::classic(), new my_ctypeComma);
-        //instream3.imbue(x);
-
-        instream3 >> tmp1;
-        //instream3 >> tmp2;
-        //instream3 >> tmp3;
-
-        auto spl2 = getNextLineAndSplitIntoTokens2(instream3);
-        auto spl3 = getNextLineAndSplitIntoTokens(instream3);
-
-        instream3 >> tmp7;
-    }
-    {
         std::string delimiters("\",;");
         std::vector<std::string> parts;
         split(parts, newstr, boost::is_any_of(delimiters));
@@ -571,36 +262,6 @@ void SimulateInOut() {
         }
     }
 
-    {
-        std::istringstream instream3;
-        instream3.str(newstr);
-        //std::locale x(std::locale::classic(), new my_ctypeComma);
-        //instream3.imbue(x);
-
-        std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
-        instream3 >> tmp1;
-
-        //std::string line = newstr;
-        std::string line;
-        getline(instream3, line);
-
-        std::vector<std::string> vec;
-        using namespace boost;
-        tokenizer<escaped_list_separator<char>> tk(
-                line, escaped_list_separator<char>('\\', ',', '\"'));
-
-        for(tokenizer<escaped_list_separator<char>>::iterator i(tk.begin());
-            i != tk.end(); ++i)
-        {
-            auto val = *i;
-            std::locale x(std::locale::classic(), new my_ctypeIgnore);
-            //lineStream.imbue(x);
-            trim(val, x);
-
-            vec.push_back(val);
-        }
-    }
-
     cout << endl;
     cout << endl;
     const int iMax = 500;
@@ -617,14 +278,12 @@ void SimulateInOut() {
         std::istringstream instream3;
         instream3.str(versionString);
         instream3 >> vtok1;
-        
-        
-        /*std::istringstream instreamCText2;
-        instreamCText2.str(str);
-        //instreamCText2.seekg(std::ios_base::beg);
-        InfoCTextLoader loader2;
-        instreamCText2 >> loader2;*/
 
+        /*std::istringstream instreamCText2;
+           instreamCText2.str(str);
+           //instreamCText2.seekg(std::ios_base::beg);
+           InfoTextLoader loader2;
+           instreamCText2 >> loader2;*/
     }
     sw.Stop();
     cout << "Time: " << sw.GetDuration() << endl;
@@ -635,6 +294,9 @@ void SimulateInOut() {
     // Todo: create a version class derived from a token class in the serializer lib
     //       that reads in versioned stuff from iostream.
 } // SimulateInOut
+
+void dingens() {
+}
 
 int wmain(int ac, hchar_t* av[]) {
 //    return 0;
@@ -694,7 +356,7 @@ int wmain(int ac, hchar_t* av[]) {
             //LogManager::getLoggerRepository()->setThreshold(
             //        Level::getInfo() );
         }
-        
+
         dingens();
         if(progOpts.isSimulate()) {
             SimulateInOut();
