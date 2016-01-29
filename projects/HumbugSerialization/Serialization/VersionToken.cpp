@@ -23,7 +23,22 @@
 namespace humbug {
 namespace serialization {
 using namespace std;
-VersionToken::VersionToken() : m_iMajor(-1), m_iMinor(-1), m_iBuild(-1), m_iRevision(-1) {
+
+const VersionToken& VersionToken::InvalidToken() {
+    static VersionToken vtok(-1, -1, -1, -1);
+    return vtok;
+}
+
+const VersionToken& VersionToken::EmptyToken() {
+    static VersionToken vtok;
+    return vtok;
+}
+
+VersionToken::VersionToken(int major, int minor, int build, int revision)
+    : m_iMajor{major},
+    m_iMinor{minor},
+    m_iBuild{build},
+    m_iRevision{revision} {
     //dbgOut(__FUNCTION__);
 }
 
@@ -37,7 +52,7 @@ const char * VersionToken::Language(int x) const {
 
 ostream& operator<<(ostream& o, const VersionToken& obj) {
     o << "Version ";
-    
+
     o << obj.m_iMajor;
     o << ".";
     o << obj.m_iMinor;
@@ -105,7 +120,7 @@ istream& operator>>(istream& i, VersionToken& obj) {
         throw TokenParsingException(message);
     }
 
-    if (tokensize >= 1) {
+    if(tokensize >= 1) {
         obj.m_iMajor = stoi(tokens[0]);
     }
 

@@ -30,7 +30,10 @@ namespace serialization {
 class VersionToken : public Token {
 public:
 
-    VersionToken();
+    static const VersionToken& InvalidToken();
+    static const VersionToken& EmptyToken();
+
+    explicit VersionToken(int major = 0, int minor = 0, int build = 0, int revision = 0);
     ~VersionToken();
 
     /** VersionToken, BlaStr:
@@ -52,6 +55,37 @@ public:
      */
     const char * Language(int x) const override;
 
+    /** Brief description of VersionToken, Major
+     *  Detailed description.
+     *  @return TODO
+     */
+    int Major() const {
+        return m_iMajor;
+    }
+
+    /** Brief description of VersionToken, Minor
+     *  Detailed description.
+     *  @return TODO
+     */
+    int Minor() const {
+        return m_iMinor;
+    }
+
+    /** Brief description of VersionToken, Build
+     *  Detailed description.
+     *  @return TODO
+     */
+    int Build() const {
+        return m_iBuild;
+    }
+
+    /** Brief description of VersionToken, Revision
+     *  Detailed description.
+     *  @return TODO
+     */
+    int Revision() const {
+        return m_iRevision;
+    }
 
     friend std::ostream& operator<<(std::ostream& o, const VersionToken& obj);
 

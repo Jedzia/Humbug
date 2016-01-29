@@ -171,6 +171,7 @@ public:
 
 void SimulateInOut() {
     using namespace gui::components;
+    using namespace humbug::serialization;
 
     cout << endl;
     cout << endl;
@@ -192,16 +193,18 @@ void SimulateInOut() {
     std::istringstream instreamCText;
     instreamCText.str(str);
 
-    humbug::serialization::InfoTextLoader loader;
-    loader.OnComment([](const humbug::serialization::InfoTextLoader::LinedataType& data)
+    InfoTextLoader loader;
+    loader.OnComment([](const InfoTextLoader::LinedataType& data)
     {
-        stdcOut("[" << std::setfill('0') << std::setw(3) << 0 << "]Comment: " << data.line);
+        cout << "[" << std::setfill('0') << std::setw(3) << 0 << "]Comment: " << data.line << endl;
     });
-    loader.OnParsed([](const humbug::serialization::InfoTextLoader::LinedataType& data)
+    loader.OnParsed([](const InfoTextLoader::LinedataType& data)
     {
-        stdcOut("[" << std::setfill('0') << std::setw(3) << 0 << "]Data   : (" << data.data.size() << ") " << data.line);
+        cout << "[" << std::setfill('0') << std::setw(3) << 0 << "]Data   : (" << data.data.size() << ") " << data.line << endl;
     });
     instreamCText >> loader;
+    cout << "Version of CText data stream was: " << loader.Version() << " " << endl;
+    cout << endl;
 
     //gui::components::CPoint p1(0, 0);
     CRectangle r1(10, 20, 33, 55);
@@ -271,7 +274,7 @@ void SimulateInOut() {
     CStopWatch sw;
     sw.Start();
     //std::time()
-    humbug::serialization::VersionToken vtok1;
+    VersionToken vtok1;
 
     for(int i = 0; i < iMax; ++i)
     {
