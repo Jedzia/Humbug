@@ -111,28 +111,28 @@ public:
      *  @param time TODO
      *  @return TODO
      */
-    bool IsBefore(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsBefore(seconds time, const ConditionalTimeFunc& func = NULL);
 
     /** Brief description of Timing, IsAfter
     *  Detailed description.
     *  @param time TODO
     *  @return TODO
     */
-    bool IsAfter(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsAfter(seconds time, const ConditionalTimeFunc& func = NULL);
 
     /** Brief description of Timing, IsAfter
     *  Detailed description.
     *  @param time TODO
     *  @return TODO
     */
-    bool IsAfterAndBefore(seconds after, seconds before, ConditionalTimeFunc func = NULL);
+    bool IsAfterAndBefore(seconds after, seconds before, const ConditionalTimeFunc& func = NULL);
 
     /** Brief description of Timing, IsAt
      *  Detailed description.
      *  @param time TODO
      *  @return TODO
      */
-    bool IsAt(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsAt(seconds time, const ConditionalTimeFunc& func = NULL);
 
     /** Brief description of Timing, IsAtOrAfter
      *  Detailed description.
@@ -140,7 +140,7 @@ public:
      *  @param func TODO
      *  @return TODO
      */
-    bool IsAtOrAfter(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsAtOrAfter(seconds time, const ConditionalTimeFunc& func = NULL);
 
     operator bool() const;
 };

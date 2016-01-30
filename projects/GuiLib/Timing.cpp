@@ -55,7 +55,7 @@ namespace gui {
         return Convert(TicksSinceStart());
     }
 
-    bool Timing::IsBefore(seconds time, ConditionalTimeFunc func)
+    bool Timing::IsBefore(seconds time, const ConditionalTimeFunc& func)
     {
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsBefore, boost::ref(*this), _1, _2);
@@ -68,7 +68,7 @@ namespace gui {
         return result;
     }
 
-    bool Timing::IsAfter(seconds time, ConditionalTimeFunc func)
+    bool Timing::IsAfter(seconds time, const ConditionalTimeFunc& func)
     {
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1, _2);
@@ -81,7 +81,7 @@ namespace gui {
         return result;
     }
 
-    bool Timing::IsAfterAndBefore(seconds after, seconds before, ConditionalTimeFunc func)
+    bool Timing::IsAfterAndBefore(seconds after, seconds before, const ConditionalTimeFunc& func)
     {
         //m_timeLastCheck = time;
         //m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1, _2);
@@ -94,7 +94,7 @@ namespace gui {
         return result;
     }
 
-    bool Timing::IsAt(seconds time, ConditionalTimeFunc func)
+    bool Timing::IsAt(seconds time, const ConditionalTimeFunc& func)
     {
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsAt, boost::ref(*this), _1, _2);
@@ -107,7 +107,7 @@ namespace gui {
         return result;
     }
 
-    bool Timing::IsAtOrAfter(seconds time, ConditionalTimeFunc func)
+    bool Timing::IsAtOrAfter(seconds time, const ConditionalTimeFunc& func)
     {
         m_timeLastCheck = time;
         m_fncLastCheck = boost::bind(&Timing::IsAtOrAfter, boost::ref(*this), _1, _2);

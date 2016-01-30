@@ -11,7 +11,7 @@ namespace gui {
     {
     }
 
-    TimingChain& TimingChain::At(seconds time, Timing::ConditionalTimeFunc func, seconds time2)
+    TimingChain& TimingChain::At(seconds time, const Timing::ConditionalTimeFunc& func, seconds time2)
     {
         //m_timTimer.IsBefore(time + m_secStarttime, func);
         seconds after = m_secStarttime;
@@ -22,7 +22,7 @@ namespace gui {
         return *this;
     }
 
-    TimingChain& TimingChain::At(seconds after, seconds before, Timing::ConditionalTimeFunc func)
+    TimingChain& TimingChain::At(seconds after, seconds before, const Timing::ConditionalTimeFunc& func)
     {
         m_timTimer.IsAfterAndBefore(after, before, func);
         return *this;

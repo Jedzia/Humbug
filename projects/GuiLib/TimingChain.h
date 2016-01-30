@@ -29,8 +29,8 @@ class TimingChain {
     Timing m_timTimer;
 public:
     explicit TimingChain(Hookable* updater);
-    TimingChain& At(seconds time, Timing::ConditionalTimeFunc func = NULL, seconds time2 = 0);
-    TimingChain& At(seconds after, seconds before, Timing::ConditionalTimeFunc func = NULL);
+    TimingChain& At(seconds time, const Timing::ConditionalTimeFunc& func = NULL, seconds time2 = 0);
+    TimingChain& At(seconds after, seconds before, const Timing::ConditionalTimeFunc& func = NULL);
     void Commit(seconds loopAfter = 0);
 };
 }
