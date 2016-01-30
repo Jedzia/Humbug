@@ -31,6 +31,7 @@
 #include <GuiLib/GUI/Components/TextAnimator.h>
 #include <GuiLib/Timing2.h>
 #include "MenuScreen/TutorA1.h"
+#include <GuiLib/TimingChain.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -345,6 +346,44 @@ void MenuScreen::OnDraw() {
         frect.H() -= frectSize - stopRect.SecondsSinceStart() * frectSize;
     }
     stopRect.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); });
+
+    CRectangle frect2(760, 620, 64, 64);
+    static TimingChain tchain1(this);
+    //tchain1.Add(2.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Red()); });
+    /*tchain1.Add(1.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Red()); })
+        .Add(2.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Blue()); })
+        .Add(3.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Green()); });*/
+    
+//    tchain1.Add(1.0f, [&]()
+//    {
+//        m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
+//    })
+//        .Add(2.0f, [&]()
+//    {
+//        m_pBackground->RenderFillRect(frect2, CColor::Blue());
+//    })
+//        .Add(3.0f, [&]()
+//    {
+//        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Green());
+//    });
+
+    tchain1.At(1.0f, 2.0f, [&]()
+    {
+        m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
+    })
+        .At(2.1f, 4.0f, [&]()
+    {
+        m_pBackground->RenderFillRect(frect2, CColor::Green());
+    })
+        .At(3.0f, 6.0f, [&]()
+    {
+        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
+    });
+
+
+//    tchain1.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })
+//        .IsAfter(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })
+//        .IsAfter(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); });
 
     CRectangle dstDims(0, 0, 200, 200);
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
