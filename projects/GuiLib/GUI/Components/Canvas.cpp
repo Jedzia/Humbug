@@ -500,10 +500,16 @@ bool CCanvas::RenderDrawRect(const CRectangle& rect, const CColor* color) const 
 bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor* color) const {
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
     int ret = 0;
-    if(color) {
+    if (color) {
         ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
     }
 
+    ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
+    return true;
+}
+
+bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor& color) const {
+    int   ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA());
     ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
     return true;
 }

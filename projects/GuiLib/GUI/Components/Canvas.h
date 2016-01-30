@@ -297,6 +297,13 @@ public:
     */
     bool RenderFillRect(const CRectangle& rect, const CColor* color) const;
 
+    /** Fill a rectangle.
+    *  Use this function to fill a rectangle on the current rendering target with the drawing color.
+    *  @param rect a CRectangle representing the rectangle to draw.
+    *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
+    */
+    bool RenderFillRect(const CRectangle& rect, const CColor& color) const;
+
     //clear entire surface to a color
     bool Clear ( const CColor& color ) const;
 
