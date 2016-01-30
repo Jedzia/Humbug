@@ -262,8 +262,8 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     
     m_pEasingText.reset(new CText(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48), "Ease In", CColor::LightGreen(), CPoint(40,400)));
-    //m_pEasingText->MoveTo(CPoint(800, 400), this, 4.0f, 1.0f)->FlyTo(CPoint(460, 700), this, 4.0f);
-    m_pEasingText->FadeIn(this, 4.0f)->FlyTo(CPoint(800, 400), this, 4.0f);
+    m_pEasingText->MoveTo(CPoint(800, 400), this, 4.0f, 0);
+    //m_pEasingText->FadeIn(this, 4.0f)->MoveTo(CPoint(800, 400), this, 4.0f);
 
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
     m_pInfoText.reset(new InfoText2(m_pArialfont, keysfont,
@@ -280,9 +280,9 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
 
     m_pInfoText->makeCText<CText>(m_pArialfont, "Let's fly away ", m_colText)
         //->MoveTo(CPoint(200, 200), this)->MoveTo(CPoint(100, 40), this)->MoveTo(CPoint(300, 440), this);
-        ->MoveTo(CPoint(200, 200), this, 4.0f)->FlyTo(CPoint(300, 600), this, 8.0f)->FlyTo(CPoint(900, 40), this, 12.0f)
-        ->FlyTo(CPoint(300, 600), this, 16.0f)->FlyTo(CPoint(460, 700), this, 4.0f)
-        ->FlyTo(CPoint(20, 20), this, 8.0f)->FlyTo(CPoint(1024 / 2, 768 / 3), this, 12.0f);
+        ->MoveTo(CPoint(200, 200), this, 4.0f)->MoveTo(CPoint(300, 600), this, 8.0f)->MoveTo(CPoint(900, 40), this, 12.0f)
+        ->MoveTo(CPoint(300, 600), this, 16.0f)->MoveTo(CPoint(460, 700), this, 4.0f)
+        ->MoveTo(CPoint(20, 20), this, 8.0f)->MoveTo(CPoint(1024 / 2, 768 / 3), this, 12.0f);
 
     auto text = m_pInfoText->makeCText<CText>(m_pArialfont, " ... to the moon.", m_colText);
     text->FadeIn(this, 4.0f)->Wait(this, 8)->FadeOut(this, 2.5f)->Wait(this, 15)->FadeIn(this, 4.5f);

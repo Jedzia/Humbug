@@ -36,7 +36,7 @@ TextAnimator * TextAnimator::Wait(Hookable* hookable, Timing::seconds waitTime) 
     return mover;
 }
 
-TextAnimator * TextAnimator::FlyTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
+TextAnimator * TextAnimator::MoveTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
     //TextMover mover(c_point, hookable);
     auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
     nextAnimator = mover;
