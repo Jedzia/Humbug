@@ -26,6 +26,7 @@
 namespace gui {
 class Hookable;
 namespace components {
+class TextMover;
 class CText;
 class CCanvas;
 struct TextAnimatorData;
@@ -76,6 +77,39 @@ public:
      *  this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
      */
     TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f, const TimeEasingFunc& easingFunc = NULL);
+
+    template <typename T>
+    TextAnimator* MoveTo(CPoint point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut)
+    {
+        auto mover = new TextMover(point, hookable, speed, timeIn, timeOut, T());
+        AddAnimator(mover);
+        return mover;
+    };
+
+    template <typename T, typename A>
+    TextAnimator* MoveTo(CPoint point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut, const A& parEase)
+    {
+        auto mover = new TextMover(point, hookable, speed, timeIn, timeOut, T(parEase));
+        AddAnimator(mover);
+        return mover;
+    }
+
+    template <typename T, typename A, typename B>
+    TextAnimator* MoveTo(CPoint point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut, const A& parEaseA, const B& parEaseB)
+    {
+        auto mover = new TextMover(point, hookable, speed, timeIn, timeOut, T(parEaseA, parEaseB));
+        AddAnimator(mover);
+        return mover;
+    }
+
+    template <typename T, typename A, typename B, typename C>
+    TextAnimator* MoveTo(CPoint point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut, const A& parEaseA, const B& parEaseB, const C& parEaseC)
+    {
+        auto mover = new TextMover(point, hookable, speed, timeIn, timeOut, T(parEaseA, parEaseB, parEaseC));
+        AddAnimator(mover);
+        return mover;
+    }
+
     TextAnimator * FadeIn(Hookable* hookable, Timing::seconds fadeInTime = 1.0f);
     TextAnimator * FadeOut(Hookable* hookable, Timing::seconds fadeOutTime = 1.0f, bool fadeOutRemovesText = false);
 
@@ -187,9 +221,9 @@ private:
     SDL_Surface* m_pRenderText;
 };
 
-/** @class CTextParagraph:
- *  Placeholder. No function at the moment.
- */
+    /** @class CTextParagraph:
+     *  Placeholder. No function at the moment.
+     */
 class CTextParagraph {
 public:
 
