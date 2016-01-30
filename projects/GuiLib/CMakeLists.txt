@@ -38,6 +38,9 @@ SET(USE_LIB_BOOST TRUE)
 # local project settings
 INCLUDE (bindings)
 
+SET(GuiLib_GLOBAL_headers
+		TimingDefs.h
+)
 
 # User-Interface skeleton
 SET(GuiLib_GUI_Data_headers
@@ -84,6 +87,7 @@ SET(GuiLib_GUI_sources
 # Component set (Canvas, Controls, etc.)
 SET(GuiLib_Component_headers
 		Timing.h
+		Timing2.h
 		GUI/Disposable.h
 		
 		GUI/Components/Point.h
@@ -122,6 +126,7 @@ SET(GuiLib_Component_headers
 		GUI/TileEngine/TileEngine.h
 )
 SET(GuiLib_Component_sources
+		Timing.cpp
 		GUI/Disposable.cpp
 
 		GUI/Components/Point.cpp
@@ -237,13 +242,13 @@ SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
 SOURCE_GROUP(Resources FILES ${GuiLib_resfiles})
 SOURCE_GROUP(GUI FILES ${GuiLib_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+SOURCE_GROUP(GlobalHeader FILES ${GuiLib_GLOBAL_headers})
 SOURCE_GROUP(THeaders FILES ${GuiLib_headers})
 SOURCE_GROUP(TSources FILES ${GuiLib_sources})
 SOURCE_GROUP(GuiHeaders FILES ${GuiLib_GUI_headers})
 SOURCE_GROUP(GuiSources FILES ${GuiLib_GUI_sources})
 SOURCE_GROUP(CompHeaders FILES ${GuiLib_Component_headers})
 SOURCE_GROUP(CompSources FILES ${GuiLib_Component_sources})
-
 
 #SET(GuiLib_documents
 #		Readme.md
@@ -261,6 +266,7 @@ ADD_LIBRARY_X(GuiLib ${LIBRARY_TYPE}
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h
 
+		${GuiLib_GLOBAL_headers}
         ${GuiLib_headers}
         ${GuiLib_sources}
 		${GuiLib_GuiConsole_headers}

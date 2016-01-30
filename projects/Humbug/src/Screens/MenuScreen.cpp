@@ -29,6 +29,7 @@
 #include <GuiLib/GUI/Data/ColorData.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Components/TextAnimator.h>
+#include <GuiLib/Timing2.h>
 #include "MenuScreen/TutorA1.h"
 //
 //#include <build/cmake/include/debug.h>
@@ -325,6 +326,7 @@ void MenuScreen::OnDraw() {
 
     static int coldelta = 0;
     static Timing stopRect(this);
+    static Timing2 stopRect2(boost::bind(&Hookable::GetTicks, boost::ref(*this)));
 
     //CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     //m_pMainCanvas->Lock();
@@ -335,11 +337,13 @@ void MenuScreen::OnDraw() {
 
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
-    CRectangle frect(700, 120, 185, 185);
-    /*if (stopRect.IsBefore(2.0f))
+    int frectSize = 185;
+    CRectangle frect(700, 120, frectSize, frectSize);
+    if (stopRect2.IsBefore(1.0f))
     {
-        m_pBackground->RenderFillRect(frect, &color);
-    }*/
+        frect.W() -= frectSize - stopRect.SecondsSinceStart() * frectSize;
+        frect.H() -= frectSize - stopRect.SecondsSinceStart() * frectSize;
+    }
     stopRect.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); });
 
     CRectangle dstDims(0, 0, 200, 200);

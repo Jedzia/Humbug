@@ -22,7 +22,7 @@
 //
 //#include <build/cmake/include/debug.h>
 
-Timing::UpdateTimeFunc gui::components::FadeInOutRenderer::GetTimeUpdateFunction(const Hookable* hookable) {
+gui::Timing::UpdateTimeFunc gui::components::FadeInOutRenderer::GetTimeUpdateFunction(const Hookable* hookable) {
     if(!hookable) {
         return NULL;
     }

@@ -5,8 +5,8 @@
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the Timing.h class.
- * \file       Timing.h
+ *             the Timing2.h class.
+ * \file       Timing2.h
  * \date       2016-01-30
  * \author     Jedzia.
  *
@@ -17,22 +17,11 @@
 #include "TimingDefs.h"
 
 namespace gui {
-class Hookable;
-
-/** @class Timing:
- *  Detailed description.
+/** @class Timing2:
+ *  Lightweight timing implementation.
  *
  */
-class Timing {
-public:
-
-    typedef seconds seconds;
-    typedef UpdateTimeFunc UpdateTimeFunc;
-    typedef boost::function<void (void)> ConditionalTimeFunc;
-    typedef boost::function<bool (seconds time, ConditionalTimeFunc func)> UnaryTimeCheckFunc;
-
-private:
-
+class Timing2 {
     UpdateTimeFunc m_fncUpdateTime;
     int m_iTicks;
     int m_iStartTicks;
@@ -43,36 +32,31 @@ private:
      *  Detailed description.
      *
      */
-    void UpdateTimeFunction();
+    void UpdateTimeFunction() {
+        if(!m_fncUpdateTime) {
+            return;
+        }
 
-    /** Brief description of Timing, nullfunc
-     *  Detailed description.
-     *
-     */
-    static void nullfunc() { }
-
-    /** Brief description of Timing, GetTimeUpdateFunction
-     *  Detailed description.
-     *  @param hookable TODO
-     *  @return TODO
-     */
-    static UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
+        UpdateIdle(m_fncUpdateTime());
+    }
 
 public:
 
-    static const int FRAMESPERSECOND = gui::FRAMESPERSECOND;
+    explicit Timing2(UpdateTimeFunc updateFunction = NULL)
+        : Timing2(0, updateFunction) {}
 
-    explicit Timing(UpdateTimeFunc updateFunction = NULL);
-    explicit Timing(Hookable* updater);
-    explicit Timing(int startupTicks, UpdateTimeFunc updateFunction = NULL);
-    explicit Timing(int startupTicks, Hookable* updater);
+    explicit Timing2(int startupTicks, UpdateTimeFunc updateFunction = NULL)
+        : m_fncUpdateTime(updateFunction), m_iTicks(0), m_iStartTicks(startupTicks), m_fncLastCheck(NULL), m_timeLastCheck(0) {}
 
     /** Brief description of Timing, Convert
      *  Detailed description.
      *  @param ticks TODO
      *  @return TODO
      */
-    static seconds Convert(int ticks);
+    static seconds Convert(int ticks) {
+        seconds result = static_cast<seconds>(ticks) / static_cast<seconds>(FRAMESPERSECOND);
+        return result;
+    }
 
     /** Brief description of Timing, Reset
      *  Detailed description.
@@ -98,43 +82,71 @@ public:
      *  Detailed description.
      *  @return TODO
      */
-    int TicksSinceStart();
+    int TicksSinceStart() {
+        UpdateTimeFunction();
+        return m_iTicks - m_iStartTicks;
+    }
 
     /** Brief description of Timing, SecondsSinceStart
      *  Detailed description.
      *  @return TODO
      */
-    seconds SecondsSinceStart();
+    seconds SecondsSinceStart() {
+        return Convert(TicksSinceStart());
+    }
 
     /** Brief description of Timing, IsBefore
      *  Detailed description.
      *  @param time TODO
      *  @return TODO
      */
-    bool IsBefore(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsBefore(seconds time) {
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing2::IsBefore, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now < time;
+    }
 
     /** Brief description of Timing, IsAfter
      *  Detailed description.
      *  @param time TODO
      *  @return TODO
      */
-    bool IsAfter(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsAfter(seconds time) {
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing2::IsAfter, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now > time;
+    }
 
     /** Brief description of Timing, IsAt
      *  Detailed description.
      *  @param time TODO
      *  @return TODO
      */
-    bool IsAt(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsAt(seconds time) {
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing2::IsAt, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now == time;
+    }
 
-    /** Brief description of Timing, IsAtOrAfter
+    /** Brief description of Timing2, IsAtOrAfter
      *  Detailed description.
      *  @param time TODO
-     *  @param func TODO
      *  @return TODO
      */
-    bool IsAtOrAfter(seconds time, ConditionalTimeFunc func = NULL);
+    bool IsAtOrAfter(seconds time) {
+        m_timeLastCheck = time;
+        m_fncLastCheck = boost::bind(&Timing2::IsAtOrAfter, boost::ref(*this), _1);
+        seconds now = SecondsSinceStart();
+        return now >= time;
+    }
 
-    operator bool() const;
+    operator bool() const
+    {
+        bool result = m_fncLastCheck(m_timeLastCheck);
+        return result;
+    }
 };
 }
