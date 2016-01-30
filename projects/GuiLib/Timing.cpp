@@ -81,6 +81,19 @@ namespace gui {
         return result;
     }
 
+    bool Timing::IsAfterAndBefore(seconds after, seconds before, ConditionalTimeFunc func)
+    {
+        //m_timeLastCheck = time;
+        //m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1, _2);
+        //seconds now = SecondsSinceStart();
+        bool result = IsAfter(after) && IsBefore(before);
+        if (result && func) {
+            func();
+        }
+
+        return result;
+    }
+
     bool Timing::IsAt(seconds time, ConditionalTimeFunc func)
     {
         m_timeLastCheck = time;

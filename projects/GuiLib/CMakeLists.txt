@@ -87,6 +87,7 @@ SET(GuiLib_GUI_sources
 # Component set (Canvas, Controls, etc.)
 SET(GuiLib_Component_headers
 		Timing.h
+		TimingChain.h
 		Timing2.h
 		GUI/Disposable.h
 		
@@ -127,6 +128,7 @@ SET(GuiLib_Component_headers
 )
 SET(GuiLib_Component_sources
 		Timing.cpp
+		TimingChain.cpp
 		GUI/Disposable.cpp
 
 		GUI/Components/Point.cpp

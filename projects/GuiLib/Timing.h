@@ -114,11 +114,18 @@ public:
     bool IsBefore(seconds time, ConditionalTimeFunc func = NULL);
 
     /** Brief description of Timing, IsAfter
-     *  Detailed description.
-     *  @param time TODO
-     *  @return TODO
-     */
+    *  Detailed description.
+    *  @param time TODO
+    *  @return TODO
+    */
     bool IsAfter(seconds time, ConditionalTimeFunc func = NULL);
+
+    /** Brief description of Timing, IsAfter
+    *  Detailed description.
+    *  @param time TODO
+    *  @return TODO
+    */
+    bool IsAfterAndBefore(seconds after, seconds before, ConditionalTimeFunc func = NULL);
 
     /** Brief description of Timing, IsAt
      *  Detailed description.
