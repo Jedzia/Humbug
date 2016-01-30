@@ -324,6 +324,7 @@ void MenuScreen::OnDraw() {
     }
 
     static int coldelta = 0;
+    static Timing stopRect(this);
 
     //CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     //m_pMainCanvas->Lock();
@@ -335,7 +336,11 @@ void MenuScreen::OnDraw() {
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
     CRectangle frect(700, 120, 185, 185);
-    m_pBackground->RenderFillRect(frect, &color);
+    /*if (stopRect.IsBefore(2.0f))
+    {
+        m_pBackground->RenderFillRect(frect, &color);
+    }*/
+    stopRect.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); });
 
     CRectangle dstDims(0, 0, 200, 200);
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );

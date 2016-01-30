@@ -14,6 +14,8 @@
  */
 /*---------------------------------------------------------*/
 #pragma once
+#include "../Visual/Hookable.h"
+#include <boost/function.hpp>
 
 /** @class Timing:
  *  Detailed description.
@@ -24,7 +26,8 @@ public:
 
     typedef float seconds;
     typedef boost::function<int (void)> UpdateTimeFunc;
-    typedef boost::function<bool (seconds time)> UnaryTimeCheckFunc;
+    typedef boost::function<void (void)> ConditionalTimeFunc;
+    typedef boost::function<bool (seconds time, ConditionalTimeFunc func)> UnaryTimeCheckFunc;
 
 private:
 
@@ -46,6 +49,25 @@ private:
         UpdateIdle(m_fncUpdateTime());
     }
 
+    /** Brief description of Timing, nullfunc
+     *  Detailed description.
+     *
+     */
+    static void nullfunc() { }
+
+    /** Brief description of Timing, GetTimeUpdateFunction
+     *  Detailed description.
+     *  @param hookable TODO
+     *  @return TODO
+     */
+    static UpdateTimeFunc GetTimeUpdateFunction(const gui::Hookable* hookable) {
+        if(!hookable) {
+            return NULL;
+        }
+
+        return boost::bind(&gui::Hookable::GetTicks, boost::ref(*hookable));
+    }
+
 public:
 
     static const int FRAMESPERSECOND = 30;
@@ -53,8 +75,15 @@ public:
     explicit Timing(UpdateTimeFunc updateFunction = NULL)
         : Timing(0, updateFunction) {}
 
+    explicit Timing(gui::Hookable* updater)
+        : Timing(0, GetTimeUpdateFunction(updater)) {}
+
     explicit Timing(int startupTicks, UpdateTimeFunc updateFunction = NULL)
         : m_fncUpdateTime(updateFunction), m_iTicks(0), m_iStartTicks(startupTicks), m_fncLastCheck(NULL), m_timeLastCheck(0) {}
+
+    explicit Timing(int startupTicks, gui::Hookable* updater)
+        : m_fncUpdateTime(GetTimeUpdateFunction(updater)), m_iTicks(0), m_iStartTicks(startupTicks), m_fncLastCheck(NULL),
+        m_timeLastCheck(0) {}
 
     /** Brief description of Timing, Convert
      *  Detailed description.
@@ -108,11 +137,16 @@ public:
      *  @param time TODO
      *  @return TODO
      */
-    bool IsBefore(seconds time) {
+    bool IsBefore(seconds time, ConditionalTimeFunc func = NULL) {
         m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsBefore, boost::ref(*this), _1);
+        m_fncLastCheck = boost::bind(&Timing::IsBefore, boost::ref(*this), _1, _2);
         seconds now = SecondsSinceStart();
-        return now < time;
+        bool result = now < time;
+        if(result && func) {
+            func();
+        }
+
+        return result;
     }
 
     /** Brief description of Timing, IsAfter
@@ -120,11 +154,16 @@ public:
      *  @param time TODO
      *  @return TODO
      */
-    bool IsAfter(seconds time) {
+    bool IsAfter(seconds time, ConditionalTimeFunc func = NULL) {
         m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1);
+        m_fncLastCheck = boost::bind(&Timing::IsAfter, boost::ref(*this), _1, _2);
         seconds now = SecondsSinceStart();
-        return now > time;
+        bool result = now > time;
+        if(result && func) {
+            func();
+        }
+
+        return result;
     }
 
     /** Brief description of Timing, IsAt
@@ -132,23 +171,39 @@ public:
      *  @param time TODO
      *  @return TODO
      */
-    bool IsAt(seconds time) {
+    bool IsAt(seconds time, ConditionalTimeFunc func = NULL) {
         m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsAt, boost::ref(*this), _1);
+        m_fncLastCheck = boost::bind(&Timing::IsAt, boost::ref(*this), _1, _2);
         seconds now = SecondsSinceStart();
-        return now == time;
+        bool result = now == time;
+        if(result && func) {
+            func();
+        }
+
+        return result;
     }
 
-    bool IsAtOrAfter(seconds time) {
+    /** Brief description of Timing, IsAtOrAfter
+     *  Detailed description.
+     *  @param time TODO
+     *  @param func TODO
+     *  @return TODO
+     */
+    bool IsAtOrAfter(seconds time, ConditionalTimeFunc func = NULL) {
         m_timeLastCheck = time;
-        m_fncLastCheck = boost::bind(&Timing::IsAtOrAfter, boost::ref(*this), _1);
+        m_fncLastCheck = boost::bind(&Timing::IsAtOrAfter, boost::ref(*this), _1, _2);
         seconds now = SecondsSinceStart();
-        return now >= time;
+        bool result = now >= time;
+        if(result && func) {
+            func();
+        }
+
+        return result;
     }
 
     operator bool() const
     {
-        bool result = m_fncLastCheck(m_timeLastCheck);
+        bool result = m_fncLastCheck(m_timeLastCheck, NULL);
         return result;
     }
 };
