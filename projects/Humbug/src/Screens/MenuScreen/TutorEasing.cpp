@@ -85,15 +85,7 @@ bool TutorEasing::OnInit( int argc, char* argv[] ){
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
-    SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/MenuScreen/TutorA1Bg.png") );
-
-    //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-    //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-    //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-    //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-    m_pBackground.reset( new CCanvas( tmpfsurf ) );
-
-    //CCanvas tmpCanvas( tmpfsurf );
+    m_pBackground.reset(new CCanvas(m_Loader.FL_LOADIMG("Intro/MenuScreen/TutorA1Bg.png")));
     m_Loader.FreeLast();
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -128,9 +120,12 @@ bool TutorEasing::OnInit( int argc, char* argv[] ){
     m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 600), 800));
 
     m_pEasingText.reset(new CText(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24), "Ease In", CColor::DarkGreen(), CPoint(40, 400)));
-    m_pEasingText->MoveTo(CPoint(800, 400), this, 8.0f, 2, 2, EasingOperator::Func());
+    //m_pEasingText->MoveTo(CPoint(800, 400), this, 8.0f, 2, 2, EasingOperator::Func());
+    
     //static EasingOperator eaop;
     //m_pEasingText->MoveTo(CPoint(800, 400), this, 8.0f, 2, 2, boost::ref(eaop));
+
+    m_pEasingText->MoveTo<EaseOutInQuad>(CPoint(800, 400), this, 8.0f, 2, 2, 2.0f);
 
     return Screen::OnInit(argc, argv);
 

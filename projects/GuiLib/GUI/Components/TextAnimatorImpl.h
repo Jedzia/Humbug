@@ -43,6 +43,72 @@ public:
     vdouble operator()(vdouble in);
 };
 
+class EaseNone {
+public:
+
+    explicit EaseNone(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
+
+    vdouble operator()(vdouble t) const
+    {
+        return t;
+    }
+};
+
+class EaseOutQuad {
+public:
+
+    explicit EaseOutQuad(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
+
+    vdouble operator()(vdouble t) const
+    {
+        return -t*(t - 2);
+    }
+};
+
+class EaseInQuad {
+public:
+
+    explicit EaseInQuad(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
+
+    vdouble operator()(vdouble t) const
+    {
+        return t*t;
+    }
+};
+
+class EaseInOutQuad {
+public:
+
+    explicit EaseInOutQuad(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
+
+    vdouble operator()(vdouble t)
+    {
+        t *= vdouble(2.0);
+        if (t < 1) {
+            return t*t / vdouble(2);
+        }
+        else {
+            --t;
+            return vdouble(-0.5) * (t*(t - 2) - 1);
+        }
+    }
+};
+
+class EaseOutInQuad {
+    EaseInQuad easeInQuad;
+    EaseOutQuad easeOutQuad;
+public:
+
+    explicit EaseOutInQuad(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
+
+    vdouble operator()(vdouble t) const
+    {
+        if (t < vdouble(0.5)) return easeOutQuad(t * 2) / 2;
+        return easeInQuad((2 * t) - 1) / 2 + vdouble(0.5);
+    }
+};
+
+
 /** @class TextMover:
  *  Implementation of a TextAnimator that can move a CText with specified speed to a specified
  * CPoint.
@@ -62,7 +128,7 @@ class TextMover : public TextAnimator {
     vector2d current;
     //vector2d delta;
     vector2d lastPos;
-    TimeEasingFunc easingFunc;
+    TimeEasingFunc m_easingFunc;
 
     vdouble Easing(vdouble timeTraveledRatio);
 

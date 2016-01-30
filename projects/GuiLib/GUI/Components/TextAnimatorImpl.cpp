@@ -49,8 +49,8 @@ EasingOperator::EasingOperator(const vdouble alpha) : m_alpha{alpha} {
 EasingOperator::~EasingOperator() {
 }
 
-vdouble EasingOperator::operator()(vdouble in) {
-    float x = in;
+vdouble EasingOperator::operator()(vdouble t) {
+    float x = t;
     float powXA = std::pow(x, m_alpha);
     float fn = powXA / (powXA + std::pow(1.0f - x, m_alpha));
     return fn;
@@ -58,9 +58,8 @@ vdouble EasingOperator::operator()(vdouble in) {
 
 TextMover::TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut, const TimeEasingFunc& easingFunc) : destination(destination),
 speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)),
-    timeIn(timeIn), timeOut(timeOut), fulldistance(0), hasFirstRun(false), destinationReached(false), easingFunc(easingFunc) {
-    //static EasingOperator eaop;
-    //easingFunc = eaop;
+    timeIn(timeIn), timeOut(timeOut), fulldistance(0), hasFirstRun(false), destinationReached(false), m_easingFunc(easingFunc) {
+    // m_easingFunc = EasingOperator::Func();
 }
 
 vector2d TextMover::normalizedDirection(const vector2d& vA, const vector2d& vB, vdouble speed) {
@@ -83,8 +82,8 @@ bool TextMover::CompareWithTolerance(const vector2d& a, const vector2d& b, const
 }
 
 vdouble TextMover::Easing(vdouble input) {
-    if(easingFunc) {
-        return easingFunc(input);
+    if(m_easingFunc) {
+        return m_easingFunc(input);
     }
 
     return input;
@@ -122,6 +121,8 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
     vdouble timeTraveled = timingStart.SecondsSinceStart() - timeIn;
     vdouble timeTraveledRatio = timeTraveled / (fulldistance / speed / 30.0f);
     float fn = Easing(timeTraveledRatio);
+    fn = std::min(1.0f, fn);
+    fn = std::max(-1.0f, fn);
 
 #if DEBUGPRINT
     //std::ostringstream outstring1;
