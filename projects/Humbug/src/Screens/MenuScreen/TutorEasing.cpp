@@ -126,7 +126,7 @@ bool TutorEasing::OnInit( int argc, char* argv[] ){
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
     m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 600), 800));
 
-    m_pEasingText.reset(new CText(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48), "Ease In", CColor::DarkGreen(), CPoint(40, 400)));
+    m_pEasingText.reset(new CText(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24), "Ease In", CColor::DarkGreen(), CPoint(40, 400)));
     m_pEasingText->MoveTo(CPoint(800, 400), this, 4.0f, 0);
 
     return Screen::OnInit(argc, argv);

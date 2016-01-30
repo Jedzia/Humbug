@@ -24,8 +24,6 @@
 namespace gui {
 namespace components {
 #define DEBUGPRINT 1
-typedef float vdouble;
-typedef boost::numeric::ublas::vector<double> vector2d;
 
 /** @class TextMover:
  *  Implementation of a TextAnimator that can move a CText with specified speed to a specified
@@ -40,11 +38,15 @@ class TextMover : public TextAnimator {
     Timing timingEnd;
     float timeIn;
     float timeOut;
+    vdouble fulldistance;
     bool hasFirstRun;
     bool destinationReached;
     vector2d current;
-    vector2d delta;
+    //vector2d delta;
     vector2d lastPos;
+    TimeEasingFunc easingFunc;
+
+    vdouble Easing(vdouble timeTraveledRatio);
 
 public:
 
@@ -83,6 +85,7 @@ public:
      *  @param tolerance The margin (+/- tolerance) to accept when comparing for equality.
      *  @return \b true if equal or \b false if not.
      */
+
     static bool CompareWithTolerance(const vector2d& a, const vector2d& b, const vdouble tolerance);
 
     /** Loop functor, runs in the CText animator queue.
@@ -112,7 +115,7 @@ public:
 
     static vector2d normalizedDirection(
             const vector2d& vA,
-            const vector2d& vB, double speed);
+            const vector2d& vB, vdouble speed);
 
     /** Loop functor, runs in the CText animator queue.
      *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate

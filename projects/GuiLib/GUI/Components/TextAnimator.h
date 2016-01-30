@@ -24,6 +24,9 @@ namespace components {
 class CText;
 class CCanvas;
 
+typedef float vdouble;
+typedef boost::numeric::ublas::vector<vdouble> vector2d;
+
 /** @struct TextAnimatorData:
 *  Data used while drawing/modifying with TextAnimator's.
 */
@@ -51,6 +54,8 @@ struct TextAnimatorData : CCanvasRenderModifierData
  */
 class TextAnimator {
 public:
+
+    typedef boost::function<vdouble(vdouble)> TimeEasingFunc;
 
     /** Install timing function of the Hookable.
     *  Get the Timing::UpdateTimeFunc functor of the specified Hookable object.
