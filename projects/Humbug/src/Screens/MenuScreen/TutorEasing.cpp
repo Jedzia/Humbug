@@ -31,6 +31,7 @@
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
 #include <GuiLib/GUI/Components/TextAnimatorImpl.h>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -128,7 +129,7 @@ bool TutorEasing::OnInit( int argc, char* argv[] ){
     //m_pEasingText->MoveTo<EaseOutInQuad>(CPoint(800, 400), this, 8.0f, 2, 2, 2.0f);
     //m_pEasingText->MoveTo<EaseInOutElastic>(CPoint(800, 400), this, 4.0f, 2, 2, 8.0f, -4.0f);
     //m_pEasingText->MoveTo<EaseOutInElastic>(CPoint(800, 400), this, 4.0f, 2, 2, 4.0f, 2.0f);
-    m_pEasingText->MoveTo<EaseInOutBounce>(CPoint(800, 400), this, 4.0f, 2, 2, 2.0f);
+    m_pEasingText->MoveTo<EaseInOutBounce>(CPoint(800, 400), this, 4.0f, 0.2, 4, 1.50f);
 
     return Screen::OnInit(argc, argv);
 

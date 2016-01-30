@@ -108,6 +108,7 @@ SET(GuiLib_Component_headers
 		GUI/Components/Text.h
 		GUI/Components/TextAnimator.h
 		GUI/Components/TextAnimatorImpl.h
+		GUI/Components/EasingFunctors.h
 		GUI/Components/TextScroller.h
 
 		GUI/Components/Screen.h
@@ -148,6 +149,7 @@ SET(GuiLib_Component_sources
 		GUI/Components/Text.cpp
 		GUI/Components/TextAnimator.cpp
 		GUI/Components/TextAnimatorImpl.cpp
+		GUI/Components/EasingFunctors.cpp
 		GUI/Components/TextScroller.cpp
 
 		GUI/Components/Screen.cpp
