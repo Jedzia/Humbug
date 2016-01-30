@@ -121,8 +121,12 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
     vdouble timeTraveled = timingStart.SecondsSinceStart() - timeIn;
     vdouble timeTraveledRatio = timeTraveled / (fulldistance / speed / 30.0f);
     float fn = Easing(timeTraveledRatio);
-    fn = std::min(1.0f, fn);
-    fn = std::max(-1.0f, fn);
+    
+    // clamp when at end of cycle
+    if (timeTraveledRatio >= 1.0f) {
+        fn = std::min(1.0f, fn);
+        fn = std::max(-1.0f, fn);
+    }
 
 #if DEBUGPRINT
     //std::ostringstream outstring1;
