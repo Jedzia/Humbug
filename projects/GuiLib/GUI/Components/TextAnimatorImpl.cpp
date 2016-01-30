@@ -50,7 +50,7 @@ vector2d TextMover::direction(const vector2d& vA, const vector2d& vB, const vdou
 bool TextMover::CompareWithTolerance(const vector2d& a, const vector2d& b, const vdouble tolerance) {
     bool xcomp = a[0] - tolerance<b[0] && a[0] + tolerance> b[0];
     bool ycomp = a[1] - tolerance<b[1] && a[1] + tolerance> b[1];
-    return xcomp || ycomp;
+    return xcomp && ycomp;
 }
 
 void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) {
