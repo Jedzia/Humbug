@@ -44,6 +44,7 @@ class TextMover : public TextAnimator {
     bool destinationReached;
     vector2d current;
     vector2d delta;
+    vector2d lastPos;
 
 public:
 

@@ -70,6 +70,7 @@ SET(Humbug_MyGUI_headers
 		Screens/MenuScreen/SubmenuA.h
 		Screens/MenuScreen/SubmenuB.h
 		Screens/MenuScreen/TutorA1.h
+		Screens/MenuScreen/TutorEasing.h
 
 		Screens/WavyTextFloat.h
 )
@@ -94,6 +95,7 @@ SET(Humbug_MyGUI_sources
 		Screens/MenuScreen/SubmenuA.cpp
 		Screens/MenuScreen/SubmenuB.cpp
 		Screens/MenuScreen/TutorA1.cpp
+		Screens/MenuScreen/TutorEasing.cpp
 
 		Screens/WavyTextFloat.cpp
 )

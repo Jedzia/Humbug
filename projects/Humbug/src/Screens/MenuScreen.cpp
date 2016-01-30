@@ -31,6 +31,7 @@
 #include <GuiLib/GUI/Components/TextAnimator.h>
 #include <GuiLib/Timing2.h>
 #include "MenuScreen/TutorA1.h"
+#include "MenuScreen/TutorEasing.h"
 #include <GuiLib/TimingChain.h>
 //
 //#include <build/cmake/include/debug.h>
@@ -261,10 +262,6 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
      
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     
-    m_pEasingText.reset(new CText(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48), "Ease In", CColor::LightGreen(), CPoint(40,400)));
-    m_pEasingText->MoveTo(CPoint(800, 400), this, 4.0f, 0);
-    //m_pEasingText->FadeIn(this, 4.0f)->MoveTo(CPoint(800, 400), this, 4.0f);
-
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
     m_pInfoText.reset(new InfoText2(m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
@@ -293,6 +290,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     // Todo: derive a ScrollingLineMenu
     CRectangle lineMenuRect(100, 100, 800, 300);
     m_pLineMenu.reset(new CLineMenu(m_Loader, NULL, 1, "MenuScreen", lineMenuRect, CRectangle(10, 10, 10, 10)));
+    m_pLineMenu->AddTextLabel("Tutor Easing", HookMgr(), boost::make_shared<ScreenCreator<TutorEasing>>(m_Loader, m_pBackground.get()));
     m_pLineMenu->AddTextLabel("Sub Menu A", HookMgr(), boost::make_shared<ScreenCreator<SubmenuA>>(m_Loader, m_pBackground.get()));
     m_pLineMenu->AddTextLabel("Sub Menu B", HookMgr(), boost::make_shared<ScreenCreator<SubmenuB>>(m_Loader, m_pBackground.get()));
     m_pLineMenu->AddTextLabel("Tutor Intro", HookMgr(), boost::make_shared<ScreenCreator<TutorA1>>(m_Loader, m_pBackground.get()));
@@ -414,7 +412,6 @@ void MenuScreen::OnDraw() {
 
     m_pLineMenu->Draw();
     m_pInfoText->Draw(m_pBackground.get());
-    m_pEasingText->RenderPut(m_pBackground.get());
 
     //m_pMainCanvas->Unlock();
 }   // OnDraw

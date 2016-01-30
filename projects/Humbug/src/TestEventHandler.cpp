@@ -36,6 +36,7 @@
 #include "GUI/Components/Text.h"
 #include "Screens/SimpleScreen.h"
 #include "Screens/MenuScreen/SubmenuA.h"
+#include "Screens/MenuScreen/TutorEasing.h"
 
 namespace humbug {
 
@@ -343,7 +344,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //HookMgr()->RegisterHookable("XXXX", nn);
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
-    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
+    //HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<TutorEasing>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));

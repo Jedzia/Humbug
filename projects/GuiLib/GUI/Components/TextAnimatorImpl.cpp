@@ -61,6 +61,7 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
     //text->Dispose();
     if(!hasFirstRun) {
         origin = text->GetPosition();
+        lastPos = text->GetPosition();
         current = text->GetPosition();
         delta = normalizedDirection(destination, origin, speed);
         //delta = direction(destination, origin, speed);
@@ -78,6 +79,14 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
         if(timingStart.IsBefore(timeIn)) {
             return;
         }
+    }
+
+    if (true)
+    {
+        //delta = direction(destination, lastPos, speed);
+        auto diff = current - destination;
+        auto diffn = norm_2(diff);
+        delta = normalizedDirection(destination, lastPos, speed);
     }
 
 #if DEBUGPRINT
@@ -108,6 +117,7 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
 #endif // if DEBUGPRINT
 
     text->SetPosition(CPoint(current));
+    lastPos = current;
 
     const vdouble tolerance = static_cast<vdouble>(0.02);
     if(CompareWithTolerance(current, destination, tolerance)) {
