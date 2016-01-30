@@ -31,5 +31,6 @@ public:
     explicit TimingChain(Hookable* updater);
     TimingChain& Add(seconds time, Timing::ConditionalTimeFunc func = NULL, seconds time2 = 0);
     TimingChain& At(seconds after, seconds before, Timing::ConditionalTimeFunc func = NULL);
+    void Commit(seconds loopAfter = 0);
 };
 }

@@ -378,7 +378,7 @@ void MenuScreen::OnDraw() {
         .At(3.0f, 6.0f, [&]()
     {
         m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
-    });
+    }).Commit();
 
 
 //    tchain1.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })

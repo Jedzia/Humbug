@@ -35,4 +35,9 @@ namespace gui {
         m_timTimer.IsAfterAndBefore(after, before, func);
         return *this;
     }
+
+    void TimingChain::Commit(seconds loopAfter)
+    {
+        m_secStarttime = 0;
+    }
 }
