@@ -70,6 +70,8 @@ public:
     void OnUpdate() override;
 
 private:
+    
+    void OnFocus() override;
 
     struct TutorA1Impl;
     boost::scoped_ptr<TutorA1Impl> pimpl_;

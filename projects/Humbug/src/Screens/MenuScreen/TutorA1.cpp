@@ -189,4 +189,13 @@ void TutorA1::OnUpdate(){
     mcol.SetB( rand() );
     //m_iUpdateTimes++;
 }
+
+void TutorA1::OnFocus()
+{
+    int xx = 0;
+    xx++;
+    //FadeInOutRenderer fadeRenderer(this, 3.0f, FadeInOutRenderer::FadeMode::FadeIn, true);
+    //m_pBackground->AddModifier(fadeRenderer);
+
+}
 }
