@@ -224,12 +224,12 @@ TextAnimator* CText::Wait(Hookable* hookable, Timing::seconds waitTime)
 class SinusoidWobbler {
 };
 
-TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut) {
+TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut, const TimeEasingFunc& easingFunc) {
     //auto bla = *this;
     //AddAnimator(NULL);
     //return NULL;
     //TextMover mover(c_point, hookable);
-    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
+    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut, easingFunc);
 
     //GetCanvas()->AddAnimator(mover);
     AddAnimator(mover);

@@ -26,6 +26,7 @@ class CCanvas;
 
 typedef float vdouble;
 typedef boost::numeric::ublas::vector<vdouble> vector2d;
+typedef boost::function<vdouble(vdouble)> TimeEasingFunc;
 
 /** @struct TextAnimatorData:
 *  Data used while drawing/modifying with TextAnimator's.
@@ -54,8 +55,6 @@ struct TextAnimatorData : CCanvasRenderModifierData
  */
 class TextAnimator {
 public:
-
-    typedef boost::function<vdouble(vdouble)> TimeEasingFunc;
 
     /** Install timing function of the Hookable.
     *  Get the Timing::UpdateTimeFunc functor of the specified Hookable object.
@@ -97,7 +96,7 @@ public:
     *  @return a new TextAnimator that can be used to build a method chain initialization.
     *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f, this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
     */
-    TextAnimator * MoveTo(CPoint destination, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f);
+    TextAnimator * MoveTo(CPoint destination, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f, const TimeEasingFunc& easingFunc = NULL);
 
     TextAnimator * Position(CPoint destination);
 

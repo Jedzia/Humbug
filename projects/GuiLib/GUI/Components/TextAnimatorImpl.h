@@ -15,15 +15,33 @@
 /*---------------------------------------------------------*/
 #pragma once
 #include "Canvas.h"
+#include "CanvasRendererImpl.h"
 #include "Text.h"
 #include "TextAnimator.h"
 #include "Timing.h"
 #include <boost/numeric/ublas/vector.hpp>
-#include "CanvasRendererImpl.h"
 
 namespace gui {
 namespace components {
 #define DEBUGPRINT 1
+
+/** @class EasingOperator:
+ *  Detailed description.
+ *  @param in TODO
+ *  @return TODO
+ */
+class EasingOperator {
+    vdouble m_alpha;
+
+public:
+
+    static const TimeEasingFunc& Func(void);
+    static EasingOperator& Instance(void);
+    explicit EasingOperator(const vdouble alpha = static_cast<vdouble>(2.0f));
+    ~EasingOperator();
+
+    vdouble operator()(vdouble in);
+};
 
 /** @class TextMover:
  *  Implementation of a TextAnimator that can move a CText with specified speed to a specified
@@ -57,7 +75,7 @@ public:
     /// <param name="speed">The movement speed.</param>
     /// <param name="hookable">The hosting hookable or NULL. This is essentially important for
     // timing.</param>
-    explicit TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut);
+    explicit TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut, const TimeEasingFunc& easingFunc = NULL);
 
     /** Calculates the normalized direction.
      *  Calculate the unity direction vector between two points.
@@ -130,32 +148,32 @@ public:
 };
 
 /** @class WaitingAnimator:
-*  Waits for a specified time before calling the child TextAnimator.
-*/
+ *  Waits for a specified time before calling the child TextAnimator.
+ */
 class WaitingAnimator : public TextAnimator {
     Timing::seconds waitTime;
     Hookable* hookable;
     Timing timingStart;
 
 public:
+
     /// <summary>
     /// Initializes a new instance of the <see cref="WaitingAnimator"/> class.
     /// </summary>
     /// <param name="hookable">The hookable.</param>
     /// <param name="waitTime">The waiting time.</param>
     explicit WaitingAnimator(Hookable* hookable, Timing::seconds waitTime)
-        : waitTime(waitTime), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)){
-    }
+        : waitTime(waitTime), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)){}
 
     /** Loop functor, runs in the CText animator queue.
-    *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
-    * CText objects.
-    *  @param target The target canvas to paint on.
-    *  @param text The CText object to modify.
-    *  @param mdata Parameters for all TextAnimator's in the transformation loop.
-    */
+     *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate
+     * CText objects.
+     *  @param target The target canvas to paint on.
+     *  @param text The CText object to modify.
+     *  @param mdata Parameters for all TextAnimator's in the transformation loop.
+     */
     void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
-        if (timingStart.IsAtOrAfter(waitTime)) {
+        if(timingStart.IsAtOrAfter(waitTime)) {
             mdata.state++;
             mdata.markedForDeletion = true;
         }
@@ -164,11 +182,11 @@ public:
     // ()
 };
 
-
 /** @class FadeInOutAnimator:
  *  Old test implementation. Use TextMover.
  */
-class FadeInOutAnimator : public TextAnimator, FadeInOutRenderer {
+class FadeInOutAnimator : public TextAnimator,
+                                 FadeInOutRenderer {
 public:
 
     /// <summary>
@@ -176,11 +194,13 @@ public:
     /// </summary>
     /// <param name="hookable">The hookable.</param>
     /// <param name="fadeInOutTime">The fade in time, or fade out time in FadeMode::FadeOut.</param>
-    /// <param name="fadeMode">The fade mode. Only FadeMode::FadeIn and FadeMode::FadeOut are implemented.</param>
+    /// <param name="fadeMode">The fade mode. Only FadeMode::FadeIn and FadeMode::FadeOut are
+    // implemented.</param>
     /// <param name="stayTime">The stay time. not implemented.</param>
     /// <param name="fadeOutTime">The fade out time. not implemented.</param>
-    explicit FadeInOutAnimator(Hookable* hookable, Timing::seconds fadeInOutTime, FadeMode fadeMode = FadeMode::FadeIn, bool fadeOutRemovesText = false,
-                               Timing::seconds stayTime = 1.0f, Timing::seconds fadeOutTime = 1.0f);
+    explicit FadeInOutAnimator(Hookable* hookable, Timing::seconds fadeInOutTime, FadeMode fadeMode = FadeMode::FadeIn,
+            bool fadeOutRemovesText = false,
+            Timing::seconds stayTime = 1.0f, Timing::seconds fadeOutTime = 1.0f);
 
     /** Loop functor, runs in the CText animator queue.
      *  Functor implementation of the CText::TextModifierFunc that is used to modify or animate

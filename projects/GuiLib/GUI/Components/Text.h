@@ -21,6 +21,7 @@
 #include "Rectangle.h"
 #include "SDL_ttf.h"
 #include "Timing.h"
+#include "TextAnimator.h"
 
 namespace gui {
 class Hookable;
@@ -74,7 +75,7 @@ public:
      *  (like ->MoveTo(CPoint(200, 200), 4.0f, this)->MoveTo(CPoint(300, 600), 8.0f,
      *  this)->MoveTo(CPoint(900, 40), 12.0f, this)-> ...
      */
-    TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f);
+    TextAnimator * MoveTo(CPoint point, Hookable* hookable = NULL, float speed = 1.0f, Timing::seconds timeIn = 1.0f, Timing::seconds timeOut = 1.0f, const TimeEasingFunc& easingFunc = NULL);
     TextAnimator * FadeIn(Hookable* hookable, Timing::seconds fadeInTime = 1.0f);
     TextAnimator * FadeOut(Hookable* hookable, Timing::seconds fadeOutTime = 1.0f, bool fadeOutRemovesText = false);
 

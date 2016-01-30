@@ -29,39 +29,38 @@
 namespace gui {
 namespace components {
 using namespace boost::numeric::ublas;
-class EasingOperator
+
+const TimeEasingFunc& EasingOperator::Func()
 {
-public:
-
-    explicit EasingOperator(const vdouble alpha = static_cast<vdouble>( 2.0f ))
-        : m_alpha{alpha}
-    {
-    }
-    ~EasingOperator();
-
-    vdouble operator()(vdouble in);;
-
-private:
-    vdouble m_alpha;
-};
-
-EasingOperator::~EasingOperator()
-{
+    //static EasingOperator eaop;
+    static auto t = TimeEasingFunc(boost::ref(Instance()));
+    return t;
 }
 
-vdouble EasingOperator::operator()(vdouble in)
+EasingOperator& EasingOperator::Instance()
 {
+    static EasingOperator eaop;
+    return eaop;
+}
+
+EasingOperator::EasingOperator(const vdouble alpha) : m_alpha{alpha} {
+}
+
+EasingOperator::~EasingOperator() {
+}
+
+vdouble EasingOperator::operator()(vdouble in) {
     float x = in;
     float powXA = std::pow(x, m_alpha);
     float fn = powXA / (powXA + std::pow(1.0f - x, m_alpha));
     return fn;
 }
 
-TextMover::TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut) : destination(destination),
-    speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)),
-    timingEnd(GetTimeUpdateFunction(hookable)), timeIn(timeIn), timeOut(timeOut), fulldistance(0), hasFirstRun(false), destinationReached(false) {
-    static EasingOperator eaop;
-    easingFunc = eaop;
+TextMover::TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut, const TimeEasingFunc& easingFunc) : destination(destination),
+speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)),
+    timeIn(timeIn), timeOut(timeOut), fulldistance(0), hasFirstRun(false), destinationReached(false), easingFunc(easingFunc) {
+    //static EasingOperator eaop;
+    //easingFunc = eaop;
 }
 
 vector2d TextMover::normalizedDirection(const vector2d& vA, const vector2d& vB, vdouble speed) {
@@ -83,13 +82,11 @@ bool TextMover::CompareWithTolerance(const vector2d& a, const vector2d& b, const
     return xcomp && ycomp;
 }
 
-vdouble TextMover::Easing(vdouble input)
-{
-    if (easingFunc)
-    {
+vdouble TextMover::Easing(vdouble input) {
+    if(easingFunc) {
         return easingFunc(input);
     }
-    
+
     return input;
 }
 
@@ -122,36 +119,9 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
         }
     }
 
-    //if (true)
-    //{
-        //delta = direction(destination, lastPos, speed);
-    //vdouble distance = norm_2(current - destination);
     vdouble timeTraveled = timingStart.SecondsSinceStart() - timeIn;
-    // 30 = 30 pixel per seconds when speed is 1.0
     vdouble timeTraveledRatio = timeTraveled / (fulldistance / speed / 30.0f);
-    //vdouble timeTraveledRatio = speed / timeTraveled;
-    //vdouble distanceTraveledRatioInv = static_cast<vdouble>(1.0f) - distance / fulldistance;
-    //delta = normalizedDirection(destination, lastPos, speed / (diffn / 100));
-    //float speedVariance = std::max(1.0f, /*std::abs*/(speed * distanceTraveledRatioInv));
-    //float speedVariance = std::min(-1.0f, std::max(1.0f, distanceTraveledRatioInv));
-    //float speedVariance = std::max(0.2f, std::abs(distanceTraveledRatioInv));
-    //if (distanceTraveledRatioInv < 0.0f)
-    {
-        //speedVariance *= -1.0f;
-    }
-    //float fn = timeTraveledRatio;
-    //float fn = timeTraveledRatio;
-    //if (easingFunc)
-    //{
     float fn = Easing(timeTraveledRatio);
-    //}
-    //fn *= speed;
-    //fn = distanceTraveledRatioInv;
-    //delta = normalizedDirection(destination, origin, speed * distanceTraveledRatioInv);
-    //delta = normalizedDirection(destination, origin, speed * speedVariance);
-    //delta = normalizedDirection(destination, origin, speed * fn);
-
-    //}
 
 #if DEBUGPRINT
     //std::ostringstream outstring1;
@@ -188,7 +158,7 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
     outstring4 << " fn: " << fn;
     textPos += vresText3.VerticalSpacing();
     CText vresText4(text->GetFont(), outstring4.str(), CColor::Black(), textPos);
-    vresText4.RenderPut(target); 
+    vresText4.RenderPut(target);
 #endif // if DEBUGPRINT
 
     text->SetPosition(CPoint(current));
@@ -196,7 +166,7 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
 
     //const vdouble tolerance = static_cast<vdouble>(0.2f);
     //if(CompareWithTolerance(current, destination, tolerance)) {
-    if (timeTraveledRatio >= 1.0f) {
+    if(timeTraveledRatio >= 1.0f) {
         destinationReached = true;
 
         if(hookable && timingEnd.IsBefore(timeOut)) {
@@ -205,7 +175,7 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
 
         mdata.state++;
         mdata.markedForDeletion = true;
-    } 
+    }
 } // ()
 
 Mover2::Mover2(const CPoint& destination, Hookable* hookable) : destination(destination), hookable(hookable), timingStart(GetTimeUpdateFunction(

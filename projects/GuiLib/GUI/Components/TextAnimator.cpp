@@ -36,9 +36,9 @@ TextAnimator * TextAnimator::Wait(Hookable* hookable, Timing::seconds waitTime) 
     return mover;
 }
 
-TextAnimator * TextAnimator::MoveTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut) {
+TextAnimator * TextAnimator::MoveTo(CPoint c_point, Hookable* hookable, float speed, float timeIn, float timeOut, const TimeEasingFunc& easingFunc) {
     //TextMover mover(c_point, hookable);
-    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut);
+    auto mover = new TextMover(c_point, hookable, speed, timeIn, timeOut, easingFunc);
     nextAnimator = mover;
     return mover;
 }
