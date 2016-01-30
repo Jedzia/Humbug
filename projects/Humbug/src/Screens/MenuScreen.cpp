@@ -260,6 +260,10 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
         "";
      
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
+    
+    m_pEasingText.reset(new CText(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48), "Ease In", CColor::LightGreen(), CPoint(40,400)));
+    //m_pEasingText->MoveTo(CPoint(800, 400), this, 4.0f, 1.0f)->FlyTo(CPoint(460, 700), this, 4.0f);
+    m_pEasingText->FadeIn(this, 4.0f)->FlyTo(CPoint(800, 400), this, 4.0f);
 
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
     m_pInfoText.reset(new InfoText2(m_pArialfont, keysfont,
@@ -367,19 +371,32 @@ void MenuScreen::OnDraw() {
 //        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Green());
 //    });
 
-    tchain1.At(1.0f, 2.0f, [&]()
+//    tchain1.At(1.0f, 2.0f, [&]()
+//    {
+//        m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
+//    })
+//        .At(2.1f, 4.0f, [&]()
+//    {
+//        m_pBackground->RenderFillRect(frect2, CColor::Green());
+//    })
+//        .At(3.0f, 6.0f, [&]()
+//    {
+//        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
+//    }).Commit();
+
+
+    tchain1.At(1.0f, [&]()
     {
         m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
     })
-        .At(2.1f, 4.0f, [&]()
+        .At(1.0f, [&]()
     {
         m_pBackground->RenderFillRect(frect2, CColor::Green());
     })
-        .At(3.0f, 6.0f, [&]()
+        .At(1.0f, [&]()
     {
         m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
-    }).Commit();
-
+    }).Commit(0.01f);
 
 //    tchain1.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })
 //        .IsAfter(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })
@@ -397,6 +414,7 @@ void MenuScreen::OnDraw() {
 
     m_pLineMenu->Draw();
     m_pInfoText->Draw(m_pBackground.get());
+    m_pEasingText->RenderPut(m_pBackground.get());
 
     //m_pMainCanvas->Unlock();
 }   // OnDraw
