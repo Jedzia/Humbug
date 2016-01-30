@@ -19,20 +19,13 @@
 #include "InfoTextLoader.h"
 //
 #include "VersionToken.h"
-#include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/function.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/variant.hpp>
-#include <boost/variant/get.hpp>
-#include <boost/variant/variant.hpp>
-#include <iomanip>
-#include <iostream>
 #include <iterator>
-#include <locale>
 #include <regex>
-#include <sstream>
 #include <vector>
 //
 //#include <build/cmake/include/debug.h>

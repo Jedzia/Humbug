@@ -155,14 +155,15 @@ std::string ltrim(std::string str) {
  *  @return TODO
  */
 class CStopWatch {
-private:
 
     clock_t start;
     clock_t finish;
 
 public:
 
-    double GetDuration() { return (double)(finish - start) / CLOCKS_PER_SEC; }
+    CStopWatch() : start(0), finish(0)     {    }
+
+    double GetDuration() const { return static_cast<double>(finish - start) / CLOCKS_PER_SEC; }
 
     void Start() { start = clock(); }
 
@@ -267,7 +268,7 @@ void SimulateInOut() {
 
     cout << endl;
     cout << endl;
-    const int iMax = 500;
+    const int iMax = 1000;
     const char* versionString = "Version 1.2.3.4";
     stdcOut(iMax << " * Version parse of '" << versionString << "'.");
 
