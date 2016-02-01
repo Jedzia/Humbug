@@ -175,10 +175,14 @@ public:
 
     explicit DingensPainter(const MenuScreen* host)
         : DetailedControlPainter(), x(0), k(0), m_pHost(host)
-    {}
+    {
+        
+    }
 
     virtual ~DingensPainter()
-    {}
+    {
+        
+    }
 
     void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param) {
         int rnd = 4 - (rand() % 4);
@@ -263,7 +267,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
-    m_pInfoText.reset(new InfoText2(m_pArialfont, keysfont,
+    m_pInfoText.reset(new InfoText3(m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
     m_colText = CColor::Black();
     std::ostringstream outstring2;
@@ -300,8 +304,11 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pLineMenu->AddTextLabel();
     m_pLineMenu->AddTextLabel();
     m_pLineMenu->AddTextLabel();
+    // uses the functor part ( colored movement) of DingensPainter.
     DingensPainter painter(this);
     m_pLineMenu->AddChildPainter(painter); // performs copy
+    // uses the controls::DetailedControlPainter inheritance of DingensPainter with 
+    // After-, Before- and DrawChild() overloaded methods.
     m_pLineMenu->MakeChildPainter<DingensPainter>(this);
     m_connection = m_pLineMenu->ConnectMenuSChanged(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
     
