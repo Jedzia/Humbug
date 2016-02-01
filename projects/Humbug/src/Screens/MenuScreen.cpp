@@ -43,6 +43,43 @@ using namespace gui;
 namespace humbug {
 #include "MenuScreen/MenuScreenPainters.h"
 
+/** @class InfoTextAnimator:
+ *  Detailed description.
+ *  @param target TODO
+ *  @param text TODO
+ *  @param mdata TODO
+ *  @return TODO
+ */
+class InfoTextAnimator : public TextAnimator {
+    Hookable* hookable;
+    Timing timing;
+
+public:
+
+    explicit InfoTextAnimator(Hookable* hookable)
+        : hookable(hookable), timing(hookable) {
+    }
+
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override {
+        operator()(target, static_cast<BaseDrawable *>(text), mdata);
+    }
+
+    void operator()(const CCanvas* target, BaseDrawable* text, TextAnimatorData& mdata) override {
+        //static EaseInOutQuad ease;
+        //static EaseInOutBounce ease;
+        //static EasingOperator ease(2.0f);
+        //static EaseOutQuart ease;
+        static EaseOutBounce easeBounce;
+
+        float t1 = timing.RangeMappedSinceStart(-1200, 0, 0, 2.0f, -1200, 0, boost::ref(easeBounce));
+        CPoint infotextOffset = CPoint(static_cast<int>(round(t1)), text->GetPosition().GetY());
+        text->SetPosition(infotextOffset);
+        //text->Draw(target);
+    }
+
+    void Reset() { timing.Reset(); }
+};
+
 struct MenuScreen::MenuScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
@@ -50,9 +87,10 @@ struct MenuScreen::MenuScreenImpl {
     int x;
     Timing timing;
     DingensPainter painter;
+    InfoTextAnimator ita;
 
     explicit MenuScreenImpl(MenuScreen* host)
-        : x(0), timing{ host }, painter(host) {
+        : x(0), timing{host}, painter(host), ita(host) {
     }
 };
 
@@ -143,6 +181,9 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     text->FadeIn(this, 4.0f)->Wait(this, 8)->FadeOut(this, 2.5f)->Wait(this, 15)->FadeIn(this, 4.5f);
     text->MoveTo(CPoint(1024 / 2, 768 / 3 + 26), this, 4.0f, 0.005f);
     //text->FadeIn(this, 0.5f)->Wait(this, 3)->FadeOut(this, 2.5f, true);
+    //m_pInfoText->AddAnimator(InfoTextAnimator(this));
+    m_pInfoText->AddAnimator(boost::ref(pimpl_->ita));
+    //m_pInfoText->MoveTo<EasingOperator>(CPoint(-30, -400), this, 4.0f, 0.2, 4, 1.50f);
 
     // Todo: derive a ScrollingLineMenu
     CRectangle lineMenuRect(100, 100, 800, 300);
@@ -164,7 +205,6 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     // XX After-, Before- and DrawChild() overloaded methods.                          XX
     m_pLineMenu->MakeChildPainter<DingensPainter>(this);
     m_connection = m_pLineMenu->ConnectMenuSChanged(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
-
     // this->AddExclusiveKeyfilters(SDLK_1, SDLK_2) etc.
 
     return Screen::OnInit(argc, argv);
@@ -208,8 +248,8 @@ void MenuScreen::OnDraw() {
     }
 
     stopRect.IsBefore(2.0f, [&]() {
-        m_pBackground->RenderFillRect(frect, &color);
-    });
+            m_pBackground->RenderFillRect(frect, &color);
+        });
 
     // time chaining example. Red, green and blue looping rects..
     {
@@ -222,20 +262,20 @@ void MenuScreen::OnDraw() {
 
         tchain1
         .At(1.0f, [&]() {
-            m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
-        })
+                m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
+            })
         .At(1.0f, [&]() {
-            m_pBackground->RenderFillRect(frect2, CColor::Green());
-        })
+                m_pBackground->RenderFillRect(frect2, CColor::Green());
+            })
         .At(1.0f, [&]() {
-            m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
-        }).Commit(0.01f);
+                m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
+            }).Commit(0.01f);
     }
 
     m_pLineMenu->Draw();
 
     // timing example, bounce-in info text.
-    {
+    if(false) {
         Timing& timing = pimpl_->timing;
         //static EaseInOutQuad ease;
         //static EaseInOutBounce ease;
@@ -263,6 +303,8 @@ void MenuScreen::OnDraw() {
         m_pInfoText->SetPosition(infotextOffset);
         m_pInfoText->Draw(m_pBackground.get());
     }
+
+    m_pInfoText->Draw(m_pBackground.get());
 
     coldelta++;
 
@@ -309,7 +351,11 @@ void MenuScreen::OnEvent(SDL_Event* pEvent) {
     }
     case SDLK_SPACE:
     {
-        pimpl_->timing.Reset();
+        if(!HookMgr()->IsHookActive()) {
+            pimpl_->timing.Reset();
+            pimpl_->ita.Reset();
+        }
+
         break;
     }
     default:

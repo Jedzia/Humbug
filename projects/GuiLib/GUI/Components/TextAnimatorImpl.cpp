@@ -58,7 +58,8 @@ vdouble EasingOperator::operator()(vdouble t) {
 
 TextMover::TextMover(const CPoint& destination, Hookable* hookable, float speed, float timeIn, float timeOut, const TimeEasingFunc& easingFunc) : destination(destination),
 speed(static_cast<vdouble>(speed)), hookable(hookable), timingStart(GetTimeUpdateFunction(hookable)), timingEnd(GetTimeUpdateFunction(hookable)),
-    timeIn(timeIn), timeOut(timeOut), fulldistance(0), hasFirstRun(false), destinationReached(false), m_easingFunc(easingFunc) {
+    timeIn(timeIn), timeOut(timeOut), fulldistance(0), hasFirstRun(false), destinationReached(false), m_easingFunc(easingFunc), dis_fn(0), dis_timeTraveledRatio(0)
+{
     // use standard easing.
     m_easingFunc = EasingOperator::Func();
 }
