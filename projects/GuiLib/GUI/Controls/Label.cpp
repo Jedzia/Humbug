@@ -59,6 +59,7 @@ CLabel::CLabel(CControl* pParent, CRectangle rcDimensions, Uint32 id, std::strin
 //        //set the caption
 //        SetCaption(sCaption);
     m_sCaption = sCaption;
+    SetPosition(rcDimensions);
     CreateTextCanvas(sCaption, rcDimensions, colText);
     //set the colors
     m_colFace = colFace;

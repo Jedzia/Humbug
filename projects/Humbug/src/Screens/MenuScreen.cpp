@@ -266,9 +266,14 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
      
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     
+    m_pDebugInfoLabel.reset(new controls::CLabel(NULL, CRectangle(10,40, 200, 40), 12345, "No Text", m_pArialfont, true, m_colText));
+   // m_pDebugInfoLabel->SetPosition(CPoint(10, 40));
+
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
     m_pInfoText.reset(new InfoText3(m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
+                    //Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40)), CPoint(0,-200)));
+
     m_colText = CColor::Black();
     std::ostringstream outstring2;
     outstring2 << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
@@ -411,15 +416,27 @@ void MenuScreen::OnDraw() {
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
     //m_pMainCanvas->AddUpdateRect(dstDims);
 
-    coldelta++;
-
-    if(coldelta > 64) {
-        coldelta = 0;
-    }
-
     m_pLineMenu->Draw();
+
+    static Timing timing;
+    float t1 = timing.RangeMappedSinceStart(0, 100);
+    if (t1 > 1)
+    {
+        int xxx = 3;
+        xxx++;
+    }
+    std::ostringstream outstring;
+    outstring << "t1: " << t1;
+    //m_pDebugInfoText->set
+    m_pDebugInfoLabel->Draw();
+
     m_pInfoText->Draw(m_pBackground.get());
 
+    coldelta++;
+
+    if (coldelta > 64) {
+        coldelta = 0;
+    }
     //m_pMainCanvas->Unlock();
 }   // OnDraw
 
