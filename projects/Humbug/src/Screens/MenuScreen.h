@@ -80,8 +80,6 @@ public:
     void OnEvent(SDL_Event* pEvent) override;
 
 private:
-    class DingensPainter;
-
     virtual void MenuSelectionChanged(const std::string& selectedLabel) const;
 
     struct MenuScreenImpl;

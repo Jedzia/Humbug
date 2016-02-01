@@ -18,22 +18,22 @@
 #include "MenuScreen.h"
 //
 #include "../GUI/DebugOverlay.h"
+#include "InfoText.h"
 #include "MenuScreen/SubmenuA.h"
 #include "MenuScreen/SubmenuB.h"
-#include "InfoText.h"
+#include "MenuScreen/TutorA1.h"
+#include "MenuScreen/TutorEasing.h"
 #include <GuiLib/Filesystem/FileLoader.h>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 #include <GuiLib/GUI/Components/Rectangle.h>
 #include <GuiLib/GUI/Components/Text.h>
+#include <GuiLib/GUI/Components/TextAnimator.h>
 #include <GuiLib/GUI/Components/TextScroller.h>
 #include <GuiLib/GUI/Controls/Control.h>
 #include <GuiLib/GUI/Data/ColorData.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
-#include <GuiLib/GUI/Components/TextAnimator.h>
 #include <GuiLib/Timing2.h>
-#include "MenuScreen/TutorA1.h"
-#include "MenuScreen/TutorEasing.h"
 #include <GuiLib/TimingChain.h>
-#include <GuiLib/GUI/Components/EasingFunctors.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -41,16 +41,18 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
+#include "MenuScreen/MenuScreenPainters.h"
+
 struct MenuScreen::MenuScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
 
     int x;
     Timing timing;
+    DingensPainter painter;
 
-    explicit MenuScreenImpl(MenuScreen * host)
-        : x(0), timing{ host }
-    {
+    explicit MenuScreenImpl(MenuScreen* host)
+        : x(0), timing{ host }, painter(host) {
     }
 };
 
@@ -76,171 +78,9 @@ MenuScreen::~MenuScreen(void) {
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-/** @class InfoText:
- *  Detailed description.
- *  @return TODO
- */
-class InfoText {
-    int m_iFrames;
-    int m_iInitFrame;
-    TTF_Font* m_pTextFont;
-    TTF_Font* m_pKeysFont;
-    CRectangle m_rectPaint;
-    boost::scoped_ptr<CText> m_pInfoText1;
-    boost::scoped_ptr<CText> m_pInfoText2;
-    boost::scoped_ptr<CText> m_pInfoText3;
-    boost::scoped_ptr<CText> m_pInfoText4;
-    boost::scoped_ptr<CText> m_pInfoText5;
-    typedef float seconds;
-
-    seconds GetTime() const {
-        return (m_iFrames - m_iInitFrame) / 30.0f;
-    }
-
-public:
-
-    InfoText(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
-        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {
-        CColor m_colText = CColor::Black();
-        std::ostringstream outstring;
-        outstring << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
-        outstring << ")";
-        m_pInfoText1.reset(new CText(m_pTextFont, outstring.str(), m_colText));
-        m_pInfoText2.reset(new CText(m_pTextFont,
-                        "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
-        m_pInfoText3.reset(new CText(m_pKeysFont, "     K    J      w    s  "));
-        m_pInfoText4.reset(new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.",
-                        m_colText));
-        m_pInfoText5.reset(new CText(m_pKeysFont, " L  e         U     q  "));
-    }
-    ~InfoText() {}
-
-    void Draw(const CCanvas* canvas) const {
-        CRectangle rect = m_rectPaint;
-        m_pInfoText1->RenderPut(canvas, rect);
-        FROMTIME(0.25f)
-        rect += m_pInfoText1->VerticalSpacing();
-        m_pInfoText2->RenderPut(canvas, rect);
-        ENDTIMEBLOCK
-            FROMTIME(0.5f)
-        rect += m_pInfoText2->VerticalSpacing();
-        m_pInfoText3->RenderPut(canvas, rect);
-        ENDTIMEBLOCK
-            FROMTIME(0.75f)
-        rect += m_pInfoText3->VerticalSpacing();
-        m_pInfoText4->RenderPut(canvas, rect);
-        ENDTIMEBLOCK
-            FROMTIME(1.0f)
-        rect += m_pInfoText4->VerticalSpacing();
-        m_pInfoText5->RenderPut(canvas, rect);
-        ENDTIMEBLOCK
-    } // Draw
-    void Idle(int ticks) {
-        if(!m_iInitFrame) {
-            m_iInitFrame = ticks;
-        }
-
-        m_iFrames = ticks;
-    }
-};
-
-
-/** @class MenuScreen:
- *  Detailed description.
- *  @param parent TODO
- *  @param pChild TODO
- *  @param param TODO
- */
-class MenuScreen::DingensPainter : public controls::DetailedControlPainter {
-    int x;
-    int k;
-    const MenuScreen* m_pHost;
-    CPoint lastPos;
-
-    // overloads of the DetailedControlPainter
-    void BeforeDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
-        CPoint c_point = pChild->GetPosition();
-        lastPos = c_point;
-    }
-    void DrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
-        const int varX = 1;
-        auto x1 = (varX - cos(m_pHost->GetTicks() / 6.0f) * 4);
-        auto y1 = (varX - sin(m_pHost->GetTicks() / 6.0f) * 4);
-        pChild->SetPosition(CPoint(lastPos.GetX() + x1, lastPos.GetY() + y1));
-        //param.SetDrawn(true);
-        CColor sdl_color = CColor::LightMagenta();
-        auto x2 = (varX - sin(m_pHost->GetTicks() / 6.0f) * 32);
-        auto rect = CRectangle(333 - x2, 393, 55, 55);
-        //pChild->GetCanvas()->RenderFillRect(rect, &sdl_color);
-        CText text(m_pHost->m_pDebugfont, __FUNCTION__, sdl_color);
-        text.RenderPut(parent.GetCanvas(), rect);
-    }
-    void AfterDrawChild(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param)  override {
-        //param.SetDrawn(true);
-        pChild->SetPosition(lastPos);
-    }
-public:
-
-    explicit DingensPainter(const MenuScreen* host)
-        : DetailedControlPainter(), x(0), k(0), m_pHost(host)
-    {
-        
-    }
-
-    virtual ~DingensPainter()
-    {
-        
-    }
-
-    void operator()(const controls::CControl& parent, controls::CControl* pChild, controls::ControlPainterParameters& param) {
-        int rnd = 4 - (rand() % 4);
-        x += rnd;
-        k++;
-
-        //auto label = static_cast<controls::CLabel>(pChild);
-        auto label = dynamic_cast<controls::CLabel *>(pChild);
-
-        if(label) {
-            CColor cl = label->GetTextColor();
-            CColor clred = CColor::Red();
-
-            if(cl != clred) {
-                //int rdegrees = (m_pHost->m_iTicks + r % 360);
-                int degrees = (m_pHost->GetTicks()) * 8 % 360;
-                const float PI = 3.14159265f;
-                float radians = degrees * PI / 180.0f;
-                float clock = degrees / PI;
-                int corrector = 64 + sin(radians) * 64;
-
-                int sval = cos(m_pHost->GetTicks() / 6.0f) * 4;
-                int c = x % 200;
-                //CColor color(c, c, c | 0xa0, c);
-                CColor color(corrector, corrector, corrector | 0xa0, corrector);
-                //const int kfac = parent.GetNumChildren();
-                //CColor color((k % kfac) * 32 + corrector, (k % kfac) * 32, (k % kfac) * 32 | 0xa0,
-                // corrector);
-                label->SetTextColor(color);
-            }
-
-            //pChild->GetCanvas()->SetColorKey(color);
-        }
-
-        const int varX = 1;
-        //CPoint lastPos = pChild->GetPosition();
-        //pChild->SetPosition(CPoint(lastPos.GetX() + (varX - sin(m_pHost->m_iTicks / 6.0f) * 4),
-        // lastPos.GetY()));
-        //pChild->Draw();
-        //pChild->SetPosition(lastPos);
-        //param.SetDrawn(true);
-
-        CColor sdl_color = CColor::DarkMagenta();
-        pChild->GetCanvas()->RenderFillRect(CRectangle(333 + x, 333, 55, 55), &sdl_color);
-    } // ()
-};
-
 bool MenuScreen::OnInit(int argc, char* argv[]) {
     TTF_Font* m_pArialfont;
-    m_pDebugfont = m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
+    m_pDebugfont = pimpl_->painter.font = m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
 
     mcol = CColor::White();
 
@@ -271,16 +111,16 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
         "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" << "\t" << "48" << "\t" <<
         "Humbug" << "\r\n" <<
         "";
-     
+
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
-    
+
     m_pDebugInfoLabel.reset(new controls::CLabel(NULL, CRectangle(10, 80, 200, 40), 12345, "No Text", m_pArialfont, true, m_colText));
-   // m_pDebugInfoLabel->SetPosition(CPoint(10, 40));
+    // m_pDebugInfoLabel->SetPosition(CPoint(10, 40));
 
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
     m_pInfoText.reset(new InfoText3(m_pArialfont, keysfont,
                     Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40))));
-                    //Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40)), CPoint(0,-200)));
+    //Master()->GetMainCanvas()->GetDimension().Pad(CRectangle(60, 500, 60, 40)), CPoint(0,-200)));
 
     m_colText = CColor::Black();
     std::ostringstream outstring2;
@@ -293,16 +133,16 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pInfoText->makeCText<CText>(keysfont, " L  e         U     q  ");
 
     m_pInfoText->makeCText<CText>(m_pArialfont, "Let's fly away ", m_colText)
-        //->MoveTo(CPoint(200, 200), this)->MoveTo(CPoint(100, 40), this)->MoveTo(CPoint(300, 440), this);
-        ->MoveTo(CPoint(200, 200), this, 4.0f)->MoveTo(CPoint(300, 600), this, 8.0f)->MoveTo(CPoint(900, 40), this, 12.0f)
-        ->MoveTo(CPoint(300, 600), this, 16.0f)->MoveTo(CPoint(460, 700), this, 4.0f)
-        ->MoveTo(CPoint(20, 20), this, 8.0f)->MoveTo(CPoint(1024 / 2, 768 / 3), this, 12.0f);
+    //->MoveTo(CPoint(200, 200), this)->MoveTo(CPoint(100, 40), this)->MoveTo(CPoint(300, 440),
+    // this);
+    ->MoveTo(CPoint(200, 200), this, 4.0f)->MoveTo(CPoint(300, 600), this, 8.0f)->MoveTo(CPoint(900, 40), this, 12.0f)
+    ->MoveTo(CPoint(300, 600), this, 16.0f)->MoveTo(CPoint(460, 700), this, 4.0f)
+    ->MoveTo(CPoint(20, 20), this, 8.0f)->MoveTo(CPoint(1024 / 2, 768 / 3), this, 12.0f);
 
     auto text = m_pInfoText->makeCText<CText>(m_pArialfont, " ... to the moon.", m_colText);
     text->FadeIn(this, 4.0f)->Wait(this, 8)->FadeOut(this, 2.5f)->Wait(this, 15)->FadeIn(this, 4.5f);
     text->MoveTo(CPoint(1024 / 2, 768 / 3 + 26), this, 4.0f, 0.005f);
     //text->FadeIn(this, 0.5f)->Wait(this, 3)->FadeOut(this, 2.5f, true);
-
 
     // Todo: derive a ScrollingLineMenu
     CRectangle lineMenuRect(100, 100, 800, 300);
@@ -317,14 +157,14 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
     m_pLineMenu->AddTextLabel();
     m_pLineMenu->AddTextLabel();
     m_pLineMenu->AddTextLabel();
-    // uses the functor part ( colored movement) of DingensPainter.
-    DingensPainter painter(this);
-    m_pLineMenu->AddChildPainter(painter); // performs copy
-    // uses the controls::DetailedControlPainter inheritance of DingensPainter with 
-    // After-, Before- and DrawChild() overloaded methods.
+    // XX uses the functor part ( colored movement) of DingensPainter. XX
+    m_pLineMenu->AddChildPainter(DingensPainter(this)); // performs copy
+    //m_pLineMenu->AddChildPainter(boost::ref(pimpl_->painter)); // performs no copy
+    // XX uses the controls::DetailedControlPainter inheritance of DingensPainter with XX
+    // XX After-, Before- and DrawChild() overloaded methods.                          XX
     m_pLineMenu->MakeChildPainter<DingensPainter>(this);
     m_connection = m_pLineMenu->ConnectMenuSChanged(boost::bind(&MenuScreen::MenuSelectionChanged, this, _1));
-    
+
     // this->AddExclusiveKeyfilters(SDLK_1, SDLK_2) etc.
 
     return Screen::OnInit(argc, argv);
@@ -342,7 +182,7 @@ void MenuScreen::OnIdle(int ticks) {
 
 void MenuScreen::OnDraw() {
     if(HookMgr()->IsHookActive()) {
-        // When in submenu no draw other than the sub-screens should occur.
+        // When in submenu no Draw() other than the sub-screens should be called.
         RaiseOnDraw();
         return;
     }
@@ -362,113 +202,74 @@ void MenuScreen::OnDraw() {
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
     int frectSize = 185;
     CRectangle frect(700, 120, frectSize, frectSize);
-    if (stopRect2.IsBefore(1.0f))
-    {
-        frect.W() -= frectSize - stopRect.SecondsSinceStart() * frectSize;
-        frect.H() -= frectSize - stopRect.SecondsSinceStart() * frectSize;
+    if(stopRect2.IsBefore(1.0f)) {
+        frect.W() -= static_cast<int>(frectSize - stopRect.SecondsSinceStart() * frectSize);
+        frect.H() -= static_cast<int>(frectSize - stopRect.SecondsSinceStart() * frectSize);
     }
-    stopRect.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); });
 
-    CRectangle frect2(760, 620, 64, 64);
-    static TimingChain tchain1(this);
-    //tchain1.Add(2.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Red()); });
-    /*tchain1.Add(1.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Red()); })
-        .Add(2.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Blue()); })
-        .Add(3.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Green()); });*/
-    
-//    tchain1.Add(1.0f, [&]()
-//    {
-//        m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
-//    })
-//        .Add(2.0f, [&]()
-//    {
-//        m_pBackground->RenderFillRect(frect2, CColor::Blue());
-//    })
-//        .Add(3.0f, [&]()
-//    {
-//        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Green());
-//    });
+    stopRect.IsBefore(2.0f, [&]() {
+        m_pBackground->RenderFillRect(frect, &color);
+    });
 
-//    tchain1.At(1.0f, 2.0f, [&]()
-//    {
-//        m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
-//    })
-//        .At(2.1f, 4.0f, [&]()
-//    {
-//        m_pBackground->RenderFillRect(frect2, CColor::Green());
-//    })
-//        .At(3.0f, 6.0f, [&]()
-//    {
-//        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
-//    }).Commit();
-
-
-    tchain1.At(1.0f, [&]()
+    // time chaining example. Red, green and blue looping rects..
     {
-        m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
-    })
-        .At(1.0f, [&]()
-    {
-        m_pBackground->RenderFillRect(frect2, CColor::Green());
-    })
-        .At(1.0f, [&]()
-    {
-        m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
-    }).Commit(0.01f);
+        CRectangle frect2(760, 620, 64, 64);
+        static TimingChain tchain1(this);
+        //tchain1.Add(2.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Red()); });
+        /*tchain1.Add(1.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Red()); })
+            .Add(2.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Blue()); })
+            .Add(3.0f, [&]() { m_pBackground->RenderFillRect(frect2, CColor::Green()); });*/
 
-//    tchain1.IsBefore(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })
-//        .IsAfter(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); })
-//        .IsAfter(2.0f, [&]() { m_pBackground->RenderFillRect(frect, &color); });
-
-    CRectangle dstDims(0, 0, 200, 200);
-    //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
-    //m_pMainCanvas->AddUpdateRect(dstDims);
+        tchain1
+        .At(1.0f, [&]() {
+            m_pBackground->RenderFillRect(frect2 - CPoint(80, 0), CColor::Red());
+        })
+        .At(1.0f, [&]() {
+            m_pBackground->RenderFillRect(frect2, CColor::Green());
+        })
+        .At(1.0f, [&]() {
+            m_pBackground->RenderFillRect(frect2 + CPoint(80, 0), CColor::Blue());
+        }).Commit(0.01f);
+    }
 
     m_pLineMenu->Draw();
 
-    Timing& timing = pimpl_->timing;
-    //static EaseInOutQuad ease;
-    //static EaseInOutBounce ease;
-    //static EasingOperator ease(2.0f);
-    //static EaseOutQuart ease;
-    static EaseOutBounce ease;
-
-    //float t1 = timing.RangeMappedSinceStart(-200, 200, -20, 20);
-    //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 4);
-    //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 3.25, -600, 0);
-    //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 3.25, -600, 0, EasingOperator::Func());
-    float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 2.0f, -600, 0, boost::ref(ease));
-    if (t1 > 1)
+    // timing example, bounce-in info text.
     {
-        int xxx = 3;
-        xxx++;
-    }
-    CPoint infotextOffset = CPoint(t1, m_pInfoText->GetPosition().GetY());
-    static float lastresult1 = timing.B;
-    static int lastresult = infotextOffset.GetX();
-    lastresult1 -= timing.B;
-    lastresult -= infotextOffset.GetX();
-    std::ostringstream outstring;
-    outstring << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << "t: " << timing.SecondsSinceStart();
-    //outstring << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << "t: " << 1;
-    outstring << " t1: " << t1;
-    outstring << " fmap: " << timing.A;
-    outstring << " fres: " << timing.B;
-    outstring << " last: " << lastresult;
-    outstring << " last1: " << lastresult1;
-    m_pDebugInfoLabel->SetCaption(outstring.str());
-    m_pDebugInfoLabel->Draw();
-    lastresult1 = timing.B;
-    lastresult = infotextOffset.GetX();
+        Timing& timing = pimpl_->timing;
+        //static EaseInOutQuad ease;
+        //static EaseInOutBounce ease;
+        //static EasingOperator ease(2.0f);
+        //static EaseOutQuart ease;
+        static EaseOutBounce easeBounce;
 
-    m_pInfoText->SetPosition(infotextOffset);
-    m_pInfoText->Draw(m_pBackground.get());
+        //float t1 = timing.RangeMappedSinceStart(-200, 200, -20, 20);
+        //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 4);
+        //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 3.25, -600, 0);
+        //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 3.25, -600, 0,
+        // EasingOperator::Func());
+        float t1 = timing.RangeMappedSinceStart(-1200, 0, 0, 2.0f, -1200, 0, boost::ref(easeBounce));
+        CPoint infotextOffset = CPoint(static_cast<int>(round(t1)), m_pInfoText->GetPosition().GetY());
+        static int lastresult = infotextOffset.GetX();
+        lastresult -= infotextOffset.GetX();
+        std::ostringstream outstring;
+        outstring << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << "t: " << timing.SecondsSinceStart();
+        outstring << " t1: " << t1;
+        outstring << " last: " << lastresult;
+        m_pDebugInfoLabel->SetCaption(outstring.str());
+        m_pDebugInfoLabel->Draw();
+        lastresult = infotextOffset.GetX();
+
+        m_pInfoText->SetPosition(infotextOffset);
+        m_pInfoText->Draw(m_pBackground.get());
+    }
 
     coldelta++;
 
-    if (coldelta > 64) {
+    if(coldelta > 64) {
         coldelta = 0;
     }
+
     //m_pMainCanvas->Unlock();
 }   // OnDraw
 
@@ -517,12 +318,12 @@ void MenuScreen::OnEvent(SDL_Event* pEvent) {
 } // MenuScreen::OnEvent
 
 void MenuScreen::MenuSelectionChanged(const std::string&  selectedLabel) const {
-    if (selectedLabel == CLineMenu::BackSelected) {
+    if(selectedLabel == CLineMenu::BackSelected) {
         HookMgr()->DisableHookable();
         return;
     }
-   
-    if (HookMgr()->IsHookActive() || selectedLabel.empty()) {
+
+    if(HookMgr()->IsHookActive() || selectedLabel.empty()) {
         return;
     }
 
@@ -532,17 +333,17 @@ void MenuScreen::MenuSelectionChanged(const std::string&  selectedLabel) const {
             HookMgr()->DisableHookable();
         }
 
-    // When in submenu no selection other than the "back" key should occur.
-    if(HookMgr()->IsHookActive()) {
+       // When in submenu no selection other than the "back" key should occur.
+       if(HookMgr()->IsHookActive()) {
         return;
-    }
+       }
 
-    if(selectedLabel == label1) {
+       if(selectedLabel == label1) {
         HookMgr()->EnableHookable("SubmenuA");
-    }
-    else if(selectedLabel == label2) {
+       }
+       else if(selectedLabel == label2) {
         HookMgr()->EnableHookable("SubmenuB");
-    }*/
+       }*/
 
     dbgOut(__FUNCTION__ << "SelectedLabel: " << selectedLabel << " (" << this << ").");
 } // MenuScreen::MenuSelectionChanged

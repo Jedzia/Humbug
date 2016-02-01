@@ -117,10 +117,7 @@ public:
     typedef boost::function<float(float)> TimeEasingFunc;
     float RangeMappedSinceStart(float outMin, float outMax, float inMin = 0.0f, float inMax = 1.0f,
         float outMinClamp = -std::numeric_limits<float>::max(), float outMaxClamp = std::numeric_limits<float>::max(), 
-        //float outMinClamp = -1000000, float outMaxClamp = +1000000,
         TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
-    // for testing
-    float A, B, C;
 
     /** Brief description of Timing, IsBefore
      *  Detailed description.

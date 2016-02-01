@@ -92,32 +92,10 @@ namespace gui {
         float foutMinClamp, float foutMaxClamp)
     {
         seconds now = SecondsSinceStart();
-        //float inFac = inMax - inMin / inMax;
-        //float outFac = outMax - outMin / outMax;
-        //float result = now * inFac * outFac;
-
-//        float slope = 1.0f * (outMax - outMin) / (inMax - inMin);
-        //float result = outMin + round(slope * (now - inMin));
-//        float result = outMin + (slope * (now - inMin));
         if (functor)
         {
-            //float functormap = rangeMap(now, 0, 1, inMin, inMax, 0, 1);
             float functormap = rangeMap(now, 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
-            if (functormap > 0.8)
-            {
-                int x = 0;
-                x++;
-            }
-            
-            A = functormap;
-            float functorresult = functor(functormap);
-            B = functorresult;
-            //now = now * functorresult;
-            //result = outMin + round(slope * functorresult * (now - inMin));
-            //slope = functorresult * (outMax - outMin) / (inMax - inMin);
-            //result = outMin + (slope * (now - inMin));
-            return rangeMap(functorresult, outMin, outMax, 0, 1, outMinClamp, outMaxClamp);
-            //result *= functorresult;
+            return rangeMap(functor(functormap), outMin, outMax, 0, 1, outMinClamp, outMaxClamp);
         }
         
         return rangeMap(now, outMin, outMax, inMin, inMax, outMinClamp, outMaxClamp);

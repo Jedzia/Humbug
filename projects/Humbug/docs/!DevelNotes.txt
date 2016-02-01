@@ -1,3 +1,79 @@
+
+-X-X-X-X- Mo, 01 Feb 2016 17:30:17 -----------------------------------------------------------
+Old in-place InfoText:
+
+/** @class InfoText:
+ *  Detailed description.
+ *  @return TODO
+ */
+class InfoText {
+    int m_iFrames;
+    int m_iInitFrame;
+    TTF_Font* m_pTextFont;
+    TTF_Font* m_pKeysFont;
+    CRectangle m_rectPaint;
+    boost::scoped_ptr<CText> m_pInfoText1;
+    boost::scoped_ptr<CText> m_pInfoText2;
+    boost::scoped_ptr<CText> m_pInfoText3;
+    boost::scoped_ptr<CText> m_pInfoText4;
+    boost::scoped_ptr<CText> m_pInfoText5;
+    typedef float seconds;
+
+    seconds GetTime() const {
+        return (m_iFrames - m_iInitFrame) / 30.0f;
+    }
+
+public:
+
+    InfoText(TTF_Font* textFont, TTF_Font* keysFont, const CRectangle& paintDimensions) : m_iFrames(0), m_iInitFrame(0),
+        m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(paintDimensions) {
+        CColor m_colText = CColor::Black();
+        std::ostringstream outstring;
+        outstring << "This screen shows how to display a simple Submenu. (" << CApplication::ShownFrames();
+        outstring << ")";
+        m_pInfoText1.reset(new CText(m_pTextFont, outstring.str(), m_colText));
+        m_pInfoText2.reset(new CText(m_pTextFont,
+                        "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText));
+        m_pInfoText3.reset(new CText(m_pKeysFont, "     K    J      w    s  "));
+        m_pInfoText4.reset(new CText(m_pTextFont, "Enter or [e] selects and Backspace or [q] moves back.",
+                        m_colText));
+        m_pInfoText5.reset(new CText(m_pKeysFont, " L  e         U     q  "));
+    }
+
+    ~InfoText() {}
+
+    void Draw(const CCanvas* canvas) const {
+        CRectangle rect = m_rectPaint;
+        m_pInfoText1->RenderPut(canvas, rect);
+        FROMTIME(0.25f)
+        rect += m_pInfoText1->VerticalSpacing();
+        m_pInfoText2->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+            FROMTIME(0.5f)
+        rect += m_pInfoText2->VerticalSpacing();
+        m_pInfoText3->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+            FROMTIME(0.75f)
+        rect += m_pInfoText3->VerticalSpacing();
+        m_pInfoText4->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+            FROMTIME(1.0f)
+        rect += m_pInfoText4->VerticalSpacing();
+        m_pInfoText5->RenderPut(canvas, rect);
+        ENDTIMEBLOCK
+    } // Draw
+
+    void Idle(int ticks) {
+        if(!m_iInitFrame) {
+            m_iInitFrame = ticks;
+        }
+
+        m_iFrames = ticks;
+    }
+};
+
+
+-----------------------------------------------------------------------------------------------
 -X-X-X-X- Montag, 25. November 2013 -----------------------------------------------------------------------------
 
 Register global Lua objects.
