@@ -18,7 +18,6 @@
 
 #include "BaseDrawable.h"
 #include "Color.h"
-#include "Rectangle.h"
 #include "SDL_ttf.h"
 #include "Timing.h"
 #include "TextAnimator.h"
@@ -182,18 +181,6 @@ public:
      */
     void SetColor(const CColor textcolor);
 
-    /** Get current text Position.
-     *  Gets the current text position of this instance.
-     *  @return the point of the text position.
-     */
-    CPoint GetPosition() const { return m_ptPosition; }
-
-    /** Set text Position.
-     *  Sets the text position of this instance used by RenderPut(const CCanvas* canvas).
-     *  @param position The value of the text position.
-     */
-    void SetPosition(CPoint position) { m_ptPosition = position; }
-
     /**  Get the font.
      *  Gets the font used by this text instance.
      *  @return the text font.
@@ -208,7 +195,6 @@ private:
 
     void RunModifiers(CCanvas* textcanvas) const;
 
-    CPoint m_ptPosition;
     TTF_Font* m_pFont;
     std::string m_strText;
     CColor m_colText;

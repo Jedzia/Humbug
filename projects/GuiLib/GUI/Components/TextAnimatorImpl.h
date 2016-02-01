@@ -72,7 +72,8 @@ class TextMover : public TextAnimator {
     //vector2d delta;
     vector2d lastPos;
     TimeEasingFunc m_easingFunc;
-
+    vdouble dis_fn;
+    vdouble dis_timeTraveledRatio;
     vdouble Easing(vdouble timeTraveledRatio);
 
 public:
@@ -122,8 +123,9 @@ public:
      *  @param text The CText object to modify.
      *  @param mdata Parameters for all TextAnimator's in the transformation loop.
      */
-    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override;
+    void operator()(const CCanvas* target, BaseDrawable* text, TextAnimatorData& mdata) ;
 
+    void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) override;
     // ()
 };
 

@@ -89,7 +89,7 @@ vdouble TextMover::Easing(vdouble input) {
     return input;
 }
 
-void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) {
+void TextMover::operator()(const CCanvas* target, BaseDrawable* text, TextAnimatorData& mdata) {
     using namespace boost::numeric::ublas;
     auto color = CColor::DarkGray();
     target->RenderFillRect(CRectangle(CPoint(destination), CPoint(33, 33)), &color);
@@ -120,51 +120,21 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
 
     vdouble timeTraveled = timingStart.SecondsSinceStart() - timeIn;
     vdouble timeTraveledRatio = timeTraveled / (fulldistance / speed / 30.0f);
-    float fn = Easing(timeTraveledRatio);
+    vdouble fn = Easing(timeTraveledRatio);
     
     // clamp when at end of cycle
     if (timeTraveledRatio >= 1.0f) {
         fn = std::min(1.0f, fn);
         fn = std::max(-1.0f, fn);
     }
+    dis_fn = fn;
+    dis_timeTraveledRatio = timeTraveledRatio;
 
-#if DEBUGPRINT
-    //std::ostringstream outstring1;
-    //outstring1 << "delta: " << delta;
-    //CPoint textPos = CPoint(400, 180);
-    //CText vresText1(text->GetFont(), outstring1.str(), CColor::Black(), textPos);
-    //vresText1.RenderPut(target);
-
-#endif
-
-    if(!destinationReached) {
+    if (!destinationReached) {
         //current += delta;
         auto difference = destination - origin;
         current = origin + difference * fn;
     }
-
-#if DEBUGPRINT
-    std::ostringstream outstring2;
-    outstring2 << "destination: " << destination;
-    CPoint textPos = CPoint(400, 180);
-    //textPos += vresText1.VerticalSpacing();
-    CText vresText2(text->GetFont(), outstring2.str(), CColor::Black(), textPos);
-    vresText2.RenderPut(target);
-
-    std::ostringstream outstring3;
-    outstring3 << "current: " << current;
-    textPos += vresText2.VerticalSpacing();
-    CText vresText3(text->GetFont(), outstring3.str(), CColor::Black(), textPos);
-    vresText3.RenderPut(target);
-
-    std::ostringstream outstring4;
-    outstring4 << "t: " << timeTraveledRatio;
-    //outstring4 << " v: " << speedVariance;
-    outstring4 << " fn: " << fn;
-    textPos += vresText3.VerticalSpacing();
-    CText vresText4(text->GetFont(), outstring4.str(), CColor::Black(), textPos);
-    vresText4.RenderPut(target);
-#endif // if DEBUGPRINT
 
     text->SetPosition(CPoint(current));
     lastPos = current;
@@ -182,6 +152,42 @@ void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData&
         mdata.markedForDeletion = true;
     }
 } // ()
+void TextMover::operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata)
+{
+    operator()(target, static_cast<BaseDrawable*>(text), mdata);
+
+#if DEBUGPRINT
+    //std::ostringstream outstring1;
+    //outstring1 << "delta: " << delta;
+    //CPoint textPos = CPoint(400, 180);
+    //CText vresText1(text->GetFont(), outstring1.str(), CColor::Black(), textPos);
+    //vresText1.RenderPut(target);
+
+#endif
+
+#if DEBUGPRINT
+    std::ostringstream outstring2;
+    outstring2 << "destination: " << destination;
+    CPoint textPos = CPoint(400, 180);
+    //textPos += vresText1.VerticalSpacing();
+    CText vresText2(text->GetFont(), outstring2.str(), CColor::Black(), textPos);
+    vresText2.RenderPut(target);
+
+    std::ostringstream outstring3;
+    outstring3 << "current: " << current;
+    textPos += vresText2.VerticalSpacing();
+    CText vresText3(text->GetFont(), outstring3.str(), CColor::Black(), textPos);
+    vresText3.RenderPut(target);
+
+    std::ostringstream outstring4;
+    outstring4 << "t: " << dis_timeTraveledRatio;
+    //outstring4 << " v: " << speedVariance;
+    outstring4 << " fn: " << dis_fn;
+    textPos += vresText3.VerticalSpacing();
+    CText vresText4(text->GetFont(), outstring4.str(), CColor::Black(), textPos);
+    vresText4.RenderPut(target);
+    #endif // if DEBUGPRINT
+}
 
 Mover2::Mover2(const CPoint& destination, Hookable* hookable) : destination(destination), hookable(hookable), timingStart(GetTimeUpdateFunction(
                     hookable)),

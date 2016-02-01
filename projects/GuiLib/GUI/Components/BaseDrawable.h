@@ -16,6 +16,7 @@
 #pragma once
 
 #include "../Disposable.h"
+#include "Rectangle.h"
 
 namespace gui {
 namespace components {
@@ -26,6 +27,28 @@ namespace components {
  */
 class BaseDrawable : public Disposable {
 public:
+
+
+    explicit BaseDrawable(const CPoint& m_pt_position)
+        : m_ptPosition{m_pt_position}
+    {
+    }
+
+    /** Get current text Position.
+        *  Gets the current text position of this instance.
+        *  @return the point of the text position.
+        */
+    CPoint GetPosition() const { return m_ptPosition; }
+
+    /** Set text Position.
+    *  Sets the text position of this instance used by RenderPut(const CCanvas* canvas).
+    *  @param position The value of the text position.
+    */
+    void SetPosition(CPoint position) { m_ptPosition = position; }
+
+private:
+    CPoint m_ptPosition;
+
 };
 }
 }

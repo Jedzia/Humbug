@@ -33,8 +33,7 @@
 
 namespace gui {
 namespace components {
-CText::CText(TTF_Font* font, std::string text, CColor textcolor, const CPoint& position) :
-    m_ptPosition(position),
+    CText::CText(TTF_Font* font, std::string text, CColor textcolor, const CPoint& position) : BaseDrawable(position),
     m_pFont(font),
     m_strText(text),
     m_colText(textcolor) {
