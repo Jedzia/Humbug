@@ -75,6 +75,25 @@ public:
     vdouble operator()(vdouble t) const;
 };
 
+class EaseOutQuart {
+public:
+
+    explicit EaseOutQuart(const vdouble alpha = static_cast<vdouble>(1.0f)) { }
+
+    vdouble operator()(vdouble t) const;
+};
+
+
+
+class EaseInOutQuart {
+public:
+
+    explicit EaseInOutQuart(const vdouble alpha = static_cast<vdouble>(1.0f)) { }
+
+    vdouble operator()(vdouble t) const;
+};
+
+
 /** @class EaseInOutElastic:
  *  Detailed description.
  *  @param t TODO
@@ -111,6 +130,16 @@ public:
     vdouble operator()(vdouble t) const;
 };
 
+class EaseOutBounce {
+    vdouble m_amplitude;
+
+public:
+
+    explicit EaseOutBounce(const vdouble amplitude = static_cast<vdouble>(1.0f)) : m_amplitude(amplitude)
+    { }
+
+    vdouble operator()(vdouble t) const;
+};
 /** @class EaseInOutBounce:
  *  Detailed description.
  *  @param t TODO

@@ -46,6 +46,45 @@ vdouble EaseOutInQuad::operator()(vdouble t) const {
     return easeInQuad((2 * t) - 1) / 2 + vdouble(0.5);
 }
 
+/**
+    * Easing equation function for a quartic (t^4) easing out: decelerating from zero velocity.
+    *
+    * @param t		Current time (in frames or seconds).
+    * @return		The correct value.
+    */
+static vdouble easeOutQuart(vdouble t)
+{
+    t -= vdouble(1.0);
+    return -(t*t*t*t - 1);
+}
+
+vdouble EaseOutQuart::operator()(vdouble t) const
+{
+    return easeOutQuart(t);
+}
+
+
+/**
+* Easing equation function for a quartic (t^4) easing in/out: acceleration until halfway, then deceleration.
+*
+* @param t		Current time (in frames or seconds).
+* @return		The correct value.
+*/
+static vdouble easeInOutQuart(vdouble t)
+{
+    t *= 2;
+    if (t < 1) return vdouble(0.5)*t*t*t*t;
+    else {
+        t -= 2.0f;
+        return vdouble(-0.5) * (t*t*t*t - 2);
+    }
+}
+
+vdouble EaseInOutQuart::operator()(vdouble t) const
+{
+    return easeInOutQuart(t);
+}
+
 static vdouble easeInElastic_helper(vdouble t, vdouble b, vdouble c, vdouble d, vdouble a, vdouble p) {
     if(t == 0) { return b; }
 
@@ -167,6 +206,12 @@ static vdouble easeOutBounce_helper(vdouble t, vdouble c, vdouble a) {
 static vdouble easeOutBounce(vdouble t, vdouble a) {
     return easeOutBounce_helper(t, 1, a);
 }
+
+vdouble EaseOutBounce::operator()(vdouble t) const
+{
+    return easeOutBounce(t, m_amplitude);
+}
+
 
 /**
  * Easing equation function for a bounce (exponentially decaying parabolic bounce) easing in:

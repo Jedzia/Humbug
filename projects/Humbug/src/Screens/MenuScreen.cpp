@@ -33,6 +33,7 @@
 #include "MenuScreen/TutorA1.h"
 #include "MenuScreen/TutorEasing.h"
 #include <GuiLib/TimingChain.h>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -43,7 +44,14 @@ namespace humbug {
 struct MenuScreen::MenuScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
+
     int x;
+    Timing timing;
+
+    explicit MenuScreenImpl(MenuScreen * host)
+        : x(0), timing{ host }
+    {
+    }
 };
 
 CMainCanvas * MenuScreen::GetMainCanvas() const {
@@ -51,7 +59,7 @@ CMainCanvas * MenuScreen::GetMainCanvas() const {
 }
 
 MenuScreen::MenuScreen(FileLoader& loader, CCanvas* background) :
-    pimpl_(new MenuScreenImpl),
+    pimpl_(new MenuScreenImpl(this)),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
@@ -418,19 +426,42 @@ void MenuScreen::OnDraw() {
 
     m_pLineMenu->Draw();
 
-    static Timing timing(this);
-    float t1 = timing.RangeMappedSinceStart(0, 100);
+    Timing& timing = pimpl_->timing;
+    //static EaseInOutQuad ease;
+    //static EaseInOutBounce ease;
+    //static EasingOperator ease(2.0f);
+    //static EaseOutQuart ease;
+    static EaseOutBounce ease;
+
+    //float t1 = timing.RangeMappedSinceStart(-200, 200, -20, 20);
+    //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 4);
+    //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 3.25, -600, 0);
+    //float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 3.25, -600, 0, EasingOperator::Func());
+    float t1 = timing.RangeMappedSinceStart(-600, 0, 0, 2.0f, -600, 0, boost::ref(ease));
     if (t1 > 1)
     {
         int xxx = 3;
         xxx++;
     }
+    CPoint infotextOffset = CPoint(t1, m_pInfoText->GetPosition().GetY());
+    static float lastresult1 = timing.B;
+    static int lastresult = infotextOffset.GetX();
+    lastresult1 -= timing.B;
+    lastresult -= infotextOffset.GetX();
     std::ostringstream outstring;
-    outstring << "t: " << timing.SecondsSinceStart();
+    outstring << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << "t: " << timing.SecondsSinceStart();
+    //outstring << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << "t: " << 1;
     outstring << " t1: " << t1;
+    outstring << " fmap: " << timing.A;
+    outstring << " fres: " << timing.B;
+    outstring << " last: " << lastresult;
+    outstring << " last1: " << lastresult1;
     m_pDebugInfoLabel->SetCaption(outstring.str());
     m_pDebugInfoLabel->Draw();
+    lastresult1 = timing.B;
+    lastresult = infotextOffset.GetX();
 
+    m_pInfoText->SetPosition(infotextOffset);
     m_pInfoText->Draw(m_pBackground.get());
 
     coldelta++;
@@ -473,6 +504,11 @@ void MenuScreen::OnEvent(SDL_Event* pEvent) {
         auto rect = m_pLineMenu->GetOffset();
         rect.Y()++;
         m_pLineMenu->SetOffset(rect);
+        break;
+    }
+    case SDLK_SPACE:
+    {
+        pimpl_->timing.Reset();
         break;
     }
     default:
