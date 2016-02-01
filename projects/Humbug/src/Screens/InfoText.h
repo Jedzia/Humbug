@@ -148,7 +148,7 @@ public:
  */
 class InfoText3 : public gui::components::BaseDrawable {
 public:
-    typedef boost::function<void(const gui::components::CCanvas *, gui::components::BaseDrawable * text, gui::components::TextAnimatorData& mdata)> InfoTextModifierFunc;
+    //typedef boost::function<void(const gui::components::CCanvas *, gui::components::BaseDrawable * text, gui::components::TextAnimatorData& mdata)> InfoTextModifierFunc;
 
 private:
     int m_iTicks;
@@ -160,7 +160,7 @@ private:
     typedef boost::ptr_vector<gui::components::CText> TextStorage;
     TextStorage m_pvecInfoTexts;
     typedef float seconds;
-    typedef std::vector<InfoTextModifierFunc> TextModifierStorage;
+    typedef std::vector<gui::components::TextAnimator::DrawableAnimatorFunc> TextModifierStorage;
     TextModifierStorage m_vecModifierVault;
     //typedef boost::ptr_vector<gui::components::TextAnimator> AnimatorStorage;
     //AnimatorStorage m_vecAnimatorVault;
@@ -209,8 +209,17 @@ public:
 
         float time = 0.25f;
         //int itpos = 0;
-        TextStorage::iterator end = m_pvecInfoTexts.end();
 
+        gui::components::CRectangle srcRect, dstRect;
+        gui::components::TextAnimatorData mdata(&srcRect, &dstRect);
+        BOOST_FOREACH(auto itpos, m_vecModifierVault)
+        {
+            // Todo: maybe full TextAnimator impl. with children like in CText::ApplyAnimators(...) ?
+            itpos(canvas, this, mdata);
+        }
+
+
+        TextStorage::iterator end = m_pvecInfoTexts.end();
         for(TextStorage::iterator it = m_pvecInfoTexts.begin(); it < end; ++it)
         {
             gui::components::CText & text = (*it);
@@ -284,7 +293,7 @@ public:
         return p;
     }
 
-    void AddAnimator(InfoTextModifierFunc updfunc) {
+    void AddAnimator(const gui::components::TextAnimator::DrawableAnimatorFunc& updfunc) {
         m_vecModifierVault.push_back(updfunc);
     }
 
@@ -296,7 +305,9 @@ public:
     gui::components::TextAnimator* MoveTo(gui::components::CPoint point, gui::Hookable* hookable, float speed, gui::Timing::seconds timeIn, gui::Timing::seconds timeOut, const A& parEase)
     {
         auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut, T(parEase));
-        AddAnimator(mover);
+        //auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut);
+        AddAnimator(boost::ref(*mover));
+        //AddAnimator(*mover);
         return mover;
     }
 

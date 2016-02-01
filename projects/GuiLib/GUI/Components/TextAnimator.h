@@ -21,7 +21,8 @@
 namespace gui {
 class Hookable;
 namespace components {
-class CText;
+    class BaseDrawable;
+    class CText;
 class CCanvas;
 
 typedef float vdouble;
@@ -56,6 +57,8 @@ struct TextAnimatorData : CCanvasRenderModifierData
 class TextAnimator {
 public:
 
+    typedef boost::function<void(const CCanvas *, BaseDrawable * text, TextAnimatorData& mdata)> DrawableAnimatorFunc;
+
     /** Install timing function of the Hookable.
     *  Get the Timing::UpdateTimeFunc functor of the specified Hookable object.
     *  @param hookable The object with the timing function or NULL when not specified.
@@ -85,6 +88,7 @@ public:
     *  @param mdata Parameters for all TextAnimator's in the transformation loop. 
     */
     virtual void operator()(const CCanvas* target, CText* text, TextAnimatorData& mdata) = 0;
+    virtual void operator()(const CCanvas* target, BaseDrawable* text, TextAnimatorData& mdata) {  };
 
     TextAnimator * Wait(Hookable* hookable, Timing::seconds waitTime = 1.0f);
     
