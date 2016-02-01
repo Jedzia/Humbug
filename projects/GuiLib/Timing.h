@@ -94,6 +94,14 @@ public:
         m_iTicks = ticks;
     }
 
+    /** Brief description of Timing, UpdateIdle
+    *  With no updateFunction or Hookable set, you have to call this manually.
+    *  @param ticks TODO
+    */
+    void UpdateIdle() {
+        m_iTicks++;
+    }
+
     /** Brief description of Timing, TicksSinceStart
      *  Detailed description.
      *  @return TODO
@@ -105,6 +113,11 @@ public:
      *  @return TODO
      */
     seconds SecondsSinceStart();
+
+    float RangeMappedSinceStart(float outMin, float outMax, 
+        float inMin = 0.0f, float inMax = 1.0f,
+        float outMinClamp = std::numeric_limits<float>::min(), float outMaxClamp = std::numeric_limits<float>::max(), 
+        float functor = 0);
 
     /** Brief description of Timing, IsBefore
      *  Detailed description.

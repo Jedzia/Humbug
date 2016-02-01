@@ -10,6 +10,11 @@ namespace gui {
     void Timing::UpdateTimeFunction()
     {
         if(!m_fncUpdateTime) {
+            // warning ! when no update function is set:
+            // every call to here updates the timer
+            // m_iTicks++;
+
+            // you have to manually call void UpdateIdle(int ticks)
             return;
         }
 
@@ -53,6 +58,17 @@ namespace gui {
     seconds Timing::SecondsSinceStart()
     {
         return Convert(TicksSinceStart());
+    }
+
+    float Timing::RangeMappedSinceStart(float outMin, float outMax, float inMin, float inMax, float outMinClamp, float outMaxClamp, float functor)
+    {
+        seconds now = SecondsSinceStart();
+        float inFac = inMax - inMin / inMax;
+        float outFac = outMax - outMin / outMax;
+        float result = now * inFac * outFac;
+        result = std::max(outMinClamp, result);
+        result = std::min(outMaxClamp, result);
+        return result;
     }
 
     bool Timing::IsBefore(seconds time, const ConditionalTimeFunc& func)

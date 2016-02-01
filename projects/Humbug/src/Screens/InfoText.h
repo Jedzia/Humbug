@@ -179,18 +179,22 @@ private:
 
 public:
 
-    gui::components::CRectangle CalcRelativePosition(const gui::components::CRectangle& paintDimensions)
+    static gui::components::CRectangle CalcRelativePosition(const gui::components::CRectangle& paintDimensions)
     {
         gui::components::CRectangle relative(paintDimensions);
-        relative.X() = 0;
-        relative.Y() = 0;
+        //relative.X() = 0;
+        //relative.Y() = 0;
         return relative;
     }
 
-    InfoText3(TTF_Font* textFont, TTF_Font* keysFont, const gui::components::CRectangle& paintDimensions) 
+    InfoText3(TTF_Font* textFont, TTF_Font* keysFont, const gui::components::CRectangle& paintDimensions, const gui::components::CPoint& position = gui::components::CPoint())
        // : BaseDrawable(paintDimensions.Position(gui::components::CRectangle::CompassRose::NW)), m_iTicks(0), m_iStartTicks(0),
-       : BaseDrawable(gui::components::CPoint(paintDimensions.GetX(), paintDimensions.GetY())), m_iTicks(0), m_iStartTicks(0),
-       m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectPaint(CalcRelativePosition(paintDimensions)), m_rectInitPos(CalcRelativePosition(paintDimensions)) {}
+       //: BaseDrawable(gui::components::CPoint(paintDimensions.GetX(), paintDimensions.GetY())), m_iTicks(0), m_iStartTicks(0),
+       : BaseDrawable(position), m_iTicks(0), m_iStartTicks(0),
+       m_pTextFont(textFont), m_pKeysFont(keysFont), m_rectInitPos(CalcRelativePosition(paintDimensions))
+    {
+        m_rectPaint = m_rectInitPos;
+    }
 
     ~InfoText3() {}
 
@@ -217,12 +221,22 @@ public:
                 //text.SetPosition(rect);
                 // Todo: Let the global modifiers run here.
             gui::components::CRectangle r = text.GetCanvas()->GetDimension();
+            //r.X() = 0;
+            //r.Y() = 0;
             r += text.GetPosition();
             r += GetPosition();
             text.RenderPut(canvas, r);
+
+
+            //gui::components::CPoint r = text.GetPosition();
+            //r += GetPosition();
+            //text.SetPosition(r);
+
+            //text.RenderPut(canvas);
+
             //rect += text.VerticalSpacing();
             ENDTIMEBLOCK
-                time += 0.25f;
+            time += 0.25f;
 
             if(text.IsDisposed()) {
                 TextStorage::iterator it2 = it;
@@ -262,6 +276,8 @@ public:
         //auto p = new CText(boost::detail::sp_forward<Arg1>(arg1),
         // boost::detail::sp_forward<Args>(args)...);
         auto p = new T(boost::detail::sp_forward<Arg1>(arg1), boost::detail::sp_forward<Args>(args) ...);
+        //gui::components::CRectangle rectangle = m_rectPaint + GetPosition();
+        //p->SetPosition(rectangle);
         p->SetPosition(m_rectPaint);
         m_rectPaint += p->VerticalSpacing();
         m_pvecInfoTexts.push_back(p);

@@ -266,7 +266,7 @@ bool MenuScreen::OnInit(int argc, char* argv[]) {
      
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     
-    m_pDebugInfoLabel.reset(new controls::CLabel(NULL, CRectangle(10,40, 200, 40), 12345, "No Text", m_pArialfont, true, m_colText));
+    m_pDebugInfoLabel.reset(new controls::CLabel(NULL, CRectangle(10, 80, 200, 40), 12345, "No Text", m_pArialfont, true, m_colText));
    // m_pDebugInfoLabel->SetPosition(CPoint(10, 40));
 
     auto keysfont = m_Loader.FL_LOADFONT("Fonts/aaQwertz-Tasten.ttf", 36);
@@ -418,7 +418,7 @@ void MenuScreen::OnDraw() {
 
     m_pLineMenu->Draw();
 
-    static Timing timing;
+    static Timing timing(this);
     float t1 = timing.RangeMappedSinceStart(0, 100);
     if (t1 > 1)
     {
@@ -426,8 +426,9 @@ void MenuScreen::OnDraw() {
         xxx++;
     }
     std::ostringstream outstring;
-    outstring << "t1: " << t1;
-    //m_pDebugInfoText->set
+    outstring << "t: " << timing.SecondsSinceStart();
+    outstring << " t1: " << t1;
+    m_pDebugInfoLabel->SetCaption(outstring.str());
     m_pDebugInfoLabel->Draw();
 
     m_pInfoText->Draw(m_pBackground.get());
