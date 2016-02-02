@@ -141,12 +141,112 @@ public:
        }*/
 };
 
+template<class T1, class T2, class T2data>
+class TextModifierWorker
+{
+public:
+    typedef boost::function<void(const gui::components::CCanvas *, T1 * text, T2data& mdata)> DrawableAnimatorFunc;
+private:
+    typedef std::vector<DrawableAnimatorFunc> TextModifierStorage;
+    TextModifierStorage m_vecModifierVault;
+    //typedef std::vector<gui::components::CText::TextModifierFunc> TextModifierStorage;
+    //TextModifierStorage m_vecModifierVault;
+    typedef boost::ptr_vector<T2> AnimatorStorage;
+    AnimatorStorage m_vecAnimatorVault;
+
+protected:
+
+    void ApplyModifiers(const gui::components::CCanvas* target, T1* text, gui::components::CRectangle& srcRect, gui::components::CRectangle& dstRect) {
+        target->Lock();
+
+        T2data mdata(&srcRect, &dstRect);
+
+        if (!m_vecModifierVault.empty()) {
+            typename TextModifierStorage::iterator end = m_vecModifierVault.end();
+
+            for (typename TextModifierStorage::iterator it = m_vecModifierVault.begin(); it < end; ++it)
+            {
+                (*it)(target, text, mdata);
+                if (mdata.markedForDeletion) {
+                    //m_vecModifierVault.pop_back();
+                    //TextModifierStorage::iterator ex;
+                    m_vecModifierVault.erase(it);
+                    mdata.markedForDeletion = false;
+                    // Todo: better fill a deleter list and erase after loop.
+                    break;
+                }
+            }
+        }
+
+        target->Unlock();
+    } // CText::ApplyModifiers
+
+    void ApplyAnimators(const gui::components::CCanvas* target, T1* text,
+        gui::components::CRectangle& srcRect, gui::components::CRectangle& dstRect) {
+        using namespace gui::components;
+        target->Lock();
+
+        T2data mdata(&srcRect, &dstRect);
+
+        if (!m_vecAnimatorVault.empty()) {
+            typename AnimatorStorage::iterator end = m_vecAnimatorVault.end();
+
+            for (typename AnimatorStorage::iterator it = m_vecAnimatorVault.begin(); it < end; ++it)
+            {
+                (*it)(target, text /* was this */, mdata);
+                if (mdata.markedForDeletion) {
+                    T2 * savedAnimator = (*it).nextAnimator;
+
+                    if (savedAnimator) {
+                        //savedAnimator->x = (*it).x;
+                        //savedAnimator->y = (*it).y;
+                        (*it).nextAnimator = NULL;
+                        m_vecAnimatorVault.erase(it);
+                        mdata.markedForDeletion = false;
+                        AddAnimator(savedAnimator);
+                        break;
+                    }
+
+                    m_vecAnimatorVault.erase(it);
+                    mdata.markedForDeletion = false;
+                    // Todo: better fill a deleter list and erase after loop.
+                    break;
+                }
+            }
+        }
+
+        target->Unlock();
+    } // CText::ApplyAnimators
+
+public:
+
+
+    void AddAnimator(T2 * animator) {
+        m_vecAnimatorVault.push_back(animator);
+    }
+
+    void AddAnimator(const DrawableAnimatorFunc& updfunc) {
+        m_vecModifierVault.push_back(updfunc);
+    }
+
+    template <typename Ta, typename A>
+    T2 * MoveTo(gui::components::CPoint point, gui::Hookable* hookable, float speed, gui::Timing::seconds timeIn, gui::Timing::seconds timeOut, const A& parEase)
+    {
+        auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut, Ta(parEase));
+        //auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut);
+        AddAnimator(boost::ref(*mover));
+        //AddAnimator(*mover);
+        return mover;
+    }
+
+};
+
 /** @class InfoText:
  *  Detailed description.
  *  Todo: With a global TextAnimator chain. 
  *  @return TODO
  */
-class InfoText3 : public gui::components::BaseDrawable {
+class InfoText3 : public gui::components::BaseDrawable, public TextModifierWorker<gui::components::BaseDrawable, gui::components::TextAnimator, gui::components::TextAnimatorData> {
 public:
     //typedef boost::function<void(const gui::components::CCanvas *, gui::components::BaseDrawable * text, gui::components::TextAnimatorData& mdata)> InfoTextModifierFunc;
 
@@ -160,8 +260,8 @@ private:
     typedef boost::ptr_vector<gui::components::CText> TextStorage;
     TextStorage m_pvecInfoTexts;
     typedef float seconds;
-    typedef std::vector<gui::components::TextAnimator::DrawableAnimatorFunc> TextModifierStorage;
-    TextModifierStorage m_vecModifierVault;
+//    typedef std::vector<gui::components::TextAnimator::DrawableAnimatorFunc> TextModifierStorage;
+//    TextModifierStorage m_vecModifierVault;
     //typedef boost::ptr_vector<gui::components::TextAnimator> AnimatorStorage;
     //AnimatorStorage m_vecAnimatorVault;
 
@@ -211,13 +311,14 @@ public:
         //int itpos = 0;
 
         gui::components::CRectangle srcRect, dstRect;
-        gui::components::TextAnimatorData mdata(&srcRect, &dstRect);
+        /*gui::components::TextAnimatorData mdata(&srcRect, &dstRect);
         BOOST_FOREACH(auto itpos, m_vecModifierVault)
         {
             // Todo: maybe full TextAnimator impl. with children like in CText::ApplyAnimators(...) ?
             itpos(canvas, this, mdata);
-        }
-
+        }*/
+        ApplyAnimators(canvas, this, srcRect, dstRect);
+        ApplyModifiers(canvas, this, srcRect, dstRect);
 
         TextStorage::iterator end = m_pvecInfoTexts.end();
         for(TextStorage::iterator it = m_pvecInfoTexts.begin(); it < end; ++it)
@@ -293,24 +394,13 @@ public:
         return p;
     }
 
-    void AddAnimator(const gui::components::TextAnimator::DrawableAnimatorFunc& updfunc) {
+    /*void AddAnimator(const gui::components::TextAnimator::DrawableAnimatorFunc& updfunc) {
         m_vecModifierVault.push_back(updfunc);
-    }
+    }*/
 
     /*void AddAnimator(gui::components::TextAnimator* animator) {
         m_vecAnimatorVault.push_back(animator);
     }*/
-
-    template <typename T, typename A>
-    gui::components::TextAnimator* MoveTo(gui::components::CPoint point, gui::Hookable* hookable, float speed, gui::Timing::seconds timeIn, gui::Timing::seconds timeOut, const A& parEase)
-    {
-        auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut, T(parEase));
-        //auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut);
-        AddAnimator(boost::ref(*mover));
-        //AddAnimator(*mover);
-        return mover;
-    }
-
 
     /*template<class T, class Arg1, class ... Args>
        typename boost::detail::sp_if_not_array<T>::type OwnChildPainter(Arg1 && arg1, Args && ...
