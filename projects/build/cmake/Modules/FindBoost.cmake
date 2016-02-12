@@ -851,7 +851,8 @@ if(BOOST_ROOT)
 	set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
 		${BOOST_ROOT}/lib/x64/lib
 		${BOOST_ROOT}/lib
-		${BOOST_ROOT}/stage/lib)
+		${BOOST_ROOT}/stage/lib
+		${BOOST_ROOT}/lib64-msvc-12.0)
 	else()	
 	set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
 		${BOOST_ROOT}/lib

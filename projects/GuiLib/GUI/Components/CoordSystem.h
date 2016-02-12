@@ -2,6 +2,7 @@
 #define __CoordSystem_H__
 
 #include "Canvas.h"
+#include <set>
 
 class FileLoader;
 
@@ -9,7 +10,7 @@ namespace gui {
 namespace components {
 
 //main canvas, abstract primary display surface
-class CCoordSystem 
+class CCoordSystem
 {
     const char* m_pTitle;
     int m_iWidth;
@@ -38,7 +39,7 @@ public:
 
     void Reset();
     void AddDatapoint(const CPoint& point);
-    
+
     int NumDatapoints() const
     {
         return m_vPoints.size();
