@@ -30,6 +30,8 @@
 #include <iterator>
 #include <string>
 
+typedef wchar_t hchar_t;
+
 // A helper function to simplify the main part.
 template<class T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v) {
@@ -72,13 +74,13 @@ public:
     };
 
     //! Constructs a new ProgOptions object and parse the command line arguments.
-    ProgOptions(int ac, char* * av);
+    ProgOptions(int ac, hchar_t* * av);
 
     //! Destructor
     ~ProgOptions();
 
     //! Bla
-    const char * language(int x) const;
+    const hchar_t * language(int x) const;
 
     //! Gets the parsed command line options.
     inline MainOptions& getPoptions() { return *m_poptions; }
@@ -92,12 +94,14 @@ public:
     //! Returns true if help was requested by the --help command line switch.
     inline bool isHelpRequested() const { return m_result == rsHelpRequested; }
 
-    inline const bool isDebugPrint() const;
+    inline bool isDebugPrint() const;
+    
+    inline bool isSimulate() const;
 
     //! Gets the parse result.
-    inline const Result getResult() const;
+    inline Result getResult() const;
 
-    inline const int getDebugLevel() const;
+    inline int getDebugLevel() const;
 
 private:
 
@@ -118,7 +122,7 @@ private:
     //!  Internal preparation of the command line arguments to the Options structure.
     //
     // bool operator!(void) { return IsOk(); }
-    Result prepare(int ac, char* * av, MainOptions & m_p);
+    Result prepare(int ac, hchar_t* * av, MainOptions & m_p);
 
     //! Holds the internal Options data.
     MainOptions* m_poptions;
@@ -127,7 +131,7 @@ private:
     int m_ac;
 
     //! Hold the raw command line argument data.
-    char* * m_av;
+    hchar_t* * m_av;
 
     //! Internal storage for the result of the command line argument preparation.
     Result m_result;
@@ -135,17 +139,22 @@ private:
     //! Use debugging output.
     bool mDebug;
     int mDebugLevel;
+    bool mSimulate;
 };
-inline const bool ProgOptions::isDebugPrint() const {
+inline bool ProgOptions::isDebugPrint() const {
     return mDebug;
 }
 
+inline bool ProgOptions::isSimulate() const {
+    return mSimulate;
+}
+
 //! Gets the parse result.
-inline const ProgOptions::Result ProgOptions::getResult() const {
+inline ProgOptions::Result ProgOptions::getResult() const {
     return m_result;
 }
 
-inline const int ProgOptions::getDebugLevel() const {
+inline int ProgOptions::getDebugLevel() const {
     return mDebugLevel;
 }
 

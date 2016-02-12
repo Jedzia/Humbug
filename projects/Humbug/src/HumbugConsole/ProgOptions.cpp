@@ -37,9 +37,10 @@ const char * const ProgOptions::DESCR_BACKEND = "Backend options";
 const char * const ProgOptions::SUBST_DELIM = "=";
 
 //#include <build/cmake/include/debug.h>
-ProgOptions::ProgOptions(int ac, char* * av) :
+ProgOptions::ProgOptions(int ac, hchar_t* * av) :
     mDebug(false),
     mDebugLevel(0),
+    mSimulate(false),
     m_ac(ac),
     m_av(av),
     m_poptions(new MainOptions)   {
@@ -61,8 +62,8 @@ ProgOptions::~ProgOptions(){
 }
 
 //! Bla
-const char * ProgOptions::language(int x) const {
-    return "AsciiDoc";
+const hchar_t * ProgOptions::language(int x) const {
+    return L"AsciiDoc";
 }
 
 void ProgOptions::initGeneral(boost::program_options::options_description & optionGroup) {
@@ -83,6 +84,7 @@ void ProgOptions::initGeneral(boost::program_options::options_description & opti
         ("vtrace", "verbosity level: display trace messages.")
         ("input-file", po::value< vector<string> >(), "input file")
         ("project-file", po::value< string >(), "project file")
+        ("simulate,s", "simulate dings file in and output.")
         ("subst", po::value< vector<string> >(), "template substitution. "
         "Example: \n--subst \"TEMPLATE=This is my replacement text\"")
     ;
@@ -138,17 +140,18 @@ ProgOptions::Result ProgOptions::prepareTemplates(MainOptions & m_p,
         return rsNoInputFiles;
     }
 
-    const vector<string>& templates = vm["subst"].as< vector<string> >();
+    const vector<wstring>& templates = vm["subst"].as< vector<wstring> >();
     int cnt = 1;
 
-    for( vector<string>::const_iterator i = templates.begin(),
+    for( vector<wstring>::const_iterator i = templates.begin(),
          end = templates.end();
          i != end; ++i )
     {
-        const std::string& item = (*i);
-        string::size_type tpos = item.find_first_of(SUBST_DELIM);
-        string templateStr(item, 0, tpos);
-        string substituteStr( item, tpos + 1, item.length() );
+        const std::wstring& item = (*i);
+        //wstring::size_type tpos = item.find_first_of(std::string(SUBST_DELIM));
+        wstring::size_type tpos = item.find_first_of(L"Kacke");
+        wstring templateStr(item, 0, tpos);
+        wstring substituteStr( item, tpos + 1, item.length() );
         //ConfigString* s = new ConfigString(templateStr, substituteStr, "Templates");
         //m_p.optionList->addOption(s);
         cnt++;
@@ -159,7 +162,7 @@ ProgOptions::Result ProgOptions::prepareTemplates(MainOptions & m_p,
 //!  Internal preparation of the command line arguments to the Options structure.
 //
 // bool operator!(void) { return IsOk(); }
-ProgOptions::Result ProgOptions::prepare(int ac, char* * av, MainOptions & m_p) {
+ProgOptions::Result ProgOptions::prepare(int ac, hchar_t* * av, MainOptions & m_p) {
     try {
         //csz::dbg << "Static debug message, Prepare Options " << LOGGER_ENDMSG;
 
@@ -186,7 +189,7 @@ ProgOptions::Result ProgOptions::prepare(int ac, char* * av, MainOptions & m_p) 
         // Process input data.
         //store(parse_command_line(ac, av, all), vm);
         po::variables_map vm;
-        po::store(po::command_line_parser(ac, av).
+        po::store(cmd_line_parser(ac, av).
                 options(all).positional(p).run(), vm);
         po::notify(vm);
 
@@ -202,6 +205,10 @@ ProgOptions::Result ProgOptions::prepare(int ac, char* * av, MainOptions & m_p) 
             mDebugLevel = 6;
         }
 
+        if (vm.count("simulate")) {
+            mSimulate = true;
+        }
+        
         // help options
         if ( vm.count("help") ) {
             cout << visible;

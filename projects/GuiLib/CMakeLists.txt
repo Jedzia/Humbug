@@ -17,6 +17,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 PROJECT( GuiLib )
+ADD_SUBDIRECTORY( docs )
 
 MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
 INCLUDE (BoostExtensions)
@@ -37,6 +38,9 @@ SET(USE_LIB_BOOST TRUE)
 # local project settings
 INCLUDE (bindings)
 
+SET(GuiLib_GLOBAL_headers
+		TimingDefs.h
+)
 
 # User-Interface skeleton
 SET(GuiLib_GUI_Data_headers
@@ -46,7 +50,16 @@ SET(GuiLib_GUI_Data_sources
 		GUI/Data/ColorData.cpp
 )
 
+SET(GuiLib_OTHER_headers
+		Input/KeyboardHandler.h
+)
+SET(GuiLib_OTHER_sources
+		Input/KeyboardHandler.cpp
+)
+
 SET(GuiLib_GUI_headers
+		GUI/GuiFontMetrics.h
+
 		GUI/Visual/Application.h
 		GUI/Visual/EventHandler.h
 		GUI/Visual/MessageHandler.h
@@ -58,6 +71,8 @@ SET(GuiLib_GUI_headers
 		GUI/Visual/Console.h
 )
 SET(GuiLib_GUI_sources
+		GUI/GuiFontMetrics.cpp
+
 		GUI/Visual/Application.cpp
 		GUI/Visual/EventHandler.cpp
 		GUI/Visual/MessageHandler.cpp
@@ -71,21 +86,37 @@ SET(GuiLib_GUI_sources
 
 # Component set (Canvas, Controls, etc.)
 SET(GuiLib_Component_headers
+		Timing.h
+		TimingChain.h
+		Timing2.h
+		GUI/Disposable.h
+		
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
 		GUI/Components/Color.h
 		GUI/Components/Canvas.h
+		GUI/Components/CanvasRendererImpl.h
 		GUI/Components/Image.h
 		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
+		GUI/Components/CoordSystem.h
 
+		GUI/Components/Shape.h
+		GUI/Components/Shapes/Line.h
+
+		GUI/Components/BaseDrawable.h
 		GUI/Components/Text.h
+		GUI/Components/TextAnimator.h
+		GUI/Components/TextAnimatorImpl.h
+		GUI/Components/EasingFunctors.h
 		GUI/Components/TextScroller.h
 
 		GUI/Components/Screen.h
 
 		GUI/Controls/Control.h
 		GUI/Controls/Button.h
+		GUI/Controls/Label.h
+		GUI/Controls/LineMenu.h
 
 		GUI/Sprite/Sprite.h
 		GUI/Sprite/SpriteManager.h
@@ -97,21 +128,36 @@ SET(GuiLib_Component_headers
 		GUI/TileEngine/TileEngine.h
 )
 SET(GuiLib_Component_sources
+		Timing.cpp
+		TimingChain.cpp
+		GUI/Disposable.cpp
+
 		GUI/Components/Point.cpp
 		GUI/Components/Rectangle.cpp
 		GUI/Components/Color.cpp
 		GUI/Components/Canvas.cpp
+		GUI/Components/CanvasRendererImpl.cpp
 		GUI/Components/Image.cpp
 		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
+		GUI/Components/CoordSystem.cpp
 
+		GUI/Components/Shape.cpp
+		GUI/Components/Shapes/Line.cpp
+		
+		GUI/Components/BaseDrawable.cpp
 		GUI/Components/Text.cpp
+		GUI/Components/TextAnimator.cpp
+		GUI/Components/TextAnimatorImpl.cpp
+		GUI/Components/EasingFunctors.cpp
 		GUI/Components/TextScroller.cpp
 
 		GUI/Components/Screen.cpp
 
 		GUI/Controls/Control.cpp
 		GUI/Controls/Button.cpp
+		GUI/Controls/Label.cpp
+		GUI/Controls/LineMenu.cpp
 
 		GUI/Sprite/Sprite.cpp
 		GUI/Sprite/SpriteManager.cpp
@@ -139,6 +185,7 @@ SET(GuiLib_GuiConsole_sources
 
 # putting the sources together
 SET(GuiLib_headers
+		${GuiLib_OTHER_headers}
 		${GuiLib_GUI_Data_headers}
 		${GuiLib_GUI_headers}
 		${GuiLib_Component_headers}
@@ -147,6 +194,7 @@ SET(GuiLib_headers
 )
 
 SET(GuiLib_sources
+		${GuiLib_OTHER_sources}
 		${GuiLib_GUI_Data_sources}
 		${GuiLib_GUI_sources}
 		${GuiLib_Component_sources}
@@ -155,11 +203,11 @@ SET(GuiLib_sources
 )
 
 
-	INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
-	INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
-	INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
-	INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
+#INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
@@ -180,18 +228,38 @@ IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
 
+#if(WIN32)
+#endif(WIN32)
+
+if(CMAKE_GENERATOR MATCHES Visual*)
+	# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
+	ADD_DEFINITIONS("/wd4996")
+	# error C3859: virtual memory range for PCH exceeded; please recompile with a command line option of '-Zm118' or greater
+	# fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
+	ADD_DEFINITIONS("-Zm118")
+endif()
+
+
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" GuiLib_sources)
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
 SOURCE_GROUP(Resources FILES ${GuiLib_resfiles})
 SOURCE_GROUP(GUI FILES ${GuiLib_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+SOURCE_GROUP(GlobalHeader FILES ${GuiLib_GLOBAL_headers})
 SOURCE_GROUP(THeaders FILES ${GuiLib_headers})
 SOURCE_GROUP(TSources FILES ${GuiLib_sources})
 SOURCE_GROUP(GuiHeaders FILES ${GuiLib_GUI_headers})
 SOURCE_GROUP(GuiSources FILES ${GuiLib_GUI_sources})
 SOURCE_GROUP(CompHeaders FILES ${GuiLib_Component_headers})
 SOURCE_GROUP(CompSources FILES ${GuiLib_Component_sources})
+
+#SET(GuiLib_documents
+#		Readme.md
+#		docs/!DevelNotes.txt
+#)
+#SOURCE_GROUP(Docs FILES ${GuiLib_documents})
+ENSURE_DOCS_ARE_PRESENT(GuiLib_documents)
 
 SET(LIBRARY_TYPE STATIC)
 ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
@@ -202,21 +270,23 @@ ADD_LIBRARY_X(GuiLib ${LIBRARY_TYPE}
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h
 
+		${GuiLib_GLOBAL_headers}
         ${GuiLib_headers}
         ${GuiLib_sources}
 		${GuiLib_GuiConsole_headers}
 		${GuiLib_GuiConsole_sources}
+		${GuiLib_documents}
 )
 
 
 
 TargetLinkBoost(GuiLib "filesystem;system;regex;signals")
 TARGET_LINK_LIBRARIES(GuiLib HumbugLib)
-TARGET_LINK_LIBRARIES(GuiLib HumbugShared)
-	TARGET_LINK_LIBRARIES(GuiLib ${SDL_LIBRARY})
-	TARGET_LINK_LIBRARIES(GuiLib ${SDLIMAGE_LIBRARY})
-	TARGET_LINK_LIBRARIES(GuiLib ${SDLTTF_LIBRARY})
-	TARGET_LINK_LIBRARIES(GuiLib ${SDLGFX_LIBRARY})
+#TARGET_LINK_LIBRARIES(GuiLib HumbugShared)
+TARGET_LINK_LIBRARIES(GuiLib ${SDL_LIBRARY})
+TARGET_LINK_LIBRARIES(GuiLib ${SDLIMAGE_LIBRARY})
+TARGET_LINK_LIBRARIES(GuiLib ${SDLTTF_LIBRARY})
+TARGET_LINK_LIBRARIES(GuiLib ${SDLGFX_LIBRARY})
 
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header,

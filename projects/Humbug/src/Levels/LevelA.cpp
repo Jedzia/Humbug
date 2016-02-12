@@ -91,7 +91,7 @@ public:
             : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_done(false), m_step(0){
             m_pArialfont = loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48);
             m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
-            SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 5);
+            SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 5);
         }
 
 		~Introplayer()
@@ -141,14 +141,14 @@ public:
                 m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
             }
 			else if ((m_step == 0) &&(curTicks > 200 && curTicks < 220 )) {
-				SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 255);
+                SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 255);
 				m_canvas->Clear(CColor::LightGray());
 				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
 				m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
 				m_step++;
 			}
 			else if ((m_step == 1) &&(curTicks > 220 && curTicks < 320 )) {
-				SDL_SetAlpha(m_canvas->GetSurface(), SDL_SRCALPHA, 11);
+                SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 11);
 				CText infoText( m_pArialfont, "To Something Completely Different!", CColor::Blue() );
 				infoText.Put( m_canvas, m_canvas->GetDimension() + CPoint(100, 200) );
 				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
@@ -458,7 +458,8 @@ private:
         CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
         m_pMainCanvas->Clear( CColor::Black() );
 
-        m_pOverlay.reset( new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1) );
+        //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1, "LevelA"));
+        m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "LevelA"));
 
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
         //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -468,12 +469,12 @@ private:
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
 
-        //	CCanvas tmpCanvas(SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LevelABg.png")
+        //	CCanvas tmpCanvas(( m_Loader.FL_LOADIMG("Intro/LevelABg.png")
         // ));
-        CCanvas tmpCanvas( SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ) );
+        CCanvas tmpCanvas( ( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") ) );
         CCanvas* testCanvas =
             CCanvas::CreateRGBCompatible( NULL, m_pMainCanvas->GetWidth(), m_pMainCanvas->GetHeight() );
-        //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 255);
+        //SDL_SetSurfaceAlphaMod(testCanvas->GetSurface(), 255);
 	    CColor c_color = CColor(0x00, 0x00, 0x00);
 	    testCanvas->SetColorKey( c_color );
 
@@ -487,14 +488,14 @@ private:
         tmpTilesCanvas->SetColorKey( c_color );
         m_pTiles.reset( tmpTilesCanvas );
 
-// SDL_SWSURFACE | SDL_SRCALPHA | SDL_SRCCOLORKEY
+// SDL_SWSURFACE | SDL_SRCALPHA | SDL_TRUE
 
-        //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-        //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-        //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
+        //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
+        //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
+        //SDL_SetSurfaceAlphaMod(tmpfsurf, 0);
         m_pBackground.reset( testCanvas );
         //m_pBackground->SetColorKey(CColor::Black());
-        //SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 128);
+        //SDL_SetSurfaceAlphaMod(m_pBackground->GetSurface(), 128);
 
         //CCanvas tmpCanvas( tmpfsurf );
         m_Loader.FreeLast();
@@ -513,8 +514,8 @@ private:
         CText* text = new CText(m_pArialfont, outstring.str(), m_colText);
 
         //const boost::function<void(CCanvas*, int)> textMo = mtextfloat;
-        //text->AddModifier(boost::ref( mtextfloat ));
-        text->AddModifier( WavyTextFloat(64) );
+        //text->AddAnimator(boost::ref( mtextfloat ));
+        text->AddAnimator( WavyTextFloat(64) );
         m_pScrollText.reset(text);
 
         // ### Tiles ###
@@ -819,7 +820,7 @@ private:
         {
             //key press
             //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-            SDLKey sym = pEvent->key.keysym.sym;
+            SDL_Keycode sym = pEvent->key.keysym.sym;
 
             if( sym == SDLK_w ) {
                 //pimpl_->m_player.Move( GVector2D::Up() );

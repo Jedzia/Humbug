@@ -164,10 +164,19 @@ public:
 }
 #if defined(LOGMANAGER_NOLOG)
 #define dbgOut(x) std::cerr << x << std::endl
+#define dbgcOut(x) 
+#define stdcOut(x) 
 #define LOGSTD(x) std::cout << x
 #define LOGSTREAM std::cerr
 #else
 #define dbgOut(x) humbuglib::LogManager::getSingleton().stream() << x
+#if _DEBUG
+#define dbgcOut(x) humbuglib::LogManager::getSingleton().stream() << x
+#define stdcOut(x) std::cerr << x << std::endl
+#else
+#define dbgcOut(x) 
+#define stdcOut(x) 
+#endif
 #define LOGSTD(x) humbuglib::LogManager::getSingleton().stream() << x
 #define LOGSTREAM humbuglib::LogManager::getSingleton().stream()
 #endif

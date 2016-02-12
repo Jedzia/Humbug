@@ -63,6 +63,15 @@ SET(Humbug_MyGUI_headers
 		Screens/TestScreen.h
 		Screens/HighscoreScreen.h
 		Screens/TileScreen.h
+		Screens/SimpleScreen.h
+
+		Screens/InfoText.h
+		Screens/MenuScreen.h
+		Screens/MenuScreen/SubmenuA.h
+		Screens/MenuScreen/SubmenuB.h
+		Screens/MenuScreen/TutorA1.h
+		Screens/MenuScreen/TutorEasing.h
+
 		Screens/WavyTextFloat.h
 )
 SET(Humbug_MyGUI_sources 
@@ -80,6 +89,14 @@ SET(Humbug_MyGUI_sources
 		Screens/TestScreen.cpp
 		Screens/HighscoreScreen.cpp
 		Screens/TileScreen.cpp
+		Screens/SimpleScreen.cpp
+
+		Screens/MenuScreen.cpp
+		Screens/MenuScreen/SubmenuA.cpp
+		Screens/MenuScreen/SubmenuB.cpp
+		Screens/MenuScreen/TutorA1.cpp
+		Screens/MenuScreen/TutorEasing.cpp
+
 		Screens/WavyTextFloat.cpp
 )
 
@@ -97,8 +114,11 @@ SET(Humbug_headers
 		${Humbug_MyGUI_headers}
 		${Humbug_Level_headers}
 
+		HumbugFileLoader.h
+
 		Input/PlayerKeys.h
 		Input/PlayerKeys2.h
+		Input/PlayerKeys3.h
 
 	    Project/ProjectModel.h
 )
@@ -109,7 +129,9 @@ SET(Humbug_sources
 
 		Input/PlayerKeys.cpp
 		Input/PlayerKeys2.cpp
+		Input/PlayerKeys3.cpp
 
+		HumbugFileLoader.cpp
 	    main.cpp 
 	    Project/ProjectModel.cpp
 )
@@ -125,6 +147,7 @@ INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${GuiLib_INTERFACE_DIR})
+INCLUDE_DIRECTORIES(${HumbugSerialization_INTERFACE_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
@@ -144,6 +167,14 @@ IF(LINUX)
   ADD_DEFINITIONS("-DLINUX")
 ENDIF(LINUX)
 
+if(CMAKE_GENERATOR MATCHES Visual*)
+	# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
+	ADD_DEFINITIONS("/wd4996")
+	# error C3859: virtual memory range for PCH exceeded; please recompile with a command line option of '-Zm118' or greater
+	# fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
+	ADD_DEFINITIONS("-Zm118")
+endif()
+
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
@@ -153,6 +184,11 @@ SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
 
+SET(Humbug_documents
+		../Readme.md
+		../docs/!DevelNotes.txt
+)
+SOURCE_GROUP(Docs FILES ${Humbug_documents})
 
 # Move to bindings
 SET(_GUI_DEP )
@@ -167,6 +203,7 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 
         ${Humbug_headers}
         ${Humbug_sources} 
+		${Humbug_documents}
 )
 
 
@@ -174,11 +211,14 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
 SET(Pak01_PACKAGE_SOURCE_FILES 
 		${PROJECT_SOURCE_DIR}/Icons/
 	    ${Humbug_Artwork_DIR}/data/
+	    ${Humbug_Artwork_DIR}/Tutor/
+#	    ${Humbug_Artwork_DIR}/Tutor/Images
 		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
 	    ${Humbug_Artwork_WORKDIR}/Intro/
 	    #${Humbug_Artwork_WORKDIR}/Screens/
 	    ${Humbug_Artwork_WORKDIR}/Images/
+	    ${Humbug_Artwork_WORKDIR}/Text/
 		#${PROJECT_SOURCE_DIR}/Icons/blue.png
 	    #${P_ROOT_PATH}/Artwork/footer.png
 	    #${Humbug_Artwork_WORKDIR}/footer.png
@@ -187,6 +227,10 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    ${Humbug_Artwork_DIR}/Tiles/gfx/Tiles1.bmp
 )
 CREATEPACKAGE(Humbug MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
+#SET(Pak01x_PACKAGE_SOURCE_FILES 
+#	    ${Humbug_Artwork_DIR}/Tutor/Images
+#)
+#CREATEPACKAGE(Humbug MakeVFSx "${Pak01x_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
 #ADD_DEPENDENCIES(MakeVFS Artwork)
 
 SET(Pak02_PACKAGE_SOURCE_FILES 
@@ -207,7 +251,9 @@ TargetLinkBoost(Humbug "filesystem;system;regex;signals;serialization")
 TARGET_LINK_LIBRARIES(Humbug HumbugLib)
 TARGET_LINK_LIBRARIES(Humbug HumbugShared)
 TARGET_LINK_LIBRARIES(Humbug GuiLib)
+TARGET_LINK_LIBRARIES(Humbug HumbugSerialization)
 TARGET_LINK_LIBRARIES(Humbug ${SDL_LIBRARY})
+TARGET_LINK_LIBRARIES(Humbug ${SDLMAIN_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLIMAGE_LIBRARY})
 TARGET_LINK_LIBRARIES(Humbug ${SDLTTF_LIBRARY})
 IF(USE_SDL_GFX)
@@ -262,12 +308,14 @@ INSTALL(FILES
 SET(HumbugConsole_headers 
 #        HumbugConsole/GB.h
         HumbugConsole/ProgOptions.h 
+		HumbugConsole/HumbugFileLoader.h
 #        HumbugConsole/ProcessProject.h 
 )
 
 SET(HumbugConsole_sources 
 #        HumbugConsole/GB.cpp 
         HumbugConsole/ProgOptions.cpp 
+		HumbugConsole/HumbugFileLoader.cpp
 #        HumbugConsole/ProcessProject.cpp 
         HumbugConsole/main.cpp 
 )
@@ -277,6 +325,7 @@ ADD_DEFINITIONS(-DUNICODE -D_UNICODE)
 ADD_MSVC_PRECOMPILED_HEADER("HumbugConsole/stdafx.h" "HumbugConsole/stdafx.cpp" HumbugConsole_sources)
 INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
 INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${HumbugSerialization_INTERFACE_DIR})
 #INCLUDE_DIRECTORIES( ${Crunchy_INCLUDE_DIR})
 
 ADD_EXECUTABLE(HumbugConsole #WIN32
@@ -294,9 +343,11 @@ ADD_EXECUTABLE(HumbugConsole #WIN32
 )
 
 TargetLinkBoost(HumbugConsole "program_options")
-TargetLinkBoost(HumbugConsole "filesystem;system;regex")
+TargetLinkBoost(HumbugConsole "filesystem;system;regex;serialization")
 #TARGET_LINK_LIBRARIES(HumbugConsole CppStructz)
+TARGET_LINK_LIBRARIES(HumbugConsole GuiLib)
 TARGET_LINK_LIBRARIES(HumbugConsole HumbugShared)
+TARGET_LINK_LIBRARIES(HumbugConsole HumbugSerialization)
 #Copy_DLL_To_Target(HumbugConsole CppStructz)
 IF(USE_NLS)
   Copy_DLL_To_Target(HumbugConsole LIBINTL)

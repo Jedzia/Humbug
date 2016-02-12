@@ -18,12 +18,13 @@
 #ifndef __Log_H__
 #define __Log_H__
 
-#include <HumbugLib/global.h>
+#include "global.h"
 #include <string>
 #include <vector>
 #include <fstream>
 #include <sstream>
 #include <iosfwd>
+#include <iostream>
 
 namespace humbuglib {
 

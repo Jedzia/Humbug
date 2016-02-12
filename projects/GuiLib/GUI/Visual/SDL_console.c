@@ -272,8 +272,9 @@ void CON_UpdateConsole(ConsoleInformation *console) {
 
 	SDL_FillRect(console->ConsoleSurface, NULL, SDL_MapRGBA(console->ConsoleSurface->format, 0, 0, 0, console->ConsoleAlpha));
 
-	if(console->OutputScreen->flags & SDL_OPENGLBLIT)
-		SDL_SetAlpha(console->ConsoleSurface, 0, SDL_ALPHA_OPAQUE);
+// TR2
+//	if(console->OutputScreen->flags & SDL_OPENGLBLIT)
+//        SDL_SetSurfaceAlphaMod(console->ConsoleSurface, SDL_ALPHA_OPAQUE);
 
 	/* draw the background image if there is one */
 	if(console->BackgroundImage) {
@@ -288,10 +289,10 @@ void CON_UpdateConsole(ConsoleInformation *console) {
 	 * this is a normal SDL software-mode blit, so we need to temporarily set the ColorKey
 	 * for the font, and then clear it when we're done.
 	 */
-	if((console->OutputScreen->flags & SDL_OPENGLBLIT) && (console->OutputScreen->format->BytesPerPixel > 2)) {
+	/*TR2 if((console->OutputScreen->flags & SDL_OPENGLBLIT) && (console->OutputScreen->format->BytesPerPixel > 2)) {
 		Uint32 *pix = (Uint32 *) (CurrentFont->FontSurface->pixels);
-		SDL_SetColorKey(CurrentFont->FontSurface, SDL_SRCCOLORKEY, *pix);
-	}
+		SDL_SetColorKey(CurrentFont->FontSurface, SDL_TRUE, *pix);
+	}*/
 
 	/*	now draw text from last but second line to top
 		loop: for every line in the history
@@ -305,8 +306,9 @@ void CON_UpdateConsole(ConsoleInformation *console) {
 			DT_DrawText(console->ConsoleLines[console->ConsoleScrollBack + loop], console->ConsoleSurface, console->FontNumber, CON_CHAR_BORDER, (Screenlines - loop - 2) * console->FontHeight);
 	}
 
-	if(console->OutputScreen->flags & SDL_OPENGLBLIT)
-		SDL_SetColorKey(CurrentFont->FontSurface, 0, 0);
+    // TR2
+	//if(console->OutputScreen->flags & SDL_OPENGLBLIT)
+	//	SDL_SetColorKey(CurrentFont->FontSurface, 0, 0);
 }
 
 void CON_UpdateOffset(ConsoleInformation* console) {
@@ -354,8 +356,8 @@ void CON_DrawConsole(ConsoleInformation *console) {
 
 	/* before drawing, make sure the alpha channel of the console surface is set
 	 * properly.  (sigh) I wish we didn't have to do this every frame... */
-	if(console->OutputScreen->flags & SDL_OPENGLBLIT)
-		CON_AlphaGL(console->ConsoleSurface, console->ConsoleAlpha);
+	//TR2 if(console->OutputScreen->flags & SDL_GL_OPENGLBLIT)
+	//	CON_AlphaGL(console->ConsoleSurface, console->ConsoleAlpha);
 
 	SrcRect.x = 0;
 	SrcRect.y = console->ConsoleSurface->h - console->RaiseOffset;
@@ -368,10 +370,11 @@ void CON_DrawConsole(ConsoleInformation *console) {
 	DestRect.w = console->ConsoleSurface->w;
 	DestRect.h = console->ConsoleSurface->h;
 
-	SDL_BlitSurface(console->ConsoleSurface, &SrcRect, console->OutputScreen, &DestRect);
+    //SDL_BlitSurface(console->ConsoleSurface, &SrcRect, console->OutputScreen, &DestRect);
+    SDL_BlitSurface(console->ConsoleSurface, &SrcRect, console->OutputScreen, &DestRect);
 
-	if(console->OutputScreen->flags & SDL_OPENGLBLIT)
-		SDL_UpdateRects(console->OutputScreen, 1, &DestRect);
+	//TR2 if(console->OutputScreen->flags & SDL_OPENGLBLIT)
+	//	SDL_UpdateRects(console->OutputScreen, 1, &DestRect);
 }
 
 
@@ -409,7 +412,7 @@ ConsoleInformation *CON_Init(SDL_Surface *Surface, SDL_Surface *DisplayScreen, i
 	CON_SetTabCompletion(newinfo, Default_TabFunction);
 
 	/* Load the consoles font */
-	if(-1 == (newinfo->FontNumber = DT_LoadFontFromSurface(Surface, TRANS_FONT))) {
+    if (-1 == (newinfo->FontNumber = DT_LoadFontFromSurface(Surface, TRANS_FONT, DisplayScreen))) {
 		PRINT_ERROR("Could not load the font ");
 		PRINT_ERROR("for the console!");
 		return NULL;
@@ -438,7 +441,7 @@ ConsoleInformation *CON_Init(SDL_Surface *Surface, SDL_Surface *DisplayScreen, i
 		PRINT_ERROR("Couldn't create the ConsoleSurface\n");
 		return NULL;
 	}
-	newinfo->ConsoleSurface = SDL_DisplayFormat(Temp);
+    newinfo->ConsoleSurface = SDL_ConvertSurfaceFormat(Temp, DisplayScreen->format->format, DisplayScreen->flags);
 	SDL_FreeSurface(Temp);
 	SDL_FillRect(newinfo->ConsoleSurface, NULL, SDL_MapRGBA(newinfo->ConsoleSurface->format, 0, 0, 0, newinfo->ConsoleAlpha));
 
@@ -448,7 +451,7 @@ ConsoleInformation *CON_Init(SDL_Surface *Surface, SDL_Surface *DisplayScreen, i
 		PRINT_ERROR("Couldn't create the InputBackground\n");
 		return NULL;
 	}
-	newinfo->InputBackground = SDL_DisplayFormat(Temp);
+    newinfo->InputBackground = SDL_ConvertSurfaceFormat(Temp, DisplayScreen->format->format, DisplayScreen->flags);
 	SDL_FreeSurface(Temp);
 	SDL_FillRect(newinfo->InputBackground, NULL, SDL_MapRGBA(newinfo->ConsoleSurface->format, 0, 0, 0, SDL_ALPHA_OPAQUE));
 
@@ -491,8 +494,8 @@ void CON_Show(ConsoleInformation *console) {
 		console->Visible = CON_OPENING;
 		CON_UpdateConsole(console);
 
-		console->WasUnicode = SDL_EnableUNICODE(-1);
-		SDL_EnableUNICODE(1);
+		//console->WasUnicode = SDL_EnableUNICODE(-1);
+		//SDL_EnableUNICODE(1);
 	}
 }
 
@@ -500,7 +503,7 @@ void CON_Show(ConsoleInformation *console) {
 void CON_Hide(ConsoleInformation *console) {
 	if(console) {
 		console->Visible = CON_CLOSING;
-		SDL_EnableUNICODE(console->WasUnicode);
+		// SDL_EnableUNICODE(console->WasUnicode);
 	}
 }
 
@@ -622,10 +625,10 @@ void DrawCommandLine() {
 
 	/* once again we're drawing text, so in OpenGL context we need to temporarily set up
 	   software-mode transparency. */
-	if(Topmost->OutputScreen->flags & SDL_OPENGLBLIT) {
+	/*TR2 if(Topmost->OutputScreen->flags & SDL_OPENGLBLIT) {
 		Uint32 *pix = (Uint32 *) (CurrentFont->FontSurface->pixels);
-		SDL_SetColorKey(CurrentFont->FontSurface, SDL_SRCCOLORKEY, *pix);
-	}
+		SDL_SetColorKey(CurrentFont->FontSurface, SDL_TRUE, *pix);
+	}*/
 
 	/* first of all restore InputBackground */
 	rect.x = 0;
@@ -660,9 +663,9 @@ void DrawCommandLine() {
 	}
 
 
-	if(Topmost->OutputScreen->flags & SDL_OPENGLBLIT) {
+	/* TR2 if(Topmost->OutputScreen->flags & SDL_OPENGLBLIT) {
 		SDL_SetColorKey(CurrentFont->FontSurface, 0, 0);
-	}
+	}*/
 }
 
 /* Outputs text to the console (in game), up to CON_CHARS_PER_LINE chars can be entered */
@@ -711,19 +714,19 @@ void CON_Alpha(ConsoleInformation *console, unsigned char alpha) {
 	/* store alpha as state! */
 	console->ConsoleAlpha = alpha;
 
-	if((console->OutputScreen->flags & SDL_OPENGLBLIT) == 0) {
+	//TR2 if((console->OutputScreen->flags & SDL_OPENGLBLIT) == 0) {
 		if(alpha == 0)
-			SDL_SetAlpha(console->ConsoleSurface, 0, alpha);
+            SDL_SetSurfaceAlphaMod(console->ConsoleSurface, alpha);
 		else
-			SDL_SetAlpha(console->ConsoleSurface, SDL_SRCALPHA, alpha);
-	}
+            SDL_SetSurfaceAlphaMod(console->ConsoleSurface, alpha);
+	//}
 
 	/*	CON_UpdateConsole(console); */
 }
 
 
 /* Adds  background image to the console, x and y based on consoles x and y */
-int CON_Background(ConsoleInformation *console, const char *image, int x, int y) {
+int CON_Background(ConsoleInformation *console, const char *image, int x, int y, SDL_Surface* displayScreen) {
 	SDL_Surface *temp;
 	SDL_Rect backgroundsrc, backgrounddest;
 
@@ -749,8 +752,9 @@ int CON_Background(ConsoleInformation *console, const char *image, int x, int y)
 		CON_Out(console, "Cannot load background %s.", image);
 		return 1;
 	}
-
-	console->BackgroundImage = SDL_DisplayFormat(temp);
+    
+    //console->BackgroundImage = SDL_DisplayFormat(temp);
+    console->BackgroundImage = SDL_ConvertSurfaceFormat(temp, displayScreen->format->format, displayScreen->flags);
 	SDL_FreeSurface(temp);
 	console->BackX = x;
 	console->BackY = y;
@@ -790,7 +794,7 @@ void CON_Position(ConsoleInformation *console, int x, int y) {
 
 /* resizes the console, has to reset alot of stuff
  * returns 1 on error */
-int CON_Resize(ConsoleInformation *console, SDL_Rect rect) {
+int CON_Resize(ConsoleInformation *console, SDL_Rect rect, SDL_Surface* displayScreen) {
 	SDL_Surface *Temp;
 	SDL_Rect backgroundsrc, backgrounddest;
 
@@ -818,8 +822,9 @@ int CON_Resize(ConsoleInformation *console, SDL_Rect rect) {
 		PRINT_ERROR("Couldn't create the console->ConsoleSurface\n");
 		return 1;
 	}
-	console->ConsoleSurface = SDL_DisplayFormat(Temp);
-	SDL_FreeSurface(Temp);
+	//console->ConsoleSurface = SDL_DisplayFormat(Temp);
+    console->ConsoleSurface = SDL_ConvertSurfaceFormat(Temp, displayScreen->format->format, displayScreen->flags);
+    SDL_FreeSurface(Temp);
 
 	/* Load the dirty rectangle for user input */
 	SDL_FreeSurface(console->InputBackground);
@@ -828,7 +833,8 @@ int CON_Resize(ConsoleInformation *console, SDL_Rect rect) {
 		PRINT_ERROR("Couldn't create the input background\n");
 		return 1;
 	}
-	console->InputBackground = SDL_DisplayFormat(Temp);
+    //console->InputBackground = SDL_DisplayFormat(Temp);
+    console->InputBackground = SDL_ConvertSurfaceFormat(Temp, displayScreen->format->format, displayScreen->flags);
 	SDL_FreeSurface(Temp);
 
 	/* Now reset some stuff dependent on the previous size */
@@ -869,7 +875,8 @@ int CON_Transfer(ConsoleInformation* console, SDL_Surface* new_outputscreen, SDL
 
 	console->OutputScreen = new_outputscreen;
 
-	return( CON_Resize(console, rect) );
+    // TR2 added new_outputscreen
+    return(CON_Resize(console, rect, new_outputscreen));
 }
 
 /* Sets the topmost console for input */
@@ -1041,11 +1048,17 @@ void Cursor_BSpace(ConsoleInformation *console) {
 void Cursor_Add(ConsoleInformation *console, SDL_Event *event) {
 	int len = 0;
 
+    if (event->key.keysym.sym < SDLK_SPACE || event->key.keysym.sym > SDLK_z)
+    {
+        return;
+    }
+
+    // Todo: keysym.unicode is obsolete
 	/* Again: the commandline has to hold the command and the cursor (+1) */
-	if(strlen(Topmost->Command) + 1 < CON_CHARS_PER_LINE && event->key.keysym.unicode) {
+	if(strlen(Topmost->Command) + 1 < CON_CHARS_PER_LINE && event->key.keysym.sym) {
 		Topmost->CursorPos++;
 		len = strlen(Topmost->LCommand);
-		Topmost->LCommand[len] = (char)event->key.keysym.unicode;
+        Topmost->LCommand[len] = (char)event->key.keysym.sym;
 		Topmost->LCommand[len + sizeof(char)] = '\0';
 		Assemble_Command(console);
 	}

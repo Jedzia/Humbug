@@ -59,8 +59,11 @@ SET(LUABIND_USE_CXX11 OFF)# "Build Luabind using C++11 features?" ${LUABIND_CXX1
 ADD_SUBDIRECTORY(SupportLibs)
 #ADD_SUBDIRECTORY(CppStructz)
 ADD_SUBDIRECTORY(HumbugLib)
+ADD_SUBDIRECTORY(HumbugShared)
 
 ADD_SUBDIRECTORY(GuiLib)
+ADD_SUBDIRECTORY(HumbugCore)
+ADD_SUBDIRECTORY(HumbugSerialization)
 ADD_SUBDIRECTORY(Humbug )
 ADD_SUBDIRECTORY(Playground)
 #ADD_SUBDIRECTORY(build/Templates/src/Templates)

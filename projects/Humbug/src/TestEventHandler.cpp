@@ -7,7 +7,8 @@
 //#include "windows.h"
 //#include <build/cmake/include/debug.h>
 //
-#include "Filesystem/FileLoader.h"
+#include "HumbugFileLoader.h"
+//#include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
 #include "GUI/Components/Rectangle.h"
@@ -26,12 +27,16 @@
 #include "Screens/BlaScreen.h"
 #include "Screens/LuaScreen.h"
 #include "Screens/HopperScreen.h"
+#include "Screens/MenuScreen.h"
 #include "Levels/TestLevel.h"
 #include "Levels/LevelA.h"
 #include "HumbugLib/src/HumbugLib/AppGB.h"
 #include "Screens/TileScreen.h"
 #include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Text.h"
+#include "Screens/SimpleScreen.h"
+#include "Screens/MenuScreen/SubmenuA.h"
+#include "Screens/MenuScreen/TutorEasing.h"
 
 namespace humbug {
 
@@ -122,7 +127,7 @@ void CTestEventHandler::OnExit(){
 
 	// FileLoader frees the surface of m_pBackground,
 	// so this is a workaround.
-	m_pBackground->SetSurface(NULL);
+	//m_pBackground->SetSurface(NULL);
 	delete m_pBackground;
 	
 	//destroy font
@@ -132,20 +137,21 @@ void CTestEventHandler::OnExit(){
     CEventHandler::OnExit();
 } // OnExit
 
+CText *fickText;
+
 //initialization
 bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //initialize parent class
     CEventHandler::OnInit(argc, argv);
 
 
-	SDL_WM_SetCaption("Humbug, the Game", NULL);
-    //create display surface
     Uint32 video_flags;
 
     //video_flags = SDL_OPENGL;
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
     //video_flags = SDL_ANYFORMAT;
-    video_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+    //video_flags = SDL_WINDOW_BORDERLESS;
+    video_flags = SDL_WINDOW_SHOWN;
 
     //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
     //SDL_EnableKeyRepeat(100, 1);
@@ -153,7 +159,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
     //construct main canvas
     //m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    CMainCanvas* m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
+    CMainCanvas* m_pMainCanvas = new CMainCanvas("Humbug, the Game", 1024, 768, video_flags);
     SetMainCanvas( m_pMainCanvas );
 
     //m_pDrawCanvas = m_pMainCanvas;
@@ -196,7 +202,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 	//fl.reset(new FileLoader("E:/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
 
 	std::string appDir = AppGB::Instance().AppDir();
-	fl.reset(new FileLoader(appDir + "base_data"));
+	fl.reset(new HumbugFileLoader(appDir + "base_data"));
 
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     try
@@ -231,36 +237,40 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
             
 			// delete loadsurf;
 			//m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
-			tmpsurf = SDL_DisplayFormatAlpha( loadsurf = fl->FL_LOADIMG("Moo.png") );
+            //tmpsurf = (loadsurf = fl->FL_LOADIMG("Moo.png"));
+            tmpsurf = loadsurf = fl->FL_LOADIMG("Moo.png");
             CCanvas tmpCanvas(tmpsurf);
-			//CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
+            //CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
 			CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768);
             testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
             m_pBackground = testCanvas;
 			CRectangle screenrect = m_pMainCanvas->GetDimension();
-			m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+            m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
+            //m_pMainCanvas->Render(m_pBackground, screenrect, screenrect);
 
 			//m_pBackground->Invalidate();
             //delete tmpsurf;
             //SDL_FreeSurface( loadsurf );
             fl->FreeLast();
 
-			int fontsize = 48;
-			CPoint sp(220, 240);
+            int fontsize = 48;
+			CPoint sp(120, 140);
 			TTF_Font *iarial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
 
 			const char *lines[] = { 
-				"Press '1' for: TestScreen",
-				"Press '2' for: TestLevel",
-				"Press '3' for: HighscoreScreen",
+				"Press '1' for: StartScreen",
+				"Press '2' for: Highscores",
+				"Press '3' for: TestLevel",
 				"Press '4' for: BlaScreen",
 				"Press '5' for: TileScreen",
 				"Press '6' for: LuaScreen",
 				"Press '7' for: HopperScreen",
-				"Press '8' for: LevelA"
-			};
+				"Press '8' for: LevelA",
+                "Press '9' for: SimpleScreen",
+                "Press '0' for: MenuScreen"
+            };
 
-			for (int i = 0; i < 8 ; i++)
+            for (int i = 0; i < sizeof(lines) / sizeof(const char *); i++)
 			{
 				const char *cur = lines[i];
 				CText infoText(iarial, cur, CColor::Black());
@@ -280,21 +290,21 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 			//SDL_FreeSurface( tmpsurf );
         }
 
-        //m_pBackground = new CCanvas( SDL_DisplayFormatAlpha( tmpsurf ));
+        //m_pBackground = new CCanvas( ( tmpsurf ));
         //m_pBackground = m_pMainCanvas->CreateRGBCompatible(NULL, 1024, 768);
         //SDL_Surface* g_pBitmapSurface = fl.LoadImg("icons/blue.png");
-        SDL_Surface* g_pBitmapSurface = SDL_DisplayFormatAlpha( fl->FL_LOADIMG("icons/blue.png") );
+        //SDL_Surface* g_pBitmapSurface = (fl->FL_LOADIMG("icons/blue.png"));
+        SDL_Surface* g_pBitmapSurface = (fl->FL_LOADIMG("icons/blue.png"));
         fl->FreeLast();
 
         //SDL_FreeSurface( loadsurf );
-        //SDL_SetAlpha(g_pBitmapSurface,SDL_SRCALPHA, 0);
-        //SDL_SetAlpha(m_pBlue->GetCanvas()->GetSurface(), SDL_SRCALPHA, 255);
         m_pBlue = new CImage( new CCanvas( g_pBitmapSurface ), true );
 
 		//SDL_Surface* ddd1 = fl2.LoadImg("Icons/blue.png");
         //m_pHud = new Hud(fl, mainControl, new HudBackground(fl, "humbug.pdb"), 0);
 
         // fl->Free("Tiles1.bmp");
+        m_pMainCanvas->MainUpdateAndRenderCopy();
     }
     catch (FileLoaderException ex)
     {
@@ -323,7 +333,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //m_scrStart = new StartScreen(*fl, m_pMainCanvas);
     //HookMgr()->AddHookable("StartScreen", m_scrStart, true);
     //HookMgr()->EnableHookable("StartScreen");
-    //HookMgr()->AddHookable("Test1", new TestHookable());
+    //HookMgr()->AddHookable("TestScreen", new TestHookable());
 
     //Hookable *nn = HookCreator<StartScreen>::Create();
     //Hookable *nn = HookCreator<StartScreen>::Create();
@@ -334,17 +344,21 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //HookMgr()->RegisterHookable("XXXX", nn);
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
-    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("Test1", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
+    //HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<TutorEasing>(*fl, m_pMainCanvas)));
+	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
+    //HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator < SubmenuA> (*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Bla", HookCreatorPtr(new ScreenCreator<BlaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Tiles", HookCreatorPtr(new ScreenCreator<TileScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Lua", HookCreatorPtr(new ScreenCreator<LuaScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Hopper", HookCreatorPtr(new ScreenCreator<HopperScreen>(*fl, m_pMainCanvas)));
-	HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("LevelA", HookCreatorPtr(new ScreenCreator<LevelA>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Simple", HookCreatorPtr(new ScreenCreator<SimpleScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("Menu", HookCreatorPtr(new ScreenCreator<MenuScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->EnableHookable("StartScreen");
-	//HookMgr()->EnableHookable("Test1");
+	//HookMgr()->EnableHookable("TestScreen");
     //std::vector<boost::shared_ptr<HookCreator>> xx;
     //xx.push_back(nn);
     //std::map<std::string, boost::shared_ptr<HookCreator>> xx;
@@ -357,6 +371,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
         new gui::CConsole( this, fl->FL_LOADIMG("Fonts/ConsoleFont.bmp"),
                 m_pMainCanvas, 100, CRectangle(0, 0, 0,
                         300) );
+
+    //int *failmemcheck = new int(666);
     return(true);
 } // OnInit
 
@@ -396,7 +412,7 @@ void CTestEventHandler::OnIdle(int ticks){
 
 
     //m_pHud->Invalidate();
-    CControl::Redraw();
+//    CControl::Redraw();
 
     //m_pHud->Draw();
     //PutBlue();
@@ -409,9 +425,12 @@ void CTestEventHandler::OnIdle(int ticks){
     // kucken fuer was 'screenrect' gebraucht wird und ob das stimmt.
     //m_pMainCanvas->ClearUpdateRects();
 
+    //fickText->Put(m_pMainCanvas, CRectangle(ticks % 200, ticks % 200, 0, 0));
+    //fickText->RenderPut(m_pMainCanvas, CRectangle(ticks % 200, ticks % 200, 0, 0));
+    //m_pMainCanvas->MainUpdateAndRenderCopy();
+
     //m_pMainCanvas->UpdateRects ( );
-    
-    //m_pMainCanvas->Unlock();
+    //m_pMainCanvas->Render(m_pDrawCanvas, m_pMainCanvas->GetDimension(), m_pMainCanvas->GetDimension());
 	//m_pMainCanvas->Invalidate();
     // call base method.
     CApplication::OnIdle(ticks);
@@ -426,7 +445,6 @@ void CTestEventHandler::Update(){
         fprintf(stdout, "UPD-Ticks: '%d' (%d diff)\n", now, diff);
         m_pLastTicks2 = now;
        }*/
-
 	// call base method.
     CApplication::Update();
 }
@@ -461,7 +479,7 @@ void CTestEventHandler::OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely
 }
 
 //key press
-void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
+void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     const int step = 6;
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
 
@@ -502,7 +520,8 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
         //
         m_inActiveSprite ^= 1;
     }*/
-    else if( mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE )   {
+    //else if (mod == KMOD_LCTRL && sym == SDLK_BACKQUOTE)   {
+    else if (sym == SDLK_CARET)   {
         // toggle console
         m_pConsole->Toggle();
     }
@@ -519,7 +538,7 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
     else if( sym == SDLK_2 )   {
         //
         //HookMgr()->Test2();
-        //HookMgr()->EnableHookable("Test1");
+        //HookMgr()->EnableHookable("TestScreen");
         HookMgr()->EnableHookable("Highscores");
     }
     else if( sym == SDLK_3 )   {
@@ -546,6 +565,14 @@ void CTestEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
 		//
 		HookMgr()->EnableHookable("LevelA");
 	}
+    else if (sym == SDLK_9)   {
+        //
+        HookMgr()->EnableHookable("Simple");
+    }
+    else if (sym == SDLK_0)   {
+        //
+        HookMgr()->EnableHookable("Menu");
+    }
 
 } // OnKeyDown
 

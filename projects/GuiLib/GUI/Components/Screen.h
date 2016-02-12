@@ -1,9 +1,7 @@
 #ifndef HUMBUG_GUI_COMPONENTS_SCREEN_H
 #define HUMBUG_GUI_COMPONENTS_SCREEN_H
-#include "../Visual/Application.h"
 #include "../Visual/Hookable.h"
 #include "../Visual/HookableManager.h"
-#include "../Visual/MessageHandler.h"
 //#include "GUI/Components/MainCanvas.h"
 #include "../Components/Canvas.h"
 #include "../Detail/Signals.h"
@@ -26,7 +24,8 @@ public:
     ScreenCreator(FileLoader& loader, CCanvas *background)
         : m_loader(loader), m_background(background)
     {};
-    Hookable* Create(){
+    Hookable* Create() override
+    {
         return new T(m_loader, m_background);
     }
 };
@@ -34,7 +33,7 @@ public:
 class Screen : public Hookable/*, CMessageHandler*/ {
 public:
 
-    Screen(CCanvas *background);
+    Screen(CCanvas *background, bool usesSDL2Render = false);
     virtual ~Screen();
 
     virtual void OnUpdate();
@@ -42,14 +41,22 @@ public:
 
     //virtual bool OnInit( int argc,char* argv[] );
 protected:
-    virtual bool OnInit( int argc,char* argv[] );
+    /** Initialization frame-loop.
+    *  Is called once on initialization.
+    *  @param argc Dummy parameter.
+    * @param argv Dummy parameter.
+    * @return true on success.
+    */
+    bool OnInit(int argc, char* argv[]) override;
 private:
-    GroupId GetGroupID();
+    GroupId GetGroupID() override;
 
-    virtual void OnIdle( int ticks );
+    void OnIdle( int ticks ) override;
 	virtual void OnEvent(SDL_Event* pEvent);
-    virtual void OnConnect();
-    virtual void OnDisconnect();
+    virtual void OnFocus() {    }
+    virtual void OnLostFocus() {    }
+    void OnConnect() override;
+    void OnDisconnect() override;
 
     //CMainCanvas *m_pMainScreen;
 
@@ -57,6 +64,7 @@ private:
     bs::connection m_conUpdate;
 	bs::connection m_conEvt;
 	int i;
+    bool m_bUsesSDL2Render;
 };
 
 } // namespace components

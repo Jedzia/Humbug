@@ -28,11 +28,13 @@
 #  define HUMBUGLIB_OutputCString(str) ::OutputDebugStringA(str)
 #  define HUMBUGLIB_OutputWString(str) ::OutputDebugStringW(str)
 #else
+#include <windows.h>
+#include <iostream>
 #  define HUMBUGLIB_OutputCString(str) std::cerr << str
 #  define HUMBUGLIB_OutputWString(str) std::cerr << str
 #endif
 
-#define String std::string
+//#define String std::string
 #define HUMBUGLIB_LOCK_AUTO_MUTEX
 
 //
@@ -40,7 +42,7 @@
 
 
 #if (WIN32)
-#include < time.h >
+#include <time.h>
 #include <windows.h> //I've ommited this line.
 #if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
@@ -101,7 +103,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 
 HumbugLIB_BEGIN_NAMESPACE
 //-----------------------------------------------------------------------
-Log::Log( const String& name, bool debuggerOuput, bool suppressFile ) :
+Log::Log( const std::string& name, bool debuggerOuput, bool suppressFile ) :
     mLogLevel(LL_NORMAL),
     mDebugOut(debuggerOuput),
     mSuppressFile(suppressFile),
@@ -122,7 +124,7 @@ Log::~Log(){
 }
 
 //-----------------------------------------------------------------------
-void Log::logMessage( const String& message, LogMessageLevel lml, bool maskDebug ){
+void Log::logMessage( const std::string& message, LogMessageLevel lml, bool maskDebug ){
     HUMBUGLIB_LOCK_AUTO_MUTEX;
 
     if ( (mLogLevel + lml) >= HUMBUGLIB_LOG_THRESHOLD ) {
@@ -136,7 +138,7 @@ void Log::logMessage( const String& message, LogMessageLevel lml, bool maskDebug
             if (mDebugOut && !maskDebug)
 #if _DEBUG && (HUMBUGLIB_PLATFORM == HUMBUGLIB_PLATFORM_WIN32 || HUMBUGLIB_PLATFORM == HUMBUGLIB_PLATFORM_WINRT)
             {
-                String logMessageString(message);
+                std::string logMessageString(message);
                 logMessageString.append( "\n" );
                 HUMBUGLIB_OutputCString( logMessageString.c_str() );
             }

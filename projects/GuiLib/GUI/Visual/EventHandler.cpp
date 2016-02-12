@@ -8,7 +8,7 @@
 #include "EventHandler.h"
 //#include "Hookable.h"
 #include "HookableManager.h"
-
+#include <SDL_events.h>
 
 namespace gui {
 
@@ -35,7 +35,7 @@ void CEventHandler::OnEvent(SDL_Event* pEvent){
     //dispatch event
     switch(pEvent->type)
     {
-    case SDL_ACTIVEEVENT:    //activation event
+    /*case SDL_ACTIVEEVENT:    //activation event
     {
         //what was gained or lost?
         switch(pEvent->active.state)
@@ -77,17 +77,18 @@ void CEventHandler::OnEvent(SDL_Event* pEvent){
             }
         } break;
         } // switch
-    } break;
+    } break;*/
     case SDL_KEYDOWN:    //key press
     {
         //key press
-        OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+        OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod);
 
     } break;
     case SDL_KEYUP:    //key release
     {
         //key release
-        OnKeyUp(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+        //OnKeyUp(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
+        OnKeyUp(pEvent->key.keysym.sym, pEvent->key.keysym.mod);
 
     } break;
     case SDL_MOUSEMOTION:    //mouse motion
@@ -163,12 +164,12 @@ void CEventHandler::OnEvent(SDL_Event* pEvent){
     {
         //ignore
     } break;
-    case SDL_VIDEORESIZE:    //resize video
+    case SDL_WINDOWEVENT_RESIZED:    //resize video
     {
         //resize handler
-        OnResize(pEvent->resize.w, pEvent->resize.h);
+        OnResize(pEvent->window.data1, pEvent->window.data2);
     } break;
-    case SDL_VIDEOEXPOSE:    //video expose
+    case SDL_WINDOWEVENT_EXPOSED:    //video expose
     {
         //expose handler
         OnExpose();
@@ -217,11 +218,11 @@ void CEventHandler::OnRestore(){
 }
 
 //keyboard events
-void CEventHandler::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode){
+void CEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     //do nothing
 }
 
-void CEventHandler::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode){
+void CEventHandler::OnKeyUp(SDL_Keycode sym, Uint16 mod){
     //do nothing
 }
 

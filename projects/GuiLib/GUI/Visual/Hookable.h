@@ -7,8 +7,7 @@
 #include <boost/noncopyable.hpp>
 
 namespace gui {
-
-class CEventHandler;
+    class CMaster;
 
 //message id
 typedef int GroupId;
@@ -26,7 +25,18 @@ public:
     //initialization
     virtual bool OnInit(int argc,char* argv[]);
 
+    /** Idle frame-loop.
+    *  Is called once per frame, before OnDraw().
+    *  @param ticks frame ticks counter.
+    */
     virtual void OnIdle(int ticks) = 0;
+
+    /** Get timing ticks.
+    *  Retrieves the ticks (or FPS frames per second) run by the application.
+    *  @return The current ticks that are run by the application.
+    */
+    int GetTicks() const;
+
     friend class HookableManager;
 
 protected:
@@ -37,7 +47,7 @@ protected:
     virtual GroupId GetGroupID();
 
     static GroupId CreateNextGroupID();
-    CEventHandler* Master() const { return m_pMaster; }
+    CMaster* Master() const { return m_pMaster; }
     void Connect(/*Hookable* controller*/);
     void Disconnect();
 
@@ -45,18 +55,20 @@ protected:
     virtual void OnDisconnect() = 0;
 
 private:
-    void Init(CEventHandler *Master, Hookable *controller);
+    void Init(CMaster *Master, Hookable *controller);
+    void HandleIdle(int ticks);
 
 	//static boost::ptr_vector<Hookable> m_pvHooks;
     //static Hookable* m_pController;
     struct HookableImpl;
     boost::scoped_ptr<HookableImpl> pimpl_;
-    CEventHandler *m_pMaster;
+    CMaster *m_pMaster;
     Hookable *m_pController;
     static GroupId s_NextGrpID;
 
     GroupId m_grpID;
     bool m_bIsInitialized;
+    int m_iTicks;
 };
 
 class TestHookable : public Hookable
@@ -65,12 +77,13 @@ public:
     TestHookable();
     virtual ~TestHookable();
 
-    void OnIdle(int ticks);
-    virtual GroupId GetGroupID();
+    GroupId GetGroupID() override;
 
-    virtual void OnConnect();
+    void OnIdle(int ticks) override;
 
-    virtual void OnDisconnect();
+    void OnConnect() override;
+
+    void OnDisconnect() override;
 
 protected:
 private:

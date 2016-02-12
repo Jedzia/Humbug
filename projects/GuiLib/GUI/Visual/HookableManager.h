@@ -22,11 +22,9 @@
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <map>
-#include <string>
 
 namespace gui {
-
-class HookCreator {
+    class HookCreator {
 public:
     /*HookCreator()
     {
@@ -50,9 +48,10 @@ public:
     {
         dbgOut(__FUNCTION__ << " (" << this << ")");
     };*/
-   Hookable* Create(){
+   Hookable* Create() override
+   {
         return new T;
-    }
+   }
 };
 
 typedef boost::shared_ptr<HookCreator> HookCreatorPtr;
@@ -60,7 +59,8 @@ typedef boost::shared_ptr<HookCreator> HookCreatorPtr;
 class HookableManager {
 public:
 
-    HookableManager(CEventHandler* master);
+    //HookableManager(CEventHandler* master);
+    HookableManager(CMaster* master);
     ~HookableManager();
 
     // Register a factory hook-type creator.
@@ -78,7 +78,7 @@ public:
     // Switch the Hookable with the given key to status event-processing ON.
     void EnableHookable(const std::string& key);
     // Switch the Hookable with the given key to status event-processing OFF.
-    void DisableHookable(const std::string& key);
+    void DisableHookable(const std::string& key = "");
 
     // Cleanup all registered and instantiated Hookables.
     void Close();
@@ -86,9 +86,14 @@ public:
     void Test1();
     void Test2();
 
+    bool IsHookActive() const
+    {
+        return m_pActiveHook != NULL;
+    }
+
 private:
 
-    CEventHandler* m_pMaster;
+    CMaster* m_pMaster;
 
     //typedef std::map<std::string, Hookable*> HookDictionary;
     typedef boost::ptr_map<std::string, Hookable> HookDictionary;

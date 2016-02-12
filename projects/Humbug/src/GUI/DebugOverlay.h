@@ -19,34 +19,51 @@
 
 #include "GUI/Components/Canvas.h"
 #include "GUI/Controls/Control.h"
-#include <string>
+
 namespace gui {
   namespace components {
-	  class CCanvas;
 	  class CImage;
-	  class CText;
+  }
+  namespace controls {
+      class CLabel;
   }
 }
 class FileLoader;
 
 namespace humbug {
-
-
   class DebugOverlay : public gui::controls::CControl {
 public:
 
       // DebugOverlay(const FileLoader& loader, CCanvas* pCanvas);
-      DebugOverlay(FileLoader& loader, gui::controls::CControl* pParent, Uint32 id);
+    DebugOverlay(FileLoader& loader, CControl* pParent, Uint32 id, const std::string& name, const gui::components::CRectangle& position = gui::components::CRectangle(0, 0, 800, 160));
       ~DebugOverlay();
 
-      //void Draw();
-	  void OnDraw();
-	  void IdleSetVars(int ticks);
+	  void OnDraw() override;
+      
+      /** Idle update.
+      *  Call during the idle method of your display loop.
+      *  @param ticks Use this to pass the ticks parameter of the idle loop.
+      */
+      void IdleSetVars(int ticks);
 
-      virtual bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle);
+      /** Create a text label and add it to the overlay.
+      *  Creates a new text label with the specified text and adds it to the debug overlay.
+      *  @return a unique identifier of the label. This id can be used by functions like SetTextLabelText.
+      */
+      int AddTextLabel();
+
+      /** Sets the text of a label.
+      *  Use this method to set the text of a label, created by AddTextLabel().
+      *  @param id The identifikation number of the text label.
+      *  @param text The new caption of the label.
+      */
+      void SetTextLabelText(int id, const std::string& text);
+
+      bool OnMouseMove(Uint16 x, Uint16 y, Sint16 relx, Sint16 rely, bool bLeft, bool bRight, bool bMiddle) override;
 
 private:
-
+        
+      static int LabelId;
       void Init(gui::controls::CControl* pParent);
 
       gui::components::CRectangle InitRect(const FileLoader& loader);
@@ -55,15 +72,19 @@ private:
       const FileLoader& m_pLoader;
 	  TTF_Font* m_pDebugfont;
 	  boost::scoped_ptr<gui::components::CText> m_pTextA;
+      
+      boost::ptr_map<int, gui::controls::CLabel> m_mLabels;
+      int m_iLastAutoLabelPosition;
 
       //CCanvas* m_pCanvas;
       //CPoint dst;
       //DebugOverlayBackground* m_pBackground;
       // CCanvas* footer;
-      gui::components::CImage* footerImage;
-      bool oldstate;
-      gui::components::CCanvas* tmpcanvas;
-      bool flank;
+      std::string m_sName;
+      gui::components::CImage* m_pFooterImage;
+      bool m_bOldstate;
+      gui::components::CCanvas* m_pTmpCanvas;
+      bool m_bFlank;
 	  int m_ticks;
   };
 }

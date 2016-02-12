@@ -41,7 +41,7 @@ int LoadSprite(char *file)
 
 	/* Set transparent pixel as the pixel at (0,0) */
 	if ( gui->format->palette ) {
-		SDL_SetColorKey(gui, (SDL_SRCCOLORKEY|SDL_RLEACCEL),
+		SDL_SetColorKey(gui, (SDL_TRUE|SDL_RLEACCEL),
 						*(Uint8 *)gui->pixels);
 	}
 

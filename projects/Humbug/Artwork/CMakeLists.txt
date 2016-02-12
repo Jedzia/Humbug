@@ -85,7 +85,8 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 		# ImageMagick part
 		# convert -layers merge infile.psd outfile.png
 		SET(Build_Image_CMD ${IMAGEMAGICK_CONVERT_EXECUTABLE})
-		SET(Build_Image_OPTIONS -layers merge)
+		#SET(Build_Image_OPTIONS -layers merge)
+		SET(Build_Image_OPTIONS -background transparent -flatten)
 		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
 		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_file_fullpath}\"")
 		#SET(Build_Image_ARGUMENTS "${_image_source_file}")
@@ -119,7 +120,7 @@ ENDFUNCTION()
 #ADD_IMGCONVERSION_TARGET(BI ${CMAKE_CURRENT_SOURCE_DIR}/footer.psd)
 
 #FILE(GLOB IMAGES_SOURCE_FILES ${PROJECT_SOURCE_DIR}/*.psd;${PROJECT_SOURCE_DIR}/*.svg)
-FILE(GLOB_RECURSE IMAGES_SOURCE_FILES ${PROJECT_SOURCE_DIR}/*.psd;${PROJECT_SOURCE_DIR}/*.svg)
+FILE(GLOB_RECURSE IMAGES_SOURCE_FILES ${PROJECT_SOURCE_DIR}/*.psd;${PROJECT_SOURCE_DIR}/*.svg;${PROJECT_SOURCE_DIR}/*.ai)
 
 
 SET(ADDITIONAL_IMAGES_SOURCE_FILES 

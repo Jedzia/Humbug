@@ -6,11 +6,10 @@
  *
  * \brief      This file contains the definition of
  *             the $(filename) class.
- * \folder     $(folder)
  * \file       $(filename)
- * \date       2013-11-22
+ * \date       2016-01-30
  * \author     Jedzia.
  *
- * modified    2013-11-22, Jedzia
+ * modified    2016-01-30, Jedzia
  */
 /*---------------------------------------------------------*/

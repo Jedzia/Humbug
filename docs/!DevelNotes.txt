@@ -1,4 +1,131 @@
 
+-X-X-X-X- Do, 28 Jan 2016 10:05:28 -----------------------------------------------------------
+Todo:
+Statemachine
+Info:
+that term i searched was "ease in, ease out" ... for animation curves.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 26 Jan 2016 02:53:13 -----------------------------------------------------------
+MakeVFS or something should copy 
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Tutor\Images\Tutor\A1\Class Diagram Screen01.jpg
+to 
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Work\Images\Tutor\A1\Class Diagram Screen01.jpg
+
+means 
+	Artwork\Tutor\Images
+to 	Artwork\Work\Images\
+
+*******
+
+    tmpfsurf = m_Loader.FL_LOADIMG("Images/Tutor/A1/Class Diagram Screen01");
+should be able to auto-load "Images/Tutor/A1/Class Diagram Screen01.png"
+
+*******
+projects\build\cmake\Modules\PackageCreate.cmake
+winzip part is broken
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 20 Jan 2016 14:58:29 -----------------------------------------------------------
+Todo:
+ - Timeline
+ - Animation
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 14 Jan 2016 01:31:18 -----------------------------------------------------------
+char names: pippa and felicity
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 13 Jan 2016 03:34:05 -----------------------------------------------------------
+Todo
+Scrolling Text 
+	x from left to right
+	- from top to bottom
+	- star wars
+hookable das sich einklinken laesst vom screen und automatisch in draw, idle und update mit keyboard usw. eingebunden wird	
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 12 Jan 2016 02:26:18 -----------------------------------------------------------
+Todo
+
+CLabel:
+correct offset (from SetPosition) when rendering CControls.
+
+CImage: 
+transform operations ( resize, move, rotate )
+- for init from surface 
+- or for the CCanvas itself
+- or as modifier when rendering
+
+need a standardized or normalized system for CCanvasRenderer, etc. modifiers. moving things by degrees in a rectangle coord system
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- So, 10 Jan 2016 00:27:39 -----------------------------------------------------------
+Todo: Canvas.h  CImage docs
+make a list of what the components are used for.
+like 
+CImage -> easy to use Canvas with Renderput( CPoint destination) ... 1:1 render)
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 09 Jan 2016 00:48:35 -----------------------------------------------------------
+Todo: Integrate 
+SET(GuiLib_documents
+		Readme.md
+		docs/!DevelNotes.txt
+)
+SOURCE_GROUP(Docs FILES ${GuiLib_documents})
+
+(from E:\Projects\C++\Humbug\projects\GuiLib\CMakeLists.txt)
+into ADD_LIBRARY_X macro to enforce the usage of docs and Readme
+
+This is now: 
+ENSURE_DOCS_ARE_PRESENT(HumbugCore_documents)
+and include the var HumbugCore_documents in
+
+ADD_LIBRARY_X(HumbugCore ${LIBRARY_TYPE}
+        stdafx.h
+		...
+		${HumbugCore_documents}
+)
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 04 Jan 2016 14:56:47 -----------------------------------------------------------
+TestLevel with CSeamlessImage needs a camera that can be positioned via WASD keys like in BlaScreen::OnEvent
+see       m_pKeyHandler2 = new PlayerKeys(400, 200);
+
+so Todo: implement WASD move of seamless Image. aka scroller game
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 04 Jan 2016 11:11:03 -----------------------------------------------------------
+Todo: 
+- scroll seamless image around
+- add music
+- add selection menu screen
+- trails?
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 04 Jan 2016 00:15:55 -----------------------------------------------------------
+    else if( sym == SDLK_1 )   {
+        HookMgr()->EnableHookable("StartScreen");
+    else if( sym == SDLK_2 )   {
+        HookMgr()->EnableHookable("Highscores");
+    else if( sym == SDLK_3 )   {
+        HookMgr()->EnableHookable("TestLevel");
+	else if( sym == SDLK_4 )   {
+		HookMgr()->EnableHookable("Bla");
+	else if( sym == SDLK_5 )   {
+		HookMgr()->EnableHookable("Tiles");
+	else if( sym == SDLK_6 )   {
+		HookMgr()->EnableHookable("Lua");
+	else if( sym == SDLK_7 )   {
+		HookMgr()->EnableHookable("Hopper");
+	else if( sym == SDLK_8 )   {
+		HookMgr()->EnableHookable("LevelA");
+    else if (sym == SDLK_9)   {
+        HookMgr()->EnableHookable("Simple");
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Mi, 01 Jul 2015 14:47:40 -----------------------------------------------------------
 Error	1	error LNK2019: unresolved external symbol "__declspec(dllimport) protected: __cdecl boost::archive::detail::basic_iarchive::~basic_iarchive(void)" (__imp_??1basic_iarchive@detail@archive@boost@@IEAA@XZ) referenced in function "int `protected: __cdecl boost::archive::detail::common_iarchive<class boost::archive::binary_iarchive>::common_iarchive<class boost::archive::binary_iarchive>(unsigned int)'::`1'::dtor$0" (?dtor$0@?0???0?$common_iarchive@Vbinary_iarchive@archive@boost@@@detail@archive@boost@@IEAA@I@Z@4HA)	E:\Projects\C++\Humbug\build2013x64\Playground\boost_serialization01.obj	boost_serialization01
 

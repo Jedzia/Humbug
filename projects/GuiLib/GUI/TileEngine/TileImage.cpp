@@ -10,15 +10,13 @@
 //#include <build/cmake/include/debug.h>
 namespace gui {
   CTileImage::CTileImage( FileLoader& loader, std::string filename,
-          CTileImageSetup configuration ) : CCanvas() {
+          CTileImageSetup configuration ) : CCanvas(static_cast<SDL_Surface*>(NULL)) {
       dbgOut(__FUNCTION__);
-      SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
+      SDL_Surface* bitmap = ( loader.FL_LOADIMG(filename) );
       loader.FreeLast();
-      SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
-      SDL_SetAlpha(bitmap, 0, 128);
-      //SDL_SetAlpha(bitmap, 0, 0);
-      //SDL_SetAlpha(bitmap, 0, 255);
+      SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
+      //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
+      SDL_SetSurfaceAlphaMod(bitmap, 128);
       SetSurface( bitmap );
       m_tiConfig.BitmapHeight = GetHeight();
       m_tiConfig.BitmapWidth = GetWidth();
@@ -34,12 +32,12 @@ namespace gui {
   }
 
 	  CTileImage::CTileImage( FileLoader& loader, std::string filename, std::string tileDescrFile )
-		  : CCanvas()
+          : CCanvas(static_cast<SDL_Surface*>(NULL))
 	  {
 
 		  // Todo: duplicate init code ... see other ctor, simplify
 		  dbgOut(__FUNCTION__);
-		  SDL_Surface* bitmap = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
+		  SDL_Surface* bitmap = ( loader.FL_LOADIMG(filename) );
 		  loader.FreeLast();
 
 
@@ -48,7 +46,7 @@ namespace gui {
 		  std::istringstream htstrstr(tileConfData);
 		  int TileCount, MapCount;
 		  uint32_t transparentColorR , transparentColorG, transparentColorB;
-		  uint32_t dummy1x, dummy2x, dummy3x, dummy4x, dummy5x, transparentColor;
+          uint32_t dummy4x, dummy5x, transparentColor;
 		  std::string picture;
 		  std::string tmpStr;
 
@@ -70,12 +68,12 @@ namespace gui {
 		  transparentColor <<= 8;
 		  transparentColor |= transparentColorB;
 		  //transparentColor <<= 8;
-		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 128);
-		  //SDL_SetAlpha(bitmap, SDL_SRCALPHA, 22);
+		  //SDL_SetSurfaceAlphaMod(bitmap, 128);
+		  //SDL_SetSurfaceAlphaMod(bitmap, 22);
 
 		  //Clear(CColor::Black);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0x000000);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, transparentColor);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0x000000);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, transparentColor);
 		  /*for (int i = 0; i < MapCount ; i++)
 		  {
 			  std::string MapName;
@@ -83,11 +81,10 @@ namespace gui {
 		  }*/
 
 
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xff00ff);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, 0xffffff);
-		  //SDL_SetColorKey(bitmap, SDL_SRCCOLORKEY, (Uint32)(SDL_Color)CColor::Red());
-		  //SDL_SetAlpha(bitmap, 0, 0);
-		  //SDL_SetAlpha(bitmap, 0, 255);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0xff00ff);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, 0xffffff);
+		  //SDL_SetColorKey(bitmap, SDL_TRUE, (Uint32)(SDL_Color)CColor::Red());
+		  //SDL_SetSurfaceAlphaMod(bitmap, 0);
 		  SetSurface( bitmap );
 		  //SetColorKey(CColor::Black());
 

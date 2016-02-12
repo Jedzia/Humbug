@@ -8,7 +8,6 @@ namespace gui {
 
 class HookableManager;
 
-
 /*
 	==CEventHandler==
 	Event dispatching application class
@@ -19,8 +18,8 @@ public:
 	// signal types
 
 	// bool OnInit(int argc,char* argv[])
-	// void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
-	typedef bs::signal<void(SDLKey sym, SDLMod mod, Uint16 unicode)> signal_type_keydown;
+	// void OnKeyDown(SDL_Keycode sym,Uint16 mod);
+	typedef bs::signal<void(SDL_Keycode sym, Uint16 mod)> signal_type_keydown;
 	typedef signal_type_keydown::slot_type slot_type_keydown;
 
     static MSGID MSGID_QuitApp;//no parms
@@ -44,8 +43,8 @@ public:
 	virtual void OnMinimize();
 	virtual void OnRestore();
 //keyboard events
-	virtual void OnKeyDown(SDLKey sym,SDLMod mod,Uint16 unicode);
-	virtual void OnKeyUp(SDLKey sym,SDLMod mod,Uint16 unicode);
+	virtual void OnKeyDown(SDL_Keycode sym, Uint16 mod);
+    virtual void OnKeyUp(SDL_Keycode sym, Uint16 mod);
 //mouse events
 	virtual void OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle);
 	virtual void OnLButtonDown(Uint16 x,Uint16 y);
@@ -69,7 +68,8 @@ public:
 
     virtual void OnExiting();
 
-    bs::connection ConnectOnInit(const slot_type_init& s) {
+    bs::connection ConnectOnInit(const slot_type_init& s) override
+    {
          return m_sigOnInit.connect( s );
     }
 	bs::connection ConnectOnKeyDown(const slot_type_keydown& s) {

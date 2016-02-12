@@ -24,7 +24,8 @@ using namespace gob;
 //#include <build/cmake/include/debug.h>
 namespace humbug {
   PlayerKeys2::PlayerKeys2(float x, float y) :
-      m_position(x, y), m_speed(0), m_lastTick(0){
+      m_position(x, y), m_speed(0), m_lastTick(0), m_curspeed(0)
+  {
       dbgOut(__FUNCTION__);
   }
 

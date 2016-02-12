@@ -61,7 +61,7 @@ namespace gui {
       MapStorage::pointer result = NULL;
       MapStorage::iterator end = m_pvTileMaps.end();
 
-      for (MapStorage::iterator it = m_pvTileMaps.begin(); it < end; it++)
+      for (MapStorage::iterator it = m_pvTileMaps.begin(); it < end; ++it)
       {
           CTileMap& current = (*it);
 
@@ -95,7 +95,7 @@ namespace gui {
       TileStorage::pointer result = NULL;
       TileStorage::iterator end = m_pvTileSets.end();
 
-      for (TileStorage::iterator it = m_pvTileSets.begin(); it < end; it++)
+      for (TileStorage::iterator it = m_pvTileSets.begin(); it < end; ++it)
       {
           CTileSet& current = (*it);
 

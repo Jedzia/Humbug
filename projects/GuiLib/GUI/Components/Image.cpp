@@ -51,5 +51,24 @@ void CImage::Put ( CCanvas* pcnvDest, const CPoint& ptDst ){
     DstRect ( ) -= ptDst;
 }
 
+    void CImage::RenderPut(CCanvas* pcnvDest, const CPoint& ptDst)
+    {
+        DstRect() += ptDst;
+        CCanvas* source = GetCanvas();
+        source->GetTexture();
+        pcnvDest->RenderPutCopy(source, &DstRect(), &SrcRect());
+        DstRect() -= ptDst;
+    }
+
+    void CImage::Scale(float factor)
+    {
+        Scale(factor, factor);
+    }
+
+    void CImage::Scale(float wFactor, float hFactor)
+    {
+        DstRect().W() *= wFactor;
+        DstRect().H() *= hFactor;
+    }
 } // namespace components
 } // namespace gui

@@ -1,9 +1,10 @@
 #include "stdafx.h"
+//
 #include "HookableManager.h"
 #include <stdexcept>
 #include <utility>
 #include "EventHandler.h"
-
+//
 //#include <build/cmake/include/debug.h>
 
 namespace gui {
@@ -15,7 +16,7 @@ public:
 	~HookBinder();
 };
 
-HookableManager::HookableManager(CEventHandler* master)
+HookableManager::HookableManager(CMaster* master)
 : m_pMaster(master), m_pActiveHook(NULL)
 {
          //dbgOut(__FUNCTION__);
@@ -121,7 +122,7 @@ void HookableManager::EnableHookable( const std::string& key )
     {
         m_pActiveHook->Disconnect();
         m_pActiveHook = NULL;
-        m_pMaster->GetMainCanvas()->AddUpdateRect(m_pMaster->GetMainCanvas()->GetDimension());
+        //m_pMaster->GetMainCanvas()->AddUpdateRect(m_pMaster->GetMainCanvas()->GetDimension());
     }
 
     Hookable* hookable = GetHookable(key);
@@ -131,6 +132,17 @@ void HookableManager::EnableHookable( const std::string& key )
 
 void HookableManager::DisableHookable( const std::string& key )
 {
+    if (key.empty())
+    {
+        // empty key means disconnect current active hook
+        if (m_pActiveHook)
+        {
+            m_pActiveHook->Disconnect();
+            m_pActiveHook = NULL;
+        }
+        return;
+    }
+
     Hookable* hookable = GetHookable(key);
     hookable->Disconnect();
     if (hookable == m_pActiveHook)

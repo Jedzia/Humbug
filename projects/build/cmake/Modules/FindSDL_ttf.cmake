@@ -72,7 +72,25 @@ FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE
   ${_DEP_PATH}/VisualC/x64/Release
     PATH_SUFFIXES lib64 lib
 )
-SET(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_RELEASE}"  CACHE STRING "SDL true type font library" FORCE)
+FIND_LIBRARY(SDLTTF_LIBRARY_DEBUG 
+  NAMES SDL_ttf
+  HINTS
+  $ENV{SDLTTFDIR}
+  $ENV{SDLDIR}
+  PATHS
+  ~/Library/Frameworks
+  /Library/Frameworks
+  /usr/local
+  /usr
+  /sw
+  /opt/local
+  /opt/csw
+  /opt
+  ${_DEP_PATH}/VisualC/Debug
+  ${_DEP_PATH}/VisualC/x64/Debug
+    PATH_SUFFIXES lib64 lib
+)
+SET(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_DEBUG}"  CACHE STRING "SDL true type font library" FORCE)
 
 IF(WIN32)
 

@@ -220,19 +220,28 @@ void CApplication::OnIdle(int ticks)
 {
 	//by default, do nothing
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
-    m_sigOnIdle(ticks);
+    RaiseOnIdle(ticks);
 	// std::cout << "---APP After m_sigOnIdle---" << std::endl;
-	m_sigOnDraw();
+
+    //m_pMainCanvas->MainRenderClear();
+
+	RaiseOnDraw();
 	// std::cout << "---APP After m_sigOnDraw---" << std::endl;
 	if (m_pConsole)
 		m_pConsole->Draw();
+
+    components::CRectangle frect(100, 200, 185, 185);
+    //bool result = m_pMainCanvas->RenderFillRect(frect, components::CColor(33, 55, 99));
+    //bool result = m_pMainCanvas->FillRect(frect, components::CColor(133, 55, 99));
+
 	m_pMainCanvas->UpdateRects ( );
+    m_pMainCanvas->MainRenderFinal();
 }
 
 //update loop
 void CApplication::Update()
 {
-    m_sigOnUpdate();
+    RaiseOnUpdate();
     //SDL_Delay( 1 );
 
 }
@@ -299,8 +308,8 @@ int CApplication::Execute(int argc,char* argv[])
 
     {
         // Get SDL Info
-        SdlInfo sdlInfo(SDL_GetVideoSurface());
-        LOGSTREAM << sdlInfo;
+        //SdlInfo sdlInfo(SDL_GetVideoSurface());
+        //LOGSTREAM << sdlInfo;
     }
 
     //The frame rate regulator
@@ -328,7 +337,7 @@ int CApplication::Execute(int argc,char* argv[])
 			if(event.type==SDL_QUIT) break;
 			//event occurred
 			GetApplication()->OnEvent(&event);
-			GetApplication()->m_sigOnEvent(&event);
+			GetApplication()->RaiseOnEvent(&event);
 		}
 		else
 		{
@@ -351,7 +360,9 @@ int CApplication::Execute(int argc,char* argv[])
                 curdelay = framecap  - fps.get_ticks();
                 //delaynumber++;
                 //fprintf(stdout, "Curdelay: '%d', %d \n", curdelay, delaynumber);
+                
                 SDL_Delay( curdelay );
+                
                 /*while (curdelay > 0)
                 {
                     SDL_Delay( capfactor );
@@ -376,7 +387,9 @@ int CApplication::Execute(int argc,char* argv[])
             //FPS.str("");
             //FPS << ShownFrames;
             int delay = m_iShownFrames - m_iFramesCap;
-            fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", m_iShownFrames, loopFrames, curdelay);
+            //fprintf(stdout, "FPS: '%d', Loop: '%d', Delay: '%d'\n", m_iShownFrames, loopFrames, curdelay);
+            LOGSTREAM << "FPS: " << m_iShownFrames << ", Loop: " << loopFrames << ", Delay: '" << curdelay << "'";// << std::endl;
+
             m_iShownFrames = shownFrames;
 
             shownFrames = 0;
@@ -398,22 +411,22 @@ CApplication* CApplication::GetApplication()
 	return(s_pTheApplication);
 }
 
-bs::connection CApplication::ConnectOnIdle( const slot_type_idle& s )
+bs::connection CMaster::ConnectOnIdle(const slot_type_idle& s)
 {
     return m_sigOnIdle.connect( s );
 }
 
-bs::connection CApplication::ConnectOnDraw( const slot_type_event& s )
+bs::connection CMaster::ConnectOnDraw(const slot_type_event& s)
 {
     return m_sigOnDraw.connect( s );
 }
 
-bs::connection CApplication::ConnectOnUpdate( const slot_type_event& s )
+bs::connection CMaster::ConnectOnUpdate(const slot_type_event& s)
 {
     return m_sigOnUpdate.connect( s );
 }
 
-bs::connection CApplication::ConnectOnEvent( const slot_type_sdlevent& s )
+bs::connection CMaster::ConnectOnEvent(const slot_type_sdlevent& s)
 {
 	return m_sigOnEvent.connect( s );
 }

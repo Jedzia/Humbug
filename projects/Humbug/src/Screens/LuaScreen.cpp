@@ -183,12 +183,12 @@ public:
         //m_pArialfont =
         // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
-        SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/LuaScreenBg.png") );
+        SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/LuaScreenBg.png") );
 
-        //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-        //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-        //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-        //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
+        //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
+        //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
+        //SDL_SetSurfaceAlphaMod(tmpfsurf, SDL_SRCALPHA, 0);
+        //SDL_SetSurfaceAlphaMod(m_pMainCanvas->GetSurface(), 128);
         m_pBackground.reset( new CCanvas( tmpfsurf ) );
 
         //CCanvas tmpCanvas( tmpfsurf );
@@ -208,8 +208,8 @@ public:
         CText* text = new CText(m_pArialfont, outstring.str(), m_colText);
 
         //const boost::function<void(CCanvas*, int)> textMo = mtextfloat;
-        //text->AddModifier(boost::ref( mtextfloat ));
-        text->AddModifier( WavyTextFloat(64) );
+        //text->AddAnimator(boost::ref( mtextfloat ));
+        text->AddAnimator( WavyTextFloat(64) );
         m_pScrollText.reset(text);
 
         // ### Sprites ###

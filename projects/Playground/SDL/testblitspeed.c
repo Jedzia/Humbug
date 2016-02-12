@@ -120,7 +120,7 @@ static void output_surface_details(const char *name, SDL_Surface *surface)
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_RESIZABLE);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_NOFRAME);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_HWACCEL);
-        append_sdl_surface_flag(surface, f, sizeof (f), SDL_SRCCOLORKEY);
+        append_sdl_surface_flag(surface, f, sizeof (f), SDL_TRUE);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_RLEACCELOK);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_RLEACCEL);
         append_sdl_surface_flag(surface, f, sizeof (f), SDL_SRCALPHA);
@@ -311,35 +311,8 @@ static int setup_test(int argc, char **argv)
     origdstalphaflags = dstalphaflags;
     srcalpha = src->format->alpha;
     dstalpha = dest->format->alpha;
-    for (i = 1; i < argc; i++)
-    {
-        const char *arg = argv[i];
-
-        if (strcmp(arg, "--srcalpha") == 0)
-            srcalpha = atoi(argv[++i]);
-        else if (strcmp(arg, "--dstalpha") == 0)
-            dstalpha = atoi(argv[++i]);
-        else if (strcmp(arg, "--srcsrcalpha") == 0)
-            srcalphaflags |= SDL_SRCALPHA;
-        else if (strcmp(arg, "--srcnosrcalpha") == 0)
-            srcalphaflags &= ~SDL_SRCALPHA;
-        else if (strcmp(arg, "--srcrleaccel") == 0)
-            srcalphaflags |= SDL_RLEACCEL;
-        else if (strcmp(arg, "--srcnorleaccel") == 0)
-            srcalphaflags &= ~SDL_RLEACCEL;
-        else if (strcmp(arg, "--dstsrcalpha") == 0)
-            dstalphaflags |= SDL_SRCALPHA;
-        else if (strcmp(arg, "--dstnosrcalpha") == 0)
-            dstalphaflags &= ~SDL_SRCALPHA;
-        else if (strcmp(arg, "--dstrleaccel") == 0)
-            dstalphaflags |= SDL_RLEACCEL;
-        else if (strcmp(arg, "--dstnorleaccel") == 0)
-            dstalphaflags &= ~SDL_RLEACCEL;
-    }
-    if ((dstalphaflags != origdstalphaflags) || (dstalpha != dest->format->alpha))
-        SDL_SetAlpha(dest, dstalphaflags, (Uint8) dstalpha);
-    if ((srcalphaflags != origsrcalphaflags) || (srcalpha != src->format->alpha))
-        SDL_SetAlpha(src, srcalphaflags, (Uint8) srcalpha);
+      
+    SDL_SetSurfaceAlphaMod(src, (Uint8)srcalpha);
 
     /* set some sane defaults so we can see if the blit code is broken... */
     SDL_FillRect(dest, NULL, SDL_MapRGB(dest->format, 0, 0, 0));

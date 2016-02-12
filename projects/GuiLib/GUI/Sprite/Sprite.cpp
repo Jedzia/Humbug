@@ -41,7 +41,7 @@ namespace gui
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension){
       // m_pSprImage(sprImage),
-      SDL_Surface* alphasurf = SDL_DisplayFormatAlpha( loader.FL_LOADIMG(filename) );
+      SDL_Surface* alphasurf = ( loader.FL_LOADIMG(filename) );
 
       // free the loaded surface.
       loader.FreeLast();
@@ -87,7 +87,7 @@ namespace gui
 
       //m_pMainCanvas->FillRect(bluerectOld, CColor(0, 0, 0) );
       //CPoint spos( m_cpPos.GetX(), m_cpPos.GetY());
-      //SDL_SetAlpha(m_pSprImage->GetCanvas()->GetSurface(), SDL_SRCALPHA /*| SDL_RLEACCEL*/,
+      //SDL_SetSurfaceAlphaMod(m_pSprImage->GetCanvas()->GetSurface() /*| SDL_RLEACCEL*/,
       // 128);
       m_pSprImage->Put(m_pMainCanvas, m_cpPos);
       m_pMainCanvas->Unlock();
@@ -125,16 +125,22 @@ namespace gui
    */
   void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
       SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
-      SDL_SetColorKey(alphasurf, SDL_SRCCOLORKEY, key);
-      SDL_SetAlpha(alphasurf, 0, alpha);
+      SDL_SetColorKey(alphasurf, SDL_TRUE, key);
+      SDL_SetSurfaceAlphaMod(alphasurf, alpha);
   }
 
-  /** $(fclass), operator <<:
-   *  Detailed description.
-   *  @param o TODO
-   * @param r TODO
-   * @return TODO
-   */
+    void CSprite::Render()
+    {
+        m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
+        m_cpOldPos = m_cpPos;
+    }
+
+    /** $(fclass), operator <<:
+     *  Detailed description.
+     *  @param o TODO
+     * @param r TODO
+     * @return TODO
+     */
   std::ostream& operator<<(std::ostream& o, const CSprite& r) {
       return o << "CSprite[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                    << ", W=" << r.GetW() << ", H=" << r.GetH()

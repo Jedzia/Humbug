@@ -54,7 +54,7 @@ namespace humbug {
 
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
       m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
-      SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") );
+      SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TileScreenBg.png") );
       m_pBackground.reset( new CCanvas( tmpfsurf ) );
 
       m_Loader.FreeLast();
@@ -62,18 +62,16 @@ namespace humbug {
 
 	  SDL_Surface* loadsurf;
 	  SDL_Surface* tmpsurf;
-	  tmpsurf = SDL_DisplayFormatAlpha( loadsurf = m_Loader.FL_LOADIMG("Moo.png") );
+	  tmpsurf = ( loadsurf = m_Loader.FL_LOADIMG("Moo.png") );
 
 	  // delete loadsurf;
 	  CCanvas tmpCanvas(tmpsurf);
 	  CCanvas* testCanvas = CCanvas::CreateRGBCompatible(NULL, 1024 * 5, 768 - 320);
 	  //tmpCanvas->SetColorKey(CColor::Black());
-	  //SDL_SetAlpha(testCanvas->GetSurface(), SDL_SRCALPHA, 22);
 
 	  testCanvas->Blit( tmpCanvas.GetDimension(), tmpCanvas, tmpCanvas.GetDimension() );
 	  //m_pBackground = testCanvas;
 	  m_pBackground.reset( testCanvas );
-      //SDL_SetAlpha(m_pBackground->GetSurface(), SDL_SRCALPHA, 22);
 
 	  //delete tmpsurf;
 	  //SDL_FreeSurface( loadsurf );
@@ -209,7 +207,7 @@ namespace humbug {
       {
           //key press
           //OnKeyDown(pEvent->key.keysym.sym, pEvent->key.keysym.mod, pEvent->key.keysym.unicode);
-		  SDLKey sym = pEvent->key.keysym.sym;
+          SDL_Keycode sym = pEvent->key.keysym.sym;
 		  if( sym == SDLK_a )   {
 			  // toggle console
 			  m_inScreenDelta++;

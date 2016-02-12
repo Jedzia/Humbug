@@ -18,7 +18,7 @@ if "%PLATFORM%" == "X64" (
 )
 
 REM set QTDIR=E:\Devel\CPP\Libs\QT4
-SET SDLDIR=%~dp0%builddir%\DEPS\SDL-%SDLVER%
+SET SDLDIR=%~dp0%builddir%\DEPS\SDL2-%SDLVER%
 SET LUA_DIR=E:\Devel\CPP\Libs\Lua\5.2.1\vc12\x64\static
 REM SET BOOST_ROOTDIR=E:\Devel\CPP\Libs\boost\boost-1.55.0
 

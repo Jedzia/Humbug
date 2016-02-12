@@ -107,7 +107,7 @@ struct Hookable::HookableImpl {
 }*/
 
 Hookable::Hookable(bool hook)
-: pimpl_(new Hookable::HookableImpl(this)), m_bIsInitialized(false), m_pMaster(NULL), m_pController(NULL)
+    : pimpl_(new Hookable::HookableImpl(this)), m_pMaster(NULL), m_pController(NULL), m_bIsInitialized(false), m_iTicks(0)
 {
     dbgOut(__FUNCTION__ << " Hookable child ctor " << this);
     //LOGSTREAM << "Hookable child ctor" << std::endl;
@@ -143,7 +143,12 @@ GroupId Hookable::GetGroupID()
     return grpID;
 }
 
-void Hookable::Init(CEventHandler* master, Hookable* controller)
+    int Hookable::GetTicks() const
+    {
+        return m_iTicks;
+    }
+
+    void Hookable::Init(CMaster* master, Hookable* controller)
 {
 
     if (m_bIsInitialized)
@@ -173,14 +178,21 @@ void Hookable::Init(CEventHandler* master, Hookable* controller)
     m_bIsInitialized = true;
 }
 
-void Hookable::Connect(/*Hookable* controller*/)
+    void Hookable::HandleIdle(int ticks)
+    {
+        m_iTicks = ticks;
+        OnIdle(ticks);
+    }
+
+    void Hookable::Connect(/*Hookable* controller*/)
 {
     //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*controller), _1, _2));
     //pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*controller), _1));
 
     // do not use the main Init event. the manager has to pre init them
     //pimpl_->m_conInit = m_pMaster->ConnectOnInit(boost::bind(&Hookable::OnInit, boost::ref(*m_pController), _1, _2));
-    pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*m_pController), _1));
+    //pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::OnIdle, boost::ref(*m_pController), _1));
+    pimpl_->m_conIdle = m_pMaster->ConnectOnIdle(boost::bind(&Hookable::HandleIdle, boost::ref(*m_pController), _1));
     OnConnect();
 }
 

@@ -18,6 +18,7 @@
 #define HUMBUG_LEVELS_TESTLEVEL_H
 #include <GUI/Components/Screen.h>
 #include <boost/smart_ptr/scoped_ptr.hpp>
+#include "HumbugShared/GameObjects/Player.h"
 
 struct _TTF_Font;
 typedef struct _TTF_Font TTF_Font;
@@ -26,6 +27,7 @@ namespace gui {
   namespace components {
     class CCanvas;
     class CSeamlessImage;
+    class CImage;
     class CText;
     class CTextScroller;
   }
@@ -37,6 +39,9 @@ namespace gui {
 class FileLoader;
 
 namespace humbug {
+    class DebugOverlay;
+    class PlayerKeys3;
+
   namespace levels {
     class TestLevel : public gui::components::Screen {
 public:
@@ -44,14 +49,14 @@ public:
         TestLevel(FileLoader& loader, gui::components::CCanvas* background);
         ~TestLevel();
 
-        virtual bool OnInit( int argc, char* argv[] );
-        virtual void OnIdle(int ticks);
+        bool OnInit( int argc, char* argv[] ) override;
+        void OnIdle(int ticks) override;
+        void OnDraw() override;
+        void OnUpdate() override;
+        void OnEvent(SDL_Event* pEvent) override;
 
-        virtual void OnDraw();
 
-        virtual void OnUpdate();
-
-private:
+    private:
 
         struct TestLevelImpl;
         boost::scoped_ptr<TestLevelImpl> pimpl_;
@@ -60,11 +65,18 @@ private:
         Uint8 x;
         gui::components::CColor mcol;
         TTF_Font* m_pArialfont;
-        boost::shared_ptr<gui::components::CCanvas> m_pBackground;
+        boost::scoped_ptr<DebugOverlay> m_pOverlay;
+        boost::scoped_ptr<gui::components::CCanvas> m_pBackground;
+        boost::scoped_ptr<gui::components::CCanvas> m_pBlue;
+        boost::scoped_ptr<gui::components::CImage> m_pBanding1;
+        boost::scoped_ptr<gui::components::CImage> m_pBanding2;
         boost::scoped_ptr<gui::components::CText> m_pScrollText;
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
-        gui::components::CSeamlessImage* m_pSprite;
+        gui::components::CSeamlessImage* m_pSeamlessImage;
+        boost::scoped_ptr<PlayerKeys3> m_pKeyHandler;
+        gob::Player m_player;
+
     };
   }
 }

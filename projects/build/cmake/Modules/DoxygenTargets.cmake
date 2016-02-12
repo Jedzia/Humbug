@@ -309,4 +309,9 @@ function(add_doxygen _doxyfile)
 		endif()
 
 	endif()
+	
+	if(TARGET ${DOC_TARGET})
+		SET_PROPERTY(TARGET ${DOC_TARGET} PROPERTY FOLDER "Documentation")
+	endif(TARGET ${DOC_TARGET})
+
 endfunction()

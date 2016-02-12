@@ -76,5 +76,8 @@
 //#include <HumbugShared/GB.h>
 //#include <HumbugShared/Project/ProcessProject.h>
 
+// wide char stuff
+typedef wchar_t hchar_t;
+typedef boost::program_options::wcommand_line_parser cmd_line_parser;
 //#include "ProgOptions.h"
 #endif //STDAFX_CDCE86428F8F4560BFEBCC82B4CC7C51_H

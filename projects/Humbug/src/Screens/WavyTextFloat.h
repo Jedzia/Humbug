@@ -24,7 +24,7 @@ namespace gui {
   namespace components {
     class CCanvas;
     class CText;
-    struct CTextModifierData;
+    struct TextAnimatorData;
   }
 }
 
@@ -42,7 +42,7 @@ public:
         ~WavyTextFloat();
 
         void operator() (const gui::components::CCanvas* textcanvas, const gui::components::CText* text,
-                gui::components::CTextModifierData& mdata);
+                gui::components::TextAnimatorData& mdata);
     };
   }
 }

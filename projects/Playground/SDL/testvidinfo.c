@@ -12,7 +12,7 @@
 #define NUM_UPDATES	500
 
 #define FLAG_MASK	(SDL_HWSURFACE | SDL_FULLSCREEN | SDL_DOUBLEBUF | \
-                         SDL_SRCCOLORKEY | SDL_SRCALPHA | SDL_RLEACCEL  | \
+                         SDL_TRUE | SDL_SRCALPHA | SDL_RLEACCEL  | \
                          SDL_RLEACCELOK)
 
 void PrintFlags(Uint32 flags)
@@ -29,8 +29,8 @@ void PrintFlags(Uint32 flags)
 	if ( flags & SDL_DOUBLEBUF ) {
 		printf(" | SDL_DOUBLEBUF");
 	}
-	if ( flags & SDL_SRCCOLORKEY ) {
-		printf(" | SDL_SRCCOLORKEY");
+	if ( flags & SDL_TRUE ) {
+		printf(" | SDL_TRUE");
 	}
 	if ( flags & SDL_SRCALPHA ) {
 		printf(" | SDL_SRCALPHA");
@@ -171,7 +171,7 @@ int RunModeTests(SDL_Surface *screen)
 	}
 	printf("Running freshly loaded cc blit test: %dx%d at %d bpp, flags: ",
 		bmpcc->w, bmpcc->h, bmpcc->format->BitsPerPixel);
-        SDL_SetColorKey(bmpcc, SDL_SRCCOLORKEY | SDL_RLEACCEL, *(Uint8 *)bmpcc->pixels);
+        SDL_SetColorKey(bmpcc, SDL_TRUE | SDL_RLEACCEL, *(Uint8 *)bmpcc->pixels);
 
 	PrintFlags(bmpcc->flags);
 	printf("\n");
@@ -261,7 +261,7 @@ int RunModeTests(SDL_Surface *screen)
         {
 		SDL_FreeSurface(bmp);
                 bmp = SDL_LoadBMP("sample.bmp");
-		SDL_SetAlpha(bmp, SDL_SRCALPHA, 85); /* 85 - 33% alpha */
+                SDL_SetSurfaceAlphaMod(bmp, 85); /* 85 - 33% alpha */
 		tmp = bmp;
 		bmp = SDL_DisplayFormat(bmp);
 		SDL_FreeSurface(tmp);
@@ -298,8 +298,8 @@ int RunModeTests(SDL_Surface *screen)
         {
 		SDL_FreeSurface(bmpcc);
                 bmpcc = SDL_LoadBMP("sample.bmp");
-		SDL_SetAlpha(bmpcc, SDL_SRCALPHA, 85); /* 85 - 33% alpha */
-                SDL_SetColorKey(bmpcc, SDL_SRCCOLORKEY | SDL_RLEACCEL, *(Uint8 *)bmpcc->pixels);
+                SDL_SetSurfaceAlphaMod(bmpcc, 85); /* 85 - 33% alpha */
+                SDL_SetColorKey(bmpcc, SDL_TRUE | SDL_RLEACCEL, *(Uint8 *)bmpcc->pixels);
 		tmp = bmpcc;
 		bmpcc = SDL_DisplayFormat(bmpcc);
 		SDL_FreeSurface(tmp);

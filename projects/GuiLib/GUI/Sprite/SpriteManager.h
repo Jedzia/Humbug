@@ -38,8 +38,8 @@ public:
       void OnIdle(int ticks);
 
       friend std::ostream& operator<<(std::ostream& o, const CSpriteManager& r);
-
-private:
+      void Render();
+  private:
 
       typedef boost::ptr_vector<CSpriteHook> SprStorage;
       SprStorage m_pvSprites;

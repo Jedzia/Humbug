@@ -101,7 +101,7 @@ namespace humbug {
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
       m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
       mcol = CColor::White();
-      SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
+      SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
 
       CControl* mainControl = CControl::GetMainControl();
       m_pHud = new Hud(m_Loader, mainControl, new HudBackground(m_Loader, "Hud/footer.png"), 0);
@@ -111,7 +111,7 @@ namespace humbug {
 
       {
           // Todo: use SpriteManager of this instance
-          SDL_Surface* tmpfsurf = SDL_DisplayFormatAlpha( m_Loader.FL_LOADIMG("Icons/red.png") );
+          SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Icons/red.png") );
           CCanvas* tmpCanvas = new CCanvas( tmpfsurf );
           m_Loader.FreeLast();
           m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
@@ -121,10 +121,10 @@ namespace humbug {
                   CRectangle(0, 0, 32, 32), CPoint(32, 0) );
       }
 
-      //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
-      //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
-      //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
+      //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
+      //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
+      //SDL_SetSurfaceAlphaMod(tmpfsurf, 0);
+      //SDL_SetSurfaceAlphaMod(m_pMainCanvas->GetSurface(), 128);
       m_pBackground.reset( new CCanvas( tmpfsurf ) );
 
       //CCanvas tmpCanvas( tmpfsurf );
