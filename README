@@ -1,28 +1,28 @@
 This is Humbug
-2011 (c) Jedzia
+2016 (c) Jedzia
 -------------------
 
-OLD SDL1 Development Version, DISCONTINUED!
+Current SDL2 Development Version
 
 
 Build-Dependencies:
 =======================
 
-- SDL 1.2.15	
+- SDL2 2.0.4	
 http://www.libsdl.org/ and http://www.libsdl.org/libraries.php
-Windows: Start the build environment (devel2008.bat or devel2010.bat) and call ../BuildDependencies.bat to
+Windows: Start the build environment (devel2013x64.bat) and call ../BuildDependencies_2013 to
 invoke the automatic build of the necessary SDL Libraries.
 Humbug is using these SDL libraries:
-	SDL-1.2.15
-	SDL_gfx-2.0.23
-	SDL_image-1.2.12
-	SDL_mixer-1.2.12
-	SDL_net-1.2.8
-	SDL_ttf-2.0.11
+	SDL2-2.0.4
+	SDL2_gfx-1.0.1
+	SDL2_image-2.0.0
+	SDL2_mixer-2.0.0
+	SDL2_net-2.0.0
+	SDL2_ttf-2.0.12
 	oglconsole-0.2
 
-- ImageMagick-6.7.8-2-Q16-windows-dll.exe		
-http://www.imagemagick.org/download/binaries/ImageMagick-6.7.8-2-Q16-windows-dll.exe
+- ImageMagick 7.0.0-0-Q16-HDRI
+http://transloadit.imagemagick.org/download/binaries/ImageMagick-7.0.0-0-Q16-HDRI-x64-static.exe
 For the creation of images, etc.
 
 
