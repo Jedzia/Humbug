@@ -1,4 +1,40 @@
 
+-X-X-X-X- Fr, 12 Feb 2016 21:59:20 -----------------------------------------------------------
+Todo: Artwork should run before all MakeVFS. So MakeVFS should be dependant on it.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 16:32:43 -----------------------------------------------------------
+msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:"External Library\LuaBind"
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 15:36:34 -----------------------------------------------------------
+Boost build:
+
+bootstrap
+b2 headers
+
+MSVC12
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-git_latest
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-filesystem stage
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 15:34:07 -----------------------------------------------------------
+http://kalyanchakravarthy.net/blog/git-discard-submodule-changes.html
+
+E:\Devel\CPP\Libs\boost\boost-git_latest>
+git reset --hard
+git submodule update --init
+
+or
+https://gist.github.com/codeswimmer/1377447
+git submodule foreach git submodule init && git submodule update --recursive
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Do, 28 Jan 2016 10:05:28 -----------------------------------------------------------
 Todo:
 Statemachine
