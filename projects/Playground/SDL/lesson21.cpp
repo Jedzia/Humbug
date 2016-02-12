@@ -107,10 +107,11 @@ SDL_Surface *load_image( std::string filename )
     if( loadedImage != NULL )
     {
         //Create an optimized surface
-        optimizedImage = SDL_DisplayFormat( loadedImage );
+        //optimizedImage = SDL_DisplayFormat(loadedImage);
+        optimizedImage = loadedImage;
 
         //Free the old surface
-        SDL_FreeSurface( loadedImage );
+        //SDL_FreeSurface( loadedImage );
 
         //If the surface was optimized
         if( optimizedImage != NULL )
@@ -137,6 +138,9 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
     SDL_BlitSurface( source, clip, destination, &offset );
 }
 
+SDL_Window* window;
+SDL_Renderer* renderer;
+
 bool init()
 {
     //Initialize all SDL subsystems
@@ -145,17 +149,36 @@ bool init()
         return false;
     }
 
-    //Set up the screen
-    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+    // Create the window where we will draw.
+    window = SDL_CreateWindow("Move the Dot",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        SCREEN_WIDTH, SCREEN_HEIGHT,
+        0);
+    // We must call SDL_CreateRenderer in order for draw calls to affect this window.
+    renderer = SDL_CreateRenderer(window, -1, 0);
+    
+    /* SDL interprets each pixel as a 32-bit number, so our masks must depend
+    on the endianness (byte order) of the machine */
+    Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
+    screen = SDL_CreateRGBSurface(0, 640, 480, 32, rmask, gmask, bmask, amask);
 
     //If there was an error in setting up the screen
     if( screen == NULL )
     {
         return false;
     }
-
-    //Set the window caption
-    SDL_WM_SetCaption( "Move the Dot", NULL );
 
     //If everything initialized fine
     return true;
@@ -192,6 +215,8 @@ void clean_up()
     //Free the surfaces
     SDL_FreeSurface( dot );
     SDL_FreeSurface( background );
+
+    SDL_DestroyRenderer(renderer);
 
     //Quit SDL
     SDL_Quit();
@@ -381,7 +406,7 @@ bool Timer::is_paused()
     return paused;
 }
 
-int main( int argc, char* args[] )
+int wmain( int argc, char* args[] )
 {
     //Quit flag
     bool quit = false;
@@ -395,12 +420,14 @@ int main( int argc, char* args[] )
     //Initialize
     if( init() == false )
     {
+        fprintf(stdout, "\nInit failed!\n");
         return 1;
     }
 
     //Load the files
     if( load_files() == false )
     {
+        fprintf(stdout, "\nCannot load Images!\n");
         return 1;
     }
 
@@ -437,10 +464,17 @@ int main( int argc, char* args[] )
         myDot.show();
 
         //Update the screen
-        if( SDL_Flip( screen ) == -1 )
+        /*if( SDL_Flip( screen ) == -1 )
         {
             return 1;
-        }
+        }*/
+
+        SDL_Texture *texture;
+        texture = SDL_CreateTextureFromSurface(renderer, screen);
+        SDL_RenderCopy(renderer, texture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+        SDL_DestroyTexture(texture);
+
 
         //Cap the frame rate
         if( fps.get_ticks() < 1000 / FRAMES_PER_SECOND )

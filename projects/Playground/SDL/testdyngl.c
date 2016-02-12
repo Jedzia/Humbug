@@ -94,10 +94,11 @@ void init_glfuncs(glfuncs* f)
 
 #define NB_PIXELS 1000
 
-int main(int argc,char *argv[])
+int wmain(int argc,char *argv[])
 {
 	glfuncs f;
 	int i;
+    SDL_Window* window;
 	SDL_Event event;
 	int done=0;
 	GLfloat pixels[NB_PIXELS*3];
@@ -125,14 +126,22 @@ int main(int argc,char *argv[])
 		quit(1);
 	}
 
-	if (SDL_SetVideoMode(640,480,0,SDL_OPENGL)==NULL)
+	/*if (SDL_SetVideoMode(640,480,0,SDL_OPENGL)==NULL)
 	{
 		printf("Unable to open video mode : %s\n",SDL_GetError());
 		quit(1);
 	}
 
-	/* Set the window manager title bar */
-	SDL_WM_SetCaption( "SDL Dynamic OpenGL Loading Test", "testdyngl" );
+	// Set the window manager title bar
+	SDL_WM_SetCaption( "SDL Dynamic OpenGL Loading Test", "testdyngl" );*/
+
+    // Create the window where we will draw.
+    window = SDL_CreateWindow("testdyngl",
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        640, 480,
+        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    // Create an OpenGL context associated with the window.
+    SDL_GLContext glcontext = SDL_GL_CreateContext(window);
 
 	init_glfuncs(&f);
 
@@ -182,11 +191,12 @@ int main(int argc,char *argv[])
 			f.glVertex3f(pixels[3*i],pixels[3*i+1],pixels[3*i+2]);
 		}
 		f.glEnd();
-		SDL_GL_SwapBuffers();
+		//SDL_GL_SwapBuffers();
+        SDL_GL_SwapWindow(window);
 
 		while(SDL_PollEvent(&event))
 		{
-			if(event.type & SDL_KEYDOWN)
+            if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN)
 				done=1;
 		}
 
@@ -194,7 +204,8 @@ int main(int argc,char *argv[])
 	}
 	while(!done);
 	
-	SDL_Quit();
+    SDL_GL_DeleteContext(glcontext);
+    SDL_Quit();
 	return 0;
 }
 

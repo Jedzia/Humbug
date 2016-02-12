@@ -594,7 +594,7 @@ public:
 
 //----------------------------------------------------------
 
-int main(int argc, char **argv)
+int wmain(int argc, char **argv)
 {
   // Declare all the local variables.
 
@@ -604,9 +604,11 @@ int main(int argc, char **argv)
   Uint32 start = 0;
   Uint32 frames = 0;
 
+  SDL_Texture *texture;
   SDL_Surface *screen = NULL;
   SDL_Event event;
   SDL_PixelFormat *pf = NULL;
+  SDL_Rect r;
   Uint32 black;
   Uint32 red;
   Uint32 green;
@@ -654,14 +656,53 @@ int main(int argc, char **argv)
   // to get hardware buffers at all. And, it may have to
   // be full screen to get double buffering.
 
-  screen = SDL_SetVideoMode(screenWidth, 
+  /*screen = SDL_SetVideoMode(screenWidth, 
                             screenHeight, 
                             0, 
                             SDL_ANYFORMAT |
                             SDL_FULLSCREEN |
                             SDL_HWSURFACE |
                             SDL_DOUBLEBUF
-                            );
+                            );*/
+                            
+  SDL_Window* window;
+  SDL_Renderer* renderer;
+
+  // Initialize SDL.
+  if (SDL_Init(SDL_INIT_VIDEO) < 0)
+      return 1;
+
+  // Create the window where we will draw.
+  window = SDL_CreateWindow(name,
+      SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+      screenWidth, screenHeight,
+      0);
+
+  // We must call SDL_CreateRenderer in order for draw calls to affect this window.
+  renderer = SDL_CreateRenderer(window, -1, 0);
+  //texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, screenWidth, screenHeight);
+
+  Uint32 rmask, gmask, bmask, amask;
+
+  /* SDL interprets each pixel as a 32-bit number, so our masks must depend
+  on the endianness (byte order) of the machine */
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  rmask = 0xff000000;
+  gmask = 0x00ff0000;
+  bmask = 0x0000ff00;
+  amask = 0x000000ff;
+#else
+  rmask = 0x000000ff;
+  gmask = 0x0000ff00;
+  bmask = 0x00ff0000;
+  amask = 0xff000000;
+#endif
+
+  screen = SDL_CreateRGBSurface(0, 640, 480, 32, rmask, gmask, bmask, amask);
+
+  r.w = 100;
+  r.h = 50;
+
 
   if (NULL == screen)
   {
@@ -673,11 +714,11 @@ int main(int argc, char **argv)
   // asked for a hardware buffer. Check the flags to make
   // sure you got what you asked for.
 
-  if (0 == screen->flags & SDL_HWSURFACE)
+  /*if (0 == screen->flags & SDL_HWSURFACE)
   {
     printf("Can't get hardware surface\n");
     exit(1);
-  }
+  }*/
 
   // Grab the pixel format for the screen. SDL_MapRGB()
   // needs the pixel format to create pixels that are laid
@@ -698,12 +739,6 @@ int main(int argc, char **argv)
   red = SDL_MapRGB(pf, 0xff, 0x00, 0x00);
   green = SDL_MapRGB(pf, 0x00, 0xff, 0x00);
   blue = SDL_MapRGB(pf, 0x00, 0x00, 0xff);
-
-  // Set the window caption and the icon caption for the
-  // program. In this case I'm just setting it to whatever
-  // the name of the program happens to be.
-
-  SDL_WM_SetCaption(name, name);
 
   // Create the three animating lines. It is amazing to
   // see the different kinds of behavior you can get from
@@ -839,7 +874,24 @@ int main(int argc, char **argv)
     // buffers SDL_Flip() will "usually" return
     // immediately.
 
-    SDL_Flip(screen);
+    //SDL_Flip(screen);
+
+    r.x = rand() % 500;
+    r.y = rand() % 500;
+
+    texture = SDL_CreateTextureFromSurface(renderer, screen);
+    
+    //SDL_SetRenderTarget(renderer, texture);
+    //SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+    //SDL_RenderClear(renderer);
+    //SDL_RenderDrawRect(renderer, &r);
+    //SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0x00);
+    //SDL_RenderFillRect(renderer, &r);
+    //SDL_SetRenderTarget(renderer, NULL);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    SDL_DestroyTexture(texture);
 
     frames++;
   }
