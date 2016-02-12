@@ -169,6 +169,8 @@ std::pair<void*, int> cast_graph::impl::cast(
     q.push(queue_entry(p, src, 0));
 
     boost::dynamic_bitset<> visited(m_vertices.size());
+    // see https://github.com/Wohlhabend-Networks/luabind-deboostified/blob/master/src/inheritance.cpp#L139
+    //std::vector<bool> visited(m_vertices.size(),false);
 
     while (!q.empty())
     {

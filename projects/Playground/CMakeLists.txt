@@ -276,8 +276,8 @@ endif()
 	ENDIF(${_target_name} STREQUAL "stdafx")
 ENDFOREACH()
 
-Copy_File_To_Target(SDL_testsprite "${PROJECT_SOURCE_DIR}/SDL/icon.bmp")
-Copy_File_To_Target(SDL_testblitspeed "${PROJECT_SOURCE_DIR}/SDL/sample.bmp")
+#Copy_File_To_Target(SDL_testsprite "${PROJECT_SOURCE_DIR}/SDL/icon.bmp")
+#Copy_File_To_Target(SDL_testblitspeed "${PROJECT_SOURCE_DIR}/SDL/sample.bmp")
 
 TARGET_LINK_LIBRARIES(SDL_lesson21 ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY})
 Copy_File_To_Target(SDL_lesson21 "${PROJECT_SOURCE_DIR}/SDL/bg.png")

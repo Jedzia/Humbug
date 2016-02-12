@@ -21,6 +21,7 @@
 #include "SDL_ttf.h"
 #include "Timing.h"
 #include "TextAnimator.h"
+//#include "TextAnimatorImpl.h"
 
 namespace gui {
 class Hookable;

@@ -23,6 +23,8 @@
 #ifndef LUABIND_HAS_GET_POINTER_051022_HPP
 # define LUABIND_HAS_GET_POINTER_051022_HPP
 
+//# include <boost/type_traits.hpp>
+# include <boost/type_traits/function_traits.hpp>
 # include <boost/type_traits/add_reference.hpp>
 
 # ifndef BOOST_NO_ARGUMENT_DEPENDENT_LOOKUP

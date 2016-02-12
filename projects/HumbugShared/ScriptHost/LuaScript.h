@@ -474,7 +474,8 @@ private:
           m_scriptText(scriptText),
           data1(666), data2(777){
           std::cout << "LuaScript ctor Callee: " << typeid(Callee).name() << std::endl;
-          pushglobal( boost::ref( this ), "Host");
+          //pushglobal(boost::ref(this), "Host");
+          pushglobal(this, "Host");
       }
       lua_State* m_L;
       std::string m_scriptText;

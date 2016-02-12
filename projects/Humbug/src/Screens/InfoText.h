@@ -20,6 +20,16 @@
 #include <boost/foreach.hpp>
 #include <GuiLib/GUI/Components/TextAnimatorImpl.h>
 
+inline void TestArrayFoo() {
+    std::array<int, 9> marr;
+    marr[0] = 123456;
+
+    boost::array<int, 4> a = { { 1, 2, 3 } };
+    boost::array<int, 4> b = { 1, 2, 3 }; 
+}
+
+
+
 namespace humbug {
 /** @class InfoText:
  *  Detailed description.
@@ -141,6 +151,7 @@ public:
        }*/
 };
 
+// Todo: move to #include "TextAnimator.h" and apply this to gui::components::CText
 template<class T1, class T2, class T2data>
 class TextModifierWorker
 {
