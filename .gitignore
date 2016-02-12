@@ -17,3 +17,6 @@
 /build2008
 /tmp
 /projects/GuiLib/gmtl
+/projects/build/scripts/ListMSBuildTargets.pdb
+/projects/build/scripts/ListMSBuildTargets.vshost.exe
+/projects/build/scripts/ListMSBuildTargets.vshost.exe.config
