@@ -3,9 +3,12 @@
 # http://academic.cleardefinition.com/
 # Iowa State University HCI Graduate Program/VRAC
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.3)
 set(CMAKE_LEGACY_CYGWIN_WIN32 0) # Remove when CMake >= 2.8.4 is required
 project(LuaBind)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+include(CheckCXXCompilerFlag)
 
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "9")
@@ -42,15 +45,19 @@ if(NOT LUA_FOUND AND NOT LUA51_FOUND AND NOT LUA52_FOUND)
     set(LUA_INCLUDE_DIRS "${LUA_INCLUDE_DIR}")
 endif()
 
-if(LUABIND_USE_CXX11)
-# C++11-related searches
-find_package(CXXFeatures)
-
-set(LUABIND_CXX11_DEFAULT OFF)
-if(CXX11_COMPILER_FLAGS OR MSVC_VERSION GREATER 1699) # 1700 = VS 11 (2012)
-    set(LUABIND_CXX11_DEFAULT ON)
+if(NOT MSVC)
+    check_cxx_compiler_flag(-std=c++11 LUABIND_HAS_CXX11)
+    if (LUABIND_HAS_CXX11)
+        set (LUABIND_CXX11_COMPILER_FLAGS "-std=c++11")
+    else()
+        message("Compiler does not support -std=c++11 flag, C++11 disabled.")
+    endif()
+elseif(MSVC_VERSION GREATER 1699) # 1700 = VS 11 (2012)
+    set (LUABIND_HAS_CXX11 ON)
+else()
+    set (LUABIND_HAS_CXX11 OFF)
+    message("MSVC < 11 (2012) detected, C++11 disabled.")
 endif()
-endif(LUABIND_USE_CXX11)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     # We are the top-level project
@@ -62,15 +69,25 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     option(LUABIND_DYNAMIC_LINK "Build luabind as a shared library?" OFF)
     option(LUABIND_NOT_THREADSAFE "Permit the use of static variables, thus making Luabind usable only from one of your system threads." OFF)
     option(LUABIND_ENABLE_WARNINGS "Enable extra warnings during the build of the library and tests" ON)
-    option(LUABIND_USE_CXX11 "Build Luabind using C++11 features?" ${LUABIND_CXX11_DEFAULT})
+    if (LUABIND_HAS_CXX11)
+        option(LUABIND_USE_CXX11 "Build Luabind using C++11 features?" ON)
+    else()
+        set(LUABIND_USE_CXX11 OFF)
+    endif()
 
     if(Boost_VERSION LESS 104700)
         set(LUABIND_USE_NOEXCEPT_DEF OFF)
-        if (LUABIND_CXX11_DEFAULT AND NOT MSVC)
+        # 1900 = VS 14 (2015)
+        if (LUABIND_CXX11_DEFAULT AND NOT MSVC OR MSVC_VERSION GREATER 1899)
             set(LUABIND_USE_NOEXCEPT_DEF ON)
         endif()
         option(LUABIND_USE_NOEXCEPT "If your compiler is C++11 compliant, but you're using old Boost, you need to set this." ${LUABIND_USE_NOEXCEPT_DEF})
         unset(LUABIND_USE_NOEXCEPT_DEF)
+    endif()
+
+    if(LUABIND_USE_CXX11 AND NOT LUABIND_HAS_CXX11)
+        # The compiler supports no C++11
+        set(LUABIND_USE_CXX11 OFF CACHE BOOL "Build Luabind using C++11 features?" FORCE)
     endif()
 
     if(LUABIND_USE_CXX11)
@@ -96,12 +113,11 @@ configure_file(build_information.hpp.cmake_in "${CMAKE_CURRENT_BINARY_DIR}/luabi
 # Set up the build
 set(BUILD_SHARED_LIBS ${LUABIND_DYNAMIC_LINK})
 
-if(LUABIND_USE_CXX11 AND CXX11_COMPILER_FLAGS)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX11_COMPILER_FLAGS}")
+if(LUABIND_USE_CXX11 AND LUABIND_CXX11_COMPILER_FLAGS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${LUABIND_CXX11_COMPILER_FLAGS}")
 endif()
 
 # Test and enable warning flags if desired, as well as other compiler flag
-include(CheckCXXCompilerFlag)
 macro(_luabind_add_flag _flag _var)
     check_cxx_compiler_flag(${_flag} ${_var})
     if(${_var})
@@ -119,6 +135,21 @@ if(MSVC)
         # Disable incorrect warning C4709
         # ("comma operator within array index expression")
         _luabind_add_flag(/wd4709 SUPPORTS_WD4709_FLAG)
+
+        IF (MSVC_VERSION GREATER 1899) # 1900 = MSVC 14 (2015)
+            # Disable overly pendantic warning C4459 "declaration of 'var' hides
+            # global declaration" which is issued a lot for 'result' which is
+            # globally declared for policies.  See also
+            # https://connect.microsoft.com/VisualStudio/feedback/details/1355600/.
+            _luabind_add_flag(/wd4459 SUPPORTS_WD4459_FLAG)
+
+            # Disable warning C4913 "user defined binary operator ',' exists but
+            # no overload could convert all operands, default built-in binary
+            # operator ',' used" which is triggered even when no comma is
+            # involved at all, refering to the 'T const& x,
+            # operator_void_return' overload in luabind::detail.
+            _luabind_add_flag(/wd4913 SUPPORTS_WD4913_FLAG)
+        endif()
     endif()
 else()
 
@@ -131,6 +162,7 @@ else()
             Wall
             Wextra
             Wno-deprecated-declarations # auto_ptr is OK for now
+            Wno-unused-macros
             Wlogical-op
             Wmissing-declarations
             Wsign-conversion
@@ -155,7 +187,7 @@ else()
             list(APPEND possible_flags Wnoexcept)
         endif()
 
-        if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
             list(APPEND possible_flags
                 Weverything
                 Wno-shadow
@@ -175,7 +207,7 @@ else()
                     Wno-c++11-long-long)
             endif()
 
-        elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" AND NOT LUABIND_USE_CXX11)
+        elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT LUABIND_USE_CXX11)
             list(APPEND possible_flags Wno-long-long)
         endif()
 
@@ -193,7 +225,9 @@ set( LUABIND_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR
 
 include_directories(${Boost_INCLUDE_DIRS}
     "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_BINARY_DIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}")
+include_directories(AFTER
+    ${Boost_INCLUDE_DIRS}
     ${LUA_INCLUDE_DIRS})
 
 add_subdirectory(src)
@@ -204,9 +238,8 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     if(BUILD_TESTING)
         add_subdirectory(test)
     endif()
-#    add_subdirectory(doc)
-endif()
     add_subdirectory(doc)
+endif()
 
 if(LUABIND_INSTALL)
     if(WIN32 AND NOT CYGWIN)
@@ -220,4 +253,3 @@ if(LUABIND_INSTALL)
     install(FILES "cmake/Modules/FindLua52.cmake" DESTINATION ${INSTALL_CMAKE_DIR_LUA})
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/luabind/build_information.hpp" DESTINATION include/luabind)
 endif()
-

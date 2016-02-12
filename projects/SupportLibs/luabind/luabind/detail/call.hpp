@@ -55,6 +55,7 @@ struct LUABIND_API invoke_context
     invoke_context()
       : best_score((std::numeric_limits<int>::max)())
       , candidate_index(0)
+      , additional_candidates(0)
     {}
 
     operator bool() const
@@ -64,9 +65,11 @@ struct LUABIND_API invoke_context
 
     void format_error(lua_State* L, function_object const* overloads) const;
 
-    function_object const* candidates[10];
+    BOOST_STATIC_CONSTANT(int, max_candidates = 10);
+    function_object const* candidates[max_candidates];
     int best_score;
     int candidate_index;
+    int additional_candidates;
 };
 
 template <class F, class Signature, class Policies, class IsVoid>
@@ -266,10 +269,14 @@ invoke_normal
         ctx.best_score = score;
         ctx.candidates[0] = &self;
         ctx.candidate_index = 1;
+        ctx.additional_candidates = 0;
     }
     else if (score == ctx.best_score)
     {
-        ctx.candidates[ctx.candidate_index++] = &self;
+        if (ctx.candidate_index < invoke_context::max_candidates)
+            ctx.candidates[ctx.candidate_index++] = &self;
+        else
+            ++ctx.additional_candidates;
     }
 
     int results = 0;
