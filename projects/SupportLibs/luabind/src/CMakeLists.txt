@@ -16,6 +16,7 @@ set(LUABIND_SRCS
     function_introspection.cpp
     inheritance.cpp
     link_compatibility.cpp
+    lua51compat.cpp
     object_rep.cpp
     open.cpp
     operator.cpp
@@ -126,11 +127,9 @@ elseif(CMAKE_COMPILER_IS_GNUCXX)
     list(APPEND LUABIND_EXTRA_LIBS m)
 endif()
 
-_luabind_add_flag(-Wno-unused-macros SUPPORTS_Wno_unused_macros_FLAG)
-
 set(CMAKE_DEBUG_POSTFIX "-d")
 add_library(luabind ${LUABIND_SRCS} ${LUABIND_API} ${LUABIND_DETAIL_API})
-target_link_libraries(luabind ${LUA_LIBRARIES} ${LUABIND_EXTRA_LIBS})
+target_link_libraries(luabind ${LUA_LIBRARIES} ${LUABIND_EXTRA_LIBS} ${CMAKE_DL_LIBS})
 set_property(TARGET
     luabind PROPERTY
     COMPILE_FLAGS

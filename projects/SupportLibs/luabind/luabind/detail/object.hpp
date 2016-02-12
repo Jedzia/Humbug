@@ -41,6 +41,8 @@
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility/enable_if.hpp>
 
+#include <ostream>
+
 namespace luabind {
 
 namespace adl
@@ -504,6 +506,8 @@ namespace detail
       handle m_key;
   };
 
+#if BOOST_VERSION < 105700
+
 // Needed because of some strange ADL issues.
 
 #define LUABIND_OPERATOR_ADL_WKND(op) \
@@ -526,6 +530,7 @@ namespace detail
 
 #undef LUABIND_OPERATOR_ADL_WKND
 
+#endif // BOOST_VERSION < 105700
 } // namespace detail
 
 namespace adl

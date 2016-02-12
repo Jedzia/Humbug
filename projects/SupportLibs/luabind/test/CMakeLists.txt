@@ -28,6 +28,7 @@ set(TESTS
     function_converter
     function_introspection
     function_object
+    function_overload_overflow
     held_type
     implicit_cast
     implicit_raw
@@ -37,6 +38,7 @@ set(TESTS
     null_pointer
     object
     operators
+    out_value
     package_preload
     policies
     private_destructors
@@ -81,9 +83,9 @@ foreach(test ${TESTS})
     set_property(TARGET test_${test} PROPERTY FOLDER "Tests")
 endforeach()
 
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang" AND LUABIND_ENABLE_WARNINGS)
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND LUABIND_ENABLE_WARNINGS)
     set (priv_dtor_flags "-Wno-ctor-dtor-privacy")
-    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set(priv_dtor_flags "${priv_dtor_flags} -Wno-unused-member-function")
     endif()
     set_property(TARGET test_private_destructors
@@ -108,7 +110,7 @@ if(BUILD_TESTING AND LUABIND_BUILD_HEADER_TESTS)
         set (cppname "${CMAKE_CURRENT_BINARY_DIR}/${targetname}.cpp")
         configure_file(test_headercompile.cpp.in "${cppname}" @ONLY)
         add_executable(${targetname} ${cppname})
-        if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" AND LUABIND_ENABLE_WARNINGS)
+        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND LUABIND_ENABLE_WARNINGS)
             # Clang complains about '#define LUABIND_TEST_HEADERCOMPILE'.
             set_property(TARGET ${targetname}
                     PROPERTY COMPILE_FLAGS "-Wno-unused-macros")
