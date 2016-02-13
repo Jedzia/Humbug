@@ -1,4 +1,10 @@
 
+-X-X-X-X- Sa, 13 Feb 2016 18:05:35 -----------------------------------------------------------
+copy old:
+Copy_Files_To_Target(Humbug "${SDLIMAGE_LIBRARY_DLLS_EXT}")
+Todo: use a copy-func that copies a text file to a test lua dir in DEBUG and package it when in RELEASE.
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Fr, 12 Feb 2016 21:59:20 -----------------------------------------------------------
 Todo: Artwork should run before all MakeVFS. So MakeVFS should be dependant on it.
 -----------------------------------------------------------------------------------------------

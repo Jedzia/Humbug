@@ -64,6 +64,7 @@ SET(Humbug_MyGUI_headers
 		Screens/HighscoreScreen.h
 		Screens/TileScreen.h
 		Screens/SimpleScreen.h
+		Screens/ZoomInScreen.h
 
 		Screens/InfoText.h
 		Screens/MenuScreen.h
@@ -90,6 +91,7 @@ SET(Humbug_MyGUI_sources
 		Screens/HighscoreScreen.cpp
 		Screens/TileScreen.cpp
 		Screens/SimpleScreen.cpp
+		Screens/ZoomInScreen.cpp
 
 		Screens/MenuScreen.cpp
 		Screens/MenuScreen/SubmenuA.cpp
@@ -135,6 +137,18 @@ SET(Humbug_sources
 	    main.cpp 
 	    Project/ProjectModel.cpp
 )
+
+SET(Humbug_LUA_sources 
+		Lua/funcret.lua
+		Lua/globalclass.lua
+		Lua/hello.lua
+		Lua/iowrite.lua
+		Lua/male_sprites.spr
+		Lua/math.lua
+		Lua/sequencer.lua
+		Lua/sprite1.lua
+)
+
 
 
 #SET(CMAKE_BUILD_TYPE DEBUG)
@@ -183,6 +197,7 @@ SOURCE_GROUP(GUI FILES ${Humbug_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
+SOURCE_GROUP(LUA FILES ${Humbug_LUA_sources})
 
 SET(Humbug_documents
 		../Readme.md
@@ -204,6 +219,7 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
         ${Humbug_headers}
         ${Humbug_sources} 
 		${Humbug_documents}
+		${Humbug_LUA_sources}
 )
 
 
