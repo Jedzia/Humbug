@@ -51,6 +51,9 @@ int bmain(int argc, char *argv[])
     }
     //delete oukk;
 //    int ff = app.exec();
+
+    freopen("output.txt", "w", stdout);
+
     int ff = 0;
 	LOGSTREAM << "";
 	LOGSTREAM << "This is Humbug (" << argv[0] << ").";

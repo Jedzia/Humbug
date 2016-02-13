@@ -86,18 +86,23 @@ public:
       static int writeLn( lua_State* lua ){
           int argc = lua_gettop( lua );
 
+          std::stringstream ss;
           for ( int i = 1; i <= argc; i++ ) {
               const char* c = lua_tostring( lua, i );
               //std::cout << c;
-              std::cerr << c;
+              //std::cerr << c;
+              ss << c;
               //humbuglib::LogManager::getSingleton().stream() << c;
           }
 
           if ( argc > 0 ) {
               //std::cout << std::endl;
-              std::cerr << std::endl;
+              //std::cerr << std::endl;
+              //ss << std::endl;
               //humbuglib::LogManager::getSingleton().stream() << "\n";
           }
+          
+          LOGSTREAM << ss.str();
 
           lua_pushnumber( lua, argc );
           return 1;
