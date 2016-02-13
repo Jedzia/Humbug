@@ -261,7 +261,7 @@ private:
                               "ioDelete(io)";
 
       // A file
-      //std::string& luaFileContent = m_Loader.FL_LOADASSTRING("lua/hello.lua");
+      //std::string& luaFileContent = m_Loader.FL_LOADASSTRING("Lua/hello.lua");
       s = luaL_loadstring( pimpl_->L, script.c_str() );
 
       //s = luaL_loadstring( pimpl_->L, luascript );
@@ -326,7 +326,7 @@ private:
       }
 
       // A file
-      //std::string& luaFileContent = m_Loader.FL_LOADASSTRING("lua/hello.lua");
+      //std::string& luaFileContent = m_Loader.FL_LOADASSTRING("Lua/hello.lua");
       s = luaL_loadstring( pimpl_->L, script.c_str() );
 
       if ( s == 0 ) {
@@ -488,7 +488,7 @@ private:
       //luascript<int, int, int> *luascr = generate<int, int, int>();
   } // RunScript2
 
- 
+
   void ScriptHost::RunScript7(const std::string& script) {
 	  using namespace luabind;
 
@@ -560,7 +560,7 @@ private:
   } // RunScript2
 
 
-  
+
   /** $(class), initLua:
    *  Detailed description.
    *  @return TODO

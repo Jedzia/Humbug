@@ -227,16 +227,16 @@ public:
         //_crtBreakAlloc = pimpl_->allocReqNum+4;
 
         shost::ScriptHost shost;
-        //shost.RunScript2(m_Loader.FL_LOADASSTRING("lua/hello.lua"));
-        // shost.RunScript(m_Loader.FL_LOADASSTRING("lua/funcret.lua"));
-        //shost.RunScript4(m_Loader.FL_LOADASSTRING("lua/iowrite.lua"));
-        //shost.RunScript(m_Loader.FL_LOADASSTRING("lua/globalclass.lua"));
-        //shost.RunScript6( m_Loader.FL_LOADASSTRING("lua/globalclass.lua") );
-		//shost.RunScript7( m_Loader.FL_LOADASSTRING("lua/--FREE--.lua") );
+        //shost.RunScript2(m_Loader.FL_LOADASSTRING("Lua/hello.lua"));
+        // shost.RunScript(m_Loader.FL_LOADASSTRING("Lua/funcret.lua"));
+        //shost.RunScript4(m_Loader.FL_LOADASSTRING("Lua/iowrite.lua"));
+        //shost.RunScript(m_Loader.FL_LOADASSTRING("Lua/globalclass.lua"));
+        //shost.RunScript6( m_Loader.FL_LOADASSTRING("Lua/globalclass.lua") );
+		//shost.RunScript7( m_Loader.FL_LOADASSTRING("Lua/--FREE--.lua") );
 
 		typedef shost::LuaScript<int, double, double> ScriptType;
 		ScriptType::Script s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-			"lua/sprite1.lua"), "Ticks", "X", "Y" );
+			"Lua/sprite1.lua"), "Ticks", "X", "Y" );
 		pimpl_->script = s;
 
         world.FPS = CApplication::FramesCap();
@@ -244,7 +244,7 @@ public:
         world.ScreenX = screenRect.GetW();
         world.ScreenY = screenRect.GetH();
 
-		// Todo maybe an functor to initialize more global stuff 
+		// Todo maybe an functor to initialize more global stuff
 		(*s->AddStatic(world))("World")
 			.def("greet", &greet)
 			.def_readonly("FPS", &World::FPS)

@@ -608,7 +608,7 @@ private:
 
         typedef shost::LuaScript<int, double, double> ScriptType;
         ScriptType::Script s = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
-                        "lua/sprite1.lua"), "Ticks", "X", "Y" );
+                        "Lua/sprite1.lua"), "Ticks", "X", "Y" );
         pimpl_->script = s;
 
         world.FPS = CApplication::FramesCap();

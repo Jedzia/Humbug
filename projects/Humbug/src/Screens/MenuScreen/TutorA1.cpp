@@ -131,7 +131,7 @@ bool TutorA1::OnInit( int argc, char* argv[] ){
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
     m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 730), 800));
 
-    //m_Loader.FL_LOADASSTRING("lua/sprite1.lua");
+    //m_Loader.FL_LOADASSTRING("Lua/sprite1.lua");
 
     return Screen::OnInit(argc, argv);
 

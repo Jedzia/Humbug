@@ -80,7 +80,7 @@ ENDIF()
 	foreach(_source ${_sources})
 		get_source_file_property(_sourcePath ${_source} LOCATION)
 		get_filename_component(_name "${_source}" NAME)
-			message("${_source}: _name='${_name}', path='${_sourcePath}', dest='${_destPath}'")
+		#	message("${_source}: _name='${_name}', path='${_sourcePath}', dest='${_destPath}'")
 		#Copy_File_To_Target(${_target} ${_sourcePath})
 		IF(_HELPER_COPY_ENABLED)
 			ADD_CUSTOM_COMMAND(
