@@ -35,6 +35,7 @@
 #include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Text.h"
 #include "Screens/SimpleScreen.h"
+#include "Screens/ZoomInScreen.h"
 #include "Screens/MenuScreen/SubmenuA.h"
 #include "Screens/MenuScreen/TutorEasing.h"
 
@@ -258,7 +259,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 			TTF_Font *iarial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", fontsize);
 
 			const char *lines[] = { 
-				"Press '1' for: StartScreen",
+                //"Press '1' for: StartScreen",
+                "Press '1' for: current devel Screen",
 				"Press '2' for: Highscores",
 				"Press '3' for: TestLevel",
 				"Press '4' for: BlaScreen",
@@ -345,7 +347,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     //HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
-    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<TutorEasing>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<ZoomInScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
