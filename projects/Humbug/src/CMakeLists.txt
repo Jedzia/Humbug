@@ -254,6 +254,11 @@ SET(Pak02_PACKAGE_SOURCE_FILES
 )
 CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 
+SET_SOURCE_FILES_PROPERTIES( ${Humbug_LUA_sources} 
+        PROPERTIES LANGUAGE LUA_Script
+)
+copy_language_to_build_tree(Humbug LUA_Script base_data)
+
 #ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 
 Copy_DLL_To_Target(Humbug SDL_LIBRARY)
@@ -297,11 +302,6 @@ ADD_PRECOMPILED_HEADER(Humbug stdafx.h stdafx.h.gch TRUE "${Humbug_sources}")
 #SET_SOURCE_FILES_PROPERTIES( main.cpp
 #       PROPERTIES OBJECT_DEPENDS ${CppStructz_DLL_DEBUG}
 #)
-
-#SET_SOURCE_FILES_PROPERTIES( ${Humbug_sources} #main.cpp
-#       PROPERTIES OBJECT_DEPENDS "d:/Eigene Dateien/Projects/C++/Humbug/src/CppStructz/TestClass.cpp"
-#)
-#copy_resources_to_build_tree(Humbug)
 
 INSTALL(TARGETS Humbug 
 	COMPONENT Application

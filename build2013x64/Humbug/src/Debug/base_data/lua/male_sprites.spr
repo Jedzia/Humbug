@@ -22,4 +22,15 @@ spMovie = SpriteMovie("walk", { F(0,0), F(0,1), F(0,2) })
 
 -- write to IO
 io.write("IO Write, from male_sprites.spr, ",_VERSION,"!\n")
+-- io.write("IO Write, Value X1:(", X1, ")!\n")
+-- X1=X1 + 1
+
+-- io.write("IO Write, Value Host:(", Host, ")!\n")
 io.write("IO Write, Ticks=", Host.Ticks, " Value Host.X/Y:(", Host.X, "/", Host.Y, ")!\n")
+
+--World = {}
+--World.ScreenX = 1024
+--World.ScreenY = 768
+--World.FPS = 30
+
+speed = -2.0
