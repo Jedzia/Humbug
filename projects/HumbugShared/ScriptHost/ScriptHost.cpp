@@ -147,7 +147,8 @@ private:
               int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
 
               if (ret != 0) {
-                  std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+                  //std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+                  LOGSTD("error running : " << lua_tostring(pimpl_->L, -1));
               }
               else {
                   //char *result = copyGlobalString(pimpl_->L, Key);
@@ -221,7 +222,7 @@ private:
 
           if (ret != 0) {
               //std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
-              dbgOut("error running : " << lua_tostring(pimpl_->L, -1));
+              LOGSTD("error running : " << lua_tostring(pimpl_->L, -1));
           }
           else {
               //lua_getglobal(pimpl_->L, Key);
@@ -392,7 +393,8 @@ private:
           ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
 
           if (ret != 0) {
-              std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              //std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              LOGSTD("error running : " << lua_tostring(pimpl_->L, -1));
           }
           else {
               //char *result = copyGlobalString(pimpl_->L, Key);
@@ -467,7 +469,8 @@ private:
           ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
 
           if (ret != 0) {
-              std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              //std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              LOGSTD("error running : " << lua_tostring(pimpl_->L, -1));
           }
           else {
               //char *result = copyGlobalString(pimpl_->L, Key);
@@ -538,8 +541,9 @@ private:
 		  int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
 
 		  if (ret != 0) {
-			  std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
-		  }
+			  //std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              LOGSTD("error running : " << lua_tostring(pimpl_->L, -1));
+          }
 		  else {
 			  //char *result = copyGlobalString(pimpl_->L, Key);
 			  //std::cout << "Got <" << Key << "> from Lua:\"" << copyGlobalString(pimpl_->L, Key)
