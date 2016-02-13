@@ -52,7 +52,10 @@ int bmain(int argc, char *argv[])
     //delete oukk;
 //    int ff = app.exec();
 
+#if _DEBUG
+    // redirect stdout to text file.
     freopen("output.txt", "w", stdout);
+#endif
 
     int ff = 0;
 	LOGSTREAM << "";

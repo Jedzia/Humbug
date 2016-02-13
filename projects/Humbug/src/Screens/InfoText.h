@@ -25,9 +25,8 @@ inline void TestArrayFoo() {
     marr[0] = 123456;
 
     boost::array<int, 4> a = { { 1, 2, 3 } };
-    boost::array<int, 4> b = { 1, 2, 3 }; 
+    boost::array<int, 4> b = { 1, 2, 3 };
 }
-
 
 
 namespace humbug {
@@ -254,7 +253,7 @@ public:
 
 /** @class InfoText:
  *  Detailed description.
- *  Todo: With a global TextAnimator chain. 
+ *  Todo: With a global TextAnimator chain.
  *  @return TODO
  */
 class InfoText3 : public gui::components::BaseDrawable, public TextModifierWorker<gui::components::BaseDrawable, gui::components::TextAnimator, gui::components::TextAnimatorData> {
