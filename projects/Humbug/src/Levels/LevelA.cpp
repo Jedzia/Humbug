@@ -623,6 +623,7 @@ private:
         .def_readonly("ScreenX", &World::ScreenX)
         .def_readonly("ScreenY", &World::ScreenY);
 
+        // !!! Warning, Sprites/male_spritesA.spr exists on local and virtual filesystem. !!!
         ScriptType::Script sprInit = shost.generate<int, double, double>( m_Loader.FL_LOADASSTRING(
                         "Sprites/male_spritesA.spr"), "Ticks", "X", "Y" );
         //ScriptType::Script sprInit = shost.generate<int, double, double>(

@@ -228,8 +228,9 @@ public:
 
         shost::ScriptHost shost;
         //shost.RunScript2(m_Loader.FL_LOADASSTRING("Lua/hello.lua"));
-        // shost.RunScript(m_Loader.FL_LOADASSTRING("Lua/funcret.lua"));
+        //shost.RunScript(m_Loader.FL_LOADASSTRING("Lua/funcret.lua"));
         //shost.RunScript4(m_Loader.FL_LOADASSTRING("Lua/iowrite.lua"));
+        shost.RunScript4(m_Loader.FL_LOADASSTRING("Lua/math.lua"));
         //shost.RunScript(m_Loader.FL_LOADASSTRING("Lua/globalclass.lua"));
         //shost.RunScript6( m_Loader.FL_LOADASSTRING("Lua/globalclass.lua") );
 		//shost.RunScript7( m_Loader.FL_LOADASSTRING("Lua/--FREE--.lua") );

@@ -181,10 +181,11 @@ private:
 
       //openLuaLib (pimpl_->L, LUA_LOADLIBNAME);
       LuaReg::openLuaLib (pimpl_->L, "_G");
-      LuaReg::openLuaLib (pimpl_->L, LUA_IOLIBNAME);
-
-      //IOReg::Register(pimpl_->L);
-      //IOReg::createIO(pimpl_->L);
+      LuaReg::openLuaLib(pimpl_->L, LUA_IOLIBNAME);
+      LuaReg::openLuaLib(pimpl_->L, LUA_MATHLIBNAME);
+      
+      IOReg::Register(pimpl_->L);
+      IOReg::createIO(pimpl_->L);
       /* variable with an unique address */
       static const char* Key = "myVar";
       static const char* value = "FromScriptHost";
@@ -219,11 +220,13 @@ private:
           int ret = lua_pcall( pimpl_->L, 0, LUA_MULTRET, 0 );
 
           if (ret != 0) {
-              std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              //std::cout << "error running : " << lua_tostring(pimpl_->L, -1) << std::endl;
+              dbgOut("error running : " << lua_tostring(pimpl_->L, -1));
           }
           else {
               //lua_getglobal(pimpl_->L, Key);
-			  std::cout << "Got <" << Key << "> from Lua:(" << LuaVars::copyGlobalString(pimpl_->L, Key) << ")" << std::endl;
+              //std::cout << "Got <" << Key << "> from Lua:(" << LuaVars::copyGlobalString(pimpl_->L, Key) << ")" << std::endl;
+              dbgOut("Got <" << Key << "> from Lua:(" << LuaVars::copyGlobalString(pimpl_->L, Key) << ")");
               //lua_pop
               //luabind::pcall_callback_fun()
           }

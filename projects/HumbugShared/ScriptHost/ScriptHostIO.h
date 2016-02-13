@@ -21,7 +21,7 @@ namespace shost {
   class IO {
 public:
 
-      /** IO, WriteLn:
+      /** IO, WriteLn: 
        *  Detailed description.
        *  @param c TODO
        */
@@ -39,7 +39,7 @@ public:
        * @return TODO
        */
       static int createIO( lua_State* lua ){
-          void* io = (void *)new IO();
+          void* io = static_cast<void *>(new IO());
           lua_pushlightuserdata( lua, io );
           return 1;
       }
@@ -88,11 +88,15 @@ public:
 
           for ( int i = 1; i <= argc; i++ ) {
               const char* c = lua_tostring( lua, i );
-              std::cout << c;
+              //std::cout << c;
+              std::cerr << c;
+              //humbuglib::LogManager::getSingleton().stream() << c;
           }
 
           if ( argc > 0 ) {
-              std::cout << std::endl;
+              //std::cout << std::endl;
+              std::cerr << std::endl;
+              //humbuglib::LogManager::getSingleton().stream() << "\n";
           }
 
           lua_pushnumber( lua, argc );
@@ -119,7 +123,8 @@ public:
        *  Detailed description.
        *
        */
-      void greet(){
+      void greet() const
+      {
           std::cout << "greet !\n";
       }
       /** dummy, stgreet:
@@ -139,7 +144,8 @@ public:
        *  Detailed description.
        *
        */
-      void greet(){
+      void greet() const
+      {
           std::cout << "hello world from PropA!\n";
       }
   };
@@ -161,7 +167,8 @@ public:
        *  Detailed description.
        *
        */
-      void greet(){
+      void greet() const
+      {
           std::cout << "greet !\n";
       }
       /** SpriteModel, stgreet:
@@ -180,7 +187,7 @@ private:
    *  Detailed description.
    *
    */
-  void greet(){
+    inline void greet(){
       std::cout << "hello world!\n";
   }
 
@@ -188,7 +195,7 @@ private:
    *  Detailed description.
    *
    */
-  void greet2(){
+    inline void greet2(){
       std::cout << "hello st fnc greet2!\n";
   }
 }

@@ -163,8 +163,9 @@ public:
     }
 
 	void greetHopper(){
-		std::cout << "hello world from HopperScreen!\n";
-	}
+		//std::cout << "hello world from HopperScreen!" << std::endl;
+        //dbgOut("hello world from HopperScreen!");
+    }
 
 	class TestClass {
 	public:

@@ -41,7 +41,8 @@ struct ScriptHost::ScriptHostImpl {
      *  Detailed description.
      *  @param var TODO
      */
-    void  setglobal(const char* var){
+    void  setglobal(const char* var) const
+    {
         lua_setglobal(L, var);
     }
 };
