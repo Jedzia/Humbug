@@ -143,12 +143,15 @@ SET(Humbug_LUA_sources
 		Lua/globalclass.lua
 		Lua/hello.lua
 		Lua/iowrite.lua
-		Lua/male_sprites.spr
 		Lua/math.lua
 		Lua/sequencer.lua
 		Lua/sprite1.lua
 )
 
+SET(Humbug_LUAsprite_sources 
+		Lua/male_sprites.spr
+		Lua/male_spritesA.spr
+)
 
 
 #SET(CMAKE_BUILD_TYPE DEBUG)
@@ -197,7 +200,9 @@ SOURCE_GROUP(GUI FILES ${Humbug_uifiles})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
 SOURCE_GROUP(THeaders FILES ${Humbug_headers})
 SOURCE_GROUP(TSources FILES ${Humbug_sources})
-SOURCE_GROUP(LUA FILES ${Humbug_LUA_sources})
+SOURCE_GROUP(Lua FILES ${Humbug_LUA_sources})
+SOURCE_GROUP(LuaSprites FILES ${Humbug_LUAsprite_sources})
+
 
 SET(Humbug_documents
 		../Readme.md
@@ -220,6 +225,7 @@ ADD_EXECUTABLE(Humbug ${_GUI_DEP}
         ${Humbug_sources} 
 		${Humbug_documents}
 		${Humbug_LUA_sources}
+		${Humbug_LUAsprite_sources}
 )
 
 
@@ -254,10 +260,14 @@ SET(Pak02_PACKAGE_SOURCE_FILES
 )
 CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 
+# copy to build dir based on language
 SET_SOURCE_FILES_PROPERTIES( ${Humbug_LUA_sources} 
         PROPERTIES LANGUAGE LUA_Script
 )
 copy_language_to_build_tree(Humbug LUA_Script base_data)
+
+# copy to build dir based on file list
+copy_files_to_build_tree(Humbug "${Humbug_LUAsprite_sources}" base_data/Sprites)
 
 #ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 

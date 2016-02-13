@@ -38,7 +38,7 @@ ENDIF()
 					TARGET ${_target} 
 					POST_BUILD
 #					COMMAND ${CMAKE_COMMAND} ${_HELPERS_COPY_CMAKE_DEBUG_STR} -Dconfig=${CMAKE_CFG_INTDIR} -Dtgt="${PROJECT_BINARY_DIR}/" -Dreleasesrc="${file}" -Ddebugsrc="${file}" -P "${P_MODULE_PATH}/copy.cmake"
-					COMMAND ${CMAKE_COMMAND} -E copy "${_sourcePath}" "${_destPath}/${_source}"
+					COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_sourcePath}" "${_destPath}/${_source}"
 					DEPENDS "${_sourcePath}"
 					COMMENT "Copy ${_source} LUA Resource File." 
 				)
@@ -47,6 +47,52 @@ ENDIF()
 	endforeach()
 endfunction()
 
+function(copy_filesRelative_to_build_tree _target _sources _dest)
+SET(_HELPER_COPY_ENABLED FALSE)
+IF(MSVC)
+	SET(_HELPER_COPY_ENABLED TRUE)
+ENDIF()
+	SET(_destPath ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_dest} )
+#	message(WARN "_sources='${_sources}'")
+	foreach(_source ${_sources})
+		get_source_file_property(_sourcePath ${_source} LOCATION)
+		#	message("${_source}: lang='${_sourceLang}', path='${_sourcePath}', dest='${_destPath}'")
+		#Copy_File_To_Target(${_target} ${_sourcePath})
+		IF(_HELPER_COPY_ENABLED)
+			ADD_CUSTOM_COMMAND(
+				TARGET ${_target} 
+				POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_sourcePath}" "${_destPath}/${_source}"
+				DEPENDS "${_sourcePath}"
+				COMMENT "Copy ${_source} LUA Resource File." 
+			)
+		ENDIF(_HELPER_COPY_ENABLED)
+	endforeach()
+endfunction()
+
+function(copy_files_to_build_tree _target _sources _dest)
+SET(_HELPER_COPY_ENABLED FALSE)
+IF(MSVC)
+	SET(_HELPER_COPY_ENABLED TRUE)
+ENDIF()
+	SET(_destPath ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${_dest} )
+#	message(WARN "_sources='${_sources}'")
+	foreach(_source ${_sources})
+		get_source_file_property(_sourcePath ${_source} LOCATION)
+		get_filename_component(_name "${_source}" NAME)
+			message("${_source}: _name='${_name}', path='${_sourcePath}', dest='${_destPath}'")
+		#Copy_File_To_Target(${_target} ${_sourcePath})
+		IF(_HELPER_COPY_ENABLED)
+			ADD_CUSTOM_COMMAND(
+				TARGET ${_target} 
+				POST_BUILD
+				COMMAND ${CMAKE_COMMAND} -E copy_if_different "${_sourcePath}" "${_destPath}/${_name}"
+				DEPENDS "${_sourcePath}"
+				COMMENT "Copy ${_source} LUA Resource File." 
+			)
+		ENDIF(_HELPER_COPY_ENABLED)
+	endforeach()
+endfunction()
 
 function(copy_resources_to_build_tree _target)
 	get_target_property(_resources ${_target} RESOURCE)
