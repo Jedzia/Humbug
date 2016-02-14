@@ -30,6 +30,7 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
+#include <GuiLib/GUI/Components/Image.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -41,6 +42,17 @@ struct ZoomInScreen::ZoomInScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
     int x;
+    boost::scoped_ptr<gui::components::CImage> m_pBlue;
+
+    void draw(CCanvas* canvas, SDL_Color& fcol){
+        CRectangle screenrect = canvas->GetDimension();
+        CPoint sp(220, 340);
+        CColor textColor(fcol.r, fcol.g, fcol.b);
+        //CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (fontsize + 10) + fcol.g);
+
+        //CPoint c_point = m_pKeyHandler->Char();
+        m_pBlue->RenderPut(canvas, CPoint(50 , 50));
+    }
 };
 
 ZoomInScreen::ZoomInScreen( FileLoader& loader, CCanvas* background) :
@@ -94,6 +106,8 @@ bool ZoomInScreen::OnInit( int argc, char* argv[] ){
 
     //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
+
+    pimpl_->m_pBlue.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Images/Strange01.png")), true));
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -160,6 +174,8 @@ void ZoomInScreen::OnDraw(){
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
     //m_pMainCanvas->AddUpdateRect(dstDims);
     m_pScroller->Render();
+
+    pimpl_->draw(m_pBackground.get(), fcol);;
 
     coldelta++;
 

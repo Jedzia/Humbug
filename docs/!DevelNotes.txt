@@ -1,6 +1,8 @@
 
 -X-X-X-X- Sa, 13 Feb 2016 23:40:15 -----------------------------------------------------------
-Todo: continue work on Humbug\projects\Humbug\src\Screens\InfoText.h
+Todo: 
+- continue work on Humbug\projects\Humbug\src\Screens\InfoText.h
+- implement Zoom in for text and CCanvas or CImage, Humbug\projects\Humbug\src\Screens\ZoomInScreen.cpp
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Sa, 13 Feb 2016 18:05:35 -----------------------------------------------------------
