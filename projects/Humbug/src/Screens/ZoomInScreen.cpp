@@ -41,17 +41,22 @@ namespace humbug {
 struct ZoomInScreen::ZoomInScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
-    int x;
+    int x = 0;
     boost::scoped_ptr<gui::components::CImage> m_pBlue;
 
     void draw(CCanvas* canvas, SDL_Color& fcol){
         CRectangle screenrect = canvas->GetDimension();
         CPoint sp(220, 340);
         CColor textColor(fcol.r, fcol.g, fcol.b);
-        //CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (fontsize + 10) + fcol.g);
+        CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (x + 10) + fcol.g);
 
+        int zoomSize = x * 16;
+        CRectangle growRect(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);
         //CPoint c_point = m_pKeyHandler->Char();
-        m_pBlue->RenderPut(canvas, CPoint(50 , 50));
+        CPoint pt_dst = CPoint(50 + x , 50 + x);
+        //m_pBlue->RenderPut(canvas, pt_dst);
+        m_pBlue->RenderPut(canvas, growRect);
+        x++;
     }
 };
 
