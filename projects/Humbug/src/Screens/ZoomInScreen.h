@@ -68,6 +68,7 @@ public:
     *  Is called once per frame, after OnDraw().
     */
     void OnUpdate() override;
+    void OnKeyDown(SDL_Keycode sym, Uint16 mod) override;
 
 private:
 

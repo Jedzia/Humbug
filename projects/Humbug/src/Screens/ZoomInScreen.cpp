@@ -21,6 +21,7 @@
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 #include <GuiLib/Filesystem/FileLoader.h>
+#include <GuiLib/GUI/Components/Image.h>
 #include <GuiLib/GUI/Components/Rectangle.h>
 #include <GuiLib/GUI/Components/Text.h>
 #include <GuiLib/GUI/Components/TextScroller.h>
@@ -30,7 +31,6 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
-#include <GuiLib/GUI/Components/Image.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -44,7 +44,7 @@ struct ZoomInScreen::ZoomInScreenImpl {
     int x = 0;
     boost::scoped_ptr<gui::components::CImage> m_pBlue;
 
-    void draw(CCanvas* canvas, SDL_Color& fcol){
+    void draw(CCanvas* canvas, SDL_Color& fcol) {
         CRectangle screenrect = canvas->GetDimension();
         CPoint sp(220, 340);
         CColor textColor(fcol.r, fcol.g, fcol.b);
@@ -53,27 +53,27 @@ struct ZoomInScreen::ZoomInScreenImpl {
         int zoomSize = x * 16;
         CRectangle growRect(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);
         //CPoint c_point = m_pKeyHandler->Char();
-        CPoint pt_dst = CPoint(50 + x , 50 + x);
+        CPoint pt_dst = CPoint(50 + x, 50 + x);
         //m_pBlue->RenderPut(canvas, pt_dst);
         m_pBlue->RenderPut(canvas, growRect);
         x++;
     }
 };
 
-ZoomInScreen::ZoomInScreen( FileLoader& loader, CCanvas* background) :
-    pimpl_(new ZoomInScreen::ZoomInScreenImpl ),
+ZoomInScreen::ZoomInScreen(FileLoader& loader, CCanvas* background) :
+    pimpl_(new ZoomInScreen::ZoomInScreenImpl),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL),
-    m_pSprMgr(new CSpriteManager){
+    m_pSprMgr(new CSpriteManager) {
     //,m_pSprEye(NULL),
     //m_pSprWormler(NULL)
     dbgOut(__FUNCTION__ << " " << this);
 }
 
-ZoomInScreen::~ZoomInScreen(void){
+ZoomInScreen::~ZoomInScreen(void) {
     //delete m_pScrollText;
     //delete m_pScroller;
     //delete m_pBackground;
@@ -88,12 +88,12 @@ ZoomInScreen::~ZoomInScreen(void){
     return grpID;
     //throw std::exception("The method or operation is not implemented.");
    }*/
-bool ZoomInScreen::OnInit( int argc, char* argv[] ){
+bool ZoomInScreen::OnInit(int argc, char* argv[]) {
     // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1,
     // "ZoomInScreen"));
-    m_pOverlay.reset( new DebugOverlay(m_Loader, NULL, 1, "ZoomInScreen") );
+    m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "ZoomInScreen"));
 
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
@@ -101,13 +101,13 @@ bool ZoomInScreen::OnInit( int argc, char* argv[] ){
     TTF_Font* m_pArialfont;
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
-    SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TestScreenBg.png") );
+    SDL_Surface* tmpfsurf = (m_Loader.FL_LOADIMG("Intro/TestScreenBg.png"));
 
     //SDL_SetColorKey(tmpfsurf, SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
     //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-    m_pBackground.reset( new CCanvas( tmpfsurf ) );
+    m_pBackground.reset(new CCanvas(tmpfsurf));
 
     //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
@@ -142,7 +142,7 @@ bool ZoomInScreen::OnInit( int argc, char* argv[] ){
         "Humbug" << "\r\n" <<
         "";
 
-    m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
+    m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
     m_pScroller.reset(new CTextScroller(m_pBackground.get(), *m_pScrollText, CPoint(100, 600), 800));
 
     return Screen::OnInit(argc, argv);
@@ -150,13 +150,13 @@ bool ZoomInScreen::OnInit( int argc, char* argv[] ){
     //return true;
 }   // OnInit
 
-void ZoomInScreen::OnIdle(int ticks){
+void ZoomInScreen::OnIdle(int ticks) {
     m_pOverlay->IdleSetVars(ticks);
     //m_pScroller->Scroll(4);
     //m_pSprMgr->OnIdle(ticks);
 }
 
-void ZoomInScreen::OnDraw(){
+void ZoomInScreen::OnDraw() {
     static int coldelta = 0;
 
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
@@ -172,19 +172,19 @@ void ZoomInScreen::OnDraw(){
     //m_pMainCanvas->FillRect( frect, mcol );
     SDL_Color& fcol = wavemap[index];
     CColor color = CColor(fcol.r, fcol.g, fcol.b);
-    m_pMainCanvas->RenderFillRect( frect, &color );
+    m_pMainCanvas->RenderFillRect(frect, &color);
     //m_pMainCanvas->AddUpdateRect(frect);
 
-    CRectangle dstDims( 0, 0, 200, 200);
+    CRectangle dstDims(0, 0, 200, 200);
     //m_pScrollText->RenderPut(m_pBackground.get(), dstDims, dstDims );
     //m_pMainCanvas->AddUpdateRect(dstDims);
     m_pScroller->Render();
 
-    pimpl_->draw(m_pBackground.get(), fcol);;
+    pimpl_->draw(m_pBackground.get(), fcol);
 
     coldelta++;
 
-    if (coldelta > 64) {
+    if(coldelta > 64) {
         coldelta = 0;
     }
 
@@ -193,12 +193,24 @@ void ZoomInScreen::OnDraw(){
     m_pMainCanvas->Unlock();
 }   // OnDraw
 
-void ZoomInScreen::OnUpdate(){
+void ZoomInScreen::OnUpdate() {
     Screen::OnUpdate();
     x += 1 + (rand() << 21);
-    mcol.SetR( rand() );
-    mcol.SetG( rand() );
-    mcol.SetB( rand() );
+    mcol.SetR(rand());
+    mcol.SetG(rand());
+    mcol.SetB(rand());
     //m_iUpdateTimes++;
+}
+
+void ZoomInScreen::OnKeyDown(SDL_Keycode sym, Uint16) {
+    switch(sym) {
+    case SDLK_SPACE:
+    {
+        pimpl_->x = 0;
+        break;
+    }
+    default:
+        break;
+    }     // switch
 }
 }

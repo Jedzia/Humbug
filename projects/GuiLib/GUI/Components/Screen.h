@@ -53,6 +53,7 @@ private:
 
     void OnIdle( int ticks ) override;
 	virtual void OnEvent(SDL_Event* pEvent);
+    virtual void OnKeyDown(SDL_Keycode sym, Uint16 mod);
     virtual void OnFocus() {    }
     virtual void OnLostFocus() {    }
     void OnConnect() override;
