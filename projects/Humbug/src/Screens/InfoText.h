@@ -20,15 +20,6 @@
 #include <boost/foreach.hpp>
 #include <GuiLib/GUI/Components/TextAnimatorImpl.h>
 
-inline void TestArrayFoo() {
-    std::array<int, 9> marr;
-    marr[0] = 123456;
-
-    boost::array<int, 4> a = { { 1, 2, 3 } };
-    boost::array<int, 4> b = { 1, 2, 3 };
-}
-
-
 namespace humbug {
 /** @class InfoText:
  *  Detailed description.
