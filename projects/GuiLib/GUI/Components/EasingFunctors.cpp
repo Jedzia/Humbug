@@ -5,8 +5,8 @@
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
- *             the TextAnimatorImpl.cpp class.
- * \file       TextAnimatorImpl.cpp
+ *             timing easing functions.
+ * \file       easing.cpp
  * \date       2016-01-23
  * \author     Jedzia.
  *

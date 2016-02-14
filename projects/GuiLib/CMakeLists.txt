@@ -39,6 +39,7 @@ SET(USE_LIB_BOOST TRUE)
 INCLUDE (bindings)
 
 SET(GuiLib_GLOBAL_headers
+		MathDefs.h
 		TimingDefs.h
 )
 

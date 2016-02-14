@@ -79,7 +79,7 @@ float rangeMap(seconds now, float outMin, float outMax, float inMin, float inMax
 }
 
 float Timing::RangeMappedSinceStart(
-        float outMin, float outMax,
+        float outStart, float outEnd,
         float inMin, float inMax,
         float outMinClamp, float outMaxClamp,
         TimeEasingFunc functor,
@@ -87,19 +87,19 @@ float Timing::RangeMappedSinceStart(
     seconds now = SecondsSinceStart();
     if(functor) {
         float functormap = rangeMap(now, 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
-        return rangeMap(functor(functormap), outMin, outMax, 0, 1, outMinClamp, outMaxClamp);
+        return rangeMap(functor(functormap), outStart, outEnd, 0, 1, outMinClamp, outMaxClamp);
     }
 
-    return rangeMap(now, outMin, outMax, inMin, inMax, outMinClamp, outMaxClamp);
+    return rangeMap(now, outStart, outEnd, inMin, inMax, outMinClamp, outMaxClamp);
 }
 
-float Timing::RangeMappedSinceStart(float outMin,
-        float outMax,
+float Timing::RangeMappedSinceStart(float outStart,
+        float outEnd,
         seconds inMax,
         TimeEasingFunc functor,
         float foutMinClamp,
         float foutMaxClamp) {
-    return RangeMappedSinceStart(outMin, outMax, outMin, inMax,
+    return RangeMappedSinceStart(outStart, outEnd, outStart, inMax,
 //            outMin, outMax,
             -std::numeric_limits<float>::max(), std::numeric_limits<float>::max(),
             functor,
