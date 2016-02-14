@@ -59,11 +59,12 @@ struct ZoomInScreen::ZoomInScreenImpl {
         CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (x + 10) + fcol.g);
 
         //static EaseOutBounce ease;
-        //static EaseOutBounce ease;
-        static EaseOutQuart ease;
+        //static EaseOutQuart ease;
+        static EaseOutElastic ease(2);
 
         //float t1 = timing.RangeMappedSinceStart(0, 120, 0, 2.0f, 0, 120, boost::ref(ease));
-        float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 1.25f, boost::ref(ease));
+        //float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 0, 2.0f, 0, screenrect.GetH() * 2, boost::ref(ease));
+        float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 3.25f, boost::ref(ease));
         int zoomSize = t1;
         //int zoomSize = x * 16;
         CRectangle growRect(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);

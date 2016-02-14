@@ -75,6 +75,11 @@ public:
     vdouble operator()(vdouble t) const;
 };
 
+/** @class EaseOutQuart:
+ *  Detailed description.
+ *  @param t TODO
+ *  @return TODO
+ */
 class EaseOutQuart {
 public:
 
@@ -83,8 +88,11 @@ public:
     vdouble operator()(vdouble t) const;
 };
 
-
-
+/** @class EaseInOutQuart:
+ *  Detailed description.
+ *  @param t TODO
+ *  @return TODO
+ */
 class EaseInOutQuart {
 public:
 
@@ -92,7 +100,6 @@ public:
 
     vdouble operator()(vdouble t) const;
 };
-
 
 /** @class EaseInOutElastic:
  *  Detailed description.
@@ -117,6 +124,24 @@ public:
  *  @param t TODO
  *  @return TODO
  */
+class EaseOutElastic {
+    vdouble m_amplitude;
+    vdouble m_period;
+
+public:
+
+    explicit EaseOutElastic(const vdouble amplitude = static_cast<vdouble>(1.0f),
+            const vdouble period = static_cast<vdouble>(1.0f)) : m_amplitude(amplitude), m_period(period)
+    { }
+
+    vdouble operator()(vdouble t) const;
+};
+
+/** @class EaseOutInElastic:
+ *  Detailed description.
+ *  @param t TODO
+ *  @return TODO
+ */
 class EaseOutInElastic {
     vdouble m_amplitude;
     vdouble m_period;
@@ -130,6 +155,11 @@ public:
     vdouble operator()(vdouble t) const;
 };
 
+/** @class EaseOutBounce:
+ *  Detailed description.
+ *  @param t TODO
+ *  @return TODO
+ */
 class EaseOutBounce {
     vdouble m_amplitude;
 
@@ -140,6 +170,7 @@ public:
 
     vdouble operator()(vdouble t) const;
 };
+
 /** @class EaseInOutBounce:
  *  Detailed description.
  *  @param t TODO
