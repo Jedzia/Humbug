@@ -14,7 +14,7 @@
  */
 /*---------------------------------------------------------*/
 #pragma once
-#include "TextAnimator.h"
+#include "../../MathDefs.h"
 
 namespace gui {
 namespace components {

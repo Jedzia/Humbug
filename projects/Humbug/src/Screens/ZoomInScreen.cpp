@@ -31,6 +31,7 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -41,8 +42,15 @@ namespace humbug {
 struct ZoomInScreen::ZoomInScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
-    int x = 0;
+    int x;
     boost::scoped_ptr<gui::components::CImage> m_pBlue;
+    Timing timing;
+
+
+    ZoomInScreenImpl(Screen* host)
+        : x(0), timing{ host }
+    {
+    }
 
     void draw(CCanvas* canvas, SDL_Color& fcol) {
         CRectangle screenrect = canvas->GetDimension();
@@ -50,7 +58,14 @@ struct ZoomInScreen::ZoomInScreenImpl {
         CColor textColor(fcol.r, fcol.g, fcol.b);
         CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (x + 10) + fcol.g);
 
-        int zoomSize = x * 16;
+        //static EaseOutBounce ease;
+        //static EaseOutBounce ease;
+        static EaseOutQuart ease;
+
+        //float t1 = timing.RangeMappedSinceStart(0, 120, 0, 2.0f, 0, 120, boost::ref(ease));
+        float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 1.25f, boost::ref(ease));
+        int zoomSize = t1;
+        //int zoomSize = x * 16;
         CRectangle growRect(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);
         //CPoint c_point = m_pKeyHandler->Char();
         CPoint pt_dst = CPoint(50 + x, 50 + x);
@@ -61,7 +76,7 @@ struct ZoomInScreen::ZoomInScreenImpl {
 };
 
 ZoomInScreen::ZoomInScreen(FileLoader& loader, CCanvas* background) :
-    pimpl_(new ZoomInScreen::ZoomInScreenImpl),
+    pimpl_(new ZoomInScreen::ZoomInScreenImpl(this)),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
@@ -207,6 +222,7 @@ void ZoomInScreen::OnKeyDown(SDL_Keycode sym, Uint16) {
     case SDLK_SPACE:
     {
         pimpl_->x = 0;
+        pimpl_->timing.Reset();
         break;
     }
     default:

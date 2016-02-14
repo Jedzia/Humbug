@@ -114,9 +114,39 @@ public:
      */
     seconds SecondsSinceStart();
 
+    /** Time Easing Function
+    *  A functor or function that transforms the input range 0.0f to 1.0f into an output value between 0.0f and 1.0f.
+    */
     typedef boost::function<float(float)> TimeEasingFunc;
+    
+    /** Timing, input/output range mapper
+    *  Maps the timing to the specified output range.
+    *  @param outMin The lower range of the output value.
+    *  @param outMax The upper range of the output value.
+    *  @param inMin The lower range of the input value. The input value is always SecondsSinceStart().
+    *  @param inMax The upper range of the input value. The input value is always SecondsSinceStart().
+    *  @param outMinClamp Minimum clamping for the return value.
+    *  @param outMaxClamp Maximum clamping for the return value.
+    *  @param functor Time easing functor.
+    *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing functor.
+    *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing functor.
+    *  @return the range-mapped value of SecondsSinceStart().
+    */
     float RangeMappedSinceStart(float outMin, float outMax, float inMin = 0.0f, float inMax = 1.0f,
         float outMinClamp = -std::numeric_limits<float>::max(), float outMaxClamp = std::numeric_limits<float>::max(), 
+        TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
+
+    /** Timing, duration range mapper 
+    *  Maps a duration to the specified output range.
+    *  @param outMin The lower range of the output value.
+    *  @param outMax The upper range of the output value.
+    *  @param duration The duration it should take to come from outMin to outMax.
+    *  @param functor Time easing functor.
+    *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing functor.
+    *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing functor.
+    *  @return the range-mapped value of SecondsSinceStart().
+    */
+    float RangeMappedSinceStart(float outMin, float outMax, seconds duration = 1.0f, 
         TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
 
     /** Brief description of Timing, IsBefore

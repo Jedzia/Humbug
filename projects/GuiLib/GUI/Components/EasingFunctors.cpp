@@ -21,6 +21,8 @@
 namespace gui {
 namespace components {
 
+#include "easing/easing.cpp"
+
 vdouble EaseOutQuad::operator()(vdouble t) const {
     return -t * (t - 2);
 }

@@ -14,6 +14,7 @@
  */
 /*---------------------------------------------------------*/
 #pragma once
+#include "../../MathDefs.h"
 #include "Rectangle.h"
 #include "Timing.h"
 #include "Canvas.h"
@@ -25,7 +26,6 @@ namespace components {
     class CText;
 class CCanvas;
 
-typedef float vdouble;
 typedef boost::numeric::ublas::vector<vdouble> vector2d;
 typedef boost::function<vdouble(vdouble)> TimeEasingFunc;
 

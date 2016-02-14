@@ -101,6 +101,14 @@ namespace gui {
         return rangeMap(now, outMin, outMax, inMin, inMax, outMinClamp, outMaxClamp);
     }
 
+    float Timing::RangeMappedSinceStart(float outMin, float outMax, seconds inMax, TimeEasingFunc functor, float foutMinClamp, float foutMaxClamp)
+    {
+        return RangeMappedSinceStart(outMin, outMax, outMin, inMax,
+            outMin, outMax,
+            functor,
+            foutMinClamp, foutMaxClamp);
+    }
+
     bool Timing::IsBefore(seconds time, const ConditionalTimeFunc& func)
     {
         m_timeLastCheck = time;
