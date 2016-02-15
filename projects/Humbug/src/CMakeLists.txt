@@ -105,10 +105,12 @@ SET(Humbug_MyGUI_sources
 SET(Humbug_Level_headers 
 		Levels/TestLevel.h
 		Levels/LevelA.h
+		Levels/Scroller/ScrollerLevelA.h
 )
 SET(Humbug_Level_sources 
 		Levels/TestLevel.cpp
 		Levels/LevelA.cpp
+		Levels/Scroller/ScrollerLevelA.cpp
 )
 
 # putting the sources together

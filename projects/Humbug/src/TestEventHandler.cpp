@@ -38,6 +38,7 @@
 #include "Screens/ZoomInScreen.h"
 #include "Screens/MenuScreen/SubmenuA.h"
 #include "Screens/MenuScreen/TutorEasing.h"
+#include "Levels/Scroller/ScrollerLevelA.h"
 
 namespace humbug {
 
@@ -262,7 +263,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
                 //"Press '1' for: StartScreen",
                 "Press '1' for: current devel Screen",
 				"Press '2' for: Highscores",
-				"Press '3' for: TestLevel",
+                //"Press '3' for: TestLevel",
+                "Press '3' for: ScrollerLevelA",
 				"Press '4' for: BlaScreen",
 				"Press '5' for: TileScreen",
 				"Press '6' for: LuaScreen",
@@ -349,7 +351,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<ZoomInScreen>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
-    HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
+    //HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<levels::ScrollerLevelA>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator<HighscoreScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->RegisterHookable("Highscores", HookCreatorPtr(new ScreenCreator < SubmenuA> (*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("Bla", HookCreatorPtr(new ScreenCreator<BlaScreen>(*fl, m_pMainCanvas)));
