@@ -144,7 +144,11 @@ ENDFOREACH()
 
 
 FOREACH(f ${IMAGES_SOURCE_FILES})
-#		MESSAGE(STATUS "IMG: ${f}")
+		#MESSAGE(STATUS "IMG: ${f}")
+		if("${f}" MATCHES "Artwork/Sprites/Ship")
+			#MESSAGE(STATUS "SKIP IMG: ${f}")
+			continue()
+		endif()
 		ADD_IMGCONVERSION_TARGET(Artwork ${${PROJECT_NAME}_WORKDIR} ${f} png)
 ENDFOREACH()
 

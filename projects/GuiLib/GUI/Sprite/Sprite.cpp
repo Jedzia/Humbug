@@ -68,6 +68,12 @@ namespace gui
    *  @return TODO
    */
   void CSprite::Draw(){
+      m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
+      //CRectangle dstrect = m_pSprImage->DstRect();
+      //dstrect = dstrect / 2;
+      //m_pSprImage->RenderPut(m_pMainCanvas, dstrect + m_cpPos);
+      m_cpOldPos = m_cpPos;
+      return;
       m_pMainCanvas->Lock();
 
       if (m_pBackground) {

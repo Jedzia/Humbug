@@ -1,3 +1,13 @@
+-X-X-X-X- Montag, 15. Februar 2016 -----------------------------------------------------------------------------
+
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Sprites\Ship>
+"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" ShipSprite02.ai ShipSprite02.png
+
+creates ShipSprite02-0.png and ShipSprite02-1.png
+
+combine them:
+"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 ShipSprite02-* ShipSprite02.png
+----------------------------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mo, 01 Feb 2016 17:30:17 -----------------------------------------------------------
 Old in-place InfoText:

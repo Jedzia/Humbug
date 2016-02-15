@@ -341,6 +341,58 @@ using gui::controls::CControl;
 
 //gui::controls::CButton* testbutton;
 
+namespace hspriv {
+    class ShipMover {
+        int h_;
+        bool toggle_;
+        int deltaY_;
+        uint32_t sproffs;
+        //int rnd;
+
+    public:
+
+        ShipMover(int deltaY = 0, uint32_t spriteoffset = 3) : h_(-1),
+            toggle_(false),
+            deltaY_(deltaY),
+            sproffs(spriteoffset){
+            dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
+            int rnd = 180 - (rand() % 360);
+            h_ = rnd;
+        }
+        ~ShipMover(){
+            dbgOut(__FUNCTION__ << " " << this);
+        }
+        /** $(fclass), operator ():
+        *  Detailed description.
+        *  @param sprite TODO
+        * @param ticks TODO
+        * @return TODO
+        */
+        void operator()(CSprite* sprite, int ticks) {
+            double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
+            int ssin = static_cast<int>(ss * 100);
+
+            //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
+            sprite->SetPos(CPoint(130 + ssin, deltaY_));
+            sprite->SprOffset(ticks % sproffs);
+
+            if (h_ >= 180) {
+                toggle_ = false;
+            }
+            else if (h_ <= -180)   {
+                toggle_ = true;
+            }
+
+            if (toggle_) {
+                h_++;
+            }
+            else {
+                h_--;
+            }
+        } // ()
+    };
+}
+
 /** $(class), OnInit:
  *  Detailed description.
  *  @param argc TODO
@@ -445,6 +497,11 @@ bool ScrollerLevelA::OnInit( int argc, char* argv[] ){
 
     m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );
 
+    //CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/eye.png", m_pMainCanvas, CRectangle(0, 0, 64, 64), CPoint(64, 0));
+    CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 0));
+    m_pSprEye->SprImage()->DstRect() = m_pSprEye->SprImage()->DstRect() / 2;
+    m_pSprMgr->AddSprite(m_pSprEye, hspriv::ShipMover(160));
+
     return Screen::OnInit(argc, argv);
 
     //return true;
@@ -459,7 +516,7 @@ void ScrollerLevelA::OnIdle(int ticks){
     m_pOverlay->IdleSetVars(ticks);
     m_pKeyHandler->HookIdle(ticks, 1.0f);
     //m_pScroller->Scroll(4);
-    //m_pSprMgr->OnIdle(ticks);
+    m_pSprMgr->OnIdle(ticks);
 }
 
 /** $(class), OnDraw:
@@ -506,18 +563,15 @@ void ScrollerLevelA::OnDraw(){
     m_pMainCanvas->RenderFillRect( frect, &sdl_color );
     //m_pMainCanvas->AddUpdateRect(frect);
 
-    static int xxx = 0;
+    /*static int xxx = 0;
     CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);
     CRectangle srcDims(0 + xxx, 0, 600, 200 - xxx);
-    //m_pScrollText->Put(m_pBackground.get(),dstDims, srcDims );
-//        m_pScrollText->GetCanvas()->SetTextureColorMod(sdl_color);
     m_pScrollText->RenderPut(m_pMainCanvas, dstDims, srcDims );
-    //m_pMainCanvas->AddUpdateRect(dstDims);
     xxx++;
 
     if (xxx > 128) {
         xxx = 0;
-    }
+    }*/
 
     //testbutton->Invalidate();
     //testbutton->Draw();
@@ -530,15 +584,10 @@ void ScrollerLevelA::OnDraw(){
     //CPoint point = CPoint(300, 300);
     //m_pBlue->RenderCopy(point);
 
-    CColor bannercolor(sdl_color);
+    /*CColor bannercolor(sdl_color);
     bannercolor.SetR(255 - coldelta);
-    //m_pBanding1->GetCanvas()->SetTextureColorMod(bannercolor);
-    //m_pBanding1->GetCanvas()->RenderCopy(CPoint(40, 550));
     m_pBanding1->RenderPut( m_pMainCanvas, CPoint(40, 550) );
-    //m_pBanding1->RenderPut(m_pBackground.get(), CPoint(40, 550));
-
-    m_pBanding2->RenderPut( m_pBackground.get(), CPoint(140, 250) );
-    //m_pBanding2->RenderPut(m_pMainCanvas, CPoint(140, 250));
+    m_pBanding2->RenderPut( m_pBackground.get(), CPoint(140, 250) );*/
 
     pimpl_->Draw();
 
@@ -548,7 +597,7 @@ void ScrollerLevelA::OnDraw(){
         coldelta = 0;
     }
 
-    //m_pOverlay->OnDraw();
+    m_pSprMgr->OnDraw();
     m_pOverlay->Draw();
     m_pMainCanvas->Unlock();
 }     // OnDraw
