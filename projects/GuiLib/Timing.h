@@ -63,7 +63,7 @@ public:
     static const int FRAMESPERSECOND = gui::FRAMESPERSECOND;
 
     explicit Timing(UpdateTimeFunc updateFunction = NULL);
-    explicit Timing(Hookable* updater);
+    explicit Timing(const Hookable* updater);
     explicit Timing(int startupTicks, UpdateTimeFunc updateFunction = NULL);
     explicit Timing(int startupTicks, Hookable* updater);
 

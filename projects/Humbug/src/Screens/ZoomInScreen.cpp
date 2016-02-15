@@ -32,6 +32,7 @@
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
 #include <GuiLib/GUI/Components/EasingFunctors.h>
+#include <GuiLib/GUI/Components/TextAnimatorImpl.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -39,17 +40,55 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
+    
+    class AnimatedRectangle
+    {
+        CRectangle m_recStart;
+        CRectangle m_recEnd;
+        Timing m_Timing;
+        vdouble m_duration;
+        TimeEasingFunc m_easingFunc;
+
+    public:
+        AnimatedRectangle(const CRectangle& recStart, const CRectangle& recEnd, const Hookable* updater, vdouble duration, TimeEasingFunc easingfunc = NULL)
+            : m_recStart{recStart},
+              m_recEnd{recEnd},
+              m_Timing(updater), m_duration(duration), m_easingFunc(easingfunc)
+        {
+        }
+
+        void Reset() { m_Timing.Reset(); }
+
+        // conversion
+        operator CRectangle()
+        {
+            //static EaseNone ease;
+            float x = m_Timing.RangeMappedSinceStart(m_recStart.GetX(), m_recEnd.GetX(), m_duration, m_easingFunc);
+            float y = m_Timing.RangeMappedSinceStart(m_recStart.GetY(), m_recEnd.GetY(), m_duration, m_easingFunc);
+            float w = m_Timing.RangeMappedSinceStart(m_recStart.GetW(), m_recEnd.GetW(), m_duration, m_easingFunc);
+            float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration, m_easingFunc);
+            //float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration, boost::ref(ease));
+            return CRectangle(x, y, w, h);
+        };
+
+    private:
+
+    };
+
 struct ZoomInScreen::ZoomInScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
+    ZoomInScreen* m_host;
     int x;
-    boost::scoped_ptr<gui::components::CImage> m_pBlue;
+    boost::scoped_ptr<gui::components::CImage> m_pZoomingImage;
     Timing timing;
+    AnimatedRectangle animRect;
+    boost::shared_ptr<AnimatedRectangle> animRect1;
 
-
-    ZoomInScreenImpl(Screen* host)
-        : x(0), timing{ host }
+    ZoomInScreenImpl(ZoomInScreen* host)
+        : m_host(host), x(0), timing{ host }, animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, EaseInOutElastic(2))
     {
+        animRect1 = boost::make_shared<AnimatedRectangle>(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, EaseInOutElastic(2));
     }
 
     void draw(CCanvas* canvas, SDL_Color& fcol) {
@@ -70,8 +109,21 @@ struct ZoomInScreen::ZoomInScreenImpl {
         CRectangle growRect(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);
         //CPoint c_point = m_pKeyHandler->Char();
         CPoint pt_dst = CPoint(50 + x, 50 + x);
-        //m_pBlue->RenderPut(canvas, pt_dst);
-        m_pBlue->RenderPut(canvas, growRect);
+        //m_pZoomingImage->RenderPut(canvas, pt_dst);
+        m_pZoomingImage->RenderPut(canvas, growRect);
+
+        // CRectangle rect2(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);
+        const int drawSize = 200;
+        CRectangle rect2(screenrect.GetW() / 2 - drawSize / 2, screenrect.GetH() / 2 - drawSize / 2, drawSize, drawSize);
+        //AnimatedRectangle animRect(CRectangle(100, 100, 10, 10), rect2, m_host);
+        //static EaseNone easeAnim;
+        //static AnimatedRectangle animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, boost::ref(easeAnim));
+        //static AnimatedRectangle animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, EaseInOutElastic(2));
+        canvas->RenderDrawRect(animRect, &textColor);
+
+
+
+
         x++;
     }
 };
@@ -128,7 +180,7 @@ bool ZoomInScreen::OnInit(int argc, char* argv[]) {
     //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
 
-    pimpl_->m_pBlue.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Images/Strange01.png")), true));
+    pimpl_->m_pZoomingImage.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Images/Strange01.png")), true));
 
     //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
     //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
@@ -224,6 +276,11 @@ void ZoomInScreen::OnKeyDown(SDL_Keycode sym, Uint16) {
     {
         pimpl_->x = 0;
         pimpl_->timing.Reset();
+        break;
+    }
+    case SDLK_a:
+    {
+        pimpl_->animRect.Reset();
         break;
     }
     default:

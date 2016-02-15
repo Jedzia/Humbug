@@ -31,7 +31,7 @@ UpdateTimeFunc Timing::GetTimeUpdateFunction(const Hookable* hookable) {
 Timing::Timing(UpdateTimeFunc updateFunction) : Timing(0, updateFunction)
 {}
 
-Timing::Timing(Hookable* updater) : Timing(0, GetTimeUpdateFunction(updater))
+Timing::Timing(const Hookable* updater) : Timing(0, GetTimeUpdateFunction(updater))
 {}
 
 Timing::Timing(int startupTicks, UpdateTimeFunc updateFunction) : m_fncUpdateTime(updateFunction), m_iTicks(0), m_iStartTicks(startupTicks),
@@ -95,11 +95,11 @@ float Timing::RangeMappedSinceStart(
 
 float Timing::RangeMappedSinceStart(float outStart,
         float outEnd,
-        seconds inMax,
+        seconds duration,
         TimeEasingFunc functor,
         float foutMinClamp,
         float foutMaxClamp) {
-    return RangeMappedSinceStart(outStart, outEnd, outStart, inMax,
+    return RangeMappedSinceStart(outStart, outEnd, 0, duration,
 //            outMin, outMax,
             -std::numeric_limits<float>::max(), std::numeric_limits<float>::max(),
             functor,

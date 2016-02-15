@@ -18,7 +18,7 @@
 
 namespace gui {
 typedef float seconds;
-typedef boost::function<int (void)> UpdateTimeFunc;
+typedef boost::function<int (void)> const UpdateTimeFunc;
 typedef boost::function<bool (seconds time)> UnaryTimeCheckFunc;
 
 static const int FRAMESPERSECOND = 30;

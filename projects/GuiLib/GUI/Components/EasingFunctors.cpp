@@ -55,6 +55,11 @@ vdouble EaseInOutQuart::operator()(vdouble t) const {
     return easeInOutQuart(t);
 }
 
+vdouble EaseInOutElastic::operator()(vdouble t) const
+{
+    return easeInOutElastic(t, m_amplitude, m_period);
+}
+
 vdouble EaseOutElastic::operator()(vdouble t) const {
     return easeOutElastic_helper(t, 0, 1, 1, m_amplitude, m_period);
 }
