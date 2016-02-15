@@ -21,9 +21,11 @@
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
 #include <GuiLib/Filesystem/FileLoader.h>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 #include <GuiLib/GUI/Components/Image.h>
 #include <GuiLib/GUI/Components/Rectangle.h>
 #include <GuiLib/GUI/Components/Text.h>
+#include <GuiLib/GUI/Components/TextAnimatorImpl.h>
 #include <GuiLib/GUI/Components/TextScroller.h>
 #include <GuiLib/GUI/Controls/Control.h>
 #include <GuiLib/GUI/Data/ColorData.h>
@@ -31,8 +33,6 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
-#include <GuiLib/GUI/Components/EasingFunctors.h>
-#include <GuiLib/GUI/Components/TextAnimatorImpl.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -40,40 +40,52 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
-    
-    class AnimatedRectangle
+/** @class AnimatedRectangle:
+ *  Detailed description.
+ *
+ */
+class AnimatedRectangle : public boost::noncopyable {
+    CRectangle m_recStart;
+    CRectangle m_recEnd;
+    Timing m_Timing;
+    vdouble m_duration;
+    TimeEasingFunc m_easingFunc;
+
+public:
+
+    AnimatedRectangle(const CRectangle& recStart,
+            const CRectangle& recEnd,
+            const Hookable* updater,
+            vdouble duration,
+            TimeEasingFunc easingfunc = NULL)
+        : m_recStart{recStart}, m_recEnd{recEnd}, m_Timing(updater), m_duration(duration), m_easingFunc(easingfunc) {
+    }
+
+    AnimatedRectangle(const CRectangle& recStart,
+            const CRectangle& recEnd,
+            UpdateTimeFunc updateFunction,
+            vdouble duration,
+            TimeEasingFunc easingfunc = NULL)
+        : m_recStart{recStart}, m_recEnd{recEnd}, m_Timing(updateFunction), m_duration(duration), m_easingFunc(easingfunc) {
+    }
+
+    void Reset() { m_Timing.Reset(); }
+
+    // conversion
+    operator CRectangle()
     {
-        CRectangle m_recStart;
-        CRectangle m_recEnd;
-        Timing m_Timing;
-        vdouble m_duration;
-        TimeEasingFunc m_easingFunc;
-
-    public:
-        AnimatedRectangle(const CRectangle& recStart, const CRectangle& recEnd, const Hookable* updater, vdouble duration, TimeEasingFunc easingfunc = NULL)
-            : m_recStart{recStart},
-              m_recEnd{recEnd},
-              m_Timing(updater), m_duration(duration), m_easingFunc(easingfunc)
-        {
-        }
-
-        void Reset() { m_Timing.Reset(); }
-
-        // conversion
-        operator CRectangle()
-        {
-            //static EaseNone ease;
-            float x = m_Timing.RangeMappedSinceStart(m_recStart.GetX(), m_recEnd.GetX(), m_duration, m_easingFunc);
-            float y = m_Timing.RangeMappedSinceStart(m_recStart.GetY(), m_recEnd.GetY(), m_duration, m_easingFunc);
-            float w = m_Timing.RangeMappedSinceStart(m_recStart.GetW(), m_recEnd.GetW(), m_duration, m_easingFunc);
-            float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration, m_easingFunc);
-            //float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration, boost::ref(ease));
-            return CRectangle(x, y, w, h);
-        };
-
-    private:
-
+        //static EaseNone ease;
+        float x = m_Timing.RangeMappedSinceStart(m_recStart.GetX(), m_recEnd.GetX(), m_duration, m_easingFunc);
+        float y = m_Timing.RangeMappedSinceStart(m_recStart.GetY(), m_recEnd.GetY(), m_duration, m_easingFunc);
+        float w = m_Timing.RangeMappedSinceStart(m_recStart.GetW(), m_recEnd.GetW(), m_duration, m_easingFunc);
+        float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration, m_easingFunc);
+        //float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration,
+        // boost::ref(ease));
+        return CRectangle(x, y, w, h);
     };
+
+private:
+};
 
 struct ZoomInScreen::ZoomInScreenImpl {
     //prv::EyeMover eyemover;
@@ -82,13 +94,15 @@ struct ZoomInScreen::ZoomInScreenImpl {
     int x;
     boost::scoped_ptr<gui::components::CImage> m_pZoomingImage;
     Timing timing;
-    AnimatedRectangle animRect;
     boost::shared_ptr<AnimatedRectangle> animRect1;
 
     ZoomInScreenImpl(ZoomInScreen* host)
-        : m_host(host), x(0), timing{ host }, animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, EaseInOutElastic(2))
-    {
-        animRect1 = boost::make_shared<AnimatedRectangle>(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, EaseInOutElastic(2));
+        : m_host(host), x(0), timing{host} {
+        // *** initialize Animated Rectangle ***
+        animRect1 = boost::make_shared<AnimatedRectangle>(
+                CRectangle(50, 50, 50, 50), // starting shape
+                CRectangle(400, 400, 300, 300), // final shape
+                host, 2.0f, EaseOutBounce(2));
     }
 
     void draw(CCanvas* canvas, SDL_Color& fcol) {
@@ -97,12 +111,15 @@ struct ZoomInScreen::ZoomInScreenImpl {
         CColor textColor(fcol.r, fcol.g, fcol.b);
         CRectangle rect = screenrect + sp.Offset(fcol.r, 1 * (x + 10) + fcol.g);
 
+        // *** Range mapper test ***
+
         //static EaseOutBounce ease;
         //static EaseOutQuart ease;
         static EaseOutElastic ease(2);
 
         //float t1 = timing.RangeMappedSinceStart(0, 120, 0, 2.0f, 0, 120, boost::ref(ease));
-        //float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 0, 2.0f, 0, screenrect.GetH() * 2, boost::ref(ease));
+        //float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 0, 2.0f, 0,
+        // screenrect.GetH() * 2, boost::ref(ease));
         float t1 = timing.RangeMappedSinceStart(0, screenrect.GetH(), 3.25f, boost::ref(ease));
         int zoomSize = t1;
         //int zoomSize = x * 16;
@@ -112,20 +129,22 @@ struct ZoomInScreen::ZoomInScreenImpl {
         //m_pZoomingImage->RenderPut(canvas, pt_dst);
         m_pZoomingImage->RenderPut(canvas, growRect);
 
-        // CRectangle rect2(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize / 2, zoomSize, zoomSize);
-        const int drawSize = 200;
-        CRectangle rect2(screenrect.GetW() / 2 - drawSize / 2, screenrect.GetH() / 2 - drawSize / 2, drawSize, drawSize);
+        // *** Animated Rectangle ***
+
+        // CRectangle rect2(screenrect.GetW() / 2 - zoomSize / 2, screenrect.GetH() / 2 - zoomSize /
+        // 2, zoomSize, zoomSize);
+        //const int drawSize = 200;
+        //CRectangle rect2(screenrect.GetW() / 2 - drawSize / 2, screenrect.GetH() / 2 - drawSize / 2, drawSize, drawSize);
         //AnimatedRectangle animRect(CRectangle(100, 100, 10, 10), rect2, m_host);
         //static EaseNone easeAnim;
-        //static AnimatedRectangle animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, boost::ref(easeAnim));
-        //static AnimatedRectangle animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300), m_host, 2.0f, EaseInOutElastic(2));
-        canvas->RenderDrawRect(animRect, &textColor);
-
-
-
+        //static AnimatedRectangle animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300,
+        // 300), m_host, 2.0f, boost::ref(easeAnim));
+        //AnimatedRectangle animRect(CRectangle(50, 50, 50, 50), CRectangle(400, 400, 300, 300),
+        // m_host, 2.0f, EaseInOutElastic(2));
+        canvas->RenderDrawRect(*animRect1, &textColor);
 
         x++;
-    }
+    } // draw
 };
 
 ZoomInScreen::ZoomInScreen(FileLoader& loader, CCanvas* background) :
@@ -280,11 +299,11 @@ void ZoomInScreen::OnKeyDown(SDL_Keycode sym, Uint16) {
     }
     case SDLK_a:
     {
-        pimpl_->animRect.Reset();
+        pimpl_->animRect1->Reset();
         break;
     }
     default:
         break;
     }     // switch
-}
+} // ZoomInScreen::OnKeyDown
 }
