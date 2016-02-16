@@ -48,11 +48,11 @@ protected:
     * @return true on success.
     */
     bool OnInit(int argc, char* argv[]) override;
+    virtual void OnEvent(SDL_Event* pEvent);
 private:
     GroupId GetGroupID() override;
 
     void OnIdle( int ticks ) override;
-	virtual void OnEvent(SDL_Event* pEvent);
     virtual void OnKeyDown(SDL_Keycode sym, Uint16 mod);
     virtual void OnFocus() {    }
     virtual void OnLostFocus() {    }
