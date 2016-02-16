@@ -55,7 +55,10 @@ public:
     CPoint& Scale (int scalar);
 
     //distance
-    int Distance(const CPoint& pt);
+    int Distance(const CPoint& pt) const;
+
+    //angle between two vectors
+    float Angle(const CPoint& pt) const;
 
     //assignment
     CPoint& operator = (const CPoint& pt);

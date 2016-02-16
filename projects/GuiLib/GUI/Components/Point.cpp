@@ -144,12 +144,20 @@ CPoint& CPoint::Scale (int scalar) {
 }
 
 //distance
-int CPoint::Distance(const CPoint& pt) {
+int CPoint::Distance(const CPoint& pt) const
+{
     //calculate distance
-    int distance = X() * X() + Y() * Y();
+    CPoint diff = *this - pt;
+    int distance = diff.X() * diff.X() + diff.Y() * diff.Y();
     distance = static_cast<int >(sqrt(static_cast<double>(distance)));
     //return the distance
     return (distance);
+}
+
+float CPoint::Angle(const CPoint& pt) const
+{
+    float radians = atan2(GetY() - pt.GetY(), GetX() - pt.GetX());
+    return radians * 180 / boost::math::constants::pi<float>();
 }
 
 //operators

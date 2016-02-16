@@ -60,6 +60,7 @@ public:
        * @return nothing.
        */
       void SetPos(CPoint pos);
+      CPoint GetPos() const { return m_cpPos; };
 
       void SprOffset(int offset);
 
