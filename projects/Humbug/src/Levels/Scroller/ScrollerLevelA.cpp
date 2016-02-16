@@ -281,55 +281,6 @@ public:
 
 int CanvasStripeRendererA::renderNum = 0;
 
-struct ScrollerLevelA::ScrollerLevelAImpl {
-private:
-
-    //prv::EyeMover eyemover;
-    //prv::WormMover wormmover;
-    int x;
-    ScrollerLevelA* host;
-
-public:
-
-    explicit ScrollerLevelAImpl(ScrollerLevelA* host)
-        : x(0), host{host}
-    {}
-
-    void Draw() {
-        auto aaaa = host->m_pBackground->GetDimension();
-    }
-};
-
-ScrollerLevelA::ScrollerLevelA(FileLoader& loader, gui::components::CCanvas* background) :
-    pimpl_(new ScrollerLevelA::ScrollerLevelAImpl(this)),
-    Screen(background, true),
-    m_Loader(loader),
-    m_pArialfont(NULL),
-    //m_iUpdateTimes(0),
-    m_pScrollText(NULL),
-    m_pScroller(NULL),
-    m_pSeamlessImage(NULL),
-    m_pKeyHandler(new PlayerKeys3(200, 600, false, false, 1.0f)),
-    m_pSprMgr(new CSpriteManager) {
-    //,m_pSprEye(NULL),
-    //m_pSprWormler(NULL)
-    dbgOut(__FUNCTION__ << " " << this);
-}
-
-ScrollerLevelA::~ScrollerLevelA(void) {
-    //if (m_pArialfont) {
-    //    TTF_CloseFont(m_pArialfont);
-    //}
-
-    delete m_pSeamlessImage;
-    //delete m_pScrollText;
-    //delete m_pScroller;
-    //delete m_pBackground;
-    //delete m_pSprWormler;
-    //delete m_pSprEye;
-    dbgOut(__FUNCTION__ << " " << this);
-}
-
 /*GroupId ScrollerLevelA::GetGroupID()
    {
     static GroupId grpID = CreateNextGroupID();
@@ -441,6 +392,161 @@ public:
         lastSpritePos = sprite->GetPos();
     }     // ()
 };
+
+class LaserMover {
+    int h_;
+    bool toggle_;
+    int deltaX_;
+    uint32_t sproffs;
+    uint32_t sproffsAct;
+    //int rnd;
+    CPoint lastSpritePos;
+    DebugOverlay* m_pOverlay;
+    CCanvas* m_pBackground;
+
+public:
+
+    LaserMover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 11) : h_(-1),
+        toggle_(false),
+        deltaX_(deltaY),
+        sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr), m_pBackground(background) {
+        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
+        int rnd = 180 - (rand() % 360);
+        h_ = rnd;
+    }
+
+    ~LaserMover() {
+        dbgOut(__FUNCTION__ << " " << this);
+    }
+
+    void SetDebugOverlay(DebugOverlay* m_p_overlay)
+    {
+        m_pOverlay = m_p_overlay;
+    }
+
+    void IncrementOffset() { sproffsAct++; }
+    void DecrementOffset() { sproffsAct--; }
+
+    /** $(fclass), operator ():
+    *  Detailed description.
+    *  @param sprite TODO
+    * @param ticks TODO
+    * @return TODO
+    */
+    void operator()(CSprite* sprite, int ticks) {
+        double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
+        double sc = std::cos(static_cast<double>(h_) / 3.14159 / 4.0);
+        int ssin = static_cast<int>(ss * 100);
+        int scos = static_cast<int>(sc * 100);
+
+        //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaX_ + ssin));
+        //sprite->SetPos(CPoint(130 + ssin, deltaX_ - scos));
+        sprite->SetPos(CPoint(deltaX_, 130 + ssin));
+        //sprite->SetPos(CPoint(deltaX_, 130));
+        int delta = lastSpritePos.Distance(sprite->GetPos());
+        float angle = lastSpritePos.Angle(sprite->GetPos());
+        //sproffsAct = 2;
+        /*if (delta > 4) {
+            if (angle <= 0) {
+                sproffsAct = 2;
+            }
+            else if (angle > 0) {
+                sproffsAct = 1;
+            }
+        }*/
+
+        //sprite->SprOffset(ticks % sproffs);
+        uint32_t offset = sproffsAct % sproffs;
+        sprite->SprOffset(offset);
+
+        CRectangle sdl_rect = sprite->SprImage()->DstRect();
+        //m_pBackground->RenderDrawRect(sdl_rect, &sprColor);
+        CColor sprColor = CColor::White();
+        m_pBackground->RenderFillRect(CRectangle(100,100,200,200), &sprColor);
+
+        if (m_pOverlay)
+        {
+            std::ostringstream out6003;
+            out6003 << "sproffs: (" << offset << ")";
+            m_pOverlay->SetTextLabelText(6003, out6003.str());
+
+            std::ostringstream out6004;
+            out6004 << "delta: (" << delta << ")";
+            m_pOverlay->SetTextLabelText(6004, out6004.str());
+        }
+
+
+
+
+
+        if (h_ >= 180) {
+            toggle_ = false;
+        }
+        else if (h_ <= -180) {
+            toggle_ = true;
+        }
+
+        if (toggle_) {
+            h_++;
+        }
+        else {
+            h_--;
+        }
+
+        lastSpritePos = sprite->GetPos();
+    }     // ()
+};
+
+}
+
+struct ScrollerLevelA::ScrollerLevelAImpl {
+private:
+
+    //prv::EyeMover eyemover;
+    //prv::WormMover wormmover;
+    int x;
+    ScrollerLevelA* host;
+
+public:
+    boost::shared_ptr<hspriv::LaserMover> updfunc2;
+
+    explicit ScrollerLevelAImpl(ScrollerLevelA* host)
+        : x(0), host{ host }
+    {}
+
+    void Draw() {
+        auto aaaa = host->m_pBackground->GetDimension();
+    }
+};
+
+ScrollerLevelA::ScrollerLevelA(FileLoader& loader, gui::components::CCanvas* background) :
+pimpl_(new ScrollerLevelA::ScrollerLevelAImpl(this)),
+Screen(background, true),
+m_Loader(loader),
+m_pArialfont(NULL),
+//m_iUpdateTimes(0),
+m_pScrollText(NULL),
+m_pScroller(NULL),
+m_pSeamlessImage(NULL),
+m_pKeyHandler(new PlayerKeys3(200, 600, false, false, 1.0f)),
+m_pSprMgr(new CSpriteManager) {
+    //,m_pSprEye(NULL),
+    //m_pSprWormler(NULL)
+    dbgOut(__FUNCTION__ << " " << this);
+}
+
+ScrollerLevelA::~ScrollerLevelA(void) {
+    //if (m_pArialfont) {
+    //    TTF_CloseFont(m_pArialfont);
+    //}
+
+    delete m_pSeamlessImage;
+    //delete m_pScrollText;
+    //delete m_pScroller;
+    //delete m_pBackground;
+    //delete m_pSprWormler;
+    //delete m_pSprEye;
+    dbgOut(__FUNCTION__ << " " << this);
 }
 
 /** $(class), OnInit:
@@ -554,6 +660,12 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     updfunc.SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprEye, updfunc);
 
+    CSprite* m_pSprLaser = new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CRectangle(0, 0, 49, 480), CPoint(49, 480));
+    int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprEye->SprImage()->DstRect().GetW() / 2;
+    pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
+    pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
+    m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
+
     return Screen::OnInit(argc, argv);
 
     //return true;
@@ -649,8 +761,8 @@ void ScrollerLevelA::OnDraw() {
         coldelta = 0;
     }
 
-    m_pSprMgr->OnDraw();
     m_pOverlay->Draw();
+    m_pSprMgr->OnDraw();
     m_pMainCanvas->Unlock();
 }     // OnDraw
 
@@ -674,6 +786,30 @@ void ScrollerLevelA::OnUpdate() {
 
 void ScrollerLevelA::OnEvent(SDL_Event* pEvent) {
     m_pKeyHandler->HookEventloop(pEvent);
+    Screen::OnEvent(pEvent);
 }
+
+void ScrollerLevelA::OnKeyDown(SDL_Keycode sym, Uint16) {
+    switch (sym) {
+    case SDLK_SPACE:
+    {
+        //pimpl_->x = 0;
+        //pimpl_->timing.Reset();
+        break;
+    }
+    case SDLK_KP_PLUS:
+    {
+        pimpl_->updfunc2->IncrementOffset();
+        break;
+    }
+    case SDLK_KP_MINUS:
+    {
+        pimpl_->updfunc2->DecrementOffset();
+        break;
+    }
+    default:
+        break;
+    }     // switch
+} // ZoomInScreen::OnKeyDown
 }
 }

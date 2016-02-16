@@ -120,7 +120,24 @@ namespace gui
    * @return TODO
    */
   void CSprite::SprOffset( int offset ){
-      m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
+      CRectangle fullspriteDimension = m_pSprImage->GetCanvas()->GetDimension();
+
+      int xMove = m_cpSprMove.GetX();
+      int yMove = m_cpSprMove.GetY();
+      if (xMove == 0)
+      {
+          // old behaviour, Todo: check & remove
+          m_pSprImage->SrcRect() = m_crSprDim.Move(m_cpSprMove * offset);
+          return;
+      }
+
+      int xRange = fullspriteDimension.GetW() / xMove;
+      //int yRange = fullspriteDimension.GetH() / yMove;
+      int xOffset = offset % xRange;
+      int yOffset = (offset / xRange);
+
+      CPoint offsetPoint(xMove * xOffset, yMove * yOffset);
+      m_pSprImage->SrcRect() = m_crSprDim.Move(offsetPoint);
   }
 
   /** CSprite, SetColorAndAlpha:

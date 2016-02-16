@@ -54,7 +54,7 @@ public:
         void OnDraw() override;
         void OnUpdate() override;
         void OnEvent(SDL_Event* pEvent) override;
-
+        void OnKeyDown(SDL_Keycode sym, Uint16) override;
 
     private:
 
