@@ -144,6 +144,7 @@ FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 		SET(_out_sequence_dir  "${CMAKE_CURRENT_BINARY_DIR}/${_additional_path}")
 		SET(_out_sequence_fullpath  "${_out_sequence_dir}/${_file_name}-%%03d.${_format}")
 		SET(_in_Mfile_fullpath      "${_out_sequence_dir}/${_file_name}-*")
+		SET(_in_Mfirstfile_fullpath  "${_out_sequence_dir}/${_file_name}-000.${_format}")
 		#MESSAGE(STATUS "[IMGCONV] HAS _additional_path")
 	ELSE()
 		SET(_out_file_fullpath      "${_imgconv_output_dir}/${_file_rel_path}/${_file_name}.${_format}")
@@ -151,6 +152,7 @@ FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 		SET(_out_sequence_dir  "${CMAKE_CURRENT_BINARY_DIR}/${_file_rel_path}")
 		SET(_out_sequence_fullpath  "${_out_sequence_dir}/${_file_name}-%%03d.${_format}")
 		SET(_in_Mfile_fullpath      "${_out_sequence_dir}/${_file_name}-*")
+		SET(_in_Mfirstfile_fullpath  "${_out_sequence_dir}/${_file_name}-000.${_format}")
 	ENDIF()
 	#MESSAGE(STATUS "[IMGCONV] output ${_out_file_fullpath}")
 
@@ -194,9 +196,10 @@ FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 	#file(MAKE_DIRECTORY ${directory})
 	SET(_out_file_buildcmd  "${_out_sequence_dir}/${_file_name}.${_format}.cmd")
 #	MESSAGE(STATUS "[IMGCONV-X] _out_file_buildcmd ${_out_file_buildcmd}")
+	MESSAGE(STATUS "[IMGCONV-X] _in_Mfirstfile_fullpath ${_in_Mfirstfile_fullpath}")
 	file(WRITE ${_out_file_buildcmd} "\"${Build_Image_CMD}\" ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS}" )
 	ADD_CUSTOM_COMMAND(
-		OUTPUT "${_out_file_fullpath}-MUL"
+		OUTPUT "${_in_Mfirstfile_fullpath}"
 		POST_BUILD
 #		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS} && touch ${_imgconv_final_output_dir}
 		COMMAND ${_out_file_buildcmd}
@@ -210,7 +213,7 @@ FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 		OUTPUT "${_out_file_fullpath}"
 		POST_BUILD
 		COMMAND ${Montage_Image_CMD} ${Montage_Image_OPTIONS} ${Montage_Image_ARGUMENTS} && touch ${_imgconv_final_output_dir}
-		DEPENDS "${_out_file_fullpath}-MUL"
+		DEPENDS "${_in_Mfirstfile_fullpath}"
 		COMMENT "Montage ${_file_name}-* Images to ${_file_name}.${_format}." 
 	)
 	list(APPEND IMGCONVERSION_TARGETS "${_out_file_fullpath}")

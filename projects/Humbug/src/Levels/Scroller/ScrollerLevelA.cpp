@@ -665,7 +665,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
     pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
-
+     
     return Screen::OnInit(argc, argv);
 
     //return true;
