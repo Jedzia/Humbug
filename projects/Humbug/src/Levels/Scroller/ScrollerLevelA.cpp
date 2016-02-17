@@ -22,7 +22,7 @@
 #include "boost/lambda/lambda.hpp"
 #include <cstdlib>
 //
-#include "../../Input/PlayerKeys3.h"
+#include "../../Input/PlayerKeys4.h"
 #include "GUI/DebugOverlay.h"
 #include "HumbugShared/GameObjects/Player.h"
 #include <GUI/Components/Rectangle.h>
@@ -307,11 +307,11 @@ class ShipMover {
     //int rnd;
     CPoint lastSpritePos;
     DebugOverlay* m_pOverlay;
-
+    PlayerKeys4* m_pKeyHandler;
 public:
 
-    ShipMover(int deltaY = 0, uint32_t spriteoffset = 3) : h_(-1),
-        toggle_(false),
+    ShipMover(PlayerKeys4* keyHandler, int deltaY = 0, uint32_t spriteoffset = 3) : h_(-1),
+        toggle_(false), m_pKeyHandler(keyHandler),
         deltaY_(deltaY),
         sproffs(spriteoffset), m_pOverlay(nullptr) {
         dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
@@ -342,11 +342,12 @@ public:
 
         //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
         //sprite->SetPos(CPoint(130 + ssin, deltaY_ - scos));
-        sprite->SetPos(CPoint(130 + ssin, deltaY_));
+        //sprite->SetPos(CPoint(130 + ssin, deltaY_));
+        sprite->SetPos(m_pKeyHandler->Char());
         int delta = lastSpritePos.Distance(sprite->GetPos());
         float angle = lastSpritePos.Angle(sprite->GetPos());
         int sproffsAct = 0;
-        if(delta > 4) {
+        if(delta > 0) {
             if(angle <= 0) {
                 sproffsAct = 2;
             }
@@ -358,6 +359,7 @@ public:
         //sprite->SprOffset(ticks % sproffs);
         sprite->SprOffset(sproffsAct % sproffs);
 
+        lastSpritePos = sprite->GetPos();
 
 
         if (m_pOverlay)
@@ -369,6 +371,10 @@ public:
             std::ostringstream out6001;
             out6001 << "delta: (" << delta << ")";
             m_pOverlay->SetTextLabelText(6001, out6001.str());
+           
+            std::ostringstream out6002;
+            out6002 << "spritePos: (" << lastSpritePos << ")";
+            m_pOverlay->SetTextLabelText(6002, out6002.str());
         }
 
 
@@ -389,7 +395,6 @@ public:
             h_--;
         }
 
-        lastSpritePos = sprite->GetPos();
     }     // ()
 };
 
@@ -528,7 +533,7 @@ m_pArialfont(NULL),
 m_pScrollText(NULL),
 m_pScroller(NULL),
 m_pSeamlessImage(NULL),
-m_pKeyHandler(new PlayerKeys3(200, 600, false, false, 1.0f)),
+m_pKeyHandler(NULL),
 m_pSprMgr(new CSpriteManager) {
     //,m_pSprEye(NULL),
     //m_pSprWormler(NULL)
@@ -654,14 +659,22 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 
     //CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/eye.png", m_pMainCanvas, CRectangle(0, 0,
     // 64, 64), CPoint(64, 0));
-    CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 0));
-    m_pSprEye->SprImage()->DstRect() = m_pSprEye->SprImage()->DstRect() / 2;
-    hspriv::ShipMover updfunc = hspriv::ShipMover(m_pMainCanvas->GetHeight() - m_pSprEye->SprImage()->DstRect().GetH() - 224);
+    CSprite* m_pSprShip = new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
+    m_pSprShip->SprImage()->DstRect() = m_pSprShip->SprImage()->DstRect() / 2;
+    int mainCanvasMiddleX = m_pMainCanvas->GetWidth() / 2;
+    int mainSprEyeMiddleX = m_pSprShip->SprImage()->DstRect().GetW() / 2;
+    CRectangle sprDimension = m_pSprShip->SpriteDimension();
+    CRectangle mainDimension = m_pMainCanvas->GetDimension();
+    //CRectangle rect = CRectangle() mainDimension.Pad(sprDimension);
+    CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(), mainDimension.GetW() - sprDimension.GetW()/2, mainDimension.GetH() - sprDimension.GetH()/2);
+    int delta_y = m_pMainCanvas->GetHeight() - m_pSprShip->SprImage()->DstRect().GetH() - 128;
+    m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), mainCanvasMiddleX - mainSprEyeMiddleX, delta_y, false, false, 1.0f));
+    hspriv::ShipMover updfunc = hspriv::ShipMover(m_pKeyHandler.get(), delta_y);
     updfunc.SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprEye, updfunc);
+    m_pSprMgr->AddSprite(m_pSprShip, updfunc);
 
     CSprite* m_pSprLaser = new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CRectangle(0, 0, 49, 480), CPoint(49, 480));
-    int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprEye->SprImage()->DstRect().GetW() / 2;
+    int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
     pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
     pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
@@ -677,6 +690,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
  * @return TODO
  */
 void ScrollerLevelA::OnIdle(int ticks) {
+    m_iTicks = ticks;
     m_pOverlay->IdleSetVars(ticks);
     m_pKeyHandler->HookIdle(ticks, 1.0f);
     //m_pScroller->Scroll(4);
@@ -702,12 +716,12 @@ void ScrollerLevelA::OnDraw() {
     int index = (coldelta * 2 & 63);
 
     //static CPoint sp(-480, 110);
-    static CPoint sp(0, 110);
+    CPoint sp(0, m_iTicks);
     //m_pSprite->SetPos(sp);
     //m_pSprite->Draw();
     //m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
-    //m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);
-    m_pSeamlessImage->RenderPut(m_pBackground.get(), m_pKeyHandler->Char());
+    m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);
+    //m_pSeamlessImage->RenderPut(m_pBackground.get(), m_pKeyHandler->Char());
 
     /*if ( testbutton->IsPressed() ) {
         CPoint point(-3, 0);
@@ -744,7 +758,7 @@ void ScrollerLevelA::OnDraw() {
     //m_pBlue->ClearColorKey();
     CRectangle sdl_rect = CRectangle(300, 300, 256, 256);
     //m_pBlue->RenderCopy(&sdl_rect, static_cast<CRectangle*>(nullptr));
-    m_pBlue->RenderCopy(&sdl_rect);
+//    m_pBlue->RenderCopy(&sdl_rect);
     //CPoint point = CPoint(300, 300);
     //m_pBlue->RenderCopy(point);
 

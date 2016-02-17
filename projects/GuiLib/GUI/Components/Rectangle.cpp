@@ -227,47 +227,51 @@ CRectangle& CRectangle::operator -= (CRectangle& rc){
     return (*this);
 }
 
-CRectangle CRectangle::operator + (const CPoint& pt){
+CRectangle CRectangle::operator + (const CPoint& pt) const
+{
     CRectangle result = (*this);
     result += pt;
     return (result);
 }
 
-CRectangle CRectangle::operator - (const CPoint& pt){
+CRectangle CRectangle::operator - (const CPoint& pt) const
+{
     CRectangle result = (*this);
     result -= pt;
     return (result);
 }
 
-CRectangle CRectangle::operator / (float div){
+CRectangle CRectangle::operator / (float div) const
+{
     int left1, top1, right1, bottom1;
     int left2, top2, right2, bottom2;
 
-    left1 = X();
-    top1 = Y();
-    right1 = W() / div;
-    bottom1 = H() / div;
+    left1 = GetX();
+    top1 = GetY();
+    right1 = GetW() / div;
+    bottom1 = GetH() / div;
 
     CRectangle result(left1, top1, right1, bottom1);
     return result;
 }
 
-CRectangle CRectangle::operator + (CRectangle& rc){
+CRectangle CRectangle::operator + (CRectangle& rc) const
+{
     int left1, top1, right1, bottom1;
     int left2, top2, right2, bottom2;
 
     CRectangle result;
     result.SetEmpty();
 
-    left1 = X();
-    top1 = Y();
-    right1 = X() + W();
-    bottom1 = Y() + H();
+    left1 = GetX();
+    top1 = GetY();
+    right1 = GetX() + GetW();
+    bottom1 = GetY() + GetH();
 
-    left2 = rc.X();
-    top2 = rc.Y();
-    right2 = rc.X() + rc.W();
-    bottom2 = rc.Y() + rc.H();
+    left2 = rc.GetX();
+    top2 = rc.GetY();
+    right2 = rc.GetX() + rc.GetW();
+    bottom2 = rc.GetY() + rc.GetH();
 
     if ( left1 > left2 ) { left1 = left2; }
 
@@ -290,22 +294,23 @@ CRectangle CRectangle::operator + (CRectangle& rc){
     return (result);
 } // +
 
-CRectangle CRectangle::operator - (CRectangle& rc){
+CRectangle CRectangle::operator - (CRectangle& rc) const
+{
     int left1, top1, right1, bottom1;
     int left2, top2, right2, bottom2;
 
     CRectangle result;
     result.SetEmpty();
 
-    left1 = X();
-    top1 = Y();
-    right1 = X() + W();
-    bottom1 = Y() + H();
+    left1 = GetX();
+    top1 = GetY();
+    right1 = GetX() + GetW();
+    bottom1 = GetY() + GetH();
 
-    left2 = rc.X();
-    top2 = rc.Y();
-    right2 = rc.X() + rc.W();
-    bottom2 = rc.Y() + rc.H();
+    left2 = rc.GetX();
+    top2 = rc.GetY();
+    right2 = rc.GetX() + rc.GetW();
+    bottom2 = rc.GetY() + rc.GetH();
 
     if ( left1 < left2 ) { left1 = left2; }
 
@@ -328,15 +333,18 @@ CRectangle CRectangle::operator - (CRectangle& rc){
     return (result);
 } // -
 
-bool CRectangle::operator == (const CRectangle& rc){
-    return ( X() == rc.GetX() && Y() == rc.GetY() && W() == rc.GetW() && H() == rc.GetH() );
+bool CRectangle::operator == (const CRectangle& rc) const
+{
+    return (GetX() == rc.GetX() && GetY() == rc.GetY() && GetW() == rc.GetW() && GetH() == rc.GetH());
 }
 
-bool CRectangle::operator == (CRectangle& rc){
-    return ( X() == rc.X() && Y() == rc.Y() && W() == rc.W() && H() == rc.H() );
+bool CRectangle::operator == (CRectangle& rc) const
+{
+    return (GetX() == rc.GetX() && GetY() == rc.GetY() && GetW() == rc.GetW() && GetH() == rc.GetH());
 }
 
-bool CRectangle::operator != (CRectangle& rc){
+bool CRectangle::operator != (CRectangle& rc) const
+{
     return ( !( (*this) == rc ) );
 }
 
@@ -355,6 +363,24 @@ CRectangle CRectangle::Pad(const CRectangle& rc) const {
     result.Y() += rc.GetY();
     result.W() -= rc.GetW() + rc.GetX();
     result.H() -= rc.GetH() + rc.GetY();
+    return result;
+}
+
+CRectangle CRectangle::Pad(int x) const {
+    CRectangle result(*this);
+    result.X() += x;
+    result.Y() += x;
+    result.W() -= x + x;
+    result.H() -= x + x;
+    return result;
+}
+
+CRectangle CRectangle::Pad(int x, int y) const {
+    CRectangle result(*this);
+    result.X() += x;
+    result.Y() += y;
+    result.W() -= x + x;
+    result.H() -= y + y;
     return result;
 }
 

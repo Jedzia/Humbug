@@ -40,7 +40,7 @@ class FileLoader;
 
 namespace humbug {
     class DebugOverlay;
-    class PlayerKeys3;
+    class PlayerKeys4;
 
   namespace levels {
     class ScrollerLevelA : public gui::components::Screen {
@@ -63,6 +63,7 @@ public:
 
         FileLoader& m_Loader;
         Uint8 x;
+        int m_iTicks;
         gui::components::CColor mcol;
         TTF_Font* m_pArialfont;
         boost::scoped_ptr<DebugOverlay> m_pOverlay;
@@ -74,7 +75,7 @@ public:
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
         gui::components::CSeamlessImage* m_pSeamlessImage;
-        boost::scoped_ptr<PlayerKeys3> m_pKeyHandler;
+        boost::scoped_ptr<PlayerKeys4> m_pKeyHandler;
         gob::Player m_player;
 
     };

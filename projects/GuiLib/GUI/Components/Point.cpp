@@ -144,18 +144,16 @@ CPoint& CPoint::Scale (int scalar) {
 }
 
 //distance
-int CPoint::Distance(const CPoint& pt) const
-{
+int CPoint::Distance(const CPoint& pt) const {
     //calculate distance
     CPoint diff = *this - pt;
     int distance = diff.X() * diff.X() + diff.Y() * diff.Y();
-    distance = static_cast<int >(sqrt(static_cast<double>(distance)));
+    distance = static_cast<int>(sqrt(static_cast<double>(distance)));
     //return the distance
     return (distance);
 }
 
-float CPoint::Angle(const CPoint& pt) const
-{
+float CPoint::Angle(const CPoint& pt) const {
     float radians = atan2(GetY() - pt.GetY(), GetX() - pt.GetX());
     return radians * 180 / boost::math::constants::pi<float>();
 }
@@ -202,8 +200,7 @@ CPoint& CPoint::operator /= (int scalar) {
 }
 
 //unary
-CPoint CPoint::operator - () const
-{
+CPoint CPoint::operator - () const {
     //unary negativeness--multiply by -1
     CPoint pt = (*this);
     pt *= -1;
@@ -318,6 +315,16 @@ CPoint operator * (int scalar, CPoint& pt) {
     //scalar*pt rather than pt*scalar, still the same idea...
     CPoint result = pt * scalar;
     return result;
+}
+
+std::ostream& operator<<(std::ostream& o, const CPoint& r) {
+    o << "CPoint[ X=" << r.GetX() << ", Y=" << r.GetY() <<
+        " ]";
+    return o;
+}
+
+std::istream& operator>>(std::istream& s, CPoint& r) {
+    return s;
 }
 } // namespace components
 } // namespace gui

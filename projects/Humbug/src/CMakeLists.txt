@@ -123,6 +123,7 @@ SET(Humbug_headers
 		Input/PlayerKeys.h
 		Input/PlayerKeys2.h
 		Input/PlayerKeys3.h
+		Input/PlayerKeys4.h
 
 	    Project/ProjectModel.h
 )
@@ -134,6 +135,7 @@ SET(Humbug_sources
 		Input/PlayerKeys.cpp
 		Input/PlayerKeys2.cpp
 		Input/PlayerKeys3.cpp
+		Input/PlayerKeys4.cpp
 
 		HumbugFileLoader.cpp
 	    main.cpp 

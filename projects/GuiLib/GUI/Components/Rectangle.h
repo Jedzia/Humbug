@@ -124,16 +124,16 @@ public:
 	CRectangle& operator -= ( CRectangle& rc ) ;
 
 	//arithmetic operators
-	CRectangle operator + ( const CPoint& pt ) ;
-	CRectangle operator - ( const CPoint& pt ) ;
-    CRectangle operator + ( CRectangle& rc ) ;
-	CRectangle operator - ( CRectangle& rc ) ;
-    CRectangle operator/  (float div);
+	CRectangle operator + ( const CPoint& pt ) const;
+	CRectangle operator - ( const CPoint& pt ) const;
+    CRectangle operator + ( CRectangle& rc ) const;
+	CRectangle operator - ( CRectangle& rc ) const;
+    CRectangle operator/  (float div) const;
 
 	//comparisons
-	bool operator == ( CRectangle& rc ) ;
-	bool operator == ( const CRectangle& rc ) ;
-	bool operator != ( CRectangle& rc ) ;
+	bool operator == ( CRectangle& rc ) const;
+	bool operator == ( const CRectangle& rc ) const;
+	bool operator != ( CRectangle& rc ) const;
 
 	//clip or wrap points
 	CPoint Clip ( CPoint pt ) ;
@@ -142,6 +142,8 @@ public:
     friend std::ostream& operator<<(std::ostream& o, const CRectangle& r);
     CRectangle Subtract(const CRectangle& rc) const;
     CRectangle Pad(const CRectangle& rc) const;
+    CRectangle Pad(int x) const;
+    CRectangle Pad(int x, int y) const;
     CPoint Position(const CompassRose& value) const;
 };
 

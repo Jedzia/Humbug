@@ -96,6 +96,11 @@ public:
     operator boost::numeric::ublas::vector<long double>() const;
     operator boost::numeric::ublas::vector<float>() const;
     operator boost::numeric::ublas::vector<int>() const;
+
+    // stream
+    friend std::ostream& operator<<(std::ostream& o, const CPoint& r);
+    friend std::istream& operator>>(std::istream& s, CPoint& r);
+
 };
 
 CPoint operator * (int scalar, CPoint& pt);
