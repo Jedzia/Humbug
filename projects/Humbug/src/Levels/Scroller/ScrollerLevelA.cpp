@@ -67,8 +67,8 @@ public:
     explicit CanvasStripeRendererAOld(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
     {}
 
-    void operator()(const gui::components::CCanvas* target, gui::components::CCanvas* source,
-            gui::components::CCanvasRenderModifierData& mdata) {
+    void operator()(const CCanvas* target, CCanvas* source,
+            CCanvasRenderModifierData& mdata) {
         m_iFrames++;
 
         if(!mdata.dstRect) {
@@ -156,7 +156,7 @@ public:
     ~CanvasStripeRendererA() {
     }
 
-    static void Render(gui::components::CCanvas* source, const gui::components::CCanvas* target,
+    static void Render(CCanvas* source, const CCanvas* target,
             const CRectangle& dstRect, const CRectangle& srcRect, const CColor& color) {
         source->SetTextureColorMod(color);
         target->FinalRenderCopy(source->GetTexture(), &dstRect, &srcRect);
@@ -175,8 +175,8 @@ public:
         return 1.0f;
     }
 
-    void operator()(const gui::components::CCanvas* target, gui::components::CCanvas* source,
-            gui::components::CCanvasRenderModifierData& mdata) {
+    void operator()(const CCanvas* target, CCanvas* source,
+            CCanvasRenderModifierData& mdata) {
         m_iFrames++;
 
         if(!mdata.dstRect) {
@@ -206,8 +206,8 @@ public:
         const float PI = 3.14159265f;
         float radians = degrees * PI / 180.0f;
         float clock = degrees / PI;
-        int corrector = 64 + sin(radians) * 64;
-        int stepcheck = stepsize + sin(((m_iFrames * 2 % 180) + 180) * PI / 180.0f) * stepsize;
+        int corrector = static_cast<int>(64 + sin(radians) * 64);
+        int stepcheck = static_cast<int>( stepsize + sin(((m_iFrames * 2 % 180) + 180) * PI / 180.0f) * stepsize);
 
         /*if (m_pDebugFont)
            {
@@ -242,7 +242,7 @@ public:
             //cs.Reset();
         }
 
-        for(size_t i = 0; i < stepsize; i++)
+        for(int i = 0; i < stepsize; i++)
         {
             //int newColor = (colorstep * ((i * 8 + -m_iTicks / colorstep) % stepsize)) % 255;
             int newColorStep = (colorstep / 2 * i) + 1;
@@ -289,7 +289,7 @@ int CanvasStripeRendererA::renderNum = 0;
     //throw std::exception("The method or operation is not implemented.");
    }*/
 
-using gui::controls::CControl;
+using controls::CControl;
 
 //gui::controls::CButton* testbutton;
 
@@ -561,14 +561,14 @@ public:
 
         // ring via Timed() -> seconds. added easing.
         //float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, sproffs, ring.RingSeconds(), boost::ref(easeInOutQuart));
-        float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, sproffs, ring.RingSeconds(), boost::ref(easeInOutQuad));
+        float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, static_cast<vdouble>(sproffs), ring.RingSeconds(), boost::ref(easeInOutQuad));
         int offset = static_cast<int>(t1);
         
         sprite->SprOffset(offset);
 
         if(m_pOverlay) {
             std::ostringstream out6005;
-            out6005 << "ticks%sproffs: (" << std::fmod(ticks, sproffs) << ")";
+            out6005 << "ticks%sproffs: (" << fmod(ticks, sproffs) << ")";
             m_pOverlay->SetTextLabelText(6005, out6005.str());
 
             std::ostringstream out6006;
@@ -618,9 +618,9 @@ public:
     }
 };
 
-ScrollerLevelA::ScrollerLevelA(FileLoader& loader, gui::components::CCanvas* background) :
+ScrollerLevelA::ScrollerLevelA(FileLoader& loader, CCanvas* background) :
     Screen(background, true),
-    pimpl_(new ScrollerLevelA::ScrollerLevelAImpl(this)),
+    pimpl_(new ScrollerLevelAImpl(this)),
     m_Loader(loader),
     m_pArialfont(NULL),
     m_pScrollText(NULL),
@@ -683,7 +683,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 
     CColor m_colText = CColor::White();
     std::ostringstream outstring;
-    outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
+    outstring << "Bla fasel:" << CApplication::ShownFrames();
     outstring << " ";
 
     //std::string pstr;
@@ -719,7 +719,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
             mainDimension.GetW() - sprDimension.GetW() / 2, mainDimension.GetH() - sprDimension.GetH() / 2);
     int delta_y = m_pMainCanvas->GetHeight() - m_pSprShip->SprImage()->DstRect().GetH() - 128;
-    m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), mainCanvasMiddleX - mainSprEyeMiddleX, delta_y, false, false, 1.0f));
+    m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), static_cast<float>(mainCanvasMiddleX - mainSprEyeMiddleX), static_cast<float>(delta_y), false, false, 1.0f));
     hspriv::ShipMover updfunc = hspriv::ShipMover(m_pKeyHandler.get(), delta_y);
     updfunc.SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprShip, updfunc);
@@ -732,7 +732,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
 
     CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer01.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
-    m_pSprSaucer->SprImage()->DstRect() /= 2;
+    m_pSprSaucer->SprImage()->Scale(0.5);
     offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
     pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW);
     pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
@@ -821,10 +821,10 @@ void ScrollerLevelA::OnDraw() {
     //CPoint point = CPoint(300, 300);
     //m_pBlue->RenderCopy(point);
 
-    /*CColor bannercolor(sdl_color);
+    CColor bannercolor(sdl_color);
        bannercolor.SetR(255 - coldelta);
        m_pBanding1->RenderPut( m_pMainCanvas, CPoint(40, 550) );
-       m_pBanding2->RenderPut( m_pBackground.get(), CPoint(140, 250) );*/
+       m_pBanding2->RenderPut( m_pBackground.get(), CPoint(140, 250) );
 
     pimpl_->Draw();
 

@@ -40,7 +40,7 @@ public:
     void Reset();
     void AddDatapoint(const CPoint& point);
 
-    int NumDatapoints() const
+    size_t NumDatapoints() const
     {
         return m_vPoints.size();
     }
