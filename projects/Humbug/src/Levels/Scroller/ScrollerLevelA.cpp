@@ -821,10 +821,10 @@ void ScrollerLevelA::OnDraw() {
     //CPoint point = CPoint(300, 300);
     //m_pBlue->RenderCopy(point);
 
-    CColor bannercolor(sdl_color);
+    /*CColor bannercolor(sdl_color);
        bannercolor.SetR(255 - coldelta);
        m_pBanding1->RenderPut( m_pMainCanvas, CPoint(40, 550) );
-       m_pBanding2->RenderPut( m_pBackground.get(), CPoint(140, 250) );
+       m_pBanding2->RenderPut( m_pBackground.get(), CPoint(140, 250) );*/
 
     pimpl_->Draw();
 
