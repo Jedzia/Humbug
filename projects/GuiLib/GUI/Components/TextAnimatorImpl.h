@@ -38,20 +38,6 @@ public:
     vdouble operator()(vdouble in);
 };
 
-class EaseNone {
-public:
-
-    explicit EaseNone(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
-
-    vdouble operator()(vdouble t) const
-    {
-        return t;
-    }
-};
-
-
-
-
 /** @class TextMover:
  *  Implementation of a TextAnimator that can move a CText with specified speed to a specified
  * CPoint.

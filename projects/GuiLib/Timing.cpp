@@ -83,10 +83,19 @@ float Timing::RangeMappedSinceStart(
         float inMin, float inMax,
         float outMinClamp, float outMaxClamp,
         TimeEasingFunc functor,
-        float foutMinClamp, float foutMaxClamp) {
+        float foutMinClamp, float foutMaxClamp, bool loop) {
     seconds now = SecondsSinceStart();
     if(functor) {
-        float functormap = rangeMap(now, 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
+        float functormap;
+        if (loop)
+        {
+            functormap = rangeMap(std::fmod(now, inMax), 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
+        }
+        else
+        {
+            functormap = rangeMap(now, 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
+        }
+
         return rangeMap(functor(functormap), outStart, outEnd, 0, 1, outMinClamp, outMaxClamp);
     }
 
@@ -96,14 +105,14 @@ float Timing::RangeMappedSinceStart(
 float Timing::RangeMappedSinceStart(float outStart,
         float outEnd,
         seconds duration,
-        TimeEasingFunc functor,
+        TimeEasingFunc functor, bool loop,
         float foutMinClamp,
         float foutMaxClamp) {
     return RangeMappedSinceStart(outStart, outEnd, 0, duration,
 //            outMin, outMax,
             -std::numeric_limits<float>::max(), std::numeric_limits<float>::max(),
             functor,
-            foutMinClamp, foutMaxClamp);
+            foutMinClamp, foutMaxClamp, loop);
 }
 
 bool Timing::IsBefore(seconds time, const ConditionalTimeFunc& func) {

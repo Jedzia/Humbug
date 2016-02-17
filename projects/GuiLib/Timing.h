@@ -134,7 +134,7 @@ public:
     */
     float RangeMappedSinceStart(float outStart, float outEnd, float inMin = 0.0f, float inMax = 1.0f,
         float outMinClamp = -std::numeric_limits<float>::max(), float outMaxClamp = std::numeric_limits<float>::max(), 
-        TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
+        TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f, bool loop = false);
 
     /** Timing, duration range mapper 
     *  Maps a duration to the specified output range.
@@ -147,7 +147,7 @@ public:
     *  @return the range-mapped value of SecondsSinceStart().
     */
     float RangeMappedSinceStart(float outStart, float outEnd, seconds duration = 1.0f, 
-        TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
+        TimeEasingFunc functor = 0, bool loop = false, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
 
     /** Brief description of Timing, IsBefore
      *  Detailed description.

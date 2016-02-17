@@ -41,6 +41,7 @@
 #include <GuiLib/GUI/Sprite/Sprite.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 
 namespace humbug {
 namespace levels {
@@ -502,6 +503,121 @@ public:
     }     // ()
 };
 
+class SaucerMover {
+    int h_;
+    bool toggle_;
+    int deltaX_;
+    uint32_t sproffs;
+    uint32_t sproffsAct;
+    //int rnd;
+    CPoint lastSpritePos;
+    DebugOverlay* m_pOverlay;
+    CCanvas* m_pBackground;
+    int m_iTicks;
+    Timing timing;
+    
+    int MITicks() const     {        return m_iTicks;    }
+
+public:
+
+    SaucerMover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 70) : h_(-1),
+        toggle_(false),
+        deltaX_(deltaY), timing(boost::bind(&SaucerMover::MITicks, boost::ref(*this))),
+        sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr), m_pBackground(background) {
+        dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
+        int rnd = 180 - (rand() % 360);
+        h_ = rnd;
+    }
+
+    ~SaucerMover() {
+        dbgOut(__FUNCTION__ << " " << this);
+    }
+
+    void SetDebugOverlay(DebugOverlay* m_p_overlay)
+    {
+        m_pOverlay = m_p_overlay;
+    }
+
+    void IncrementOffset() { sproffsAct++; }
+    void DecrementOffset() { sproffsAct--; }
+
+    /** $(fclass), operator ():
+    *  Detailed description.
+    *  @param sprite TODO
+    * @param ticks TODO
+    * @return TODO
+    */
+    void operator()(CSprite* sprite, int ticks) {
+        m_iTicks = ticks;
+        double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
+        double sc = std::cos(static_cast<double>(h_) / 3.14159 / 4.0);
+        int ssin = static_cast<int>(ss * 100);
+        int scos = static_cast<int>(sc * 100);
+
+        //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaX_ + ssin));
+        //sprite->SetPos(CPoint(130 + ssin, deltaX_ - scos));
+        sprite->SetPos(CPoint(deltaX_, 130 + ssin));
+        //sprite->SetPos(CPoint(deltaX_, 130));
+        int delta = lastSpritePos.Distance(sprite->GetPos());
+        float angle = lastSpritePos.Angle(sprite->GetPos());
+        //sproffsAct = 2;
+        /*if (delta > 4) {
+        if (angle <= 0) {
+        sproffsAct = 2;
+        }
+        else if (angle > 0) {
+        sproffsAct = 1;
+        }
+        }*/
+
+        //sprite->SprOffset(ticks % sproffs);
+        //static EaseOutElastic ease(2);
+        static EaseNone ease(2);
+
+        float t1 = timing.RangeMappedSinceStart(0, sproffs, 3.25f, boost::ref(ease), true);
+        sprite->SprOffset(static_cast<int>(t1) % sproffs);
+        //sprite->SprOffset(static_cast<int>(ssin) % sproffs);
+        //uint32_t offset = sproffsAct % sproffs;
+        //sprite->SprOffset(offset);
+
+        CRectangle sdl_rect = sprite->SprImage()->DstRect();
+        //m_pBackground->RenderDrawRect(sdl_rect, &sprColor);
+        CColor sprColor = CColor::White();
+        m_pBackground->RenderFillRect(CRectangle(100, 100, 200, 200), &sprColor);
+
+        if (m_pOverlay)
+        {
+            std::ostringstream out6005;
+            out6005 << "ticks%sproffs: (" << std::fmod(ticks, sproffs) << ")";
+            m_pOverlay->SetTextLabelText(6005, out6005.str());
+
+            std::ostringstream out6006;
+            out6006 << "t1: (" << t1 << ")";
+            m_pOverlay->SetTextLabelText(6006, out6006.str());
+        }
+
+
+
+
+
+        if (h_ >= 180) {
+            toggle_ = false;
+        }
+        else if (h_ <= -180) {
+            toggle_ = true;
+        }
+
+        if (toggle_) {
+            h_++;
+        }
+        else {
+            h_--;
+        }
+
+        lastSpritePos = sprite->GetPos();
+    }     // ()
+};
+
 }
 
 struct ScrollerLevelA::ScrollerLevelAImpl {
@@ -514,6 +630,7 @@ private:
 
 public:
     boost::shared_ptr<hspriv::LaserMover> updfunc2;
+    boost::shared_ptr<hspriv::SaucerMover> updfunc3;
 
     explicit ScrollerLevelAImpl(ScrollerLevelA* host)
         : x(0), host{ host }
@@ -567,6 +684,8 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1,
     // "ScrollerLevelA"));
     m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "ScrollerLevelA"));
+    m_pOverlay->AddTextLabel();
+    m_pOverlay->AddTextLabel();
 
     /*testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0, 0, 160,
                     40), 21345, "Change Direction", true);
@@ -678,7 +797,13 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
     pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
-     
+    
+    CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer01.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
+    offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
+    pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW);
+    pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
+    m_pSprMgr->AddSprite(m_pSprSaucer, boost::ref(*pimpl_->updfunc3));
+
     return Screen::OnInit(argc, argv);
 
     //return true;

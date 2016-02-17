@@ -20,6 +20,17 @@ namespace gui {
 namespace components {
 #define DEBUGPRINT 1
 
+class EaseNone {
+public:
+
+    explicit EaseNone(const vdouble alpha = static_cast<vdouble>(1.0f)) { };
+
+    vdouble operator()(vdouble t) const
+    {
+        return t;
+    }
+};
+
 /** @class EaseOutQuad:
  *  Detailed description.
  *  @param t TODO
