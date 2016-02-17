@@ -121,7 +121,8 @@ public:
 	CRectangle& operator += ( const CPoint& pt ) ;
 	CRectangle& operator -= ( const CPoint& pt ) ;
 	CRectangle& operator += ( CRectangle& rc ) ;
-	CRectangle& operator -= ( CRectangle& rc ) ;
+    CRectangle& operator -= (CRectangle& rc);
+    CRectangle& operator /= (float div);
 
 	//arithmetic operators
 	CRectangle operator + ( const CPoint& pt ) const;

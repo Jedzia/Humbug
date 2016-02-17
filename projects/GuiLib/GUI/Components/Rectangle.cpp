@@ -28,48 +28,48 @@ namespace components {
         }
    };*/
 
-CRectangle::CRectangle (int x, int y, int w, int h){
+CRectangle::CRectangle (int x, int y, int w, int h) {
 //: pimpl_(new CRectangle::CRectangleImpl)
     Set(x, y, w, h);
 }
 
-CRectangle::CRectangle (CPoint xy, CPoint wh){
+CRectangle::CRectangle (CPoint xy, CPoint wh) {
 //: pimpl_(new CRectangle::CRectangleImpl)
-    Set( xy.GetX(), xy.GetY(), wh.GetX(), wh.GetY() );
+    Set(xy.GetX(), xy.GetY(), wh.GetX(), wh.GetY());
 }
 
-CRectangle::CRectangle (SDL_Rect rc){
+CRectangle::CRectangle (SDL_Rect rc) {
 //: pimpl_(new CRectangle::CRectangleImpl)
     Set(rc.x, rc.y, rc.w, rc.h);
 }
 
-CRectangle::CRectangle (const SDL_Rect* prc){
+CRectangle::CRectangle (const SDL_Rect* prc) {
 //: pimpl_(new CRectangle::CRectangleImpl)
     Set(prc->x, prc->y, prc->w, prc->h);
 }
 
-CRectangle::CRectangle (const CRectangle& rc){
+CRectangle::CRectangle (const CRectangle& rc) {
 //: pimpl_(new CRectangle::CRectangleImpl)
-    Set( rc.GetX(), rc.GetY(), rc.GetW(), rc.GetH() );
+    Set(rc.GetX(), rc.GetY(), rc.GetW(), rc.GetH());
     //( *this ) = rc ;
 }
 
 CRectangle::~CRectangle ()
 {}
 
-int& CRectangle::X (){
+int& CRectangle::X () {
     return (pimpl_->m_rect.x);
 }
 
-int& CRectangle::Y (){
+int& CRectangle::Y () {
     return (pimpl_->m_rect.y);
 }
 
-int& CRectangle::W (){
+int& CRectangle::W () {
     return (pimpl_->m_rect.w);
 }
 
-int& CRectangle::H (){
+int& CRectangle::H () {
     return (pimpl_->m_rect.h);
 }
 
@@ -91,37 +91,37 @@ int CRectangle::GetH() const {
 }
 
 //setters
-void CRectangle::SetX(int x){
+void CRectangle::SetX(int x) {
     pimpl_->m_rect.x = x;
 }
 
-void CRectangle::SetY(int y){
+void CRectangle::SetY(int y) {
     pimpl_->m_rect.y = y;
 }
 
-void CRectangle::SetW(int w){
+void CRectangle::SetW(int w) {
     pimpl_->m_rect.w = w;
 }
 
-void CRectangle::SetH(int h){
+void CRectangle::SetH(int h) {
     pimpl_->m_rect.h = h;
 }
 
-CRectangle::operator SDL_Rect (){
+CRectangle::operator SDL_Rect () {
     return (pimpl_->m_rect);
 }
 
-CRectangle::operator SDL_Rect *(){
+CRectangle::operator SDL_Rect *() {
     return (&pimpl_->m_rect);
 }
 
-CRectangle::operator CPoint (){
+CRectangle::operator CPoint () {
     CPoint pt;
-    pt.Set( X(), Y() );
+    pt.Set(X(), Y());
     return (pt);
 }
 
-CRectangle& CRectangle::Set (int x, int y, int w, int h){
+CRectangle& CRectangle::Set (int x, int y, int w, int h) {
     X() = x;
     Y() = y;
     W() = w;
@@ -129,60 +129,60 @@ CRectangle& CRectangle::Set (int x, int y, int w, int h){
     return (*this);
 }
 
-CRectangle& CRectangle::Copy (CRectangle& rc){
+CRectangle& CRectangle::Copy (CRectangle& rc) {
     (*this) = rc;
     return (*this);
 }
 
-CRectangle& CRectangle::SetEmpty (){
+CRectangle& CRectangle::SetEmpty () {
     Set(0, 0, 0, 0);
     return (*this);
 }
 
-bool CRectangle::IsEmpty (){
+bool CRectangle::IsEmpty () {
     return (W() == 0 && H() == 0);
 }
 
-CRectangle& CRectangle::Offset (int dx, int dy){
+CRectangle& CRectangle::Offset (int dx, int dy) {
     X() += dx;
     Y() += dy;
     return (*this);
 }
 
-CRectangle& CRectangle::Offset (CPoint& pt){
-    Offset( pt.X(), pt.Y() );
+CRectangle& CRectangle::Offset (CPoint& pt) {
+    Offset(pt.X(), pt.Y());
     return (*this);
 }
 
-CRectangle& CRectangle::Move (int x, int y){
+CRectangle& CRectangle::Move (int x, int y) {
     X() = x;
     Y() = y;
     return (*this);
 }
 
-CRectangle& CRectangle::Move (const CPoint& pt){
-    Move( pt.GetX(), pt.GetY() );
+CRectangle& CRectangle::Move (const CPoint& pt) {
+    Move(pt.GetX(), pt.GetY());
     return (*this);
 }
 
-CRectangle& CRectangle::Intersect (CRectangle& rc){
+CRectangle& CRectangle::Intersect (CRectangle& rc) {
     (*this) -= rc;
     return (*this);
 }
 
-CRectangle& CRectangle::Union (CRectangle& rc){
+CRectangle& CRectangle::Union (CRectangle& rc) {
     (*this) += rc;
     return (*this);
 }
 
-bool CRectangle::Contains (int x, int y){
+bool CRectangle::Contains (int x, int y) {
     x -= X();
     y -= Y();
-    return ( x >= 0 && y >= 0 && x < W() && y < H() );
+    return (x >= 0 && y >= 0 && x < W() && y < H());
 }
 
-bool CRectangle::Contains (CPoint& pt){
-    return ( Contains( pt.GetX(), pt.GetY() ) );
+bool CRectangle::Contains (CPoint& pt) {
+    return (Contains(pt.GetX(), pt.GetY()));
 }
 
 /*CRectangle& CRectangle::operator = ( CRectangle& rc )
@@ -193,7 +193,7 @@ bool CRectangle::Contains (CPoint& pt){
         H ( ) = rc.GetH ( ) ;
         return ( *this ) ;
    }*/
-CRectangle& CRectangle::operator = (const CRectangle& rc){
+CRectangle& CRectangle::operator = (const CRectangle& rc) {
     X() = rc.GetX();
     Y() = rc.GetY();
     W() = rc.GetW();
@@ -201,48 +201,51 @@ CRectangle& CRectangle::operator = (const CRectangle& rc){
     return (*this);
 }
 
-CRectangle& CRectangle::operator += (const CPoint& pt){
+CRectangle& CRectangle::operator += (const CPoint& pt) {
     X() += pt.GetX();
     Y() += pt.GetY();
     return (*this);
 }
 
-CRectangle& CRectangle::operator -= (const CPoint& pt){
+CRectangle& CRectangle::operator -= (const CPoint& pt) {
     X() -= pt.GetX();
     Y() -= pt.GetY();
     return (*this);
 }
 
-CRectangle& CRectangle::operator += (CRectangle& rc){
+CRectangle& CRectangle::operator += (CRectangle& rc) {
     //( *this ) = ( *this ) + rc ;
     CRectangle tmp = (*this) + rc;
     Copy(tmp);
     return (*this);
 }
 
-CRectangle& CRectangle::operator -= (CRectangle& rc){
+CRectangle& CRectangle::operator -= (CRectangle& rc) {
     //( *this ) = ( *this ) - rc ;
     CRectangle tmp = (*this) - rc;
     Copy(tmp);
     return (*this);
 }
 
-CRectangle CRectangle::operator + (const CPoint& pt) const
-{
+CRectangle& CRectangle::operator /= (float div) {
+    CRectangle tmp = (*this) / div;
+    Copy(tmp);
+    return (*this);
+}
+
+CRectangle CRectangle::operator + (const CPoint& pt) const {
     CRectangle result = (*this);
     result += pt;
     return (result);
 }
 
-CRectangle CRectangle::operator - (const CPoint& pt) const
-{
+CRectangle CRectangle::operator - (const CPoint& pt) const {
     CRectangle result = (*this);
     result -= pt;
     return (result);
 }
 
-CRectangle CRectangle::operator / (float div) const
-{
+CRectangle CRectangle::operator / (float div) const {
     int left1, top1, right1, bottom1;
     int left2, top2, right2, bottom2;
 
@@ -255,8 +258,7 @@ CRectangle CRectangle::operator / (float div) const
     return result;
 }
 
-CRectangle CRectangle::operator + (CRectangle& rc) const
-{
+CRectangle CRectangle::operator + (CRectangle& rc) const {
     int left1, top1, right1, bottom1;
     int left2, top2, right2, bottom2;
 
@@ -273,18 +275,18 @@ CRectangle CRectangle::operator + (CRectangle& rc) const
     right2 = rc.GetX() + rc.GetW();
     bottom2 = rc.GetY() + rc.GetH();
 
-    if ( left1 > left2 ) { left1 = left2; }
+    if(left1 > left2) { left1 = left2; }
 
-    if ( top1 > top2 ) { top1 = top2; }
+    if(top1 > top2) { top1 = top2; }
 
-    if ( right1 < right2 ) { right1 = right2; }
+    if(right1 < right2) { right1 = right2; }
 
-    if ( bottom1 < bottom2 ) { bottom1 = bottom2; }
+    if(bottom1 < bottom2) { bottom1 = bottom2; }
 
     right1 -= left1;
     bottom1 -= top1;
 
-    if ( right1 > 0 && bottom1 > 0 ) {
+    if(right1 > 0 && bottom1 > 0) {
         result.X() = left1;
         result.Y() = top1;
         result.W() = right1;
@@ -294,8 +296,7 @@ CRectangle CRectangle::operator + (CRectangle& rc) const
     return (result);
 } // +
 
-CRectangle CRectangle::operator - (CRectangle& rc) const
-{
+CRectangle CRectangle::operator - (CRectangle& rc) const {
     int left1, top1, right1, bottom1;
     int left2, top2, right2, bottom2;
 
@@ -312,18 +313,18 @@ CRectangle CRectangle::operator - (CRectangle& rc) const
     right2 = rc.GetX() + rc.GetW();
     bottom2 = rc.GetY() + rc.GetH();
 
-    if ( left1 < left2 ) { left1 = left2; }
+    if(left1 < left2) { left1 = left2; }
 
-    if ( top1 < top2 ) { top1 = top2; }
+    if(top1 < top2) { top1 = top2; }
 
-    if ( right1 > right2 ) { right1 = right2; }
+    if(right1 > right2) { right1 = right2; }
 
-    if ( bottom1 > bottom2 ) { bottom1 = bottom2; }
+    if(bottom1 > bottom2) { bottom1 = bottom2; }
 
     right1 -= left1;
     bottom1 -= top1;
 
-    if ( right1 > 0 && bottom1 > 0 ) {
+    if(right1 > 0 && bottom1 > 0) {
         result.X() = left1;
         result.Y() = top1;
         result.W() = right1;
@@ -333,19 +334,16 @@ CRectangle CRectangle::operator - (CRectangle& rc) const
     return (result);
 } // -
 
-bool CRectangle::operator == (const CRectangle& rc) const
-{
+bool CRectangle::operator == (const CRectangle& rc) const {
     return (GetX() == rc.GetX() && GetY() == rc.GetY() && GetW() == rc.GetW() && GetH() == rc.GetH());
 }
 
-bool CRectangle::operator == (CRectangle& rc) const
-{
+bool CRectangle::operator == (CRectangle& rc) const {
     return (GetX() == rc.GetX() && GetY() == rc.GetY() && GetW() == rc.GetW() && GetH() == rc.GetH());
 }
 
-bool CRectangle::operator != (CRectangle& rc) const
-{
-    return ( !( (*this) == rc ) );
+bool CRectangle::operator != (CRectangle& rc) const {
+    return (!((*this) == rc));
 }
 
 CRectangle CRectangle::Subtract(const CRectangle& rc) const {
@@ -385,34 +383,34 @@ CRectangle CRectangle::Pad(int x, int y) const {
 }
 
 CPoint CRectangle::Position(const CompassRose& value) const {
-    switch (value)
+    switch(value)
     {
     case CompassRose::Origin:
         return CPoint(GetX() + GetW() / 2, GetY() + GetH() / 2);
 
     case CompassRose::N:
-        return CPoint( GetX() + GetW() / 2, GetY() );
+        return CPoint(GetX() + GetW() / 2, GetY());
 
     case CompassRose::NE:
-        return CPoint( GetX() + GetW(), GetY() );
+        return CPoint(GetX() + GetW(), GetY());
 
     case CompassRose::E:
-        return CPoint( ( GetX() + GetW() ), GetY() + GetH() / 2 );
+        return CPoint((GetX() + GetW()), GetY() + GetH() / 2);
 
     case CompassRose::SE:
-        return CPoint( GetX() + GetW(), GetY() + GetH() );
+        return CPoint(GetX() + GetW(), GetY() + GetH());
 
     case CompassRose::S:
-        return CPoint( GetX() + GetW() / 2, GetY() + GetH() );
+        return CPoint(GetX() + GetW() / 2, GetY() + GetH());
 
     case CompassRose::SW:
-        return CPoint( GetX(), GetY() + GetH() );
+        return CPoint(GetX(), GetY() + GetH());
 
     case CompassRose::W:
         return CPoint(GetX(), GetY() + GetH() / 2);
 
     case CompassRose::NW:
-        return CPoint( GetX(), GetY() );
+        return CPoint(GetX(), GetY());
 
     case CompassRose::CompassRose_END:
     default:
@@ -420,46 +418,46 @@ CPoint CRectangle::Position(const CompassRose& value) const {
     } // switch
 } // CRectangle::Position
 
-CRectangle operator + (CPoint& pt, CRectangle& rc){
+CRectangle operator + (CPoint& pt, CRectangle& rc) {
     CRectangle result = rc;
     result += pt;
     return (result);
 }
 
-CRectangle operator - (CPoint& pt, CRectangle& rc){
+CRectangle operator - (CPoint& pt, CRectangle& rc) {
     CRectangle result = rc;
     result -= pt;
     return (result);
 }
 
-CPoint CRectangle::Clip (CPoint pt){
-    if ( pt.X() < X() ) { pt.X() = X(); }
+CPoint CRectangle::Clip (CPoint pt) {
+    if(pt.X() < X()) { pt.X() = X(); }
 
-    if ( pt.Y() < Y() ) { pt.Y() = Y(); }
+    if(pt.Y() < Y()) { pt.Y() = Y(); }
 
-    if ( pt.X() >= X() + W() ) { pt.X() = X() + W() - 1; }
+    if(pt.X() >= X() + W()) { pt.X() = X() + W() - 1; }
 
-    if ( pt.Y() >= Y() + H() ) { pt.Y() = Y() + H() - 1; }
+    if(pt.Y() >= Y() + H()) { pt.Y() = Y() + H() - 1; }
 
     return (pt);
 }
 
-CPoint CRectangle::Wrap (CPoint pt){
-    if ( IsEmpty() ) { return ( CPoint(0, 0) ); }
+CPoint CRectangle::Wrap (CPoint pt) {
+    if(IsEmpty()) { return (CPoint(0, 0)); }
 
-    while ( pt.X() < X() ) {
+    while(pt.X() < X()) {
         pt.X() += W();
     }
 
-    while ( pt.Y() < Y() ) {
+    while(pt.Y() < Y()) {
         pt.Y() += H();
     }
 
-    while ( pt.X() >= X() + W() ) {
+    while(pt.X() >= X() + W()) {
         pt.X() -= W();
     }
 
-    while ( pt.Y() >= Y() + H() ) {
+    while(pt.Y() >= Y() + H()) {
         pt.Y() -= H();
     }
     return (pt);
@@ -471,26 +469,23 @@ std::ostream& operator<<(std::ostream& o, const CRectangle& r) {
            " ]";
 }
 
-std::string ParseFromValue(std::string input, const std::string& front, const std::string& delim, int& value)
-{
+std::string ParseFromValue(std::string input, const std::string& front, const std::string& delim, int& value) {
     std::string tmp2Start = input.substr(0, 2);
-    if (tmp2Start != front)
-    {
+    if(tmp2Start != front) {
         std::string message("Front '");
         message += tmp2Start + "' != '" + front + "'.";
         return message;
     }
+
     std::string tmp2End = input.substr(2, input.size() - 3);
-    if (tmp2End.length() < 1)
-    {
+    if(tmp2End.length() < 1) {
         std::string message("value not found '");
         message += input + "'.";
         return message;
     }
 
     std::string tmp2delim = input.substr(input.size() - 1, 1);
-    if (tmp2delim != delim)
-    {
+    if(tmp2delim != delim) {
         std::string message("delimiter(");
         message += delim + ") not found. '" + input + "'.";
         return message;
@@ -501,20 +496,17 @@ std::string ParseFromValue(std::string input, const std::string& front, const st
     instream >> value;
 
     return "";
+} // ParseFromValue
+
+void CheckResult(std::string result) {
+    if(!result.empty()) {
+        std::string message = "Error parsing CRectangle: ";
+        message += result;
+        throw std::runtime_error(message);
+    }
 }
 
-    void CheckResult(std::string result)
-    {
-        if (!result.empty())
-        {
-            std::string message = "Error parsing CRectangle: ";
-            message += result;
-            throw std::runtime_error(message);
-        }
-    }
-
-    std::istream& operator>>(std::istream& s, CRectangle& r)
-{
+std::istream& operator>>(std::istream& s, CRectangle& r) {
     std::string tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
     s >> tmp1;
     s >> tmp2;
@@ -524,8 +516,7 @@ std::string ParseFromValue(std::string input, const std::string& front, const st
     s >> tmp6;
     //s >> tmp7;
 
-    if (tmp1 != "CRectangle[")
-    {
+    if(tmp1 != "CRectangle[") {
         return s;
     }
 
@@ -536,6 +527,6 @@ std::string ParseFromValue(std::string input, const std::string& front, const st
     CheckResult(ParseFromValue(tmp5 + tmp6, "H=", "]", r.H()));
 
     return s;
-}
+} // >>
 } // namespace components
 } // namespace gui

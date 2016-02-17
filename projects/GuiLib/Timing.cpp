@@ -79,20 +79,18 @@ float rangeMap(seconds now, float outMin, float outMax, float inMin, float inMax
 }
 
 float Timing::RangeMappedSinceStart(
+        float now,
         float outStart, float outEnd,
         float inMin, float inMax,
         float outMinClamp, float outMaxClamp,
         TimeEasingFunc functor,
         float foutMinClamp, float foutMaxClamp, bool loop) {
-    seconds now = SecondsSinceStart();
     if(functor) {
         float functormap;
-        if (loop)
-        {
+        if(loop) {
             functormap = rangeMap(std::fmod(now, inMax), 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
         }
-        else
-        {
+        else {
             functormap = rangeMap(now, 0, 1, inMin, inMax, foutMinClamp, foutMaxClamp);
         }
 
@@ -100,6 +98,27 @@ float Timing::RangeMappedSinceStart(
     }
 
     return rangeMap(now, outStart, outEnd, inMin, inMax, outMinClamp, outMaxClamp);
+}
+
+float Timing::RangeMappedSinceStart(
+        float now,
+        float outStart, float outEnd,
+        seconds duration,
+        TimeEasingFunc functor, bool loop,
+        float foutMinClamp,
+        float foutMaxClamp) {
+    return RangeMappedSinceStart(now, outStart, outEnd, 0, duration, -std::numeric_limits<float>::max(),
+            std::numeric_limits<float>::max(), functor, foutMinClamp, foutMaxClamp, loop);
+}
+
+float Timing::RangeMappedSinceStart(
+        float outStart, float outEnd,
+        float inMin, float inMax,
+        float outMinClamp, float outMaxClamp,
+        TimeEasingFunc functor,
+        float foutMinClamp, float foutMaxClamp, bool loop) {
+    return RangeMappedSinceStart(
+            SecondsSinceStart(), outStart, outEnd, inMin, inMax, outMinClamp, outMaxClamp, functor, foutMinClamp, foutMaxClamp, loop);
 }
 
 float Timing::RangeMappedSinceStart(float outStart,

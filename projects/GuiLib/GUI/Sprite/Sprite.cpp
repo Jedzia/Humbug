@@ -7,8 +7,11 @@
 #include "Filesystem/FileLoader.h"
 #include "SDL.h"
 #include "Sprite.h"
-
+//
 //#include <build/cmake/include/debug.h>
+
+const bool debugFrame = false;
+
 using namespace gui::components;
 namespace gui
 {
@@ -69,8 +72,11 @@ namespace gui
    */
   void CSprite::Draw(){
       m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
-      CColor col = CColor::White();
-      m_pMainCanvas->RenderDrawRect(m_pSprImage->DstRect() + m_cpPos, &col);
+      if (debugFrame)
+      {
+          CColor col = CColor::White();
+          m_pMainCanvas->RenderDrawRect(m_pSprImage->DstRect() + m_cpPos, &col);
+      }
       //CRectangle dstrect = m_pSprImage->DstRect();
       //dstrect = dstrect / 2;
       //m_pSprImage->RenderPut(m_pMainCanvas, dstrect + m_cpPos);

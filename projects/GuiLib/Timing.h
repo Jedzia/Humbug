@@ -121,6 +121,7 @@ public:
     
     /** Timing, input/output range mapper
     *  Maps the timing to the specified output range.
+    *  @param now Actual input value.
     *  @param outStart The lower range of the output value.
     *  @param outEnd The upper range of the output value.
     *  @param inMin The lower range of the input value. The input value is always SecondsSinceStart().
@@ -130,6 +131,39 @@ public:
     *  @param functor Time easing functor.
     *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing functor.
     *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing functor.
+    *  @param loop Apply std::fmod(now, inMax) looping.
+    *  @return the range-mapped value of SecondsSinceStart().
+    */
+    static float RangeMappedSinceStart(float now, float outStart, float outEnd, float inMin = 0.0f, float inMax = 1.0f,
+        float outMinClamp = -std::numeric_limits<float>::max(), float outMaxClamp = std::numeric_limits<float>::max(),
+        TimeEasingFunc functor = 0, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f, bool loop = false);
+ 
+    /** Timing, duration range mapper
+    *  Maps a duration to the specified output range.
+    *  @param now Actual input value.
+    *  @param outStart The lower range of the output value.
+    *  @param outEnd The upper range of the output value.
+    *  @param duration The duration it should take to come from outMin to outMax.
+    *  @param functor Time easing functor.
+    *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing functor.
+    *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing functor.
+    *  @return the range-mapped value of SecondsSinceStart().
+    */
+    static float RangeMappedSinceStart(float now, float outStart, float outEnd, seconds duration = 1.0f,
+        TimeEasingFunc functor = 0, bool loop = false, float foutMinClamp = 0.0f, float foutMaxClamp = 1.0f);
+
+    /** Timing, input/output range mapper
+    *  Maps the timing to the specified output range.
+    *  @param outStart The lower range of the output value.
+    *  @param outEnd The upper range of the output value.
+    *  @param inMin The lower range of the input value. The input value is always SecondsSinceStart().
+    *  @param inMax The upper range of the input value. The input value is always SecondsSinceStart().
+    *  @param outMinClamp Minimum clamping for the return value.
+    *  @param outMaxClamp Maximum clamping for the return value.
+    *  @param functor Time easing functor.
+    *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing functor.
+    *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing functor.
+    *  @param loop Apply std::fmod(now, inMax) looping.
     *  @return the range-mapped value of SecondsSinceStart().
     */
     float RangeMappedSinceStart(float outStart, float outEnd, float inMin = 0.0f, float inMax = 1.0f,
