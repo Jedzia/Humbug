@@ -500,29 +500,22 @@ public:
  *  @return TODO
  */
 class SaucerMover {
-    int h_;
-    bool toggle_;
     int deltaX_;
     uint32_t sproffs;
-    uint32_t sproffsAct;
-    //int rnd;
     CPoint lastSpritePos;
-    DebugOverlay* m_pOverlay;
-    CCanvas* m_pBackground;
     int m_iTicks;
     Timing timing;
+    DebugOverlay* m_pOverlay;
+    CCanvas* m_pBackground;
 
-    int MITicks() const {        return m_iTicks;    }
+    int MITicks() const { return m_iTicks; }
 
 public:
 
-    SaucerMover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 70) : h_(-1),
-        toggle_(false),
-        deltaX_(deltaY), timing(boost::bind(&SaucerMover::MITicks, boost::ref(*this))),
-        sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr), m_pBackground(background) {
+    SaucerMover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 70) : 
+        deltaX_(deltaY), sproffs(spriteoffset),
+        timing(boost::bind(&SaucerMover::MITicks, boost::ref(*this))), m_pOverlay(nullptr), m_pBackground(background) {
         dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
-        int rnd = 180 - (rand() % 360);
-        h_ = rnd;
     }
 
     ~SaucerMover() {
@@ -533,104 +526,45 @@ public:
         m_pOverlay = m_p_overlay;
     }
 
-    void IncrementOffset() { sproffsAct++; }
-
-    void DecrementOffset() { sproffsAct--; }
-
-    /** @class EaseBounce:
-     *  Detailed description.
-     *  @param t TODO
-     *  @return TODO
-     */
-    class EaseBounce {
-public:
-
-        explicit EaseBounce(const vdouble alpha = static_cast<vdouble>(1.0f)) { }
-
-        vdouble operator()(vdouble t) const {
-            if(t >= 0.5) {
-                return  1.0 - ((t - 0.5) * 2);
-            }
-            else {
-                return t * 2;
-            }
-        }
-    };
-
-    class Ring {
-        const int m_iRing;
-    public:
-
-        explicit Ring(const int ring = gui::FRAMESPERSECOND): m_iRing(ring)
-        { }
-
-        int operator()(int in) const {
-            int t = in % m_iRing;
-            if (t >= m_iRing / 2) {
-                return  m_iRing - ((t - m_iRing / 2) * 2);
-            }
-            else {
-                return t * 2;
-            }
-        }
-    };
-
-    /** $(fclass), operator ():
-     *  Detailed description.
-     *  @param sprite TODO
-     * @param ticks TODO
-     * @return TODO
-     */
     void operator()(CSprite* sprite, int ticks) {
         m_iTicks = ticks;
-        double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
-        double sc = std::cos(static_cast<double>(h_) / 3.14159 / 4.0);
-        int ssin = static_cast<int>(ss * 100);
-        int scos = static_cast<int>(sc * 100);
 
-        //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaX_ + ssin));
-        //sprite->SetPos(CPoint(130 + ssin, deltaX_ - scos));
-        sprite->SetPos(CPoint(deltaX_, 130 + ssin));
-        //sprite->SetPos(CPoint(deltaX_, 130));
+        sprite->SetPos(CPoint(deltaX_, 130));
         int delta = lastSpritePos.Distance(sprite->GetPos());
         float angle = lastSpritePos.Angle(sprite->GetPos());
-        //sproffsAct = 2;
-        /*if (delta > 4) {
-           if (angle <= 0) {
-           sproffsAct = 2;
-           }
-           else if (angle > 0) {
-           sproffsAct = 1;
-           }
-           }*/
 
-        //sprite->SprOffset(ticks % sproffs);
-        static EaseNone ease(2);
-        static EaseBounce easeBounce(2);
-        static Ring ring;
+        static EaseNone easeNone(2);
+        static RingBounce easeRingBounce(2);
+        static EaseInOutBounce easeInOutBounce(1);
+        static EaseInOutQuad easeInOutQuad;
+        static EaseInOutQuart easeInOutQuart;
+        //static Ring ring(FRAMESPERSECOND * 32);
+        static Ring ring(8.0f);
 
-        //float t1 = Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND),
-        // -sproffs, sproffs, 3.25f, boost::ref(ease), true);
+        //int ring0 = ring.Timed(ticks);
         int ring1 = ring(ticks);
-        //float t1 = Timing::RangeMappedSinceStart(ring1 / static_cast<float>(gui::FRAMESPERSECOND),
-        float t1 = Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND),
-           // -static_cast<int>(sproffs),
-                 0,
-                sproffs,
-                16.0f,
-                boost::ref(easeBounce),
-                true);
-        //uint32_t offset = static_cast<int>(t1) % sproffs;
-        uint32_t offset = static_cast<int>(t1);
-        sprite->SprOffset(offset);
-        //sprite->SprOffset(static_cast<int>(ssin) % sproffs);
-        //uint32_t offset = sproffsAct % sproffs;
-        //sprite->SprOffset(offset);
 
-        CRectangle sdl_rect = sprite->SprImage()->DstRect();
-        //m_pBackground->RenderDrawRect(sdl_rect, &sprColor);
-        CColor sprColor = CColor::White();
-        m_pBackground->RenderFillRect(CRectangle(100, 100, 200, 200), &sprColor);
+        // -static_cast<int>(sproffs),
+
+//        // ring mod via functor and loop parameter.
+//        float t1 =
+//            Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs, 3.25f, boost::ref(
+//                            easeRingBounce), true);
+
+//        // stops at sproffs, no looping.
+//        float t1 = Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs,
+//                ring.RingSeconds(), boost::ref(easeNone), false);
+
+//        // ring via operator() -> int.
+//        float t1 = Timing::RangeMappedSinceStart(ring(ticks) / static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs,
+//                ring.RingSeconds(), boost::ref(easeNone));
+
+        // ring via Timed() -> seconds. added easing.
+        //float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, sproffs, ring.RingSeconds(), boost::ref(easeInOutQuart));
+        float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, sproffs, ring.RingSeconds(), boost::ref(easeInOutQuad));
+        int offset = static_cast<int>(t1);
+        
+        sprite->SprOffset(offset);
 
         if(m_pOverlay) {
             std::ostringstream out6005;
@@ -649,23 +583,11 @@ public:
             //dbgOut(out6007.str());
 
             std::ostringstream out6008;
-            out6008 << "offset: (" << offset << ")";
+            out6008 << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << "t1: (" << t1 << ")";
+            out6008 << " ticks: (" << ticks << ")";
+            out6008 << " offset: (" << offset << ")";
             m_pOverlay->SetTextLabelText(6008, out6008.str());
             //dbgOut(out6008.str());
-        }
-
-        if(h_ >= 180) {
-            toggle_ = false;
-        }
-        else if(h_ <= -180) {
-            toggle_ = true;
-        }
-
-        if(toggle_) {
-            h_++;
-        }
-        else {
-            h_--;
         }
 
         lastSpritePos = sprite->GetPos();
@@ -690,38 +612,27 @@ public:
         : x(0), host{host}
     {}
 
-    void Draw() {
+    void Draw() const
+    {
         auto aaaa = host->m_pBackground->GetDimension();
     }
 };
 
 ScrollerLevelA::ScrollerLevelA(FileLoader& loader, gui::components::CCanvas* background) :
-    pimpl_(new ScrollerLevelA::ScrollerLevelAImpl(this)),
     Screen(background, true),
+    pimpl_(new ScrollerLevelA::ScrollerLevelAImpl(this)),
     m_Loader(loader),
     m_pArialfont(NULL),
-//m_iUpdateTimes(0),
     m_pScrollText(NULL),
     m_pScroller(NULL),
+    m_pSprMgr(new CSpriteManager),
     m_pSeamlessImage(NULL),
-    m_pKeyHandler(NULL),
-    m_pSprMgr(new CSpriteManager) {
-    //,m_pSprEye(NULL),
-    //m_pSprWormler(NULL)
+    m_pKeyHandler(NULL) {
     dbgOut(__FUNCTION__ << " " << this);
 }
 
 ScrollerLevelA::~ScrollerLevelA(void) {
-    //if (m_pArialfont) {
-    //    TTF_CloseFont(m_pArialfont);
-    //}
-
     delete m_pSeamlessImage;
-    //delete m_pScrollText;
-    //delete m_pScroller;
-    //delete m_pBackground;
-    //delete m_pSprWormler;
-    //delete m_pSprEye;
     dbgOut(__FUNCTION__ << " " << this);
 }
 
@@ -732,11 +643,14 @@ ScrollerLevelA::~ScrollerLevelA(void) {
  * @return TODO
  */
 bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
-    // Master()->GetMainCanvas();
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
+    mcol = CColor::White();
+    m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 30);
+    /*if (!controls::CLabel::GetLabelFont())
+    {
+    controls::CLabel::SetLabelFont(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 16));
+    }*/
 
-    //m_pOverlay.reset(new DebugOverlay(m_Loader, controls::CControl::GetMainControl(), 1,
-    // "ScrollerLevelA"));
     m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "ScrollerLevelA"));
     m_pOverlay->AddTextLabel();
     m_pOverlay->AddTextLabel();
@@ -744,39 +658,11 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     m_pOverlay->AddTextLabel();
     m_pOverlay->AddTextLabel();
 
-    /*testbutton = new gui::controls::CButton(CControl::GetMainControl(), CRectangle(0, 0, 160,
-                    40), 21345, "Change Direction", true);
-       testbutton->SetPosition( CPoint(800, 30) );*/
-
-    //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
-    //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
-    // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-    //m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf",
-    // 30);
-    m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 30);
-    /*if (!controls::CLabel::GetLabelFont())
-       {
-        controls::CLabel::SetLabelFont(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 16));
-       }*/
-
-    mcol = CColor::White();
     SDL_Surface* tmpfsurf = (m_Loader.FL_LOADIMG("Intro/TestScreenBg.png"));
-
-    //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);
-    //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_TRUE, 0xff00ff);
     m_pBackground.reset(new CCanvas(tmpfsurf));
-    //m_pBackground->GetTexture();
 
-    //CCanvas tmpCanvas( tmpfsurf );
     m_Loader.FreeLast();
 
-    //m_pSprite = new CSprite(m_Loader, "Sprites/kmail.png", m_pBackground.get()/*,
-    // CRectangle(0,0,64,64)*/);
-    //m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky01.png", m_pBackground.get()/*,
-    // CRectangle(0,0,64,64)*/);
-    //m_pSprite = new CSeamlessImage(m_Loader, "Images/Sky02.png", m_pMainCanvas/*,
-    // CRectangle(0,0,64,64)*/);
-    //SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/Sky02.png"));
     SDL_Surface* g_pBitmapSurface = (m_Loader.FL_LOADIMG("Images/SeamlessB.png"));
     m_pSeamlessImage = new CSeamlessImage(new CCanvas(g_pBitmapSurface), true);
     m_Loader.FreeLast();
@@ -785,29 +671,16 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     // m_pBlue = new CImage(new CCanvas(fl.FL_LOADIMG("icons/blue.png")), true);
     m_pBlue.reset(new CCanvas(m_Loader.FL_LOADIMG("icons/blue.png")));
 
-    //m_pBanding1.reset(new CImage(new
-    // CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), CRectangle(0, 0, 400, 200),
-    // true, CPoint(150,50)));
     m_pBanding1.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
-    //m_pBanding1->DstRect().Y() -= 200;
-    //m_pBanding1->DstRect().H() *= 2;
     m_pBanding1->Scale(0.6f);
     CanvasStripeRendererA stripeModifier(m_Loader, 16, m_pArialfont, m_pOverlay.get());
     m_pBanding1->GetCanvas()->AddModifier(stripeModifier);
 
     m_pBanding2.reset(new CImage(new CCanvas(m_Loader.FL_LOADIMG("Text/ColorBandedTextWhite01.png")), true));
-    //CanvasStripeRendererA stripeModifier2(16, m_pArialfont, m_pOverlay.get());
-    //static CanvasStripeRendererA stripeModifier2(16, m_pArialfont, m_pOverlay.get());
-    //m_pBanding2->GetCanvas()->AddAnimator(boost::ref(stripeModifier2));
     m_pBanding2->GetCanvas()->AddModifier(stripeModifier);
     FadeInOutRenderer fadeRenderer(this, 3.0f, FadeInOutRenderer::FadeMode::FadeIn);
     m_pBanding2->GetCanvas()->AddModifier(fadeRenderer);
 
-    //m_pMainCanvas->Blit(m_pMainCanvas->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-    //m_pBackground->Blit(m_pBackground->GetDimension(), tmpCanvas, tmpCanvas.GetDimension());
-    m_pMainCanvas->AddUpdateRect(m_pBackground->GetDimension());
-
-    //"\r\n"
     CColor m_colText = CColor::White();
     std::ostringstream outstring;
     outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
