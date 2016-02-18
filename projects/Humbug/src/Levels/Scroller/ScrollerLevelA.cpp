@@ -595,6 +595,46 @@ public:
 };
 }
 
+class PlayerShip
+{
+    CSprite* m_pSprShip;
+    CRectangle sprDimension;
+    CRectangle mainDimension;
+    boost::scoped_ptr<PlayerKeys4> m_pKeyHandler;
+    boost::shared_ptr<hspriv::ShipMover> updfuncShip;
+
+public:
+    PlayerShip(FileLoader& m_Loader, CCanvas* m_pMainCanvas, CSpriteManager* m_pSprMgr, DebugOverlay* m_pOverlay)
+    {
+        m_pSprShip =
+            new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
+        m_pSprShip->SprImage()->DstRect() = m_pSprShip->SprImage()->DstRect() / 2;
+        int mainCanvasMiddleX = m_pMainCanvas->GetWidth() / 2;
+        int mainSprEyeMiddleX = m_pSprShip->SprImage()->DstRect().GetW() / 2;
+        sprDimension = m_pSprShip->SpriteDimension();
+        mainDimension = m_pMainCanvas->GetDimension();
+        //CRectangle rect = CRectangle() mainDimension.Pad(sprDimension);
+        CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
+            mainDimension.GetW() - sprDimension.GetW() / 2, mainDimension.GetH() - sprDimension.GetH() / 2);
+        int delta_y = m_pMainCanvas->GetHeight() - m_pSprShip->SprImage()->DstRect().GetH() - 128;
+        m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), static_cast<float>(mainCanvasMiddleX - mainSprEyeMiddleX), static_cast<float>(delta_y), false, false, 1.0f));
+        updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
+        updfuncShip->SetDebugOverlay(m_pOverlay);
+        m_pSprMgr->AddSprite(m_pSprShip, boost::ref(*updfuncShip.get()));
+    }
+
+    void HookEventloop(SDL_Event* pEvent) const
+    {
+        m_pKeyHandler->HookEventloop(pEvent);
+    }
+
+    void HookIdle(int ticks, float speed) const
+    {
+        m_pKeyHandler->HookIdle(ticks, speed);
+    }
+
+};
+
 struct ScrollerLevelA::ScrollerLevelAImpl {
 private:
 
@@ -607,9 +647,10 @@ public:
 
     boost::shared_ptr<hspriv::LaserMover> updfunc2;
     boost::shared_ptr<hspriv::SaucerMover> updfunc3;
+    boost::shared_ptr<PlayerShip> m_pPlayerShip;
 
     explicit ScrollerLevelAImpl(ScrollerLevelA* host)
-        : x(0), host{host}
+        : x(0), host{ host }
     {}
 
     void Draw() const
@@ -706,7 +747,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
 
-    //CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/eye.png", m_pMainCanvas, CRectangle(0, 0,
+   /* //CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/eye.png", m_pMainCanvas, CRectangle(0, 0,
     // 64, 64), CPoint(64, 0));
     CSprite* m_pSprShip =
         new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
@@ -722,7 +763,8 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), static_cast<float>(mainCanvasMiddleX - mainSprEyeMiddleX), static_cast<float>(delta_y), false, false, 1.0f));
     hspriv::ShipMover updfunc = hspriv::ShipMover(m_pKeyHandler.get(), delta_y);
     updfunc.SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprShip, updfunc);
+    m_pSprMgr->AddSprite(m_pSprShip, updfunc);*/
+    pimpl_->m_pPlayerShip = boost::make_shared<PlayerShip>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get());
 
     CSprite* m_pSprLaser =
         new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CRectangle(0, 0, 49, 480), CPoint(49, 480));
@@ -751,7 +793,8 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 void ScrollerLevelA::OnIdle(int ticks) {
     m_iTicks = ticks;
     m_pOverlay->IdleSetVars(ticks);
-    m_pKeyHandler->HookIdle(ticks, 1.0f);
+    //m_pKeyHandler->HookIdle(ticks, 1.0f);
+    pimpl_->m_pPlayerShip->HookIdle(ticks, 1.0f);
     //m_pScroller->Scroll(4);
     m_pSprMgr->OnIdle(ticks);
 }
@@ -858,7 +901,9 @@ void ScrollerLevelA::OnUpdate() {
 }
 
 void ScrollerLevelA::OnEvent(SDL_Event* pEvent) {
-    m_pKeyHandler->HookEventloop(pEvent);
+    //m_pKeyHandler->HookEventloop(pEvent);
+    pimpl_->m_pPlayerShip->HookEventloop(pEvent);
+
     Screen::OnEvent(pEvent);
 }
 
