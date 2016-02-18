@@ -41,7 +41,7 @@ class InfoText2 {
      *  @return TODO
      */
     seconds GetTime() const {
-        return (m_iTicks - m_iStartTicks) / 30.0f;
+        return gui::Timing::Convert(m_iTicks - m_iStartTicks);
     }
 
 #define FROMTIME(x) if(GetTime() > (x)) {
@@ -271,7 +271,7 @@ private:
      *  @return TODO
      */
     seconds GetTime() const {
-        return (m_iTicks - m_iStartTicks) / 30.0f;
+        return gui::Timing::Convert(m_iTicks - m_iStartTicks);
     }
 
 #define FROMTIME(x) if(GetTime() > (x)) {
