@@ -731,10 +731,10 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
 
-    CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer01.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
-    m_pSprSaucer->SprImage()->Scale(0.5);
+    CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
+    //m_pSprSaucer->SprImage()->Scale(0.5);
     offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
-    pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW);
+    pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW, 90);
     pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprSaucer, boost::ref(*pimpl_->updfunc3));
 

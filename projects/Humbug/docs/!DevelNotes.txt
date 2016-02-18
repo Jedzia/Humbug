@@ -15,6 +15,7 @@ creates ShipSprite02-0.png and ShipSprite02-1.png
 combine them:
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 ShipSprite02-* ShipSprite02.png
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 Laser01-* Laser01.png
+"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 Saucer01_* Saucer01.png
 
 identify
 E:\Projects\C++\Humbug\projects\Humbug\Artwork\Work\Sprites\Ship\Laser>"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\identify.exe" Laser01-1.png
