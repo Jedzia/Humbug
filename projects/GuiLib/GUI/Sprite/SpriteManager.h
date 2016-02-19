@@ -62,8 +62,8 @@ public:
 
       struct CSpriteManagerImpl;
       boost::scoped_ptr<CSpriteManagerImpl> pimpl_;
-      typedef boost::ptr_vector<CSpriteHook> SprStorage;
-      SprStorage m_pvSprites;
+      //typedef boost::ptr_vector<CSpriteHook> SprStorage;
+      //SprStorage m_pvSprites;
   };
 
   std::ostream& operator<<(std::ostream& o, const CSpriteManager& r);

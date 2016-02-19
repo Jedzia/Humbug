@@ -63,7 +63,8 @@ typedef std::vector<SpriteCallData> SprDataStorage;
 
 struct SpriteLinkData {
     int id = -1;
-    CSprite* sprite;
+    SpriteShrp sprite;
+    CSpriteManager::CSpriteModifierFunc mainfunc;
     SprDataStorage callData;
 };
 
@@ -95,13 +96,14 @@ public:
         return currentId++;
     }
 
-    int AddSpriteData(CSprite* sprite) {
+    int AddSpriteData(CSprite* sprite, const CSpriteManager::CSpriteModifierFunc& fnc) {
         int id = NewId();
 
         SpriteLinkData data;
         data.id = id;
-        data.sprite = sprite;
-        //data.callData = NULL;
+        //data.sprite = sprite;
+        data.sprite.reset(sprite);
+        data.mainfunc = fnc;
         m_vSpriteData.insert(std::make_pair(id, data));
         return id;
     }
@@ -117,25 +119,72 @@ CSpriteManager::~CSpriteManager(void) {
 }
 
 int CSpriteManager::AddSprite(CSprite* sprite, const CSpriteModifierFunc& updfunc) {
-    int id = pimpl_->AddSpriteData(sprite);
-    m_pvSprites.push_back(new CSpriteHook(sprite, updfunc));
+    int id = pimpl_->AddSpriteData(sprite, updfunc);
+    //m_pvSprites.push_back(new CSpriteHook(sprite, updfunc));
     return id;
 }
 
 void CSpriteManager::OnDraw() {
-    SprStorage::iterator end = m_pvSprites.end();
+    /*SprStorage::iterator end = m_pvSprites.end();
 
     for(SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
     {
         SpriteShrp sprite = it->Sprite();
         sprite->Draw();
+    }*/
+
+    BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
+    {
+        it.second.sprite->Draw();
     }
+
 }
 
 void CSpriteManager::OnIdle(int ticks) {
-    std::vector<SprStorage::iterator> removeList;
-    SprStorage::iterator end = m_pvSprites.end();
 
+
+    SprLinkStorage::iterator sprIt = pimpl_->m_vSpriteData.begin();
+    while (sprIt != pimpl_->m_vSpriteData.end()) {
+
+        static CRectangle srcRect, dstRect;
+        CSpriteModifierData mdata(&srcRect, &dstRect);
+        CSprite* sprite = (*sprIt).second.sprite.get();
+        (*sprIt).second.mainfunc(sprite, ticks, mdata);
+
+        if (mdata.markedForDeletion) {
+            // if markedForDeletion, remove it
+            sprIt = pimpl_->m_vSpriteData.erase(sprIt);
+        }
+        else {
+            // SprDataStorage
+            ++sprIt;
+        }
+    }
+
+
+
+    /*// this seems the best when iterating and deleting
+    SprStorage::iterator sprIt = m_pvSprites.begin();
+    while (sprIt != m_pvSprites.end()) {
+
+        static CRectangle srcRect, dstRect;
+        CSpriteModifierData mdata(&srcRect, &dstRect);
+        (*sprIt).DoIdle(ticks, mdata);
+
+        if (mdata.markedForDeletion) {
+            // if markedForDeletion, remove it
+            sprIt = m_pvSprites.erase(sprIt);
+        }
+        else {
+            // SprDataStorage
+            ++sprIt;
+        }
+    }*/
+
+    /*
+    std::vector<SprStorage::iterator> removeList;
+
+    SprStorage::iterator end = m_pvSprites.end();
     for(SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
     {
         //SpriteShrp sprite = it->Sprite();
@@ -146,18 +195,22 @@ void CSpriteManager::OnIdle(int ticks) {
         // fill deletion list
         if(mdata.markedForDeletion) {
             SprStorage::iterator it2 = it;
+            // it has to be checked, if removing has no side effects. see CSpriteManager::OnIdle for a solution with "while".
             //removeList.push_back(it2);
             removeList.insert(removeList.begin(), it2);
+            continue;
         }
 
-        /*if (mdata.isHandled) {
+        //if (mdata.isHandled) {
            // do something
-           }*/
+        //   }
     }
 
     BOOST_FOREACH(SprLinkStorage::value_type & v, pimpl_->m_vSpriteData)
     {
+        auto id = v.first;
         auto pos = v.second.sprite->GetPosition();
+        id++;
     }
 
     // delete marked sprites
@@ -165,17 +218,21 @@ void CSpriteManager::OnIdle(int ticks) {
     {
         m_pvSprites.erase(itpos);
         //break;
-    }
+    }*/
 
 } // CSpriteManager::OnIdle
 
 void CSpriteManager::Render() {
-    SprStorage::iterator end = m_pvSprites.end();
+    /*SprStorage::iterator end = m_pvSprites.end();
 
     for(SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
     {
         SpriteShrp sprite = it->Sprite();
         sprite->Render();
+    }*/
+    BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
+    {
+        it.second.sprite->Render();
     }
 }
 
