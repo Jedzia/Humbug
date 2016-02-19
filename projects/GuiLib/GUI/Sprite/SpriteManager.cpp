@@ -148,6 +148,7 @@ void CSpriteManager::OnIdle(int ticks) {
 
         static CRectangle srcRect, dstRect;
         CSpriteModifierData mdata(&srcRect, &dstRect);
+        SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = (*sprIt).second.sprite.get();
         (*sprIt).second.mainfunc(sprite, ticks, mdata);
 
@@ -156,7 +157,24 @@ void CSpriteManager::OnIdle(int ticks) {
             sprIt = pimpl_->m_vSpriteData.erase(sprIt);
         }
         else {
-            // SprDataStorage
+            // children call data
+
+            SprDataStorage::iterator subIt = linkdata.callData.begin();
+            while (subIt != linkdata.callData.end()) {
+
+                //static CRectangle srcRect, dstRect;
+                //CSpriteModifierData mdata(&srcRect, &dstRect);
+                (*subIt).updfunc(sprite, ticks, mdata);
+
+                if (mdata.markedForDeletion) {
+                    // if markedForDeletion, remove it
+                    subIt = linkdata.callData.erase(subIt);
+                }
+                else {
+                    ++subIt;
+                }
+            }
+
             ++sprIt;
         }
     }
