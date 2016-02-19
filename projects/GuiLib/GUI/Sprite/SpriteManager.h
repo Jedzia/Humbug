@@ -25,7 +25,7 @@
 namespace gui {
   //
   class CSpriteHook;
-  struct CSpriteRenderModifierData
+  struct CSpriteModifierData
   {
       /** contains the source rectangle. */
       CRectangle* srcRect;
@@ -37,7 +37,7 @@ namespace gui {
       bool markedForDeletion;
       int state;
 
-      CSpriteRenderModifierData(CRectangle* srcRect, CRectangle* dstRect)
+      CSpriteModifierData(CRectangle* srcRect, CRectangle* dstRect)
           : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(1)
       {
 
@@ -46,12 +46,12 @@ namespace gui {
 
   class CSpriteManager {
 public:
-    //typedef boost::function<void(gui::CSprite *, int, CSpriteRenderModifierData& mdata)> CSpriteRenderer;
-    typedef boost::function<void(gui::CSprite *, int)> CSpriteRenderer;
+    //typedef boost::function<void(gui::CSprite *, int, CSpriteModifierData& mdata)> CSpriteModifierFunc;
+    typedef boost::function<void(gui::CSprite *, int)> CSpriteModifierFunc;
 
       CSpriteManager(/*SDL_Surface* screen*/);
       ~CSpriteManager();
-      void AddSprite(gui::CSprite* sprite, const CSpriteRenderer& updfunc = NULL);
+      void AddSprite(gui::CSprite* sprite, const CSpriteModifierFunc& updfunc = NULL);
 
       void OnDraw();
 

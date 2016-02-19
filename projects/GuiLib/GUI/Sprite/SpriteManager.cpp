@@ -4,17 +4,19 @@
 //
 #include "SpriteManager.h"
 #include "boost/smart_ptr/weak_ptr.hpp"
+#include <boost/foreach.hpp>
+
 namespace gui {
 //#include <build/cmake/include/debug.h>
   typedef boost::shared_ptr<CSprite> SpriteShrp;
   class CSpriteHook {
       //CSprite *m_pSprite;
       SpriteShrp m_pSprite;
-      const boost::function<void(CSprite *, int)> m_fncUpdate;
+      const CSpriteManager::CSpriteModifierFunc m_fncUpdate;
 
 public:
 
-      CSpriteHook( CSprite* sprite, const boost::function<void(CSprite *, int)> updfunc = NULL ) :
+    CSpriteHook(CSprite* sprite, const CSpriteManager::CSpriteModifierFunc updfunc = NULL) :
           m_pSprite(sprite),
           m_fncUpdate(updfunc){
           dbgOut(__FUNCTION__ << " " << this);
@@ -24,15 +26,16 @@ public:
       ~CSpriteHook(){
           dbgOut(__FUNCTION__ << " " << this);
       }
-      void DoIdle(int framenumber){
+      bool DoIdle(int framenumber) const
+      {
           if (m_fncUpdate != NULL) {
               //boost::weak_ptr<CSprite> wspr( m_pSprite );
               //if (!wspr.expired())
               //{
               m_fncUpdate(m_pSprite.get(), framenumber);
-
               //}
           }
+          return false;
       }
       //CSprite * Sprite() const { return m_pSprite; }
       SpriteShrp Sprite() const { return m_pSprite; }
@@ -46,8 +49,7 @@ public:
       dbgOut(__FUNCTION__);
   }
 
-  void CSpriteManager::AddSprite(CSprite* sprite, const boost::function<void(CSprite *,
-                                                                             int)>& updfunc){
+  void CSpriteManager::AddSprite(CSprite* sprite, const CSpriteModifierFunc& updfunc){
       m_pvSprites.push_back( new CSpriteHook( sprite, updfunc) );
 
       //m_pvSprites.push_back(new CSpriteHook( sprite));
@@ -63,13 +65,29 @@ public:
   }
 
   void CSpriteManager::OnIdle( int ticks ){
+      std::vector<SprStorage::iterator> removeList;
+
       SprStorage::iterator end = m_pvSprites.end();
       for (SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
       {
           //SpriteShrp sprite = it->Sprite();
           //dbgOut(__FUNCTION__ << " " << &it);
-          (*it).DoIdle(ticks);
+          bool markedForDeletion = (*it).DoIdle(ticks);
+          // fill deletion list
+          if (markedForDeletion) {
+              SprStorage::iterator it2 = it;
+              removeList.push_back(it2);
+          }
       }
+      // delete marked sprites
+      BOOST_FOREACH(SprStorage::iterator itpos, removeList)
+      {
+          m_pvSprites.erase(itpos);
+      }
+
+      /*if (mdata.isHandled) {
+          return true;
+      }*/
   }
 
     void CSpriteManager::Render()
