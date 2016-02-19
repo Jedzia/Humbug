@@ -121,6 +121,16 @@ CPoint& CPoint::Move (int dx, int dy) {
     return (*this);
 }
 
+CPoint CPoint::Up(int dy) const
+{
+    return Offset(0, dy);
+}
+
+CPoint CPoint::Right(int dx) const
+{
+    return Offset(dx, 0);
+}
+
 CPoint& CPoint::Add (const CPoint& pt) {
     //add point to this point
     (*this) += pt;
@@ -307,8 +317,9 @@ CPoint::operator boost::numeric::ublas::vector<int>() const
     return result;
 }
 
-CPoint CPoint::Offset(int x, int y) {
-    return CPoint(X() + x, Y() + y);
+CPoint CPoint::Offset(int x, int y) const
+{
+    return CPoint(GetX() + x, GetY() + y);
 }
 
 CPoint operator * (int scalar, CPoint& pt) {

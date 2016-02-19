@@ -40,12 +40,14 @@ public:
     //setter
     CPoint& Set (int x, int y);
 
-    CPoint Offset (int x, int y);
+    CPoint Offset (int x, int y) const;
 
     CPoint& Copy(const CPoint& pt);
 
     //move
-    CPoint& Move (int dx, int dy);
+    CPoint& Move(int dx, int dy);
+    CPoint Up(int dy) const;
+    CPoint Right(int dx) const;
 
     CPoint& Add (const CPoint& pt);
 
