@@ -51,6 +51,7 @@ public:
       void Draw();
 
       void SprOffset(int offset);
+      int GetOffset() const { return m_iOffset; }
 
       /** Brief description which ends at this dot. Details follow
        *  here.
@@ -75,6 +76,7 @@ public:
       components::CPoint m_cpOldPos;
       components::CPoint m_cpSprMove;
       components::CRectangle m_crSprDim;
+      int m_iOffset;
       bool m_bOwner;
   };
 

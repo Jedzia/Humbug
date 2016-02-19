@@ -607,6 +607,8 @@ public:
  */
 class PlayerShip {
     CSprite* m_pSprShip;
+    CSprite* m_pSprLaser;
+    int m_iSprLaserId;
     CRectangle sprDimension;
     CRectangle mainDimension;
     boost::scoped_ptr<PlayerKeys4> m_pKeyHandler;
@@ -638,6 +640,8 @@ public:
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
         updfuncShip->SetDebugOverlay(dbgOverlay);
         sprMgr->AddSprite(m_pSprShip, boost::ref(*updfuncShip.get()));
+
+        m_iSprLaserId = CreateLaserSprite();
     }
 
     static void LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
@@ -670,12 +674,11 @@ public:
         }
     }
     
-
-    void Fire()
+    int CreateLaserSprite()
     {
         //CPoint shipCannon(319, 152);
         //CPoint laserRayBottom(23, 441);
-        CSprite* m_pSprLaser =
+        m_pSprLaser =
             new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pCanvas, CRectangle(0, 0, 49, 480), CPoint(49, 480));
         //CPoint pos = m_pSprShip->GetPosition().Up(-480) + shipCannon;
         //CPoint pos = m_pSprShip->GetPosition() - laserRayBottom;
@@ -689,10 +692,18 @@ public:
         //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc, boost::ref(*this)));
         //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc, *this));
         //m_pSprMgr->AddSprite(m_pSprLaser, &PlayerShip::LaserUpdfunc);
+        m_pSprLaser->SetVisibility(false);
+        //int result = m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
+        return m_pSprMgr->AddSprite(m_pSprLaser);
+    }
+
+    void Fire()
+    {
         
         //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3);
-        m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
-
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
+        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
     }
 
     void HookEventloop(SDL_Event* pEvent) {
@@ -946,7 +957,8 @@ void ScrollerLevelA::OnDraw() {
     }
 
     m_pOverlay->Draw();
-    m_pSprMgr->OnDraw();
+    m_pSprMgr->Render();
+    //m_pSprMgr->OnDraw();
     m_pMainCanvas->Unlock();
 }     // OnDraw
 

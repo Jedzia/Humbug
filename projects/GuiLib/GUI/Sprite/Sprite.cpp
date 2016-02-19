@@ -25,7 +25,8 @@ namespace gui
       m_pBackground(background),
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
-      m_crSprDim(spriteDimension){
+      m_crSprDim(spriteDimension), m_iOffset(0)
+  {
       dbgOut(__FUNCTION__);
 
       //m_cpSprDim.SetX(sprImage->SrcRect().GetW());
@@ -40,7 +41,8 @@ namespace gui
       m_pBackground(NULL),
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
-      m_crSprDim(spriteDimension){
+      m_crSprDim(spriteDimension), m_iOffset(0)
+  {
       // m_pSprImage(sprImage),
       SDL_Surface* alphasurf = ( loader.FL_LOADIMG(filename) );
 
@@ -69,6 +71,8 @@ namespace gui
    *  @return TODO
    */
   void CSprite::Draw(){
+      Render();
+      return;
       m_pSprImage->RenderPut(m_pMainCanvas, GetPosition());
       if (debugFrame)
       {
@@ -118,6 +122,12 @@ namespace gui
    * @return TODO
    */
   void CSprite::SprOffset( int offset ){
+      if (m_iOffset == offset)
+      {
+          return;
+      }
+
+      m_iOffset = offset;
       CRectangle fullspriteDimension = m_pSprImage->GetCanvas()->GetDimension();
 
       int xMove = m_cpSprMove.GetX();
@@ -152,6 +162,11 @@ namespace gui
 
 void CSprite::Render()
 {
+    if (debugFrame)
+    {
+        CColor col = CColor::White();
+        m_pMainCanvas->RenderDrawRect(m_pSprImage->DstRect() + GetPosition(), &col);
+    }
     m_pSprImage->RenderPut(m_pMainCanvas, GetPosition());
     m_cpOldPos = GetPosition();
 }

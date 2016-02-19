@@ -139,13 +139,13 @@ public:
 /** @class BaseDrawable:
  *  Base class for all items that draw on their member canvas.
  *  See: BaseShape's are lightweight items that draw themselves to a CCanvas, but don't own a
- *CCanvas.
+ * CCanvas.
  */
 class BaseDrawable : public Disposable {
 public:
 
     explicit BaseDrawable(const CPoint& m_pt_position)
-        : m_ptPosition{m_pt_position}
+        : m_ptPosition{m_pt_position}, m_bIsVisible(true)
     {}
 
     /** Get current text Position.
@@ -160,9 +160,22 @@ public:
      */
     void SetPosition(const CPoint& position) { m_ptPosition = position; }
 
+    /** Brief description of BaseDrawable, IsVisible
+     *  Detailed description.
+     *  @return TODO
+     */
+    bool IsVisible() const {  return m_bIsVisible; }
+
+    /** Brief description of BaseDrawable, set_MBIsVisible
+     *  Detailed description.
+     *  @param visibility TODO
+     */
+    void SetVisibility(bool visibility) { m_bIsVisible = visibility; }
+
 private:
 
     CPoint m_ptPosition;
+    bool m_bIsVisible;
 };
 }
 }
