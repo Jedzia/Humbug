@@ -747,23 +747,6 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
 
-   /* //CSprite* m_pSprEye = new CSprite(m_Loader, "Sprites/eye.png", m_pMainCanvas, CRectangle(0, 0,
-    // 64, 64), CPoint(64, 0));
-    CSprite* m_pSprShip =
-        new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
-    m_pSprShip->SprImage()->DstRect() = m_pSprShip->SprImage()->DstRect() / 2;
-    int mainCanvasMiddleX = m_pMainCanvas->GetWidth() / 2;
-    int mainSprEyeMiddleX = m_pSprShip->SprImage()->DstRect().GetW() / 2;
-    CRectangle sprDimension = m_pSprShip->SpriteDimension();
-    CRectangle mainDimension = m_pMainCanvas->GetDimension();
-    //CRectangle rect = CRectangle() mainDimension.Pad(sprDimension);
-    CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
-            mainDimension.GetW() - sprDimension.GetW() / 2, mainDimension.GetH() - sprDimension.GetH() / 2);
-    int delta_y = m_pMainCanvas->GetHeight() - m_pSprShip->SprImage()->DstRect().GetH() - 128;
-    m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), static_cast<float>(mainCanvasMiddleX - mainSprEyeMiddleX), static_cast<float>(delta_y), false, false, 1.0f));
-    hspriv::ShipMover updfunc = hspriv::ShipMover(m_pKeyHandler.get(), delta_y);
-    updfunc.SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprShip, updfunc);*/
     pimpl_->m_pPlayerShip = boost::make_shared<PlayerShip>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get());
 
     CSprite* m_pSprLaser =

@@ -25,13 +25,33 @@
 namespace gui {
   //
   class CSpriteHook;
+  struct CSpriteRenderModifierData
+  {
+      /** contains the source rectangle. */
+      CRectangle* srcRect;
+      /** contains the destination rectangle. */
+      CRectangle*  dstRect;
+      bool isHandled;
+      /** If set to true the TextAnimator will be removed and deleted from the execution queue.
+      The TextAnimator::nextAnimator next animator is added and called on the next run of the queue. */
+      bool markedForDeletion;
+      int state;
+
+      CSpriteRenderModifierData(CRectangle* srcRect, CRectangle* dstRect)
+          : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(1)
+      {
+
+      };
+  };
+
   class CSpriteManager {
 public:
+    //typedef boost::function<void(gui::CSprite *, int, CSpriteRenderModifierData& mdata)> CSpriteRenderer;
+    typedef boost::function<void(gui::CSprite *, int)> CSpriteRenderer;
 
       CSpriteManager(/*SDL_Surface* screen*/);
       ~CSpriteManager();
-      void AddSprite(gui::CSprite* sprite, const boost::function<void(gui::CSprite *,
-                                                                      int)>& updfunc = NULL);
+      void AddSprite(gui::CSprite* sprite, const CSpriteRenderer& updfunc = NULL);
 
       void OnDraw();
 
