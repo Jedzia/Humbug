@@ -26,16 +26,15 @@ public:
       ~CSpriteHook(){
           dbgOut(__FUNCTION__ << " " << this);
       }
-      bool DoIdle(int framenumber) const
+      void DoIdle(int framenumber, CSpriteModifierData& mdata) const
       {
           if (m_fncUpdate != NULL) {
               //boost::weak_ptr<CSprite> wspr( m_pSprite );
               //if (!wspr.expired())
               //{
-              m_fncUpdate(m_pSprite.get(), framenumber);
+              m_fncUpdate(m_pSprite.get(), framenumber, mdata);
               //}
           }
-          return false;
       }
       //CSprite * Sprite() const { return m_pSprite; }
       SpriteShrp Sprite() const { return m_pSprite; }
@@ -65,19 +64,25 @@ public:
   }
 
   void CSpriteManager::OnIdle( int ticks ){
-      std::vector<SprStorage::iterator> removeList;
 
+
+      std::vector<SprStorage::iterator> removeList;
       SprStorage::iterator end = m_pvSprites.end();
       for (SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
       {
           //SpriteShrp sprite = it->Sprite();
           //dbgOut(__FUNCTION__ << " " << &it);
-          bool markedForDeletion = (*it).DoIdle(ticks);
+          static CRectangle srcRect, dstRect;
+          CSpriteModifierData mdata(&srcRect, &dstRect);
+          (*it).DoIdle(ticks, mdata);
           // fill deletion list
-          if (markedForDeletion) {
+          if (mdata.markedForDeletion) {
               SprStorage::iterator it2 = it;
               removeList.push_back(it2);
           }
+          /*if (mdata.isHandled) {
+          // do something
+          }*/
       }
       // delete marked sprites
       BOOST_FOREACH(SprStorage::iterator itpos, removeList)
@@ -85,9 +90,6 @@ public:
           m_pvSprites.erase(itpos);
       }
 
-      /*if (mdata.isHandled) {
-          return true;
-      }*/
   }
 
     void CSpriteManager::Render()

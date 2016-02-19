@@ -195,7 +195,7 @@ public:
              * @param ticks TODO
              * @return TODO
              */
-            void operator()(CSprite* sprite, int ticks) {
+            void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
                 sprite->SetPos( CPoint( static_cast<int>(x), static_cast<int>(y) ) );
             }
             /** EyeMover, Y:
@@ -330,7 +330,7 @@ public:
            * @param ticks TODO
            * @return TODO
            */
-          void operator()(CSprite* sprite, int ticks) {
+          void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
               double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
               int ssin = static_cast<int>(ss * 100);
 

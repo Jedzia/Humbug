@@ -335,7 +335,7 @@ public:
      * @param ticks TODO
      * @return TODO
      */
-    void operator()(CSprite* sprite, int ticks) {
+    void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
         double sc = std::cos(static_cast<double>(h_) / 3.14159 / 4.0);
         int ssin = static_cast<int>(ss * 100);
@@ -436,7 +436,7 @@ public:
      * @param ticks TODO
      * @return TODO
      */
-    void operator()(CSprite* sprite, int ticks) {
+    void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
         double sc = std::cos(static_cast<double>(h_) / 3.14159 / 4.0);
         int ssin = static_cast<int>(ss * 100);
@@ -526,7 +526,7 @@ public:
         m_pOverlay = m_p_overlay;
     }
 
-    void operator()(CSprite* sprite, int ticks) {
+    void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         m_iTicks = ticks;
 
         sprite->SetPos(CPoint(deltaX_, 130));

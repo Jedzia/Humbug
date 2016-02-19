@@ -46,8 +46,7 @@ namespace gui {
 
   class CSpriteManager {
 public:
-    //typedef boost::function<void(gui::CSprite *, int, CSpriteModifierData& mdata)> CSpriteModifierFunc;
-    typedef boost::function<void(gui::CSprite *, int)> CSpriteModifierFunc;
+    typedef boost::function<void(gui::CSprite *, int, CSpriteModifierData& mdata)> CSpriteModifierFunc;
 
       CSpriteManager(/*SDL_Surface* screen*/);
       ~CSpriteManager();

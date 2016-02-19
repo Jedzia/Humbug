@@ -41,7 +41,7 @@ public:
      * @param ticks TODO
      * @return TODO
      */
-    void operator()(CSprite* sprite, int ticks) {
+    void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         //sprite->SetPos(CPoint(100 + ((ticks % 32) * 16), 420));
         const int sprMaxFrames = 40;
         int frame = (ticks % sprMaxFrames);
