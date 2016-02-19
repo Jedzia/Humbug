@@ -177,6 +177,7 @@ bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage,
             (*it)(target, const_cast<CCanvas *>(source), mdata);
             if(mdata.markedForDeletion) {
                 CCanvasRendererStorage::iterator it2 = it;
+                // it has to be checked, if removing has no side effects. see CSpriteManager::OnIdle for a solution with "while".
                 //removeList.push_back(it2);
                 removeList.insert(removeList.begin(), it2);
             }
