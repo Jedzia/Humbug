@@ -341,12 +341,12 @@ public:
         int ssin = static_cast<int>(ss * 100);
         int scos = static_cast<int>(sc * 100);
 
-        //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
-        //sprite->SetPos(CPoint(130 + ssin, deltaY_ - scos));
-        //sprite->SetPos(CPoint(130 + ssin, deltaY_));
-        sprite->SetPos(m_pKeyHandler->Char());
-        int delta = lastSpritePos.Distance(sprite->GetPos());
-        float angle = lastSpritePos.Angle(sprite->GetPos());
+        //sprite->SetPosition(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
+        //sprite->SetPosition(CPoint(130 + ssin, deltaY_ - scos));
+        //sprite->SetPosition(CPoint(130 + ssin, deltaY_));
+        sprite->SetPosition(m_pKeyHandler->Char());
+        int delta = lastSpritePos.Distance(sprite->GetPosition());
+        float angle = lastSpritePos.Angle(sprite->GetPosition());
         int sproffsAct = 0;
         if(delta > 0) {
             if(angle <= 0) {
@@ -360,7 +360,7 @@ public:
         //sprite->SprOffset(ticks % sproffs);
         sprite->SprOffset(sproffsAct % sproffs);
 
-        lastSpritePos = sprite->GetPos();
+        lastSpritePos = sprite->GetPosition();
 
         if(m_pOverlay) {
             std::ostringstream out6000;
@@ -442,12 +442,12 @@ public:
         int ssin = static_cast<int>(ss * 100);
         int scos = static_cast<int>(sc * 100);
 
-        //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaX_ + ssin));
-        //sprite->SetPos(CPoint(130 + ssin, deltaX_ - scos));
-        sprite->SetPos(CPoint(deltaX_, 130 + ssin));
-        //sprite->SetPos(CPoint(deltaX_, 130));
-        int delta = lastSpritePos.Distance(sprite->GetPos());
-        float angle = lastSpritePos.Angle(sprite->GetPos());
+        //sprite->SetPosition(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaX_ + ssin));
+        //sprite->SetPosition(CPoint(130 + ssin, deltaX_ - scos));
+        sprite->SetPosition(CPoint(deltaX_, 130 + ssin));
+        //sprite->SetPosition(CPoint(deltaX_, 130));
+        int delta = lastSpritePos.Distance(sprite->GetPosition());
+        float angle = lastSpritePos.Angle(sprite->GetPosition());
         //sproffsAct = 2;
         /*if (delta > 4) {
             if (angle <= 0) {
@@ -491,7 +491,7 @@ public:
             h_--;
         }
 
-        lastSpritePos = sprite->GetPos();
+        lastSpritePos = sprite->GetPosition();
     }     // ()
 };
 
@@ -529,9 +529,9 @@ public:
     void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         m_iTicks = ticks;
 
-        sprite->SetPos(CPoint(deltaX_, 130));
-        int delta = lastSpritePos.Distance(sprite->GetPos());
-        float angle = lastSpritePos.Angle(sprite->GetPos());
+        sprite->SetPosition(CPoint(deltaX_, 130));
+        int delta = lastSpritePos.Distance(sprite->GetPosition());
+        float angle = lastSpritePos.Angle(sprite->GetPosition());
 
         static EaseNone easeNone(2);
         static RingBounce easeRingBounce(2);
@@ -596,7 +596,7 @@ public:
             //dbgOut(out6008.str());
         }
 
-        lastSpritePos = sprite->GetPos();
+        lastSpritePos = sprite->GetPosition();
     }     // ()
 };
 }
@@ -643,9 +643,9 @@ public:
     static void LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
     {
         int ySpeed = -16;
-        sprite->SetPos(sprite->GetPos().Move(0, ySpeed));
+        sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);
-        if (!scr.Contains(sprite->GetPos()))
+        if (!scr.Contains(sprite->GetPosition()))
         {
             mdata.markedForDeletion = true;
         }
@@ -654,7 +654,7 @@ public:
     void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
     {
         int ySpeed = -16;
-        sprite->SetPos(sprite->GetPos().Move(0, ySpeed));
+        sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);
 
         CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
@@ -677,11 +677,11 @@ public:
         //CPoint laserRayBottom(23, 441);
         CSprite* m_pSprLaser =
             new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pCanvas, CRectangle(0, 0, 49, 480), CPoint(49, 480));
-        //CPoint pos = m_pSprShip->GetPos().Up(-480) + shipCannon;
-        //CPoint pos = m_pSprShip->GetPos() - laserRayBottom;
+        //CPoint pos = m_pSprShip->GetPosition().Up(-480) + shipCannon;
+        //CPoint pos = m_pSprShip->GetPosition() - laserRayBottom;
         //CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - laserRayBottom;
         CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        m_pSprLaser->SetPos(pos);
+        m_pSprLaser->SetPosition(pos);
         //int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
         //pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
         //pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
@@ -887,7 +887,7 @@ void ScrollerLevelA::OnDraw() {
 
     //static CPoint sp(-480, 110);
     CPoint sp(0, m_iTicks);
-    //m_pSprite->SetPos(sp);
+    //m_pSprite->SetPosition(sp);
     //m_pSprite->Draw();
     //m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
     m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);

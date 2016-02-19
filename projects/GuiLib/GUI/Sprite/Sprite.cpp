@@ -18,12 +18,11 @@ namespace gui
 // freeSrc: Take ownership of 'sprImage' and delete it on destruction.
   CSprite::CSprite(CCanvas* mainCanvas, CImage* sprImage, CCanvas* background, bool freeSrc,
           CRectangle spriteDimension,
-          CPoint spriteMove) :
-      m_bOwner(freeSrc),
+          CPoint spriteMove) : BaseDrawable(CPoint(0,0)),
+                               m_bOwner(freeSrc),
       m_pMainCanvas(mainCanvas),
       m_pSprImage(sprImage),
       m_pBackground(background),
-      m_cpPos(0, 0),
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension){
@@ -35,11 +34,10 @@ namespace gui
 
   CSprite::CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
           CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
-          CPoint spriteMove /*= CPoint(0,0) */ ) :
-      m_bOwner(true),
+          CPoint spriteMove /*= CPoint(0,0) */) : BaseDrawable(CPoint(0, 0)),
+                                                   m_bOwner(true),
       m_pMainCanvas(mainCanvas),
       m_pBackground(NULL),
-      m_cpPos(0, 0),
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension){
@@ -71,16 +69,16 @@ namespace gui
    *  @return TODO
    */
   void CSprite::Draw(){
-      m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
+      m_pSprImage->RenderPut(m_pMainCanvas, GetPosition());
       if (debugFrame)
       {
           CColor col = CColor::White();
-          m_pMainCanvas->RenderDrawRect(m_pSprImage->DstRect() + m_cpPos, &col);
+          m_pMainCanvas->RenderDrawRect(m_pSprImage->DstRect() + GetPosition(), &col);
       }
       //CRectangle dstrect = m_pSprImage->DstRect();
       //dstrect = dstrect / 2;
       //m_pSprImage->RenderPut(m_pMainCanvas, dstrect + m_cpPos);
-      m_cpOldPos = m_cpPos;
+      m_cpOldPos = GetPosition();
       return;
       m_pMainCanvas->Lock();
 
@@ -103,25 +101,17 @@ namespace gui
       //CPoint spos( m_cpPos.GetX(), m_cpPos.GetY());
       //SDL_SetSurfaceAlphaMod(m_pSprImage->GetCanvas()->GetSurface() /*| SDL_RLEACCEL*/,
       // 128);
-      m_pSprImage->Put(m_pMainCanvas, m_cpPos);
+      m_pSprImage->Put(m_pMainCanvas, GetPosition());
       m_pMainCanvas->Unlock();
 
       //m_pMainCanvas->AddUpdateRect(m_pSprImage->GetCanvas()->GetDimension() + m_cpOldPos);
       //m_pMainCanvas->AddUpdateRect(m_pSprImage->GetCanvas()->GetDimension() + m_cpPos);
       m_pMainCanvas->AddUpdateRect(m_pSprImage->DstRect() + m_cpOldPos);
-      m_pMainCanvas->AddUpdateRect(m_pSprImage->DstRect() + m_cpPos);
-      m_cpOldPos = m_cpPos;
+      m_pMainCanvas->AddUpdateRect(m_pSprImage->DstRect() + GetPosition());
+      m_cpOldPos = GetPosition();
   }   // Draw
 
-  /** CSprite, SetPos:
-   *  Detailed description.
-   *  @param position TODO
-   * @return TODO
-   */
-  void CSprite::SetPos( CPoint position ){
-      m_cpPos = position;
-  }
-
+  
   /** CSprite, SprOffset:
    *  Detailed description.
    *  @param offset TODO
@@ -162,8 +152,8 @@ namespace gui
 
 void CSprite::Render()
 {
-    m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
-    m_cpOldPos = m_cpPos;
+    m_pSprImage->RenderPut(m_pMainCanvas, GetPosition());
+    m_cpOldPos = GetPosition();
 }
 
 CRectangle CSprite::SpriteDimension() const
@@ -178,7 +168,7 @@ CRectangle CSprite::PaintDimension() const
 
 CRectangle CSprite::PaintLocation() const
 {
-    return m_pSprImage->DstRect() + GetPos();
+    return m_pSprImage->DstRect() + GetPosition();
 }
 
     /** $(fclass), operator <<:

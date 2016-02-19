@@ -158,7 +158,7 @@ public:
      *  Sets the text position of this instance used by RenderPut(const CCanvas* canvas).
      *  @param position The value of the text position.
      */
-    void SetPosition(CPoint position) { m_ptPosition = position; }
+    void SetPosition(const CPoint& position) { m_ptPosition = position; }
 
 private:
 

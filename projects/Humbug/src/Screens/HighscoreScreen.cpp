@@ -109,8 +109,8 @@ public:
               double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
               int ssin = static_cast<int>(ss * 100);
 
-              //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
-              sprite->SetPos( CPoint(130 + ssin, deltaY_) );
+              //sprite->SetPosition(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
+              sprite->SetPosition( CPoint(130 + ssin, deltaY_) );
               sprite->SprOffset(ticks % sproffs);
 
               if (h_ >= 180) {

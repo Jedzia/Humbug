@@ -482,7 +482,7 @@ void TestLevel::OnDraw(){
 
     //static CPoint sp(-480, 110);
     static CPoint sp(0, 110);
-    //m_pSprite->SetPos(sp);
+    //m_pSprite->SetPosition(sp);
     //m_pSprite->Draw();
     //m_pSeamlessImage->RenderPut(m_pMainCanvas, sp);
     //m_pSeamlessImage->RenderPut(m_pBackground.get(), sp);

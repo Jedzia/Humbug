@@ -141,8 +141,8 @@ public:
               double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
               int ssin = static_cast<int>(ss * 100);
 
-              //sprite->SetPos(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
-              sprite->SetPos( CPoint(130 + ssin, deltaY_) );
+              //sprite->SetPosition(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
+              sprite->SetPosition( CPoint(130 + ssin, deltaY_) );
               sprite->SprOffset(ticks % sproffs);
 
               if (h_ >= 180) {
@@ -427,7 +427,7 @@ public:
         pimpl_->script->run_script(ticks);
         double spr1X = pimpl_->script->GetData1();
         double spr1Y = pimpl_->script->GetData2();
-		//m_pSprEye->SetPos( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
+		//m_pSprEye->SetPosition( CPoint( static_cast<int>(spr1X), static_cast<int>(spr1Y) ) );
 
 		m_pSprMgr->OnIdle(ticks);
     }

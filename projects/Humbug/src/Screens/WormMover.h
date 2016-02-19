@@ -50,7 +50,7 @@ public:
         int movdelta = 0;
 
         int deltaX = static_cast<int>( ( ( ticks % (sprMaxFrames * 4) ) * 4.3 ) );
-        sprite->SetPos( CPoint(10 + deltaX + movdelta, 420) );
+        sprite->SetPosition( CPoint(10 + deltaX + movdelta, 420) );
         int sprframe;
 
         if ( frame < (sprMaxFrames / 2) ) {

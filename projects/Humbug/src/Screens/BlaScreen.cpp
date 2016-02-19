@@ -264,9 +264,9 @@ namespace humbug {
       mcol.SetG( rand() );
       mcol.SetB( rand() );
 
-      m_pSprite->SetPos(m_pKeyHandler->Char() /* + CPoint(50,50)*/);
-      m_pSprite2->SetPos( m_pKeyHandler2->Char() );
-      //m_pSprite->SetPos(CPoint(50,50));
+      m_pSprite->SetPosition(m_pKeyHandler->Char() /* + CPoint(50,50)*/);
+      m_pSprite2->SetPosition( m_pKeyHandler2->Char() );
+      //m_pSprite->SetPosition(CPoint(50,50));
       //m_iUpdateTimes++;
   }
 

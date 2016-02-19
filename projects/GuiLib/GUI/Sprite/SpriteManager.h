@@ -50,7 +50,7 @@ public:
 
       CSpriteManager(/*SDL_Surface* screen*/);
       ~CSpriteManager();
-      void AddSprite(gui::CSprite* sprite, const CSpriteModifierFunc& updfunc = NULL);
+      int AddSprite(gui::CSprite* sprite, const CSpriteModifierFunc& updfunc = NULL);
 
       void OnDraw();
 
@@ -60,6 +60,8 @@ public:
       void Render();
   private:
 
+      struct CSpriteManagerImpl;
+      boost::scoped_ptr<CSpriteManagerImpl> pimpl_;
       typedef boost::ptr_vector<CSpriteHook> SprStorage;
       SprStorage m_pvSprites;
   };

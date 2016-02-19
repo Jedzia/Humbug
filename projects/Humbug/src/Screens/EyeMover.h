@@ -48,7 +48,7 @@ public:
         double ss = std::sin(static_cast<double>(ticks) / 12);
         int ssin = static_cast<int>(ss * 155);
 
-        sprite->SetPos( CPoint(100 + ( (ticks % 128) * 6 ), 460 + h_ + deltaY_ + ssin) );
+        sprite->SetPosition( CPoint(100 + ( (ticks % 128) * 6 ), 460 + h_ + deltaY_ + ssin) );
         sprite->SprOffset(ticks % 8);
 
         if (h_ >= 100) {

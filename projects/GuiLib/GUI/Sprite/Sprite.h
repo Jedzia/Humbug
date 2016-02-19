@@ -18,6 +18,7 @@
 #define HUMBUG_GUI_SPRITE_CSPRITE_H
 #include "../Components/Point.h"
 #include "../Components/Rectangle.h"
+#include "../Components//BaseDrawable.h"
 #include <string>
 
 //using CCanvas=gui::components::CCanvas;
@@ -41,7 +42,7 @@ namespace gui
 
   /// Represents a two-dimensional image or animation.
   /** Hold function to bla bla bla. */
-  class CSprite {
+  class CSprite : public components::BaseDrawable{
 public:
 
       CSprite( CCanvas* mainCanvas, CImage* sprImage, CCanvas* background = NULL, bool freeSrc = false,
@@ -53,14 +54,6 @@ public:
       ~CSprite();
 
       void Draw();
-
-      /** Set Screen Position.
-       *  Sets the screen position of the sprite.
-       *  @param position The position of the sprite on screen.
-       * @return nothing.
-       */
-      void SetPos(CPoint pos);
-      CPoint GetPos() const { return m_cpPos; };
 
       void SprOffset(int offset);
 
@@ -83,7 +76,7 @@ public:
       CImage* m_pSprImage;
       CCanvas* m_pMainCanvas;
       CCanvas* m_pBackground;
-      CPoint m_cpPos;
+      //CPoint m_cpPos;
       CPoint m_cpOldPos;
       CPoint m_cpSprMove;
       CRectangle m_crSprDim;
