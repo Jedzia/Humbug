@@ -35,22 +35,17 @@ class FileLoader;
 //
 namespace gui
 {
-  using gui::components::CCanvas;
-  using gui::components::CImage;
-  using gui::components::CPoint;
-  using gui::components::CRectangle;
-
   /// Represents a two-dimensional image or animation.
   /** Hold function to bla bla bla. */
   class CSprite : public components::BaseDrawable{
 public:
 
-      CSprite( CCanvas* mainCanvas, CImage* sprImage, CCanvas* background = NULL, bool freeSrc = false,
-              CRectangle spriteDimension = CRectangle(0, 0, 0,
-                      0), CPoint spriteMove = CPoint(0, 0) );
+    CSprite(components::CCanvas* mainCanvas, components::CImage* sprImage, components::CCanvas* background = NULL, bool freeSrc = false,
+        components::CRectangle spriteDimension = components::CRectangle(0, 0, 0,
+        0), components::CPoint spriteMove = components::CPoint(0, 0));
 
-      CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas, CRectangle spriteDimension =
-                  CRectangle(0, 0, 0, 0), CPoint spriteMove = CPoint(0, 0) );
+    CSprite(FileLoader& loader, std::string filename, components::CCanvas* mainCanvas, components::CRectangle spriteDimension =
+        components::CRectangle(0, 0, 0, 0), components::CPoint spriteMove = components::CPoint(0, 0));
       ~CSprite();
 
       void Draw();
@@ -60,26 +55,26 @@ public:
       /** Brief description which ends at this dot. Details follow
        *  here.
        */
-      CImage * SprImage() const { return m_pSprImage; }
+      components::CImage * SprImage() const { return m_pSprImage; }
 
       void SetColorAndAlpha(Uint32 key, Uint8 alpha);
 
       friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
       void Render();
 
-      CRectangle SpriteDimension() const;
-      CRectangle PaintDimension() const;
-      CRectangle PaintLocation() const;
+      components::CRectangle SpriteDimension() const;
+      components::CRectangle PaintDimension() const;
+      components::CRectangle PaintLocation() const;
 
   private:
 
-      CImage* m_pSprImage;
-      CCanvas* m_pMainCanvas;
-      CCanvas* m_pBackground;
+      components::CImage* m_pSprImage;
+      components::CCanvas* m_pMainCanvas;
+      components::CCanvas* m_pBackground;
       //CPoint m_cpPos;
-      CPoint m_cpOldPos;
-      CPoint m_cpSprMove;
-      CRectangle m_crSprDim;
+      components::CPoint m_cpOldPos;
+      components::CPoint m_cpSprMove;
+      components::CRectangle m_crSprDim;
       bool m_bOwner;
   };
 

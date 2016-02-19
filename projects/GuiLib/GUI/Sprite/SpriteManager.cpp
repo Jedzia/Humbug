@@ -5,9 +5,11 @@
 #include "SpriteManager.h"
 #include "boost/smart_ptr/weak_ptr.hpp"
 #include <boost/foreach.hpp>
+//
+//#include <build/cmake/include/debug.h>
 
 namespace gui {
-//#include <build/cmake/include/debug.h>
+using namespace components;
 typedef boost::shared_ptr<CSprite> SpriteShrp;
 /** @class CSpriteHook:
  *  Detailed description.
@@ -152,7 +154,7 @@ void CSpriteManager::OnIdle(int ticks) {
         m_pvSprites.erase(itpos);
     }
 
-    BOOST_FOREACH(SprLinkStorage::value_type &v, pimpl_->m_vSpriteData)
+    BOOST_FOREACH(SprLinkStorage::value_type & v, pimpl_->m_vSpriteData)
     {
         auto pos = v.second.sprite->GetPosition();
     }

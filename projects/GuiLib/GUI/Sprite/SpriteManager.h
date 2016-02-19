@@ -28,16 +28,16 @@ namespace gui {
   struct CSpriteModifierData
   {
       /** contains the source rectangle. */
-      CRectangle* srcRect;
+      components::CRectangle* srcRect;
       /** contains the destination rectangle. */
-      CRectangle*  dstRect;
+      components::CRectangle*  dstRect;
       bool isHandled;
       /** If set to true the TextAnimator will be removed and deleted from the execution queue.
       The TextAnimator::nextAnimator next animator is added and called on the next run of the queue. */
       bool markedForDeletion;
       int state;
 
-      CSpriteModifierData(CRectangle* srcRect, CRectangle* dstRect)
+      CSpriteModifierData(components::CRectangle* srcRect, components::CRectangle* dstRect)
           : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(1)
       {
 
