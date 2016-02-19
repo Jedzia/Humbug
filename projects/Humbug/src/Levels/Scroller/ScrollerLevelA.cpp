@@ -207,7 +207,7 @@ public:
         float radians = degrees * PI / 180.0f;
         float clock = degrees / PI;
         int corrector = static_cast<int>(64 + sin(radians) * 64);
-        int stepcheck = static_cast<int>( stepsize + sin(((m_iFrames * 2 % 180) + 180) * PI / 180.0f) * stepsize);
+        int stepcheck = static_cast<int>(stepsize + sin(((m_iFrames * 2 % 180) + 180) * PI / 180.0f) * stepsize);
 
         /*if (m_pDebugFont)
            {
@@ -512,7 +512,7 @@ class SaucerMover {
 
 public:
 
-    SaucerMover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 70) : 
+    SaucerMover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 70) :
         deltaX_(deltaY), sproffs(spriteoffset),
         timing(boost::bind(&SaucerMover::MITicks, boost::ref(*this))), m_pOverlay(nullptr), m_pBackground(background) {
         dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
@@ -548,22 +548,28 @@ public:
 
 //        // ring mod via functor and loop parameter.
 //        float t1 =
-//            Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs, 3.25f, boost::ref(
+//            Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND), 0,
+// sproffs, 3.25f, boost::ref(
 //                            easeRingBounce), true);
 
 //        // stops at sproffs, no looping.
-//        float t1 = Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs,
+//        float t1 = Timing::RangeMappedSinceStart(ticks / static_cast<float>(gui::FRAMESPERSECOND),
+// 0, sproffs,
 //                ring.RingSeconds(), boost::ref(easeNone), false);
 
 //        // ring via operator() -> int.
-//        float t1 = Timing::RangeMappedSinceStart(ring(ticks) / static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs,
+//        float t1 = Timing::RangeMappedSinceStart(ring(ticks) /
+// static_cast<float>(gui::FRAMESPERSECOND), 0, sproffs,
 //                ring.RingSeconds(), boost::ref(easeNone));
 
         // ring via Timed() -> seconds. added easing.
-        //float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, sproffs, ring.RingSeconds(), boost::ref(easeInOutQuart));
-        float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, static_cast<vdouble>(sproffs), ring.RingSeconds(), boost::ref(easeInOutQuad));
+        //float t1 = Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, sproffs,
+        // ring.RingSeconds(), boost::ref(easeInOutQuart));
+        float t1 =
+            Timing::RangeMappedSinceStart(ring.Timed(ticks), 0, static_cast<vdouble>(sproffs), ring.RingSeconds(), boost::ref(
+                            easeInOutQuad));
         int offset = static_cast<int>(t1);
-        
+
         sprite->SprOffset(offset);
 
         if(m_pOverlay) {
@@ -595,44 +601,124 @@ public:
 };
 }
 
-class PlayerShip
-{
+/** @class PlayerShip:
+ *  Detailed description.
+ *  @param pEvent TODO
+ */
+class PlayerShip {
     CSprite* m_pSprShip;
     CRectangle sprDimension;
     CRectangle mainDimension;
     boost::scoped_ptr<PlayerKeys4> m_pKeyHandler;
     boost::shared_ptr<hspriv::ShipMover> updfuncShip;
+    CSpriteManager* m_pSprMgr;
+    //CSpriteManager::CSpriteModifierFunc laserUpdfunc;
+    CCanvas* m_pCanvas;
+    FileLoader& m_Loader;
+    DebugOverlay* m_pOverlay;
 
 public:
-    PlayerShip(FileLoader& m_Loader, CCanvas* m_pMainCanvas, CSpriteManager* m_pSprMgr, DebugOverlay* m_pOverlay)
+
+    PlayerShip(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr, DebugOverlay* dbgOverlay) 
+        : m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay)
     {
         m_pSprShip =
-            new CSprite(m_Loader, "Sprites/Ship/ShipSprite02.png", m_pMainCanvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
+            new CSprite(loader, "Sprites/Ship/ShipSprite02.png", canvas, CRectangle(0, 0, 256, 256), CPoint(256, 256));
         m_pSprShip->SprImage()->DstRect() = m_pSprShip->SprImage()->DstRect() / 2;
-        int mainCanvasMiddleX = m_pMainCanvas->GetWidth() / 2;
+        int mainCanvasMiddleX = canvas->GetWidth() / 2;
         int mainSprEyeMiddleX = m_pSprShip->SprImage()->DstRect().GetW() / 2;
         sprDimension = m_pSprShip->SpriteDimension();
-        mainDimension = m_pMainCanvas->GetDimension();
+        mainDimension = canvas->GetDimension();
         //CRectangle rect = CRectangle() mainDimension.Pad(sprDimension);
         CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
-            mainDimension.GetW() - sprDimension.GetW() / 2, mainDimension.GetH() - sprDimension.GetH() / 2);
-        int delta_y = m_pMainCanvas->GetHeight() - m_pSprShip->SprImage()->DstRect().GetH() - 128;
-        m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), static_cast<float>(mainCanvasMiddleX - mainSprEyeMiddleX), static_cast<float>(delta_y), false, false, 1.0f));
+                mainDimension.GetW() - sprDimension.GetW() / 2, mainDimension.GetH() - sprDimension.GetH() / 2);
+        int delta_y = canvas->GetHeight() - m_pSprShip->SprImage()->DstRect().GetH() - 128;
+        m_pKeyHandler.reset(new PlayerKeys4(rect.Pad(10), static_cast<float>(mainCanvasMiddleX - mainSprEyeMiddleX),
+                        static_cast<float>(delta_y), false, false, 1.0f));
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
-        updfuncShip->SetDebugOverlay(m_pOverlay);
-        m_pSprMgr->AddSprite(m_pSprShip, boost::ref(*updfuncShip.get()));
+        updfuncShip->SetDebugOverlay(dbgOverlay);
+        sprMgr->AddSprite(m_pSprShip, boost::ref(*updfuncShip.get()));
     }
 
-    void HookEventloop(SDL_Event* pEvent) const
+    static void LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
     {
+        int ySpeed = -16;
+        sprite->SetPos(sprite->GetPos().Move(0, ySpeed));
+        CRectangle scr(0, 0, 1024, 768);
+        if (!scr.Contains(sprite->GetPos()))
+        {
+            mdata.markedForDeletion = true;
+        }
+    }
+
+    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
+    {
+        int ySpeed = -16;
+        sprite->SetPos(sprite->GetPos().Move(0, ySpeed));
+        CRectangle scr(0, 0, 1024, 768);
+
+        CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
+        if (m_pOverlay) {
+            std::ostringstream out6009;
+            out6009 << "LaserUpdfunc2 sprite pos: (" << pt << ")";
+            m_pOverlay->SetTextLabelText(6009, out6009.str());
+        }
+
+        if (!scr.Contains(pt))
+        {
+            mdata.markedForDeletion = true;
+        }
+    }
+    
+
+    void Fire()
+    {
+        //CPoint shipCannon(319, 152);
+        //CPoint laserRayBottom(23, 441);
+        CSprite* m_pSprLaser =
+            new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pCanvas, CRectangle(0, 0, 49, 480), CPoint(49, 480));
+        //CPoint pos = m_pSprShip->GetPos().Up(-480) + shipCannon;
+        //CPoint pos = m_pSprShip->GetPos() - laserRayBottom;
+        //CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - laserRayBottom;
+        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+        m_pSprLaser->SetPos(pos);
+        //int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
+        //pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
+        //pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc, boost::ref(*this)));
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc, *this));
+        //m_pSprMgr->AddSprite(m_pSprLaser, &PlayerShip::LaserUpdfunc);
+        
+        //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3);
+        m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
+
+    }
+
+    void HookEventloop(SDL_Event* pEvent) {
         m_pKeyHandler->HookEventloop(pEvent);
+        if(pEvent->type != SDL_KEYDOWN) {
+            return;
+        }
+
+        switch (pEvent->key.keysym.sym) {
+        case SDLK_SPACE:
+        {
+            Fire();
+            break;
+        }
+        case SDLK_a:
+        {
+            break;
+        }
+        default:
+            break;
+        }     // switch
     }
 
-    void HookIdle(int ticks, float speed) const
-    {
+    void HookIdle(int ticks, float speed) const {
         m_pKeyHandler->HookIdle(ticks, speed);
     }
-
 };
 
 struct ScrollerLevelA::ScrollerLevelAImpl {
@@ -650,11 +736,10 @@ public:
     boost::shared_ptr<PlayerShip> m_pPlayerShip;
 
     explicit ScrollerLevelAImpl(ScrollerLevelA* host)
-        : x(0), host{ host }
+        : x(0), host{host}
     {}
 
-    void Draw() const
-    {
+    void Draw() const {
         auto aaaa = host->m_pBackground->GetDimension();
     }
 };
@@ -688,9 +773,9 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     mcol = CColor::White();
     m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 30);
     /*if (!controls::CLabel::GetLabelFont())
-    {
-    controls::CLabel::SetLabelFont(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 16));
-    }*/
+       {
+       controls::CLabel::SetLabelFont(m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 16));
+       }*/
 
     m_pOverlay.reset(new DebugOverlay(m_Loader, NULL, 1, "ScrollerLevelA"));
     m_pOverlay->AddTextLabel();
