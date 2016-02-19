@@ -143,103 +143,18 @@ public:
 
 // Todo: move to #include "TextAnimator.h" and apply this to gui::components::CText
 template<class T1, class T2, class T2data>
-class TextModifierWorker
+class TextModifierWorker : public gui::components::BaseModifierWorker<T1, T2, T2data>
 {
 public:
-    typedef boost::function<void(const gui::components::CCanvas *, T1 * text, T2data& mdata)> DrawableAnimatorFunc;
-private:
-    typedef std::vector<DrawableAnimatorFunc> TextModifierStorage;
-    TextModifierStorage m_vecModifierVault;
-    //typedef std::vector<gui::components::CText::TextModifierFunc> TextModifierStorage;
-    //TextModifierStorage m_vecModifierVault;
-    typedef boost::ptr_vector<T2> AnimatorStorage;
-    AnimatorStorage m_vecAnimatorVault;
-
-protected:
-
-    void ApplyModifiers(const gui::components::CCanvas* target, T1* text, gui::components::CRectangle& srcRect, gui::components::CRectangle& dstRect) {
-        target->Lock();
-
-        T2data mdata(&srcRect, &dstRect);
-
-        if (!m_vecModifierVault.empty()) {
-            typename TextModifierStorage::iterator end = m_vecModifierVault.end();
-
-            for (typename TextModifierStorage::iterator it = m_vecModifierVault.begin(); it < end; ++it)
-            {
-                (*it)(target, text, mdata);
-                if (mdata.markedForDeletion) {
-                    //m_vecModifierVault.pop_back();
-                    //TextModifierStorage::iterator ex;
-                    m_vecModifierVault.erase(it);
-                    mdata.markedForDeletion = false;
-                    // Todo: better fill a deleter list and erase after loop.
-                    break;
-                }
-            }
-        }
-
-        target->Unlock();
-    } // CText::ApplyModifiers
-
-    void ApplyAnimators(const gui::components::CCanvas* target, T1* text,
-        gui::components::CRectangle& srcRect, gui::components::CRectangle& dstRect) {
-        using namespace gui::components;
-        target->Lock();
-
-        T2data mdata(&srcRect, &dstRect);
-
-        if (!m_vecAnimatorVault.empty()) {
-            typename AnimatorStorage::iterator end = m_vecAnimatorVault.end();
-
-            for (typename AnimatorStorage::iterator it = m_vecAnimatorVault.begin(); it < end; ++it)
-            {
-                (*it)(target, text /* was this */, mdata);
-                if (mdata.markedForDeletion) {
-                    T2 * savedAnimator = (*it).nextAnimator;
-
-                    if (savedAnimator) {
-                        //savedAnimator->x = (*it).x;
-                        //savedAnimator->y = (*it).y;
-                        (*it).nextAnimator = NULL;
-                        m_vecAnimatorVault.erase(it);
-                        mdata.markedForDeletion = false;
-                        AddAnimator(savedAnimator);
-                        break;
-                    }
-
-                    m_vecAnimatorVault.erase(it);
-                    mdata.markedForDeletion = false;
-                    // Todo: better fill a deleter list and erase after loop.
-                    break;
-                }
-            }
-        }
-
-        target->Unlock();
-    } // CText::ApplyAnimators
-
-public:
-
-
-    void AddAnimator(T2 * animator) {
-        m_vecAnimatorVault.push_back(animator);
-    }
-
-    void AddAnimator(const DrawableAnimatorFunc& updfunc) {
-        m_vecModifierVault.push_back(updfunc);
-    }
-
     template <typename Ta, typename A>
     T2 * MoveTo(gui::components::CPoint point, gui::Hookable* hookable, float speed, gui::Timing::seconds timeIn, gui::Timing::seconds timeOut, const A& parEase)
     {
         auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut, Ta(parEase));
         //auto mover = new gui::components::TextMover(point, hookable, speed, timeIn, timeOut);
-        AddAnimator(boost::ref(*mover));
+        gui::components::BaseModifierWorker<T1, T2, T2data>::AddAnimator(boost::ref(*mover));
         //AddAnimator(*mover);
         return mover;
     }
-
 };
 
 /** @class InfoText:
