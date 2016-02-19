@@ -57,7 +57,7 @@ public:
      *  Adds a function with the TextModifierFunc signature to the queue of this text.
      *  @param updfunc The functor with the animation code.
      */
-    void AddAnimator(TextModifierFunc updfunc);
+    void AddAnimator(const TextModifierFunc& updfunc);
 
     /** Add animator object.
      *  Adds a TextAnimator to the queue of this text.

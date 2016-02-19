@@ -204,7 +204,7 @@ public:
     static void Redraw();
 
     // add a children control painter via functor.
-    void AddChildPainter(ControlPainter updfunc);
+    void AddChildPainter(const ControlPainter& updfunc);
 
     // add a children control painter. takes ownership
     void MakeChildPainter(DetailedControlPainter* painter);

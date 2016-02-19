@@ -200,7 +200,7 @@ void CText::RunModifiers(CCanvas* textcanvas) const {
        }*/
 }
 
-void CText::AddAnimator(TextModifierFunc updfunc) {
+void CText::AddAnimator(const TextModifierFunc& updfunc) {
     m_vecModifierVault.push_back(updfunc);
 }
 

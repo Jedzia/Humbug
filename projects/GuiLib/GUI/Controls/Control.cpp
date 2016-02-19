@@ -181,7 +181,7 @@ void CControl::Redraw() {
     GetMainControl()->Draw();
 }
 
-void CControl::AddChildPainter(ControlPainter updfunc) {
+void CControl::AddChildPainter(const ControlPainter& updfunc) {
     m_vecChildrenFuncPainter.push_back(updfunc);
 }
 

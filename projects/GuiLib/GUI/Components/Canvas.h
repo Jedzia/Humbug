@@ -55,7 +55,7 @@ typedef enum
 class CCanvas {
 public:
     typedef boost::function<void(const CCanvas *target, CCanvas* source, CCanvasRenderModifierData& mdata)> CCanvasRenderer;
-    void AddModifier(CCanvasRenderer updfunc);
+    void AddModifier(const CCanvasRenderer& updfunc);
 private:
     // remove them
     // Render from other Canvas

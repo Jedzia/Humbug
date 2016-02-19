@@ -77,7 +77,7 @@ CCanvas::~CCanvas () {
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
-void CCanvas::AddModifier(CCanvasRenderer updfunc) {
+void CCanvas::AddModifier(const CCanvasRenderer& updfunc) {
     m_vecRendererVault.push_back(updfunc);
 }
 
