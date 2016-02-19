@@ -177,7 +177,8 @@ bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage,
             (*it)(target, const_cast<CCanvas *>(source), mdata);
             if(mdata.markedForDeletion) {
                 CCanvasRendererStorage::iterator it2 = it;
-                removeList.push_back(it2);
+                //removeList.push_back(it2);
+                removeList.insert(removeList.begin(), it2);
             }
         }
         BOOST_FOREACH(CCanvasRendererStorage::iterator itpos, removeList)

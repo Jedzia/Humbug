@@ -84,7 +84,8 @@ public:
 
             if(text.IsDisposed()) {
                 TextStorage::iterator it2 = it;
-                removeList.push_back(it2);
+                //removeList.push_back(it2);
+                removeList.insert(removeList.begin(), it2);
             }
 
             //itpos++;
@@ -266,7 +267,8 @@ public:
 
             if(text.IsDisposed()) {
                 TextStorage::iterator it2 = it;
-                removeList.push_back(it2);
+                //removeList.push_back(it2);
+                removeList.insert(removeList.begin(), it2);
             }
 
             //itpos++;

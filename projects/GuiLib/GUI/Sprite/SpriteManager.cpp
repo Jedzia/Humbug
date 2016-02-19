@@ -49,7 +49,11 @@ public:
     SpriteShrp Sprite() const { return m_pSprite; }
 };
 
-struct SpriteCallData {
+/** @class SpriteCallData:
+*  This branch of action stores the position outside the Sprite and restores it later. 
+*  Makes it possible to render one sprite multiple times at different positions.
+*/
+struct SpriteCallData{
     CPoint pos;
     CSpriteManager::CSpriteModifierFunc updfunc;
     //CSpriteModifierData mdata;
@@ -97,6 +101,7 @@ public:
         SpriteLinkData data;
         data.id = id;
         data.sprite = sprite;
+        //data.callData = NULL;
         m_vSpriteData.insert(std::make_pair(id, data));
         return id;
     }
@@ -141,23 +146,27 @@ void CSpriteManager::OnIdle(int ticks) {
         // fill deletion list
         if(mdata.markedForDeletion) {
             SprStorage::iterator it2 = it;
-            removeList.push_back(it2);
+            //removeList.push_back(it2);
+            removeList.insert(removeList.begin(), it2);
         }
 
         /*if (mdata.isHandled) {
            // do something
            }*/
     }
-    // delete marked sprites
-    BOOST_FOREACH(SprStorage::iterator itpos, removeList)
-    {
-        m_pvSprites.erase(itpos);
-    }
 
     BOOST_FOREACH(SprLinkStorage::value_type & v, pimpl_->m_vSpriteData)
     {
         auto pos = v.second.sprite->GetPosition();
     }
+
+    // delete marked sprites
+    BOOST_FOREACH(SprStorage::iterator itpos, removeList)
+    {
+        m_pvSprites.erase(itpos);
+        //break;
+    }
+
 } // CSpriteManager::OnIdle
 
 void CSpriteManager::Render() {
