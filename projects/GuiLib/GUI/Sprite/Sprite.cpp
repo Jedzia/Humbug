@@ -160,18 +160,33 @@ namespace gui
       SDL_SetSurfaceAlphaMod(alphasurf, alpha);
   }
 
-    void CSprite::Render()
-    {
-        m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
-        m_cpOldPos = m_cpPos;
-    }
+void CSprite::Render()
+{
+    m_pSprImage->RenderPut(m_pMainCanvas, m_cpPos);
+    m_cpOldPos = m_cpPos;
+}
+
+CRectangle CSprite::SpriteDimension() const
+{
+    return m_crSprDim;
+}
+
+CRectangle CSprite::PaintDimension() const
+{
+    return m_pSprImage->DstRect();
+}
+
+CRectangle CSprite::PaintLocation() const
+{
+    return m_pSprImage->DstRect() + GetPos();
+}
 
     /** $(fclass), operator <<:
-     *  Detailed description.
-     *  @param o TODO
-     * @param r TODO
-     * @return TODO
-     */
+         *  Detailed description.
+         *  @param o TODO
+         * @param r TODO
+         * @return TODO
+         */
   std::ostream& operator<<(std::ostream& o, const CSprite& r) {
       return o << "CSprite[ X=" /*<< r.GetX() << ", Y=" << r.GetY()
                                    << ", W=" << r.GetW() << ", H=" << r.GetH()

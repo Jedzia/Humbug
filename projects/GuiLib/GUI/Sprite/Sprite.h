@@ -74,10 +74,9 @@ public:
       friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
       void Render();
 
-      CRectangle SpriteDimension() const
-      {
-          return m_crSprDim;
-      }
+      CRectangle SpriteDimension() const;
+      CRectangle PaintDimension() const;
+      CRectangle PaintLocation() const;
 
   private:
 
