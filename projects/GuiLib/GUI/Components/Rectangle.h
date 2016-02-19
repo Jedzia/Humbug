@@ -111,8 +111,8 @@ public:
 	CRectangle& Union ( CRectangle& rc ) ;
 
 	//check if a point is within the rectangle
-	bool Contains ( int x , int y ) ;
-	bool Contains ( CPoint& pt ) ;
+	bool Contains ( int x , int y ) const;
+	bool Contains ( const CPoint& pt ) const;
 
     // Todo: all to const refs
 	//assignment operators

@@ -175,13 +175,15 @@ CRectangle& CRectangle::Union (CRectangle& rc) {
     return (*this);
 }
 
-bool CRectangle::Contains (int x, int y) {
-    x -= X();
-    y -= Y();
-    return (x >= 0 && y >= 0 && x < W() && y < H());
+bool CRectangle::Contains (int x, int y) const
+{
+    x -= GetX();
+    y -= GetY();
+    return (x >= 0 && y >= 0 && x < GetW() && y < GetH());
 }
 
-bool CRectangle::Contains (CPoint& pt) {
+bool CRectangle::Contains (const CPoint& pt) const
+{
     return (Contains(pt.GetX(), pt.GetY()));
 }
 
