@@ -52,8 +52,8 @@ public:
 
       CSpriteManager(/*SDL_Surface* screen*/);
       ~CSpriteManager();
-      int AddSprite(CSprite* sprite, const CSpriteModifierFunc& updfunc = NULL);
-      void AddSpriteDraw(int id, const components::CPoint& position, const CSpriteModifierFunc& updfunc, const CSpriteRenderFunc& renderfunc = NULL);
+      int AddSprite(CSprite* sprite, const std::string& tag, const CSpriteModifierFunc& updfunc = NULL, const std::vector<std::string>& canCollideWithTags = std::vector<std::string>());
+      void AddSpriteDraw(int id, const components::CPoint& position, const CSpriteModifierFunc& updfunc, const std::vector<std::string>& canCollideWithTags = std::vector<std::string>(), const CSpriteRenderFunc& renderfunc = NULL);
 
       void OnDraw();
 

@@ -82,7 +82,7 @@ struct SimpleScreen::SimpleScreenImpl {
 
         CSprite *m_pSprEye = new CSprite(fl, "Sprites/eye.png", canvas, CPoint(64, 0),
             CRectangle(0, 0, 64, 64));
-        m_pSprMgr->AddSprite(m_pSprEye, boost::ref(eyemover));
+        m_pSprMgr->AddSprite(m_pSprEye, "mytag", boost::ref(eyemover));
         //m_pSprMgr->AddSprite(m_pSprEye);
     }
 

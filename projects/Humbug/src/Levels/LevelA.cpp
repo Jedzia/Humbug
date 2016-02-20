@@ -583,17 +583,17 @@ private:
         // ### Sprites ###
         m_pSprEye = new CSprite(m_Loader, "Sprites/male_spritesA.png", m_pMainCanvas, CPoint(64, 0),
                 CRectangle(0, 0, 64, 64) );
-        m_pSprMgr->AddSprite( m_pSprEye, hspriv::EyeMover(160, 8) );
+        m_pSprMgr->AddSprite(m_pSprEye, "mytag", hspriv::EyeMover(160, 8));
         //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
         //m_pSprMgr->AddSprite(m_pSprEye);
         CSprite* m_pSprWormler = new CSprite(m_Loader, "Sprites/wormtiles.png", m_pMainCanvas, CPoint(0, 64),
                 CRectangle(0, 0, 256, 64) );
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
-        m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
+        m_pSprMgr->AddSprite(m_pSprWormler, "mytag", hspriv::EyeMover(260, 40));
 
         CSprite* m_pSprite2 = new CSprite(m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas, CPoint(32, 0),
                 CRectangle(0, 0, 32, 32) );
-        m_pSprMgr->AddSprite( m_pSprite2, boost::ref( pimpl_->m_sprConstMover ) );
+        m_pSprMgr->AddSprite(m_pSprite2, "mytag", boost::ref(pimpl_->m_sprConstMover));
 
         //_CrtSetBreakAlloc(pimpl_->allocReqNum+4);
         //_crtBreakAlloc = pimpl_->allocReqNum+4;

@@ -132,7 +132,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     //EyeMover *eymover = new EyeMover;
     //prv::EyeMover eyemover;
     //m_pSprMgr->AddSprite(m_pSprEye, eyemover );
-    m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
+    m_pSprMgr->AddSprite(m_pSprEye, "mytag", boost::ref(pimpl_->eyemover));
 
     /*CSprite *m_pSprEye2 = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
         CRectangle(0, 0, 64, 64), CPoint(64, 0) );
@@ -144,7 +144,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     //prv::WormMover wormmover;
     //WormMover *wormmover = new WormMover;
     m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
-    m_pSprMgr->AddSprite(m_pSprWormler, boost::ref( pimpl_->wormmover ));
+    m_pSprMgr->AddSprite(m_pSprWormler, "mytag", boost::ref(pimpl_->wormmover));
 
 
     return Screen::OnInit(argc, argv);

@@ -5,6 +5,7 @@
 #include "SpriteManager.h"
 #include "boost/smart_ptr/weak_ptr.hpp"
 #include <boost/foreach.hpp>
+#include <boost/algorithm/cxx11/none_of.hpp>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -53,6 +54,7 @@ struct SpriteCallData{
     int offset;
     CSpriteManager::CSpriteModifierFunc updfunc;
     CSpriteManager::CSpriteRenderFunc renderfunc;
+    std::vector<std::string> canCollideWithTags;
     //CSpriteModifierData mdata;
 };
 
@@ -60,9 +62,11 @@ typedef std::vector<SpriteCallData> SprDataStorage;
 
 struct SpriteLinkData {
     int id = -1;
+    std::string tag;
     boost::shared_ptr<CSprite> sprite;
     CSpriteManager::CSpriteModifierFunc mainfunc;
     SprDataStorage callData;
+    std::vector<std::string> canCollideWithTags;
 };
 
 typedef std::map<int, SpriteLinkData> SprLinkStorage;
@@ -93,11 +97,18 @@ public:
         return currentId++;
     }
 
-    int AddSpriteData(CSprite* sprite, const CSpriteModifierFunc& fnc) {
+    int AddSpriteData(
+        CSprite* sprite,
+        const std::string& tag, 
+        const CSpriteModifierFunc& fnc,
+        const std::vector<std::string>& canCollideWithTags
+        ) {
         int id = NewId();
 
         SpriteLinkData data;
         data.id = id;
+        data.tag = tag;
+        data.canCollideWithTags = canCollideWithTags;
         //data.sprite = sprite;
         data.sprite.reset(sprite);
         data.mainfunc = fnc;
@@ -105,10 +116,16 @@ public:
         return id;
     }
 
-    void AddSpriteDraw(int id, const CPoint& position, const CSpriteModifierFunc& fnc, const CSpriteRenderFunc& renderfunc, int sprOffset = 0) {
+    void AddSpriteDraw(
+        int id, 
+        const CPoint& position,
+        const CSpriteModifierFunc& fnc, 
+        const std::vector<std::string>& canCollideWithTags, 
+        const CSpriteRenderFunc& renderfunc, int sprOffset = 0) {
         SpriteLinkData& data = m_vSpriteData[id];;
         SpriteCallData callData;
         callData.updfunc = fnc;
+        callData.canCollideWithTags = canCollideWithTags;
         callData.renderfunc = renderfunc;
         //callData.pos = data.sprite->GetPosition();
         //callData.offset = data.sprite->GetSpriteOffset();
@@ -117,12 +134,25 @@ public:
         data.callData.push_back(callData);
     }
 
-    bool CheckSpriteDrawCollision(CSprite* linkdataSprite)
+    bool CheckSpriteDrawCollision(SpriteLinkData& linkdata, const std::vector<std::string>& canCollideWithTags)
     {
+        CSprite* linkdataSprite = linkdata.sprite.get();
+
         BOOST_FOREACH(SprLinkStorage::value_type & xit, m_vSpriteData)
         {
             //if (!xit.second.sprite->IsVisible() || xit.second.sprite == linkdata.sprite)
             if (!xit.second.sprite->IsVisible() || xit.second.sprite.get() == linkdataSprite)
+            {
+                continue;
+            }
+            
+            if (linkdata.tag == "Laser")
+            {
+                int xxx = 0;
+                xxx++;
+            }
+
+            if (boost::algorithm::none_of_equal(canCollideWithTags, xit.second.tag))
             {
                 continue;
             }
@@ -146,15 +176,15 @@ CSpriteManager::~CSpriteManager(void) {
     dbgOut(__FUNCTION__);
 }
 
-int CSpriteManager::AddSprite(CSprite* sprite, const CSpriteModifierFunc& updfunc) {
-    int id = pimpl_->AddSpriteData(sprite, updfunc);
+int CSpriteManager::AddSprite(CSprite* sprite, const std::string& tag, const CSpriteModifierFunc& updfunc, const std::vector<std::string>& canCollideWithTags) {
+    int id = pimpl_->AddSpriteData(sprite, tag, updfunc, canCollideWithTags);
     //m_pvSprites.push_back(new CSpriteHook(sprite, updfunc));
     return id;
 }
 
-void CSpriteManager::AddSpriteDraw(int id, const CPoint& position, const CSpriteModifierFunc& updfunc, const CSpriteRenderFunc& renderfunc)
+void CSpriteManager::AddSpriteDraw(int id, const CPoint& position, const CSpriteModifierFunc& updfunc, const std::vector<std::string>& canCollideWithTags, const CSpriteRenderFunc& renderfunc)
 {
-    pimpl_->AddSpriteDraw(id, position, updfunc, renderfunc);
+    pimpl_->AddSpriteDraw(id, position, updfunc, canCollideWithTags, renderfunc);
 }
 
 void CSpriteManager::OnDraw() {
@@ -179,7 +209,7 @@ void CSpriteManager::OnIdle(int ticks) {
         CSpriteModifierData mdata(&srcRect, &dstRect);
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
-        mdata.isHit = pimpl_->CheckSpriteDrawCollision(sprite);
+        mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, linkdata.canCollideWithTags);
 
         /*BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
         {
@@ -220,7 +250,7 @@ void CSpriteManager::OnIdle(int ticks) {
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
-                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(sprite);
+                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, sprite_call_data.canCollideWithTags);
 
                 //childMdata.isHit = mdata.isHit;
                 sprite_call_data.updfunc(sprite, ticks, childMdata);
@@ -329,11 +359,9 @@ void CSpriteManager::Render() {
             it.second.sprite->SetSpriteOffset(child.offset);
 
             it.second.sprite->Render();
-            
-            it.second.sprite->SetPosition(oldPos);
-            it.second.sprite->SetSpriteOffset(oldOffset);
-
         }
+        it.second.sprite->SetPosition(oldPos);
+        it.second.sprite->SetSpriteOffset(oldOffset);
     }
 }
 

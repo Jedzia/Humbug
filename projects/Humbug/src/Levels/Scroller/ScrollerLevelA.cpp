@@ -656,7 +656,7 @@ public:
                         static_cast<float>(delta_y), false, false, 1.0f));
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
         updfuncShip->SetDebugOverlay(dbgOverlay);
-        sprMgr->AddSprite(m_pSprShip, boost::ref(*updfuncShip.get()));
+        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()));
 
         //m_iSprLaserId = CreateLaserSprite();
         m_pSprLaser =
@@ -666,7 +666,7 @@ public:
         CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
         m_pSprLaser->SetPosition(pos);
         m_pSprLaser->SetVisibility(false);
-        m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser);
+        m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "Laser");
     }
 
     static void LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
@@ -715,37 +715,13 @@ public:
         }
     }
     
-    int CreateLaserSprite()
-    {
-        // obsolete method, delete
-        //CPoint shipCannon(319, 152);
-        //CPoint laserRayBottom(23, 441);
-        m_pSprLaser =
-            new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pCanvas, CPoint(49, 480));
-        //CPoint pos = m_pSprShip->GetPosition().Up(-480) + shipCannon;
-        //CPoint pos = m_pSprShip->GetPosition() - laserRayBottom;
-        //CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - laserRayBottom;
-        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        m_pSprLaser->SetPosition(pos);
-        //int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
-        //pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
-        //pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
-        //m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
-        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc, boost::ref(*this)));
-        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc, *this));
-        //m_pSprMgr->AddSprite(m_pSprLaser, &PlayerShip::LaserUpdfunc);
-        m_pSprLaser->SetVisibility(false);
-        //int result = m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
-        return m_pSprMgr->AddSprite(m_pSprLaser);
-    }
-
     void Fire()
     {
         
         //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3);
         //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
         CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
+        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
     }
 
     void HookEventloop(SDL_Event* pEvent) {
@@ -887,19 +863,19 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 
     pimpl_->m_pPlayerShip = boost::make_shared<PlayerShip>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get());
 
-    CSprite* m_pSprLaser =
+    /*CSprite* m_pSprLaser =
         new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CPoint(49, 480));
     int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
     pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
     pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
-    //m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
+    m_pSprMgr->AddSprite(m_pSprLaser, "mytag", boost::ref(*pimpl_->updfunc2));*/
 
     CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer02.png", m_pMainCanvas, CPoint(256, 256));
     //m_pSprSaucer->SprImage()->Scale(0.5);
-    offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
+    int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
     pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW, 90);
     pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprSaucer, boost::ref(*pimpl_->updfunc3));
+    m_pSprMgr->AddSprite(m_pSprSaucer, "Enemy", boost::ref(*pimpl_->updfunc3));
 
     return Screen::OnInit(argc, argv);
 
