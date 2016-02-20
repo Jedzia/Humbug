@@ -662,7 +662,7 @@ public:
         m_pSprLaser =
             new CSprite(loader, "Sprites/Ship/Laser/Laser01.png", canvas, CPoint(49, 480));
         CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(-50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
-        m_pSprLaser->SetHitBox(hitbox);
+        m_pSprLaser->SetHitBox(hitbox.Pad(20,0));
         CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
         m_pSprLaser->SetPosition(pos);
         m_pSprLaser->SetVisibility(false);
@@ -684,7 +684,7 @@ public:
     {
         // Todo: test when not const .... say when modulating the alpha
         //int ySpeed = -16;
-        int ySpeed = -1;
+        int ySpeed = -4;
         sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);
         
@@ -940,8 +940,8 @@ void ScrollerLevelA::OnDraw() {
     m_pMainCanvas->RenderFillRect(frect, &sdl_color);
     //m_pMainCanvas->AddUpdateRect(frect);
     
-    CColor hitTestRecColor = CColor::LightMagenta();
-    m_pMainCanvas->RenderDrawRect(hitTestRect, &hitTestRecColor);
+    //CColor hitTestRecColor = CColor::LightMagenta();
+    //m_pMainCanvas->RenderDrawRect(hitTestRect, &hitTestRecColor);
 
     /*static int xxx = 0;
        CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);

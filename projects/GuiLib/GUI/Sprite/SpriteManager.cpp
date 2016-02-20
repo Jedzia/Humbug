@@ -140,18 +140,18 @@ public:
 
         BOOST_FOREACH(SprLinkStorage::value_type & xit, m_vSpriteData)
         {
-            //if (!xit.second.sprite->IsVisible() || xit.second.sprite == linkdata.sprite)
-            if (!xit.second.sprite->IsVisible() || xit.second.sprite.get() == linkdataSprite)
+            if (!xit.second.sprite->IsVisible() || xit.second.sprite == linkdata.sprite)
+            //if (!xit.second.sprite->IsVisible() || xit.second.sprite.get() == linkdataSprite)
             {
                 continue;
             }
             
-            if (linkdata.tag == "Laser")
-            {
-                int xxx = 0;
-                xxx++;
-            }
-
+//            if (linkdata.tag == "Laser")
+//            {
+//                int xxx = 0;
+//                xxx++;
+//            }
+//
             if (boost::algorithm::none_of_equal(canCollideWithTags, xit.second.tag))
             {
                 continue;
