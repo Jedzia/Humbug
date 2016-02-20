@@ -357,6 +357,10 @@ public:
                 sproffsAct = 1;
             }
         }
+        if (mdata.isHit)
+        {
+            sproffsAct = ticks % sproffs;
+        }
 
         //sprite->SetSpriteOffset(ticks % sproffs);
         sprite->SetSpriteOffset(sproffsAct % sproffs);
@@ -365,7 +369,7 @@ public:
 
         //bool isHit = hitTestRect.Contains(sprite->PaintLocation());
         //bool isHit = sprite->PaintLocation().Contains(hitTestRect);
-        bool isHit = false;
+        //bool isHit = false;
 
         if(m_pOverlay) {
             std::ostringstream out6000;
@@ -380,7 +384,7 @@ public:
             out6002 << "spritePos: (" << lastSpritePos << ")";
             out6002 << " hitRect: (" << hitTestRect << ")";
             out6002 << " PaintLoc: (" << sprite->PaintLocation() << ")";
-            if (isHit)
+            if (mdata.isHit)
             {
                 out6002 << " HIT at pos: (" << hitTestRect << ")";
             }

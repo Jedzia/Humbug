@@ -116,6 +116,25 @@ public:
         callData.offset = sprOffset;
         data.callData.push_back(callData);
     }
+
+    bool CheckSpriteDrawCollision(CSprite* linkdataSprite)
+    {
+        BOOST_FOREACH(SprLinkStorage::value_type & xit, m_vSpriteData)
+        {
+            //if (!xit.second.sprite->IsVisible() || xit.second.sprite == linkdata.sprite)
+            if (!xit.second.sprite->IsVisible() || xit.second.sprite.get() == linkdataSprite)
+            {
+                continue;
+            }
+
+            bool isHit = linkdataSprite->GetPaintHitbox().Contains(xit.second.sprite->GetPaintHitbox());
+            if (isHit)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 CSpriteManager::CSpriteManager(/*SDL_Surface* screen*/)
@@ -158,11 +177,11 @@ void CSpriteManager::OnIdle(int ticks) {
 
         static CRectangle srcRect, dstRect;
         CSpriteModifierData mdata(&srcRect, &dstRect);
-        mdata.isHit = false;
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
+        mdata.isHit = pimpl_->CheckSpriteDrawCollision(sprite);
 
-        BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
+        /*BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
         {
             if (!it.second.sprite->IsVisible() || it.second.sprite.get() == sprite)
             {
@@ -176,9 +195,9 @@ void CSpriteManager::OnIdle(int ticks) {
                 mdata.isHit = true;
                 break;
             }
-        }
+        }*/
 
-        bool runMainIdle = linkdata.mainfunc != NULL && linkdata.sprite->IsVisible();
+        bool runMainIdle = linkdata.mainfunc != NULL && sprite->IsVisible();
         if (runMainIdle)
         {
             linkdata.mainfunc(sprite, ticks, mdata);
@@ -190,41 +209,27 @@ void CSpriteManager::OnIdle(int ticks) {
         }
         else {
             // children call data
-            CPoint oldPos = linkdata.sprite->GetPosition();
-            int oldOffset = linkdata.sprite->GetSpriteOffset();
+            CPoint oldPos = sprite->GetPosition();
+            int oldOffset = sprite->GetSpriteOffset();
 
             SprDataStorage::iterator subIt = linkdata.callData.begin();
             while (subIt != linkdata.callData.end()) {
                 SpriteCallData& sprite_call_data = (*subIt);
-                linkdata.sprite->SetPosition(sprite_call_data.pos);
-                linkdata.sprite->SetSpriteOffset(sprite_call_data.offset);
+                sprite->SetPosition(sprite_call_data.pos);
+                sprite->SetSpriteOffset(sprite_call_data.offset);
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
-                BOOST_FOREACH(SprLinkStorage::value_type & xit, pimpl_->m_vSpriteData)
-                {
-                    if (!xit.second.sprite->IsVisible() || xit.second.sprite.get() == sprite)
-                    {
-                        continue;
-                    }
-
-                    bool isHit = linkdata.sprite->GetPaintHitbox().Contains(xit.second.sprite->GetPaintHitbox());
-                    //bool isHit = false;
-                    if (isHit)
-                    {
-                        childMdata.isHit = true;
-                        break;
-                    }
-                }
+                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(sprite);
 
                 //childMdata.isHit = mdata.isHit;
                 sprite_call_data.updfunc(sprite, ticks, childMdata);
-                sprite_call_data.pos = linkdata.sprite->GetPosition();
-                sprite_call_data.offset = linkdata.sprite->GetSpriteOffset();
+                sprite_call_data.pos = sprite->GetPosition();
+                sprite_call_data.offset = sprite->GetSpriteOffset();
 
                 // restore original sprite data.
-                linkdata.sprite->SetPosition(oldPos);
-                linkdata.sprite->SetSpriteOffset(oldOffset);
+                sprite->SetPosition(oldPos);
+                sprite->SetSpriteOffset(oldOffset);
 
                 if (childMdata.markedForDeletion) {
                     // if markedForDeletion, remove it
