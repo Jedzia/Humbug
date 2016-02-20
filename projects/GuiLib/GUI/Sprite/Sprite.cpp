@@ -10,7 +10,7 @@
 //
 //#include <build/cmake/include/debug.h>
 
-const bool debugFrame = false;
+const bool debugFrame = true;
 
 using namespace gui::components;
 namespace gui
@@ -25,6 +25,7 @@ namespace gui
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension),
+      m_crHitbox(spriteDimension),
       m_iOffset(0), m_bOwner(freeSrc)
   {
       dbgOut(__FUNCTION__);
@@ -42,6 +43,7 @@ namespace gui
       m_cpOldPos(0, 0),
       m_cpSprMove(spriteMove),
       m_crSprDim(spriteDimension),
+      m_crHitbox(spriteDimension),
       m_iOffset(0), m_bOwner(true)
   {
       // m_pSprImage(sprImage),
@@ -51,8 +53,12 @@ namespace gui
       loader.FreeLast();
 
       if ( spriteDimension == CRectangle(0, 0, 0, 0) ) {
-          m_pSprImage = new CImage( new CCanvas( alphasurf ), true );
-          m_crSprDim = m_pSprImage->SrcRect();
+          // old, build sprite dimension from loaded surface
+          //m_pSprImage = new CImage( new CCanvas( alphasurf ), true );
+          //m_crSprDim = m_pSprImage->SrcRect();
+          // build sprite dimension from sprite move offset
+          m_crHitbox = m_crSprDim = CRectangle(0, 0, spriteMove.GetX(), spriteMove.GetY());
+          m_pSprImage = new CImage(new CCanvas(alphasurf), m_crSprDim, true);
       }
       else {
           m_pSprImage = new CImage( new CCanvas( alphasurf ), spriteDimension, true );
@@ -175,9 +181,14 @@ void CSprite::Render()
 {
     if (debugFrame)
     {
-        CColor col = CColor::White();
-        m_pPaintCanvas->RenderDrawRect(m_pSprImage->DstRect() + GetPosition(), &col);
+        const CColor colbounds = CColor::White();
+        //m_pPaintCanvas->RenderDrawRect(m_pSprImage->DstRect() + GetPosition(), &colbounds);
+        m_pPaintCanvas->RenderDrawRect(PaintLocation(), &colbounds);
+    
+        CColor colhitbox = CColor::DarkRed();
+        m_pPaintCanvas->RenderDrawRect(GetPaintHitbox(), &colhitbox);
     }
+
     m_pSprImage->RenderPut(m_pPaintCanvas, GetPosition());
     m_cpOldPos = GetPosition();
 }

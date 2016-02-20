@@ -44,6 +44,11 @@ public:
         , components::CRectangle spriteDimension = components::CRectangle(0, 0, 0,0)
         , components::CPoint spriteMove = components::CPoint(0, 0));
 
+    /** Initializes a new instance of the <see cref="CSprite"/> class loaded from disk.
+    *  Load a Sprite via CImage from disk.
+    *  @param spriteMove Movement step when changing sprite offsets.
+    *  @param spriteDimension Dimensions of the painted sprite.
+    */
     CSprite(FileLoader& loader, std::string filename, components::CCanvas* mainCanvas
         , components::CPoint spriteMove = components::CPoint(0, 0)
         , components::CRectangle spriteDimension = components::CRectangle(0, 0, 0, 0)
