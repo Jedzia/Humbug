@@ -60,7 +60,7 @@ public:
             sprframe = sprMaxFrames - frame;
         }
 
-        sprite->SprOffset(sprframe);
+        sprite->SetSpriteOffset(sprframe);
     } // ()
 };
 

@@ -47,11 +47,12 @@ namespace gui {
   class CSpriteManager {
 public:
     typedef boost::function<void(CSprite *, int, CSpriteModifierData& mdata)> CSpriteModifierFunc;
+    typedef boost::function<void(CSprite *, CSpriteModifierData& mdata)> CSpriteRenderFunc;
 
       CSpriteManager(/*SDL_Surface* screen*/);
       ~CSpriteManager();
       int AddSprite(CSprite* sprite, const CSpriteModifierFunc& updfunc = NULL);
-      void AddSpriteDraw(int id, const components::CPoint& position, const CSpriteModifierFunc& updfunc);
+      void AddSpriteDraw(int id, const components::CPoint& position, const CSpriteModifierFunc& updfunc, const CSpriteRenderFunc& renderfunc = NULL);
 
       void OnDraw();
 

@@ -40,7 +40,7 @@ namespace gui
   class CSprite : public components::BaseDrawable{
 public:
 
-    CSprite(components::CCanvas* mainCanvas, components::CImage* sprImage, components::CCanvas* background = NULL, bool freeSrc = false,
+    CSprite(components::CCanvas* mainCanvas, components::CImage* sprImage, components::CCanvas* spriteCanvas = NULL, bool freeSrc = false,
         components::CRectangle spriteDimension = components::CRectangle(0, 0, 0,
         0), components::CPoint spriteMove = components::CPoint(0, 0));
 
@@ -50,8 +50,11 @@ public:
 
       void Draw();
 
-      void SprOffset(int offset);
-      int GetOffset() const { return m_iOffset; }
+      void SetSpriteOffset(int offset);
+      int GetSpriteOffset() const { return m_iOffset; }
+      
+      void SetHitBox(const components::CRectangle& hitbox);
+      components::CRectangle GetPaintHitbox() const;
 
       /** Brief description which ends at this dot. Details follow
        *  here.
@@ -70,12 +73,13 @@ public:
   private:
 
       components::CImage* m_pSprImage;
-      components::CCanvas* m_pMainCanvas;
+      components::CCanvas* m_pPaintCanvas;
       components::CCanvas* m_pBackground;
       //CPoint m_cpPos;
       components::CPoint m_cpOldPos;
       components::CPoint m_cpSprMove;
       components::CRectangle m_crSprDim;
+      components::CRectangle m_crHitbox;
       int m_iOffset;
       bool m_bOwner;
   };

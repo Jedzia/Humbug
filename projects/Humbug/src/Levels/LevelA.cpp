@@ -336,7 +336,7 @@ public:
 
               //sprite->SetPosition(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaY_ + ssin));
               sprite->SetPosition( CPoint(130 + ssin, deltaY_) );
-              sprite->SprOffset(ticks % sproffs);
+              sprite->SetSpriteOffset(ticks % sproffs);
 
               if (h_ >= 180) {
                   toggle_ = false;

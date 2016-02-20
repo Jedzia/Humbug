@@ -203,7 +203,7 @@ namespace humbug {
       }
 
       static int spr2pic = 0;
-      m_pSprite2->SprOffset(spr2pic);
+      m_pSprite2->SetSpriteOffset(spr2pic);
       spr2pic++;
 
       if (spr2pic == 16) {

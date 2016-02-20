@@ -49,7 +49,7 @@ public:
         int ssin = static_cast<int>(ss * 155);
 
         sprite->SetPosition( CPoint(100 + ( (ticks % 128) * 6 ), 460 + h_ + deltaY_ + ssin) );
-        sprite->SprOffset(ticks % 8);
+        sprite->SetSpriteOffset(ticks % 8);
 
         if (h_ >= 100) {
             toggle_ = false;

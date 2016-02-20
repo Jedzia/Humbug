@@ -357,8 +357,8 @@ public:
             }
         }
 
-        //sprite->SprOffset(ticks % sproffs);
-        sprite->SprOffset(sproffsAct % sproffs);
+        //sprite->SetSpriteOffset(ticks % sproffs);
+        sprite->SetSpriteOffset(sproffsAct % sproffs);
 
         lastSpritePos = sprite->GetPosition();
 
@@ -458,9 +458,9 @@ public:
             }
            }*/
 
-        //sprite->SprOffset(ticks % sproffs);
+        //sprite->SetSpriteOffset(ticks % sproffs);
         uint32_t offset = sproffsAct % sproffs;
-        sprite->SprOffset(offset);
+        sprite->SetSpriteOffset(offset);
 
         CRectangle sdl_rect = sprite->SprImage()->DstRect();
         //m_pBackground->RenderDrawRect(sdl_rect, &sprColor);
@@ -570,7 +570,7 @@ public:
                             easeInOutQuad));
         int offset = static_cast<int>(t1);
 
-        sprite->SprOffset(offset);
+        sprite->SetSpriteOffset(offset);
 
         if(m_pOverlay) {
             std::ostringstream out6005;
@@ -655,8 +655,9 @@ public:
         }
     }
 
-    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
+    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const
     {
+        // Todo: test when not const .... say when modulating the alpha
         int ySpeed = -16;
         sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);

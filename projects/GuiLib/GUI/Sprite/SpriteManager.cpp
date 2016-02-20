@@ -52,6 +52,7 @@ struct SpriteCallData{
     CPoint pos;
     int offset;
     CSpriteManager::CSpriteModifierFunc updfunc;
+    CSpriteManager::CSpriteRenderFunc renderfunc;
     //CSpriteModifierData mdata;
 };
 
@@ -104,12 +105,13 @@ public:
         return id;
     }
 
-    void AddSpriteDraw(int id, const CSpriteModifierFunc& fnc, const CPoint& position, int sprOffset = 0) {
+    void AddSpriteDraw(int id, const CPoint& position, const CSpriteModifierFunc& fnc, const CSpriteRenderFunc& renderfunc, int sprOffset = 0) {
         SpriteLinkData& data = m_vSpriteData[id];;
         SpriteCallData callData;
         callData.updfunc = fnc;
+        callData.renderfunc = renderfunc;
         //callData.pos = data.sprite->GetPosition();
-        //callData.offset = data.sprite->GetOffset();
+        //callData.offset = data.sprite->GetSpriteOffset();
         callData.pos = position;
         callData.offset = sprOffset;
         data.callData.push_back(callData);
@@ -131,12 +133,13 @@ int CSpriteManager::AddSprite(CSprite* sprite, const CSpriteModifierFunc& updfun
     return id;
 }
 
-void CSpriteManager::AddSpriteDraw(int id, const CPoint& position, const CSpriteModifierFunc& updfunc)
+void CSpriteManager::AddSpriteDraw(int id, const CPoint& position, const CSpriteModifierFunc& updfunc, const CSpriteRenderFunc& renderfunc)
 {
-    pimpl_->AddSpriteDraw(id, updfunc, position);
+    pimpl_->AddSpriteDraw(id, position, updfunc, renderfunc);
 }
 
 void CSpriteManager::OnDraw() {
+    // do not use, use Render()
     BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
     {
         if (it.second.sprite->IsVisible())
@@ -170,20 +173,23 @@ void CSpriteManager::OnIdle(int ticks) {
         else {
             // children call data
             CPoint oldPos = linkdata.sprite->GetPosition();
-            int oldOffset = linkdata.sprite->GetOffset();
+            int oldOffset = linkdata.sprite->GetSpriteOffset();
 
             SprDataStorage::iterator subIt = linkdata.callData.begin();
             while (subIt != linkdata.callData.end()) {
                 SpriteCallData& sprite_call_data = (*subIt);
                 linkdata.sprite->SetPosition(sprite_call_data.pos);
-                linkdata.sprite->SprOffset(sprite_call_data.offset);
+                linkdata.sprite->SetSpriteOffset(sprite_call_data.offset);
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
                 sprite_call_data.updfunc(sprite, ticks, childMdata);
                 sprite_call_data.pos = linkdata.sprite->GetPosition();
-                sprite_call_data.offset = linkdata.sprite->GetOffset();
+                sprite_call_data.offset = linkdata.sprite->GetSpriteOffset();
 
+                // restore original sprite data.
+                linkdata.sprite->SetPosition(oldPos);
+                linkdata.sprite->SetSpriteOffset(oldOffset);
 
                 if (childMdata.markedForDeletion) {
                     // if markedForDeletion, remove it
@@ -193,9 +199,6 @@ void CSpriteManager::OnIdle(int ticks) {
                     ++subIt;
                 }
             }
-
-            linkdata.sprite->SetPosition(oldPos);
-            linkdata.sprite->SprOffset(oldOffset);
 
             ++sprIt;
         }
@@ -278,17 +281,17 @@ void CSpriteManager::Render() {
         }
         
         CPoint oldPos = it.second.sprite->GetPosition();
-        int oldOffset = it.second.sprite->GetOffset();
+        int oldOffset = it.second.sprite->GetSpriteOffset();
 
         BOOST_FOREACH(SprDataStorage::value_type & child, it.second.callData)
         {
             it.second.sprite->SetPosition(child.pos);
-            it.second.sprite->SprOffset(child.offset);
+            it.second.sprite->SetSpriteOffset(child.offset);
 
             it.second.sprite->Render();
             
             it.second.sprite->SetPosition(oldPos);
-            it.second.sprite->SprOffset(oldOffset);
+            it.second.sprite->SetSpriteOffset(oldOffset);
 
         }
     }
