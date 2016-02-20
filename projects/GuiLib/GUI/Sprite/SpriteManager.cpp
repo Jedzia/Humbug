@@ -155,7 +155,10 @@ public:
 //                xxx++;
 //            }
 //
-            if(boost::algorithm::none_of_equal(canCollideWithTags, xit.second.tag)) {
+            const bool emptyTaglistMeansCollideWithAll = false;
+            bool tagListIsNotEmpty = !canCollideWithTags.empty();
+            bool tagOption = tagListIsNotEmpty && !emptyTaglistMeansCollideWithAll;
+            if (tagOption && boost::algorithm::none_of_equal(canCollideWithTags, xit.second.tag)) {
                 continue;
             }
 
