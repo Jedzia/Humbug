@@ -112,7 +112,10 @@ public:
 
 	//check if a point is within the rectangle
 	bool Contains ( int x , int y ) const;
-	bool Contains ( const CPoint& pt ) const;
+    //check if a point is within the rectangle
+    bool Contains(const CPoint& pt) const;
+    //check if two rectangles overlap.
+    bool Contains(const CRectangle& rc) const;
 
     // Todo: all to const refs
 	//assignment operators

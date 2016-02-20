@@ -292,6 +292,7 @@ int CanvasStripeRendererA::renderNum = 0;
 using controls::CControl;
 
 //gui::controls::CButton* testbutton;
+CRectangle hitTestRect(200, 200, 300, 300);
 
 namespace hspriv {
 /** @class ShipMover:
@@ -362,6 +363,10 @@ public:
 
         lastSpritePos = sprite->GetPosition();
 
+        //bool isHit = hitTestRect.Contains(sprite->PaintLocation());
+        //bool isHit = sprite->PaintLocation().Contains(hitTestRect);
+        bool isHit = false;
+
         if(m_pOverlay) {
             std::ostringstream out6000;
             out6000 << "angle: (" << angle << ")";
@@ -373,6 +378,13 @@ public:
 
             std::ostringstream out6002;
             out6002 << "spritePos: (" << lastSpritePos << ")";
+            out6002 << " hitRect: (" << hitTestRect << ")";
+            out6002 << " PaintLoc: (" << sprite->PaintLocation() << ")";
+            if (isHit)
+            {
+                out6002 << " HIT at pos: (" << hitTestRect << ")";
+            }
+
             m_pOverlay->SetTextLabelText(6002, out6002.str());
         }
 
@@ -671,11 +683,25 @@ public:
         int ySpeed = -1;
         sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);
-
+        
+        if (mdata.isHit)
+        {
+            sprite->SetSpriteOffset(ticks % 10);
+        }
+        else
+        {
+            sprite->SetSpriteOffset(0);
+        }
+        //CRectangle hitRect(0, 0, 100, 100);
+        //bool isHit = hitRect.Contains(sprite->PaintLocation());
         CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
         if (m_pOverlay) {
             std::ostringstream out6009;
             out6009 << "LaserUpdfunc2 sprite pos: (" << pt << ")";
+//            if (isHit)
+//            {
+//                out6009 << " HIT at pos: (" << hitRect << ")";
+//            }
             m_pOverlay->SetTextLabelText(6009, out6009.str());
         }
 
@@ -862,7 +888,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
     pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
     pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
+    //m_pSprMgr->AddSprite(m_pSprLaser, boost::ref(*pimpl_->updfunc2));
 
     CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer02.png", m_pMainCanvas, CPoint(256, 256));
     //m_pSprSaucer->SprImage()->Scale(0.5);
@@ -933,6 +959,9 @@ void ScrollerLevelA::OnDraw() {
     CColor sdl_color = CColor(fcol.r, fcol.g, fcol.b, fcol.a);
     m_pMainCanvas->RenderFillRect(frect, &sdl_color);
     //m_pMainCanvas->AddUpdateRect(frect);
+    
+    CColor hitTestRecColor = CColor::LightMagenta();
+    m_pMainCanvas->RenderDrawRect(hitTestRect, &hitTestRecColor);
 
     /*static int xxx = 0;
        CRectangle dstDims( 0 + xxx, 0 + xxx, 600, 200);

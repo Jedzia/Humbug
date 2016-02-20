@@ -158,8 +158,26 @@ void CSpriteManager::OnIdle(int ticks) {
 
         static CRectangle srcRect, dstRect;
         CSpriteModifierData mdata(&srcRect, &dstRect);
+        mdata.isHit = false;
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
+
+        BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
+        {
+            if (!it.second.sprite->IsVisible() || it.second.sprite.get() == sprite)
+            {
+                continue;
+            }
+
+            bool isHit = sprite->GetPaintHitbox().Contains(it.second.sprite->GetPaintHitbox());
+            //bool isHit = false;
+            if (isHit)
+            {
+                mdata.isHit = true;
+                break;
+            }
+        }
+
         bool runMainIdle = linkdata.mainfunc != NULL && linkdata.sprite->IsVisible();
         if (runMainIdle)
         {
@@ -183,6 +201,23 @@ void CSpriteManager::OnIdle(int ticks) {
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
+                BOOST_FOREACH(SprLinkStorage::value_type & xit, pimpl_->m_vSpriteData)
+                {
+                    if (!xit.second.sprite->IsVisible() || xit.second.sprite.get() == sprite)
+                    {
+                        continue;
+                    }
+
+                    bool isHit = linkdata.sprite->GetPaintHitbox().Contains(xit.second.sprite->GetPaintHitbox());
+                    //bool isHit = false;
+                    if (isHit)
+                    {
+                        childMdata.isHit = true;
+                        break;
+                    }
+                }
+
+                //childMdata.isHit = mdata.isHit;
                 sprite_call_data.updfunc(sprite, ticks, childMdata);
                 sprite_call_data.pos = linkdata.sprite->GetPosition();
                 sprite_call_data.offset = linkdata.sprite->GetSpriteOffset();

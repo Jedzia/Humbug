@@ -187,14 +187,54 @@ bool CRectangle::Contains (const CPoint& pt) const
     return (Contains(pt.GetX(), pt.GetY()));
 }
 
+bool valueInRange(int value, int min, int max)
+{
+    return (value >= min) && (value <= max);
+}
+
+bool CRectangle::Contains(const CRectangle& rc) const
+{
+    int left1, top1, right1, bottom1;
+    int left2, top2, right2, bottom2;
+    left1 = GetX();
+    top1 = GetY();
+    right1 = GetX() + GetW();
+    bottom1 = GetY() + GetH();
+
+    left2 = rc.GetX();
+    top2 = rc.GetY();
+    right2 = rc.GetX() + rc.GetW();
+    bottom2 = rc.GetY() + rc.GetH();
+
+//    return !(left1 < right2 && right1 > left2 &&
+//        top1 > bottom2 && bottom1 < top2);
+//    return (left1 < right2 || right1 > left2 ||
+//        top1 > bottom2 || bottom1 < top2);
+//    return ((left1 < right2) || (right1 > left2) ||
+//        (top1 > bottom2) || (bottom1 < top2));
+//    return (!(left1 < right2) || !(right1 > left2) ||
+//        !(top1 > bottom2) || !(bottom1 < top2));
+//    return (!(left1 < right2) && !(right1 > left2) &&
+//        !(top1 > bottom2) && !(bottom1 < top2));
+
+    bool xOverlap = valueInRange(left1, left2, right2) ||
+        valueInRange(left2, left1, right1);
+
+    bool yOverlap = valueInRange(top1, top2, bottom2) ||
+        valueInRange(top2, top1, bottom1);
+
+    return xOverlap && yOverlap;
+
+}
+
 /*CRectangle& CRectangle::operator = ( CRectangle& rc )
-   {
-        X ( ) = rc.GetX ( ) ;
-        Y ( ) = rc.GetY ( ) ;
-        W ( ) = rc.GetW ( ) ;
-        H ( ) = rc.GetH ( ) ;
-        return ( *this ) ;
-   }*/
+       {
+            X ( ) = rc.GetX ( ) ;
+            Y ( ) = rc.GetY ( ) ;
+            W ( ) = rc.GetW ( ) ;
+            H ( ) = rc.GetH ( ) ;
+            return ( *this ) ;
+       }*/
 CRectangle& CRectangle::operator = (const CRectangle& rc) {
     X() = rc.GetX();
     Y() = rc.GetY();

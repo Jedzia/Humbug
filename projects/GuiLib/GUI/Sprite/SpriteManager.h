@@ -36,9 +36,10 @@ namespace gui {
       The TextAnimator::nextAnimator next animator is added and called on the next run of the queue. */
       bool markedForDeletion;
       int state;
+      bool isHit;
 
       CSpriteModifierData(components::CRectangle* srcRect, components::CRectangle* dstRect)
-          : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(1)
+          : srcRect(srcRect), dstRect(dstRect), isHandled(false), markedForDeletion(false), state(1), isHit(false)
       {
 
       };
