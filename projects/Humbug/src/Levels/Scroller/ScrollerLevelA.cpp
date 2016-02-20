@@ -621,7 +621,7 @@ public:
  *  Detailed description.
  *  @param pEvent TODO
  */
-class PlayerShip {
+class PlayerShip : public HitHandler{
     CSprite* m_pSprShip;
     CSprite* m_pSprLaser;
     int m_iSprLaserId;
@@ -656,7 +656,7 @@ public:
                         static_cast<float>(delta_y), false, false, 1.0f));
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
         updfuncShip->SetDebugOverlay(dbgOverlay);
-        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()));
+        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this);
 
         //m_iSprLaserId = CreateLaserSprite();
         m_pSprLaser =
@@ -714,7 +714,12 @@ public:
             mdata.markedForDeletion = true;
         }
     }
-    
+
+    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
+    {
+
+    }
+
     void Fire()
     {
         
@@ -749,6 +754,13 @@ public:
         m_pKeyHandler->HookIdle(ticks, speed);
     }
 };
+class EnemyShip : public HitHandler{
+public:
+    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
+    {
+
+    }
+};
 
 struct ScrollerLevelA::ScrollerLevelAImpl {
 private:
@@ -763,6 +775,7 @@ public:
     boost::shared_ptr<hspriv::LaserMover> updfunc2;
     boost::shared_ptr<hspriv::SaucerMover> updfunc3;
     boost::shared_ptr<PlayerShip> m_pPlayerShip;
+    boost::shared_ptr<EnemyShip> m_pEnemyShip;
 
     explicit ScrollerLevelAImpl(ScrollerLevelA* host)
         : x(0), host{host}
@@ -862,6 +875,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
 
     pimpl_->m_pPlayerShip = boost::make_shared<PlayerShip>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get());
+    pimpl_->m_pEnemyShip = boost::make_shared<EnemyShip>();
 
     /*CSprite* m_pSprLaser =
         new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CPoint(49, 480));
@@ -875,7 +889,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
     pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW, 90);
     pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprSaucer, "Enemy", boost::ref(*pimpl_->updfunc3));
+    m_pSprMgr->AddSprite(m_pSprSaucer, "Enemy", boost::ref(*pimpl_->updfunc3), pimpl_->m_pEnemyShip.get());
 
     return Screen::OnInit(argc, argv);
 
