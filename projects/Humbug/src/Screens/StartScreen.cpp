@@ -128,7 +128,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 
 	// ### Sprites ###
     CSprite *m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
-        CRectangle(0, 0, 64, 64), CPoint(64, 0) );
+        CPoint(64, 0), CRectangle(0, 0, 64, 64));
     //EyeMover *eymover = new EyeMover;
     //prv::EyeMover eyemover;
     //m_pSprMgr->AddSprite(m_pSprEye, eyemover );
@@ -140,7 +140,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     m_pSprMgr->AddSprite(m_pSprEye2, eymover2 );*/
 
     CSprite *m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
-        CRectangle(0, 0, 256, 64), CPoint(0, 64) );
+        CPoint(0, 64), CRectangle(0, 0, 256, 64) );
     //prv::WormMover wormmover;
     //WormMover *wormmover = new WormMover;
     m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);

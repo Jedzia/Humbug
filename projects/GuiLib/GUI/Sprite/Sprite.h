@@ -40,12 +40,14 @@ namespace gui
   class CSprite : public components::BaseDrawable{
 public:
 
-    CSprite(components::CCanvas* mainCanvas, components::CImage* sprImage, components::CCanvas* spriteCanvas = NULL, bool freeSrc = false,
-        components::CRectangle spriteDimension = components::CRectangle(0, 0, 0,
-        0), components::CPoint spriteMove = components::CPoint(0, 0));
+    CSprite(components::CCanvas* mainCanvas, components::CImage* sprImage, components::CCanvas* spriteCanvas = NULL, bool freeSrc = false
+        , components::CRectangle spriteDimension = components::CRectangle(0, 0, 0,0)
+        , components::CPoint spriteMove = components::CPoint(0, 0));
 
-    CSprite(FileLoader& loader, std::string filename, components::CCanvas* mainCanvas, components::CRectangle spriteDimension =
-        components::CRectangle(0, 0, 0, 0), components::CPoint spriteMove = components::CPoint(0, 0));
+    CSprite(FileLoader& loader, std::string filename, components::CCanvas* mainCanvas
+        , components::CPoint spriteMove = components::CPoint(0, 0)
+        , components::CRectangle spriteDimension = components::CRectangle(0, 0, 0, 0)
+        );
       ~CSprite();
 
       void Draw();

@@ -213,13 +213,13 @@ public:
         m_pScrollText.reset(text);
 
         // ### Sprites ###
-        m_pSprEye = new CSprite( m_Loader, "Sprites/eye.png", m_pMainCanvas,
-                CRectangle(0, 0, 64, 64), CPoint(64, 0) );
+        m_pSprEye = new CSprite(m_Loader, "Sprites/eye.png", m_pMainCanvas, CPoint(64, 0),
+                CRectangle(0, 0, 64, 64) );
         m_pSprMgr->AddSprite( m_pSprEye, hspriv::EyeMover(160) );
         //m_pSprMgr->AddSprite(m_pSprEye, boost::ref( pimpl_->eyemover ) );
         //m_pSprMgr->AddSprite(m_pSprEye);
-        CSprite* m_pSprWormler = new CSprite( m_Loader, "Sprites/wormtiles.png", m_pMainCanvas,
-                CRectangle(0, 0, 256, 64), CPoint(0, 64) );
+        CSprite* m_pSprWormler = new CSprite(m_Loader, "Sprites/wormtiles.png", m_pMainCanvas, CPoint(0, 64),
+                CRectangle(0, 0, 256, 64) );
         m_pSprWormler->SetColorAndAlpha(0xff00ff, 128);
         m_pSprMgr->AddSprite( m_pSprWormler, hspriv::EyeMover(260, 40) );
 

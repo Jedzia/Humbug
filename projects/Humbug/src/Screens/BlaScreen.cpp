@@ -117,8 +117,8 @@ namespace humbug {
           m_pSprite = new CSprite(m_pMainCanvas, new CImage( tmpCanvas,
                           true ), m_pBackground.get(), true);
 
-          m_pSprite2 = new gui::CSprite( m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas,
-                  CRectangle(0, 0, 32, 32), CPoint(32, 0) );
+          m_pSprite2 = new gui::CSprite(m_Loader, "Sprites/Voiture.bmp", m_pMainCanvas, CPoint(32, 32),
+                  CRectangle(0, 0, 32, 32) );
       }
 
       //SDL_SetColorKey(tmpfsurf, SDL_TRUE, 0xff00ff);

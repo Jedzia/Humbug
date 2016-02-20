@@ -34,8 +34,9 @@ namespace gui
   }
 
   CSprite::CSprite( FileLoader& loader, std::string filename, CCanvas* mainCanvas,
-          CRectangle spriteDimension /*= CRectangle(0,0,0,0) */,
-          CPoint spriteMove /*= CPoint(0,0) */) : BaseDrawable(CPoint(0, 0)),
+          CPoint spriteMove,
+          CRectangle spriteDimension
+          ) : BaseDrawable(CPoint(0, 0)),
                                                    m_pPaintCanvas(mainCanvas),
                                                    m_pBackground(NULL),
       m_cpOldPos(0, 0),
