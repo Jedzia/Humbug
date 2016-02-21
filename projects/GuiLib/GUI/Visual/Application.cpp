@@ -13,6 +13,7 @@
 #include <stdexcept>
 #include "GUI/Visual/Console.h"
 #include <HumbugLib/LogManager.h>
+#include "../../TimingDefs.h"
 
 extern int bmain(int argc,char* argv[]);
 
@@ -23,7 +24,7 @@ humbuglib::LogManager *mLogManager;
 //singleton pointer
 CApplication* CApplication::s_pTheApplication=NULL;
 Uint32 CApplication::m_uiFPSLastTime=0;
-int CApplication::m_iFramesCap = 30;
+int CApplication::m_iFramesCap = FRAMESPERSECOND;
 Uint32 CApplication::m_iShownFrames = 0;
 
 
