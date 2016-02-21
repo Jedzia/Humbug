@@ -139,6 +139,7 @@ public:
         data.callData.push_back(callData);
     }
 
+    // ReSharper disable CyclomaticComplexity
     bool CheckSpriteDrawCollision(SpriteLinkData& linkdata, const std::vector<std::string>& canCollideWithTags, int collideId) {
         CSprite* linkdataSprite = linkdata.sprite.get();
 
