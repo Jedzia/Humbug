@@ -117,10 +117,10 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 	ENDIF()
 ENDFUNCTION(ADD_IMGCONVERSION_TARGET) 
 
-FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_image_source_file _format)
+FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_image_source_file _tile _format )
 
 	#SET(_imgconv_output_dir ${PROJECT_SOURCE_DIR}/Work)
-	SET(_additional_path ${ARGV4})
+	SET(_additional_path ${ARGV5})
 
 	GET_FILENAME_COMPONENT(_image_source_file  ${_inp_image_source_file} ABSOLUTE)
 	GET_FILENAME_COMPONENT(_file_namef  ${_image_source_file} NAME)
@@ -176,7 +176,8 @@ FUNCTION(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 		#SET(Build_Image_OPTIONS -layers merge)
 		SET(Build_Image_OPTIONS "-background transparent")
 #		SET(Montage_Image_OPTIONS -background none -geometry 256x256)
-		SET(Montage_Image_OPTIONS -background none -geometry 49x480)
+#		SET(Montage_Image_OPTIONS -background none -geometry 49x480)
+		SET(Montage_Image_OPTIONS -background none -geometry ${_tile})
 		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
 		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_sequence_fullpath}\"")
 		SET(Montage_Image_ARGUMENTS "\"${_in_Mfile_fullpath}\" \"${_out_file_fullpath}\"")
@@ -261,14 +262,17 @@ FOREACH(f ${IMAGES_SOURCE_FILES})
 		ADD_IMGCONVERSION_TARGET(Artwork ${${PROJECT_NAME}_WORKDIR} ${f} png)
 ENDFOREACH()
 
-SET(MULTI_IMAGES_SOURCE_FILES 
-	    ${CMAKE_CURRENT_SOURCE_DIR}/Sprites/Ship/Laser/Laser01.ai
-)
+#SET(MULTI_IMAGES_SOURCE_FILES 
+#	    ${CMAKE_CURRENT_SOURCE_DIR}/Sprites/Ship/Laser/Laser01.ai
+#)
 
-FOREACH(f ${MULTI_IMAGES_SOURCE_FILES})
-		#MESSAGE(STATUS "IMG: ${f}")
-		ADD_IMGCONVERSION_TARGET_MULTI(Artwork ${${PROJECT_NAME}_WORKDIR} ${f} png)
-ENDFOREACH()
+#FOREACH(f ${MULTI_IMAGES_SOURCE_FILES})
+#		#MESSAGE(STATUS "IMG: ${f}")
+#		ADD_IMGCONVERSION_TARGET_MULTI(Artwork ${${PROJECT_NAME}_WORKDIR} ${f} 49x480 png)
+#ENDFOREACH()
+
+ADD_IMGCONVERSION_TARGET_MULTI(Artwork ${${PROJECT_NAME}_WORKDIR} ${CMAKE_CURRENT_SOURCE_DIR}/Sprites/Ship/Laser/Bullet01.ai 32x32 png)
+ADD_IMGCONVERSION_TARGET_MULTI(Artwork ${${PROJECT_NAME}_WORKDIR} ${CMAKE_CURRENT_SOURCE_DIR}/Sprites/Ship/Laser/Laser01.ai 49x480 png)
 
 #ADD_IMGCONVERSION_TARGET(Artwork ${${PROJECT_NAME}_WORKDIR} Icons/nase.psd png AnotherFolder)
 
