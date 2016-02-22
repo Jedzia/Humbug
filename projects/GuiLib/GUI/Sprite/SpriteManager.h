@@ -95,6 +95,7 @@ public:
     */
     void AddSpriteDraw(int id, const components::CPoint& position, const CSpriteModifierFunc& updfunc,
             const std::vector<std::string>& canCollideWithTags = std::vector<std::string>(),
+            HitHandler* hitHandler = NULL,
             const CSpriteRenderFunc& renderfunc = NULL);
 
     void OnDraw();

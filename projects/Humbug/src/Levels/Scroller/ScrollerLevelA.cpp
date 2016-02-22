@@ -141,7 +141,7 @@ public:
             label1.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", debugFont,
                             true, CColor::Black(), CColor::White()));
             Uint16 height = label1->GetHeight();
-            label1->SetPosition(CPoint(300, height));
+            label1->SetPosition(CPoint(600, height/2));
             m_pDovl->AddChild(label1.get());
 
             // automatic labels
@@ -380,16 +380,16 @@ public:
             out6001 << "delta: (" << delta << ")";
             m_pOverlay->SetTextLabelText(6001, out6001.str());
 
-            std::ostringstream out6002;
-            out6002 << "spritePos: (" << lastSpritePos << ")";
-            out6002 << " hitRect: (" << hitTestRect << ")";
-            out6002 << " PaintLoc: (" << sprite->PaintLocation() << ")";
-            if (mdata.isHit)
-            {
-                out6002 << " HIT at pos: (" << hitTestRect << ")";
-            }
-
-            m_pOverlay->SetTextLabelText(6002, out6002.str());
+//            std::ostringstream out6002;
+//            out6002 << "spritePos: (" << lastSpritePos << ")";
+//            out6002 << " hitRect: (" << hitTestRect << ")";
+//            out6002 << " PaintLoc: (" << sprite->PaintLocation() << ")";
+//            if (mdata.isHit)
+//            {
+//                out6002 << " HIT at pos: (" << hitTestRect << ")";
+//            }
+//
+//            m_pOverlay->SetTextLabelText(6002, out6002.str());
         }
 
         if(h_ >= 180) {
@@ -657,7 +657,8 @@ public:
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
         updfuncShip->SetDebugOverlay(dbgOverlay);
         //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this);
-        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "Enemy", "Enemy1", "EnemyBullet" });
+        //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "Enemy", "Enemy1", "EnemyBullet" });
+        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "ALL" });
 
         //m_iSprLaserId = CreateLaserSprite();
         m_pSprLaser =
@@ -718,6 +719,12 @@ public:
 
     void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
     {
+        std::ostringstream out6002;
+        out6002 << "PlayerHit: (" << paintHitbox << ")";
+        out6002 << " id:(" << id << ")";
+        out6002 << " tag:(" << tag << ")";
+
+        m_pOverlay->SetTextLabelText(6002, out6002.str());
 
     }
 
@@ -895,7 +902,7 @@ public:
         //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N).Up(-64);
         //CPoint pos(128,128);
         //m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
-        m_pSprMgr->AddSpriteDraw(m_iSprShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" });
+        m_pSprMgr->AddSpriteDraw(m_iSprShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" }, this);
 
 
         //m_iSprLaserId = CreateLaserSprite();
@@ -911,8 +918,54 @@ public:
 
     void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
     {
-
+        //Fire();
     }
+
+    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const
+    {
+        // Todo: test when not const .... say when modulating the alpha
+        //int ySpeed = -16;
+        int ySpeed = -4;
+        sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
+        CRectangle scr(0, 0, 1024, 768);
+
+        if (mdata.isHit)
+        {
+            sprite->SetSpriteOffset(ticks % 10);
+        }
+        else
+        {
+            sprite->SetSpriteOffset(0);
+        }
+        //CRectangle hitRect(0, 0, 100, 100);
+        //bool isHit = hitRect.Contains(sprite->PaintLocation());
+        CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
+        if (m_pOverlay) {
+            std::ostringstream out6009;
+            out6009 << "LaserUpdfunc2 sprite pos: (" << pt << ")";
+            //            if (isHit)
+            //            {
+            //                out6009 << " HIT at pos: (" << hitRect << ")";
+            //            }
+            m_pOverlay->SetTextLabelText(6009, out6009.str());
+        }
+
+        if (!scr.Contains(pt))
+        {
+            mdata.markedForDeletion = true;
+        }
+    }
+
+    void Fire()
+    {
+
+        //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3);
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
+        CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&EnemyShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Ship" });
+    }
+
+
 };
 
 class EnemyWave : public HitHandler{
@@ -1214,6 +1267,7 @@ void ScrollerLevelA::OnDraw() {
     }
 
     m_pOverlay->Draw();
+    m_pOverlay->SetTextLabelText(6002, "Player Idle");
     m_pSprMgr->Render();
     //m_pSprMgr->OnDraw();
     m_pMainCanvas->Unlock();

@@ -4,6 +4,7 @@
 //
 #include "SpriteManager.h"
 #include "boost/smart_ptr/weak_ptr.hpp"
+#include <boost/algorithm/cxx11/any_of.hpp>
 #include <boost/algorithm/cxx11/none_of.hpp>
 #include <boost/foreach.hpp>
 //
@@ -57,6 +58,7 @@ struct SpriteCallData {
     CSpriteManager::CSpriteModifierFunc updfunc;
     CSpriteManager::CSpriteRenderFunc renderfunc;
     std::vector<std::string> canCollideWithTags;
+    HitHandler* hitHandler;
     //CSpriteModifierData mdata;
 };
 
@@ -126,6 +128,7 @@ public:
             const CPoint& position,
             const CSpriteModifierFunc& fnc,
             const std::vector<std::string>& canCollideWithTags,
+            HitHandler* hitHandler,
             const CSpriteRenderFunc& renderfunc, int sprOffset = 0) {
         SpriteLinkData& data = m_vSpriteData[id];
         SpriteCallData callData;
@@ -137,12 +140,26 @@ public:
         callData.initialpos = position;
         callData.pos = position;
         callData.offset = sprOffset;
+        callData.hitHandler = hitHandler;
         callData.id = data.callData.size();
         data.callData.push_back(callData);
     }
 
+    static bool CanNotCollideWithTag(const std::vector<std::string>& canCollideWithTags, const std::string& tag) {
+        const bool emptyTaglistMeansCollideWithAll = false;
+        bool tagListIsNotEmpty = !canCollideWithTags.empty();
+        bool tagOption = tagListIsNotEmpty || !emptyTaglistMeansCollideWithAll;
+        bool tagOptionNotMet = tagOption && boost::algorithm::none_of_equal(canCollideWithTags, tag);
+        if(boost::algorithm::any_of_equal(canCollideWithTags, "ALL")) {
+            tagOptionNotMet = false;
+        }
+
+        return tagOptionNotMet;
+    }
+
     // ReSharper disable CyclomaticComplexity
-    bool CheckSpriteDrawCollision(SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags, int collideId) {
+    bool CheckSpriteDrawCollision(SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags,
+            int collideId) {
         CSprite* checkedSprite = checkedSprite_link_data.sprite.get();
         bool sprIsHit = false;
         // check against all registered sprites.
@@ -150,53 +167,56 @@ public:
         {
             SpriteLinkData& currentSprite_link_data = curSpriteIt.second;
             boost::shared_ptr<CSprite>& currentSprite = currentSprite_link_data.sprite;
-            
+
 //            if (!currentSprite->IsVisible()) {
 //                continue;
 //            }
 
             // skip if the current sprite == the sprite to check against
-            if (currentSprite_link_data.sprite == checkedSprite_link_data.sprite) {
+            if(currentSprite_link_data.sprite == checkedSprite_link_data.sprite) {
                 continue;
             }
 
-            const bool emptyTaglistMeansCollideWithAll = false;
-            bool tagListIsNotEmpty = !canCollideWithTags.empty();
-            bool tagOption = tagListIsNotEmpty && !emptyTaglistMeansCollideWithAll;
-            bool tagOptionNotMet = tagOption && boost::algorithm::none_of_equal(canCollideWithTags, currentSprite_link_data.tag);
-//            if (boost::algorithm::none_of_equal(canCollideWithTags, currentSprite_link_data.tag)) {
+//            if (boost::algorithm::none_of_equal(canCollideWithTags, currentSprite_link_data.tag))
+// {
 //                continue;
 //            }
 
             CRectangle checkedSpriteHitBox = checkedSprite->GetPaintHitbox();
             CRectangle currentSpriteHitBox = currentSprite->GetPaintHitbox();
-            if (currentSprite->IsVisible() && !boost::algorithm::none_of_equal(canCollideWithTags, currentSprite_link_data.tag)) {
+            if(currentSprite->IsVisible() && !CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
                 bool isHit = checkedSpriteHitBox.Contains(currentSpriteHitBox);
                 if(isHit) {
-                   // if (currentSprite_link_data.hitHandler) {
-                   //     currentSprite_link_data.hitHandler->HitBy(*linkdataSprite, linkdataSpriteHitBox, collideId, checkedSprite_link_data.tag);
-                  //  }
-                    if (checkedSprite_link_data.hitHandler) {
-                        checkedSprite_link_data.hitHandler->HitBy(*currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag);
+                    // if (currentSprite_link_data.hitHandler) {
+                    //     currentSprite_link_data.hitHandler->HitBy(*linkdataSprite,
+                    // linkdataSpriteHitBox, collideId, checkedSprite_link_data.tag);
+                    //  }
+                    if(checkedSprite_link_data.hitHandler) {
+                        checkedSprite_link_data.hitHandler->HitBy(
+                                *currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag);
                     }
+
                     sprIsHit = true;
                     //return true;
                 }
             }
 
             //
-            // test the sprite in checkedSprite_link_data against the clones of all sprites (currentSprite) collision
+            // test the sprite in checkedSprite_link_data against the clones of all sprites
+            // (currentSprite) collision
             //BOOST_FOREACH(SprDataStorage::value_type & clone, curSpriteIt.second.callData)
             BOOST_FOREACH(SprDataStorage::value_type & clone, currentSprite_link_data.callData)
             {
 //                if ((!clone.canCollideWithTags.empty() && !emptyTaglistMeansCollideWithAll)
-//                    && boost::algorithm::none_of_equal(clone.canCollideWithTags, currentSprite_link_data.tag)) {
+//                    && boost::algorithm::none_of_equal(clone.canCollideWithTags,
+// currentSprite_link_data.tag)) {
 //                    continue;
 //                }
-//                if (boost::algorithm::none_of_equal(clone.canCollideWithTags, currentSprite_link_data.tag)) {
+//                if (boost::algorithm::none_of_equal(clone.canCollideWithTags,
+// currentSprite_link_data.tag)) {
 //                    continue;
 //                }
-                if (boost::algorithm::none_of_equal(canCollideWithTags, currentSprite_link_data.tag)) {
+                if(CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
                     continue;
                 }
 
@@ -206,8 +226,17 @@ public:
                 bool isHit = checkedSpriteHitBox.Contains(currentCloneSpriteHitBox);
                 currentSprite->SetPosition(oldPos);
                 if(isHit) {
-                    if (checkedSprite_link_data.hitHandler) {
-                        checkedSprite_link_data.hitHandler->HitBy(*checkedSprite, currentCloneSpriteHitBox, clone.id, currentSprite_link_data.tag);
+                    if(checkedSprite_link_data.hitHandler) {
+                        checkedSprite_link_data.hitHandler->HitBy(*checkedSprite,
+                                currentCloneSpriteHitBox,
+                                clone.id,
+                                currentSprite_link_data.tag);
+                    }
+                    if (clone.hitHandler) {
+                        clone.hitHandler->HitBy(*checkedSprite,
+                            currentCloneSpriteHitBox,
+                            checkedSprite_link_data.id,
+                            checkedSprite_link_data.tag);
                     }
 
                     //return true;
@@ -243,8 +272,9 @@ void CSpriteManager::AddSpriteDraw(int id,
         const CPoint& position,
         const CSpriteModifierFunc& updfunc,
         const std::vector<std::string>& canCollideWithTags,
+        HitHandler* hitHandler,
         const CSpriteRenderFunc& renderfunc) {
-    pimpl_->AddSpriteDraw(id, position, updfunc, canCollideWithTags, renderfunc);
+    pimpl_->AddSpriteDraw(id, position, updfunc, canCollideWithTags, hitHandler, renderfunc);
 }
 
 void CSpriteManager::OnDraw() {
