@@ -31,6 +31,7 @@ struct CSpriteModifierData
     components::CRectangle* srcRect;
     /** contains the destination rectangle. */
     components::CRectangle* dstRect;
+    components::CPoint initialpos;
     bool isHandled;
     /** If set to true the TextAnimator will be removed and deleted from the execution queue.
        The TextAnimator::nextAnimator next animator is added and called on the next run of the

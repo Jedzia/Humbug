@@ -73,8 +73,19 @@ public:
       friend std::ostream& operator<<(std::ostream& o, const CSprite& r);
       void Render();
 
+      /** Gets the physical proportions of the sprite.
+      *  @return a rectangle representing the width and height of the sprite.
+      */
       components::CRectangle SpriteDimension() const;
+     
+      /** Gets the painting proportions of the sprite.
+      *  @return a rectangle representing the source render image width and height of the sprite.
+      */
       components::CRectangle PaintDimension() const;
+
+      /** Gets the actual render size and location of the sprite.
+      *  @return a rectangle representing the current position and source render image width and height of the sprite.
+      */
       components::CRectangle PaintLocation() const;
 
   private:
