@@ -66,6 +66,7 @@ public:
      */
     void Reset(int ticks = 0) {
         m_iStartTicks = ticks;
+        m_iTicks = ticks;
     }
 
     /** Brief description of Timing, UpdateIdle

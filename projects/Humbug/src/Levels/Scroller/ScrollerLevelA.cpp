@@ -42,6 +42,7 @@
 #include <GuiLib/GUI/Sprite/Sprite.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
+#include <GuiLib/Timing.h>
 
 namespace humbug {
 namespace levels {
@@ -141,7 +142,7 @@ public:
             label1.reset(new controls::CLabel(debug_overlay, CRectangle(0, 0, -1, -1), 123, "Label 1", debugFont,
                             true, CColor::Black(), CColor::White()));
             Uint16 height = label1->GetHeight();
-            label1->SetPosition(CPoint(600, height/2));
+            label1->SetPosition(CPoint(600, height / 2));
             m_pDovl->AddChild(label1.get());
 
             // automatic labels
@@ -357,8 +358,8 @@ public:
                 sproffsAct = 1;
             }
         }
-        if (mdata.isHit)
-        {
+
+        if(mdata.isHit) {
             sproffsAct = ticks % sproffs;
         }
 
@@ -621,7 +622,7 @@ public:
  *  Detailed description.
  *  @param pEvent TODO
  */
-class PlayerShip : public HitHandler{
+class PlayerShip : public HitHandler {
     CSprite* m_pSprShip;
     CSprite* m_pSprLaser;
     int m_iSprLaserId;
@@ -637,9 +638,8 @@ class PlayerShip : public HitHandler{
 
 public:
 
-    PlayerShip(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr, DebugOverlay* dbgOverlay) 
-        : m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay)
-    {
+    PlayerShip(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr, DebugOverlay* dbgOverlay)
+        : m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay) {
         m_pSprShip =
             new CSprite(loader, "Sprites/Ship/ShipSprite02.png", canvas, CPoint(256, 256));
         m_pSprShip->SprImage()->DstRect() = m_pSprShip->SprImage()->DstRect() / 2;
@@ -657,51 +657,50 @@ public:
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
         updfuncShip->SetDebugOverlay(dbgOverlay);
         //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this);
-        //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "Enemy", "Enemy1", "EnemyBullet" });
+        //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "Enemy",
+        // "Enemy1", "EnemyBullet" });
         sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "ALL" });
 
         //m_iSprLaserId = CreateLaserSprite();
         m_pSprLaser =
             new CSprite(loader, "Sprites/Ship/Laser/Laser01.png", canvas, CPoint(49, 480));
-        CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(-50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
-        m_pSprLaser->SetHitBox(hitbox.Pad(20,0));
-        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+        CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(
+                        -50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
+        m_pSprLaser->SetHitBox(hitbox.Pad(20, 0));
+        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(
+                CRectangle::CompassRose::S).Up(-50);
         m_pSprLaser->SetPosition(pos);
         m_pSprLaser->SetVisibility(false);
         m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "Laser");
     }
 
-    static void LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata)
-    {
+    static void LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         int ySpeed = -16;
         sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);
-        if (!scr.Contains(sprite->GetPosition()))
-        {
+        if(!scr.Contains(sprite->GetPosition())) {
             mdata.markedForDeletion = true;
         }
     }
 
-    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const
-    {
+    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const {
         // Todo: test when not const .... say when modulating the alpha
         //int ySpeed = -16;
         int ySpeed = -4;
         sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
         CRectangle scr(0, 0, 1024, 768);
-        
-        if (mdata.isHit)
-        {
+
+        if(mdata.isHit) {
             sprite->SetSpriteOffset(ticks % 10);
         }
-        else
-        {
+        else {
             sprite->SetSpriteOffset(0);
         }
+
         //CRectangle hitRect(0, 0, 100, 100);
         //bool isHit = hitRect.Contains(sprite->PaintLocation());
         CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
-        if (m_pOverlay) {
+        if(m_pOverlay) {
             std::ostringstream out6009;
             out6009 << "LaserUpdfunc2 sprite pos: (" << pt << ")";
 //            if (isHit)
@@ -711,30 +710,29 @@ public:
             m_pOverlay->SetTextLabelText(6009, out6009.str());
         }
 
-        if (!scr.Contains(pt))
-        {
+        if(!scr.Contains(pt)) {
             mdata.markedForDeletion = true;
         }
-    }
+    } // LaserUpdfunc2
 
-    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
-    {
+    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override {
         std::ostringstream out6002;
         out6002 << "PlayerHit: (" << paintHitbox << ")";
         out6002 << " id:(" << id << ")";
         out6002 << " tag:(" << tag << ")";
 
         m_pOverlay->SetTextLabelText(6002, out6002.str());
-
     }
 
-    void Fire()
-    {
-        
-        //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3);
-        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
-        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Enemy", "Enemy1" });
+    void Fire() {
+        //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2,
+        // boost::ref(*this), _1, _2, _3);
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2,
+        // boost::ref(*this), _1, _2, _3));
+        CPoint pos = m_pSprShip->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(
+                CRectangle::CompassRose::S).Up(-50);
+        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(
+                                *this), _1, _2, _3), { "Enemy", "Enemy1" });
     }
 
     void HookEventloop(SDL_Event* pEvent) {
@@ -743,7 +741,7 @@ public:
             return;
         }
 
-        switch (pEvent->key.keysym.sym) {
+        switch(pEvent->key.keysym.sym) {
         case SDLK_SPACE:
         {
             Fire();
@@ -756,14 +754,110 @@ public:
         default:
             break;
         }     // switch
-    }
+    } // HookEventloop
 
     void HookIdle(int ticks, float speed) const {
         m_pKeyHandler->HookIdle(ticks, speed);
     }
 };
 
+/** @class EnemyShip1Mover:
+ *  Detailed description.
+ *  @param hitter TODO
+ *  @param paintHitbox TODO
+ *  @param id TODO
+ *  @param tag TODO
+ */
+class EnemyShip1Mover;
+/** @class EnemyShip:
+ *  Detailed description.
+ *  @param hitter TODO
+ *  @param paintHitbox TODO
+ *  @param id TODO
+ *  @param tag TODO
+ */
+class EnemyShip : public HitHandler {
+    CSprite* m_pEnemy1Ship;
+    CSprite* m_pSprLaser;
+    int m_iSprShipId;
+    int m_iSprLaserId;
+    CRectangle sprDimension;
+    CRectangle mainDimension;
+    boost::shared_ptr<EnemyShip1Mover> updfuncShip;
+    CSpriteManager* m_pSprMgr;
+    CCanvas* m_pCanvas;
+    DebugOverlay* m_pOverlay;
+    CPoint m_pos;
+    Timing timing;
+    bool m_bFired;
 
+public:
+
+    EnemyShip(const CPoint& pos,
+            CSprite* enemy1Ship,
+            int sprShipId,
+            CSprite* sprLaser,
+            int sprLaserId,
+            CCanvas* canvas,
+            CSpriteManager* sprMgr,
+            DebugOverlay* dbgOverlay);
+
+    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override {
+        Fire(hitter);
+    }
+
+    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const {
+        // Todo: test when not const .... say when modulating the alpha
+        //int ySpeed = -16;
+        int ySpeed = 4;
+        sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
+        CRectangle scr(0, 0, 1024, 768);
+
+        if(mdata.isHit) {
+            sprite->SetSpriteOffset(1 + ticks % 1);
+        }
+        else {
+            sprite->SetSpriteOffset(0);
+        }
+
+        CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
+        if(!scr.Contains(pt)) {
+            mdata.markedForDeletion = true;
+        }
+    } // LaserUpdfunc2
+
+    void Fire(const CSprite& hitter) {
+        return;
+
+        if(timing.IsAfter(1.0f)) {
+            m_bFired = false;
+            timing.Reset(0);
+        }
+
+        if(m_bFired) {
+            return;
+        }
+
+        m_bFired = true;
+        //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2,
+        // boost::ref(*this), _1, _2, _3);
+        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2,
+        // boost::ref(*this), _1, _2, _3));
+        //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) -
+        // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+        //CPoint pos = m_pos -
+        // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+        //CPoint pos = m_pos;
+        //CPoint pos = m_pos + m_pEnemy1Ship->PaintLocation();
+        CPoint pos = hitter.PaintLocation();
+        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&EnemyShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Ship" });
+    } // Fire
+};
+
+/** @class EnemyShip1Mover:
+ *  Detailed description.
+ *  @param m_p_overlay TODO
+ */
 class EnemyShip1Mover {
     int h_;
     bool toggle_;
@@ -775,15 +869,20 @@ class EnemyShip1Mover {
     DebugOverlay* m_pOverlay;
     CCanvas* m_pBackground;
     CPoint pos;
+    EnemyShip* m_pShip;
+    Timing timing;
+    float m_waitTime;
+
 public:
 
-    EnemyShip1Mover(CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 29) : h_(-1),
+    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 29) : m_pShip(ship), h_(-1),
         toggle_(false),
         deltaX_(deltaY),
         sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr), m_pBackground(background) {
         dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
         int rnd = 180 - (rand() % 360);
         h_ = rnd;
+        m_waitTime = CalcWaitTime(0);
     }
 
     ~EnemyShip1Mover() {
@@ -798,47 +897,47 @@ public:
 
     void DecrementOffset() { sproffsAct--; }
 
+    static float CalcWaitTime(float minTime = 4.5f) {
+        //float minTime = 4.5f;
+        float rndTime = (rand() % 4500) / 1000.0f;
+        float wtime = minTime + rndTime;
+
+        return wtime;
+    }
+
     /** $(fclass), operator ():
-    *  Detailed description.
-    *  @param sprite TODO
-    * @param ticks TODO
-    * @return TODO
-    */
+     *  Detailed description.
+     *  @param sprite TODO
+     * @param ticks TODO
+     * @return TODO
+     */
     void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
-        double ss = std::sin(static_cast<double>(h_) / 3.14159 / 4.0);
-        double sc = std::cos(static_cast<double>(h_) / 3.14159 / 4.0);
+        timing.UpdateIdle();
+        double ss = std::sin(static_cast<double>(h_) / 3.14159 / 12.0);
+        double sc = std::cos(static_cast<double>(h_) / 3.14159 / 12.0);
         int ssin = static_cast<int>(ss * 8);
         int scos = static_cast<int>(sc * 8);
 
-        //sprite->SetPosition(CPoint(100 + ((ticks % 128) * 6), 460 + h_ + deltaX_ + ssin));
-        //sprite->SetPosition(CPoint(130 + ssin, deltaX_ - scos));
-        //sprite->SetPosition(CPoint(deltaX_, 330 + ssin));
-        //CPoint pos = sprite->GetPosition();
-        //sprite->SetPosition(CPoint(deltaX_ + scos, 330 + ssin));
         sprite->SetPosition(CPoint(mdata.initialpos.GetX() + deltaX_ + scos, mdata.initialpos.GetY() + ssin));
-        //sprite->SetPosition(CPoint(deltaX_, 130));
         int delta = lastSpritePos.Distance(sprite->GetPosition());
         float angle = lastSpritePos.Angle(sprite->GetPosition());
-        //sproffsAct = 2;
-        /*if (delta > 4) {
-        if (angle <= 0) {
-        sproffsAct = 2;
-        }
-        else if (angle > 0) {
-        sproffsAct = 1;
-        }
-        }*/
 
-        sprite->SetSpriteOffset((ticks / 4)  % sproffs);
-        uint32_t offset = sproffsAct % sproffs;
-        //sprite->SetSpriteOffset(offset);
+        //uint32_t offset = sproffsAct % sproffs;
+        uint32_t offset = h_/4 % sproffs;
+        sprite->SetSpriteOffset(offset);
 
         CRectangle sdl_rect = sprite->SprImage()->DstRect();
         //m_pBackground->RenderDrawRect(sdl_rect, &sprColor);
         CColor sprColor = CColor::White();
-        m_pBackground->RenderFillRect(CRectangle(100, 100, 200, 200), &sprColor);
+        //m_pBackground->RenderFillRect(CRectangle(100, 100, 200, 200), &sprColor);
 
-        if (false && m_pOverlay) {
+        if(timing.IsAfter(m_waitTime)) {
+            m_pShip->Fire(*sprite);
+            m_waitTime = CalcWaitTime();
+            timing.Reset();
+        }
+
+        if(false && m_pOverlay) {
             std::ostringstream out6003;
             out6003 << "sproffs: (" << offset << ")";
             m_pOverlay->SetTextLabelText(6003, out6003.str());
@@ -848,14 +947,14 @@ public:
             m_pOverlay->SetTextLabelText(6004, out6004.str());
         }
 
-        if (h_ >= 180) {
+        if(h_ >= 180) {
             toggle_ = false;
         }
-        else if (h_ <= -180) {
+        else if(h_ <= -180) {
             toggle_ = true;
         }
 
-        if (toggle_) {
+        if(toggle_) {
             h_++;
         }
         else {
@@ -866,109 +965,64 @@ public:
     }     // ()
 };
 
-class EnemyShip : public HitHandler{
-    CSprite* m_pEnemy1Ship;
-    CSprite* m_pSprLaser;
-    int m_iSprShipId;
-    int m_iSprLaserId;
-    CRectangle sprDimension;
-    CRectangle mainDimension;
-    boost::shared_ptr<EnemyShip1Mover> updfuncShip;
-    CSpriteManager* m_pSprMgr;
-    CCanvas* m_pCanvas;
-    DebugOverlay* m_pOverlay;
+EnemyShip::EnemyShip(const CPoint& pos,
+        CSprite* enemy1Ship,
+        int sprShipId,
+        CSprite* sprLaser,
+        int sprLaserId,
+        CCanvas* canvas,
+        CSpriteManager* sprMgr,
+        DebugOverlay* dbgOverlay) : m_pEnemy1Ship(enemy1Ship), m_pSprLaser(sprLaser), m_iSprShipId(sprShipId), m_iSprLaserId(sprLaserId),
+    m_pSprMgr(sprMgr), m_pCanvas(canvas), m_pOverlay(dbgOverlay), m_pos(pos),
+    timing(boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr))), m_bFired(false) {
+    /*m_pEnemy1Ship =
+        new CSprite(loader, "Sprites/Ship/Enemy01a.png", canvas, CPoint(64, 64));
+       m_pEnemy1Ship->SprImage()->DstRect() = m_pSprEnemy1Ship->SprImage()->DstRect();
+       m_pEnemy1Ship->SetHitBox(m_pSprEnemy1Ship->SprImage()->DstRect());
+       int mainCanvasMiddleX = canvas->GetWidth() / 2;
+       int mainSprEyeMiddleX = m_pEnemy1Ship->SprImage()->DstRect().GetW() / 2;
+       sprPaintDimension = m_pEnemy1Ship->SpriteDimension();
+       mainDimension = canvas->GetDimension();
+       //CRectangle rect = CRectangle() mainDimension.Pad(sprPaintDimension);
+       CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
+        mainDimension.GetW() - sprPaintDimension.GetW() / 2, mainDimension.GetH() -
+           sprPaintDimension.GetH() / 2);
+       int delta_y = canvas->GetHeight() - m_pEnemy1Ship->SprImage()->DstRect().GetH() - 128;*/
+    updfuncShip = boost::make_shared<EnemyShip1Mover>(this, canvas, 120);
+    updfuncShip->SetDebugOverlay(dbgOverlay);
+    //m_iSprShipId = sprMgr->AddSprite(m_pEnemy1Ship, "Enemy", boost::ref(*updfuncShip.get()),
+    // this);
 
-public:
-    EnemyShip(const CPoint& pos, CSprite* enemy1Ship, int sprShipId, CSprite* sprLaser, int sprLaserId, CCanvas* canvas, CSpriteManager* sprMgr, DebugOverlay* dbgOverlay)
-        : m_pEnemy1Ship(enemy1Ship), m_pSprLaser(sprLaser), m_iSprShipId(sprShipId), m_iSprLaserId(sprLaserId), m_pSprMgr(sprMgr), m_pCanvas(canvas), m_pOverlay(dbgOverlay)
-    {
-        /*m_pEnemy1Ship =
-            new CSprite(loader, "Sprites/Ship/Enemy01a.png", canvas, CPoint(64, 64));
-        m_pEnemy1Ship->SprImage()->DstRect() = m_pSprEnemy1Ship->SprImage()->DstRect();
-        m_pEnemy1Ship->SetHitBox(m_pSprEnemy1Ship->SprImage()->DstRect());
-        int mainCanvasMiddleX = canvas->GetWidth() / 2;
-        int mainSprEyeMiddleX = m_pEnemy1Ship->SprImage()->DstRect().GetW() / 2;
-        sprPaintDimension = m_pEnemy1Ship->SpriteDimension();
-        mainDimension = canvas->GetDimension();
-        //CRectangle rect = CRectangle() mainDimension.Pad(sprPaintDimension);
-        CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
-            mainDimension.GetW() - sprPaintDimension.GetW() / 2, mainDimension.GetH() - sprPaintDimension.GetH() / 2);
-        int delta_y = canvas->GetHeight() - m_pEnemy1Ship->SprImage()->DstRect().GetH() - 128;*/
-        updfuncShip = boost::make_shared<EnemyShip1Mover>(canvas, 120);
-        updfuncShip->SetDebugOverlay(dbgOverlay);
-        //m_iSprShipId = sprMgr->AddSprite(m_pEnemy1Ship, "Enemy", boost::ref(*updfuncShip.get()), this);
+    //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) -
+    // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+    //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N).Up(-64);
+    //CPoint pos(128,128);
+    //m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2,
+    // boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
+    m_pSprMgr->AddSpriteDraw(m_iSprShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" }, this);
 
-        //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N).Up(-64);
-        //CPoint pos(128,128);
-        //m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
-        m_pSprMgr->AddSpriteDraw(m_iSprShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" }, this);
+    //m_iSprLaserId = CreateLaserSprite();
+    /*m_pSprLaser =
+        new CSprite(loader, "Sprites/Ship/Laser/Bullet01.png", canvas, CPoint(49, 480));
+       CRectangle hitbox =
+          CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(-50),
+          m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
+       m_pSprLaser->SetHitBox(hitbox.Pad(20, 0));*/
+    CPoint posLas = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(
+            CRectangle::CompassRose::S).Up(-50);
+    //m_pSprLaser->SetPosition(posLas);
+    //m_pSprLaser->SetVisibility(false);
+    //m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyLaser");
+}
 
-
-        //m_iSprLaserId = CreateLaserSprite();
-        /*m_pSprLaser =
-            new CSprite(loader, "Sprites/Ship/Laser/Bullet01.png", canvas, CPoint(49, 480));
-        CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(-50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
-        m_pSprLaser->SetHitBox(hitbox.Pad(20, 0));*/
-        CPoint posLas = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        //m_pSprLaser->SetPosition(posLas);
-        //m_pSprLaser->SetVisibility(false);
-        //m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyLaser");
-    }
-
-    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
-    {
-        //Fire();
-    }
-
-    void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const
-    {
-        // Todo: test when not const .... say when modulating the alpha
-        //int ySpeed = -16;
-        int ySpeed = -4;
-        sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
-        CRectangle scr(0, 0, 1024, 768);
-
-        if (mdata.isHit)
-        {
-            sprite->SetSpriteOffset(ticks % 10);
-        }
-        else
-        {
-            sprite->SetSpriteOffset(0);
-        }
-        //CRectangle hitRect(0, 0, 100, 100);
-        //bool isHit = hitRect.Contains(sprite->PaintLocation());
-        CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
-        if (m_pOverlay) {
-            std::ostringstream out6009;
-            out6009 << "LaserUpdfunc2 sprite pos: (" << pt << ")";
-            //            if (isHit)
-            //            {
-            //                out6009 << " HIT at pos: (" << hitRect << ")";
-            //            }
-            m_pOverlay->SetTextLabelText(6009, out6009.str());
-        }
-
-        if (!scr.Contains(pt))
-        {
-            mdata.markedForDeletion = true;
-        }
-    }
-
-    void Fire()
-    {
-
-        //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3);
-        //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3));
-        CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-        m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&EnemyShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Ship" });
-    }
-
-
-};
-
-class EnemyWave : public HitHandler{
+/** @class EnemyWave:
+ *  Detailed description.
+ *  @param hitter TODO
+ *  @param paintHitbox TODO
+ *  @param id TODO
+ *  @param tag TODO
+ */
+class EnemyWave : public HitHandler {
     CSprite* m_pSprEnemy1Ship;
     CSprite* m_pSprLaser;
     int m_iSprEnemy1ShipId;
@@ -984,9 +1038,9 @@ class EnemyWave : public HitHandler{
     boost::ptr_vector<EnemyShip> m_pEnemyShips;
 
 public:
+
     EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr, DebugOverlay* dbgOverlay)
-        : m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay)
-    {
+        : m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay) {
         m_pSprEnemy1Ship =
             new CSprite(loader, "Sprites/Ship/Enemy01a.png", canvas, CPoint(64, 64));
         m_pSprEnemy1Ship->SprImage()->DstRect() = m_pSprEnemy1Ship->SprImage()->DstRect() / 2;
@@ -997,43 +1051,56 @@ public:
         mainDimension = canvas->GetDimension();
         //CRectangle rect = CRectangle() mainDimension.Pad(sprPaintDimension);
         CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
-            mainDimension.GetW() - sprPaintDimension.GetW() / 2, mainDimension.GetH() - sprPaintDimension.GetH() / 2);
+                mainDimension.GetW() - sprPaintDimension.GetW() / 2, mainDimension.GetH() - sprPaintDimension.GetH() / 2);
         int delta_y = canvas->GetHeight() - m_pSprEnemy1Ship->SprImage()->DstRect().GetH() - 128;
 //        updfuncShip = boost::make_shared<EnemyShip1Mover>(canvas, 120);
 //        updfuncShip->SetDebugOverlay(dbgOverlay);
-//        m_iSprEnemy1ShipId = sprMgr->AddSprite(m_pSprEnemy1Ship, "Enemy", boost::ref(*updfuncShip.get()), this);
-         m_iSprEnemy1ShipId = sprMgr->AddSprite(m_pSprEnemy1Ship, "Enemy", NULL, this);
-         m_pSprEnemy1Ship->SetPosition(CPoint(200,200));
-//        //CPoint pos = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-//        //CPoint pos = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N).Up(-64);
+//        m_iSprEnemy1ShipId = sprMgr->AddSprite(m_pSprEnemy1Ship, "Enemy",
+// boost::ref(*updfuncShip.get()), this);
+        m_iSprEnemy1ShipId = sprMgr->AddSprite(m_pSprEnemy1Ship, "Enemy", NULL, this);
+        m_pSprEnemy1Ship->SetPosition(CPoint(200, 200));
+//        //CPoint pos = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) -
+// m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+//        //CPoint pos =
+// m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N).Up(-64);
 //        CPoint pos(128, 128);
-//        //m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
-//        m_pSprMgr->AddSpriteDraw(m_iSprEnemy1ShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" });
-         m_pSprEnemy1Ship->SetVisibility(false);
-
+//        //m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2,
+// boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
+//        m_pSprMgr->AddSpriteDraw(m_iSprEnemy1ShipId, pos, boost::ref(*updfuncShip.get()), {
+// "Laser", "Ship" });
+        m_pSprEnemy1Ship->SetVisibility(false);
 
         //m_iSprLaserId = CreateLaserSprite();
         m_pSprLaser =
-            new CSprite(loader, "Sprites/Ship/Laser/Bullet01.png", canvas, CPoint(49, 480));
-        CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(-50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
+            new CSprite(loader, "Sprites/Ship/Laser/Bullet01.png", canvas, CPoint(32, 32));
+        CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(
+                        -50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
         m_pSprLaser->SetHitBox(hitbox.Pad(20, 0));
-//        CPoint posLas = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
+//        CPoint posLas = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) -
+// m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
 //        m_pSprLaser->SetPosition(posLas);
         m_pSprLaser->SetVisibility(false);
         m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyBullet");
         
-        CPoint pos(128, 128);
-        //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId, m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
-        for (size_t i = 0; i < 8; i++)
+        const int startPos = 32;
+        CPoint pos(startPos, 128);
+
+        //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId,
+        // m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
+        for (size_t row = 0; row < 7; row++)
         {
-            m_pEnemyShips.push_back(new EnemyShip(pos, m_pSprEnemy1Ship, m_iSprEnemy1ShipId, m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay));
-            pos.Move(sprPaintDimension.GetW() + sprPaintDimension.GetW() / 2, 0);
+            int rowNotEven = row % 1;
+            pos = CPoint(startPos + rowNotEven * 32, startPos + row * 64);
+            for (size_t i = 0; i < 16; i++)
+            {
+                m_pEnemyShips.push_back(new EnemyShip(pos, m_pSprEnemy1Ship, m_iSprEnemy1ShipId, m_pSprLaser, m_iSprLaserId, canvas, sprMgr,
+                    dbgOverlay));
+                pos.Move(sprPaintDimension.GetW() + sprPaintDimension.GetW() / 2, 0);
+            }
         }
     }
 
-    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override
-    {
-
+    void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag) override {
     }
 };
 
@@ -1154,14 +1221,15 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
 
     /*CSprite* m_pSprLaser =
         new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CPoint(49, 480));
-    int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
-    pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
-    pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprLaser, "mytag", boost::ref(*pimpl_->updfunc2));*/
+       int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprLaser->SprImage()->DstRect().GetW() / 2;
+       pimpl_->updfunc2 = boost::make_shared<hspriv::LaserMover>(m_pBackground.get(), offsetW);
+       pimpl_->updfunc2->SetDebugOverlay(m_pOverlay.get());
+       m_pSprMgr->AddSprite(m_pSprLaser, "mytag", boost::ref(*pimpl_->updfunc2));*/
 
     CSprite* m_pSprSaucer = new CSprite(m_Loader, "Sprites/Ship/Saucer02.png", m_pMainCanvas, CPoint(256, 256));
     //m_pSprSaucer->SprImage()->Scale(0.5);
     int offsetW = m_pMainCanvas->GetWidth() / 2 - m_pSprSaucer->SprImage()->DstRect().GetW() / 2;
+    offsetW += 300;
     pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW, 90);
     pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
     m_pSprMgr->AddSprite(m_pSprSaucer, "Enemy1", boost::ref(*pimpl_->updfunc3), pimpl_->m_pEnemyShip.get());
@@ -1228,7 +1296,7 @@ void ScrollerLevelA::OnDraw() {
     CColor sdl_color = CColor(fcol.r, fcol.g, fcol.b, fcol.a);
     m_pMainCanvas->RenderFillRect(frect, &sdl_color);
     //m_pMainCanvas->AddUpdateRect(frect);
-    
+
     //CColor hitTestRecColor = CColor::LightMagenta();
     //m_pMainCanvas->RenderDrawRect(hitTestRect, &hitTestRecColor);
 

@@ -7,6 +7,11 @@
 #include <boost/algorithm/cxx11/any_of.hpp>
 #include <boost/algorithm/cxx11/none_of.hpp>
 #include <boost/foreach.hpp>
+#include <iostream>
+#include <chrono>
+//#include <chrono_io>
+#include <ctime>
+#include <iomanip>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -160,8 +165,10 @@ public:
     // ReSharper disable CyclomaticComplexity
     bool CheckSpriteDrawCollision(SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags,
             int collideId) {
+        const bool returnsImmediately = false;
         CSprite* checkedSprite = checkedSprite_link_data.sprite.get();
         bool sprIsHit = false;
+        //return sprIsHit;
         // check against all registered sprites.
         BOOST_FOREACH(SprLinkStorage::value_type & curSpriteIt, m_vSpriteData)
         {
@@ -197,7 +204,8 @@ public:
                     }
 
                     sprIsHit = true;
-                    //return true;
+                    if (returnsImmediately)
+                        return true;
                 }
             }
 
@@ -224,7 +232,6 @@ public:
                 currentSprite->SetPosition(clone.pos);
                 CRectangle currentCloneSpriteHitBox = currentSprite->GetPaintHitbox();
                 bool isHit = checkedSpriteHitBox.Contains(currentCloneSpriteHitBox);
-                currentSprite->SetPosition(oldPos);
                 if(isHit) {
                     if(checkedSprite_link_data.hitHandler) {
                         checkedSprite_link_data.hitHandler->HitBy(*checkedSprite,
@@ -233,19 +240,22 @@ public:
                                 currentSprite_link_data.tag);
                     }
                     if (clone.hitHandler) {
-                        clone.hitHandler->HitBy(*checkedSprite,
+                        clone.hitHandler->HitBy(*currentSprite,
                             currentCloneSpriteHitBox,
                             checkedSprite_link_data.id,
                             checkedSprite_link_data.tag);
                     }
 
-                    //return true;
                     sprIsHit = true;
+                    if (returnsImmediately)
+                        return true;
                 }
+                currentSprite->SetPosition(oldPos);
             }
         }
+        if (returnsImmediately)
+            return false;
         return sprIsHit;
-        //return false;
     } // CheckSpriteDrawCollision
 };
 
@@ -287,11 +297,78 @@ void CSpriteManager::OnDraw() {
     }
 }
 
+struct HighResClock
+{
+    typedef long long                               rep;
+    typedef std::nano                               period;
+    typedef std::chrono::duration<rep, period>      duration;
+    typedef std::chrono::time_point<HighResClock>   time_point;
+    static const bool is_steady = true;
+
+    static time_point now();
+};
+namespace
+{
+    const long long g_Frequency = []() -> long long
+    {
+        LARGE_INTEGER frequency;
+        QueryPerformanceFrequency(&frequency);
+        return frequency.QuadPart;
+    }();
+
+/*    template<typename Clock, typename Duration>
+    std::ostream &operator<<(std::ostream &stream,
+        const std::chrono::time_point<Clock, Duration> &time_point) {
+        const time_t time = Clock::to_time_t(time_point);
+#if __GNUC__ > 4 || \
+    ((__GNUC__ == 4) && __GNUC_MINOR__ > 8 && __GNUC_REVISION__ > 1)
+        // Maybe the put_time will be implemented later?
+        struct tm tm;
+        localtime_r(&time, &tm);
+        return stream << std::put_time(&tm, "c");
+#else
+        char buffer[26];
+        ctime_r(&time, buffer);
+        buffer[24] = '\0';  // Removes the newline that is added
+        return stream << buffer;
+#endif
+    }*/
+
+}
+
+HighResClock::time_point HighResClock::now()
+{
+    LARGE_INTEGER count;
+    QueryPerformanceCounter(&count);
+    return time_point(duration(count.QuadPart * static_cast<rep>(period::den) / g_Frequency));
+}
+
+class StopWatchTimer
+{
+public:
+    StopWatchTimer() : beg_(clock_::now()) {}
+    void reset() { beg_ = clock_::now(); }
+    double elapsed() const {
+        return std::chrono::duration_cast<second_>
+            (clock_::now() - beg_).count();
+    }
+
+private:
+    typedef std::chrono::high_resolution_clock clock_;
+    typedef std::chrono::duration<double, std::ratio<1> > second_;
+    std::chrono::time_point<clock_> beg_;
+}; 
+
 void CSpriteManager::OnIdle(int ticks) {
+    //std::chrono::high_resolution_clock::time_point start(std::chrono::high_resolution_clock::now());
+    HighResClock::time_point start(HighResClock::now());
+    //StopWatchTimer tmr;
+
+    m_iTicks = ticks;
     SprLinkStorage::iterator sprIt = pimpl_->m_vSpriteData.begin();
 
     while(sprIt != pimpl_->m_vSpriteData.end()) {
-        static CRectangle srcRect, dstRect;
+        CRectangle srcRect, dstRect;
         CSpriteModifierData mdata(&srcRect, &dstRect);
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
@@ -337,7 +414,7 @@ void CSpriteManager::OnIdle(int ticks) {
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
-                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, sprite_call_data.canCollideWithTags, sprite_call_data.id);
+//                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, sprite_call_data.canCollideWithTags, sprite_call_data.id);
                 childMdata.initialpos = sprite_call_data.initialpos;
 
                 //childMdata.isHit = mdata.isHit;
@@ -360,6 +437,23 @@ void CSpriteManager::OnIdle(int ticks) {
             ++sprIt;
         }
     }
+    //auto time = std::chrono::high_resolution_clock::now() - start;
+    //auto t = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start);
+    auto time = HighResClock::now() - start;
+    auto t = std::chrono::duration_cast<std::chrono::microseconds>(HighResClock::now() - start);
+    //auto t = std::chrono::duration_cast<std::chrono::milliseconds>(HighResClock::now() - start);
+    dbgOut("CSpriteManager, OnIdle Time: " << t.count());
+    
+    //dbgOut("CSpriteManager, OnIdle Time: " << std::chrono::duration_fmt(std::chrono::symbol) << t.count());
+    //dbgOut("CSpriteManager(" << std::chrono::system_clock::now() << "), OnIdle Time: " << t);
+    //dbgOut("CSpriteManager(), OnIdle Time: " << t);
+
+
+    //std::cout << std::chrono::system_clock::now() << std::endl;
+
+    //dbgOut("CSpriteManager, OnIdle Time: " << tmr.elapsed());
+
+
     /*// this seems the best when iterating and deleting
        SprStorage::iterator sprIt = m_pvSprites.begin();
        while (sprIt != m_pvSprites.end()) {

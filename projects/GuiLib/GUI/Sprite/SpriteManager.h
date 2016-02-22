@@ -106,10 +106,13 @@ public:
 
     void Render();
 
+    int UpdateTimeFunc() const { return m_iTicks; }
+
 private:
 
     struct CSpriteManagerImpl;
     boost::scoped_ptr<CSpriteManagerImpl> pimpl_;
+    int m_iTicks;
     //typedef boost::ptr_vector<CSpriteHook> SprStorage;
     //SprStorage m_pvSprites;
 };
