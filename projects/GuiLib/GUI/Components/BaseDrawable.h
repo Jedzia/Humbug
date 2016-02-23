@@ -145,7 +145,7 @@ class BaseDrawable : public Disposable {
 public:
 
     explicit BaseDrawable(const CPoint& m_pt_position)
-        : m_ptPosition{m_pt_position}, m_bIsVisible(true)
+        : m_ptPosition{ m_pt_position }, m_bIsVisible(true), m_strName("NoName")
     {}
 
     /** Get current text Position.
@@ -172,10 +172,14 @@ public:
      */
     void SetVisibility(bool visibility) { m_bIsVisible = visibility; }
 
+    std::string GetName() const { return m_strName; }
+    void SetName(const std::string& m_str_name) { m_strName = m_str_name; }
+
 private:
 
     CPoint m_ptPosition;
     bool m_bIsVisible;
+    std::string m_strName;
 };
 }
 }
