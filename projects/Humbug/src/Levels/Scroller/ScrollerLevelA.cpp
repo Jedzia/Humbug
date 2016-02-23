@@ -733,9 +733,9 @@ public:
             timing.Reset(0);
         }
 
-        if (m_bFired) {
-            return;
-        }
+//        if (m_bFired) {
+//            return;
+//        }
 
         m_bFired = true;
 
@@ -824,10 +824,11 @@ public:
 
     void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag, CSpriteModifierData& mdata) override {
         Fire(hitter);
-        if (tag == "Laser" && id > 1023)
-        {
-            mdata.markedForDeletion = true;
-        }
+        // delete laser when enemy is hit.
+//        if (tag == "Laser" && id > 1023)
+//        {
+//            mdata.markedForDeletion = true;
+//        }
     }
 
     void LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const {

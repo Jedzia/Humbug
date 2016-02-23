@@ -19,9 +19,27 @@
 #include <ctime>
 #include <iomanip>
 #include <set>
-
 //
 //#include <build/cmake/include/debug.h>
+
+#define GRIDFISHING_ENABLED
+
+//template <class CharT, class Traits>
+humbuglib::Log::Stream&
+duration_shortx(humbuglib::Log::Stream& os)
+{
+    typedef boost::chrono::duration_punct<humbuglib::Log::Stream::char_type> Facet;
+    std::locale loc = os.getloc();
+    if (std::has_facet<Facet>(loc))
+    {
+        const Facet& f = std::use_facet<Facet>(loc);
+        if (f.is_long_name())
+            os.imbue(std::locale(loc, new Facet(Facet::use_short, f)));
+    }
+    else
+        os.imbue(std::locale(loc, new Facet(Facet::use_short)));
+    return os;
+}
 
 namespace gui {
 using namespace components;
@@ -100,6 +118,14 @@ public:
     std::map<std::string, std::set<int>> spriteTagToIdMap;
     //std::map<std::string, std::set<int>> cloneTagToIdMap;
     SprLinkStorage m_vSpriteData;
+#if defined(GRIDFISHING_ENABLED)
+
+    //    std::map<int, std::set<int>> spriteIdGridWidth;
+    //    std::map<int, std::set<int>> spriteIdGridHeight;
+    std::map<int, int> spriteIdGridWidth;
+    std::map<int, int> spriteIdGridHeight;
+
+#endif
 
     //boost::shared_ptr<hspriv::LaserMover> updfunc2;
     //boost::shared_ptr<hspriv::SaucerMover> updfunc3;
@@ -196,12 +222,21 @@ public:
         return tagOptionNotMet;
     }
 
+    template <typename T>
+    bool IsInBounds(const T& value, const T& low, const T& high) {
+        return !(value < low) && (value < high);
+    }
+
     // ReSharper disable CyclomaticComplexity
     bool CheckSpriteDrawCollision(const SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags,
             int canCollideWithId, int collideId, CSpriteModifierData& mdata, int& subSpritesChecked) {
         const bool returnsImmediately = false;
         CSprite* checkedSprite = checkedSprite_link_data.sprite.get();
         bool sprIsHit = false;
+#if defined(GRIDFISHING_ENABLED)
+        int collideGridWidth = spriteIdGridWidth[collideId];
+        int collideGridHeight = spriteIdGridHeight[collideId];
+#endif
 
         //return sprIsHit;
         // check against all registered sprites.
@@ -212,6 +247,19 @@ public:
                 continue;
             }
 
+            bool inBounds = true;
+
+#if defined(GRIDFISHING_ENABLED)
+            const CPoint& curPos = currentSprite_link_data.sprite->GetPosition();
+            int curGridWidth = curPos.GetX() / 64;
+            int curGridHeight = curPos.GetY() / 64;
+
+            if (!IsInBounds(curGridWidth, collideGridWidth - 2, collideGridWidth + 2) && !IsInBounds(curGridHeight, collideGridHeight - 2, collideGridHeight + 2))
+            {
+                inBounds = false;
+                //continue;
+            }
+#endif
             std::set<int>& collideIds = spriteTagToIdMap[currentSprite_link_data.tag];
             const bool is_in = collideIds.find(checkedSprite_link_data.id) != collideIds.end();
 //            if (!is_in) {
@@ -244,7 +292,7 @@ public:
 
             CRectangle checkedSpriteHitBox = checkedSprite->GetPaintHitbox();
             CRectangle currentSpriteHitBox = currentSprite->GetPaintHitbox();
-            if(is_in) {
+            if (is_in && inBounds) {
                 //if (!CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
                 if(currentSprite->IsVisible()) {
 //                    dbgOut(
@@ -300,6 +348,19 @@ public:
 //                    continue;
 //                }
 
+                const CPoint& clonePos = clone.pos;
+#if defined(GRIDFISHING_ENABLED)
+                int cloneGridWidth = clonePos.GetX() / 64;
+                int cloneGridHeight = clonePos.GetY() / 64;
+
+//                int collideGridWidth = spriteIdGridWidth[collideId];
+//                int collideGridHeight = spriteIdGridHeight[collideId];
+
+                if (!IsInBounds(cloneGridWidth, collideGridWidth - 2, collideGridWidth + 2) && !IsInBounds(cloneGridHeight, collideGridHeight - 2, collideGridHeight + 2))
+                {
+                    continue;
+                }
+#endif
                 if(!is_in) {
                     continue;
                 }
@@ -333,7 +394,7 @@ public:
 //                    );
 
                 CPoint oldPos = currentSprite->GetPosition();
-                currentSprite->SetPosition(clone.pos);
+                currentSprite->SetPosition(clonePos);
                 CRectangle currentCloneSpriteHitBox = currentSprite->GetPaintHitbox();
                 bool isHit = checkedSpriteHitBox.Contains(currentCloneSpriteHitBox);
                 if(isHit) {
@@ -450,6 +511,20 @@ void CSpriteManager::OnDraw() {
     typedef std::chrono::duration<double, std::ratio<1> > second_;
     std::chrono::time_point<clock_> beg_;
    };*/
+
+
+template <class Rep, class Period>
+std::string
+short_duration_log(const boost::chrono::duration<Rep, Period>& t)
+{
+    std::stringstream sst;
+    sst << std::setfill('0') << std::setw(5);
+    sst << boost::chrono::duration_short;
+    sst << t;
+    return sst.str();
+}
+
+
 void CSpriteManager::OnIdle(int ticks) {
     boost::chrono::high_resolution_clock::time_point start(boost::chrono::high_resolution_clock::now());
     boost::chrono::microseconds t2(0);
@@ -495,9 +570,18 @@ void CSpriteManager::OnIdle(int ticks) {
            }*/
         numSpritesChecked++;
 
+        CPoint oldPos = sprite->GetPosition();
+        int oldOffset = sprite->GetSpriteOffset();
+
         bool runMainIdle = linkdata.mainfunc != NULL && sprite->IsVisible();
         if(runMainIdle) {
             linkdata.mainfunc(sprite, ticks, mdata);
+
+#if defined(GRIDFISHING_ENABLED)
+            CPoint newPos = sprite->GetPosition();
+            pimpl_->spriteIdGridWidth[linkdata.id] = newPos.GetX() / 64;
+            pimpl_->spriteIdGridHeight[linkdata.id] = newPos.GetY() / 64;
+#endif
         }
 
         if(mdata.markedForDeletion) {
@@ -506,8 +590,6 @@ void CSpriteManager::OnIdle(int ticks) {
         }
         else {
             // children call data
-            CPoint oldPos = sprite->GetPosition();
-            int oldOffset = sprite->GetSpriteOffset();
 
             SprDataStorage::iterator subIt = linkdata.callData.begin();
 
@@ -546,9 +628,13 @@ void CSpriteManager::OnIdle(int ticks) {
                 //childMdata.isHit = mdata.isHit;
                 boost::chrono::high_resolution_clock::time_point start3(boost::chrono::high_resolution_clock::now());
                 sprite_call_data.updfunc(sprite, ticks, childMdata);
-                t3 += boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start3);
                 sprite_call_data.pos = sprite->GetPosition();
                 sprite_call_data.offset = sprite->GetSpriteOffset();
+#if defined(GRIDFISHING_ENABLED)
+                pimpl_->spriteIdGridWidth[sprite_call_data.id] = sprite_call_data.pos.GetX() / 64;
+                pimpl_->spriteIdGridHeight[sprite_call_data.id] = sprite_call_data.pos.GetY() / 64;
+#endif
+                t3 += boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start3);
 
                 // restore original sprite data.
                 sprite->SetPosition(oldPos);
@@ -586,19 +672,47 @@ void CSpriteManager::OnIdle(int ticks) {
     //dbgOut("CSpriteManager, OnIdle Time: " << t.count());
     //dbgOut("CSpriteManager, OnIdle Time: " << std::setfill('0') << std::setw(3) << std::fixed <<
     // std::setprecision(3) << t);
+    static boost::chrono::microseconds avg(0);
+    static int runs = 0;
+    runs++;
 
-//   auto t =
-// boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now()
-// - start);
-//    dbgOut("CSprMgr=" << std::setfill('0') << std::setw(3) << pimpl_->m_vSpriteData.size() <<
-//                ", all=" << std::setw(5) << numSpritesChecked <<
-//                ", Sub=" << std::setw(5) << subSpritesChecked <<
-//                ", OnIdle t: " << t <<
-//                ", Sub check t: " << t2 <<
-//                ", Sub updfunc t: " << t3
-//            );
+   auto t = boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
+   avg += t;
 
-    /*// this seems the best when iterating and deleting
+//   std::locale loc = humbuglib::LogManager::getSingleton().stream().getloc();
+//   typedef boost::chrono::duration_punct<std::string> Facet;
+//   const Facet& f = std::use_facet<Facet>(loc);
+//   if (f.is_long_name())
+//       os.imbue(std::locale(loc, new Facet(Facet::use_short, f)));
+
+//   std::stringstream sst;
+//   sst << boost::chrono::duration_short << t;
+//   std::stringstream sst2;
+//   sst2 << boost::chrono::duration_short << t2;
+//   std::stringstream sst3;
+//   sst3 << boost::chrono::duration_short << t3;
+//   std::stringstream sst4;
+//   sst4 << boost::chrono::duration_short << avg / runs;
+
+   // duration_shortx <<
+   dbgOut( "[" << std::setfill('0') << std::setw(5) << runs << "]Spr=" << std::setw(3) << pimpl_->m_vSpriteData.size() <<
+                ", all=" << std::setw(5) << numSpritesChecked <<
+                ", Sub=" << std::setw(5) << subSpritesChecked <<
+                ", OnIdle t: " << short_duration_log(t) <<
+                ", Sub check t: " << short_duration_log(t2) <<
+                ", Sub updfunc t: " << short_duration_log(t3) <<
+                ", Avg t: " << short_duration_log(avg / runs)
+                );
+   
+   
+   //std::cout << boost::chrono::duration_short << std::endl;
+   //std::cout.imbue()
+
+       
+       
+       
+       
+       /*// this seems the best when iterating and deleting
        SprStorage::iterator sprIt = m_pvSprites.begin();
        while (sprIt != m_pvSprites.end()) {
 

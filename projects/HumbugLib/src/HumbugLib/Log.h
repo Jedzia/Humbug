@@ -203,7 +203,8 @@ protected:
         BaseStream mCache;
 
 public:
-
+    typedef BaseStream::char_type char_type;
+        
         /// Simple type to indicate a flush of the stream to the log
         struct Flush {};
 
@@ -228,6 +229,21 @@ public:
                     mTarget->logMessage(mCache.str(), mLevel, mMaskDebug);
                }
         }
+
+        std::locale getloc() const
+        {	// get locale
+            return std::cout.getloc();
+        }
+
+        std::locale imbue(const std::locale& _Loc)
+        {	// set locale to argument
+//            std::locale _Oldlocale = std::ios_base::imbue(_Loc);
+//            if (rdbuf() != 0)
+//                rdbuf()->pubimbue(_Loc);
+//            return (_Oldlocale);
+            return getloc();
+        }
+
         /** $(fclass), operator <<:
          *  Detailed description.
          *  @param v TODO
