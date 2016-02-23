@@ -203,12 +203,17 @@ void PlayerKeys4::Stop() {
     m_direction = GVector2D::Zero();
 }
 
+bool PlayerKeys4::IsPressed(SDL_Keycode keyCode)
+{
+    return m_KeyboardHandler.IsPressed (keyCode);
+}
+
 /** PlayerKeys4, operator <<:
- *  Detailed description.
- *  @param o TODO
- * @param r TODO
- * @return TODO
- */
+     *  Detailed description.
+     *  @param o TODO
+     * @param r TODO
+     * @return TODO
+     */
 std::ostream& operator<<(std::ostream& o, const PlayerKeys4& r) {
     return o << "PlayerKeys4[ X="   /*<< r.GetX() << ", Y=" << r.GetY()
                                        << ", W=" << r.GetW() << ", H=" << r.GetH()

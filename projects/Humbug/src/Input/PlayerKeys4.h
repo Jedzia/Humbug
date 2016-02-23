@@ -78,6 +78,8 @@ public:
       */
       void Stop();
 
+      bool IsPressed(SDL_Keycode keyCode);
+
       friend std::ostream& operator<<(std::ostream& o, const PlayerKeys4& r);
   private:
 
