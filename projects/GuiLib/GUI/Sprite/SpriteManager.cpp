@@ -8,74 +8,33 @@
 #include <boost/algorithm/cxx11/none_of.hpp>
 #include <boost/chrono/include.hpp>
 #include <boost/foreach.hpp>
-#include <iostream>
-//#include <boost/chrono/chrono.hpp>
-//#include <boost/chrono/chrono_io.hpp>
-//#include <boost/chrono/io/duration_io.hpp>
-//#include <boost/chrono/io/duration_style.hpp>
-//#include <boost/chrono/io/utility/ios_base_state_ptr.hpp>
-//#include <boost/chrono/io/duration_style.hpp>
-//#include <chrono_io>
 #include <ctime>
 #include <iomanip>
+#include <iostream>
 #include <set>
 //
 //#include <build/cmake/include/debug.h>
 
-#define GRIDFISHING_ENABLED
+//#define GRIDFISHING_ENABLED
 
-//template <class CharT, class Traits>
-humbuglib::Log::Stream&
-duration_shortx(humbuglib::Log::Stream& os)
-{
+humbuglib::Log::Stream&duration_shortx(humbuglib::Log::Stream& os) {
     typedef boost::chrono::duration_punct<humbuglib::Log::Stream::char_type> Facet;
     std::locale loc = os.getloc();
-    if (std::has_facet<Facet>(loc))
-    {
+    if(std::has_facet<Facet>(loc)) {
         const Facet& f = std::use_facet<Facet>(loc);
-        if (f.is_long_name())
+        if(f.is_long_name()) {
             os.imbue(std::locale(loc, new Facet(Facet::use_short, f)));
+        }
     }
-    else
+    else {
         os.imbue(std::locale(loc, new Facet(Facet::use_short)));
+    }
+
     return os;
 }
 
 namespace gui {
 using namespace components;
-//typedef boost::shared_ptr<CSprite> SpriteShrp;
-/*class CSpriteHook {
-    //CSprite *m_pSprite;
-    SpriteShrp m_pSprite;
-    const CSpriteManager::CSpriteModifierFunc m_fncUpdate;
-
-   public:
-
-    CSpriteHook(CSprite* sprite, const CSpriteManager::CSpriteModifierFunc updfunc = NULL) :
-        m_pSprite(sprite),
-        m_fncUpdate(updfunc) {
-        dbgOut(__FUNCTION__ << " " << this);
-
-        //m_pSprite.reset(sprite);
-    }
-
-    ~CSpriteHook() {
-        dbgOut(__FUNCTION__ << " " << this);
-    }
-
-    void DoIdle(int framenumber, CSpriteModifierData& mdata) const {
-        if(m_fncUpdate != NULL) {
-            //boost::weak_ptr<CSprite> wspr( m_pSprite );
-            //if (!wspr.expired())
-            //{
-            m_fncUpdate(m_pSprite.get(), framenumber, mdata);
-            //}
-        }
-    }
-
-    //CSprite * Sprite() const { return m_pSprite; }
-    SpriteShrp Sprite() const { return m_pSprite; }
-   };*/
 
 /** @class SpriteCallData:
  *  This branch of action stores the position outside the Sprite and restores it later.
@@ -116,20 +75,13 @@ private:
 public:
 
     std::map<std::string, std::set<int>> spriteTagToIdMap;
-    //std::map<std::string, std::set<int>> cloneTagToIdMap;
     SprLinkStorage m_vSpriteData;
 #if defined(GRIDFISHING_ENABLED)
 
-    //    std::map<int, std::set<int>> spriteIdGridWidth;
-    //    std::map<int, std::set<int>> spriteIdGridHeight;
     std::map<int, int> spriteIdGridWidth;
     std::map<int, int> spriteIdGridHeight;
 
 #endif
-
-    //boost::shared_ptr<hspriv::LaserMover> updfunc2;
-    //boost::shared_ptr<hspriv::SaucerMover> updfunc3;
-    // boost::shared_ptr<PlayerShip> m_pPlayerShip;
 
     explicit CSpriteManagerImpl(CSpriteManager* host)
         : currentId(0), host{host}
@@ -163,14 +115,6 @@ public:
         data.mainfunc = fnc;
         m_vSpriteData.insert(std::make_pair(id, data));
 
-        /*BOOST_FOREACH(SprLinkStorage::value_type & curSpriteIt, m_vSpriteData)
-           {
-            int id = curSpriteIt.first;
-            bool canNotCollide = CanNotCollideWithTag(canCollideWithTags, curSpriteIt.second.tag);
-            std::set<int>& list = spriteTagToIdMap[curSpriteIt.second.tag];
-            list.insert(id);
-           }*/
-
         BOOST_FOREACH(const std::vector<std::string>::value_type & collideTag, canCollideWithTags)
         {
             std::set<int>& collideIds = spriteTagToIdMap[collideTag];
@@ -190,10 +134,7 @@ public:
         SpriteLinkData& data = m_vSpriteData[id];
         SpriteCallData callData;
         callData.updfunc = fnc;
-        //callData.canCollideWithTags = canCollideWithTags;
         callData.renderfunc = renderfunc;
-        //callData.pos = data.sprite->GetPosition();
-        //callData.offset = data.sprite->GetSpriteOffset();
         callData.initialpos = position;
         callData.pos = position;
         callData.offset = sprOffset;
@@ -222,7 +163,7 @@ public:
         return tagOptionNotMet;
     }
 
-    template <typename T>
+    template<typename T>
     bool IsInBounds(const T& value, const T& low, const T& high) {
         return !(value < low) && (value < high);
     }
@@ -254,23 +195,15 @@ public:
             int curGridWidth = curPos.GetX() / 64;
             int curGridHeight = curPos.GetY() / 64;
 
-            if (!IsInBounds(curGridWidth, collideGridWidth - 2, collideGridWidth + 2) && !IsInBounds(curGridHeight, collideGridHeight - 2, collideGridHeight + 2))
-            {
+            if(!IsInBounds(curGridWidth, collideGridWidth - 2, collideGridWidth + 2) 
+                && !IsInBounds(curGridHeight, collideGridHeight - 2, collideGridHeight + 2)) {
                 inBounds = false;
                 //continue;
             }
+
 #endif
             std::set<int>& collideIds = spriteTagToIdMap[currentSprite_link_data.tag];
             const bool is_in = collideIds.find(checkedSprite_link_data.id) != collideIds.end();
-//            if (!is_in) {
-//                int xxxx = 0;
-//                xxxx++;
-//            }
-//            else {
-//                //continue;
-//                int xxxx = 0;
-//                xxxx++;
-//            }
 
             // checkedSprite_link_data.id is canCollideWithId
 //            if (canCollideWithId == currentSprite_link_data.id) {
@@ -292,25 +225,11 @@ public:
 
             CRectangle checkedSpriteHitBox = checkedSprite->GetPaintHitbox();
             CRectangle currentSpriteHitBox = currentSprite->GetPaintHitbox();
-            if (is_in && inBounds) {
+            if(is_in && inBounds) {
                 //if (!CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
                 if(currentSprite->IsVisible()) {
-//                    dbgOut(
-//                        "mSpr[" << checkedSprite->GetName() << "](" << std::setfill('0') <<
-// std::setw(5) << checkedSprite_link_data.id <<
-//                        ", " << collideId <<
-//                        ") vs Spr[" <<
-//                        "mSpr[" << currentSprite_link_data.sprite->GetName() << "](" <<
-// currentSprite_link_data.id <<
-//                        ")"
-//                        );
-
                     bool isHit = checkedSpriteHitBox.Contains(currentSpriteHitBox);
                     if(isHit) {
-                        // if (currentSprite_link_data.hitHandler) {
-                        //     currentSprite_link_data.hitHandler->HitBy(*linkdataSprite,
-                        // linkdataSpriteHitBox, collideId, checkedSprite_link_data.tag);
-                        //  }
                         if(checkedSprite_link_data.hitHandler) {
                             checkedSprite_link_data.hitHandler->HitBy(
                                     *currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag, mdata);
@@ -335,31 +254,18 @@ public:
             //
             // test the sprite in checkedSprite_link_data against the clones of all sprites
             // (currentSprite) collision
-            //BOOST_FOREACH(SprDataStorage::value_type & clone, curSpriteIt.second.callData)
             BOOST_FOREACH(SprDataStorage::value_type & clone, currentSprite_link_data.callData)
             {
-//                if ((!clone.canCollideWithTags.empty() && !emptyTaglistMeansCollideWithAll)
-//                    && boost::algorithm::none_of_equal(clone.canCollideWithTags,
-// currentSprite_link_data.tag)) {
-//                    continue;
-//                }
-//                if (boost::algorithm::none_of_equal(clone.canCollideWithTags,
-// currentSprite_link_data.tag)) {
-//                    continue;
-//                }
-
                 const CPoint& clonePos = clone.pos;
 #if defined(GRIDFISHING_ENABLED)
                 int cloneGridWidth = clonePos.GetX() / 64;
                 int cloneGridHeight = clonePos.GetY() / 64;
 
-//                int collideGridWidth = spriteIdGridWidth[collideId];
-//                int collideGridHeight = spriteIdGridHeight[collideId];
-
-                if (!IsInBounds(cloneGridWidth, collideGridWidth - 2, collideGridWidth + 2) && !IsInBounds(cloneGridHeight, collideGridHeight - 2, collideGridHeight + 2))
-                {
+                if(!IsInBounds(cloneGridWidth, collideGridWidth - 2, collideGridWidth + 2) 
+                    && !IsInBounds(cloneGridHeight, collideGridHeight - 2, collideGridHeight + 2)) {
                     continue;
                 }
+
 #endif
                 if(!is_in) {
                     continue;
@@ -387,11 +293,6 @@ public:
 //
 
                 subSpritesChecked++;
-
-//                dbgOut("Spr(" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id
-// <<
-//                    ") vs Spr(" << clone.id << ")"
-//                    );
 
                 CPoint oldPos = currentSprite->GetPosition();
                 currentSprite->SetPosition(clonePos);
@@ -467,63 +368,14 @@ void CSpriteManager::OnDraw() {
     }
 }
 
-//using namespace boost;
-
-/*struct HighResClock
-   {
-    typedef long long                               rep;
-    typedef nano                               period;
-    typedef chrono::duration<rep, period>      duration;
-    typedef chrono::time_point<HighResClock>   time_point;
-    static const bool is_steady = true;
-
-    static time_point now();
-   };*/
-/*namespace
-   {
-    const long long g_Frequency = []() -> long long
-    {
-        LARGE_INTEGER frequency;
-        QueryPerformanceFrequency(&frequency);
-        return frequency.QuadPart;
-    }();
-   }*/
-
-/*HighResClock::time_point HighResClock::now()
-   {
-    LARGE_INTEGER count;
-    QueryPerformanceCounter(&count);
-    return time_point(duration(count.QuadPart * static_cast<rep>(period::den) / g_Frequency));
-   }
-
-   class StopWatchTimer
-   {
-   public:
-    StopWatchTimer() : beg_(clock_::now()) {}
-    void reset() { beg_ = clock_::now(); }
-    double elapsed() const {
-        return std::chrono::duration_cast<second_>
-            (clock_::now() - beg_).count();
-    }
-
-   private:
-    typedef std::chrono::high_resolution_clock clock_;
-    typedef std::chrono::duration<double, std::ratio<1> > second_;
-    std::chrono::time_point<clock_> beg_;
-   };*/
-
-
-template <class Rep, class Period>
-std::string
-short_duration_log(const boost::chrono::duration<Rep, Period>& t)
-{
+template<class Rep, class Period>
+std::string short_duration_log(const boost::chrono::duration<Rep, Period>& t) {
     std::stringstream sst;
     sst << std::setfill('0') << std::setw(5);
     sst << boost::chrono::duration_short;
     sst << t;
     return sst.str();
 }
-
 
 void CSpriteManager::OnIdle(int ticks) {
     boost::chrono::high_resolution_clock::time_point start(boost::chrono::high_resolution_clock::now());
@@ -551,23 +403,6 @@ void CSpriteManager::OnIdle(int ticks) {
                     subSpritesChecked);
         }
 
-        //mdata.initialpos = linkdata.initialpos;
-
-        /*BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
-           {
-            if (!it.second.sprite->IsVisible() || it.second.sprite.get() == sprite)
-            {
-                continue;
-            }
-
-            bool isHit = sprite->GetPaintHitbox().Contains(it.second.sprite->GetPaintHitbox());
-            //bool isHit = false;
-            if (isHit)
-            {
-                mdata.isHit = true;
-                break;
-            }
-           }*/
         numSpritesChecked++;
 
         CPoint oldPos = sprite->GetPosition();
@@ -651,33 +486,12 @@ void CSpriteManager::OnIdle(int ticks) {
             ++sprIt;
         }
     }
-    //auto time = std::chrono::high_resolution_clock::now() - start;
-    //auto t =
-    // boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now()
-    // - start);
-    //auto time = HighResClock::now() - start;
-    //auto t = std::chrono::duration_cast<std::chrono::microseconds>(HighResClock::now() - start);
-    //auto t = std::chrono::duration_cast<std::chrono::milliseconds>(HighResClock::now() - start);
-    //dbgOut("CSpriteManager, OnIdle Time: " << t);
-
-    /*std::stringstream ss;
-
-       ss.imbue(std::locale(std::locale(), new boost::chrono::duration_punct<char>
-        (
-        boost::chrono::duration_punct<char>::use_long,
-        "secondes", "minutes", "heures",
-        "s", "m", "h"
-        )));*/
-
-    //dbgOut("CSpriteManager, OnIdle Time: " << t.count());
-    //dbgOut("CSpriteManager, OnIdle Time: " << std::setfill('0') << std::setw(3) << std::fixed <<
-    // std::setprecision(3) << t);
     static boost::chrono::microseconds avg(0);
     static int runs = 0;
     runs++;
 
-   auto t = boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
-   avg += t;
+    auto t = boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
+    avg += t;
 
 //   std::locale loc = humbuglib::LogManager::getSingleton().stream().getloc();
 //   typedef boost::chrono::duration_punct<std::string> Facet;
@@ -694,92 +508,20 @@ void CSpriteManager::OnIdle(int ticks) {
 //   std::stringstream sst4;
 //   sst4 << boost::chrono::duration_short << avg / runs;
 
-   // duration_shortx <<
-   dbgOut( "[" << std::setfill('0') << std::setw(5) << runs << "]Spr=" << std::setw(3) << pimpl_->m_vSpriteData.size() <<
+    // duration_shortx <<
+    dbgOut("[" << std::setfill('0') << std::setw(5) << runs << "]Spr=" << std::setw(3) << pimpl_->m_vSpriteData.size() <<
                 ", all=" << std::setw(5) << numSpritesChecked <<
                 ", Sub=" << std::setw(5) << subSpritesChecked <<
                 ", OnIdle t: " << short_duration_log(t) <<
                 ", Sub check t: " << short_duration_log(t2) <<
                 ", Sub updfunc t: " << short_duration_log(t3) <<
                 ", Avg t: " << short_duration_log(avg / runs)
-                );
-   
-   
-   //std::cout << boost::chrono::duration_short << std::endl;
-   //std::cout.imbue()
+            );
 
-       
-       
-       
-       
-       /*// this seems the best when iterating and deleting
-       SprStorage::iterator sprIt = m_pvSprites.begin();
-       while (sprIt != m_pvSprites.end()) {
-
-        static CRectangle srcRect, dstRect;
-        CSpriteModifierData mdata(&srcRect, &dstRect);
-        (*sprIt).DoIdle(ticks, mdata);
-
-        if (mdata.markedForDeletion) {
-            // if markedForDeletion, remove it
-            sprIt = m_pvSprites.erase(sprIt);
-        }
-        else {
-            // SprDataStorage
-       ++sprIt;
-        }
-       }*/
-
-    /*
-       std::vector<SprStorage::iterator> removeList;
-
-       SprStorage::iterator end = m_pvSprites.end();
-       for(SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
-       {
-        //SpriteShrp sprite = it->Sprite();
-        //dbgOut(__FUNCTION__ << " " << &it);
-        static CRectangle srcRect, dstRect;
-        CSpriteModifierData mdata(&srcRect, &dstRect);
-        (*it).DoIdle(ticks, mdata);
-        // fill deletion list
-        if(mdata.markedForDeletion) {
-            SprStorage::iterator it2 = it;
-            // it has to be checked, if removing has no side effects. see CSpriteManager::OnIdle for
-               a solution with "while".
-            //removeList.push_back(it2);
-            removeList.insert(removeList.begin(), it2);
-            continue;
-        }
-
-        //if (mdata.isHandled) {
-           // do something
-        //   }
-       }
-
-       BOOST_FOREACH(SprLinkStorage::value_type & v, pimpl_->m_vSpriteData)
-       {
-        auto id = v.first;
-        auto pos = v.second.sprite->GetPosition();
-        id++;
-       }
-
-       // delete marked sprites
-       BOOST_FOREACH(SprStorage::iterator itpos, removeList)
-       {
-        m_pvSprites.erase(itpos);
-        //break;
-       }*/
     m_bNotFirstRun = true;
 } // CSpriteManager::OnIdle
 
 void CSpriteManager::Render() {
-    /*SprStorage::iterator end = m_pvSprites.end();
-
-       for(SprStorage::iterator it = m_pvSprites.begin(); it < end; ++it)
-       {
-        SpriteShrp sprite = it->Sprite();
-        sprite->Render();
-       }*/
     BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
     {
         if(it.second.sprite->IsVisible()) {
