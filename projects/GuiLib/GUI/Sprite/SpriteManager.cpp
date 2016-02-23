@@ -6,9 +6,9 @@
 #include "boost/smart_ptr/weak_ptr.hpp"
 #include <boost/algorithm/cxx11/any_of.hpp>
 #include <boost/algorithm/cxx11/none_of.hpp>
+#include <boost/chrono/include.hpp>
 #include <boost/foreach.hpp>
 #include <iostream>
-#include <boost/chrono/include.hpp>
 //#include <boost/chrono/chrono.hpp>
 //#include <boost/chrono/chrono_io.hpp>
 //#include <boost/chrono/io/duration_io.hpp>
@@ -18,6 +18,8 @@
 //#include <chrono_io>
 #include <ctime>
 #include <iomanip>
+#include <set>
+
 //
 //#include <build/cmake/include/debug.h>
 
@@ -95,6 +97,8 @@ private:
 
 public:
 
+    std::map<std::string, std::set<int>> spriteTagToIdMap;
+    //std::map<std::string, std::set<int>> cloneTagToIdMap;
     SprLinkStorage m_vSpriteData;
 
     //boost::shared_ptr<hspriv::LaserMover> updfunc2;
@@ -121,6 +125,7 @@ public:
             const std::vector<std::string>& canCollideWithTags
             ) {
         int id = NewId();
+        sprite->SetName(tag);
 
         SpriteLinkData data;
         data.id = id;
@@ -131,8 +136,23 @@ public:
         data.sprite.reset(sprite);
         data.mainfunc = fnc;
         m_vSpriteData.insert(std::make_pair(id, data));
+
+        /*BOOST_FOREACH(SprLinkStorage::value_type & curSpriteIt, m_vSpriteData)
+           {
+            int id = curSpriteIt.first;
+            bool canNotCollide = CanNotCollideWithTag(canCollideWithTags, curSpriteIt.second.tag);
+            std::set<int>& list = spriteTagToIdMap[curSpriteIt.second.tag];
+            list.insert(id);
+           }*/
+
+        BOOST_FOREACH(const std::vector<std::string>::value_type & collideTag, canCollideWithTags)
+        {
+            std::set<int>& collideIds = spriteTagToIdMap[collideTag];
+            collideIds.insert(id);
+        }
+
         return id;
-    }
+    } // AddSpriteData
 
     void AddSpriteDraw(
             int id,
@@ -152,9 +172,17 @@ public:
         callData.pos = position;
         callData.offset = sprOffset;
         callData.hitHandler = hitHandler;
-        callData.id = data.callData.size();
+        //callData.id = data.callData.size();
+        callData.id = (1024 * id) + data.callData.size();
+        //callData.id = NewId();
         data.callData.push_back(callData);
-    }
+
+        BOOST_FOREACH(const std::vector<std::string>::value_type & collideTag, canCollideWithTags)
+        {
+            std::set<int>& collideIds = spriteTagToIdMap[collideTag];
+            collideIds.insert(callData.id);
+        }
+    } // AddSpriteDraw
 
     static bool CanNotCollideWithTag(const std::vector<std::string>& canCollideWithTags, const std::string& tag) {
         const bool emptyTaglistMeansCollideWithAll = false;
@@ -170,15 +198,33 @@ public:
 
     // ReSharper disable CyclomaticComplexity
     bool CheckSpriteDrawCollision(SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags,
-        int collideId, int& subSpritesChecked) {
+            int canCollideWithId, int collideId, int& subSpritesChecked) {
         const bool returnsImmediately = false;
         CSprite* checkedSprite = checkedSprite_link_data.sprite.get();
         bool sprIsHit = false;
+
         //return sprIsHit;
         // check against all registered sprites.
         BOOST_FOREACH(SprLinkStorage::value_type & curSpriteIt, m_vSpriteData)
         {
             SpriteLinkData& currentSprite_link_data = curSpriteIt.second;
+            if(currentSprite_link_data.sprite == checkedSprite_link_data.sprite) {
+                continue;
+            }
+            
+            dbgOut(
+                "mSpr[" << checkedSprite->GetName() << "](" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id <<
+                ", " << collideId <<
+                ") vs Spr[" <<
+                "mSpr[" << currentSprite_link_data.sprite->GetName() << "](" << currentSprite_link_data.id <<
+                ")"
+                );
+
+            // checkedSprite_link_data.id is canCollideWithId
+//            if (canCollideWithId == currentSprite_link_data.id) {
+//                continue;
+//            }
+
             boost::shared_ptr<CSprite>& currentSprite = currentSprite_link_data.sprite;
 
 //            if (!currentSprite->IsVisible()) {
@@ -186,9 +232,6 @@ public:
 //            }
 
             // skip if the current sprite == the sprite to check against
-            if(currentSprite_link_data.sprite == checkedSprite_link_data.sprite) {
-                continue;
-            }
             subSpritesChecked++;
 //            if (boost::algorithm::none_of_equal(canCollideWithTags, currentSprite_link_data.tag))
 // {
@@ -197,23 +240,35 @@ public:
 
             CRectangle checkedSpriteHitBox = checkedSprite->GetPaintHitbox();
             CRectangle currentSpriteHitBox = currentSprite->GetPaintHitbox();
-            if(currentSprite->IsVisible() && !CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
-                bool isHit = checkedSpriteHitBox.Contains(currentSpriteHitBox);
-                if(isHit) {
-                    // if (currentSprite_link_data.hitHandler) {
-                    //     currentSprite_link_data.hitHandler->HitBy(*linkdataSprite,
-                    // linkdataSpriteHitBox, collideId, checkedSprite_link_data.tag);
-                    //  }
-                    if(checkedSprite_link_data.hitHandler) {
-                        checkedSprite_link_data.hitHandler->HitBy(
-                                *currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag);
-                    }
+            if(!CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
+                if(currentSprite->IsVisible()) {
+                    bool isHit = checkedSpriteHitBox.Contains(currentSpriteHitBox);
+                    if(isHit) {
+                        // if (currentSprite_link_data.hitHandler) {
+                        //     currentSprite_link_data.hitHandler->HitBy(*linkdataSprite,
+                        // linkdataSpriteHitBox, collideId, checkedSprite_link_data.tag);
+                        //  }
+                        if(checkedSprite_link_data.hitHandler) {
+                            checkedSprite_link_data.hitHandler->HitBy(
+                                    *currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag);
+                        }
 
-                    sprIsHit = true;
-                    if (returnsImmediately)
-                        return true;
+                        sprIsHit = true;
+                        if(returnsImmediately) {
+                            return true;
+                        }
+                    }
                 }
             }
+            else
+            {
+                int xxxx = 0;
+                xxxx++;
+            }
+
+//            dbgOut("mSpr(" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id <<
+//                ") vs Spr(" << canCollideWithId << ")"
+//                );
 
             //
             // test the sprite in checkedSprite_link_data against the clones of all sprites
@@ -221,7 +276,6 @@ public:
             //BOOST_FOREACH(SprDataStorage::value_type & clone, curSpriteIt.second.callData)
             BOOST_FOREACH(SprDataStorage::value_type & clone, currentSprite_link_data.callData)
             {
-                subSpritesChecked++;
 //                if ((!clone.canCollideWithTags.empty() && !emptyTaglistMeansCollideWithAll)
 //                    && boost::algorithm::none_of_equal(clone.canCollideWithTags,
 // currentSprite_link_data.tag)) {
@@ -231,9 +285,31 @@ public:
 // currentSprite_link_data.tag)) {
 //                    continue;
 //                }
-                if(CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
+
+                if(/*currentSprite_link_data.sprite->IsVisible() ||*/ CanNotCollideWithTag(canCollideWithTags,
+                                                                              currentSprite_link_data.tag)) {
                     continue;
                 }
+               
+//                std::set<int>& collideIds = spriteTagToIdMap[currentSprite_link_data.tag];
+//                const bool is_in = collideIds.find(canCollideWithId) != collideIds.end();
+//                if (!is_in) {
+//                    //continue;
+//                    int xxxx = 0;
+//                    xxxx++;
+//                }
+//                else {
+//                    continue;
+//                    int xxxx = 0;
+//                    xxxx++;
+//                }
+//
+
+                subSpritesChecked++;
+
+//                dbgOut("Spr(" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id <<
+//                    ") vs Spr(" << clone.id << ")"
+//                    );
 
                 CPoint oldPos = currentSprite->GetPosition();
                 currentSprite->SetPosition(clone.pos);
@@ -246,22 +322,27 @@ public:
                                 clone.id,
                                 currentSprite_link_data.tag);
                     }
-                    if (clone.hitHandler) {
+
+                    if(clone.hitHandler) {
                         clone.hitHandler->HitBy(*currentSprite,
-                            currentCloneSpriteHitBox,
-                            checkedSprite_link_data.id,
-                            checkedSprite_link_data.tag);
+                                currentCloneSpriteHitBox,
+                                checkedSprite_link_data.id,
+                                checkedSprite_link_data.tag);
                     }
 
                     sprIsHit = true;
-                    if (returnsImmediately)
+                    if(returnsImmediately) {
                         return true;
+                    }
                 }
+
                 currentSprite->SetPosition(oldPos);
             }
         }
-        if (returnsImmediately)
+        if(returnsImmediately) {
             return false;
+        }
+
         return sprIsHit;
     } // CheckSpriteDrawCollision
 };
@@ -303,10 +384,11 @@ void CSpriteManager::OnDraw() {
         }
     }
 }
+
 //using namespace boost;
 
 /*struct HighResClock
-{
+   {
     typedef long long                               rep;
     typedef nano                               period;
     typedef chrono::duration<rep, period>      duration;
@@ -314,27 +396,27 @@ void CSpriteManager::OnDraw() {
     static const bool is_steady = true;
 
     static time_point now();
-};*/
+   };*/
 /*namespace
-{
+   {
     const long long g_Frequency = []() -> long long
     {
         LARGE_INTEGER frequency;
         QueryPerformanceFrequency(&frequency);
         return frequency.QuadPart;
     }();
-}*/
+   }*/
 
 /*HighResClock::time_point HighResClock::now()
-{
+   {
     LARGE_INTEGER count;
     QueryPerformanceCounter(&count);
     return time_point(duration(count.QuadPart * static_cast<rep>(period::den) / g_Frequency));
-}
+   }
 
-class StopWatchTimer
-{
-public:
+   class StopWatchTimer
+   {
+   public:
     StopWatchTimer() : beg_(clock_::now()) {}
     void reset() { beg_ = clock_::now(); }
     double elapsed() const {
@@ -342,14 +424,15 @@ public:
             (clock_::now() - beg_).count();
     }
 
-private:
+   private:
     typedef std::chrono::high_resolution_clock clock_;
     typedef std::chrono::duration<double, std::ratio<1> > second_;
     std::chrono::time_point<clock_> beg_;
-};*/ 
-
+   };*/
 void CSpriteManager::OnIdle(int ticks) {
     boost::chrono::high_resolution_clock::time_point start(boost::chrono::high_resolution_clock::now());
+    boost::chrono::microseconds t2(0);
+    boost::chrono::microseconds t3(0);
     //HighResClock::time_point start(HighResClock::now());
     //StopWatchTimer tmr;
     int numSpritesChecked = 0;
@@ -363,7 +446,7 @@ void CSpriteManager::OnIdle(int ticks) {
         CSpriteModifierData mdata(&srcRect, &dstRect);
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
-        mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, linkdata.canCollideWithTags, -1, subSpritesChecked);
+        mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, linkdata.canCollideWithTags, linkdata.id, linkdata.id, subSpritesChecked);
         //mdata.initialpos = linkdata.initialpos;
 
         /*BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
@@ -401,17 +484,37 @@ void CSpriteManager::OnIdle(int ticks) {
 
             while(subIt != linkdata.callData.end()) {
                 SpriteCallData& sprite_call_data = (*subIt);
+
+                std::set<int>& collideIds = pimpl_->spriteTagToIdMap[linkdata.tag];
+                const bool is_in = collideIds.find(sprite_call_data.id) != collideIds.end();
+                if (!is_in) {
+                    //continue;
+                    int xxxx = 0;
+                    xxxx++;
+                }
+                else {
+                    int xxxx = 0;
+                    xxxx++;
+                }
+
                 sprite->SetPosition(sprite_call_data.pos);
                 sprite->SetSpriteOffset(sprite_call_data.offset);
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
-                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, sprite_call_data.canCollideWithTags, sprite_call_data.id, subSpritesChecked);
+                boost::chrono::high_resolution_clock::time_point start2(boost::chrono::high_resolution_clock::now());
+                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata,
+                    sprite_call_data.canCollideWithTags, linkdata.id,
+                        sprite_call_data.id,
+                        subSpritesChecked);
+                t2 += boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start2);
                 numSpritesChecked++;
                 childMdata.initialpos = sprite_call_data.initialpos;
 
                 //childMdata.isHit = mdata.isHit;
+                boost::chrono::high_resolution_clock::time_point start3(boost::chrono::high_resolution_clock::now());
                 sprite_call_data.updfunc(sprite, ticks, childMdata);
+                t3 += boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start3);
                 sprite_call_data.pos = sprite->GetPosition();
                 sprite_call_data.offset = sprite->GetSpriteOffset();
 
@@ -431,15 +534,17 @@ void CSpriteManager::OnIdle(int ticks) {
         }
     }
     //auto time = std::chrono::high_resolution_clock::now() - start;
-    //auto t = boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
+    //auto t =
+    // boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now()
+    // - start);
     //auto time = HighResClock::now() - start;
     //auto t = std::chrono::duration_cast<std::chrono::microseconds>(HighResClock::now() - start);
     //auto t = std::chrono::duration_cast<std::chrono::milliseconds>(HighResClock::now() - start);
     //dbgOut("CSpriteManager, OnIdle Time: " << t);
-    
+
     /*std::stringstream ss;
 
-    ss.imbue(std::locale(std::locale(), new boost::chrono::duration_punct<char>
+       ss.imbue(std::locale(std::locale(), new boost::chrono::duration_punct<char>
         (
         boost::chrono::duration_punct<char>::use_long,
         "secondes", "minutes", "heures",
@@ -447,12 +552,16 @@ void CSpriteManager::OnIdle(int ticks) {
         )));*/
 
     //dbgOut("CSpriteManager, OnIdle Time: " << t.count());
-    //dbgOut("CSpriteManager, OnIdle Time: " << std::setfill('0') << std::setw(3) << std::fixed << std::setprecision(3) << t);
+    //dbgOut("CSpriteManager, OnIdle Time: " << std::setfill('0') << std::setw(3) << std::fixed <<
+    // std::setprecision(3) << t);
     auto t = boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
-    dbgOut("CSpriteManager Sprites=" << std::setfill('0') << std::setw(3) << pimpl_->m_vSpriteData.size() 
-        << ", all=" << std::setw(5) << numSpritesChecked 
-        << ", Sub=" << std::setw(5) << subSpritesChecked << ", OnIdle Time: " << t);
-
+    dbgOut("CSprMgr=" << std::setfill('0') << std::setw(3) << pimpl_->m_vSpriteData.size() <<
+                ", all=" << std::setw(5) << numSpritesChecked <<
+                ", Sub=" << std::setw(5) << subSpritesChecked <<
+                ", OnIdle t: " << t <<
+                ", Sub check t: " << t2 <<
+                ", Sub updfunc t: " << t3
+            );
 
     /*// this seems the best when iterating and deleting
        SprStorage::iterator sprIt = m_pvSprites.begin();

@@ -657,9 +657,8 @@ public:
         updfuncShip = boost::make_shared<hspriv::ShipMover>(m_pKeyHandler.get(), delta_y);
         updfuncShip->SetDebugOverlay(dbgOverlay);
         //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this);
-        //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "Enemy",
-        // "Enemy1", "EnemyBullet" });
-        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "ALL" });
+        sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "Enemy", "Enemy1", "EnemyBullet" });
+        //sprMgr->AddSprite(m_pSprShip, "Ship", boost::ref(*updfuncShip.get()), this, { "ALL" });
 
         //m_iSprLaserId = CreateLaserSprite();
         m_pSprLaser =
@@ -1082,16 +1081,20 @@ public:
         m_pSprLaser->SetVisibility(false);
         m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyBullet");
         
+//        const int rows = 7;
+//        const int columns = 16;
+        const int rows = 2;
+        const int columns = 2;
         const int startPos = 32;
         CPoint pos(startPos, 128);
 
         //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId,
         // m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
-        for (size_t row = 0; row < 7; row++)
+        for (size_t row = 0; row < rows; row++)
         {
             int rowNotEven = row % 1;
             pos = CPoint(startPos + rowNotEven * 32, startPos + row * 64);
-            for (size_t i = 0; i < 16; i++)
+            for (size_t column = 0; column < columns; column++)
             {
                 m_pEnemyShips.push_back(new EnemyShip(pos, m_pSprEnemy1Ship, m_iSprEnemy1ShipId, m_pSprLaser, m_iSprLaserId, canvas, sprMgr,
                     dbgOverlay));
