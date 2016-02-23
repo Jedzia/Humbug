@@ -61,7 +61,7 @@ public:
      *  @param id Identification number of the sprite. -1 if a real sprite or any positive number if a clone draw
      *  @param tag Tag of the hitting sprite.
      */
-    virtual void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag)
+    virtual void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag, CSpriteModifierData& mdata)
     {}
 };
 
@@ -113,6 +113,7 @@ private:
     struct CSpriteManagerImpl;
     boost::scoped_ptr<CSpriteManagerImpl> pimpl_;
     int m_iTicks;
+    bool m_bNotFirstRun;
     //typedef boost::ptr_vector<CSpriteHook> SprStorage;
     //SprStorage m_pvSprites;
 };

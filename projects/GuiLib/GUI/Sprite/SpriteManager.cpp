@@ -70,7 +70,7 @@ struct SpriteCallData {
     int id;
     CSpriteManager::CSpriteModifierFunc updfunc;
     CSpriteManager::CSpriteRenderFunc renderfunc;
-    std::vector<std::string> canCollideWithTags;
+    //std::vector<std::string> canCollideWithTags;
     HitHandler* hitHandler;
     //CSpriteModifierData mdata;
 };
@@ -164,7 +164,7 @@ public:
         SpriteLinkData& data = m_vSpriteData[id];
         SpriteCallData callData;
         callData.updfunc = fnc;
-        callData.canCollideWithTags = canCollideWithTags;
+        //callData.canCollideWithTags = canCollideWithTags;
         callData.renderfunc = renderfunc;
         //callData.pos = data.sprite->GetPosition();
         //callData.offset = data.sprite->GetSpriteOffset();
@@ -197,8 +197,8 @@ public:
     }
 
     // ReSharper disable CyclomaticComplexity
-    bool CheckSpriteDrawCollision(SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags,
-            int canCollideWithId, int collideId, int& subSpritesChecked) {
+    bool CheckSpriteDrawCollision(const SpriteLinkData& checkedSprite_link_data, const std::vector<std::string>& canCollideWithTags,
+            int canCollideWithId, int collideId, CSpriteModifierData& mdata, int& subSpritesChecked) {
         const bool returnsImmediately = false;
         CSprite* checkedSprite = checkedSprite_link_data.sprite.get();
         bool sprIsHit = false;
@@ -211,14 +211,18 @@ public:
             if(currentSprite_link_data.sprite == checkedSprite_link_data.sprite) {
                 continue;
             }
-            
-            dbgOut(
-                "mSpr[" << checkedSprite->GetName() << "](" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id <<
-                ", " << collideId <<
-                ") vs Spr[" <<
-                "mSpr[" << currentSprite_link_data.sprite->GetName() << "](" << currentSprite_link_data.id <<
-                ")"
-                );
+
+            std::set<int>& collideIds = spriteTagToIdMap[currentSprite_link_data.tag];
+            const bool is_in = collideIds.find(checkedSprite_link_data.id) != collideIds.end();
+//            if (!is_in) {
+//                int xxxx = 0;
+//                xxxx++;
+//            }
+//            else {
+//                //continue;
+//                int xxxx = 0;
+//                xxxx++;
+//            }
 
             // checkedSprite_link_data.id is canCollideWithId
 //            if (canCollideWithId == currentSprite_link_data.id) {
@@ -240,8 +244,19 @@ public:
 
             CRectangle checkedSpriteHitBox = checkedSprite->GetPaintHitbox();
             CRectangle currentSpriteHitBox = currentSprite->GetPaintHitbox();
-            if(!CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
+            if(is_in) {
+                //if (!CanNotCollideWithTag(canCollideWithTags, currentSprite_link_data.tag)) {
                 if(currentSprite->IsVisible()) {
+//                    dbgOut(
+//                        "mSpr[" << checkedSprite->GetName() << "](" << std::setfill('0') <<
+// std::setw(5) << checkedSprite_link_data.id <<
+//                        ", " << collideId <<
+//                        ") vs Spr[" <<
+//                        "mSpr[" << currentSprite_link_data.sprite->GetName() << "](" <<
+// currentSprite_link_data.id <<
+//                        ")"
+//                        );
+
                     bool isHit = checkedSpriteHitBox.Contains(currentSpriteHitBox);
                     if(isHit) {
                         // if (currentSprite_link_data.hitHandler) {
@@ -250,7 +265,7 @@ public:
                         //  }
                         if(checkedSprite_link_data.hitHandler) {
                             checkedSprite_link_data.hitHandler->HitBy(
-                                    *currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag);
+                                    *currentSprite.get(), currentSpriteHitBox, collideId, currentSprite_link_data.tag, mdata);
                         }
 
                         sprIsHit = true;
@@ -260,8 +275,7 @@ public:
                     }
                 }
             }
-            else
-            {
+            else {
                 int xxxx = 0;
                 xxxx++;
             }
@@ -286,11 +300,17 @@ public:
 //                    continue;
 //                }
 
-                if(/*currentSprite_link_data.sprite->IsVisible() ||*/ CanNotCollideWithTag(canCollideWithTags,
-                                                                              currentSprite_link_data.tag)) {
+                if(!is_in) {
                     continue;
                 }
-               
+
+//                if(/*currentSprite_link_data.sprite->IsVisible() ||*/
+// CanNotCollideWithTag(canCollideWithTags,
+//                                                                              currentSprite_link_data.tag))
+// {
+//                    continue;
+//                }
+
 //                std::set<int>& collideIds = spriteTagToIdMap[currentSprite_link_data.tag];
 //                const bool is_in = collideIds.find(canCollideWithId) != collideIds.end();
 //                if (!is_in) {
@@ -307,7 +327,8 @@ public:
 
                 subSpritesChecked++;
 
-//                dbgOut("Spr(" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id <<
+//                dbgOut("Spr(" << std::setfill('0') << std::setw(5) << checkedSprite_link_data.id
+// <<
 //                    ") vs Spr(" << clone.id << ")"
 //                    );
 
@@ -317,17 +338,17 @@ public:
                 bool isHit = checkedSpriteHitBox.Contains(currentCloneSpriteHitBox);
                 if(isHit) {
                     if(checkedSprite_link_data.hitHandler) {
-                        checkedSprite_link_data.hitHandler->HitBy(*checkedSprite,
+                        checkedSprite_link_data.hitHandler->HitBy(*currentSprite,
                                 currentCloneSpriteHitBox,
                                 clone.id,
-                                currentSprite_link_data.tag);
+                                currentSprite_link_data.tag, mdata);
                     }
 
                     if(clone.hitHandler) {
-                        clone.hitHandler->HitBy(*currentSprite,
+                        clone.hitHandler->HitBy(*checkedSprite,
                                 currentCloneSpriteHitBox,
-                                checkedSprite_link_data.id,
-                                checkedSprite_link_data.tag);
+                                collideId,
+                                checkedSprite_link_data.tag, mdata);
                     }
 
                     sprIsHit = true;
@@ -348,7 +369,7 @@ public:
 };
 
 CSpriteManager::CSpriteManager(/*SDL_Surface* screen*/)
-    : pimpl_(new CSpriteManagerImpl(this)) {
+    : pimpl_(new CSpriteManagerImpl(this)), m_iTicks(0), m_bNotFirstRun(false) {
     dbgOut(__FUNCTION__);
 }
 
@@ -446,7 +467,15 @@ void CSpriteManager::OnIdle(int ticks) {
         CSpriteModifierData mdata(&srcRect, &dstRect);
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
-        mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata, linkdata.canCollideWithTags, linkdata.id, linkdata.id, subSpritesChecked);
+        if(m_bNotFirstRun) {
+            mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata,
+                    linkdata.canCollideWithTags,
+                    linkdata.id,
+                    linkdata.id,
+                    mdata,
+                    subSpritesChecked);
+        }
+
         //mdata.initialpos = linkdata.initialpos;
 
         /*BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
@@ -485,28 +514,31 @@ void CSpriteManager::OnIdle(int ticks) {
             while(subIt != linkdata.callData.end()) {
                 SpriteCallData& sprite_call_data = (*subIt);
 
-                std::set<int>& collideIds = pimpl_->spriteTagToIdMap[linkdata.tag];
-                const bool is_in = collideIds.find(sprite_call_data.id) != collideIds.end();
-                if (!is_in) {
-                    //continue;
-                    int xxxx = 0;
-                    xxxx++;
-                }
-                else {
-                    int xxxx = 0;
-                    xxxx++;
-                }
-
+//                std::set<int>& collideIds = pimpl_->spriteTagToIdMap[linkdata.tag];
+//                const bool is_in = collideIds.find(sprite_call_data.id) != collideIds.end();
+//                if (!is_in) {
+//                    //continue;
+//                    int xxxx = 0;
+//                    xxxx++;
+//                }
+//                else {
+//                    int xxxx = 0;
+//                    xxxx++;
+//                }
+//
                 sprite->SetPosition(sprite_call_data.pos);
                 sprite->SetSpriteOffset(sprite_call_data.offset);
                 //static CRectangle srcRect, dstRect;
                 //CSpriteModifierData mdata(&srcRect, &dstRect);
                 CSpriteModifierData childMdata(&srcRect, &dstRect);
                 boost::chrono::high_resolution_clock::time_point start2(boost::chrono::high_resolution_clock::now());
-                childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata,
-                    sprite_call_data.canCollideWithTags, linkdata.id,
-                        sprite_call_data.id,
-                        subSpritesChecked);
+                if(m_bNotFirstRun) {
+                    childMdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata,
+                            linkdata.canCollideWithTags, linkdata.id,
+                            sprite_call_data.id, childMdata,
+                            subSpritesChecked);
+                }
+
                 t2 += boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start2);
                 numSpritesChecked++;
                 childMdata.initialpos = sprite_call_data.initialpos;
@@ -554,14 +586,17 @@ void CSpriteManager::OnIdle(int ticks) {
     //dbgOut("CSpriteManager, OnIdle Time: " << t.count());
     //dbgOut("CSpriteManager, OnIdle Time: " << std::setfill('0') << std::setw(3) << std::fixed <<
     // std::setprecision(3) << t);
-    auto t = boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
-    dbgOut("CSprMgr=" << std::setfill('0') << std::setw(3) << pimpl_->m_vSpriteData.size() <<
-                ", all=" << std::setw(5) << numSpritesChecked <<
-                ", Sub=" << std::setw(5) << subSpritesChecked <<
-                ", OnIdle t: " << t <<
-                ", Sub check t: " << t2 <<
-                ", Sub updfunc t: " << t3
-            );
+
+//   auto t =
+// boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now()
+// - start);
+//    dbgOut("CSprMgr=" << std::setfill('0') << std::setw(3) << pimpl_->m_vSpriteData.size() <<
+//                ", all=" << std::setw(5) << numSpritesChecked <<
+//                ", Sub=" << std::setw(5) << subSpritesChecked <<
+//                ", OnIdle t: " << t <<
+//                ", Sub check t: " << t2 <<
+//                ", Sub updfunc t: " << t3
+//            );
 
     /*// this seems the best when iterating and deleting
        SprStorage::iterator sprIt = m_pvSprites.begin();
@@ -620,6 +655,7 @@ void CSpriteManager::OnIdle(int ticks) {
         m_pvSprites.erase(itpos);
         //break;
        }*/
+    m_bNotFirstRun = true;
 } // CSpriteManager::OnIdle
 
 void CSpriteManager::Render() {
