@@ -107,6 +107,12 @@ public:
     void Render();
 
     int UpdateTimeFunc() const { return m_iTicks; }
+    
+    /** Retrieve a Sprite instance by its id.
+    *  @param id The identification number.
+    *  @return the CSprite instance coupled with the specified id or Null if invalid.
+    */
+    CSprite* GetSpriteById(int id) const;
 
 private:
 

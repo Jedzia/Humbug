@@ -586,6 +586,18 @@ void CSpriteManager::Render() {
     }
 } // CSpriteManager::Render
 
+CSprite* CSpriteManager::GetSpriteById(int id) const
+{
+    //SprLinkStorage m_vSpriteData;
+    auto spriteIt = pimpl_->m_vSpriteData.find(id);
+    if (spriteIt == pimpl_->m_vSpriteData.end())
+    {
+        return nullptr;
+    }
+
+    return (*spriteIt).second.sprite.get();
+}
+
 std::ostream& operator<<(std::ostream& o, const CSpriteManager& r) {
     return o << "CSpriteManager[ X="   /*<< r.GetX() << ", Y=" << r.GetY()
                                           << ", W=" << r.GetW() << ", H=" << r.GetH()

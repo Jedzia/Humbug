@@ -813,13 +813,10 @@ class EnemyShip : public HitHandler {
 
 public:
 
-    EnemyShip(const CPoint& pos,
-            CSprite* enemy1Ship,
+    EnemyShip(CSpriteManager* sprMgr, const CPoint& pos,
             int sprShipId,
-            CSprite* sprLaser,
             int sprLaserId,
             CCanvas* canvas,
-            CSpriteManager* sprMgr,
             DebugOverlay* dbgOverlay);
 
     void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag, CSpriteModifierData& mdata) override {
@@ -990,16 +987,15 @@ public:
     }     // ()
 };
 
-EnemyShip::EnemyShip(const CPoint& pos,
-        CSprite* enemy1Ship,
+EnemyShip::EnemyShip(CSpriteManager* sprMgr, const CPoint& pos,
         int sprShipId,
-        CSprite* sprLaser,
         int sprLaserId,
         CCanvas* canvas,
-        CSpriteManager* sprMgr,
-        DebugOverlay* dbgOverlay) : m_pEnemy1Ship(enemy1Ship), m_pSprLaser(sprLaser), m_iSprShipId(sprShipId), m_iSprLaserId(sprLaserId),
+        DebugOverlay* dbgOverlay) :  m_iSprShipId(sprShipId), m_iSprLaserId(sprLaserId),
     m_pSprMgr(sprMgr), m_pCanvas(canvas), m_pOverlay(dbgOverlay), m_pos(pos),
     timing(boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr))), m_bFired(false) {
+    m_pEnemy1Ship = sprMgr->GetSpriteById(sprShipId);
+    m_pSprLaser = sprMgr->GetSpriteById(sprLaserId);
 
     updfuncShip = boost::make_shared<EnemyShip1Mover>(this, canvas, 120);
 //    updfuncShip->SetDebugOverlay(dbgOverlay);
@@ -1102,7 +1098,7 @@ public:
             pos = CPoint(startPos + rowNotEven * 32, startPos + row * 64);
             for (size_t column = 0; column < columns; column++)
             {
-                m_pEnemyShips.push_back(new EnemyShip(pos, m_pSprEnemy1Ship, m_iSprEnemy1ShipId, m_pSprLaser, m_iSprLaserId, canvas, sprMgr,
+                m_pEnemyShips.push_back(new EnemyShip(sprMgr, pos, m_iSprEnemy1ShipId, m_iSprLaserId, canvas,
                     dbgOverlay));
                 pos.Move(sprPaintDimension.GetW() + sprPaintDimension.GetW() / 2, 0);
             }
