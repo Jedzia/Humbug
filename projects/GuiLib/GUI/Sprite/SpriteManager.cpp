@@ -36,6 +36,37 @@ humbuglib::Log::Stream&duration_shortx(humbuglib::Log::Stream& os) {
 namespace gui {
 using namespace components;
 
+/** @class Profile:
+ *  Detailed description.
+ *  @param func TODO
+ *  @return TODO
+ */
+class Profile {
+    boost::chrono::high_resolution_clock::time_point start;
+    boost::chrono::microseconds time;
+    long callCount;
+
+public:
+
+    Profile() : time(0), callCount(0) {
+    }
+
+    void operator()(const boost::function<void(void)>& func) {
+        start = boost::chrono::high_resolution_clock::time_point(boost::chrono::high_resolution_clock::now());
+        func();
+        time += boost::chrono::duration_cast<boost::chrono::microseconds>(boost::chrono::high_resolution_clock::now() - start);
+        callCount++;
+    }
+
+    boost::chrono::microseconds Time() const {
+        return time;
+    }
+
+    boost::chrono::microseconds Average() const {
+        return time / callCount;
+    }
+};
+
 /** @class SpriteCallData:
  *  This branch of action stores the position outside the Sprite and restores it later.
  *  Makes it possible to render one sprite multiple times at different positions.
@@ -195,13 +226,13 @@ public:
             int curGridWidth = curPos.GetX() / 64;
             int curGridHeight = curPos.GetY() / 64;
 
-            if(!IsInBounds(curGridWidth, collideGridWidth - 2, collideGridWidth + 2) 
-                && !IsInBounds(curGridHeight, collideGridHeight - 2, collideGridHeight + 2)) {
+            if(!IsInBounds(curGridWidth, collideGridWidth - 2, collideGridWidth + 2) &&
+               !IsInBounds(curGridHeight, collideGridHeight - 2, collideGridHeight + 2)) {
                 inBounds = false;
                 //continue;
             }
 
-#endif
+#endif // if defined(GRIDFISHING_ENABLED)
             std::set<int>& collideIds = spriteTagToIdMap[currentSprite_link_data.tag];
             const bool is_in = collideIds.find(checkedSprite_link_data.id) != collideIds.end();
 
@@ -261,8 +292,8 @@ public:
                 int cloneGridWidth = clonePos.GetX() / 64;
                 int cloneGridHeight = clonePos.GetY() / 64;
 
-                if(!IsInBounds(cloneGridWidth, collideGridWidth - 2, collideGridWidth + 2) 
-                    && !IsInBounds(cloneGridHeight, collideGridHeight - 2, collideGridHeight + 2)) {
+                if(!IsInBounds(cloneGridWidth, collideGridWidth - 2, collideGridWidth + 2) &&
+                   !IsInBounds(cloneGridHeight, collideGridHeight - 2, collideGridHeight + 2)) {
                     continue;
                 }
 
@@ -377,6 +408,9 @@ std::string short_duration_log(const boost::chrono::duration<Rep, Period>& t) {
     return sst.str();
 }
 
+#define StartProfile(name) name([&](void)
+#define EndProfile  )
+
 void CSpriteManager::OnIdle(int ticks) {
     boost::chrono::high_resolution_clock::time_point start(boost::chrono::high_resolution_clock::now());
     boost::chrono::microseconds t2(0);
@@ -388,20 +422,27 @@ void CSpriteManager::OnIdle(int ticks) {
 
     m_iTicks = ticks;
     SprLinkStorage::iterator sprIt = pimpl_->m_vSpriteData.begin();
+    Profile profTopLevel;
 
     while(sprIt != pimpl_->m_vSpriteData.end()) {
         CRectangle srcRect, dstRect;
         CSpriteModifierData mdata(&srcRect, &dstRect);
         SpriteLinkData& linkdata = (*sprIt).second;
         CSprite* sprite = linkdata.sprite.get();
-        if(m_bNotFirstRun) {
-            mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata,
-                    linkdata.canCollideWithTags,
-                    linkdata.id,
-                    linkdata.id,
-                    mdata,
-                    subSpritesChecked);
+
+        //profTopLevel([&](void) {
+
+        StartProfile(profTopLevel) {
+            if(m_bNotFirstRun) {
+                mdata.isHit = pimpl_->CheckSpriteDrawCollision(linkdata,
+                        linkdata.canCollideWithTags,
+                        linkdata.id,
+                        linkdata.id,
+                        mdata,
+                        subSpritesChecked);
+            }
         }
+        EndProfile;
 
         numSpritesChecked++;
 
@@ -513,6 +554,7 @@ void CSpriteManager::OnIdle(int ticks) {
                 ", all=" << std::setw(5) << numSpritesChecked <<
                 ", Sub=" << std::setw(5) << subSpritesChecked <<
                 ", OnIdle t: " << short_duration_log(t) <<
+                ", top t: " << short_duration_log(profTopLevel.Time()) <<
                 ", Sub check t: " << short_duration_log(t2) <<
                 ", Sub updfunc t: " << short_duration_log(t3) <<
                 ", Avg t: " << short_duration_log(avg / runs)
@@ -522,6 +564,7 @@ void CSpriteManager::OnIdle(int ticks) {
 } // CSpriteManager::OnIdle
 
 void CSpriteManager::Render() {
+    // Profile()[
     BOOST_FOREACH(SprLinkStorage::value_type & it, pimpl_->m_vSpriteData)
     {
         if(it.second.sprite->IsVisible()) {
