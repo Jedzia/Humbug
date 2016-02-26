@@ -19,6 +19,7 @@
 //
 #include "boost/function.hpp"
 #include "boost/lambda/lambda.hpp"
+#include <boost/foreach.hpp>
 #include <cstdlib>
 //
 #include "../../Input/PlayerKeys4.h"
@@ -159,6 +160,14 @@ public:
 
     void HitBy(const CSprite& hitter, const components::CRectangle& paintHitbox, int id, const std::string& tag, CSpriteModifierData& mdata) override {
     }
+
+    void HookIdle(int ticks, float speed) {
+        //m_pKeyHandler->HookIdle(ticks, speed);
+        BOOST_FOREACH(boost::ptr_vector<EnemyShip>::reference ship, m_pEnemyShips)
+        {
+            ship.SetOffset(ship.Offset() + 1);
+        }
+    }
 };
 
 struct ScrollerLevelA::ScrollerLevelAImpl {
@@ -174,7 +183,7 @@ public:
     boost::shared_ptr<hspriv::LaserMover> updfunc2;
     boost::shared_ptr<hspriv::SaucerMover> updfunc3;
     boost::shared_ptr<PlayerShip> m_pPlayerShip;
-    boost::shared_ptr<EnemyWave> m_pEnemyShip;
+    boost::shared_ptr<EnemyWave> m_pEnemyWave;
 
     explicit ScrollerLevelAImpl(ScrollerLevelA* host)
         : x(0), host{host}
@@ -273,7 +282,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));
 
     pimpl_->m_pPlayerShip = boost::make_shared<PlayerShip>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get(), 0.25f);
-    pimpl_->m_pEnemyShip = boost::make_shared<EnemyWave>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get());
+    pimpl_->m_pEnemyWave = boost::make_shared<EnemyWave>(m_Loader, m_pMainCanvas, m_pSprMgr.get(), m_pOverlay.get());
 
     /*CSprite* m_pSprLaser =
         new CSprite(m_Loader, "Sprites/Ship/Laser/Laser01.png", m_pMainCanvas, CPoint(49, 480));
@@ -288,7 +297,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
     offsetW += 300;
     pimpl_->updfunc3 = boost::make_shared<hspriv::SaucerMover>(m_pBackground.get(), offsetW, 90);
     pimpl_->updfunc3->SetDebugOverlay(m_pOverlay.get());
-    m_pSprMgr->AddSprite(m_pSprSaucer, "Enemy1", boost::ref(*pimpl_->updfunc3), pimpl_->m_pEnemyShip.get());
+    m_pSprMgr->AddSprite(m_pSprSaucer, "Enemy1", boost::ref(*pimpl_->updfunc3), pimpl_->m_pEnemyWave.get());
 
     return Screen::OnInit(argc, argv);
 
@@ -304,6 +313,7 @@ void ScrollerLevelA::OnIdle(int ticks) {
     m_iTicks = ticks;
     m_pOverlay->IdleSetVars(ticks);
     //m_pKeyHandler->HookIdle(ticks, 1.0f);
+    pimpl_->m_pEnemyWave->HookIdle(ticks, 1.0f);
     pimpl_->m_pPlayerShip->HookIdle(ticks, 1.0f);
     //m_pScroller->Scroll(4);
     m_pSprMgr->OnIdle(ticks);

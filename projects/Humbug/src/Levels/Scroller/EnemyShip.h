@@ -39,7 +39,26 @@ namespace levels {
  *  @param tag TODO
  *  @param mdata TODO
  */
-class BaseEnemyShip : public gui::HitHandler {};
+class BaseEnemyShip : public gui::HitHandler
+{
+    gui::components::CPoint m_iOffset;
+
+public:
+    
+    gui::components::CPoint Offset() const
+    {
+        return m_iOffset;
+    }
+
+    void SetOffset(const gui::components::CPoint& offset)
+    {
+        m_iOffset = offset;
+    }
+
+    BaseEnemyShip(): m_iOffset(0)
+    {
+    }
+};
 
 namespace scroller_levela {
 class EnemyShip1Mover;

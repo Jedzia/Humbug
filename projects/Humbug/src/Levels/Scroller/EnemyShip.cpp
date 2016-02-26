@@ -119,7 +119,7 @@ public:
         int ssin = static_cast<int>(ss * 8);
         int scos = static_cast<int>(sc * 8);
 
-        sprite->SetPosition(CPoint(mdata.initialpos.GetX() + deltaX_ + scos, mdata.initialpos.GetY() + ssin));
+        sprite->SetPosition(CPoint(mdata.initialpos.GetX() + deltaX_ + scos, mdata.initialpos.GetY() + ssin) + m_pShip->Offset());
         int delta = lastSpritePos.Distance(sprite->GetPosition());
         float angle = lastSpritePos.Angle(sprite->GetPosition());
 
