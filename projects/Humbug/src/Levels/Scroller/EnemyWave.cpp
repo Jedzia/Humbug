@@ -50,8 +50,8 @@
 //
 //#include <build/cmake/include/debug.h>
 
-using namespace gui::components;
 using namespace gui;
+using namespace components;
 
 namespace humbug {
 namespace levels {
@@ -106,24 +106,34 @@ struct EnemyWave::EnemyWaveImpl {
         m_pSprLaser->SetVisibility(false);
         m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyBullet");
 
-        const int rows = 7;
+        const int rows = 4;
         const int columns = 16;
         //        const int rows = 2;
         //        const int columns = 2;
-        const int startPos = 32;
-        CPoint pos(startPos, 128);
+        //const int startPosX = 32;
+
+        int screenXMiddle = canvas->GetDimension().GetW() / 2;
+        int spriteShipWidth = sprPaintDimension.GetW();
+        int spriteShipHeight = sprPaintDimension.GetH();
+        int spriteShipHeightDouble = spriteShipHeight * 2;
+        int spriteShipWidthHalf = spriteShipWidth / 2;
+        int spriteShipWidthDouble = spriteShipWidth * 2;
+        int spritesXMiddle = (spriteShipWidth * columns) / 2;
+        
+        int startPosX = screenXMiddle - spritesXMiddle;
+        const int startPosY = 32;
 
         //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId,
         // m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
         for (size_t row = 0; row < rows; row++)
         {
             int rowNotEven = row % 1;
-            pos = CPoint(startPos + rowNotEven * 32, startPos + row * 64);
+            CPoint pos = CPoint(startPosX + rowNotEven * spriteShipWidthHalf, startPosY + row * spriteShipHeightDouble);
             for (size_t column = 0; column < columns; column++)
             {
                 m_pEnemyShips.push_back(new EnemyShip(sprMgr, pos, m_iSprEnemy1ShipId, m_iSprLaserId, canvas,
                                                       dbgOverlay));
-                pos.Move(sprPaintDimension.GetW() + sprPaintDimension.GetW() / 2, 0);
+                pos.Move(spriteShipWidth, 0);
             }
         }
     }
@@ -134,6 +144,7 @@ struct EnemyWave::EnemyWaveImpl {
 
     void EnemyWave::HookIdle(int ticks, float speed)
     {
+        return;
         //m_pKeyHandler->HookIdle(ticks, speed);
         BOOST_FOREACH(boost::ptr_vector<EnemyShip>::reference ship, m_pEnemyShips)
         {

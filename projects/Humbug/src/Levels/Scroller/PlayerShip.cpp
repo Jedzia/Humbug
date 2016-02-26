@@ -49,8 +49,8 @@
 //
 //#include <build/cmake/include/debug.h>
 
-using namespace gui::components;
 using namespace gui;
+using namespace components;
 
 namespace humbug {
 namespace levels {
@@ -200,13 +200,13 @@ public:
 };
 
 PlayerShip::PlayerShip(FileLoader& loader,
-        gui::components::CCanvas* canvas,
-        gui::CSpriteManager* sprMgr, 
+        CCanvas* canvas,
+        CSpriteManager* sprMgr, 
         DebugOverlay* dbgOverlay,
-        gui::seconds fireRate) : 
+        seconds fireRate) : 
         pimpl_(new PlayerShipImpl(this)),
         m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay), m_fFireRate(fireRate),
-    timing(boost::bind(&gui::CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr))), m_bFired(false) {
+    timing(boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr))), m_bFired(false) {
     m_pSprShip =
         new CSprite(loader, "Sprites/Ship/ShipSprite02.png", canvas, CPoint(256, 256));
     m_pSprShip->SprImage()->DstRect() = m_pSprShip->SprImage()->DstRect() / 2;
@@ -240,7 +240,7 @@ PlayerShip::PlayerShip(FileLoader& loader,
     m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "Laser", 0, 0, { "Enemy", "Enemy1" });
 }
 
-void PlayerShip::LaserUpdfunc(gui::CSprite* sprite, int ticks, gui::CSpriteModifierData& mdata) {
+void PlayerShip::LaserUpdfunc(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
     int ySpeed = -16;
     sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
     CRectangle scr(0, 0, 1024, 768);
@@ -249,12 +249,12 @@ void PlayerShip::LaserUpdfunc(gui::CSprite* sprite, int ticks, gui::CSpriteModif
     }
 }
 
-void PlayerShip::LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModifierData& mdata) const {
+void PlayerShip::LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const {
     // Todo: test when not const .... say when modulating the alpha
     //int ySpeed = -16;
     int ySpeed = -4;
     sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
-    gui::components::CRectangle scr(0, 0, 1024, 768);
+    CRectangle scr(0, 0, 1024, 768);
 
     if(mdata.isHit) {
         sprite->SetSpriteOffset(ticks % 10);
@@ -265,7 +265,7 @@ void PlayerShip::LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModi
 
     //CRectangle hitRect(0, 0, 100, 100);
     //bool isHit = hitRect.Contains(sprite->PaintLocation());
-    gui::components::CPoint pt = sprite->PaintLocation().Position(gui::components::CRectangle::CompassRose::S);
+    CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
     if(m_pOverlay) {
         std::ostringstream out6009;
         out6009 << "LaserUpdfunc2 sprite pos: (" << pt << ")";
@@ -281,11 +281,11 @@ void PlayerShip::LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModi
     }
 } // PlayerShip::LaserUpdfunc2
 
-void PlayerShip::HitBy(const gui::CSprite& hitter,
-        const gui::components::CRectangle& paintHitbox,
+void PlayerShip::HitBy(const CSprite& hitter,
+        const CRectangle& paintHitbox,
         int id,
         const std::string& tag,
-        gui::CSpriteModifierData& mdata) {
+        CSpriteModifierData& mdata) {
     std::ostringstream out6002;
     out6002 << "PlayerHit: (" << paintHitbox << ")";
     out6002 << " id:(" << id << ")";

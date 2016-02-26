@@ -48,8 +48,8 @@
 
 namespace humbug {
 namespace levels {
-using namespace gui::components;
 using namespace gui;
+using namespace components;
 using namespace scroller_levela;
 
 #include "ScrollerLevelATestStuff.h"

@@ -49,8 +49,8 @@
 //
 //#include <build/cmake/include/debug.h>
 
-using namespace gui::components;
 using namespace gui;
+using namespace components;
 
 namespace humbug {
 namespace levels {
@@ -62,7 +62,6 @@ namespace scroller_levela {
 class EnemyShip1Mover {
     int h_;
     bool toggle_;
-    int deltaX_;
     uint32_t sproffs;
     uint32_t sproffsAct;
     //int rnd;
@@ -73,13 +72,13 @@ class EnemyShip1Mover {
     EnemyShip* m_pShip;
     Timing timing;
     float m_waitTime;
+    CPoint m_iOffset;
 
 public:
 
-    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, int deltaY = 0, uint32_t spriteoffset = 29) : m_pShip(ship), h_(-1),
-        toggle_(false),
-        deltaX_(deltaY),
-        sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr), m_pBackground(background) {
+    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, uint32_t spriteoffset = 29) : h_(-1), toggle_(false),
+        sproffs(spriteoffset), sproffsAct(0),
+        m_pOverlay(nullptr), m_pBackground(background), m_pShip(ship), m_iOffset(0) {
         dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
         int rnd = 180 - (rand() % 360);
         h_ = rnd;
@@ -92,6 +91,22 @@ public:
 
     void SetDebugOverlay(DebugOverlay* m_p_overlay) {
         m_pOverlay = m_p_overlay;
+    }
+
+    /** Brief description of BaseEnemyShip, Offset
+    *  Detailed description.
+    *  @return TODO
+    */
+    CPoint Offset() const {
+        return m_iOffset;
+    }
+
+    /** Brief description of BaseEnemyShip, SetOffset
+    *  Detailed description.
+    *  @param offset TODO
+    */
+    void SetOffset(const CPoint& offset){
+        m_iOffset = offset;
     }
 
     void IncrementOffset() { sproffsAct++; }
@@ -113,13 +128,13 @@ public:
      * @return TODO
      */
     void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
-        timing.UpdateIdle();
+        timing.UpdateIdle(ticks);
         double ss = std::sin(static_cast<double>(h_) / 3.14159 / 12.0);
         double sc = std::cos(static_cast<double>(h_) / 3.14159 / 12.0);
         int ssin = static_cast<int>(ss * 8);
         int scos = static_cast<int>(sc * 8);
 
-        sprite->SetPosition(CPoint(mdata.initialpos.GetX() + deltaX_ + scos, mdata.initialpos.GetY() + ssin) + m_pShip->Offset());
+        sprite->SetPosition(CPoint(mdata.initialpos.GetX() + scos, mdata.initialpos.GetY() + ssin) + Offset());
         int delta = lastSpritePos.Distance(sprite->GetPosition());
         float angle = lastSpritePos.Angle(sprite->GetPosition());
 
@@ -181,7 +196,7 @@ EnemyShip::EnemyShip(CSpriteManager* sprMgr, const CPoint& pos,
     m_pEnemy1Ship = sprMgr->GetSpriteById(sprShipId);
     m_pSprLaser = sprMgr->GetSpriteById(sprLaserId);
 
-    updfuncShip = boost::make_shared<EnemyShip1Mover>(this, canvas, 120);
+    updfuncShip = boost::make_shared<EnemyShip1Mover>(this, canvas);
     //    updfuncShip->SetDebugOverlay(dbgOverlay);
 
     m_pSprMgr->AddSpriteDraw(m_iSprShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" }, this);
@@ -200,12 +215,12 @@ EnemyShip::EnemyShip(CSpriteManager* sprMgr, const CPoint& pos,
     //m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyLaser");
 }
 
-void EnemyShip::HitBy(const gui::CSprite& hitter,
-        const gui::components::CRectangle& paintHitbox,
+void EnemyShip::HitBy(const CSprite& hitter,
+        const CRectangle& paintHitbox,
         int id,
         const std::string& tag,
-        gui::CSpriteModifierData& mdata) {
-    Fire(hitter);
+        CSpriteModifierData& mdata) {
+    Fire(hitter, paintHitbox);
     // delete laser when enemy is hit.
     //        if (tag == "Laser" && id > 1023)
     //        {
@@ -213,12 +228,12 @@ void EnemyShip::HitBy(const gui::CSprite& hitter,
     //        }
 }
 
-void EnemyShip::LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModifierData& mdata) const {
+void EnemyShip::LaserUpdfunc2(CSprite* sprite, int ticks, CSpriteModifierData& mdata) const {
     // Todo: test when not const .... say when modulating the alpha
     //int ySpeed = -16;
     int ySpeed = 4;
     sprite->SetPosition(sprite->GetPosition().Move(0, ySpeed));
-    gui::components::CRectangle scr(0, 0, 1024, 768);
+    CRectangle scr(0, 0, 1024, 768);
 
     if(mdata.isHit) {
         sprite->SetSpriteOffset(1 + ticks % 1);
@@ -227,13 +242,13 @@ void EnemyShip::LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModif
         sprite->SetSpriteOffset(0);
     }
 
-    gui::components::CPoint pt = sprite->PaintLocation().Position(gui::components::CRectangle::CompassRose::S);
+    CPoint pt = sprite->PaintLocation().Position(CRectangle::CompassRose::S);
     if(!scr.Contains(pt)) {
         mdata.markedForDeletion = true;
     }
 } // EnemyShip::LaserUpdfunc2
 
-void EnemyShip::Fire(const gui::CSprite& hitter) {
+void EnemyShip::Fire(const CSprite& hitter, const CRectangle& paintHitbox) {
     //return;
 
     if(timing.IsAfter(4.0f)) {
@@ -256,9 +271,20 @@ void EnemyShip::Fire(const gui::CSprite& hitter) {
     // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
     //CPoint pos = m_pos;
     //CPoint pos = m_pos + m_pEnemy1Ship->PaintLocation();
-    gui::components::CPoint pos = hitter.PaintLocation();
+    //CPoint pos = hitter.PaintLocation();
+    CPoint pos = paintHitbox.Position(CRectangle::CompassRose::Origin);
     m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&EnemyShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Ship" });
 } // EnemyShip::Fire
+
+gui::components::CPoint EnemyShip::Offset() const
+{
+    return updfuncShip->Offset();
+}
+
+void EnemyShip::SetOffset(const gui::components::CPoint& offset)
+{
+    updfuncShip->SetOffset(offset);
+}
 }
 }
 }

@@ -31,28 +31,28 @@ namespace levels {
  *  @param mdata TODO
  */
 class BaseEnemyShip : public gui::HitHandler {
-    gui::components::CPoint m_iOffset;
+    //gui::components::CPoint m_iOffset;
 
 public:
 
-    /** Brief description of BaseEnemyShip, Offset
-     *  Detailed description.
-     *  @return TODO
-     */
-    gui::components::CPoint Offset() const {
-        return m_iOffset;
-    }
-
-    /** Brief description of BaseEnemyShip, SetOffset
-     *  Detailed description.
-     *  @param offset TODO
-     */
-    void SetOffset(const gui::components::CPoint& offset){
-        m_iOffset = offset;
-    }
-
-    BaseEnemyShip() : m_iOffset(0)
-    {}
+//    /** Brief description of BaseEnemyShip, Offset
+//     *  Detailed description.
+//     *  @return TODO
+//     */
+//    gui::components::CPoint Offset() const {
+//        return m_iOffset;
+//    }
+//
+//    /** Brief description of BaseEnemyShip, SetOffset
+//     *  Detailed description.
+//     *  @param offset TODO
+//     */
+//    void SetOffset(const gui::components::CPoint& offset){
+//        m_iOffset = offset;
+//    }
+//
+//    BaseEnemyShip() : m_iOffset(0)
+//    {}
 };
 
 namespace scroller_levela {
@@ -83,7 +83,19 @@ public:
 
     void LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModifierData& mdata) const;
 
-    void Fire(const gui::CSprite& hitter);
+    void Fire(const gui::CSprite& hitter, const gui::components::CRectangle& paintHitbox);
+
+    /** Brief description of BaseEnemyShip, Offset
+        *  Detailed description.
+        *  @return TODO
+        */
+    gui::components::CPoint Offset() const;
+
+    /** Brief description of BaseEnemyShip, SetOffset
+        *  Detailed description.
+        *  @param offset TODO
+        */
+    void SetOffset(const gui::components::CPoint& offset);
 
 private:
 
