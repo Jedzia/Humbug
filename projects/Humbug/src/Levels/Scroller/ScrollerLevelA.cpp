@@ -25,25 +25,24 @@
 #include "PlayerShip.h"
 #include "EnemyShip.h"
 #include "GUI/DebugOverlay.h"
-#include "HumbugShared/GameObjects/Player.h"
+//#include "HumbugShared/GameObjects/Player.h"
 #include <GUI/Components/Rectangle.h>
 #include <GuiLib/Filesystem/FileLoader.h>
 #include <GuiLib/GUI/Components/CanvasRendererImpl.h>
 #include <GuiLib/GUI/Components/CoordSystem.h>
 #include <GuiLib/GUI/Components/EasingFunctors.h>
 #include <GuiLib/GUI/Components/Image.h>
-#include <GuiLib/GUI/Components/Image.h>
 #include <GuiLib/GUI/Components/SeamlessImage.h>
 #include <GuiLib/GUI/Components/Shapes/Line.h>
 #include <GuiLib/GUI/Components/Text.h>
 #include <GuiLib/GUI/Components/TextScroller.h>
-#include <GuiLib/GUI/Controls/Button.h>
+//#include <GuiLib/GUI/Controls/Button.h>
 #include <GuiLib/GUI/Controls/Label.h>
 #include <GuiLib/GUI/Data/ColorData.h>
 #include <GuiLib/GUI/Sprite/Sprite.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
-#include <GuiLib/Timing.h>
+//#include <GuiLib/Timing.h>
 //
 //#include <build/cmake/include/debug.h>
 

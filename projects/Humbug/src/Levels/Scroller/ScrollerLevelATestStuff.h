@@ -1,86 +1,41 @@
 #pragma once
 
-#include "boost/function.hpp"
-#include "boost/lambda/lambda.hpp"
-#include <cstdlib>
-#include "../../Input/PlayerKeys4.h"
-#include "PlayerShip.h"
-#include "EnemyShip.h"
-#include "GUI/DebugOverlay.h"
-#include "HumbugShared/GameObjects/Player.h"
+//#include "boost/function.hpp"
+//#include "boost/lambda/lambda.hpp"
+//#include <cstdlib>
+//#include "../../Input/PlayerKeys4.h"
+//#include "PlayerShip.h"
+//#include "EnemyShip.h"
+//#include "GUI/DebugOverlay.h"
+//#include "HumbugShared/GameObjects/Player.h"
+//
+//#include <GUI/Components/Rectangle.h>
+//#include <GuiLib/Filesystem/FileLoader.h>
+//#include <GuiLib/GUI/Components/CoordSystem.h>
+//#include <GuiLib/GUI/Components/Shapes/Line.h>
+//#include <GuiLib/GUI/Controls/Label.h>
+//#include <GuiLib/GUI/Sprite/SpriteManager.h>
+//#include <GuiLib/GUI/Components/TextScroller.h>
+//#include <GuiLib/GUI/Controls/Button.h>
+//#include <GuiLib/GUI/Controls/Label.h>
+//
+//#include <GuiLib/GUI/Components/CanvasRendererImpl.h>
+//#include <GuiLib/GUI/Components/EasingFunctors.h>
+//#include <GuiLib/GUI/Components/Color.h>
+//#include <GuiLib/GUI/Components/Canvas.h>
+//#include <GuiLib/GUI/Components/Image.h>
+//#include <GuiLib/GUI/Components/Rectangle.h>
+//#include <GuiLib/GUI/Components/SeamlessImage.h>
+//#include <GuiLib/GUI/Components/Text.h>
+//#include <GuiLib/GUI/Components/TextScroller.h>
+//#include <GuiLib/GUI/Controls/Button.h>
+//#include <GuiLib/GUI/Data/ColorData.h>
+//#include <GuiLib/GUI/Sprite/Sprite.h>
+//#include <GuiLib/GUI/Visual/EventHandler.h>
+//#include <GuiLib/Timing.h>
 
-#include <GUI/Components/Rectangle.h>
-#include <GuiLib/Filesystem/FileLoader.h>
-#include <GuiLib/GUI/Components/CoordSystem.h>
-#include <GuiLib/GUI/Components/Shapes/Line.h>
-#include <GuiLib/GUI/Controls/Label.h>
-#include <GuiLib/GUI/Sprite/SpriteManager.h>
-
-#include <GuiLib/GUI/Components/CanvasRendererImpl.h>
-#include <GuiLib/GUI/Components/EasingFunctors.h>
-#include <GuiLib/GUI/Components/Color.h>
-#include <GuiLib/GUI/Components/Canvas.h>
-#include <GuiLib/GUI/Components/Image.h>
-#include <GuiLib/GUI/Components/Rectangle.h>
-#include <GuiLib/GUI/Components/SeamlessImage.h>
-#include <GuiLib/GUI/Components/Text.h>
-#include <GuiLib/GUI/Components/TextScroller.h>
-#include <GuiLib/GUI/Controls/Button.h>
-#include <GuiLib/GUI/Data/ColorData.h>
-#include <GuiLib/GUI/Sprite/Sprite.h>
-#include <GuiLib/GUI/Visual/EventHandler.h>
-#include <GuiLib/Timing.h>
-
-/** @class CanvasStripeRendererOld:
- *  Detailed description.
- *  @param source TODO
- *  @param target TODO
- *  @param mdata TODO
- *  @return TODO 
- */
-class CanvasStripeRendererAOld {
-    int m_iBoatcols;
-    int m_iFrames;
-    int m_iSteps;
-    SDL_Color cmap[256];
-
-public:
-
-    // this little bastard should render colored stripes when ready.
-    explicit CanvasStripeRendererAOld(int steps = 16) : m_iBoatcols(0), m_iFrames(0), m_iSteps(steps)
-    {}
-
-    void operator()(const CCanvas* target, CCanvas* source,
-            gui::components::CCanvasRenderModifierData& mdata) {
-        m_iFrames++;
-
-        if(!mdata.dstRect) {
-            return;
-        }
-
-        CRectangle dstRect(*mdata.dstRect);
-
-        if(m_iFrames % 3 == 0) {
-            // jitter arround
-            dstRect.X() += m_iSteps / 2 - rand() % m_iSteps;
-            //dstRect.X() += m_iTicks % 5;
-            dstRect.Y() += m_iSteps / 2 - rand() % m_iSteps;
-            //dstRect.Y() += m_iTicks % 5;
-        }
-
-        if(rand() % 12 > 9) {
-            // flicker
-            CColor bannercolor = CColor::White();
-            source->SetTextureColorMod(bannercolor);
-        }
-
-        target->FinalRenderCopy(source->GetTexture(), &dstRect, mdata.srcRect);
-        //target->RenderCopy(source->GetTexture(), mdata.srcRect, dstRect);
-
-        // prevent rendering the target canvas again.
-        mdata.isHandled = true;
-    } // ()
-};
+using namespace gui::components;
+using namespace gui;
 
 /** @class CanvasStripeRendererA:
  *  Detailed description.
