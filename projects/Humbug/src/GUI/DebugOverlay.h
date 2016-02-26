@@ -17,8 +17,9 @@
 #ifndef GUI_DebugOverlay_H
 #define GUI_DebugOverlay_H
 
-#include "GUI/Components/Canvas.h"
-#include "GUI/Controls/Control.h"
+#include <GuiLib/GUI/Controls/Control.h>
+#include <GuiLib/GUI/Components/Canvas.h>
+#include <GuiLib/GUI/Components/Text.h>
 
 namespace gui {
   namespace components {

@@ -106,11 +106,15 @@ SET(Humbug_Level_headers
 		Levels/TestLevel.h
 		Levels/LevelA.h
 		Levels/Scroller/ScrollerLevelA.h
+		Levels/Scroller/PlayerShip.h
+		Levels/Scroller/EnemyShip.h
 )
 SET(Humbug_Level_sources 
 		Levels/TestLevel.cpp
 		Levels/LevelA.cpp
 		Levels/Scroller/ScrollerLevelA.cpp
+		Levels/Scroller/PlayerShip.cpp
+		Levels/Scroller/EnemyShip.cpp
 )
 
 # putting the sources together
