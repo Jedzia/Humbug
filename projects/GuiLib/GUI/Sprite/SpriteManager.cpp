@@ -549,6 +549,7 @@ void CSpriteManager::OnIdle(int ticks) {
 //   std::stringstream sst4;
 //   sst4 << boost::chrono::duration_short << avg / runs;
 
+#if PRINT_DEBUG_TIMING_DATA
     // duration_shortx <<
     dbgOut("[" << std::setfill('0') << std::setw(5) << runs << "]Spr=" << std::setw(3) << pimpl_->m_vSpriteData.size() <<
                 ", all=" << std::setw(5) << numSpritesChecked <<
@@ -558,7 +559,8 @@ void CSpriteManager::OnIdle(int ticks) {
                 ", Sub check t: " << short_duration_log(t2) <<
                 ", Sub updfunc t: " << short_duration_log(t3) <<
                 ", Avg t: " << short_duration_log(avg / runs)
-            );
+                );
+#endif
 
     m_bNotFirstRun = true;
 } // CSpriteManager::OnIdle

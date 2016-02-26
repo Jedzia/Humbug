@@ -30,7 +30,7 @@ namespace levels {
  *  @param tag TODO
  *  @param mdata TODO
  */
-class BaseEnemyShip : public gui::HitHandler {
+class BaseEnemyShip : public gui::HitHandler, public gui::Disposable {
     //gui::components::CPoint m_iOffset;
 
 public:
@@ -84,6 +84,7 @@ public:
     void LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModifierData& mdata) const;
 
     void Fire(const gui::CSprite& hitter, const gui::components::CRectangle& paintHitbox);
+    void Explode();
 
     /** Brief description of BaseEnemyShip, Offset
         *  Detailed description.

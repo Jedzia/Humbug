@@ -73,12 +73,14 @@ class EnemyShip1Mover {
     Timing timing;
     float m_waitTime;
     CPoint m_iOffset;
+    bool m_bDestroyMe;
 
 public:
 
-    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, uint32_t spriteoffset = 29) : h_(-1), toggle_(false),
-        sproffs(spriteoffset), sproffsAct(0),
-        m_pOverlay(nullptr), m_pBackground(background), m_pShip(ship), m_iOffset(0) {
+    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, uint32_t spriteoffset = 29) 
+        : h_(-1), toggle_(false),
+        sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr),
+        m_pBackground(background), m_pShip(ship), m_iOffset(0), m_bDestroyMe(false) {
         dbgOut(__FUNCTION__ << " created:" << " (" << this << ")");
         int rnd = 180 - (rand() % 360);
         h_ = rnd;
@@ -109,9 +111,16 @@ public:
         m_iOffset = offset;
     }
 
-    void IncrementOffset() { sproffsAct++; }
+    uint32_t SproffsActOffset() const
+    { return sproffsAct; }
 
-    void DecrementOffset() { sproffsAct--; }
+    void SetSproffsActOffset(uint32_t offset) { sproffsAct = offset; }
+
+    void Explode()
+    {
+        SetSproffsActOffset((30 * 2) - 1);
+        m_bDestroyMe = true;
+    }
 
     static float CalcWaitTime(float minTime = 4.5f) {
         //float minTime = 4.5f;
@@ -139,7 +148,7 @@ public:
         float angle = lastSpritePos.Angle(sprite->GetPosition());
 
         //uint32_t offset = sproffsAct % sproffs;
-        uint32_t offset = h_ / 4 % sproffs;
+        uint32_t offset = sproffsAct + (h_ / 4 % sproffs);
         sprite->SetSpriteOffset(offset);
 
         CRectangle sdl_rect = sprite->SprImage()->DstRect();
@@ -168,6 +177,11 @@ public:
         }
         else if(h_ <= -180) {
             toggle_ = true;
+            if (m_bDestroyMe)
+            {
+                mdata.markedForDeletion = true;
+                m_pShip->Dispose();
+            }
         }
 
         if(toggle_) {
@@ -221,6 +235,8 @@ void EnemyShip::HitBy(const CSprite& hitter,
         const std::string& tag,
         CSpriteModifierData& mdata) {
     Fire(hitter, paintHitbox);
+    Explode();
+
     // delete laser when enemy is hit.
     //        if (tag == "Laser" && id > 1023)
     //        {
@@ -276,12 +292,18 @@ void EnemyShip::Fire(const CSprite& hitter, const CRectangle& paintHitbox) {
     m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&EnemyShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Ship" });
 } // EnemyShip::Fire
 
-gui::components::CPoint EnemyShip::Offset() const
+void EnemyShip::Explode()
+{
+    updfuncShip->Explode();
+    //updfuncShip->SetSproffsActOffset((30 * 2) - 1);
+}
+
+CPoint EnemyShip::Offset() const
 {
     return updfuncShip->Offset();
 }
 
-void EnemyShip::SetOffset(const gui::components::CPoint& offset)
+void EnemyShip::SetOffset(const CPoint& offset)
 {
     updfuncShip->SetOffset(offset);
 }
