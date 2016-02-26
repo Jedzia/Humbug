@@ -19,6 +19,7 @@
 #include "../Components/Color.h"
 #include "Control.h"
 #include "SDL_ttf.h"
+#include <string>
 
 namespace gui {
 namespace controls {

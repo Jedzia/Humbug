@@ -55,6 +55,9 @@ using namespace gui;
 namespace humbug {
 namespace levels {
 namespace scroller_levela {
+
+//CRectangle hitTestRect(200, 200, 300, 300);
+
 //struct PlayerShip::PlayerShipImpl {
 //    int x;
 //};

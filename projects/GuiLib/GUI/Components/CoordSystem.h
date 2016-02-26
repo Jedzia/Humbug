@@ -2,6 +2,7 @@
 #define __CoordSystem_H__
 
 #include "Canvas.h"
+#include "Point.h"
 #include <set>
 
 class FileLoader;

@@ -106,6 +106,8 @@ SET(Humbug_Level_headers
 		Levels/TestLevel.h
 		Levels/LevelA.h
 		Levels/Scroller/ScrollerLevelA.h
+		Levels/Scroller/ScrollerLevelATestStuff.h
+		Levels/Scroller/MoverStuff.h
 		Levels/Scroller/PlayerShip.h
 		Levels/Scroller/EnemyShip.h
 )
