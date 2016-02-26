@@ -75,7 +75,6 @@ public:
         boost::scoped_ptr<gui::components::CTextScroller> m_pScroller;
         boost::scoped_ptr<gui::CSpriteManager> m_pSprMgr;
         gui::components::CSeamlessImage* m_pSeamlessImage;
-        boost::scoped_ptr<PlayerKeys4> m_pKeyHandler;
         gob::Player m_player;
 
     };

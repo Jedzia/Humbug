@@ -193,8 +193,7 @@ ScrollerLevelA::ScrollerLevelA(FileLoader& loader, CCanvas* background) :
     m_pScrollText(NULL),
     m_pScroller(NULL),
     m_pSprMgr(new CSpriteManager),
-    m_pSeamlessImage(NULL),
-    m_pKeyHandler(NULL) {
+    m_pSeamlessImage(NULL){
     dbgOut(__FUNCTION__ << " " << this);
 }
 
@@ -398,10 +397,6 @@ void ScrollerLevelA::OnDraw() {
     m_pMainCanvas->Unlock();
 }     // OnDraw
 
-/** $(class), OnUpdate:
- *  Detailed description.
- *  @return TODO
- */
 void ScrollerLevelA::OnUpdate() {
     Screen::OnUpdate();
     x += 1 + (rand() << 21);
