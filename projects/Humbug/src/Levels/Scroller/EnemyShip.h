@@ -19,15 +19,6 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/Timing.h>
 
-class FileLoader;
-namespace gui {
-class CSprite;
-class CSpriteManager;
-namespace components {
-class CCanvas;
-}
-}
-
 namespace humbug {
 class DebugOverlay;
 namespace levels {
@@ -39,28 +30,40 @@ namespace levels {
  *  @param tag TODO
  *  @param mdata TODO
  */
-class BaseEnemyShip : public gui::HitHandler
-{
+class BaseEnemyShip : public gui::HitHandler {
     gui::components::CPoint m_iOffset;
 
 public:
-    
-    gui::components::CPoint Offset() const
-    {
+
+    /** Brief description of BaseEnemyShip, Offset
+     *  Detailed description.
+     *  @return TODO
+     */
+    gui::components::CPoint Offset() const {
         return m_iOffset;
     }
 
-    void SetOffset(const gui::components::CPoint& offset)
-    {
+    /** Brief description of BaseEnemyShip, SetOffset
+     *  Detailed description.
+     *  @param offset TODO
+     */
+    void SetOffset(const gui::components::CPoint& offset){
         m_iOffset = offset;
     }
 
-    BaseEnemyShip(): m_iOffset(0)
-    {
-    }
+    BaseEnemyShip() : m_iOffset(0)
+    {}
 };
 
 namespace scroller_levela {
+/** @class EnemyShip1Mover:
+ *  Detailed description.
+ *  @param hitter TODO
+ *  @param paintHitbox TODO
+ *  @param id TODO
+ *  @param tag TODO
+ *  @param mdata TODO
+ */
 class EnemyShip1Mover;
 
 /** @class EnemyShip:
@@ -79,7 +82,6 @@ public:
             gui::CSpriteModifierData& mdata) override;
 
     void LaserUpdfunc2(gui::CSprite* sprite, int ticks, gui::CSpriteModifierData& mdata) const;
-
 
     void Fire(const gui::CSprite& hitter);
 

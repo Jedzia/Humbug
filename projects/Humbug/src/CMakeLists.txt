@@ -109,6 +109,7 @@ SET(Humbug_Level_headers
 		Levels/Scroller/ScrollerLevelATestStuff.h
 		Levels/Scroller/MoverStuff.h
 		Levels/Scroller/PlayerShip.h
+		Levels/Scroller/EnemyWave.h
 		Levels/Scroller/EnemyShip.h
 )
 SET(Humbug_Level_sources 
@@ -116,6 +117,7 @@ SET(Humbug_Level_sources
 		Levels/LevelA.cpp
 		Levels/Scroller/ScrollerLevelA.cpp
 		Levels/Scroller/PlayerShip.cpp
+		Levels/Scroller/EnemyWave.cpp
 		Levels/Scroller/EnemyShip.cpp
 )
 
