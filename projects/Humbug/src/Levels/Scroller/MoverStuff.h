@@ -148,12 +148,12 @@ public:
         float angle = lastSpritePos.Angle(sprite->GetPosition());
 
         static EaseNone easeNone(2);
-        static RingBounce easeRingBounce(2);
+        static RingBounceModulator easeRingBounce(2);
         static EaseInOutBounce easeInOutBounce(1);
         static EaseInOutQuad easeInOutQuad;
         static EaseInOutQuart easeInOutQuart;
-        //static Ring ring(FRAMESPERSECOND * 32);
-        static Ring ring(8.0f);
+        //static RingBounce ring(FRAMESPERSECOND * 32);
+        static RingBounce ring(8.0f);
 
         //int ring0 = ring.Timed(ticks);
         int ring1 = ring(ticks);

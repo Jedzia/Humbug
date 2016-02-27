@@ -228,13 +228,13 @@ public:
     operator bool() const;
 };
 
-/** @class RingBounce:
- *  Ring module calculator.
+/** @class RingBounceModulator:
+ *  RingBounce module calculator.
  */
-class RingBounce {
+class RingBounceModulator {
 public:
 
-    explicit RingBounce(const vdouble alpha = static_cast<vdouble>(1.0f)) { }
+    explicit RingBounceModulator(const vdouble alpha = static_cast<vdouble>(1.0f)) { }
 
     /** Calculate the ring result.
      *  Calculates the modulo of the input value.
@@ -251,8 +251,8 @@ public:
     }
 };
 
-/** @class Ring:
- *  Ring module calculator.
+/** @class Modulo:
+ *  Modulo calculator.
  */
 class Modulo {
     const int m_iRing;
@@ -295,17 +295,17 @@ public:
     seconds NormTimed(int in) const;
 };
 
-/** @class Ring:
- *  Ring module calculator.
+/** @class RingBounce:
+ *  RingBounce module calculator.
  */
-class Ring {
+class RingBounce {
     const int m_iRing;
 
 public:
 
-    explicit Ring(const int ring = FRAMESPERSECOND);
+    explicit RingBounce(const int ring = FRAMESPERSECOND);
 
-    explicit Ring(const seconds ringTime);
+    explicit RingBounce(const seconds ringTime);
 
     /** Convert the ring result to seconds.
      *  @return the ring result as seconds.

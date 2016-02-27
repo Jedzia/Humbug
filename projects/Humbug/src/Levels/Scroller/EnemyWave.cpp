@@ -192,8 +192,8 @@ void EnemyWave::HookIdle(int ticks, float speed) {
     int ring1 = ring(ticks);
     int mod_sinus = static_cast<int>(modSinus(ring.NormTimed(ticks)) * 100);
     int mod_cosinus = static_cast<int>(modCosinus(ring.NormTimed(ticks)) * 100);
-    //dbgOut("Ring:" << ring.NormTimed(ticks) << ", i:" << ring1 << ", modSin:" << modSinus(ring.NormTimed(ticks)));
-    //dbgOut("Ring:" << ring1);
+    //dbgOut("RingBounce:" << ring.NormTimed(ticks) << ", i:" << ring1 << ", modSin:" << modSinus(ring.NormTimed(ticks)));
+    //dbgOut("RingBounce:" << ring1);
     //return;
     //m_pKeyHandler->HookIdle(ticks, speed);
 //        BOOST_FOREACH(boost::ptr_vector<EnemyShip>::reference ship, m_pEnemyShips)

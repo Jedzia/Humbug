@@ -228,17 +228,17 @@ seconds Modulo::NormTimed(int in) const {
    }
    }*/
 
-Ring::Ring(const int ring) : m_iRing(ring)
+RingBounce::RingBounce(const int ring) : m_iRing(ring)
 { }
 
-Ring::Ring(const seconds ringTime) : Ring(static_cast<int>(ringTime * FRAMESPERSECOND))
+RingBounce::RingBounce(const seconds ringTime) : RingBounce(static_cast<int>(ringTime * FRAMESPERSECOND))
 { }
 
-seconds Ring::RingSeconds() const {
+seconds RingBounce::RingSeconds() const {
     return Timing::Convert(m_iRing);
 }
 
-int Ring::operator()(int in) const {
+int RingBounce::operator()(int in) const {
     int t = in % (m_iRing);
     if(t >= m_iRing / 2) {
         return m_iRing - ((t - m_iRing / 2) * 2);
@@ -248,11 +248,11 @@ int Ring::operator()(int in) const {
     }
 }
 
-seconds Ring::Timed(int in) const {
+seconds RingBounce::Timed(int in) const {
     return Timing::Convert(operator()(in));
 }
 
-seconds Ring::NormTimed(int in) const {
+seconds RingBounce::NormTimed(int in) const {
     return Timing::Convert(operator()(in)) / m_iRing * FRAMESPERSECOND;
 }
 }
