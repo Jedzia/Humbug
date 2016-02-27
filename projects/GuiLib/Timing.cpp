@@ -198,4 +198,61 @@ Timing::operator bool() const {
     bool result = m_fncLastCheck(m_timeLastCheck, NULL);
     return result;
 }
+
+Modulo::Modulo(const int ring) : m_iRing(ring)
+{ }
+
+Modulo::Modulo(const seconds ringTime) : Modulo(static_cast<int>(ringTime * FRAMESPERSECOND))
+{ }
+
+int Modulo::operator()(int in) const {
+    int t = in % (m_iRing);
+    return t;
+}
+
+seconds Modulo::Timed(int in) const {
+    return Timing::Convert(operator()(in));
+}
+
+seconds Modulo::NormTimed(int in) const {
+    return Timing::Convert(operator()(in)) / (m_iRing - 1) * FRAMESPERSECOND;
+}
+
+/*seconds operator()(seconds in) const {
+   int t = in % (m_iRing);
+   if (t >= m_iRing / 2) {
+   return  m_iRing - ((t - m_iRing / 2) * 2);
+   }
+   else {
+   return t * 2;
+   }
+   }*/
+
+Ring::Ring(const int ring) : m_iRing(ring)
+{ }
+
+Ring::Ring(const seconds ringTime) : Ring(static_cast<int>(ringTime * FRAMESPERSECOND))
+{ }
+
+seconds Ring::RingSeconds() const {
+    return Timing::Convert(m_iRing);
+}
+
+int Ring::operator()(int in) const {
+    int t = in % (m_iRing);
+    if(t >= m_iRing / 2) {
+        return m_iRing - ((t - m_iRing / 2) * 2);
+    }
+    else {
+        return t * 2;
+    }
+}
+
+seconds Ring::Timed(int in) const {
+    return Timing::Convert(operator()(in));
+}
+
+seconds Ring::NormTimed(int in) const {
+    return Timing::Convert(operator()(in)) / m_iRing * FRAMESPERSECOND;
+}
 }

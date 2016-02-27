@@ -387,6 +387,12 @@ void EnemyWave::HookIdle(int ticks, float speed) {
         movement = CPoint(-1, -1);
     }
 
+    static Modulo ring(2.0f);
+
+    //int ring0 = ring.Timed(ticks);
+    int ring1 = ring(ticks);
+    dbgOut("Ring:" << ring.NormTimed(ticks) << ", " << ring1);
+    //dbgOut("Ring:" << ring1);
     //return;
     //m_pKeyHandler->HookIdle(ticks, speed);
 //        BOOST_FOREACH(boost::ptr_vector<EnemyShip>::reference ship, m_pEnemyShips)

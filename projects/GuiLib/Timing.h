@@ -41,7 +41,13 @@ private:
     seconds m_timeLastCheck;
 
     void UpdateTimeFunction();
+
+    /** Brief description of Timing, nullfunc
+     *  Detailed description.
+     *
+     */
     static void nullfunc() { }
+
     static UpdateTimeFunc GetTimeUpdateFunction(const Hookable* hookable);
 
 public:
@@ -103,7 +109,7 @@ public:
 
     /** Time Easing Function
      *  A functor or function that transforms the input range 0.0f to 1.0f into an output value
-     *between 0.0f and 1.0f.
+     * between 0.0f and 1.0f.
      */
     typedef boost::function<float (float)> TimeEasingFunc;
 
@@ -113,16 +119,16 @@ public:
      *  @param outStart The lower range of the output value.
      *  @param outEnd The upper range of the output value.
      *  @param inMin The lower range of the input value. The input value is always
-     *SecondsSinceStart().
+     * SecondsSinceStart().
      *  @param inMax The upper range of the input value. The input value is always
-     *SecondsSinceStart().
+     * SecondsSinceStart().
      *  @param outMinClamp Minimum clamping for the return value.
      *  @param outMaxClamp Maximum clamping for the return value.
      *  @param functor Time easing functor.
      *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @param loop Apply std::fmod(now, inMax) looping.
      *  @return the range-mapped value of SecondsSinceStart().
      */
@@ -138,9 +144,9 @@ public:
      *  @param duration The duration it should take to come from outMin to outMax.
      *  @param functor Time easing functor.
      *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @return the range-mapped value of SecondsSinceStart().
      */
     static float RangeMappedSinceStart(float now, float outStart, float outEnd, seconds duration = 1.0f,
@@ -151,16 +157,16 @@ public:
      *  @param outStart The lower range of the output value.
      *  @param outEnd The upper range of the output value.
      *  @param inMin The lower range of the input value. The input value is always
-     *SecondsSinceStart().
+     * SecondsSinceStart().
      *  @param inMax The upper range of the input value. The input value is always
-     *SecondsSinceStart().
+     * SecondsSinceStart().
      *  @param outMinClamp Minimum clamping for the return value.
      *  @param outMaxClamp Maximum clamping for the return value.
      *  @param functor Time easing functor.
      *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @param loop Apply std::fmod(now, inMax) looping.
      *  @return the range-mapped value of SecondsSinceStart().
      */
@@ -175,9 +181,9 @@ public:
      *  @param duration The duration it should take to come from outMin to outMax.
      *  @param functor Time easing functor.
      *  @param foutMinClamp Minimum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @param foutMaxClamp Maximum clamping for the value that should be fed into the easing
-     *functor.
+     * functor.
      *  @return the range-mapped value of SecondsSinceStart().
      */
     float RangeMappedSinceStart(float outStart, float outEnd, seconds duration = 1.0f,
@@ -231,10 +237,10 @@ public:
     explicit RingBounce(const vdouble alpha = static_cast<vdouble>(1.0f)) { }
 
     /** Calculate the ring result.
-    *  Calculates the modulo of the input value.
-    *  @param t Input value
-    *  @return the ring module of the input value.
-    */
+     *  Calculates the modulo of the input value.
+     *  @param t Input value
+     *  @return the ring module of the input value.
+     */
     vdouble operator()(vdouble t) const {
         if(t >= vdouble(0.5)) {
             return vdouble(1.0) - ((t - vdouble(0.5)) * 2);
@@ -248,56 +254,83 @@ public:
 /** @class Ring:
  *  Ring module calculator.
  */
+class Modulo {
+    const int m_iRing;
+
+public:
+
+    virtual ~Modulo()
+    {}
+
+    explicit Modulo(const int ring = FRAMESPERSECOND);
+
+    explicit Modulo(const seconds ringTime);
+
+    /** Convert the modulo result to seconds.
+     *  @return the modulo result as seconds.
+     */
+    seconds RingSeconds() const {
+        return Timing::Convert(m_iRing);
+    }
+
+    /** Calculate the modulo result.
+     *  Calculates the modulo of the input value.
+     *  @param in Input value
+     *  @return the modulo module of the input value.
+     */
+    virtual int operator()(int in) const;
+
+    /** Calculate the modulo result as seconds.
+     *  Calculates the modulo of the input value as seconds.
+     *  @param in Input value
+     *  @return the modulo module of the input value.
+     */
+    seconds Timed(int in) const;
+
+    /** Calculate the modulo result as normalized time.
+     *  Bounces between 0.0 and 1.0 and 0.0 ...
+     *  @param in Input value
+     *  @return the modulo module of the input value.
+     */
+    seconds NormTimed(int in) const;
+};
+
+/** @class Ring:
+ *  Ring module calculator.
+ */
 class Ring {
     const int m_iRing;
 
 public:
 
-    explicit Ring(const int ring = gui::FRAMESPERSECOND) : m_iRing(ring)
-    { }
+    explicit Ring(const int ring = FRAMESPERSECOND);
 
-    explicit Ring(const seconds ringTime) : m_iRing(static_cast<int>(ringTime * FRAMESPERSECOND))
-    { }
+    explicit Ring(const seconds ringTime);
 
     /** Convert the ring result to seconds.
      *  @return the ring result as seconds.
      */
-    seconds RingSeconds() const {
-        return Timing::Convert(m_iRing);
-    }
+    seconds RingSeconds() const;
 
     /** Calculate the ring result.
      *  Calculates the modulo of the input value.
      *  @param in Input value
      *  @return the ring module of the input value.
      */
-    int operator()(int in) const {
-        int t = in % (m_iRing);
-        if(t >= m_iRing / 2) {
-            return m_iRing - ((t - m_iRing / 2) * 2);
-        }
-        else {
-            return t * 2;
-        }
-    }
+    int operator()(int in) const;
 
     /** Calculate the ring result as seconds.
      *  Calculates the modulo of the input value as seconds.
      *  @param in Input value
      *  @return the ring module of the input value.
      */
-    seconds Timed(int in) const {
-        return Timing::Convert(operator()(in));
-    }
+    seconds Timed(int in) const;
 
-    /*seconds operator()(seconds in) const {
-        int t = in % (m_iRing);
-        if (t >= m_iRing / 2) {
-            return  m_iRing - ((t - m_iRing / 2) * 2);
-        }
-        else {
-            return t * 2;
-        }
-       }*/
+    /** Calculate the ring result as normalized time.
+     *  Bounces between 0.0 and 1.0 and 0.0 ...
+     *  @param in Input value
+     *  @return the ring module of the input value.
+     */
+    seconds NormTimed(int in) const;
 };
 }
