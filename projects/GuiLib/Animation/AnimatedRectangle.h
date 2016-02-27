@@ -15,6 +15,8 @@
 /*---------------------------------------------------------*/
 #pragma once
 #include "../Timing.h"
+#include "../GUI/Components/Rectangle.h"
+#include "../GUI/Components/TextAnimator.h"
 #include <boost/bind.hpp>
 #include <boost/noncopyable.hpp>
 
