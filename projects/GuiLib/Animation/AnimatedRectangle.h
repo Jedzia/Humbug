@@ -63,13 +63,19 @@ public:
     void Reset() { m_Timing.Reset(); }
 
     // conversion
-    operator components::CRectangle()
+    components::CRectangle Rect()
     {
         float x = m_Timing.RangeMappedSinceStart(ReNormInt(m_recStart.GetX()), ReNormInt(m_recEnd.GetX()), m_duration, m_easingFunc);
         float y = m_Timing.RangeMappedSinceStart(ReNormInt(m_recStart.GetY()), ReNormInt(m_recEnd.GetY()), m_duration, m_easingFunc);
         float w = m_Timing.RangeMappedSinceStart(ReNormInt(m_recStart.GetW()), ReNormInt(m_recEnd.GetW()), m_duration, m_easingFunc);
         float h = m_Timing.RangeMappedSinceStart(ReNormInt(m_recStart.GetH()), ReNormInt(m_recEnd.GetH()), m_duration, m_easingFunc);
         return components::CRectangle(ReNormFloat(x), ReNormFloat(y), ReNormFloat(w), ReNormFloat(h));
+    };
+
+    // conversion
+    operator components::CRectangle()
+    {
+        return Rect();
     };
 };
 

@@ -312,22 +312,8 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     CRectangle rect = CRectangle(mainDimension.GetX(), mainDimension.GetY(),
             mainDimension.GetW() - sprPaintDimension.GetW() / 2, mainDimension.GetH() - sprPaintDimension.GetH() / 2);
     int delta_y = canvas->GetHeight() - m_pSprEnemy1Ship->SprImage()->DstRect().GetH() - 128;
-    //        updfuncShip = boost::make_shared<EnemyShip1Mover>(canvas, 120);
-    //        updfuncShip->SetDebugOverlay(dbgOverlay);
-    //        m_iSprEnemy1ShipId = sprMgr->AddSprite(m_pSprEnemy1Ship, "Enemy",
-    // boost::ref(*updfuncShip.get()), this);
     m_iSprEnemy1ShipId = sprMgr->AddSprite(m_pSprEnemy1Ship, "Enemy", NULL, this);
     m_pSprEnemy1Ship->SetPosition(CPoint(200, 200));
-    //        //CPoint pos = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N)
-    // -
-    // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-    //        //CPoint pos =
-    // m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N).Up(-64);
-    //        CPoint pos(128, 128);
-    //        //m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&PlayerShip::LaserUpdfunc2,
-    // boost::ref(*this), _1, _2, _3), { "Enemy", "Test" });
-    //        m_pSprMgr->AddSpriteDraw(m_iSprEnemy1ShipId, pos, boost::ref(*updfuncShip.get()), {
-    // "Laser", "Ship" });
     m_pSprEnemy1Ship->SetVisibility(false);
 
     //m_iSprLaserId = CreateLaserSprite();
@@ -336,10 +322,6 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     CRectangle hitbox = CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(
                     -50), m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
     m_pSprLaser->SetHitBox(hitbox.Pad(20, 0));
-    //        CPoint posLas = m_pSprEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N)
-    // -
-    // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-    //        m_pSprLaser->SetPosition(posLas);
     m_pSprLaser->SetVisibility(false);
     m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyBullet");
 
@@ -356,9 +338,11 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     int spriteShipWidthHalf = spriteShipWidth / 2;
     int spriteShipWidthDouble = spriteShipWidth * 2;
     
+    // setup what dimensions to use
     int spriteShipHorizontalUse = spriteShipWidthDouble;
     int spriteShipVerticalUse = spriteShipHeightDouble;
-    
+    // end setup
+
     int spritesXMiddle = (spriteShipHorizontalUse * columns) / 2;
     int spritesYHeight = (spriteShipVerticalUse * rows);
 
@@ -382,14 +366,10 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     }
 
     pimpl_->animRect1 = boost::make_shared<AnimatedRectangle>(
-        //CRectangle(400, 400, 300, 300),         // starting shape
-        CRectangle(0, -2 * spritesYHeight, 0, 0),         // starting shape
-        //CRectangle(initialpos, initialpos),   // final shape
-        CRectangle(CRectangle(), CRectangle()),   // final shape
-        //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 2.0f, EaseOutBounce(2));
+        CRectangle(0, -2 * spritesYHeight, 0, 0),         // starting shape, over the top
+        CRectangle(),                                     // final shape, zero
         //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 8.0f, EaseOutElastic(2));
         AnimatedRectangleBindAdapter(sprMgr), 8.0f, EaseOutElastic(1.5f));
-        //sprMgr, 8.0f, EaseOutElastic(2));
 
     //main();
 }
@@ -424,8 +404,7 @@ void EnemyWave::HookIdle(int ticks, float speed) {
         }
         else {
             //ship.SetOffset(ship.Offset() + movement);
-            CRectangle rect = *pimpl_->animRect1;
-            ship.SetOffset(rect);
+            ship.SetOffset(pimpl_->animRect1->Rect());
             ++sprIt;
         }
     }

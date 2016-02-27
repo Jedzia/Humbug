@@ -91,6 +91,10 @@ SET(GuiLib_Component_headers
 		TimingChain.h
 		Timing2.h
 		GUI/Disposable.h
+
+		Animation.h
+		Animation/AnimatedRectangle.h
+		Animation/SinusoidWobbler.h
 		
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
