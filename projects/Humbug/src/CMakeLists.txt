@@ -201,7 +201,7 @@ if(CMAKE_GENERATOR MATCHES Visual*)
 	ADD_DEFINITIONS("/wd4996")
 	# error C3859: virtual memory range for PCH exceeded; please recompile with a command line option of '-Zm118' or greater
 	# fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
-	ADD_DEFINITIONS("-Zm118")
+	ADD_DEFINITIONS("-Zm150")
 endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" Humbug_sources)
