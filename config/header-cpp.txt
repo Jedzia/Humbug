@@ -7,9 +7,9 @@
  * \brief      This file contains the definition of
  *             the $(filename) class.
  * \file       $(filename)
- * \date       2016-01-30
+ * \date       2016-02-27
  * \author     Jedzia.
  *
- * modified    2016-01-30, Jedzia
+ * modified    2016-02-27, Jedzia
  */
 /*---------------------------------------------------------*/
