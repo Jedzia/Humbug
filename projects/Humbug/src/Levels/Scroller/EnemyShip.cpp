@@ -49,11 +49,21 @@
 //
 //#include <build/cmake/include/debug.h>
 
+using namespace gui::components;
 using namespace gui;
-using namespace components;
 
 namespace humbug {
 namespace levels {
+unsigned int BaseEnemyShip::GetNewId()
+{
+    return ++CurrentID;
+}
+
+BaseEnemyShip::BaseEnemyShip() : m_iId(GetNewId())
+{}
+
+unsigned int BaseEnemyShip::CurrentID = 0;
+
 namespace scroller_levela {
 /** @class EnemyShip1Mover:
  *  Detailed description.
@@ -77,7 +87,7 @@ class EnemyShip1Mover {
 
 public:
 
-    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, uint32_t spriteoffset = 29) 
+    EnemyShip1Mover(EnemyShip* ship, CCanvas* background, uint32_t spriteoffset = 29)
         : h_(-1), toggle_(false),
         sproffs(spriteoffset), sproffsAct(0), m_pOverlay(nullptr),
         m_pBackground(background), m_pShip(ship), m_iOffset(0), m_bDestroyMe(false) {
@@ -96,18 +106,18 @@ public:
     }
 
     /** Brief description of BaseEnemyShip, Offset
-    *  Detailed description.
-    *  @return TODO
-    */
+     *  Detailed description.
+     *  @return TODO
+     */
     CPoint Offset() const {
         return m_iOffset;
     }
 
     /** Brief description of BaseEnemyShip, SetOffset
-    *  Detailed description.
-    *  @param offset TODO
-    */
-    void SetOffset(const CPoint& offset){
+     *  Detailed description.
+     *  @param offset TODO
+     */
+    void SetOffset(const CPoint& offset) {
         m_iOffset = offset;
     }
 
@@ -116,8 +126,7 @@ public:
 
     void SetSproffsActOffset(uint32_t offset) { sproffsAct = offset; }
 
-    void Explode()
-    {
+    void Explode() {
         SetSproffsActOffset((30 * 2) - 1);
         m_bDestroyMe = true;
     }
@@ -138,6 +147,7 @@ public:
      */
     void operator()(CSprite* sprite, int ticks, CSpriteModifierData& mdata) {
         timing.UpdateIdle(ticks);
+        
         double ss = std::sin(static_cast<double>(h_) / 3.14159 / 12.0);
         double sc = std::cos(static_cast<double>(h_) / 3.14159 / 12.0);
         int ssin = static_cast<int>(ss * 8);
@@ -177,8 +187,7 @@ public:
         }
         else if(h_ <= -180) {
             toggle_ = true;
-            if (m_bDestroyMe)
-            {
+            if(m_bDestroyMe) {
                 mdata.markedForDeletion = true;
                 m_pShip->Dispose();
             }
@@ -192,19 +201,23 @@ public:
         }
 
         lastSpritePos = sprite->GetPosition();
-    }                 // ()
+    } // ()
 };
+
 
 struct EnemyShip::EnemyShipImpl {
     int x;
 };
 
-EnemyShip::EnemyShip(CSpriteManager* sprMgr, const CPoint& pos,
+EnemyShip::EnemyShip(
+        CSpriteManager* sprMgr,
+        const CPoint& pos,
         int sprShipId,
         int sprLaserId,
         CCanvas* canvas,
-        DebugOverlay* dbgOverlay) : m_iSprShipId(sprShipId), m_iSprLaserId(sprLaserId),
-        pimpl_(new EnemyShipImpl),
+        DebugOverlay* dbgOverlay)
+    : pimpl_(new EnemyShipImpl), m_iSprShipId(sprShipId),
+    m_iSprLaserId(sprLaserId),
     m_pSprMgr(sprMgr), m_pCanvas(canvas), m_pOverlay(dbgOverlay), m_pos(pos),
     timing(boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr))), m_bFired(false) {
     m_pEnemy1Ship = sprMgr->GetSpriteById(sprShipId);
@@ -215,21 +228,12 @@ EnemyShip::EnemyShip(CSpriteManager* sprMgr, const CPoint& pos,
 
     m_pSprMgr->AddSpriteDraw(m_iSprShipId, pos, boost::ref(*updfuncShip.get()), { "Laser", "Ship" }, this);
 
-    //m_iSprLaserId = CreateLaserSprite();
-    /*m_pSprLaser =
-       new CSprite(loader, "Sprites/Ship/Laser/Bullet01.png", canvas, CPoint(49, 480));
-       CRectangle hitbox =
-       CRectangle(m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::SW).Up(-50),
-       m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::NE).Up(50));
-       m_pSprLaser->SetHitBox(hitbox.Pad(20, 0));*/
     CPoint posLas = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) - m_pSprLaser->PaintDimension().Position(
             CRectangle::CompassRose::S).Up(-50);
-    //m_pSprLaser->SetPosition(posLas);
-    //m_pSprLaser->SetVisibility(false);
-    //m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyLaser");
 }
 
-void EnemyShip::HitBy(const CSprite& hitter,
+void EnemyShip::HitBy(
+        const CSprite& hitter,
         const CRectangle& paintHitbox,
         int id,
         const std::string& tag,
@@ -277,36 +281,23 @@ void EnemyShip::Fire(const CSprite& hitter, const CRectangle& paintHitbox) {
     }
 
     m_bFired = true;
-    //CSpriteManager::CSpriteModifierFunc fnc = boost::bind(&PlayerShip::LaserUpdfunc2,
-    // boost::ref(*this), _1, _2, _3);
-    //m_pSprMgr->AddSprite(m_pSprLaser, boost::bind(&PlayerShip::LaserUpdfunc2,
-    // boost::ref(*this), _1, _2, _3));
-    //CPoint pos = m_pEnemy1Ship->PaintLocation().Position(CRectangle::CompassRose::N) -
-    // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-    //CPoint pos = m_pos -
-    // m_pSprLaser->PaintDimension().Position(CRectangle::CompassRose::S).Up(-50);
-    //CPoint pos = m_pos;
-    //CPoint pos = m_pos + m_pEnemy1Ship->PaintLocation();
-    //CPoint pos = hitter.PaintLocation();
+
     CPoint pos = paintHitbox.Position(CRectangle::CompassRose::Origin);
     m_pSprMgr->AddSpriteDraw(m_iSprLaserId, pos, boost::bind(&EnemyShip::LaserUpdfunc2, boost::ref(*this), _1, _2, _3), { "Ship" });
 } // EnemyShip::Fire
 
-void EnemyShip::Explode()
-{
+void EnemyShip::Explode() const {
     updfuncShip->Explode();
-    //updfuncShip->SetSproffsActOffset((30 * 2) - 1);
 }
 
-CPoint EnemyShip::Offset() const
-{
+CPoint EnemyShip::Offset() const {
     return updfuncShip->Offset();
 }
 
-void EnemyShip::SetOffset(const CPoint& offset)
-{
+void EnemyShip::SetOffset(const CPoint& offset) const {
     updfuncShip->SetOffset(offset);
 }
 }
+
 }
 }

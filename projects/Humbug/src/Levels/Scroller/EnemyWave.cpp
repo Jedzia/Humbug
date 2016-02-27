@@ -161,6 +161,7 @@ void EnemyWave::HookIdle(int ticks, float speed) {
     boost::ptr_vector<EnemyShip>::iterator sprIt = m_pEnemyShips.begin();
     while(sprIt != m_pEnemyShips.end()) {
         boost::ptr_vector<EnemyShip>::reference ship = (*sprIt);
+        unsigned int id = ship.Id();
         if(ship.IsDisposed()) {
             // if markedForDeletion, remove it
             sprIt = m_pEnemyShips.erase(sprIt);
