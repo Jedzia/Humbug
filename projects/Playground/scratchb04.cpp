@@ -1,79 +1,156 @@
+// Copyright 2010 Christophe Henry
+// henry UNDERSCORE christophe AT hotmail DOT com
+// This is an extended version of the state machine available in the boost::mpl library
+// Distributed under the same license as the original.
+// Copyright for the original version:
+// Copyright 2005 David Abrahams and Aleksey Gurtovoy. Distributed
+// under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
 #include <iostream>
-#include <sstream>
-#include <string>
-#include <boost/array.hpp>
-#include <boost/algorithm/cxx14/equal.hpp>
-#include <array>
+// back-end
+#include <boost/msm/back/state_machine.hpp>
+//front-end
+#include <boost/msm/front/state_machine_def.hpp>
+
+namespace msm = boost::msm;
+namespace mpl = boost::mpl;
+
+namespace  // Concrete FSM implementation
+{
+    // events
+    struct play {};
+    struct end_pause {};
+    struct stop {};
+    struct pause {};
+    struct open_close {};
+    struct NextSong {};
+    struct PreviousSong {};
+
+    // A "complicated" event type that carries some data.
+    struct cd_detected
+    {
+        cd_detected(std::string name)
+            : name(name)
+        {}
+
+        std::string name;
+    };
+
+    // front-end: define the FSM structure 
+    struct player_ : public msm::front::state_machine_def<player_>
+    {
+        template <class Event, class FSM>
+        void on_entry(Event const&, FSM&) { std::cout << "entering: Player" << std::endl; }
+        template <class Event, class FSM>
+        void on_exit(Event const&, FSM&) { std::cout << "leaving: Player" << std::endl; }
+
+        // The list of FSM states
+        struct Empty : public msm::front::state<>
+        {
+            // every (optional) entry/exit methods get the event passed.
+            template <class Event, class FSM>
+            void on_entry(Event const&, FSM&) { std::cout << "entering: Empty" << std::endl; }
+            template <class Event, class FSM>
+            void on_exit(Event const&, FSM&) { std::cout << "leaving: Empty" << std::endl; }
+        };
+        struct Open : public msm::front::state<>
+        {
+            template <class Event, class FSM>
+            void on_entry(Event const&, FSM&) { std::cout << "entering: Open" << std::endl; }
+            template <class Event, class FSM>
+            void on_exit(Event const&, FSM&) { std::cout << "leaving: Open" << std::endl; }
+        };
+
+        struct Stopped : public msm::front::state<>
+        {
+            // when stopped, the CD is loaded
+            template <class Event, class FSM>
+            void on_entry(Event const&, FSM&) { std::cout << "entering: Stopped" << std::endl; }
+            template <class Event, class FSM>
+            void on_exit(Event const&, FSM&) { std::cout << "leaving: Stopped" << std::endl; }
+        };
 
 
-inline void TestArrayFoo() {
-    std::array<int, 9> marr;
-    marr[0] = 123456;
+        // state not defining any entry or exit
+        struct Paused : public msm::front::state<>
+        {
+        };
 
-    boost::array<int, 4> a = { { 1, 2, 3 } };
-    boost::array<int, 4> b = { 1, 2, 3 };
+        // the initial state of the player SM. Must be defined
+        typedef Empty initial_state;
 
-    auto seq1 = { 0, 1, 2 };
-    auto seq2 = { 0, 1, 2, 3, 4 };
+        // transition actions
+        void start_playback(play const&)       { std::cout << "player::start_playback\n"; }
+        void open_drawer(open_close const&)    { std::cout << "player::open_drawer\n"; }
+        void close_drawer(open_close const&)   { std::cout << "player::close_drawer\n"; }
+        void store_cd_info(cd_detected const& cd) { std::cout << "player::store_cd_info\n"; }
+        void stop_playback(stop const&)        { std::cout << "player::stop_playback\n"; }
+        void pause_playback(pause const&)      { std::cout << "player::pause_playback\n"; }
+        void resume_playback(end_pause const&)      { std::cout << "player::resume_playback\n"; }
+        void stop_and_open(open_close const&)  { std::cout << "player::stop_and_open\n"; }
+        void stopped_again(stop const&){ std::cout << "player::stopped_again\n"; }
+        // guard conditions
 
-    bool r1 = std::equal(seq1.begin(), seq1.end(), seq2.begin()); // true
-    //bool r2 = std::equal(seq2.begin(), seq2.end(), seq1.begin()); // Undefined behavior
-    bool r3 = boost::algorithm::equal(seq1.begin(), seq1.end(), seq2.begin(), seq2.end()); // false
+        typedef player_ p; // makes transition table cleaner
+
+        // Transition table for player
+        struct transition_table : mpl::vector<
+            //      Start     Event         Next      Action               Guard
+            //    +---------+-------------+---------+---------------------+----------------------+
+            a_row < Stopped, open_close, Open, &p::open_drawer                            >,
+            a_row < Stopped, stop, Stopped, &p::stopped_again                          >,
+            //    +---------+-------------+---------+---------------------+----------------------+
+            a_row < Open, open_close, Empty, &p::close_drawer                         >,
+            //    +---------+-------------+---------+---------------------+----------------------+
+            a_row < Empty, open_close, Open, &p::open_drawer                          >,
+            a_row < Empty, cd_detected, Stopped, &p::store_cd_info                        >,
+            //    +---------+-------------+---------+---------------------+----------------------+
+            //    +---------+-------------+---------+---------------------+----------------------+
+            a_row < Paused, stop, Stopped, &p::stop_playback                        >,
+            a_row < Paused, open_close, Open, &p::stop_and_open                        >
+            //    +---------+-------------+---------+---------------------+----------------------+
+        > {};
+
+        // Replaces the default no-transition response.
+        template <class FSM, class Event>
+        void no_transition(Event const& e, FSM&, int state)
+        {
+            std::cout << "no transition from state " << state
+                << " on event " << typeid(e).name() << std::endl;
+        }
+
+    };
+    // Pick a back-end
+    typedef msm::back::state_machine<player_> player;
+
+    //
+    // Testing utilities.
+    //
+    static char const* const state_names[] = { "Stopped", "Open", "Empty", "Playing", "Paused" };
+
+    void pstate(player const& p)
+    {
+        std::cout << " -> " << state_names[p.current_state()[0]] << std::endl;
+    }
+
+    void test()
+    {
+        player p;
+        // needed to start the highest-level SM. This will call on_entry and mark the start of the SM
+        p.start();
+        // go to Open, call on_exit on Empty, then action, then on_entry on Open
+        p.process_event(open_close()); pstate(p);
+
+        p.stop();
+        std::cout << "restart fsm" << std::endl;
+        p.start();
+    }
 }
 
-int main(int argc, char *argv[])
-{ 
-    const std::string input = "\\begin{minipage}[t]{1\\columnwidth}% \n \
-\\begin{jcode}{Testerei von Code}{link} \n \
-\n \
-Das ist Mathe: $\\sqrt{25*22}$ + $\\sum e\\frac{o^{2}}{\\pi}*22_{\\beta}...in\\, q\\left\\Uparrow \\oiintop+a\\right\\Uparrow $ \n \
-\n \
-\\textit{InfoDreckDepp}\\end{jcode}% \n \
-\\end{minipage}";
-
-    TestArrayFoo();
-	
-    std::ostringstream ss;
-    std::ostringstream out;
-	/*float num;
-
-	// use it once
-	string string1 = "25 1 3.235/n1111111/n222222";
-	stream1.str(string1);
-	while( stream1 >> num ) cout << "num: " << num << endl;  // displays numbers, one per line
-
-	// use the same string stream again with clear() and str()
-	string string2 = "1 2 3 4 5  6 7 8 9 10";
-	stream1.clear();
-	stream1.str(string2);*/
-	ss << "arschloch";
-    ss << std::endl;
-	ss << input;
-    std::cout << input << std::endl;  // displays the input string.
-    std::cout << std::endl;
-    std::cout << "-----------------------------------------------------------------" << std::endl;
-	
-    std::string output(ss.str());
-	
-	
-    std::string::iterator it;
-	int count = 0;
-	for( it = output.begin(); it != output.end(); ++it ) {
-		if(*it == '\n') {
-			count = 0;
-		}
-
-		if(count > 40) {
-			//if(*it == '\\' || *it == '{' || *it == '}' || *it == ' ') {
-			if(*it == '\\' || *it == '{' || *it == '}') {
-				out << "\r\n";
-				count = 0;
-			}
-		}
-		out << *it;
-		count++;
-	}             
-
-    std::cout << out.str() << std::endl;  // displays the processed output.
-
+int main()
+{
+    test();
+    return 0;
 }

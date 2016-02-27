@@ -79,6 +79,9 @@
     #include <boost/numeric/ublas/vector.hpp>
     #include <boost/numeric/ublas/vector_expression.hpp>
 
+    #include <boost/msm/back/state_machine.hpp>
+    #include <boost/msm/front/state_machine_def.hpp>
+
 #endif //USE_LIB_BOOST
 
 #include <lua.hpp>
