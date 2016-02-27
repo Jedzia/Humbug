@@ -64,7 +64,75 @@ namespace scroller_levela {
 struct EnemyWave::EnemyWaveImpl {
     int x;
     boost::shared_ptr<AnimatedRectangle> animRect1;
+    struct ShipPositionResults
+    {
+        int rows = 0;
+        int columns = 0;
+        int screenXMiddle = 0;
+        int spriteShipWidth = 0;
+        int spriteShipHeight = 0;
+        int spriteShipHeightDouble = 0;
+        int spriteShipWidthHalf = 0;
+        int spriteShipWidthDouble = 0;
+
+        // setup what dimensions to use
+        int spriteShipHorizontalUse = 0;
+        int spriteShipVerticalUse = 0;
+
+        int spritesXMiddle = 0;
+        int spritesYHeight = 0;
+
+        int startPosX = 0;
+        int startPosY = 0;
+        
+        ShipPositionResults() 
+        {};
+
+        ShipPositionResults(const int totalRows, const int totalColumns, const CRectangle& screenDimension, const CRectangle& sprPaintDimension) /*: rows(totalRows), columns(totalColumns)*/
+        {
+            rows = totalRows;
+            columns = totalColumns;
+
+            screenXMiddle = screenDimension.GetW() / 2;
+            spriteShipWidth = sprPaintDimension.GetW();
+            spriteShipHeight = sprPaintDimension.GetH();
+            spriteShipHeightDouble = spriteShipHeight * 2;
+            spriteShipWidthHalf = spriteShipWidth / 2;
+            spriteShipWidthDouble = spriteShipWidth * 2;
+
+            // setup what dimensions to use
+            spriteShipHorizontalUse = spriteShipWidthDouble;
+            spriteShipVerticalUse = spriteShipHeightDouble;
+            // end setup
+
+            spritesXMiddle = (spriteShipHorizontalUse * totalColumns) / 2;
+            spritesYHeight = (spriteShipVerticalUse * totalRows);
+
+            startPosX = screenXMiddle - spritesXMiddle;
+            startPosY = spriteShipWidthHalf * totalRows;
+
+        }
+
+        CPoint CalculateShipPosition(int row, int column) const
+        {
+            int rowNotEven = row % 1;
+            CPoint pos = CPoint(
+                startPosX + rowNotEven * spriteShipWidthHalf + column * spriteShipHorizontalUse,
+                startPosY + row * spriteShipVerticalUse);
+            return pos;
+        }
+    };
+    //boost::shared_ptr<ShipPositionResults> shipPositions;
+    ShipPositionResults shipPositions;
+
+
+    
+    void SetupShipPositions(const int rows, const int columns, const CRectangle& screenDimension, const CRectangle& sprPaintDimension)
+    {
+        shipPositions = ShipPositionResults(rows, columns, screenDimension, sprPaintDimension);
+    }
 };
+
 
 EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr,
         DebugOverlay* dbgOverlay) : pimpl_(new EnemyWaveImpl), m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader),
@@ -96,45 +164,47 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
 
     const int rows = 4;
     const int columns = 8;
-    //        const int rows = 2;
-    //        const int columns = 2;
-    //const int startPosX = 32;
+//    //        const int rows = 2;
+//    //        const int columns = 2;
+//    //const int startPosX = 32;
+//
+//    int screenXMiddle = canvas->GetDimension().GetW() / 2;
+//    int spriteShipWidth = sprPaintDimension.GetW();
+//    int spriteShipHeight = sprPaintDimension.GetH();
+//    int spriteShipHeightDouble = spriteShipHeight * 2;
+//    int spriteShipWidthHalf = spriteShipWidth / 2;
+//    int spriteShipWidthDouble = spriteShipWidth * 2;
+//
+//    // setup what dimensions to use
+//    int spriteShipHorizontalUse = spriteShipWidthDouble;
+//    int spriteShipVerticalUse = spriteShipHeightDouble;
+//    // end setup
+//
+//    int spritesXMiddle = (spriteShipHorizontalUse * columns) / 2;
+//    int spritesYHeight = (spriteShipVerticalUse * rows);
+//
+//    int startPosX = screenXMiddle - spritesXMiddle;
+//    const int startPosY = 32 * 4;
+//    CPoint initialpos = CPoint(startPosX, startPosY);
 
-    int screenXMiddle = canvas->GetDimension().GetW() / 2;
-    int spriteShipWidth = sprPaintDimension.GetW();
-    int spriteShipHeight = sprPaintDimension.GetH();
-    int spriteShipHeightDouble = spriteShipHeight * 2;
-    int spriteShipWidthHalf = spriteShipWidth / 2;
-    int spriteShipWidthDouble = spriteShipWidth * 2;
-
-    // setup what dimensions to use
-    int spriteShipHorizontalUse = spriteShipWidthDouble;
-    int spriteShipVerticalUse = spriteShipHeightDouble;
-    // end setup
-
-    int spritesXMiddle = (spriteShipHorizontalUse * columns) / 2;
-    int spritesYHeight = (spriteShipVerticalUse * rows);
-
-    int startPosX = screenXMiddle - spritesXMiddle;
-    const int startPosY = 32 * 4;
-    CPoint initialpos = CPoint(startPosX, startPosY);
+    pimpl_->shipPositions = EnemyWaveImpl::ShipPositionResults(rows, columns, canvas->GetDimension(), sprPaintDimension);
 
     //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId,
     // m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
     for(size_t row = 0; row < rows; row++)
     {
         int rowNotEven = row % 1;
-        CPoint pos = CPoint(startPosX + rowNotEven * spriteShipWidthHalf, startPosY + row * spriteShipVerticalUse);
-
         for(size_t column = 0; column < columns; column++)
         {
+            //CPoint pos = CPoint(startPosX + rowNotEven * spriteShipWidthHalf + column * spriteShipHorizontalUse, startPosY + row * spriteShipVerticalUse);
+            CPoint pos = pimpl_->shipPositions.CalculateShipPosition(row, column);
             m_pEnemyShips.push_back(new EnemyShip(sprMgr, pos, m_iSprEnemy1ShipId, m_iSprLaserId, canvas,
                             dbgOverlay));
-            pos.Move(spriteShipHorizontalUse, 0);
+            //pos.Move(spriteShipHorizontalUse, 0);
         }
     }
     pimpl_->animRect1 = boost::make_shared<AnimatedRectangle>(
-            CRectangle(0, -2 * spritesYHeight, 0, 0),     // starting shape, over the top
+        CRectangle(0, -2 * pimpl_->shipPositions.spritesYHeight, 0, 0),     // starting shape, over the top
             CRectangle(),                                 // final shape, zero
             //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 8.0f,
             // EaseOutElastic(2));
