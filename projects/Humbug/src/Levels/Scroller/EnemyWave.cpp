@@ -17,8 +17,8 @@
 //
 #include "EnemyWave.h"
 //
-#include "EnemyWaveSTM.h"
 #include "../../GUI/DebugOverlay.h"
+#include "EnemyWaveSTM.h"
 #include <boost/foreach.hpp>
 #include <iostream>
 
@@ -33,14 +33,14 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 //#include <GuiLib/GUI/Visual/EventHandler.h>
 //#include <cstdlib>
-#include <GuiLib/GUI/Components/Rectangle.h>
 #include <GuiLib/Animation.h>
+#include <GuiLib/GUI/Components/Rectangle.h>
 //#include <GuiLib/Filesystem/FileLoader.h>
 //#include <GuiLib/GUI/Components/CanvasRendererImpl.h>
 //#include <GuiLib/GUI/Components/CoordSystem.h>
 //#include <GuiLib/GUI/Components/EasingFunctors.h>
-#include <GuiLib/GUI/Components/Image.h>
 #include <GuiLib/GUI/Components/EasingFunctors.h>
+#include <GuiLib/GUI/Components/Image.h>
 //#include <GuiLib/GUI/Components/Image.h>
 //#include <GuiLib/GUI/Components/SeamlessImage.h>
 //#include <GuiLib/GUI/Components/Shapes/Line.h>
@@ -61,14 +61,14 @@ using namespace gui;
 namespace humbug {
 namespace levels {
 namespace scroller_levela {
-
 struct EnemyWave::EnemyWaveImpl {
     int x;
     boost::shared_ptr<AnimatedRectangle> animRect1;
 };
 
 EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr,
-        DebugOverlay* dbgOverlay) : pimpl_(new EnemyWaveImpl),  m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader), m_pOverlay(dbgOverlay) {
+        DebugOverlay* dbgOverlay) : pimpl_(new EnemyWaveImpl), m_pSprMgr(sprMgr), m_pCanvas(canvas), m_Loader(loader),
+    m_pOverlay(dbgOverlay) {
     m_pSprEnemy1Ship =
         new CSprite(loader, "Sprites/Ship/Enemy01a.png", canvas, CPoint(64, 64));
     m_pSprEnemy1Ship->SprImage()->DstRect() = m_pSprEnemy1Ship->SprImage()->DstRect() / 2;
@@ -106,7 +106,7 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     int spriteShipHeightDouble = spriteShipHeight * 2;
     int spriteShipWidthHalf = spriteShipWidth / 2;
     int spriteShipWidthDouble = spriteShipWidth * 2;
-    
+
     // setup what dimensions to use
     int spriteShipHorizontalUse = spriteShipWidthDouble;
     int spriteShipVerticalUse = spriteShipHeightDouble;
@@ -117,7 +117,7 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
 
     int startPosX = screenXMiddle - spritesXMiddle;
     const int startPosY = 32 * 4;
-    CPoint initialpos = CPoint(startPosX , startPosY );
+    CPoint initialpos = CPoint(startPosX, startPosY);
 
     //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId,
     // m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
@@ -133,12 +133,12 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
             pos.Move(spriteShipHorizontalUse, 0);
         }
     }
-
     pimpl_->animRect1 = boost::make_shared<AnimatedRectangle>(
-        CRectangle(0, -2 * spritesYHeight, 0, 0),         // starting shape, over the top
-        CRectangle(),                                     // final shape, zero
-        //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 8.0f, EaseOutElastic(2));
-        AnimatedRectangleBindAdapter(sprMgr), 8.0f, EaseOutElastic(1.5f));
+            CRectangle(0, -2 * spritesYHeight, 0, 0),     // starting shape, over the top
+            CRectangle(),                                 // final shape, zero
+            //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 8.0f,
+            // EaseOutElastic(2));
+            AnimatedRectangleBindAdapter(sprMgr), 8.0f, EaseOutElastic(1.5f));
 
     //mainX();
 }
@@ -150,6 +150,34 @@ void EnemyWave::HitBy(const CSprite& hitter,
         CSpriteModifierData& mdata) {
 }
 
+struct ModulateSinus {
+    explicit ModulateSinus(const vdouble amplitude = static_cast<vdouble>(1.0f),
+            const vdouble period = static_cast<vdouble>(1.0f)) : m_amplitude(amplitude), m_period(period)
+    { }
+
+    // 0.0 to 1.0 maps to 0 to 360 degrees.
+    vdouble operator()(vdouble t) const {
+        double result = sin(t * 360.0f * vdouble(M_PI) / 180.0f);
+        return result;
+    }
+
+private:
+
+    vdouble m_amplitude;
+    vdouble m_period;
+};
+
+struct ModulateCosinus {
+    explicit ModulateCosinus()
+    { }
+
+    // 0.0 to 1.0 maps to 0 to 360 degrees.
+    vdouble operator()(vdouble t) const {
+        double result = cos(t * 360.0f * vdouble(M_PI) / 180.0f);
+        return result;
+    }
+};
+
 void EnemyWave::HookIdle(int ticks, float speed) {
     CPoint movement = CPoint(1, 1);
     if(ticks % 300 > 150) {
@@ -157,10 +185,14 @@ void EnemyWave::HookIdle(int ticks, float speed) {
     }
 
     static Modulo ring(2.0f);
+    static ModulateSinus modSinus;
+    static ModulateCosinus modCosinus;
 
     //int ring0 = ring.Timed(ticks);
     int ring1 = ring(ticks);
-    dbgOut("Ring:" << ring.NormTimed(ticks) << ", " << ring1);
+    int mod_sinus = static_cast<int>(modSinus(ring.NormTimed(ticks)) * 100);
+    int mod_cosinus = static_cast<int>(modCosinus(ring.NormTimed(ticks)) * 100);
+    //dbgOut("Ring:" << ring.NormTimed(ticks) << ", i:" << ring1 << ", modSin:" << modSinus(ring.NormTimed(ticks)));
     //dbgOut("Ring:" << ring1);
     //return;
     //m_pKeyHandler->HookIdle(ticks, speed);
@@ -170,6 +202,7 @@ void EnemyWave::HookIdle(int ticks, float speed) {
 //        }
 
     boost::ptr_vector<EnemyShip>::iterator sprIt = m_pEnemyShips.begin();
+
     while(sprIt != m_pEnemyShips.end()) {
         boost::ptr_vector<EnemyShip>::reference ship = (*sprIt);
         unsigned int id = ship.Id();
@@ -179,13 +212,13 @@ void EnemyWave::HookIdle(int ticks, float speed) {
         }
         else {
             //ship.SetOffset(ship.Offset() + movement);
-            ship.SetOffset(pimpl_->animRect1->Rect());
+            ship.SetOffset(pimpl_->animRect1->Rect() + CPoint(mod_sinus, mod_cosinus));
             ++sprIt;
         }
     }
 } // EnemyWave::HookIdle
-void EnemyWave::Reset() const
-{
+
+void EnemyWave::Reset() const {
     pimpl_->animRect1->Reset();
 }
 }
