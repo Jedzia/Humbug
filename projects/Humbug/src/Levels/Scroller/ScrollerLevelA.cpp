@@ -78,7 +78,7 @@ private:
 
 public:
 
-    boost::shared_ptr<hspriv::LaserMover> updfunc2;
+    //boost::shared_ptr<hspriv::LaserMover> updfunc2;
     boost::shared_ptr<hspriv::SaucerMover> updfunc3;
     boost::shared_ptr<PlayerShip> m_pPlayerShip;
     boost::shared_ptr<EnemyWave> m_pEnemyWave;
@@ -334,14 +334,20 @@ void ScrollerLevelA::OnKeyDown(SDL_Keycode sym, Uint16) {
         //pimpl_->timing.Reset();
         break;
     }
+    case SDLK_r:
+    {
+        pimpl_->m_pEnemyWave->Reset();
+        //pimpl_->updfunc2->IncrementOffset();
+        break;
+    }
     case SDLK_KP_PLUS:
     {
-        pimpl_->updfunc2->IncrementOffset();
+        //pimpl_->updfunc2->IncrementOffset();
         break;
     }
     case SDLK_KP_MINUS:
     {
-        pimpl_->updfunc2->DecrementOffset();
+        //pimpl_->updfunc2->DecrementOffset();
         break;
     }
     default:

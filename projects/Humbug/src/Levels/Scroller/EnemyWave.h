@@ -64,6 +64,8 @@ public:
 
     void HookIdle(int ticks, float speed);
 
+    void Reset() const;
+
 private:
 
     struct EnemyWaveImpl;

@@ -33,6 +33,7 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 #include <GuiLib/GUI/Visual/EventHandler.h>
 #include <cstdlib>
+#include <GuiLib/Animation.h>
 //
 //#include <build/cmake/include/debug.h>
 
@@ -40,59 +41,13 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
-/** @class AnimatedRectangle:
- *  Detailed description.
- *
- */
-class AnimatedRectangle : public boost::noncopyable {
-    CRectangle m_recStart;
-    CRectangle m_recEnd;
-    Timing m_Timing;
-    vdouble m_duration;
-    TimeEasingFunc m_easingFunc;
-
-public:
-
-    AnimatedRectangle(const CRectangle& recStart,
-            const CRectangle& recEnd,
-            const Hookable* updater,
-            vdouble duration,
-            TimeEasingFunc easingfunc = NULL)
-        : m_recStart{recStart}, m_recEnd{recEnd}, m_Timing(updater), m_duration(duration), m_easingFunc(easingfunc) {
-    }
-
-    AnimatedRectangle(const CRectangle& recStart,
-            const CRectangle& recEnd,
-            UpdateTimeFunc updateFunction,
-            vdouble duration,
-            TimeEasingFunc easingfunc = NULL)
-        : m_recStart{recStart}, m_recEnd{recEnd}, m_Timing(updateFunction), m_duration(duration), m_easingFunc(easingfunc) {
-    }
-
-    void Reset() { m_Timing.Reset(); }
-
-    // conversion
-    operator CRectangle()
-    {
-        //static EaseNone ease;
-        float x = m_Timing.RangeMappedSinceStart(m_recStart.GetX(), m_recEnd.GetX(), m_duration, m_easingFunc);
-        float y = m_Timing.RangeMappedSinceStart(m_recStart.GetY(), m_recEnd.GetY(), m_duration, m_easingFunc);
-        float w = m_Timing.RangeMappedSinceStart(m_recStart.GetW(), m_recEnd.GetW(), m_duration, m_easingFunc);
-        float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration, m_easingFunc);
-        //float h = m_Timing.RangeMappedSinceStart(m_recStart.GetH(), m_recEnd.GetH(), m_duration,
-        // boost::ref(ease));
-        return CRectangle(x, y, w, h);
-    };
-
-private:
-};
 
 struct ZoomInScreen::ZoomInScreenImpl {
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
     ZoomInScreen* m_host;
     int x;
-    boost::scoped_ptr<gui::components::CImage> m_pZoomingImage;
+    boost::scoped_ptr<CImage> m_pZoomingImage;
     Timing timing;
     boost::shared_ptr<AnimatedRectangle> animRect1;
 
@@ -148,7 +103,7 @@ struct ZoomInScreen::ZoomInScreenImpl {
 };
 
 ZoomInScreen::ZoomInScreen(FileLoader& loader, CCanvas* background) :
-    pimpl_(new ZoomInScreen::ZoomInScreenImpl(this)),
+    pimpl_(new ZoomInScreenImpl(this)),
     Screen(background),
     m_Loader(loader),
     //m_iUpdateTimes(0),
@@ -208,7 +163,7 @@ bool ZoomInScreen::OnInit(int argc, char* argv[]) {
     //"\r\n"
     CColor m_colText = CColor::White();
     std::ostringstream outstring;
-    outstring << "Bla fasel:" << gui::CApplication::ShownFrames();
+    outstring << "Bla fasel:" << CApplication::ShownFrames();
     outstring << " ";
 
     //std::string pstr;

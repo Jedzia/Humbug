@@ -34,12 +34,14 @@
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
 //#include <GuiLib/GUI/Visual/EventHandler.h>
 //#include <cstdlib>
-#include <GUI/Components/Rectangle.h>
+#include <GuiLib/GUI/Components/Rectangle.h>
+#include <GuiLib/Animation.h>
 //#include <GuiLib/Filesystem/FileLoader.h>
 //#include <GuiLib/GUI/Components/CanvasRendererImpl.h>
 //#include <GuiLib/GUI/Components/CoordSystem.h>
 //#include <GuiLib/GUI/Components/EasingFunctors.h>
 #include <GuiLib/GUI/Components/Image.h>
+#include <GuiLib/GUI/Components/EasingFunctors.h>
 //#include <GuiLib/GUI/Components/Image.h>
 //#include <GuiLib/GUI/Components/SeamlessImage.h>
 //#include <GuiLib/GUI/Components/Shapes/Line.h>
@@ -291,12 +293,9 @@ int main()
 }
 
 
-
-
-
 struct EnemyWave::EnemyWaveImpl {
     int x;
-
+    boost::shared_ptr<AnimatedRectangle> animRect1;
 };
 
 EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr,
@@ -345,7 +344,7 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     m_iSprLaserId = m_pSprMgr->AddSprite(m_pSprLaser, "EnemyBullet");
 
     const int rows = 4;
-    const int columns = 4;
+    const int columns = 8;
     //        const int rows = 2;
     //        const int columns = 2;
     //const int startPosX = 32;
@@ -356,25 +355,41 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
     int spriteShipHeightDouble = spriteShipHeight * 2;
     int spriteShipWidthHalf = spriteShipWidth / 2;
     int spriteShipWidthDouble = spriteShipWidth * 2;
-    int spritesXMiddle = (spriteShipWidth * columns) / 2;
+    
+    int spriteShipHorizontalUse = spriteShipWidthDouble;
+    int spriteShipVerticalUse = spriteShipHeightDouble;
+    
+    int spritesXMiddle = (spriteShipHorizontalUse * columns) / 2;
+    int spritesYHeight = (spriteShipVerticalUse * rows);
 
     int startPosX = screenXMiddle - spritesXMiddle;
-    const int startPosY = 32;
+    const int startPosY = 32 * 4;
+    CPoint initialpos = CPoint(startPosX , startPosY );
 
     //m_pEnemyShip = boost::make_shared<EnemyShip>(m_pSprEnemy1Ship, m_iSprEnemy1ShipId,
     // m_pSprLaser, m_iSprLaserId, canvas, sprMgr, dbgOverlay);
     for(size_t row = 0; row < rows; row++)
     {
         int rowNotEven = row % 1;
-        CPoint pos = CPoint(startPosX + rowNotEven * spriteShipWidthHalf, startPosY + row * spriteShipHeightDouble);
+        CPoint pos = CPoint(startPosX + rowNotEven * spriteShipWidthHalf, startPosY + row * spriteShipVerticalUse);
 
         for(size_t column = 0; column < columns; column++)
         {
             m_pEnemyShips.push_back(new EnemyShip(sprMgr, pos, m_iSprEnemy1ShipId, m_iSprLaserId, canvas,
                             dbgOverlay));
-            pos.Move(spriteShipWidth, 0);
+            pos.Move(spriteShipHorizontalUse, 0);
         }
     }
+
+    pimpl_->animRect1 = boost::make_shared<AnimatedRectangle>(
+        //CRectangle(400, 400, 300, 300),         // starting shape
+        CRectangle(0, -2 * spritesYHeight, 0, 0),         // starting shape
+        //CRectangle(initialpos, initialpos),   // final shape
+        CRectangle(CRectangle(), CRectangle()),   // final shape
+        //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 2.0f, EaseOutBounce(2));
+        //boost::bind(&CSpriteManager::UpdateTimeFunc, boost::ref(*sprMgr)), 8.0f, EaseOutElastic(2));
+        AnimatedRectangleBindAdapter(sprMgr), 8.0f, EaseOutElastic(1.5f));
+        //sprMgr, 8.0f, EaseOutElastic(2));
 
     //main();
 }
@@ -408,11 +423,17 @@ void EnemyWave::HookIdle(int ticks, float speed) {
             sprIt = m_pEnemyShips.erase(sprIt);
         }
         else {
-            ship.SetOffset(ship.Offset() + movement);
+            //ship.SetOffset(ship.Offset() + movement);
+            CRectangle rect = *pimpl_->animRect1;
+            ship.SetOffset(rect);
             ++sprIt;
         }
     }
 } // EnemyWave::HookIdle
+void EnemyWave::Reset() const
+{
+    pimpl_->animRect1->Reset();
+}
 }
 }
 }

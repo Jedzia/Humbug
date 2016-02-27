@@ -215,14 +215,6 @@ TextAnimator* CText::Wait(Hookable* hookable, Timing::seconds waitTime)
     return mover;
 }
 
-/** @class SinusoidWobbler:
- *  Detailed description.
- *  @param hookable TODO
- *  @return TODO
- */
-class SinusoidWobbler {
-};
-
 TextAnimator * CText::MoveTo(CPoint c_point, Hookable* hookable, float speed, Timing::seconds timeIn, Timing::seconds timeOut, const TimeEasingFunc& easingFunc) {
     //auto bla = *this;
     //AddAnimator(NULL);
