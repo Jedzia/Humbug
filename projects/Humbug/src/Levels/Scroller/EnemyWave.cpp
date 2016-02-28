@@ -17,6 +17,7 @@
 //
 #include "EnemyWave.h"
 //
+#include "EnemyShip.h"
 #include "../../GUI/DebugOverlay.h"
 #include "EnemyWaveSTM.h"
 #include <boost/foreach.hpp>
@@ -64,6 +65,9 @@ namespace scroller_levela {
 struct EnemyWave::EnemyWaveImpl {
     int x;
     boost::shared_ptr<AnimatedRectangle> animRect1;
+    boost::ptr_vector<EnemyShip> m_pEnemyShips;
+
+
     struct ShipPositionResults
     {
         int rows = 0;
@@ -197,9 +201,10 @@ EnemyWave::EnemyWave(FileLoader& loader, CCanvas* canvas, CSpriteManager* sprMgr
         for(size_t column = 0; column < columns; column++)
         {
             //CPoint pos = CPoint(startPosX + rowNotEven * spriteShipWidthHalf + column * spriteShipHorizontalUse, startPosY + row * spriteShipVerticalUse);
-            CPoint pos = pimpl_->shipPositions.CalculateShipPosition(row, column);
-            m_pEnemyShips.push_back(new EnemyShip(sprMgr, pos, m_iSprEnemy1ShipId, m_iSprLaserId, canvas,
-                            dbgOverlay));
+            CPoint pos = pimpl_->shipPositions.CalculateShipPosition(static_cast<int>(row), static_cast<int>(column));
+            auto ship = new EnemyShip(sprMgr, pos, m_iSprEnemy1ShipId, m_iSprLaserId, canvas, dbgOverlay);
+            ship->SetRowColumn(row, column);
+            pimpl_->m_pEnemyShips.push_back(ship);
             //pos.Move(spriteShipHorizontalUse, 0);
         }
     }
@@ -227,7 +232,7 @@ struct ModulateSinus {
 
     // 0.0 to 1.0 maps to 0 to 360 degrees.
     vdouble operator()(vdouble t) const {
-        double result = sin(t * 360.0f * vdouble(M_PI) / 180.0f);
+        vdouble result = sin(t * 360.0f * vdouble(M_PI) / 180.0f);
         return result;
     }
 
@@ -243,7 +248,7 @@ struct ModulateCosinus {
 
     // 0.0 to 1.0 maps to 0 to 360 degrees.
     vdouble operator()(vdouble t) const {
-        double result = cos(t * 360.0f * vdouble(M_PI) / 180.0f);
+        vdouble result = cos(t * 360.0f * vdouble(M_PI) / 180.0f);
         return result;
     }
 };
@@ -271,14 +276,14 @@ void EnemyWave::HookIdle(int ticks, float speed) {
 //            ship.SetOffset(ship.Offset() + movement);
 //        }
 
-    boost::ptr_vector<EnemyShip>::iterator sprIt = m_pEnemyShips.begin();
+    boost::ptr_vector<EnemyShip>::iterator sprIt = pimpl_->m_pEnemyShips.begin();
 
-    while(sprIt != m_pEnemyShips.end()) {
+    while (sprIt != pimpl_->m_pEnemyShips.end()) {
         boost::ptr_vector<EnemyShip>::reference ship = (*sprIt);
         unsigned int id = ship.Id();
         if(ship.IsDisposed()) {
             // if markedForDeletion, remove it
-            sprIt = m_pEnemyShips.erase(sprIt);
+            sprIt = pimpl_->m_pEnemyShips.erase(sprIt);
         }
         else {
             //ship.SetOffset(ship.Offset() + movement);

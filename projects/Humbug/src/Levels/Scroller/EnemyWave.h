@@ -17,7 +17,10 @@
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <GuiLib/GUI/Components/Rectangle.h>
 #include <GuiLib/GUI/Sprite/SpriteManager.h>
-#include "EnemyShip.h"
+
+namespace humbug{
+    class DebugOverlay;
+}
 
 namespace humbug {
 namespace levels {
@@ -83,7 +86,6 @@ private:
     FileLoader& m_Loader;
     DebugOverlay* m_pOverlay;
     //boost::shared_ptr<EnemyShip> m_pEnemyShip;
-    boost::ptr_vector<EnemyShip> m_pEnemyShips;
 
 };
 }

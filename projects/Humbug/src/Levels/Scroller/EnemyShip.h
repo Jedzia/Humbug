@@ -33,19 +33,30 @@ namespace levels {
 class BaseEnemyShip : public gui::HitHandler, public gui::Disposable {
     unsigned int m_iId;
     static unsigned int CurrentID;
+    std::tuple<size_t, size_t> rowColumn;
     
     static unsigned int GetNewId();
 public:
 
+    BaseEnemyShip();
+
     /** Brief description of BaseEnemyShip, Offset
-     *  Detailed description.
-     *  @return TODO
-     */
+    *  Detailed description.
+    *  @return TODO
+    */
     unsigned int Id() const {
         return m_iId;
     }
 
-    BaseEnemyShip();
+    std::tuple<size_t, size_t> RowColumn() const
+    {
+        return rowColumn;
+    }
+
+    void SetRowColumn(size_t row, size_t column)
+    {
+        rowColumn = std::tuple<size_t, size_t>(row, column);
+    }
 };
 
 namespace scroller_levela {
