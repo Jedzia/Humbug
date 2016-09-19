@@ -522,7 +522,7 @@ ObjectStatusFlag 0
 ObjectItemFlag 4
 ObjectSelectionFlag 0
 NumChildren 1
-BeginGeometry D:\E\Projects\C++\Humbug\projects\Humbug\Artwork\Sprites\Sphere\sphere01.3ds
+BeginGeometry D:\E\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Sprites\Sphere\sphere01.3ds
 EndGeometry
 ObjectAlias sphere01
 BeginMotion
@@ -3864,7 +3864,7 @@ BeginModeData Render
 		BuffOne 28 1.000000
 		BuffGamma 28 1.000000
 		BuffImageName 6 Image
-		BuffImagePath 6 D:\E\Projects\C++\Humbug\projects\Humbug\Artwork\Sprites\Sphere\Images\
+		BuffImagePath 6 D:\E\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Sprites\Sphere\Images\
 		BuffImageExt 6 BMP 24bit
 		BuffType 6 Alpha
 		BuffFlags 9 13
@@ -5942,7 +5942,7 @@ BeginExtensionData Sketch
 		SketchPath 6 
 		AlwaysShow0 9 0
 		DrawPosition 9 0
-		FullPath 6 D:\E\Projects\C++\Humbug\projects\Humbug\Artwork\Sprites\Sphere\Sphere0005_SKETCH.msk
+		FullPath 6 D:\E\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Sprites\Sphere\Sphere0005_SKETCH.msk
 		NumSketches 9 0
 EndModuleData
 BeginExtensionData ViewManager

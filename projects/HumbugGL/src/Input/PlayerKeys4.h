@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -18,7 +18,7 @@
 #define PROJECT_PlayerKeys4_H
 #include "GUI/Components/Point.h"
 #include "GUI/Components/Rectangle.h"
-#include "HumbugShared/GameObjects/GPoint2D.h"
+#include "HumbugGLShared/GameObjects/GPoint2D.h"
 #include <GuiLib/Input/KeyboardHandler.h>
 
 namespace humbug {

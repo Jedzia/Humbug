@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -145,7 +145,7 @@ public:
         // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
         m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
         //m_pArialfont =
-        // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
+        // TTF_OpenFont("E:/Projects/C++/HumbugGL/projects/HumbugGL/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
         SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/HighscoreScreenBg.png") );
 

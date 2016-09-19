@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -20,7 +20,7 @@
 #include <stdio.h>
 
 //#include <build/cmake/include/debug.h>
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 namespace internal {
 extern std::string getExePath();
 
@@ -28,7 +28,7 @@ extern std::string buildAppDir(const std::string& exePath);
 }
 }
 AppGB::AppGB(){
-    using namespace HumbugLIB_NAMESPACE::internal;
+    using namespace HumbugGLLIB_NAMESPACE::internal;
     exePath = getExePath();
     LOGSTREAM << "Starting at '" << exePath << "'.";
     appDir = buildAppDir( exePath );

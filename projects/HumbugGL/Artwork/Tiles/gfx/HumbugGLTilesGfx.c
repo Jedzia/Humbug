@@ -1,5 +1,5 @@
-#ifndef _HumbugTilesGfx_c
-#define _HumbugTilesGfx_c
+#ifndef _HumbugGLTilesGfx_c
+#define _HumbugGLTilesGfx_c
 
 
 #ifndef _GFX_BITMAP_DATA

@@ -1,21 +1,21 @@
-#ifndef HUMBUG_FS_HumbugFileLoader_H
-#define HUMBUG_FS_HumbugFileLoader_H
+#ifndef HUMBUGGL_FS_HumbugGLFileLoader_H
+#define HUMBUGGL_FS_HumbugGLFileLoader_H
 #include <GuiLib/Filesystem/FileLoader.h>
 
 
-class HumbugFileLoader : public FileLoader {
+class HumbugGLFileLoader : public FileLoader {
 public:
 
-    HumbugFileLoader(const std::string & basepath);
-    ~HumbugFileLoader();
+    HumbugGLFileLoader(const std::string & basepath);
+    ~HumbugGLFileLoader();
 
     FileLoadingInfo& Load(const std::string & filename, std::string location) override;
     std::string LoadAsString(const std::string & filename, std::string location) override;
 
 private:
 
-    struct HumbugFileLoaderImpl;
-    boost::scoped_ptr<HumbugFileLoaderImpl> pimpl_;
+    struct HumbugGLFileLoaderImpl;
+    boost::scoped_ptr<HumbugGLFileLoaderImpl> pimpl_;
 };
 
-#endif // HUMBUG_FS_HumbugFileLoader_H guard
+#endif // HUMBUGGL_FS_HumbugGLFileLoader_H guard

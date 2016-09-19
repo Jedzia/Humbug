@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -22,7 +22,7 @@
   #  define dbgOut(x)
 #endif // _DEBUG
 
-#include <HumbugLib/LogManager.h>
+#include <HumbugGLLib/LogManager.h>
 // Standard headers
 #include <iostream>
 #include <memory>   // std::auto_ptr
@@ -37,7 +37,7 @@
 #include <string>
 #include <vector>
 
-#include "HumbugShared/VFS/stdint.h"
+#include "HumbugGLShared/VFS/stdint.h"
 
 
 #if defined(USE_LIB_BOOST)

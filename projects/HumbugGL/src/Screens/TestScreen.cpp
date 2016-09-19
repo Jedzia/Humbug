@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -82,7 +82,7 @@ namespace humbug {
       //m_pBackground = CCanvas::CreateRGBCompatible(NULL, 1024, 768 - 320);
       //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
       // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
-      m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
+      m_pArialfont = TTF_OpenFont("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/arial.ttf", 30);
       mcol = CColor::White();
       SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/TestScreenBg.png") );
 
@@ -112,7 +112,7 @@ namespace humbug {
       "declared in class " <<
       "'boost::noncopyable_::noncopyable'" << "\t" <<
       "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" <<
-      "\t" << "48" << "\t" << "Humbug" << "\r\n" <<
+      "\t" << "48" << "\t" << "HumbugGL" << "\r\n" <<
       "\r\n" <<
       "Error" << "\t" << "3" << "\t" <<
       "error C2248: 'boost::scoped_ptr<T>::scoped_ptr' : cannot access private member declared in "
@@ -120,7 +120,7 @@ namespace humbug {
       "class " <<
       "'boost::scoped_ptr<T>'" << "\t" <<
       "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" << "\t" << "48" << "\t" <<
-      "Humbug" << "\r\n" <<
+      "HumbugGL" << "\r\n" <<
       "";
 
       m_pScrollText.reset( new CText(m_pArialfont, outstring.str(), m_colText) );

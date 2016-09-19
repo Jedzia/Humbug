@@ -7,7 +7,7 @@
 //#include "PlayerShip.h"
 //#include "EnemyShip.h"
 //#include "GUI/DebugOverlay.h"
-//#include "HumbugShared/GameObjects/Player.h"
+//#include "HumbugGLShared/GameObjects/Player.h"
 //
 //#include <GUI/Components/Rectangle.h>
 //#include <GuiLib/Filesystem/FileLoader.h>

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_GUI_SPRITE_CSPRITE_H
-#define HUMBUG_GUI_SPRITE_CSPRITE_H
+#ifndef HUMBUGGL_GUI_SPRITE_CSPRITE_H
+#define HUMBUGGL_GUI_SPRITE_CSPRITE_H
 #include "../Components/Point.h"
 #include "../Components/Rectangle.h"
 #include "../Components//BaseDrawable.h"
@@ -104,4 +104,4 @@ public:
 
   std::ostream& operator<<(std::ostream& o, const CSprite& r);
 }
-#endif // HUMBUG_GUI_SPRITE_CSPRITE_H guard
+#endif // HUMBUGGL_GUI_SPRITE_CSPRITE_H guard

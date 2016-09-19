@@ -26,8 +26,8 @@ format 76
   package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
   show_infonote default drawing_language default show_stereotype_properties default
   
-  cpp_h_dir "HumbugShared/"
-  cpp_src_dir "HumbugShared/"
+  cpp_h_dir "HumbugGLShared/"
+  cpp_src_dir "HumbugGLShared/"
   deploymentview 141186 "toplevel"
     //deployment diagram settings
     package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
@@ -261,7 +261,7 @@ ${inlines}
     class 420354 "defs"
       visibility package 
       cpp_external cpp_decl "${name}
-#include <HumbugShared/${name}.h>
+#include <HumbugGLShared/${name}.h>
 "
       java_decl ""
       php_decl ""

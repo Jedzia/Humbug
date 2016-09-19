@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_SCREENS_HOPPERSCREEN_H
-#define HUMBUG_SCREENS_HOPPERSCREEN_H
+#ifndef HUMBUGGL_SCREENS_HOPPERSCREEN_H
+#define HUMBUGGL_SCREENS_HOPPERSCREEN_H
 #include "GUI/Components/Screen.h"
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/smart_ptr/scoped_ptr.hpp>
@@ -71,4 +71,4 @@ private:
     };
   }
 }
-#endif // HUMBUG_SCREENS_HOPPERSCREEN_H
+#endif // HUMBUGGL_SCREENS_HOPPERSCREEN_H

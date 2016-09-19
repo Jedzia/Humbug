@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -20,19 +20,19 @@
 #include <algorithm>
 #include <stdexcept>
 //#include <boost/thread.hpp>
-#define HUMBUG_AUTO_MUTEX_NAME mutex
-#define HUMBUG_LOCK_AUTO_MUTEX
-//#define HUMBUG_LOCK_AUTO_MUTEX boost::unique_lock<boost::recursive_mutex>
+#define HUMBUGGL_AUTO_MUTEX_NAME mutex
+#define HUMBUGGL_LOCK_AUTO_MUTEX
+//#define HUMBUGGL_LOCK_AUTO_MUTEX boost::unique_lock<boost::recursive_mutex>
 // ogreAutoMutexLock(OGRE_AUTO_MUTEX_NAME)
-#ifndef HUMBUG_EXCEPT
-//#define HUMBUG_EXCEPT(num, desc, src) throw HumbugLib::ExceptionFactory::create( \
-// //	HumbugLib::ExceptionCodeType<num>(), desc, src, __FILE__, __LINE__ );
-#  define HUMBUG_EXCEPT(num, desc, src);
+#ifndef HUMBUGGL_EXCEPT
+//#define HUMBUGGL_EXCEPT(num, desc, src) throw HumbugGLLib::ExceptionFactory::create( \
+// //	HumbugGLLib::ExceptionCodeType<num>(), desc, src, __FILE__, __LINE__ );
+#  define HUMBUGGL_EXCEPT(num, desc, src);
 #endif
 //
 #include <debug.h>
 
-HumbugLIB_BEGIN_NAMESPACE
+HumbugGLLIB_BEGIN_NAMESPACE
 
 //-----------------------------------------------------------------------
 template<>
@@ -61,7 +61,7 @@ LogManager::LogManager(){
 
 //-----------------------------------------------------------------------
 LogManager::~LogManager(){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
     // Destroy all logs
     LogList::iterator i;
 
@@ -74,7 +74,7 @@ LogManager::~LogManager(){
 //-----------------------------------------------------------------------
 Log * LogManager::createLog( const std::string& name, bool defaultLog, bool debuggerOutput,
         bool suppressFileOutput){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
 
     Log* newLog = new Log(name, debuggerOutput, suppressFileOutput);
 
@@ -89,13 +89,13 @@ Log * LogManager::createLog( const std::string& name, bool defaultLog, bool debu
 
 //-----------------------------------------------------------------------
 Log * LogManager::getDefaultLog(){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
     return mDefaultLog;
 }
 
 //-----------------------------------------------------------------------
 Log * LogManager::setDefaultLog(Log* newLog){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
     Log* oldLog = mDefaultLog;
     mDefaultLog = newLog;
     return oldLog;
@@ -103,14 +103,14 @@ Log * LogManager::setDefaultLog(Log* newLog){
 
 //-----------------------------------------------------------------------
 Log * LogManager::getLog( const std::string& name){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
     LogList::iterator i = mLogs.find(name);
 
     if ( i != mLogs.end() ) {
         return i->second;
     }
     else {
-        HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
+        HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
         throw std::runtime_error("Log not found. LogManager::getLog");
     }
 }
@@ -137,7 +137,7 @@ void LogManager::destroyLog(const std::string& name){
 //-----------------------------------------------------------------------
 void LogManager::destroyLog(Log* log){
     if(!log) {
-        HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
+        HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
         throw std::runtime_error("Cannot destroy a null log. LogManager::destroyLog");
     }
 
@@ -146,7 +146,7 @@ void LogManager::destroyLog(Log* log){
 
 //-----------------------------------------------------------------------
 void LogManager::logMessage( const std::string& message, LogMessageLevel lml, bool maskDebug){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
 
     if (mDefaultLog) {
         mDefaultLog->logMessage(message, lml, maskDebug);
@@ -155,7 +155,7 @@ void LogManager::logMessage( const std::string& message, LogMessageLevel lml, bo
 
 //-----------------------------------------------------------------------
 void LogManager::setLogDetail(LoggingLevel ll){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
 
     if (mDefaultLog) {
         mDefaultLog->setLogDetail(ll);
@@ -164,13 +164,13 @@ void LogManager::setLogDetail(LoggingLevel ll){
 
 //---------------------------------------------------------------------
 Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
-    HUMBUG_LOCK_AUTO_MUTEX;
+    HUMBUGGL_LOCK_AUTO_MUTEX;
 
     if (mDefaultLog) {
         return mDefaultLog->stream(lml, maskDebug);
     }
     else {
-        HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
+        HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
         throw std::runtime_error("Default log not found. LogManager::stream");
     }
 }
@@ -180,7 +180,7 @@ Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
         throw std::exception("The method or operation is not implemented.");
    }*/
 
-HumbugLIB_END_NAMESPACE
+HumbugGLLIB_END_NAMESPACE
 
 extern "C" {
     /** $(fclass), _log_from_c:

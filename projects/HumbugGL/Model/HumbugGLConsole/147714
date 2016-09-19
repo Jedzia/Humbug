@@ -1,5 +1,5 @@
 format 76
-"filesystem" // Humbug::CppStructz::filesystem
+"filesystem" // HumbugGL::CppStructz::filesystem
   revision 12
   modified_by 2 "root"
   // class settings

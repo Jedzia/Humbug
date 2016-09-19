@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -18,7 +18,7 @@
 #define _PROGOPTIONS_H
 
 //#include "../global.h"
-//#include <HumbugShared/Project/MainOptions.h>
+//#include <HumbugGLShared/Project/MainOptions.h>
 #include <algorithm>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>

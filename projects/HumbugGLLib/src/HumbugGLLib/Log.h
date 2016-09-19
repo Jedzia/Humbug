@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -34,8 +34,8 @@ namespace humbuglib {
 /** \addtogroup General
  *  @{
  */
-// LogMessageLevel + LoggingLevel > HUMBUGLIB_LOG_THRESHOLD = message logged
-#define HUMBUGLIB_LOG_THRESHOLD 4
+// LogMessageLevel + LoggingLevel > HUMBUGGLLIB_LOG_THRESHOLD = message logged
+#define HUMBUGGLLIB_LOG_THRESHOLD 4
 
 /** The level of detail to which the log will go into.
  */
@@ -104,7 +104,7 @@ public:
 
     class Stream;
 
-    //HUMBUGLIB_AUTO_MUTEX; // public to allow external locking
+    //HUMBUGGLLIB_AUTO_MUTEX; // public to allow external locking
     /**
        @remarks
         Usual constructor - called by LogManager.
@@ -130,7 +130,7 @@ public:
     bool isTimeStampEnabled() const { return mTimeStamp; }
 
     /** Log a message to the debugger and to log file (the default is
-        "<code>HUMBUGLIB.log</code>"),
+        "<code>HUMBUGGLLIB.log</code>"),
      */
     void logMessage( const std::string& message, LogMessageLevel lml = LML_NORMAL, bool maskDebug = false );
 
@@ -272,6 +272,6 @@ public:
 /** @} */
 }
 
-//#include "HUMBUGLIBHeaderSuffix.h"
+//#include "HUMBUGGLLIBHeaderSuffix.h"
 
 #endif // ifndef __Log_H__

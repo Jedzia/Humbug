@@ -1,5 +1,5 @@
 format 76
-"HumbugLib"
+"HumbugGLLib"
   revision 48
   modified_by 2 "root"
   cpp_root_dir "../../src/"
@@ -39,9 +39,9 @@ format 76
 
   mark_for_import
   
-  cpp_h_dir "HumbugLib"
-  cpp_src_dir "HumbugLib"
-  cpp_namespace "HumbugLIB_NAMESPACE"
+  cpp_h_dir "HumbugGLLib"
+  cpp_src_dir "HumbugGLLib"
+  cpp_namespace "HumbugGLLIB_NAMESPACE"
   ncouples 13
   key "gxmi path" value "C:/Documents and Settings/root/My Documents/zipper.xmi"
   key "gxmi no model" value "no"
@@ -58,7 +58,7 @@ format 76
   key "gxmi taggedvalue" value "0"
   package_ref 128130 // test
 
-  classview 141186 "HumbugLib"
+  classview 141186 "HumbugGLLib"
     //class diagram settings
     draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
     //collaboration diagram settings
@@ -74,7 +74,7 @@ format 76
     //activity diagram settings
     package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
     show_infonote default drawing_language default show_stereotype_properties default
-    associated_deployment_view deploymentview_ref 206466 // HumbugLib
+    associated_deployment_view deploymentview_ref 206466 // HumbugGLLib
     class 141314 "global"
       visibility package 
       cpp_decl "${comment}${template}class ${name}${inherit} {
@@ -92,7 +92,7 @@ ${inlines}
     class 147970 "stdafx"
       visibility package 
       cpp_external cpp_decl "${name}
-#include \"HumbugLib/${name}.h\"
+#include \"HumbugGLLib/${name}.h\"
 "
       java_decl ""
       php_decl ""
@@ -117,14 +117,14 @@ ${inlines}
     end
   end
 
-  deploymentview 206466 "HumbugLib"
+  deploymentview 206466 "HumbugGLLib"
     //deployment diagram settings
     package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
     draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
     artifact 141314 "global"
       stereotype "source"
-      cpp_h "#ifndef HumbugLIB_GLOBAL_H
-#define HumbugLIB_GLOBAL_H
+      cpp_h "#ifndef HumbugGLLIB_GLOBAL_H
+#define HumbugGLLIB_GLOBAL_H
 
 #ifdef __cplusplus
 extern \"C\"
@@ -134,13 +134,13 @@ extern \"C\"
 #define STRING2(x) #x
 #define STRING(x) STRING2(x)
 
-#define HumbugLIB_NAMESPACE cry
-#define HumbugLIB_BEGIN_NAMESPACE namespace Support { namespace HumbugLIB_NAMESPACE {
-#define HumbugLIB_END_NAMESPACE } }
-#define HumbugLIB_USE_NAMESPACE using namespace Support::HumbugLIB_NAMESPACE;
+#define HumbugGLLIB_NAMESPACE cry
+#define HumbugGLLIB_BEGIN_NAMESPACE namespace Support { namespace HumbugGLLIB_NAMESPACE {
+#define HumbugGLLIB_END_NAMESPACE } }
+#define HumbugGLLIB_USE_NAMESPACE using namespace Support::HumbugGLLIB_NAMESPACE;
 
 #undef PRJ_NAMESPACE
-#define PRJ_NAMESPACE Support::HumbugLIB_NAMESPACE
+#define PRJ_NAMESPACE Support::HumbugGLLIB_NAMESPACE
 
 // Set the function export visibility and reset all global
 // PLATFORM vars cause they interfere with multiple libraries and the
@@ -148,19 +148,19 @@ extern \"C\"
 // EXPLICITELY_USE_PLATFORM_VARS.
 #ifndef EXPLICITELY_USE_PLATFORM_VARS
 #undef PLATFORM_ALL_DYN_LINK
-#ifdef HumbugLib_ALL_DYN_LINK
+#ifdef HumbugGLLib_ALL_DYN_LINK
 #	ifndef PLATFORM_ALL_DYN_LINK
 #		define PLATFORM_ALL_DYN_LINK 1
 #	endif
 #endif
 
 #undef PLATFORM_SOURCE
-#ifdef HumbugLib_SOURCE
+#ifdef HumbugGLLib_SOURCE
 #	define PLATFORM_SOURCE 1
 #endif
 
 #undef PLATFORM_ALL_STATIC_LINK
-#ifdef HumbugLib_ALL_STATIC_LINK
+#ifdef HumbugGLLib_ALL_STATIC_LINK
 #	ifndef PLATFORM_ALL_STATIC_LINK
 #		define PLATFORM_ALL_STATIC_LINK 1
 #	endif
@@ -184,7 +184,7 @@ extern \"C\"
 
 #include \"cpp0xfix.h\"
 
-#endif //HumbugLIB_GLOBAL_H"
+#endif //HumbugGLLIB_GLOBAL_H"
       associated_classes
 	class_ref 141314 // global
       end
@@ -198,13 +198,13 @@ extern \"C\"
 //#define MyDECLSPEC __declspec(dllexport)
 //class __declspec(dllexport) TestClass;
 
-#include <HumbugLib/global.h>
+#include <HumbugGLLib/global.h>
 
 #ifdef HAVE_CONFIG_H
 #	include <config.h>
 #endif
 
-//#include \"HumbugLib/support/strfwd.h\"
+//#include \"HumbugGLLib/support/strfwd.h\"
 
 #include <algorithm>
 #include <cerrno>
@@ -263,7 +263,7 @@ extern \"C\"
 //#include <CppStructz/TestClass.h>
 /*#include \"minizip/zip.h\"
 #include \"minizip/unzip.h\"
-#ifndef HumbugLIB_NAMESPACE_HELPERS_H
+#ifndef HumbugGLLIB_NAMESPACE_HELPERS_H
 #  include \"shared/Helpers.h\"
 #endif*/
 
@@ -271,7 +271,7 @@ extern \"C\"
 "
       cpp_src "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the commodore 64 swiss knife.
+ * This file is part of HumbugGL, the commodore 64 swiss knife.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -294,8 +294,8 @@ extern \"C\"
 
     artifact 259842 "cpp0xfix"
       stereotype "source"
-      cpp_h "#ifndef HumbugLIB_NAMESPACE_CPP0XFIX_H
-#define HumbugLIB_NAMESPACE_CPP0XFIX_H
+      cpp_h "#ifndef HumbugGLLIB_NAMESPACE_CPP0XFIX_H
+#define HumbugGLLIB_NAMESPACE_CPP0XFIX_H
 
 
 
@@ -307,7 +307,7 @@ extern \"C\"
 #undef USE_CSTDINT
 #define USE_CSTDINT
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 	template<class T>
 	inline typename T::value_type *getDataPointer(T &input )
 	{
@@ -348,7 +348,7 @@ namespace HumbugLIB_NAMESPACE {
 
 #endif
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 	template<class T>
 	inline const typename T::value_type *getDataPointer(const T &input )
 	{
@@ -365,10 +365,10 @@ namespace HumbugLIB_NAMESPACE {
 
 
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 
-} // namespace HumbugLIB_NAMESPACE
+} // namespace HumbugGLLIB_NAMESPACE
 #endif
 "
       associated_classes

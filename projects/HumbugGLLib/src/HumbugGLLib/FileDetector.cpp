@@ -9,7 +9,7 @@
 //
 #include <debug.h>
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 FileDetector::FileDetector(const std::string & filename) {
   
@@ -66,4 +66,4 @@ FileDetector::FileType FileDetector::identify(std::ifstream & input_file) {
 }
 
 
-HumbugLIB_END_NAMESPACE
+HumbugGLLIB_END_NAMESPACE

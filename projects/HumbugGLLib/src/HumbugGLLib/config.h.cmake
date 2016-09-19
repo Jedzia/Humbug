@@ -73,12 +73,12 @@
 // #define USE_HUNSPELL 1
 // #endif
 
-#cmakedefine Humbug_NLS 1
-#ifdef Humbug_NLS
+#cmakedefine HumbugGL_NLS 1
+#ifdef HumbugGL_NLS
 #define ENABLE_NLS 1
 // These are needed when building included gettext (taken from autoconf macro)
-#cmakedefine Humbug_EXTERNAL_LIBINTL 1
-#if !defined(Humbug_EXTERNAL_LIBINTL)
+#cmakedefine HumbugGL_EXTERNAL_LIBINTL 1
+#if !defined(HumbugGL_EXTERNAL_LIBINTL)
 // this only makes sense when LYX_EXTERNAL_LIBINTL is OFF.
 #define __libc_lock_t                   gl_lock_t
 #define __libc_lock_define              gl_lock_define
@@ -110,7 +110,7 @@
 #define glthread_once_call            libintl_once_call
 #define glthread_once_singlethreaded  libintl_once_singlethreaded
 #define hash_string			libintl_hash_string
-#endif /* Humbug_EXTERNAL_LIBINTL */
+#endif /* HumbugGL_EXTERNAL_LIBINTL */
 #endif
 
 

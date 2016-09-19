@@ -1,5 +1,5 @@
-#ifndef HUMBUG___TESTEVENTHANDLER_H__
-#define HUMBUG___TESTEVENTHANDLER_H__
+#ifndef HUMBUGGL___TESTEVENTHANDLER_H__
+#define HUMBUGGL___TESTEVENTHANDLER_H__
 
 #include "GUI/Visual/EventHandler.h"
 #include "GUI/Components/MainCanvas.h"
@@ -85,4 +85,4 @@ public:
 	static gui::MSGID MSGID_DrawPixel;//parm1=x,parm2=y
 };
 }
-#endif //#ifndef HUMBUG___TESTEVENTHANDLER_H__
+#endif //#ifndef HUMBUGGL___TESTEVENTHANDLER_H__

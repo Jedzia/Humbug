@@ -1,5 +1,5 @@
 format 76
-"text" // Humbug::CppStructz::text
+"text" // HumbugGL::CppStructz::text
   revision 32
   modified_by 2 "root"
   // class settings
@@ -460,7 +460,7 @@ ${inlines}
 	comment "Load a Textdocument from disk.
 \\todo: Verdammt! Kleinbuchstaben bei funcs! Nee halt, nur privaten und get/set, bzw
 statischen(/globalen aus Hilfslibs). 
-m_variablenName für private Daten.
+m_variablenName f??r private Daten.
 "
       end
 
@@ -1404,7 +1404,7 @@ ${inlines}
       stereotype "source"
       cpp_h "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1434,7 +1434,7 @@ ${namespace_end}
 "
       cpp_src "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1465,7 +1465,7 @@ ${namespace_end}"
       stereotype "source"
       cpp_h "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1495,7 +1495,7 @@ ${namespace_end}
 "
       cpp_src "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1526,7 +1526,7 @@ ${namespace_end}"
       stereotype "source"
       cpp_h "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1556,7 +1556,7 @@ ${namespace_end}
 "
       cpp_src "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *

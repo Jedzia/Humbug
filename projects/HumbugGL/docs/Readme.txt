@@ -1,6 +1,6 @@
 Keys:
 
-Escape		Quit Humbug
+Escape		Quit HumbugGL
 Any Arrow Key	Flash the Cube
 b		Clear, Add UpdateRect
 ctrl-^		Toggle Console

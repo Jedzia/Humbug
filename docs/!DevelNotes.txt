@@ -20,13 +20,13 @@ Todo:
 
 -X-X-X-X- Sa, 13 Feb 2016 23:40:15 -----------------------------------------------------------
 Todo: 
-- continue work on Humbug\projects\Humbug\src\Screens\InfoText.h
-- implement Zoom in for text and CCanvas or CImage, Humbug\projects\Humbug\src\Screens\ZoomInScreen.cpp
+- continue work on HumbugGL\projects\HumbugGL\src\Screens\InfoText.h
+- implement Zoom in for text and CCanvas or CImage, HumbugGL\projects\HumbugGL\src\Screens\ZoomInScreen.cpp
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Sa, 13 Feb 2016 18:05:35 -----------------------------------------------------------
 copy old:
-Copy_Files_To_Target(Humbug "${SDLIMAGE_LIBRARY_DLLS_EXT}")
+Copy_Files_To_Target(HumbugGL "${SDLIMAGE_LIBRARY_DLLS_EXT}")
 Todo: use a copy-func that copies a text file to a test lua dir in DEBUG and package it when in RELEASE.
 -----------------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ Todo: Artwork should run before all MakeVFS. So MakeVFS should be dependant on i
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Fr, 12 Feb 2016 16:32:43 -----------------------------------------------------------
-msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:"External Library\LuaBind"
+msbuild HumbugGL.sln /m /v:n /p:Configuration=Debug /t:"External Library\LuaBind"
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Fr, 12 Feb 2016 15:36:34 -----------------------------------------------------------
@@ -75,9 +75,9 @@ that term i searched was "ease in, ease out" ... for animation curves.
 
 -X-X-X-X- Di, 26 Jan 2016 02:53:13 -----------------------------------------------------------
 MakeVFS or something should copy 
-E:\Projects\C++\Humbug\projects\Humbug\Artwork\Tutor\Images\Tutor\A1\Class Diagram Screen01.jpg
+E:\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Tutor\Images\Tutor\A1\Class Diagram Screen01.jpg
 to 
-E:\Projects\C++\Humbug\projects\Humbug\Artwork\Work\Images\Tutor\A1\Class Diagram Screen01.jpg
+E:\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Work\Images\Tutor\A1\Class Diagram Screen01.jpg
 
 means 
 	Artwork\Tutor\Images
@@ -142,17 +142,17 @@ SET(GuiLib_documents
 )
 SOURCE_GROUP(Docs FILES ${GuiLib_documents})
 
-(from E:\Projects\C++\Humbug\projects\GuiLib\CMakeLists.txt)
+(from E:\Projects\C++\HumbugGL\projects\GuiLib\CMakeLists.txt)
 into ADD_LIBRARY_X macro to enforce the usage of docs and Readme
 
 This is now: 
-ENSURE_DOCS_ARE_PRESENT(HumbugCore_documents)
-and include the var HumbugCore_documents in
+ENSURE_DOCS_ARE_PRESENT(HumbugGLCore_documents)
+and include the var HumbugGLCore_documents in
 
-ADD_LIBRARY_X(HumbugCore ${LIBRARY_TYPE}
+ADD_LIBRARY_X(HumbugGLCore ${LIBRARY_TYPE}
         stdafx.h
 		...
-		${HumbugCore_documents}
+		${HumbugGLCore_documents}
 )
 
 -----------------------------------------------------------------------------------------------
@@ -194,7 +194,7 @@ Todo:
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mi, 01 Jul 2015 14:47:40 -----------------------------------------------------------
-Error	1	error LNK2019: unresolved external symbol "__declspec(dllimport) protected: __cdecl boost::archive::detail::basic_iarchive::~basic_iarchive(void)" (__imp_??1basic_iarchive@detail@archive@boost@@IEAA@XZ) referenced in function "int `protected: __cdecl boost::archive::detail::common_iarchive<class boost::archive::binary_iarchive>::common_iarchive<class boost::archive::binary_iarchive>(unsigned int)'::`1'::dtor$0" (?dtor$0@?0???0?$common_iarchive@Vbinary_iarchive@archive@boost@@@detail@archive@boost@@IEAA@I@Z@4HA)	E:\Projects\C++\Humbug\build2013x64\Playground\boost_serialization01.obj	boost_serialization01
+Error	1	error LNK2019: unresolved external symbol "__declspec(dllimport) protected: __cdecl boost::archive::detail::basic_iarchive::~basic_iarchive(void)" (__imp_??1basic_iarchive@detail@archive@boost@@IEAA@XZ) referenced in function "int `protected: __cdecl boost::archive::detail::common_iarchive<class boost::archive::binary_iarchive>::common_iarchive<class boost::archive::binary_iarchive>(unsigned int)'::`1'::dtor$0" (?dtor$0@?0???0?$common_iarchive@Vbinary_iarchive@archive@boost@@@detail@archive@boost@@IEAA@I@Z@4HA)	E:\Projects\C++\HumbugGL\build2013x64\Playground\boost_serialization01.obj	boost_serialization01
 
 fixed ... buggered lib compilation :/
 -----------------------------------------------------------------------------------------------
@@ -248,8 +248,8 @@ Git Nerft !
 -X-X-X-X- Mittwoch, 17. September 2014 -----------------------------------------------------------------------------
 
 For Unit Testing
-E:\Projects\C++\Humbug\build2008x64>
-msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-Humbug_HumbugShared_UnitTests-gameobjects && Humbug\HumbugShared\UnitTests\Debug\boosttest-Humbug_HumbugShared_UnitTests-gameobjects.exe -r detailed
+E:\Projects\C++\HumbugGL\build2008x64>
+msbuild HumbugGL.sln /p:Configuration=Debug /t:UnitTests\boosttest-HumbugGL_HumbugGLShared_UnitTests-gameobjects && HumbugGL\HumbugGLShared\UnitTests\Debug\boosttest-HumbugGL_HumbugGLShared_UnitTests-gameobjects.exe -r detailed
 
 ----------------------------------------------------------------------------------------------------------------
 
@@ -295,7 +295,7 @@ msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-Humbug_HumbugSh
 #end binfile
 ; --------------------------------------------------------
 -----------------------------------------------------------------------------------------------
--X-X-X-X- Samstag, 8. März 2014 -----------------------------------------------------------------------------
+-X-X-X-X- Samstag, 8. M?rz 2014 -----------------------------------------------------------------------------
 
 ; --------------------------------------------------------
 ; Example for exporting binary files from Tile Studio
@@ -344,7 +344,7 @@ msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-Humbug_HumbugSh
 ----------------------------------------------------------------------------------------------------------------
 -X-X-X-X- Montag, 13. Mai 2013 -----------------------------------------------------------------------------
 
-HAL Institut für geistesgestörte Roboter.
+HAL Institut f?r geistesgest?rte Roboter.
 ----------------------------------------------------------------------------------------------------------------
 -X-X-X-X- Mittwoch, 28. September 2011 -----------------------------------------------------------------------------
 
@@ -358,12 +358,12 @@ ist set available as defined like above.
 If there is a CMake User Option like USE_NLS (For enabling
 native language support in your program), that enables a project
 or library controlling CMake Variable like ${YourProgram_NLS}
-  #ifdef Humbug_NLS
+  #ifdef HumbugGL_NLS
   #  define ENABLE_NLS 1
   ... other NLS related options ...
   #endif
 a config.h define with ENABLE_NLS should signal that. It is better
-to wrap that Humbug_NLS define with ENABLE_NLS for later 
+to wrap that HumbugGL_NLS define with ENABLE_NLS for later 
 changes.
 
 As a summary:
@@ -384,7 +384,7 @@ http://www.vtk.org/Wiki/ITK_Coding_Style_Guide
 
 -X-X-X-X- Sa, 23 Jul 2011 04:13:56 -----------------------------------------------------------
 
-- Xerxes für vc100 einstellen.
+- Xerxes f?r vc100 einstellen.
 - NLS Problem. Wenn NLS ausgeschaltet ist zeigt CMake einen Fehler an.
 -----------------------------------------------------------------------------------------------
 
@@ -420,11 +420,11 @@ CppStructz_SOURCE				Zur Erstellung einer DLL setzen. Funktionen sind dann
 CppStructz_ALL_STATIC_LINK		Alles statisch linken, keine DLL-Erzeugung.
 
 Korrespondierend dazu ist im Macro ADD_LIBRARY_X aus library.cmake der zweite Parameter
-SHARED oder STATIC zu setzen. Dieser definiert automatisch die benötigten Preprocessor-
+SHARED oder STATIC zu setzen. Dieser definiert automatisch die ben?tigten Preprocessor-
 Parameter. Dieses Macro setzt z.B. ADD_DEFINITIONS("-D${PROJECT_NAME}_SOURCE") und
 ADD_DEFINITIONS("-DPLATFORM_SOURCE").
 Die CMake eigene Variable {Projektname}_EXPORTS (z.B. CppStructz_EXPORTS), die eine
-DLL Erstellung anzeigt, wird nicht benötigt. Die ${PROJECT_NAME}_SOURCE Definitionen
+DLL Erstellung anzeigt, wird nicht ben?tigt. Die ${PROJECT_NAME}_SOURCE Definitionen
 sind vorzuziehen.
 
 stdafx.h 
@@ -434,7 +434,7 @@ global.h und danach dann
 	#ifdef HAVE_CONFIG_H
 	#	include <config.h>
 	#endif
-eingebunden. Damit ist die config für den Bibliotheks-Benutzer nicht sichtbar.
+eingebunden. Damit ist die config f?r den Bibliotheks-Benutzer nicht sichtbar.
 -----------------------------------------------------------------------------------------------
 
 
@@ -442,12 +442,12 @@ eingebunden. Damit ist die config für den Bibliotheks-Benutzer nicht sichtbar.
 
 Check for boost usage:
 
-root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
+root@Pubsi /cygdrive/d/E/Projects/C++/HumbugGL/projects/CppStructz/src/CppStructz
 $ grep -li -R boost * | grep -v \.svn
 
 -X-X-X-X- Mo, 13 Jun 2011 01:16:26 -----------------------------------------------------------
 
 Generate a project skeleton
-D:\E\Projects\C++\Humbug\projects\QBounce>
+D:\E\Projects\C++\HumbugGL\projects\QBounce>
 ..\build\scripts\createskeleton.bat QBounce
 -----------------------------------------------------------------------------------------------

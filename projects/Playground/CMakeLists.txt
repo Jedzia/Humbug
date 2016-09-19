@@ -185,11 +185,11 @@ SET_PROPERTY(TARGET throw_error PROPERTY FOLDER "Playground")
 
 
 # zfs example
-INCLUDE_DIRECTORIES( ${HumbugShared_INCLUDE_DIR} ${ZLIB_INCLUDE_DIR} )
-TARGET_LINK_LIBRARIES(zfs HumbugShared)
+INCLUDE_DIRECTORIES( ${HumbugGLShared_INCLUDE_DIR} ${ZLIB_INCLUDE_DIR} )
+TARGET_LINK_LIBRARIES(zfs HumbugGLShared)
 
 # csz_textdocument example
-#TARGET_LINK_LIBRARIES(Humbug ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} ${QSCINTILLA2_LIB} CppStructz)
+#TARGET_LINK_LIBRARIES(HumbugGL ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${XSD_LIBRARY} ${QSCINTILLA2_LIB} CppStructz)
 #TARGET_LINK_LIBRARIES(csz_textdocument CppStructz)
 #TargetLinkBoost(csz_textdocument "filesystem;system;regex")
 #Copy_DLL_To_Target(csz_textdocument CppStructz)

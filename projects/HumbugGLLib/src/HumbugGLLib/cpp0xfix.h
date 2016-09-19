@@ -1,5 +1,5 @@
-#ifndef HumbugLIB_NAMESPACE_CPP0XFIX_H
-#define HumbugLIB_NAMESPACE_CPP0XFIX_H
+#ifndef HumbugGLLIB_NAMESPACE_CPP0XFIX_H
+#define HumbugGLLIB_NAMESPACE_CPP0XFIX_H
 
 
 
@@ -11,7 +11,7 @@
 #undef USE_CSTDINT
 #define USE_CSTDINT
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 	template<class T>
 	inline typename T::value_type *getDataPointer(T &input )
 	{
@@ -52,7 +52,7 @@ namespace HumbugLIB_NAMESPACE {
 
 #endif
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 	template<class T>
 	inline const typename T::value_type *getDataPointer(const T &input )
 	{
@@ -69,8 +69,8 @@ namespace HumbugLIB_NAMESPACE {
 
 
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 
-} // namespace HumbugLIB_NAMESPACE
+} // namespace HumbugGLLIB_NAMESPACE
 #endif

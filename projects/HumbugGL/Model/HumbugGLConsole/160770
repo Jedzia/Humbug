@@ -1,5 +1,5 @@
 format 76
-"config" // Humbug::CppStructz::config
+"config" // HumbugGL::CppStructz::config
   revision 15
   modified_by 2 "root"
   // class settings

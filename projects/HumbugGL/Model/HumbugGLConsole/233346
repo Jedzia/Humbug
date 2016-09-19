@@ -1,5 +1,5 @@
 format 76
-"HumbugConsole-deleteMe" // Humbug::HumbugConsole-deleteMe
+"HumbugGLConsole-deleteMe" // HumbugGL::HumbugGLConsole-deleteMe
   revision 10
   modified_by 2 "root"
   // class settings
@@ -26,10 +26,10 @@ format 76
   package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
   show_infonote default drawing_language default show_stereotype_properties default
   
-  cpp_h_dir "src/HumbugConsole/"
-  cpp_src_dir "src/HumbugConsole/"
+  cpp_h_dir "src/HumbugGLConsole/"
+  cpp_src_dir "src/HumbugGLConsole/"
   oid 213506
-  classview 260354 "HumbugConsole"
+  classview 260354 "HumbugGLConsole"
     //class diagram settings
     draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
     //collaboration diagram settings
@@ -138,7 +138,7 @@ format 76
     end
   end
 
-  deploymentview 252546 "HumbugConsole"
+  deploymentview 252546 "HumbugGLConsole"
     //deployment diagram settings
     package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
     draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default

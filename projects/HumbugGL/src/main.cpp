@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include <malloc.h>
 #include <stdio.h>
-#include "HumbugLib/src/HumbugLib/AppGB.h"
+#include "HumbugGLLib/src/HumbugGLLib/AppGB.h"
 
 //namespace gui {
 
@@ -19,7 +19,7 @@ int bmain(int argc, char *argv[])
 
 //    _CRT_DEBUG_BLOCK
 
-    //std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
+    //std::ofstream myfile ("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/test2.txt");
     //xout = myfile;
 
 //    int *depp2 = new int(4);
@@ -28,9 +28,9 @@ int bmain(int argc, char *argv[])
 //	QStringList plugpaths(plugpath);
 //	//app.addLibraryPath(plugpath);
 //	app.setLibraryPaths(plugpaths);
-//	//app.addLibraryPath("D:\\E\\Projects\\C++\\Humbug\\build\\Humbug\\Debug\\plugins\\");
-//	//app.addLibraryPath("D:/E/Projects/C++/Humbug/build/Humbug/Debug/plugins");
-//	//app.addLibraryPath("D:/E/Projects/C++/Humbug/build/Humbug/Debug/plugins/");
+//	//app.addLibraryPath("D:\\E\\Projects\\C++\\HumbugGL\\build\\HumbugGL\\Debug\\plugins\\");
+//	//app.addLibraryPath("D:/E/Projects/C++/HumbugGL/build/HumbugGL/Debug/plugins");
+//	//app.addLibraryPath("D:/E/Projects/C++/HumbugGL/build/HumbugGL/Debug/plugins/");
 //    //CalculatorForm calculator;
 //    //calculator.show();
 
@@ -59,7 +59,7 @@ int bmain(int argc, char *argv[])
 
     int ff = 0;
 	LOGSTREAM << "";
-	LOGSTREAM << "This is Humbug (" << argv[0] << ").";
+	LOGSTREAM << "This is HumbugGL (" << argv[0] << ").";
 	std::string exepath = AppGB::Instance().ExePath();
 
 //    const char* explanation = "Hy there from _RPT1.";

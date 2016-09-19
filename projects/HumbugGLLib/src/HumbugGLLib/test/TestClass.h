@@ -1,13 +1,13 @@
-#ifndef HumbugLIB_NAMESPACE_TEST_TESTCLASS_H
-#define HumbugLIB_NAMESPACE_TEST_TESTCLASS_H
+#ifndef HumbugGLLIB_NAMESPACE_TEST_TESTCLASS_H
+#define HumbugGLLIB_NAMESPACE_TEST_TESTCLASS_H
 
 
 #include "QBounce/global.h"
 #include <string>
 
-//namespace HumbugLIB_NAMESPACE { namespace test { struct TestClass::Subclass; }  } 
+//namespace HumbugGLLIB_NAMESPACE { namespace test { struct TestClass::Subclass; }  } 
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 namespace test {
 
@@ -30,7 +30,7 @@ class TestClass {
 
 };
 
-} // namespace HumbugLIB_NAMESPACE::test
+} // namespace HumbugGLLIB_NAMESPACE::test
 
-} // namespace HumbugLIB_NAMESPACE
+} // namespace HumbugGLLIB_NAMESPACE
 #endif

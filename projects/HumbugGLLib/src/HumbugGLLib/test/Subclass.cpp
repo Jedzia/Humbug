@@ -2,7 +2,7 @@
 #include "QBounce/stdafx.h"
 #include "Subclass.h"
 
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 namespace test {
 
@@ -11,6 +11,6 @@ void TestClass::Subclass::doSomething() {
 }
 
 
-} // namespace HumbugLIB_NAMESPACE::test
+} // namespace HumbugGLLIB_NAMESPACE::test
 
-} // namespace HumbugLIB_NAMESPACE
+} // namespace HumbugGLLIB_NAMESPACE

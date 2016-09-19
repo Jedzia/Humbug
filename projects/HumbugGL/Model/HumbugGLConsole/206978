@@ -1,5 +1,5 @@
 format 76
-"Project" // Humbug::Humbug::Project
+"Project" // HumbugGL::HumbugGL::Project
   revision 8
   modified_by 2 "root"
   // class settings

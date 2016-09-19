@@ -16,7 +16,7 @@
 #cmake_policy(SET CMP0005 NEW) # 
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugShared )
+PROJECT( HumbugGLShared )
 #SET(LIBRARY_TYPE SHARED)
 SET(LIBRARY_TYPE STATIC)
 
@@ -54,7 +54,7 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
-SET(HumbugShared_headers 
+SET(HumbugGLShared_headers 
 	GB.h
 	
 	VFS/fileio.h
@@ -69,7 +69,7 @@ SET(HumbugShared_headers
 #	Project/ProcessProjectPrivate.h
 )
 
-SET(HumbugShared_GameObject_headers 
+SET(HumbugGLShared_GameObject_headers 
 	GameObjects/Template.h
 	GameObjects/GameObject.h
 	GameObjects/GVector2D.h
@@ -77,7 +77,7 @@ SET(HumbugShared_GameObject_headers
 	GameObjects/Player.h
 )
 
-SET(HumbugShared_GameObject_sources 
+SET(HumbugGLShared_GameObject_sources 
 	GameObjects/Template.cpp
 	GameObjects/GameObject.cpp
 	GameObjects/GVector2D.cpp
@@ -85,7 +85,7 @@ SET(HumbugShared_GameObject_sources
 	GameObjects/Player.cpp
 )
 
-SET(HumbugShared_ScriptHost_headers 
+SET(HumbugGLShared_ScriptHost_headers 
 	ScriptHost/LuaScript.h
 	ScriptHost/ScriptHostIO.h
 	ScriptHost/ScriptHostPrivate.h
@@ -93,13 +93,13 @@ SET(HumbugShared_ScriptHost_headers
 	ScriptHost/ScriptHost.h
 )
 
-SET(HumbugShared_ScriptHost_sources 
+SET(HumbugGLShared_ScriptHost_sources 
 	ScriptHost/ScriptHost.cpp
 	ScriptHost/LuaScript.cpp
 )
 
 
-SET(HumbugShared_sources 
+SET(HumbugGLShared_sources 
 	GB.cpp
 
 	VFS/zfsystem.cpp
@@ -109,10 +109,10 @@ SET(HumbugShared_sources
 #	Project/ProcessProjectPrivate.cpp
 )
 
-#SET(HumbugShared_INCLUDE_DIR ${HumbugShared_IncludePath} CACHE PATH "HumbugShared include directory." FORCE)
+#SET(HumbugGLShared_INCLUDE_DIR ${HumbugGLShared_IncludePath} CACHE PATH "HumbugGLShared include directory." FORCE)
 
 
-SET(HumbugShared_resfiles 
+SET(HumbugGLShared_resfiles 
 #  mainwindow.qrc
 )
 
@@ -121,7 +121,7 @@ SET(HumbugShared_resfiles
 
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${HumbugGLLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
@@ -142,42 +142,42 @@ ENDIF(MSYS)
 
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugShared_resfiles})
-SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_headers})
-SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_sources})
-SOURCE_GROUP(ScriptHost FILES ${HumbugShared_ScriptHost_headers})
-SOURCE_GROUP(ScriptHost FILES ${HumbugShared_ScriptHost_sources})
+SOURCE_GROUP(Resources FILES ${HumbugGLShared_resfiles})
+SOURCE_GROUP(GameObject FILES ${HumbugGLShared_GameObject_headers})
+SOURCE_GROUP(GameObject FILES ${HumbugGLShared_GameObject_sources})
+SOURCE_GROUP(ScriptHost FILES ${HumbugGLShared_ScriptHost_headers})
+SOURCE_GROUP(ScriptHost FILES ${HumbugGLShared_ScriptHost_sources})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(THeaders FILES ${HumbugShared_headers})
-SOURCE_GROUP(TSources FILES ${HumbugShared_sources})
+SOURCE_GROUP(THeaders FILES ${HumbugGLShared_headers})
+SOURCE_GROUP(TSources FILES ${HumbugGLShared_sources})
 
-SET(HumbugShared_pre_sources 
-    ${HumbugShared_GameObject_sources}
-    ${HumbugShared_ScriptHost_sources}
-    ${HumbugShared_sources} 
+SET(HumbugGLShared_pre_sources 
+    ${HumbugGLShared_GameObject_sources}
+    ${HumbugGLShared_ScriptHost_sources}
+    ${HumbugGLShared_sources} 
 )
 
-ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugShared_pre_sources)
+ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugGLShared_pre_sources)
 #ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
-ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
+ADD_LIBRARY_X(HumbugGLShared ${LIBRARY_TYPE}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h 
 
-    	${HumbugShared_pre_sources}
-    	${HumbugShared_ScriptHost_headers}
-    	${HumbugShared_GameObject_headers}
-        ${HumbugShared_headers}
+    	${HumbugGLShared_pre_sources}
+    	${HumbugGLShared_ScriptHost_headers}
+    	${HumbugGLShared_GameObject_headers}
+        ${HumbugGLShared_headers}
         ${res_outfiles} 
         ${moc_outfiles} 
         ${ui_outfiles}
 )
 
-TARGET_LINK_LIBRARIES(HumbugShared ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES(HumbugShared luabind)
-ADD_DEPENDENCIES(HumbugShared luabind)
-TargetLinkBoost(HumbugShared "filesystem;system;regex")
-#ADD_DEPENDENCIES(HumbugShared CppStructz)
-ADD_PRECOMPILED_HEADER(HumbugShared stdafx.h stdafx.h.gch)
+TARGET_LINK_LIBRARIES(HumbugGLShared ${ZLIB_LIBRARY} )
+TARGET_LINK_LIBRARIES(HumbugGLShared luabind)
+ADD_DEPENDENCIES(HumbugGLShared luabind)
+TargetLinkBoost(HumbugGLShared "filesystem;system;regex")
+#ADD_DEPENDENCIES(HumbugGLShared CppStructz)
+ADD_PRECOMPILED_HEADER(HumbugGLShared stdafx.h stdafx.h.gch)
 
 ADD_SUBDIRECTORY( UnitTests )

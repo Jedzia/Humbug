@@ -1,5 +1,5 @@
-#ifndef HumbugSHARED_GLOBAL_H
-#define HumbugSHARED_GLOBAL_H
+#ifndef HumbugGLSHARED_GLOBAL_H
+#define HumbugGLSHARED_GLOBAL_H
 
 
 #endif

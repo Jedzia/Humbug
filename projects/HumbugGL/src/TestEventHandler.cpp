@@ -7,7 +7,7 @@
 //#include "windows.h"
 //#include <build/cmake/include/debug.h>
 //
-#include "HumbugFileLoader.h"
+#include "HumbugGLFileLoader.h"
 //#include "Filesystem/FileLoader.h"
 #include "GUI/Components/Color.h"
 #include "GUI/Components/Image.h"
@@ -30,7 +30,7 @@
 #include "Screens/MenuScreen.h"
 #include "Levels/TestLevel.h"
 #include "Levels/LevelA.h"
-#include "HumbugLib/src/HumbugLib/AppGB.h"
+#include "HumbugGLLib/src/HumbugGLLib/AppGB.h"
 #include "Screens/TileScreen.h"
 #include "GUI/Components/MainCanvas.h"
 #include "GUI/Components/Text.h"
@@ -79,7 +79,7 @@ MSGID CTestEventHandler::MSGID_ClearScreen = CMessageHandler::GetNextMSGID(); //
 MSGID CTestEventHandler::MSGID_DrawPixel = CMessageHandler::GetNextMSGID(); //parm1=x,parm2=y
 //constructor
 CTestEventHandler::CTestEventHandler() :
-    //fl(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data")),
+    //fl(new FileLoader("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data")),
     m_uiLastTicks(0),
     /*m_pTileSet(NULL),*/
     m_uiLastTicks2(0),
@@ -161,7 +161,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY/10, SDL_DEFAULT_REPEAT_INTERVAL/3);
     //construct main canvas
     //m_pMainCanvas = new CMainCanvas(1024, 768, 0, video_flags);
-    CMainCanvas* m_pMainCanvas = new CMainCanvas("Humbug, the Game", 1024, 768, video_flags);
+    CMainCanvas* m_pMainCanvas = new CMainCanvas("HumbugGL, the Game", 1024, 768, video_flags);
     SetMainCanvas( m_pMainCanvas );
 
     //m_pDrawCanvas = m_pMainCanvas;
@@ -188,7 +188,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     m_pTestThread = new CTestThread(this);
 
     //char *file = "blue.bmp";
-//    char* file = "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/footer.png";
+//    char* file = "D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/footer.png";
     //create main control
     CControl* mainControl = new CControl(m_pMainCanvas);
 
@@ -198,20 +198,20 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
     //CControl mainControl(m_pMainCanvas);
     //char *file = "blue.png";
-    //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-    //fl = new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
-    //fl.reset(new FileLoader("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
-	//fl.reset(new FileLoader("E:/Projects/C++/Humbug/build/Humbug/src/Debug/base_data"));
+    //FileLoader fl("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data");
+    //fl = new FileLoader("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data");
+    //fl.reset(new FileLoader("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data"));
+	//fl.reset(new FileLoader("E:/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data"));
 
 	std::string appDir = AppGB::Instance().AppDir();
-	fl.reset(new HumbugFileLoader(appDir + "base_data"));
+	fl.reset(new HumbugGLFileLoader(appDir + "base_data"));
 
-    //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    //FileLoader fl2("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data");
     try
     {
         //load in button font. Todo: Error Checking
         //TTF_OpenFont(
-          //  "D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 15)
+          //  "D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/arial.ttf", 15)
         TTF_Font *arial = fl->FL_LOADFONT("Fonts/ARIAL.TTF", 15);
         CButton::SetButtonFont( arial );
 
@@ -320,7 +320,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
 	//m_pBlue = new CCanvas( m_pLoader.LoadImg("blue.png") );
     //SDL_Surface* ddd =
-    // IMG_Load("D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/Clipboard01.png");
+    // IMG_Load("D:/E/Projects/C++/HumbugGL/projects/HumbugGL/Artwork/Clipboard01.png");
     //m_pBlue = new CImage( new CCanvas( ddd ) );
     //m_pBlue = new CImage( new CCanvas( ddd ) );
     // m_pHud = new Hud(fl, m_pMainCanvas);

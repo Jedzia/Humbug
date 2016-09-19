@@ -14,7 +14,7 @@
 ## !!!!!! CMake Help: http://www.cmake.org/cmake/help/cmake-2-8-docs.html !!!!!
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
-PROJECT( HumbugSerializationDocs )
+PROJECT( HumbugGLSerializationDocs )
 
 # See http://www.stack.nl/~dimitri/doxygen/grouping.html and 
 # http://www.stack.nl/~dimitri/doxygen/commands.html#cmdcode for 
@@ -31,7 +31,7 @@ include(DoxygenTargets)
 #   [NO_PDF]
 #)
 #${CMAKE_CURRENT_SOURCE_DIR}/
-add_doxygen(HumbugSerialization.doxygen
+add_doxygen(HumbugGLSerialization.doxygen
 #   [INSTALL_DESTINATION <installdir>
 #   [INSTALL_COMPONENT <installcomponent>]
 #   [INSTALL_PDF_NAME <installpdfname>] ]

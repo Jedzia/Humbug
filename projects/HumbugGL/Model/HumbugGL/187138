@@ -1,5 +1,5 @@
 format 76
-"HumbugShared" // HumbugShared
+"HumbugGLShared" // HumbugGLShared
   revision 15
   modified_by 2 "root"
   // class settings
@@ -26,8 +26,8 @@ format 76
   package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
   show_infonote default drawing_language default show_stereotype_properties default
   
-  cpp_h_dir "HumbugShared/"
-  cpp_src_dir "HumbugShared/"
+  cpp_h_dir "HumbugGLShared/"
+  cpp_src_dir "HumbugGLShared/"
   classview 260098 "toplevel"
     //class diagram settings
     draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
@@ -121,7 +121,7 @@ ${inlines}
 
       attribute 298498 "projectDirectory"
 	class_attribute unique private explicit_type "string"
-	init_value "\"D:/E/Projects/C++/Humbug/projects/Humbug/XSD\""
+	init_value "\"D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD\""
 	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
 "
 	java_decl ""
@@ -146,7 +146,7 @@ ${inlines}
 
       attribute 318338 "templateDirectory"
 	class_attribute unique private explicit_type "string"
-	init_value "\"D:\\\\E\\\\Projects\\\\C++\\\\Humbug\\\\projects\\\\Humbug\\\\TEMPLATES\""
+	init_value "\"D:\\\\E\\\\Projects\\\\C++\\\\HumbugGL\\\\projects\\\\HumbugGL\\\\TEMPLATES\""
 	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
 "
 	java_decl ""
@@ -260,8 +260,8 @@ inline void qDeleteAll(const Container &c)
 
     artifact 333826 "global"
       stereotype "source"
-      cpp_h "#ifndef HumbugSHARED_GLOBAL_H
-#define HumbugSHARED_GLOBAL_H
+      cpp_h "#ifndef HumbugGLSHARED_GLOBAL_H
+#define HumbugGLSHARED_GLOBAL_H
 
 
 #endif
@@ -275,7 +275,7 @@ inline void qDeleteAll(const Container &c)
       stereotype "source"
       cpp_h "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -333,7 +333,7 @@ inline void qDeleteAll(const Container &c)
 "
       cpp_src "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *

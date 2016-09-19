@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -19,8 +19,8 @@
 #include "../stdafx.h"
 //
 #include "ProcessProject.h"
-#include "HumbugShared/GB.h"
-#include "HumbugShared/Project/ProcessProjectPrivate.h"
+#include "HumbugGLShared/GB.h"
+#include "HumbugGLShared/Project/ProcessProjectPrivate.h"
 #include <boost/filesystem.hpp>
 #include <CppStructz/config/ConfigString.h>
 

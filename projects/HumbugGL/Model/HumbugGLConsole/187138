@@ -1,5 +1,5 @@
 format 76
-"HumbugShared" // Humbug::HumbugShared
+"HumbugGLShared" // HumbugGL::HumbugGLShared
   revision 11
   modified_by 2 "root"
   // class settings
@@ -26,8 +26,8 @@ format 76
   package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
   show_infonote default drawing_language default show_stereotype_properties default
   
-  cpp_h_dir "HumbugShared/"
-  cpp_src_dir "HumbugShared/"
+  cpp_h_dir "HumbugGLShared/"
+  cpp_src_dir "HumbugGLShared/"
   oid 187138
   classview 260098 "toplevel"
     //class diagram settings
@@ -127,7 +127,7 @@ ${inlines}
 
       attribute 311554 "projectDirectory"
 	class_attribute unique private explicit_type "string"
-	init_value "\"D:/E/Projects/C++/Humbug/projects/Humbug/XSD\""
+	init_value "\"D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD\""
 	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
 "
 	java_decl ""
@@ -154,7 +154,7 @@ ${inlines}
 
       attribute 318338 "templateDirectory"
 	class_attribute unique private explicit_type "string"
-	init_value "\"D:\\\\E\\\\Projects\\\\C++\\\\Humbug\\\\projects\\\\Humbug\\\\TEMPLATES\""
+	init_value "\"D:\\\\E\\\\Projects\\\\C++\\\\HumbugGL\\\\projects\\\\HumbugGL\\\\TEMPLATES\""
 	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
 "
 	java_decl ""
@@ -274,8 +274,8 @@ inline void qDeleteAll(const Container &c)
 
     artifact 333826 "global"
       stereotype "source"
-      cpp_h "#ifndef HumbugSHARED_GLOBAL_H
-#define HumbugSHARED_GLOBAL_H
+      cpp_h "#ifndef HumbugGLSHARED_GLOBAL_H
+#define HumbugGLSHARED_GLOBAL_H
 
 
 #endif

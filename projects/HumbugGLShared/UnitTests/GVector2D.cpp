@@ -11,12 +11,12 @@
 // alternatively you could define init function yourself
 #define BOOST_TEST_MAIN
 //#include <boost/test/unit_test.hpp>
-#define BOOST_TEST_MODULE HumbugShared_GVector2D
+#define BOOST_TEST_MODULE HumbugGLShared_GVector2D
 #include <BoostTestTargetConfig.h>
 
 //#define LOGMANAGER_NOLOG 1
-#include <HumbugLib/LogManager.h>
-#include <HumbugShared/GameObjects/GVector2D.h>
+#include <HumbugGLLib/LogManager.h>
+#include <HumbugGLShared/GameObjects/GVector2D.h>
 
 using namespace gob;
 

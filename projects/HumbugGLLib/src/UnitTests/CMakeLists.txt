@@ -2,8 +2,8 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-#PROJECT( HumbugLibTest )
-PROJECT( HumbugLib )
+#PROJECT( HumbugGLLibTest )
+PROJECT( HumbugGLLib )
 
 INCLUDE(BoostTestTargets)
 ADD_BOOST_TEST(unit_test_example_01

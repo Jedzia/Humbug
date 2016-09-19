@@ -12,7 +12,7 @@
 #include "../Components/MainCanvas.h"
 #include <stdexcept>
 #include "GUI/Visual/Console.h"
-#include <HumbugLib/LogManager.h>
+#include <HumbugGLLib/LogManager.h>
 #include "../../TimingDefs.h"
 
 extern int bmain(int argc,char* argv[]);

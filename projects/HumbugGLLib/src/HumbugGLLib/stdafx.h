@@ -4,13 +4,13 @@
 //#define MyDECLSPEC __declspec(dllexport)
 //class __declspec(dllexport) TestClass;
 
-#include <HumbugLib/global.h>
+#include <HumbugGLLib/global.h>
 
 #ifdef HAVE_CONFIG_H
 #	include <config.h>
 #endif
 
-//#include "HumbugLib/support/strfwd.h"
+//#include "HumbugGLLib/support/strfwd.h"
 
 #include <algorithm>
 #include <cerrno>
@@ -69,7 +69,7 @@
 //#include <CppStructz/TestClass.h>
 //#include "minizip/zip.h"
 //#include "minizip/unzip.h"
-//#ifndef HumbugLIB_NAMESPACE_HELPERS_H
+//#ifndef HumbugGLLIB_NAMESPACE_HELPERS_H
 //#  include "shared/Helpers.h"
 //#endif
 

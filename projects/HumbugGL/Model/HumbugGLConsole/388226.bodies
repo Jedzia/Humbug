@@ -2,7 +2,7 @@ class ProcessProject
 !!!417538.cpp!!!	run() : void
     using cry::FileDetector;
     const std::string prjname =
-        "D:/E/Projects/C++/Humbug/projects/Humbug/XSD/Nummer1.tmplproj";
+        "D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD/Nummer1.tmplproj";
     std::cout << std::endl;
     std::cout << "GB::getProjectDirectory(): " << GB::getProjectDirectory() << std::endl;
 

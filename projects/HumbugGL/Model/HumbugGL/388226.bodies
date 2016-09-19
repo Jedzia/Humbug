@@ -3,7 +3,7 @@ class ProcessProject
 using cry::FileDetector;
 using namespace CPPSTRUCTZ_NAMESPACE::config;
 const std::string prjname =
-    "D:/E/Projects/C++/Humbug/projects/Humbug/XSD/Nummer1.tmplproj";
+    "D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD/Nummer1.tmplproj";
 csz::dbg << LOGGER_ENDMSG;
 csz::dbg << "GB::getProjectDirectory(): " << GB::getProjectDirectory() << LOGGER_ENDMSG;
 /*ConfigString* cfgOption = new ConfigString("START", "\b", "Templates");

@@ -7,7 +7,7 @@ end
 show_stereotypes
 selected artifact_ref 147970 // stdafx
 open
-  deploymentview_ref 206466 // HumbugLib
+  deploymentview_ref 206466 // HumbugGLLib
   
   package_ref 134658 // main
   classview_ref 147714 // build

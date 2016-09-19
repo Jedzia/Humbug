@@ -6,15 +6,15 @@ Subject: [PATCH] Linux changes
 
 ---
  projects/CMakeLists.txt                            |    2 +-
- projects/Humbug/Artwork/CMakeLists.txt             |    5 +++++
- .../Humbug/HumbugShared/ScriptHost/LuaScript.h     |    4 +++-
- .../Humbug/HumbugShared/ScriptHost/ScriptHost.cpp  |    4 ++--
- projects/Humbug/HumbugShared/VFS/stdint.h          |    4 ++--
- projects/Humbug/src/Screens/BlaScreen.h            |    2 ++
- projects/Humbug/src/Screens/HighscoreScreen.h      |    2 ++
- projects/Humbug/src/Screens/LuaScreen.cpp          |    2 +-
- projects/Humbug/src/TestEventHandler.cpp           |   10 +++++-----
- projects/HumbugLib/src/HumbugLib/LogManager.cpp    |    7 ++++---
+ projects/HumbugGL/Artwork/CMakeLists.txt             |    5 +++++
+ .../HumbugGL/HumbugGLShared/ScriptHost/LuaScript.h     |    4 +++-
+ .../HumbugGL/HumbugGLShared/ScriptHost/ScriptHost.cpp  |    4 ++--
+ projects/HumbugGL/HumbugGLShared/VFS/stdint.h          |    4 ++--
+ projects/HumbugGL/src/Screens/BlaScreen.h            |    2 ++
+ projects/HumbugGL/src/Screens/HighscoreScreen.h      |    2 ++
+ projects/HumbugGL/src/Screens/LuaScreen.cpp          |    2 +-
+ projects/HumbugGL/src/TestEventHandler.cpp           |   10 +++++-----
+ projects/HumbugGLLib/src/HumbugGLLib/LogManager.cpp    |    7 ++++---
  projects/SupportLibs/luabind/CMakeLists.txt        |    3 ++-
  projects/bindings.cmake                            |    6 +++---
  12 files changed, 32 insertions(+), 19 deletions(-)
@@ -32,10 +32,10 @@ index 9be52f3..d2880e6 100644
  if ( CYGWIN )
    set(CMAKE_LEGACY_CYGWIN_WIN32 1)
  endif( CYGWIN )
-diff --git a/projects/Humbug/Artwork/CMakeLists.txt b/projects/Humbug/Artwork/CMakeLists.txt
+diff --git a/projects/HumbugGL/Artwork/CMakeLists.txt b/projects/HumbugGL/Artwork/CMakeLists.txt
 index 0581315..2b6fc9b 100644
---- a/projects/Humbug/Artwork/CMakeLists.txt
-+++ b/projects/Humbug/Artwork/CMakeLists.txt
+--- a/projects/HumbugGL/Artwork/CMakeLists.txt
++++ b/projects/HumbugGL/Artwork/CMakeLists.txt
 @@ -89,9 +89,14 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
  		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
  		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_file_fullpath}\"")
@@ -51,10 +51,10 @@ index 0581315..2b6fc9b 100644
  #	MESSAGE(STATUS "[IMGCONV-X] DEPENDS ${_image_source_file}")
  #	MESSAGE(STATUS "[IMGCONV-X] OUTPUT ${_out_file_fullpath}")
  	
-diff --git a/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h b/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h
+diff --git a/projects/HumbugGL/HumbugGLShared/ScriptHost/LuaScript.h b/projects/HumbugGL/HumbugGLShared/ScriptHost/LuaScript.h
 index db17526..5317bb7 100644
---- a/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h
-+++ b/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h
+--- a/projects/HumbugGL/HumbugGLShared/ScriptHost/LuaScript.h
++++ b/projects/HumbugGL/HumbugGLShared/ScriptHost/LuaScript.h
 @@ -23,6 +23,7 @@
  #include <lua.hpp>
  #include <luabind/luabind.hpp>
@@ -73,10 +73,10 @@ index db17526..5317bb7 100644
        }
        /** LuaScript, run_script:
         *  Detailed description.
-diff --git a/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp b/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp
+diff --git a/projects/HumbugGL/HumbugGLShared/ScriptHost/ScriptHost.cpp b/projects/HumbugGL/HumbugGLShared/ScriptHost/ScriptHost.cpp
 index 09d6f1a..0f0d202 100644
---- a/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp
-+++ b/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp
+--- a/projects/HumbugGL/HumbugGLShared/ScriptHost/ScriptHost.cpp
++++ b/projects/HumbugGL/HumbugGLShared/ScriptHost/ScriptHost.cpp
 @@ -95,7 +95,7 @@ private:
  
            // *** Bind a class with functions that can be instantiated in Lua ***
@@ -95,10 +95,10 @@ index 09d6f1a..0f0d202 100644
            bindModule[fn];
  
            // A file
-diff --git a/projects/Humbug/HumbugShared/VFS/stdint.h b/projects/Humbug/HumbugShared/VFS/stdint.h
+diff --git a/projects/HumbugGL/HumbugGLShared/VFS/stdint.h b/projects/HumbugGL/HumbugGLShared/VFS/stdint.h
 index 203fdad..cf92a19 100644
---- a/projects/Humbug/HumbugShared/VFS/stdint.h
-+++ b/projects/Humbug/HumbugShared/VFS/stdint.h
+--- a/projects/HumbugGL/HumbugGLShared/VFS/stdint.h
++++ b/projects/HumbugGL/HumbugGLShared/VFS/stdint.h
 @@ -31,7 +31,7 @@ typedef unsigned __int64	uint_least64_t;
  
  #elif defined UNIX
@@ -117,10 +117,10 @@ index 203fdad..cf92a19 100644
  
  #endif
  
-diff --git a/projects/Humbug/src/Screens/BlaScreen.h b/projects/Humbug/src/Screens/BlaScreen.h
+diff --git a/projects/HumbugGL/src/Screens/BlaScreen.h b/projects/HumbugGL/src/Screens/BlaScreen.h
 index 0d05c25..0fdb2f8 100644
---- a/projects/Humbug/src/Screens/BlaScreen.h
-+++ b/projects/Humbug/src/Screens/BlaScreen.h
+--- a/projects/HumbugGL/src/Screens/BlaScreen.h
++++ b/projects/HumbugGL/src/Screens/BlaScreen.h
 @@ -19,6 +19,8 @@
  #include "GUI/Components/Screen.h"
  #include "boost/smart_ptr/scoped_ptr.hpp"
@@ -130,10 +130,10 @@ index 0d05c25..0fdb2f8 100644
  namespace gui {
    class CSprite;
    class CSpriteManager;
-diff --git a/projects/Humbug/src/Screens/HighscoreScreen.h b/projects/Humbug/src/Screens/HighscoreScreen.h
+diff --git a/projects/HumbugGL/src/Screens/HighscoreScreen.h b/projects/HumbugGL/src/Screens/HighscoreScreen.h
 index 0927b7e..bf0ab4a 100644
---- a/projects/Humbug/src/Screens/HighscoreScreen.h
-+++ b/projects/Humbug/src/Screens/HighscoreScreen.h
+--- a/projects/HumbugGL/src/Screens/HighscoreScreen.h
++++ b/projects/HumbugGL/src/Screens/HighscoreScreen.h
 @@ -4,6 +4,8 @@
  #include <boost/smart_ptr/scoped_ptr.hpp>
  #include <boost/ptr_container/ptr_vector.hpp>
@@ -143,10 +143,10 @@ index 0927b7e..bf0ab4a 100644
  namespace gui { namespace components {
  	class CCanvas;
  	class CText;
-diff --git a/projects/Humbug/src/Screens/LuaScreen.cpp b/projects/Humbug/src/Screens/LuaScreen.cpp
+diff --git a/projects/HumbugGL/src/Screens/LuaScreen.cpp b/projects/HumbugGL/src/Screens/LuaScreen.cpp
 index acd91bf..efebebf 100644
---- a/projects/Humbug/src/Screens/LuaScreen.cpp
-+++ b/projects/Humbug/src/Screens/LuaScreen.cpp
+--- a/projects/HumbugGL/src/Screens/LuaScreen.cpp
++++ b/projects/HumbugGL/src/Screens/LuaScreen.cpp
 @@ -231,7 +231,7 @@ public:
  		pimpl_->script = s;
  
@@ -156,10 +156,10 @@ index acd91bf..efebebf 100644
          world.ScreenX = screenRect.GetW();
          world.ScreenY = screenRect.GetH();
  
-diff --git a/projects/Humbug/src/TestEventHandler.cpp b/projects/Humbug/src/TestEventHandler.cpp
+diff --git a/projects/HumbugGL/src/TestEventHandler.cpp b/projects/HumbugGL/src/TestEventHandler.cpp
 index f1687a9..fb2818a 100644
---- a/projects/Humbug/src/TestEventHandler.cpp
-+++ b/projects/Humbug/src/TestEventHandler.cpp
+--- a/projects/HumbugGL/src/TestEventHandler.cpp
++++ b/projects/HumbugGL/src/TestEventHandler.cpp
 @@ -555,14 +555,14 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
              //successful lock
              //set pixel
@@ -186,22 +186,22 @@ index f1687a9..fb2818a 100644
 -}
 \ No newline at end of file
 +}
-diff --git a/projects/HumbugLib/src/HumbugLib/LogManager.cpp b/projects/HumbugLib/src/HumbugLib/LogManager.cpp
+diff --git a/projects/HumbugGLLib/src/HumbugGLLib/LogManager.cpp b/projects/HumbugGLLib/src/HumbugGLLib/LogManager.cpp
 index 2b0ad12..a781b36 100644
---- a/projects/HumbugLib/src/HumbugLib/LogManager.cpp
-+++ b/projects/HumbugLib/src/HumbugLib/LogManager.cpp
+--- a/projects/HumbugGLLib/src/HumbugGLLib/LogManager.cpp
++++ b/projects/HumbugGLLib/src/HumbugGLLib/LogManager.cpp
 @@ -18,6 +18,7 @@
  //
  #include "LogManager.h"
  #include <algorithm>
 +#include <stdexcept>
  //#include <boost/thread.hpp>
- #define HUMBUG_AUTO_MUTEX_NAME mutex
- #define HUMBUG_LOCK_AUTO_MUTEX
+ #define HUMBUGGL_AUTO_MUTEX_NAME mutex
+ #define HUMBUGGL_LOCK_AUTO_MUTEX
 @@ -110,7 +111,7 @@ Log * LogManager::getLog( const std::string& name){
      }
      else {
-         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
+         HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
 -        throw std::exception("Log not found. LogManager::getLog");
 +        throw std::runtime_error("Log not found. LogManager::getLog");
      }
@@ -210,7 +210,7 @@ index 2b0ad12..a781b36 100644
 @@ -137,7 +138,7 @@ void LogManager::destroyLog(const std::string& name){
  void LogManager::destroyLog(Log* log){
      if(!log) {
-         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
+         HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
 -        throw std::exception("Cannot destroy a null log. LogManager::destroyLog");
 +        throw std::runtime_error("Cannot destroy a null log. LogManager::destroyLog");
      }
@@ -219,7 +219,7 @@ index 2b0ad12..a781b36 100644
 @@ -170,7 +171,7 @@ Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
      }
      else {
-         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
+         HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
 -        throw std::exception("Default log not found. LogManager::stream");
 +        throw std::runtime_error("Default log not found. LogManager::stream");
      }
@@ -272,7 +272,7 @@ index 63f7709..471debb 100644
  #...
  #SET(CHECK_STRINGS )
  # Besser wird es sein den PROJECT_NAME Ansatz zu nehmen, da die Variablen sonnst
--# für den Aufrufer verloren sind.
+-# f?r den Aufrufer verloren sind.
 +# f\FCr den Aufrufer verloren sind.
  
  IF(USE_MAGICK)

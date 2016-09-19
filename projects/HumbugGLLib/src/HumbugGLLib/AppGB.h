@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGLIB_APPGB_H
-#define HUMBUGLIB_APPGB_H
+#ifndef HUMBUGGLLIB_APPGB_H
+#define HUMBUGGLLIB_APPGB_H
 #include <string>
 class AppGB {
 public:
@@ -39,4 +39,4 @@ private:
     std::string exePath;
     std::string appDir;
 };
-#endif // HUMBUGLIB_APPGB_H
+#endif // HUMBUGGLLIB_APPGB_H

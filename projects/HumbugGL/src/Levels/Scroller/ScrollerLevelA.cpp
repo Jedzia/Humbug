@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
@@ -25,7 +25,7 @@
 #include "PlayerShip.h"
 #include "EnemyWave.h"
 #include "GUI/DebugOverlay.h"
-//#include "HumbugShared/GameObjects/Player.h"
+//#include "HumbugGLShared/GameObjects/Player.h"
 #include <GUI/Components/Rectangle.h>
 #include <GuiLib/Filesystem/FileLoader.h>
 #include <GuiLib/GUI/Components/CanvasRendererImpl.h>
@@ -166,7 +166,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
         "declared in class " <<
         "'boost::noncopyable_::noncopyable'" << "\t" <<
         "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" <<
-        "\t" << "48" << "\t" << "Humbug" << "\r\n" <<
+        "\t" << "48" << "\t" << "HumbugGL" << "\r\n" <<
         "\r\n" <<
         "Error" << "\t" << "3" << "\t" <<
         "error C2248: 'boost::scoped_ptr<T>::scoped_ptr' : cannot access private member declared in "
@@ -174,7 +174,7 @@ bool ScrollerLevelA::OnInit(int argc, char* argv[]) {
         "class " <<
         "'boost::scoped_ptr<T>'" << "\t" <<
         "d:/e/projects/c++/humbug/projects/humbug/src/gui/visual/Hookable.h" << "\t" << "48" << "\t" <<
-        "Humbug" << "\r\n" <<
+        "HumbugGL" << "\r\n" <<
         "";
 
     m_pScrollText.reset(new CText(m_pArialfont, outstring.str(), m_colText));

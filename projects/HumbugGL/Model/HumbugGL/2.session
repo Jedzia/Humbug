@@ -6,7 +6,7 @@ diagrams
 end
 show_stereotypes
 selected 
-package_ref 129 // Humbug
+package_ref 129 // HumbugGL
 open
   
 package_ref 253442 // toplevel

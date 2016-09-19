@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -15,8 +15,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_SDLINFO_H
-#define HUMBUG_SDLINFO_H
+#ifndef HUMBUGGL_SDLINFO_H
+#define HUMBUGGL_SDLINFO_H
 
 //
 #include <string>
@@ -99,4 +99,4 @@ std::ostream& operator<<(std::ostream& o, const SdlInfo& r);
 
 } // namespace gui
 
-#endif // HUMBUG_SDLINFO_H
+#endif // HUMBUGGL_SDLINFO_H

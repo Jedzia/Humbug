@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -14,8 +14,8 @@
  * modified    2013-03-06, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef __HUMBUG_GUI_VISUAL_CCONSOLE_H
-#define __HUMBUG_GUI_VISUAL_CCONSOLE_H
+#ifndef __HUMBUGGL_GUI_VISUAL_CCONSOLE_H
+#define __HUMBUGGL_GUI_VISUAL_CCONSOLE_H
 
 #include "../Components/Canvas.h"
 #include "../Components/Rectangle.h"
@@ -60,4 +60,4 @@ private:
 //std::ostream& operator<<(std::ostream& o, const CConsole& r);
 } // namespace gui
 
-#endif // __HUMBUG_GUI_VISUAL_CCONSOLE_H guard
+#endif // __HUMBUGGL_GUI_VISUAL_CCONSOLE_H guard

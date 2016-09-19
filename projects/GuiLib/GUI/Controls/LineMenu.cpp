@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -42,7 +42,7 @@ CLineMenu::CLineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const s
     dbgOut(__FUNCTION__);
 
     //Init(pParent);
-    //FileLoader fl("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
+    //FileLoader fl("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data");
     //footer = new CCanvas( m_pLoader.LoadImg("footer.png") );
 
     // BringToFront();

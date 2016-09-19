@@ -1,13 +1,13 @@
 -X-X-X-X- Montag, 15. Februar 2016 -----------------------------------------------------------------------------
 
-E:\Projects\C++\Humbug\projects\Humbug\Artwork\Sprites\Ship>
+E:\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Sprites\Ship>
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" ShipSprite02.ai ShipSprite02.png
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" Laser01.ai Laser01.png
 
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" Laser01.ai -set filename:f '%f-%p.png' '%[filename:f]'
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" Laser01.ai  -background transparent-format png -set filename:f '%f-%d-%s-%n.png' '%[filename:f]'
 
-"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" -background transparent E:/Projects/C++/Humbug/projects/Humbug/Artwork/Sprites/Ship/Laser/Laser01.ai E:/Projects/C++/Humbug/projects/Humbug/Artwork/Work/Sprites/Ship/Laser/Laser01-%03d.png
+"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" -background transparent E:/Projects/C++/HumbugGL/projects/HumbugGL/Artwork/Sprites/Ship/Laser/Laser01.ai E:/Projects/C++/HumbugGL/projects/HumbugGL/Artwork/Work/Sprites/Ship/Laser/Laser01-%03d.png
 
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\convert.exe" Laser01.ai  -background transparent -format png Laser01-%03d.png
 creates ShipSprite02-0.png and ShipSprite02-1.png
@@ -16,12 +16,12 @@ combine them:
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 ShipSprite02-* ShipSprite02.png
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 Laser01-* Laser01.png
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 256x256 Saucer01_* Saucer01.png
-E:\Projects\C++\Humbug\projects\Humbug\Artwork\UnderConstruction\Render>
+E:\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\UnderConstruction\Render>
 "D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\montage.exe" -background none -geometry 64x64 Enemy01_* Enemy01.png
 
 
 identify
-E:\Projects\C++\Humbug\projects\Humbug\Artwork\Work\Sprites\Ship\Laser>"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\identify.exe" Laser01-1.png
+E:\Projects\C++\HumbugGL\projects\HumbugGL\Artwork\Work\Sprites\Ship\Laser>"D:\Program Files\ImageMagick-7.0.0-Q16-HDRI\identify.exe" Laser01-1.png
 ----------------------------------------------------------------------------------------------------------------
 
 -X-X-X-X- Mo, 01 Feb 2016 17:30:17 -----------------------------------------------------------
@@ -227,42 +227,42 @@ So there are many riddles and hard aufgaben to solve, before you blablabla get i
 -----------------------------------------------------------------------------------------------
 -X-X-X-X- Montag, 16. Juli 2012 -----------------------------------------------------------------------------
 
-D:\E\Projects\C++\Humbug\build\Humbug\src\Debug>
-Humbug.exe > leaks.txt 2>&1
+D:\E\Projects\C++\HumbugGL\build\HumbugGL\src\Debug>
+HumbugGL.exe > leaks.txt 2>&1
 
 gdb:
 break Application.cpp:381
 ----------------------------------------------------------------------------------------------------------------
 -X-X-X-X- Sa, 07 Jul 2012 19:12:37 -----------------------------------------------------------
-Humbug, CMD:
+HumbugGL, CMD:
 
 cpack -G NSIS
-msbuild Humbug.sln /v:n /p:Configuration=Debug /t:MakeVFS
-msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug
-msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Playground\zfs
+msbuild HumbugGL.sln /v:n /p:Configuration=Debug /t:MakeVFS
+msbuild HumbugGL.sln /v:n /p:Configuration=Debug /t:HumbugGL
+msbuild HumbugGL.sln /v:n /p:Configuration=Debug /t:Playground\zfs
 
-msbuild Humbug.sln /v:n /p:Configuration=Release /t:Humbug
+msbuild HumbugGL.sln /v:n /p:Configuration=Release /t:HumbugGL
 
-msbuild Humbug.sln /v:n /p:Configuration=Debug /t:Humbug && Humbug\src\Debug\Humbug.exe
+msbuild HumbugGL.sln /v:n /p:Configuration=Debug /t:HumbugGL && HumbugGL\src\Debug\HumbugGL.exe
 
 -----------------------------------------------------------------------------------------------
 -X-X-X-X- Donnerstag, 5. Juli 2012 -----------------------------------------------------------------------------
  
 ..\SDL-1.2.15\VisualC\SDL\Debug\SDL.lib
 
-root@Pubsi /d/E/Projects/C++/Humbug/msysbuild/oglconsole/examples/SDL
+root@Pubsi /d/E/Projects/C++/HumbugGL/msysbuild/oglconsole/examples/SDL
 $ gcc -I../../ -DOGLCONSOLE_USE_SDL `sdl-config --cflags --libs` -o example example.c ../../oglconsole-sdl.o -lopengl32 -lglu32 -lSDL -lSDLmain
  
  
-D:\E\Projects\C++\Humbug\build>
-msbuild Humbug.sln /v:d /p:Configuration=Debug /t:Playground\SDL\SDL_hardlines
+D:\E\Projects\C++\HumbugGL\build>
+msbuild HumbugGL.sln /v:d /p:Configuration=Debug /t:Playground\SDL\SDL_hardlines
 
 
 Image wandeln
-root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/Artwork
+root@Pubsi /cygdrive/d/E/Projects/C++/HumbugGL/Artwork
 $ convert -layers merge footer2.psd footer2.bmp
 
-"C:\Program Files\ImageMagick-6.7.8-Q16\convert.exe" -layers merge D:/E/Projects/C++/Humbug/projects/Humbug/Artwork/footer.psd
+"C:\Program Files\ImageMagick-6.7.8-Q16\convert.exe" -layers merge D:/E/Projects/C++/HumbugGL/projects/HumbugGL/Artwork/footer.psd
 
 
 ----------------------------------------------------------------------------------------------------------------
@@ -281,7 +281,7 @@ beim cmake usen:
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
 set(CMAKE_LEGACY_CYGWIN_WIN32 1)
 
-PROJECT( Humbug )
+PROJECT( HumbugGL )
 SET(CMAKE_BUILD_TYPE Release)
 
 
@@ -302,16 +302,16 @@ PRJ BUILD:
 (cmake mit ./configure bauen)
 cmake ../projects/ -G"MSYS Makefiles"
 
-root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+root@Pubsi /d/E/Projects/C++/HumbugGL/msysbuild
 export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/c/Program Files/CMake-2.8.5/bin:/d/boost/boost-1.50.0"
 export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/d/boost/boost-1.50.0"
 
-root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+root@Pubsi /d/E/Projects/C++/HumbugGL/msysbuild
 $ export QTDIR=/c/QtSDK/Desktop/Qt/4.7.2/mingw
 ===========
 
 Create class from template:
-D:\E\Projects\C++\Humbug\projects\Humbug\src\GUI>
+D:\E\Projects\C++\HumbugGL\projects\HumbugGL\src\GUI>
 template TemplateOstream MyClass
 
 SDL:
@@ -320,29 +320,29 @@ SDL:
 set SDL_VIDEODRIVER=directx
 
 
-Humbug, msys, MinGW
+HumbugGL, msys, MinGW
 ---------------
 export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/d/boost/boost-1.50.0"
 export PATH=".:/usr/local/bin:/mingw/bin:/bin:/c/QtSDK/Desktop/Qt/4.7.2/mingw/bin:/c/Program Files/CMake-2.8.5/bin:/d/boost/boost-1.50.0"
 
-root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+root@Pubsi /d/E/Projects/C++/HumbugGL/msysbuild
 $ cmake ../projects/ -G"MSYS Makefiles"
 $ make SDL_fosdl3_8
 
-root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
+root@Pubsi /d/E/Projects/C++/HumbugGL/msysbuild
 $ /c/WINDOWS/system32/WindowsPowerShell/v1.0/powershell_ise.exe &
 $ "/c/Program Files/CMake-2.8.5/bin/cmake-gui" ../projects/
-cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugShared_ENABLED=FALSE
-cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugShared_ENABLED=FALSE -DCMAKE_BUILD_TYPE=Debug
-cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugShared_ENABLED=TRUE -DPCH_HumbugShared_ENABLED:BOOL=TRUE -DCMAKE_BUILD_TYPE=Debug
+cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugGLShared_ENABLED=FALSE
+cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugGLShared_ENABLED=FALSE -DCMAKE_BUILD_TYPE=Debug
+cmake ../projects/ -G"MSYS Makefiles" -DPCH_HumbugGLShared_ENABLED=TRUE -DPCH_HumbugGLShared_ENABLED:BOOL=TRUE -DCMAKE_BUILD_TYPE=Debug
 
-Humbug_PCH_DEBUG:BOOL=ON
+HumbugGL_PCH_DEBUG:BOOL=ON
 
 
-Humbug, cygwin
+HumbugGL, cygwin
 ---------------
-root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/cygbuild
-$ cd "D:\E\Projects\C++\Humbug\cygbuild"
+root@Pubsi /cygdrive/d/E/Projects/C++/HumbugGL/cygbuild
+$ cd "D:\E\Projects\C++\HumbugGL\cygbuild"
 
 
 SDL_ttf
@@ -361,16 +361,16 @@ Topic, Purpose:
 -----------------------------------------------------------------------------------------------
 Check for boost usage:
 
-root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
+root@Pubsi /cygdrive/d/E/Projects/C++/HumbugGL/projects/CppStructz/src/CppStructz
 $ grep -li -R boost * | grep -v \.svn
 
 
 
 -X-X-X-X- Mi, 18 Jul 2012 18:06:30 -----------------------------------------------------------
-Humbug, MinGW-pch benchmark:
+HumbugGL, MinGW-pch benchmark:
 
-root@Pubsi /d/E/Projects/C++/Humbug/msysbuild
-$ time (make clean && make Humbug)
+root@Pubsi /d/E/Projects/C++/HumbugGL/msysbuild
+$ time (make clean && make HumbugGL)
 
 without pch:
 	real    3m10.703s
@@ -390,33 +390,33 @@ with pch:
 -X-X-X-X- Mi, 18 Jul 2012 06:04:29 -----------------------------------------------------------
 MinGW, pch:
 
-[  4%] Generating stdafx.h.gch/Humbug_Debug.h++.gch
-cd /D/E/Projects/C++/Humbug/msysbuild/Humbug/src && /C/MinGW/bin/g++.exe -Wall -Wunused-parameter -fno-strict-aliasing -
-O0 -g -D_DEBUG d:/E/Projects/C++/Humbug/projects C:/MinGW/msys/1.0/include/SDL D:/E/Projects/C++/Humbug/msysbuild/DEPS/S
-DL_image-1.2.12 D:/E/Projects/C++/Humbug/msysbuild/DEPS/SDL_ttf-2.0.11 D:/E/Projects/C++/Humbug/msysbuild/DEPS/SDL_gfx-2
-.0.23 d:/E/Projects/C++/Humbug/projects/Humbug/HumbugShared/.. C:/gnuwin32/include d:/boost/boost-1.50.0 d:/E/Projects/C
-++/Humbug/projects/Humbug/src d:/E/Projects/C++/Humbug/projects/Humbug/HumbugShared/.. d:/boost/boost-1.50.0 d:/boost/bo
-ost-1.50.0 -DMSYS -std=c++0x -DWINVER=0x0500 -DBOOST_LIB_DIAGNOSTIC -DUSE_LIB_BOOST -DBOOST_ALL_DYN_LINK -DHumbugShared_
+[  4%] Generating stdafx.h.gch/HumbugGL_Debug.h++.gch
+cd /D/E/Projects/C++/HumbugGL/msysbuild/HumbugGL/src && /C/MinGW/bin/g++.exe -Wall -Wunused-parameter -fno-strict-aliasing -
+O0 -g -D_DEBUG d:/E/Projects/C++/HumbugGL/projects C:/MinGW/msys/1.0/include/SDL D:/E/Projects/C++/HumbugGL/msysbuild/DEPS/S
+DL_image-1.2.12 D:/E/Projects/C++/HumbugGL/msysbuild/DEPS/SDL_ttf-2.0.11 D:/E/Projects/C++/HumbugGL/msysbuild/DEPS/SDL_gfx-2
+.0.23 d:/E/Projects/C++/HumbugGL/projects/HumbugGL/HumbugGLShared/.. C:/gnuwin32/include d:/boost/boost-1.50.0 d:/E/Projects/C
+++/HumbugGL/projects/HumbugGL/src d:/E/Projects/C++/HumbugGL/projects/HumbugGL/HumbugGLShared/.. d:/boost/boost-1.50.0 d:/boost/bo
+ost-1.50.0 -DMSYS -std=c++0x -DWINVER=0x0500 -DBOOST_LIB_DIAGNOSTIC -DUSE_LIB_BOOST -DBOOST_ALL_DYN_LINK -DHumbugGLShared_
 ALL_STATIC_LINK -DHAVE_SDLIMAGE -DUNICODE -D_UNICODE -Wall -Wunused-parameter -fno-strict-aliasing -x c++-header -o D:/E
-/Projects/C++/Humbug/msysbuild/Humbug/src/stdafx.h.gch/Humbug_Debug.h++.gch D:/E/Projects/C++/Humbug/msysbuild/Humbug/sr
-c/stdafx.h.gch/Humbug_Debug.h++
-D:/E/Projects/C++/Humbug/msysbuild/Humbug/src/stdafx.h.gch/Humbug_Debug.h++:47:36: fatal error: boost/filesystem.hpp: No
+/Projects/C++/HumbugGL/msysbuild/HumbugGL/src/stdafx.h.gch/HumbugGL_Debug.h++.gch D:/E/Projects/C++/HumbugGL/msysbuild/HumbugGL/sr
+c/stdafx.h.gch/HumbugGL_Debug.h++
+D:/E/Projects/C++/HumbugGL/msysbuild/HumbugGL/src/stdafx.h.gch/HumbugGL_Debug.h++:47:36: fatal error: boost/filesystem.hpp: No
  such file or directory
 compilation terminated.
-make[3]: *** [Humbug/src/stdafx.h.gch/Humbug_Debug.h++.gch] Error 1
-make[3]: Leaving directory `/d/E/Projects/C++/Humbug/msysbuild'
-make[2]: *** [Humbug/src/CMakeFiles/pch_Generate_Humbug.dir/all] Error 2
-make[2]: Leaving directory `/d/E/Projects/C++/Humbug/msysbuild'
-make[1]: *** [Humbug/src/CMakeFiles/Humbug.dir/rule] Error 2
-make[1]: Leaving directory `/d/E/Projects/C++/Humbug/msysbuild'
-make: *** [Humbug] Error 2
+make[3]: *** [HumbugGL/src/stdafx.h.gch/HumbugGL_Debug.h++.gch] Error 1
+make[3]: Leaving directory `/d/E/Projects/C++/HumbugGL/msysbuild'
+make[2]: *** [HumbugGL/src/CMakeFiles/pch_Generate_HumbugGL.dir/all] Error 2
+make[2]: Leaving directory `/d/E/Projects/C++/HumbugGL/msysbuild'
+make[1]: *** [HumbugGL/src/CMakeFiles/HumbugGL.dir/rule] Error 2
+make[1]: Leaving directory `/d/E/Projects/C++/HumbugGL/msysbuild'
+make: *** [HumbugGL] Error 2
 -----------------------------------------------------------------------------------------------
 
 
 -X-X-X-X- Mi, 18 Jul 2012 03:37:39 -----------------------------------------------------------
 MinGW, Debugging:
 
-$ gdb Humbug.exe
+$ gdb HumbugGL.exe
 GNU gdb (GDB) 7.2
 Copyright (C) 2010 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -426,9 +426,9 @@ and "show warranty" for details.
 This GDB was configured as "mingw32".
 For bug reporting instructions, please see:
 <http://www.gnu.org/software/gdb/bugs/>...
-Reading symbols from d:\E\Projects\C++\Humbug\msysbuild\Humbug\src/Humbug.exe...done.
+Reading symbols from d:\E\Projects\C++\HumbugGL\msysbuild\HumbugGL\src/HumbugGL.exe...done.
 (gdb) r
-Starting program: d:\E\Projects\C++\Humbug\msysbuild\Humbug\src/Humbug.exe
+Starting program: d:\E\Projects\C++\HumbugGL\msysbuild\HumbugGL\src/HumbugGL.exe
 [New Thread 1608.0xa64]
 [New Thread 1608.0x860]
 [New Thread 1608.0x518]
@@ -521,12 +521,12 @@ locator>::~ptr_sequence_adapter (this=0xd4ffe0, __in_chrg=<value optimized out>)
 o_ptr (this=0x22fdcc, __in_chrg=<value optimized out>)
     at c:/mingw/bin/../lib/gcc/i686-pc-mingw32/4.5.4/include/c++/backward/auto_ptr.h:168
 #12 0x00402dc6 in _fu3___ZSt4cout (this=0x43b288, __in_chrg=<value optimized out>)
-    at d:/E/Projects/C++/Humbug/projects/Humbug/src/GUI/Visual/Hookable.cpp:44
+    at d:/E/Projects/C++/HumbugGL/projects/HumbugGL/src/GUI/Visual/Hookable.cpp:44
 #13 0x00401afe in CEventHandler::~CEventHandler (this=0x43b280, __in_chrg=<value optimized out>)
-    at d:/E/Projects/C++/Humbug/projects/Humbug/src/GUI/Visual/EventHandler.cpp:20
+    at d:/E/Projects/C++/HumbugGL/projects/HumbugGL/src/GUI/Visual/EventHandler.cpp:20
 #14 0x00404a09 in _fu17___ZSt4cout (this=0x43b280, __in_chrg=<value optimized out>)
-    at d:/E/Projects/C++/Humbug/projects/Humbug/src/TestEventHandler.cpp:71
-#15 0x004074b7 in __tcf_6 () at d:/E/Projects/C++/Humbug/projects/Humbug/src/TestEventHandler.cpp:627
+    at d:/E/Projects/C++/HumbugGL/projects/HumbugGL/src/TestEventHandler.cpp:71
+#15 0x004074b7 in __tcf_6 () at d:/E/Projects/C++/HumbugGL/projects/HumbugGL/src/TestEventHandler.cpp:627
 #16 0x77c39e24 in msvcrt!_initterm () from C:\WINDOWS\system32\msvcrt.dll
 #17 0x77c39e90 in msvcrt!exit () from C:\WINDOWS\system32\msvcrt.dll
 #18 0x00419ba0 in console_main (argc=1, argv=0xd47a08) at ./src/main/win32/SDL_win32_main.c:318

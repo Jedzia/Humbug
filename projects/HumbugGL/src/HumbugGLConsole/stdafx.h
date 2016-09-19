@@ -1,6 +1,6 @@
 //---------------------------------------------------------
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * Licence details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -73,8 +73,8 @@
 //#include <CppStructz/log/LogHelper.h>
 //#include <CppStructz/text/DocLoader.h>
 //#include <CppStructz/text/TextDocument.h>
-//#include <HumbugShared/GB.h>
-//#include <HumbugShared/Project/ProcessProject.h>
+//#include <HumbugGLShared/GB.h>
+//#include <HumbugGLShared/Project/ProcessProject.h>
 
 // wide char stuff
 typedef wchar_t hchar_t;

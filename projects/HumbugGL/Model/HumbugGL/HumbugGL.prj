@@ -1,5 +1,5 @@
 format 76
-"Humbug"
+"HumbugGL"
   revision 81
   modified_by 2 "root"
   cpp_root_dir "../../"
@@ -59,9 +59,9 @@ format 76
 
   package_ref 141186 // build
 
-  package_ref 180482 // Humbug
+  package_ref 180482 // HumbugGL
 
-  package_ref 187138 // HumbugShared
+  package_ref 187138 // HumbugGLShared
 
   package_ref 193922 // QT
 

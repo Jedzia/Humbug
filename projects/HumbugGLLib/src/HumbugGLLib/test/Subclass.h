@@ -1,9 +1,9 @@
-#ifndef HumbugLIB_NAMESPACE_TEST_SUBCLASS_H
-#define HumbugLIB_NAMESPACE_TEST_SUBCLASS_H
+#ifndef HumbugGLLIB_NAMESPACE_TEST_SUBCLASS_H
+#define HumbugGLLIB_NAMESPACE_TEST_SUBCLASS_H
 
 
 #include "QBounce/global.h"
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 namespace test {
 
@@ -17,7 +17,7 @@ struct TestClass::Subclass {
 
 };
 
-} // namespace HumbugLIB_NAMESPACE::test
+} // namespace HumbugGLLIB_NAMESPACE::test
 
-} // namespace HumbugLIB_NAMESPACE
+} // namespace HumbugGLLIB_NAMESPACE
 #endif

@@ -16,7 +16,7 @@
 #cmake_policy(SET CMP0005 NEW) # 
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugCore )
+PROJECT( HumbugGLCore )
 #SET(LIBRARY_TYPE SHARED)
 SET(LIBRARY_TYPE STATIC)
 
@@ -27,7 +27,7 @@ INCLUDE (library)
 INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
 
-ENSURE_DOCS_ARE_PRESENT(HumbugCore_documents)
+ENSURE_DOCS_ARE_PRESENT(HumbugGLCore_documents)
 
 SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
@@ -56,7 +56,7 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
-SET(HumbugCore_GameObject_headers 
+SET(HumbugGLCore_GameObject_headers 
 #	GameObjects/Template.h
 #	GameObjects/GameObject.h
 #	GameObjects/GVector2D.h
@@ -64,7 +64,7 @@ SET(HumbugCore_GameObject_headers
 #	GameObjects/Player.h
 )
 
-SET(HumbugCore_GameObject_sources 
+SET(HumbugGLCore_GameObject_sources 
 #	GameObjects/Template.cpp
 #	GameObjects/GameObject.cpp
 #	GameObjects/GVector2D.cpp
@@ -72,18 +72,18 @@ SET(HumbugCore_GameObject_sources
 #	GameObjects/Player.cpp
 )
 
-SET(HumbugCore_Serialization_headers 
+SET(HumbugGLCore_Serialization_headers 
 	Serialization/Test.h
 	Serialization/LoadTest.h
 )
 
-SET(HumbugCore_Serialization_sources 
+SET(HumbugGLCore_Serialization_sources 
 	Serialization/Test.cpp
 	Serialization/LoadTest.cpp
 )
 
 
-SET(HumbugCore_headers 
+SET(HumbugGLCore_headers 
 #	GB.h
 	
 #	VFS/fileio.h
@@ -97,7 +97,7 @@ SET(HumbugCore_headers
 #	Project/ProcessProjectPrivate.h
 )
 
-SET(HumbugCore_sources 
+SET(HumbugGLCore_sources 
 #	GB.cpp
 
 #	VFS/zfsystem.cpp
@@ -105,10 +105,10 @@ SET(HumbugCore_sources
 #	VFS/zstream.cpp
 )
 
-#SET(HumbugCore_INCLUDE_DIR ${HumbugCore_IncludePath} CACHE PATH "HumbugCore include directory." FORCE)
+#SET(HumbugGLCore_INCLUDE_DIR ${HumbugGLCore_IncludePath} CACHE PATH "HumbugGLCore include directory." FORCE)
 
 
-SET(HumbugCore_resfiles 
+SET(HumbugGLCore_resfiles 
 #  mainwindow.qrc
 )
 
@@ -117,7 +117,7 @@ SET(HumbugCore_resfiles
 
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${HumbugGLLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
@@ -138,45 +138,45 @@ ENDIF(MSYS)
 
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugCore_resfiles})
-SOURCE_GROUP(GameObject FILES ${HumbugCore_GameObject_headers})
-SOURCE_GROUP(GameObject FILES ${HumbugCore_GameObject_sources})
-SOURCE_GROUP(SerializationHeader FILES ${HumbugCore_Serialization_headers})
-SOURCE_GROUP(SerializationSources FILES ${HumbugCore_Serialization_sources})
+SOURCE_GROUP(Resources FILES ${HumbugGLCore_resfiles})
+SOURCE_GROUP(GameObject FILES ${HumbugGLCore_GameObject_headers})
+SOURCE_GROUP(GameObject FILES ${HumbugGLCore_GameObject_sources})
+SOURCE_GROUP(SerializationHeader FILES ${HumbugGLCore_Serialization_headers})
+SOURCE_GROUP(SerializationSources FILES ${HumbugGLCore_Serialization_sources})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(THeaders FILES ${HumbugCore_headers})
-SOURCE_GROUP(TSources FILES ${HumbugCore_sources})
+SOURCE_GROUP(THeaders FILES ${HumbugGLCore_headers})
+SOURCE_GROUP(TSources FILES ${HumbugGLCore_sources})
 
-SET(HumbugCore_pre_sources 
-    ${HumbugCore_GameObject_sources}
-    ${HumbugCore_Serialization_sources}
-    ${HumbugCore_sources} 
+SET(HumbugGLCore_pre_sources 
+    ${HumbugGLCore_GameObject_sources}
+    ${HumbugGLCore_Serialization_sources}
+    ${HumbugGLCore_sources} 
 )
 
-ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugCore_pre_sources)
+ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugGLCore_pre_sources)
 #ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
-ADD_LIBRARY_X(HumbugCore ${LIBRARY_TYPE}
+ADD_LIBRARY_X(HumbugGLCore ${LIBRARY_TYPE}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
         stddefs.h 
         global.h 
 
-    	${HumbugCore_pre_sources}
-    	${HumbugCore_Serialization_headers}
-    	${HumbugCore_GameObject_headers}
-        ${HumbugCore_headers}
+    	${HumbugGLCore_pre_sources}
+    	${HumbugGLCore_Serialization_headers}
+    	${HumbugGLCore_GameObject_headers}
+        ${HumbugGLCore_headers}
         ${res_outfiles} 
         ${moc_outfiles} 
         ${ui_outfiles}
-		${HumbugCore_documents}
+		${HumbugGLCore_documents}
 )
 
-TARGET_LINK_LIBRARIES(HumbugCore ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES(HumbugCore luabind)
-ADD_DEPENDENCIES(HumbugCore luabind)
-TargetLinkBoost(HumbugCore "filesystem;system;regex")
-#ADD_DEPENDENCIES(HumbugCore CppStructz)
-ADD_PRECOMPILED_HEADER(HumbugCore stdafx.h stdafx.h.gch)
+TARGET_LINK_LIBRARIES(HumbugGLCore ${ZLIB_LIBRARY} )
+TARGET_LINK_LIBRARIES(HumbugGLCore luabind)
+ADD_DEPENDENCIES(HumbugGLCore luabind)
+TargetLinkBoost(HumbugGLCore "filesystem;system;regex")
+#ADD_DEPENDENCIES(HumbugGLCore CppStructz)
+ADD_PRECOMPILED_HEADER(HumbugGLCore stdafx.h stdafx.h.gch)
 
 ADD_SUBDIRECTORY( docs )
 ADD_SUBDIRECTORY( UnitTests )

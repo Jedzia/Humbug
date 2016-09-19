@@ -1,5 +1,5 @@
 format 76
-"HumbugConsole"
+"HumbugGLConsole"
   revision 58
   modified_by 2 "root"
   cpp_root_dir "../../"
@@ -39,8 +39,8 @@ format 76
 
   mark_for_import
   
-  cpp_h_dir "src/HumbugConsole/"
-  cpp_src_dir "src/HumbugConsole/"
+  cpp_h_dir "src/HumbugGLConsole/"
+  cpp_src_dir "src/HumbugGLConsole/"
   ncouples 13
   key "gxmi path" value "C:/Documents and Settings/root/My Documents/zipper.xmi"
   key "gxmi no model" value "no"
@@ -55,7 +55,7 @@ format 76
   key "gxmi comment exporter" value "yes"
   key "gxmi linefeed" value "no"
   key "gxmi taggedvalue" value "0"
-  deploymentview 232578 "HumbugConsole"
+  deploymentview 232578 "HumbugGLConsole"
     //deployment diagram settings
     package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
     draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
@@ -187,7 +187,7 @@ extern \"C\"
       stereotype "source"
       cpp_h "//---------------------------------------------------------
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * Licence details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -274,11 +274,11 @@ extern \"C\"
 #include <CppStructz/config/ConfigString.h>
 #include <CppStructz/text/DocLoader.h>
 #include <CppStructz/text/TextDocument.h>
-#include <HumbugShared/GB.h>
-#include <HumbugShared/Project/ProcessProject.h>
-#include <HumbugShared/Project/ProjectNode.h>
-#include <HumbugShared/Project/ProjectParser.h>
-#include <HumbugShared/Project/XmlProjectParser.h>
+#include <HumbugGLShared/GB.h>
+#include <HumbugGLShared/Project/ProcessProject.h>
+#include <HumbugGLShared/Project/ProjectNode.h>
+#include <HumbugGLShared/Project/ProjectParser.h>
+#include <HumbugGLShared/Project/XmlProjectParser.h>
 
 
 //#include \"ProgOptions.h\"
@@ -295,7 +295,7 @@ extern \"C\"
  * during the compilation.
  */
 
-#include \"HumbugConsole/stdafx.h\"
+#include \"HumbugGLConsole/stdafx.h\"
 "
       associated_classes
 	class_ref 147970 // stdafx
@@ -312,7 +312,7 @@ extern \"C\"
 
   package_ref 141186 // build
 
-  package_ref 213506 // HumbugConsole
+  package_ref 213506 // HumbugGLConsole
 
   package_ref 193922 // QT
 
@@ -320,5 +320,5 @@ extern \"C\"
 
   package_ref 226562 // extern
 
-  package_ref 233090 // Humbug
+  package_ref 233090 // HumbugGL
 end

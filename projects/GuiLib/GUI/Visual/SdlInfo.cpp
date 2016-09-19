@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -87,14 +87,14 @@ bool SdlInfo::CastSDLBool( SDL_bool v ) const {
         return true;
     }
 
-#ifdef HUMBUG_ENUMCHECK
+#ifdef HUMBUGGL_ENUMCHECK
 
     if (v != SDL_FALSE) {
         //throw_exception();
         throw "[SdlInfo::CastSDLBool] SDL_bool in an invalid state.";
     }
 
-#endif // HUMBUG_ENUMCHECK
+#endif // HUMBUGGL_ENUMCHECK
     return false;
 }
 

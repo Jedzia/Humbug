@@ -14,14 +14,14 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-PROJECT( Humbug_Artwork )
+PROJECT( HumbugGL_Artwork )
 
 SET(${PROJECT_NAME}_DIR "${CMAKE_CURRENT_SOURCE_DIR}"  CACHE TYPE PATH)
 #SET(${PROJECT_NAME}_WORKDIR "${CMAKE_CURRENT_BINARY_DIR}"  CACHE TYPE PATH)
 SET(${PROJECT_NAME}_WORKDIR "${PROJECT_SOURCE_DIR}/Work"  CACHE TYPE PATH)
-#SET(Humbug_Artwork_OUTPUT_DIR ${PROJECT_SOURCE_DIR}/Work)
+#SET(HumbugGL_Artwork_OUTPUT_DIR ${PROJECT_SOURCE_DIR}/Work)
 
-SET(Humbug_Artwork_Update_Target "Update_Artwork")
+SET(HumbugGL_Artwork_Update_Target "Update_Artwork")
 
 SET(USE_MAGICK TRUE)
 SET(USE_INKSCAPE TRUE)
@@ -237,7 +237,7 @@ SET(ADDITIONAL_IMAGES_SOURCE_FILES
 	    ${CMAKE_CURRENT_SOURCE_DIR}/Icons/nase.psd
 )
 
-#SET(_und_const_match "(^D:/E/Projects/C\\+\\+/Humbug/projects/Humbug/Artwork/UnderConstruction/.*)")
+#SET(_und_const_match "(^D:/E/Projects/C\\+\\+/HumbugGL/projects/HumbugGL/Artwork/UnderConstruction/.*)")
 SET(_und_const_match "${PROJECT_SOURCE_DIR}/UnderConstruction/")
 FOREACH(f ${IMAGES_SOURCE_FILES})
 		string(FIND "${f}" "${_und_const_match}" _und_const_result)

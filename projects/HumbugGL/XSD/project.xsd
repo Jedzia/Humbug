@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by Venom (ICO) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.codesynthesis.com/Humbug">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.codesynthesis.com/HumbugGL">
 	<xs:element name="File" type="FileType">
 		<xs:annotation>
 			<xs:documentation>Represents a virtual file of the template project.</xs:documentation>

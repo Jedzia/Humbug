@@ -1,5 +1,5 @@
-#ifndef HUMBUGSHARED_VFS_STDINT_H
-#define HUMBUGSHARED_VFS_STDINT_H
+#ifndef HUMBUGGLSHARED_VFS_STDINT_H
+#define HUMBUGGLSHARED_VFS_STDINT_H
 
 
 
@@ -78,4 +78,4 @@ inline void __CheckSizedTypes()
 	static_assert_l(sizeof(uint_least64_t) >= 8);
 }
 
-#endif // HUMBUGSHARED_VFS_STDINT_H guard
+#endif // HUMBUGGLSHARED_VFS_STDINT_H guard

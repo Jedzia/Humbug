@@ -2,7 +2,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-#PROJECT( HumbugSharedTest )
+#PROJECT( HumbugGLSharedTest )
 
 INCLUDE(BoostTestTargets)
 ADD_BOOST_TEST(unit_test_example_01
@@ -15,19 +15,19 @@ ADD_BOOST_TEST(zfs01
  SOURCES
  zfs01.cpp
  LIBRARIES
- HumbugLib HumbugShared
+ HumbugGLLib HumbugGLShared
  RESOURCES resources/UnitTests.zip
 )
 #Copy_Files_To_Target(${PROJECT_NAME}-zfs01-boost_test resources/UnitTests.zip)
-#Copy_Files_To_Target(boosttest-Humbug_HumbugShared_UnitTests-zfs01 resources/UnitTests.zip)
+#Copy_Files_To_Target(boosttest-HumbugGL_HumbugGLShared_UnitTests-zfs01 resources/UnitTests.zip)
 
-#TARGET_LINK_LIBRARIES(zfs01 HumbugShared)
+#TARGET_LINK_LIBRARIES(zfs01 HumbugGLShared)
 
 ADD_BOOST_TEST(gameobjects
  SOURCES
  GVector2D.cpp
  LIBRARIES
- HumbugLib HumbugShared
-# RESOURCES HumbugShared
+ HumbugGLLib HumbugGLShared
+# RESOURCES HumbugGLShared
 ) 
 #SET_PROPERTY(TARGET unit_test_example_01 PROPERTY FOLDER "${PROJECT_NAME}/UnitTests")

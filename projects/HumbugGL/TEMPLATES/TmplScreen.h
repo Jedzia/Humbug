@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
-* This file is part of Humbug, the strangest game ever.
+* This file is part of HumbugGL, the strangest game ever.
 * License details can be found in the file COPYING.
 * Copyright (c) 2013, EvePanix. All rights reserved.
 *
@@ -13,8 +13,8 @@
 * modified    2016-01-09, Jedzia
 */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_SCREENS_Template_H
-#define HUMBUG_SCREENS_Template_H
+#ifndef HUMBUGGL_SCREENS_Template_H
+#define HUMBUGGL_SCREENS_Template_H
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <GuiLib/GUI/Components/Screen.h>
 
@@ -85,4 +85,4 @@ private:
 };
 }
 
-#endif // ifndef HUMBUG_SCREENS_Template_H
+#endif // ifndef HUMBUGGL_SCREENS_Template_H

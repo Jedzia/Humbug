@@ -1,8 +1,8 @@
 #include "stdafx.h"
 //
-#include "HumbugFileLoader.h"
-#include <HumbugLib/LogManager.h>
-#include <HumbugShared/VFS/zfsystem.h>
+#include "HumbugGLFileLoader.h"
+#include <HumbugGLLib/LogManager.h>
+#include <HumbugGLShared/VFS/zfsystem.h>
 	#include "SDL.h"
 	#include "SDL_image.h"
 	#include "SDL_ttf.h"
@@ -12,11 +12,11 @@ using zip_file_system::izfstream;
 
 
 
-// HumbugFileLoader
+// HumbugGLFileLoader
 
-struct HumbugFileLoader::HumbugFileLoaderImpl {
+struct HumbugGLFileLoader::HumbugGLFileLoaderImpl {
 
-#   define HumbugFileLoader_ERRNO    errno
+#   define HumbugGLFileLoader_ERRNO    errno
 
     static void slurp(std::string& data, const std::string& filename, bool is_binary = false)
     {
@@ -73,13 +73,13 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 
         if (! file)
         {
-            //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
+            //std::cerr << "[HumbugGLFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
 			LOGSTREAM << "ERROR: Can't load:" + filename;
 
 			// Todo: does not show filename with the exception.
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException("[HumbugFileLoader::LoadImg-slurp5]", filename,
-                boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException("[HumbugGLFileLoader::LoadImg-slurp5]", filename,
+                boost::system::error_code(HumbugGLFileLoader_ERRNO, boost::system::system_category())));
         }
         
         //data.clear();
@@ -119,13 +119,13 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 		char* data;
 		if (! file)
 		{
-			//std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
+			//std::cerr << "[HumbugGLFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened.";
 			LOGSTREAM << "ERROR: Can't load:" + filename;
 
 			// Todo: does not show filename with the exception.
-			HUMBUG_FILELOADER_THROW(
-				FileLoaderException("[HumbugFileLoader::LoadChar]", filename,
-				boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
+			HUMBUGGL_FILELOADER_THROW(
+				FileLoaderException("[HumbugGLFileLoader::LoadChar]", filename,
+				boost::system::error_code(HumbugGLFileLoader_ERRNO, boost::system::system_category())));
 		}
 	    
         data = new char[bufsize];
@@ -144,10 +144,10 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 
         if (! imgmem)
         {
-            //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException("[HumbugFileLoader::LoadImg-imgmem]", filename,
-                boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
+            //std::cerr << "[HumbugGLFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException("[HumbugGLFileLoader::LoadImg-imgmem]", filename,
+                boost::system::error_code(HumbugGLFileLoader_ERRNO, boost::system::system_category())));
         }
         
         //data.clear();
@@ -161,8 +161,8 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
             // load a internal error image.
             const char *imgMsg = IMG_GetError();
 
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException(std::string("[HumbugFileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException(std::string("[HumbugGLFileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
             // generic_category
         }
 
@@ -179,10 +179,10 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 
         if (! imgmem)
         {
-            //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException("[HumbugFileLoader::LoadFont]", filename,
-                boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
+            //std::cerr << "[HumbugGLFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException("[HumbugGLFileLoader::LoadFont]", filename,
+                boost::system::error_code(HumbugGLFileLoader_ERRNO, boost::system::system_category())));
         }
         
         //data.clear();
@@ -194,8 +194,8 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (!font) {
             //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
             // load a internal error image.
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException(std::string("[HumbugFileLoader::LoadFont]: '" ) + filename + "' " + TTF_GetError(), 1));
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException(std::string("[HumbugGLFileLoader::LoadFont]: '" ) + filename + "' " + TTF_GetError(), 1));
             // generic_category
         }
 
@@ -212,10 +212,10 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 
         if (! file)
         {
-            //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException("[HumbugFileLoader::LoadImg-slurp5]", filename,
-                boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
+            //std::cerr << "[HumbugGLFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException("[HumbugGLFileLoader::LoadImg-slurp5]", filename,
+                boost::system::error_code(HumbugGLFileLoader_ERRNO, boost::system::system_category())));
         }
         
         //data.clear();
@@ -229,8 +229,8 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (!sdlsurface) {
             //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
             // load a internal error image.
-            HUMBUG_FILELOADER_THROW(
-                FileLoaderException(std::string("[HumbugFileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
+            HUMBUGGL_FILELOADER_THROW(
+                FileLoaderException(std::string("[HumbugGLFileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
 
             // generic_category
         }
@@ -242,16 +242,16 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 
 };
 
-HumbugFileLoader::HumbugFileLoader(const std::string & basepath)
-: FileLoader(basepath), pimpl_(new HumbugFileLoader::HumbugFileLoaderImpl)
+HumbugGLFileLoader::HumbugGLFileLoader(const std::string & basepath)
+: FileLoader(basepath), pimpl_(new HumbugGLFileLoader::HumbugGLFileLoaderImpl)
 {
 	 using namespace humbuglib;
      dbgOut(__FUNCTION__);
-	 LogManager::getSingleton().logMessage("Creating HumbugFileLoader for '" + basepath + "'.");
+	 LogManager::getSingleton().logMessage("Creating HumbugGLFileLoader for '" + basepath + "'.");
 	 LogManager::getSingleton().stream() << "Logging from Stream.";
 }
 
-HumbugFileLoader::~HumbugFileLoader(void)
+HumbugGLFileLoader::~HumbugGLFileLoader(void)
 {
     //m_pvSurfaces.release();
 	m_resMap.release();
@@ -260,19 +260,19 @@ HumbugFileLoader::~HumbugFileLoader(void)
 
 }
 
-std::string HumbugFileLoader::LoadAsString(const std::string & filename, std::string location)
+std::string HumbugGLFileLoader::LoadAsString(const std::string & filename, std::string location)
 {
 	std::string tmp;
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		LOGSTREAM << "HumbugFileLoader LoadAsString in Cache '" << filename << "': " << location;
+		LOGSTREAM << "HumbugGLFileLoader LoadAsString in Cache '" << filename << "': " << location;
 		finf++;
 		return std::string(finf.GetData(), finf.GetFileSize());
 	}
 	else
-		LOGSTREAM << "HumbugFileLoader LoadAsString '" << filename << "' " << location;
+		LOGSTREAM << "HumbugGLFileLoader LoadAsString '" << filename << "' " << location;
 
     filesystem fsys(GetBasepathCstr(), "zip", true);
 	LOGSTREAM << fsys;
@@ -293,18 +293,18 @@ std::string HumbugFileLoader::LoadAsString(const std::string & filename, std::st
 	return std::string(data, bufsize);
 }
 
-FileLoadingInfo& HumbugFileLoader::Load(const std::string & filename, std::string location)
+FileLoadingInfo& HumbugGLFileLoader::Load(const std::string & filename, std::string location)
 {
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		LOGSTREAM << "HumbugFileLoader LoadImg in Cache '" << filename << "': " << location;
+		LOGSTREAM << "HumbugGLFileLoader LoadImg in Cache '" << filename << "': " << location;
 		finf++;
 		return finf;
 	}
 	else
-		LOGSTREAM << "HumbugFileLoader Load '" << filename << "' " << location;
+		LOGSTREAM << "HumbugGLFileLoader Load '" << filename << "' " << location;
 
     filesystem fsys(GetBasepathCstr(), "zip", true);
 	LOGSTREAM << fsys;
@@ -325,19 +325,19 @@ FileLoadingInfo& HumbugFileLoader::Load(const std::string & filename, std::strin
 }
 
 
-SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string location)
+SDL_Surface* HumbugGLFileLoader::LoadImg(const std::string & filename, std::string location)
 {
 
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		LOGSTREAM << "HumbugFileLoader LoadImg in Cache '" << filename << "': " << location;
+		LOGSTREAM << "HumbugGLFileLoader LoadImg in Cache '" << filename << "': " << location;
 		finf++;
 		return finf.GetSurface();
 	}
 	else
-		LOGSTREAM << "HumbugFileLoader LoadImg '" << filename << "' " << location;
+		LOGSTREAM << "HumbugGLFileLoader LoadImg '" << filename << "' " << location;
 	/*if (m_pvSurfaces.size() > 0)
 	{
 		surfacevector::pointer result = NULL;
@@ -347,8 +347,8 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
 			FileLoadingInfo& current = (*it);
 			if (current.SetName().compare(filename))
 			{
-				//LOGSTREAM << "HumbugFileLoader freeing '" << current.SetName() << "'";
-				LOGSTREAM << "HumbugFileLoader LoadImg in Cache '" << current << "'";
+				//LOGSTREAM << "HumbugGLFileLoader freeing '" << current.SetName() << "'";
+				LOGSTREAM << "HumbugGLFileLoader LoadImg in Cache '" << current << "'";
 				result = &current;
 			}
 		}
@@ -371,14 +371,14 @@ SDL_Surface* HumbugFileLoader::LoadImg(const std::string & filename, std::string
     return surface;
 }
 
-TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, std::string  location )
+TTF_Font* HumbugGLFileLoader::LoadFont( const std::string & filename, int ptsize, std::string  location )
 {
 
 	boost::ptr_map<std::string, FileLoadingInfo>::iterator rexs1 = m_resMap.find(filename);
 	if (rexs1 != m_resMap.end())
 	{
 		FileLoadingInfo& finf = *(rexs1->second);
-		LOGSTREAM << "HumbugFileLoader LoadFont in Cache '" << filename << "': " << location;
+		LOGSTREAM << "HumbugGLFileLoader LoadFont in Cache '" << filename << "': " << location;
 		finf++;
 		char *data = finf.GetData();
 		SDL_RWops* imgmem = SDL_RWFromMem(&data[0], finf.GetFileSize());
@@ -386,7 +386,7 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 		return font;
 	}
 	else
-		LOGSTREAM << "HumbugFileLoader LoadFont '" << filename << "'";
+		LOGSTREAM << "HumbugGLFileLoader LoadFont '" << filename << "'";
 
 
 	//FileLoadingInfo& aaa = m_resMap["bla"];
@@ -400,8 +400,8 @@ TTF_Font* HumbugFileLoader::LoadFont( const std::string & filename, int ptsize, 
 			FileLoadingInfo& current = (*it);
 			if (current.SetName().compare(filename))
 			{
-				//LOGSTREAM << "HumbugFileLoader freeing '" << current.SetName() << "'";
-				LOGSTREAM << "HumbugFileLoader LoadFont in Cache '" << current << "'";
+				//LOGSTREAM << "HumbugGLFileLoader freeing '" << current.SetName() << "'";
+				LOGSTREAM << "HumbugGLFileLoader LoadFont in Cache '" << current << "'";
 				result = &current;
 				break;
 			}

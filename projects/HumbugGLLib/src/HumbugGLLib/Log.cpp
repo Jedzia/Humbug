@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -25,17 +25,17 @@
 #  define NOMINMAX
 #  include <windows.h>
 #  pragma pop_macro("NOMINMAX")
-#  define HUMBUGLIB_OutputCString(str) ::OutputDebugStringA(str)
-#  define HUMBUGLIB_OutputWString(str) ::OutputDebugStringW(str)
+#  define HUMBUGGLLIB_OutputCString(str) ::OutputDebugStringA(str)
+#  define HUMBUGGLLIB_OutputWString(str) ::OutputDebugStringW(str)
 #else
 #include <windows.h>
 #include <iostream>
-#  define HUMBUGLIB_OutputCString(str) std::cerr << str
-#  define HUMBUGLIB_OutputWString(str) std::cerr << str
+#  define HUMBUGGLLIB_OutputCString(str) std::cerr << str
+#  define HUMBUGGLLIB_OutputWString(str) std::cerr << str
 #endif
 
 //#define String std::string
-#define HUMBUGLIB_LOCK_AUTO_MUTEX
+#define HUMBUGGLLIB_LOCK_AUTO_MUTEX
 
 //
 #include <debug.h>
@@ -101,7 +101,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 //gettimeofday(&now, &tzone); 
 
 
-HumbugLIB_BEGIN_NAMESPACE
+HumbugGLLIB_BEGIN_NAMESPACE
 //-----------------------------------------------------------------------
 Log::Log( const std::string& name, bool debuggerOuput, bool suppressFile ) :
     mLogLevel(LL_NORMAL),
@@ -116,7 +116,7 @@ Log::Log( const std::string& name, bool debuggerOuput, bool suppressFile ) :
 
 //-----------------------------------------------------------------------
 Log::~Log(){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
 
     if (!mSuppressFile) {
         mLog.close();
@@ -125,9 +125,9 @@ Log::~Log(){
 
 //-----------------------------------------------------------------------
 void Log::logMessage( const std::string& message, LogMessageLevel lml, bool maskDebug ){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
 
-    if ( (mLogLevel + lml) >= HUMBUGLIB_LOG_THRESHOLD ) {
+    if ( (mLogLevel + lml) >= HUMBUGGLLIB_LOG_THRESHOLD ) {
         bool skipThisMessage = false;
 
         for( mtLogListener::iterator i = mListeners.begin(); i != mListeners.end(); ++i ) {
@@ -136,11 +136,11 @@ void Log::logMessage( const std::string& message, LogMessageLevel lml, bool mask
 
         if (!skipThisMessage) {
             if (mDebugOut && !maskDebug)
-#if _DEBUG && (HUMBUGLIB_PLATFORM == HUMBUGLIB_PLATFORM_WIN32 || HUMBUGLIB_PLATFORM == HUMBUGLIB_PLATFORM_WINRT)
+#if _DEBUG && (HUMBUGGLLIB_PLATFORM == HUMBUGGLLIB_PLATFORM_WIN32 || HUMBUGGLLIB_PLATFORM == HUMBUGGLLIB_PLATFORM_WINRT)
             {
                 std::string logMessageString(message);
                 logMessageString.append( "\n" );
-                HUMBUGLIB_OutputCString( logMessageString.c_str() );
+                HUMBUGGLLIB_OutputCString( logMessageString.c_str() );
             }
 
 #else
@@ -174,31 +174,31 @@ void Log::logMessage( const std::string& message, LogMessageLevel lml, bool mask
 
 //-----------------------------------------------------------------------
 void Log::setTimeStampEnabled(bool timeStamp){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
     mTimeStamp = timeStamp;
 }
 
 //-----------------------------------------------------------------------
 void Log::setDebugOutputEnabled(bool debugOutput){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
     mDebugOut = debugOutput;
 }
 
 //-----------------------------------------------------------------------
 void Log::setLogDetail(LoggingLevel ll){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
     mLogLevel = ll;
 }
 
 //-----------------------------------------------------------------------
 void Log::addListener(LogListener* listener){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
     mListeners.push_back(listener);
 }
 
 //-----------------------------------------------------------------------
 void Log::removeListener(LogListener* listener){
-    HUMBUGLIB_LOCK_AUTO_MUTEX;
+    HUMBUGGLLIB_LOCK_AUTO_MUTEX;
     mListeners.erase( std::find(mListeners.begin(), mListeners.end(), listener) );
 }
 
@@ -207,4 +207,4 @@ Log::Stream Log::stream(LogMessageLevel lml, bool maskDebug){
     return Stream(this, lml, maskDebug);
 }
 
-HumbugLIB_END_NAMESPACE
+HumbugGLLIB_END_NAMESPACE

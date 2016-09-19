@@ -1,6 +1,6 @@
-# HumbugSerialization #
+# HumbugGLSerialization #
 
-The chaining core library of *Humbug*.
+The chaining core library of *HumbugGL*.
 
 **Description here**.
 
@@ -8,9 +8,9 @@ The chaining core library of *Humbug*.
 
 - TARGET_LINK Boost
 	* program_options, filesystem, system, regex, serialization
-- TARGET_LINK HumbugLib
+- TARGET_LINK HumbugGLLib
     * provides debug helpers.
-- TARGET_LINK HumbugShared
+- TARGET_LINK HumbugGLShared
 	* game objects, VFS
 - TARGET_LINK GuiLib
 - TARGET_LINK luabind

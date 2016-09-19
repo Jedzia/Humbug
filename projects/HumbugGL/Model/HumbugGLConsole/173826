@@ -1,5 +1,5 @@
 format 76
-"algorithm" // Humbug::CppStructz::boost::algorithm
+"algorithm" // HumbugGL::CppStructz::boost::algorithm
   revision 3
   modified_by 2 "root"
   // class settings

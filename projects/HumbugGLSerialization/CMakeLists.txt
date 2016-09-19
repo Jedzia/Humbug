@@ -16,7 +16,7 @@
 #cmake_policy(SET CMP0005 NEW) # 
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugSerialization )
+PROJECT( HumbugGLSerialization )
 #SET(LIBRARY_TYPE SHARED)
 SET(LIBRARY_TYPE STATIC)
 
@@ -27,7 +27,7 @@ INCLUDE (library)
 INCLUDE (CopyResourcesToBuildTree)
 INCLUDE (helpers)
 
-ENSURE_DOCS_ARE_PRESENT(HumbugSerialization_documents)
+ENSURE_DOCS_ARE_PRESENT(HumbugGLSerialization_documents)
 
 SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
 #SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
@@ -56,7 +56,7 @@ INCLUDE (bindings)
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
 #ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
-SET(HumbugSerialization_GameObject_headers 
+SET(HumbugGLSerialization_GameObject_headers 
 #	GameObjects/Template.h
 #	GameObjects/GameObject.h
 #	GameObjects/GVector2D.h
@@ -64,7 +64,7 @@ SET(HumbugSerialization_GameObject_headers
 #	GameObjects/Player.h
 )
 
-SET(HumbugSerialization_GameObject_sources 
+SET(HumbugGLSerialization_GameObject_sources 
 #	GameObjects/Template.cpp
 #	GameObjects/GameObject.cpp
 #	GameObjects/GVector2D.cpp
@@ -72,7 +72,7 @@ SET(HumbugSerialization_GameObject_sources
 #	GameObjects/Player.cpp
 )
 
-SET(HumbugSerialization_Serialization_headers 
+SET(HumbugGLSerialization_Serialization_headers 
 	Serialization/Test.h
 	Serialization/LoadTest.h
 	Serialization/SerializationHelpers.h
@@ -82,7 +82,7 @@ SET(HumbugSerialization_Serialization_headers
 	Serialization/InfoTextLoader.h
 )
 
-SET(HumbugSerialization_Serialization_sources 
+SET(HumbugGLSerialization_Serialization_sources 
 	Serialization/Test.cpp
 	Serialization/LoadTest.cpp
 	Serialization/SerializationHelpers.cpp
@@ -93,22 +93,22 @@ SET(HumbugSerialization_Serialization_sources
 )
 
 
-SET(HumbugSerialization_headers 
+SET(HumbugGLSerialization_headers 
 #	GB.h
 
 #	Project/ProcessProjectPrivate.h
 )
 
-SET(HumbugSerialization_sources 
+SET(HumbugGLSerialization_sources 
 #	GB.cpp
 
 #	Project/ProcessProjectPrivate.cpp
 )
 
-#SET(HumbugSerialization_INCLUDE_DIR ${HumbugSerialization_IncludePath} CACHE PATH "HumbugSerialization include directory." FORCE)
+#SET(HumbugGLSerialization_INCLUDE_DIR ${HumbugGLSerialization_IncludePath} CACHE PATH "HumbugGLSerialization include directory." FORCE)
 
 
-SET(HumbugSerialization_resfiles 
+SET(HumbugGLSerialization_resfiles 
 #  mainwindow.qrc
 )
 
@@ -117,7 +117,7 @@ SET(HumbugSerialization_resfiles
 
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
 INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${HumbugGLLib_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
 #INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
@@ -138,45 +138,45 @@ ENDIF(MSYS)
 
 
 SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugSerialization_resfiles})
-SOURCE_GROUP(GameObject FILES ${HumbugSerialization_GameObject_headers})
-SOURCE_GROUP(GameObject FILES ${HumbugSerialization_GameObject_sources})
-SOURCE_GROUP(SerializationHeader FILES ${HumbugSerialization_Serialization_headers})
-SOURCE_GROUP(SerializationSources FILES ${HumbugSerialization_Serialization_sources})
+SOURCE_GROUP(Resources FILES ${HumbugGLSerialization_resfiles})
+SOURCE_GROUP(GameObject FILES ${HumbugGLSerialization_GameObject_headers})
+SOURCE_GROUP(GameObject FILES ${HumbugGLSerialization_GameObject_sources})
+SOURCE_GROUP(SerializationHeader FILES ${HumbugGLSerialization_Serialization_headers})
+SOURCE_GROUP(SerializationSources FILES ${HumbugGLSerialization_Serialization_sources})
 SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(THeaders FILES ${HumbugSerialization_headers})
-SOURCE_GROUP(TSources FILES ${HumbugSerialization_sources})
+SOURCE_GROUP(THeaders FILES ${HumbugGLSerialization_headers})
+SOURCE_GROUP(TSources FILES ${HumbugGLSerialization_sources})
 
-SET(HumbugSerialization_pre_sources 
-    ${HumbugSerialization_GameObject_sources}
-    ${HumbugSerialization_Serialization_sources}
-    ${HumbugSerialization_sources} 
+SET(HumbugGLSerialization_pre_sources 
+    ${HumbugGLSerialization_GameObject_sources}
+    ${HumbugGLSerialization_Serialization_sources}
+    ${HumbugGLSerialization_sources} 
 )
 
-ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugSerialization_pre_sources)
+ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugGLSerialization_pre_sources)
 #ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
-ADD_LIBRARY_X(HumbugSerialization ${LIBRARY_TYPE}
+ADD_LIBRARY_X(HumbugGLSerialization ${LIBRARY_TYPE}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
         stddefs.h 
         global.h 
 
-    	${HumbugSerialization_pre_sources}
-    	${HumbugSerialization_Serialization_headers}
-    	${HumbugSerialization_GameObject_headers}
-        ${HumbugSerialization_headers}
+    	${HumbugGLSerialization_pre_sources}
+    	${HumbugGLSerialization_Serialization_headers}
+    	${HumbugGLSerialization_GameObject_headers}
+        ${HumbugGLSerialization_headers}
         ${res_outfiles} 
         ${moc_outfiles} 
         ${ui_outfiles}
-		${HumbugSerialization_documents}
+		${HumbugGLSerialization_documents}
 )
 
-TARGET_LINK_LIBRARIES(HumbugSerialization ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES(HumbugSerialization luabind)
-ADD_DEPENDENCIES(HumbugSerialization luabind)
-TargetLinkBoost(HumbugSerialization "filesystem;system;regex")
-#ADD_DEPENDENCIES(HumbugSerialization CppStructz)
-ADD_PRECOMPILED_HEADER(HumbugSerialization stdafx.h stdafx.h.gch)
+TARGET_LINK_LIBRARIES(HumbugGLSerialization ${ZLIB_LIBRARY} )
+TARGET_LINK_LIBRARIES(HumbugGLSerialization luabind)
+ADD_DEPENDENCIES(HumbugGLSerialization luabind)
+TargetLinkBoost(HumbugGLSerialization "filesystem;system;regex")
+#ADD_DEPENDENCIES(HumbugGLSerialization CppStructz)
+ADD_PRECOMPILED_HEADER(HumbugGLSerialization stdafx.h stdafx.h.gch)
 
 ADD_SUBDIRECTORY( docs )
 ADD_SUBDIRECTORY( UnitTests )

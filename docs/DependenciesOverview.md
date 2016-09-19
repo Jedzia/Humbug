@@ -1,5 +1,5 @@
- # HumbugLib #
-Humbug Base Helper Library
+ # HumbugGLLib #
+HumbugGL Base Helper Library
 
 Description here.
 
@@ -8,10 +8,10 @@ Description here.
 	none
 
 
-	# HumbugShared #
-Humbug Shared Library
+	# HumbugGLShared #
+HumbugGL Shared Library
 
-Types that are specific for Humbug, like game objects or the virtual file system.
+Types that are specific for HumbugGL, like game objects or the virtual file system.
 
 ## Dependencies ## 
 
@@ -21,14 +21,14 @@ Types that are specific for Humbug, like game objects or the virtual file system
 - TARGET_LINK luabind
 
 
- # Humbug GuiLib #
+ # HumbugGL GuiLib #
 SDL Gui Integration Library
 
 Provides components and helpers for easy use of SDL.
 
 ## Dependencies ## 
 
-- TARGET_LINK HumbugLib
+- TARGET_LINK HumbugGLLib
     * provides debug helpers.
 - TARGET_LINK SDL_LIBRARY
 - TARGET_LINK SDLIMAGE_LIBRARY
@@ -36,8 +36,8 @@ Provides components and helpers for easy use of SDL.
 - TARGET_LINK SDLGFX_LIBRARY
 
 
- # HumbugConsole #
-Humbug Helper Console-Application
+ # HumbugGLConsole #
+HumbugGL Helper Console-Application
 
 Description here.
 
@@ -45,9 +45,9 @@ Description here.
 
 - TARGET_LINK Boost
 	* program_options, filesystem, system, regex, serialization
-- TARGET_LINK HumbugLib
+- TARGET_LINK HumbugGLLib
     * provides debug helpers.
-- TARGET_LINK HumbugShared
+- TARGET_LINK HumbugGLShared
 	* game objects, VFS
 - TARGET_LINK GuiLib
 - TARGET_LINK luabind

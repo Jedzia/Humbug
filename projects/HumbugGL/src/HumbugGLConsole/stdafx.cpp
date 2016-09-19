@@ -8,4 +8,4 @@
  * You might want to change some of the defaults if something goes wrong
  * during the compilation.
  */
-#include "HumbugConsole/stdafx.h"
+#include "HumbugGLConsole/stdafx.h"

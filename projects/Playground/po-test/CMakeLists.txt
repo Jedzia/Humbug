@@ -1,4 +1,4 @@
-# This file is part of LyX, the document processor.
+﻿# This file is part of LyX, the document processor.
 # Licence details can be found in the file COPYING.
 #
 # Copyright (c) 2008-2011 Peter Kümmel, <syntheticpp@gmx.net>
@@ -107,8 +107,8 @@ SET_SOURCE_FILES_PROPERTIES("${CMAKE_CURRENT_BINARY_DIR}/${_lyxname}.pot" GENERA
 add_gettext_python(formats lib configure.py)
 #add_gettext_python(layouttranslations lib/layouts *.layout *.inc *.module)
 #add_gettext_python(fs ../FileSystem *.cpp)
-#add_gettext_python(layouttranslations ../../../../Humbug *.ui)
-#add_gettext_python(qt4 ../../../../Humbug *.ui)
+#add_gettext_python(layouttranslations ../../../../HumbugGL *.ui)
+#add_gettext_python(qt4 ../../../../HumbugGL *.ui)
 
 MESSAGE(STATUS " _py_sources ${_py_sources}")
 

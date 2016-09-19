@@ -1,4 +1,4 @@
-HumbugSerialization Development Diary
+HumbugGLSerialization Development Diary
 
 -X-X-X-X- Mittwoch, 27. Januar 2016 -----------------------------------------------------------------------------
 

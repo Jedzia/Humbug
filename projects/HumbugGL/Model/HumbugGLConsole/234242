@@ -1,5 +1,5 @@
 format 76
-"QT" // Humbug::QT
+"QT" // HumbugGL::QT
   revision 2
   modified_by 2 "root"
   // class settings

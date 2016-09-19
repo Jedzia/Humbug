@@ -1,5 +1,5 @@
 format 76
-"Project" // Humbug::HumbugShared::Project
+"Project" // HumbugGL::HumbugGLShared::Project
   revision 36
   modified_by 2 "root"
   // class settings
@@ -26,8 +26,8 @@ format 76
   package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
   show_infonote default drawing_language default show_stereotype_properties default
   
-  cpp_h_dir "HumbugShared/Project/"
-  cpp_src_dir "HumbugShared/Project/"
+  cpp_h_dir "HumbugGLShared/Project/"
+  cpp_src_dir "HumbugGLShared/Project/"
   oid 200450
   classview 219778 "Project"
     //class diagram settings
@@ -1468,7 +1468,7 @@ ${namespace_end}
 #include \"../stdafx.h\"
 //
 ${includes}
-#include \"HumbugShared/defs.h\"
+#include \"HumbugGLShared/defs.h\"
 //
 ${namespace_start}
 ${members}
@@ -1515,7 +1515,7 @@ ${namespace_end}"
       stereotype "source"
       cpp_h "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1546,7 +1546,7 @@ ${namespace_end}
 "
       cpp_src "/*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the template processor.
+ * This file is part of HumbugGL, the template processor.
  * License details can be found in the file COPYING.
  * Copyright (c) 2011, EvePanix. All rights reserved.
  *
@@ -1596,10 +1596,10 @@ ${includes}
 //
 #include <boost/filesystem.hpp>
 #include <Crunchy/FileDetector.h>
-#include <HumbugShared/Project/ProjectNode.h>
-#include <HumbugShared/Project/ProjectParser.h>
-#include <HumbugShared/Project/ProjectProcessor.h>
-#include \"HumbugShared/Project/ProcessTemplateFile.h\"
+#include <HumbugGLShared/Project/ProjectNode.h>
+#include <HumbugGLShared/Project/ProjectParser.h>
+#include <HumbugGLShared/Project/ProjectProcessor.h>
+#include \"HumbugGLShared/Project/ProcessTemplateFile.h\"
 //
 #include <build/cmake/include/debug.h>
 
@@ -1638,8 +1638,8 @@ ${includes}
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
-#include <HumbugShared/Project/ProjectParser.h>
-#include <HumbugShared/Project/ProjectProcessor.h>
+#include <HumbugGLShared/Project/ProjectParser.h>
+#include <HumbugGLShared/Project/ProjectProcessor.h>
 //
 #include <build/cmake/include/debug.h>
 
@@ -1679,9 +1679,9 @@ ${namespace_end}
 ${includes}
 #include <boost/filesystem.hpp>
 #include <Crunchy/FileDetector.h>
-#include <HumbugShared/Project/ProjectNode.h>
-#include <HumbugShared/Project/ProjectParser.h>
-#include <HumbugShared/Project/ProjectProcessor.h>
+#include <HumbugGLShared/Project/ProjectNode.h>
+#include <HumbugGLShared/Project/ProjectParser.h>
+#include <HumbugGLShared/Project/ProjectProcessor.h>
 //
 #include <build/cmake/include/debug.h>
 
@@ -1720,8 +1720,8 @@ ${includes}
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
-#include <HumbugShared/Project/ProjectParser.h>
-#include <HumbugShared/Project/ProjectProcessor.h>
+#include <HumbugGLShared/Project/ProjectParser.h>
+#include <HumbugGLShared/Project/ProjectProcessor.h>
 //
 #include <build/cmake/include/debug.h>
 

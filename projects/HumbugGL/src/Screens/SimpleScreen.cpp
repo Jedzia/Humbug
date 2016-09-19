@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -31,7 +31,7 @@
 #include "boost/lambda/lambda.hpp"
 #include <cstdlib>
 #include "../Input/PlayerKeys2.h"
-#include "HumbugShared/GameObjects/Player.h"
+#include "HumbugGLShared/GameObjects/Player.h"
 //
 #include <build/cmake/include/debug.h>
 

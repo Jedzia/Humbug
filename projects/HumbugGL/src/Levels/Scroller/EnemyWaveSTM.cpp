@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
-* This file is part of Humbug, the strangest game ever.
+* This file is part of HumbugGL, the strangest game ever.
 * License details can be found in the file COPYING.
 * Copyright (c) 2013, EvePanix. All rights reserved.
 *

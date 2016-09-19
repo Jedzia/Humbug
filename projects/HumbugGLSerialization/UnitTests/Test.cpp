@@ -11,12 +11,12 @@
 // alternatively you could define init function yourself
 #define BOOST_TEST_MAIN
 //#include <boost/test/unit_test.hpp>
-#define BOOST_TEST_MODULE HumbugSerialization_GVector2D
+#define BOOST_TEST_MODULE HumbugGLSerialization_GVector2D
 #include <BoostTestTargetConfig.h>
 
 //#define LOGMANAGER_NOLOG 1
-#include <HumbugLib/LogManager.h>
-#include <HumbugSerialization/Serialization/Test.h>
+#include <HumbugGLLib/LogManager.h>
+#include <HumbugGLSerialization/Serialization/Test.h>
 
 using namespace humbug::serialization;
 

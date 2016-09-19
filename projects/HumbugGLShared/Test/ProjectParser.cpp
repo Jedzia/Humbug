@@ -15,7 +15,7 @@ ProjectNode * ProjectParser::parse(const std::string & fileName) {
 	}
 
 	xml_schema::properties p = xml_schema::properties();
-	p.no_namespace_schema_location("D:/E/Projects/C++/Humbug/projects/Humbug/XSD/project.xsd");
+	p.no_namespace_schema_location("D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD/project.xsd");
 	project_type tmplProject(project_(fileName.toStdString(),0, p));
 	ProjectProcessor cp(tmplProject);
 

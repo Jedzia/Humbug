@@ -1,14 +1,14 @@
 /********************************************************************
    created: 2011/07/12 01:37
    filename:  main.cpp
-   file path: Humbug/src/HumbugConsole
+   file path: HumbugGL/src/HumbugGLConsole
    copyright:  Jedzia (c) 2011
    License: See accompanying file LICENSE_1_0.txt
 
-   purpose: main module for the 'HumbugConsole' command line template
+   purpose: main module for the 'HumbugGLConsole' command line template
    generation tool.
  *********************************************************************/
-#include "HumbugConsole/stdafx.h"
+#include "HumbugGLConsole/stdafx.h"
 //#include <tchar.h>
 //#include <boost/cstdint.hpp>
 //const boost::uint32_t dreck=4;
@@ -31,12 +31,12 @@
 #include "ProgOptions.h"
 #include <GuiLib/GUI/Components/Point.h>
 #include <GuiLib/GUI/Components/Rectangle.h>
-#include <Humbug/src/HumbugFileLoader.h>
-#include <HumbugLib/src/HumbugLib/AppGB.h>
-#include <HumbugLib/src/HumbugLib/LogManager.h>
-//#include <HumbugShared/GB.h>
-//#include <HumbugShared/Project/ProcessProject.h>
-#include <HumbugSerialization/Serialization/VersionToken.h>
+#include <HumbugGL/src/HumbugGLFileLoader.h>
+#include <HumbugGLLib/src/HumbugGLLib/AppGB.h>
+#include <HumbugGLLib/src/HumbugGLLib/LogManager.h>
+//#include <HumbugGLShared/GB.h>
+//#include <HumbugGLShared/Project/ProcessProject.h>
+#include <HumbugGLSerialization/Serialization/VersionToken.h>
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 #include <boost/function.hpp>
@@ -50,7 +50,7 @@
 #include <regex>
 #include <sstream>
 #include <vector>
-#include <HumbugSerialization/Serialization/InfoTextLoader.h>
+#include <HumbugGLSerialization/Serialization/InfoTextLoader.h>
 
 #ifdef WIN32
 #  include <process.h>
@@ -87,7 +87,7 @@ void parseProject() {
     //if(projectModel != NULL)
     //  delete projectModel;
     const std::string prjname =
-        "D:/E/Projects/C++/Humbug/projects/Humbug/XSD/Nummer1.tmplproj";
+        "D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD/Nummer1.tmplproj";
 } // parseProject
 
 void testChars() {
@@ -187,8 +187,8 @@ void SimulateInOut() {
 
     //std::string exepath = AppGB::Instance().ExePath();
     std::string appDir = AppGB::Instance().AppDir();
-    //fl.reset(new HumbugFileLoader(appDir + "base_data"));
-    HumbugFileLoader fl(appDir + "base_data");
+    //fl.reset(new HumbugGLFileLoader(appDir + "base_data"));
+    HumbugGLFileLoader fl(appDir + "base_data");
     //auto str = fl.FL_LOADASSTRING("data/levels/LevelA/Map1.map");
     auto str = fl.FL_LOADASSTRING("data/Tutor/CTextExample.txt");
     std::istringstream instreamCText;

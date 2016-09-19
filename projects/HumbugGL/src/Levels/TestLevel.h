@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -14,11 +14,11 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_LEVELS_TESTLEVEL_H
-#define HUMBUG_LEVELS_TESTLEVEL_H
+#ifndef HUMBUGGL_LEVELS_TESTLEVEL_H
+#define HUMBUGGL_LEVELS_TESTLEVEL_H
 #include <GUI/Components/Screen.h>
 #include <boost/smart_ptr/scoped_ptr.hpp>
-#include "HumbugShared/GameObjects/Player.h"
+#include "HumbugGLShared/GameObjects/Player.h"
 
 struct _TTF_Font;
 typedef struct _TTF_Font TTF_Font;
@@ -81,4 +81,4 @@ public:
   }
 }
 
-#endif // HUMBUG_LEVELS_TESTLEVEL_H
+#endif // HUMBUGGL_LEVELS_TESTLEVEL_H

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Pumpernickel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///D:/E/Projects/C++/Humbug/projects/Humbug/XSD/project.xsd">
+<project name="Pumpernickel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///D:/E/Projects/C++/HumbugGL/projects/HumbugGL/XSD/project.xsd">
 	<folder name="Zutaten" type="Standard">
 		<file name="Teig"/>
 		<file name="Ratte"/>

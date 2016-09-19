@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -32,8 +32,8 @@
 #include "GUI/TileEngine/TileImage.h"
 #include "GUI/TileEngine/TileSet.h"
 #include "GUI/Visual/EventHandler.h"
-#include "HumbugShared/GameObjects/Player.h"
-#include "HumbugShared/ScriptHost/ScriptHost.h"
+#include "HumbugGLShared/GameObjects/Player.h"
+#include "HumbugGLShared/ScriptHost/ScriptHost.h"
 #include <boost/function.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <cstdlib>
@@ -466,7 +466,7 @@ private:
         // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
         m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
         //m_pArialfont =
-        // TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
+        // TTF_OpenFont("E:/Projects/C++/HumbugGL/projects/HumbugGL/Resources/Fonts/ARIAL.TTF", 24);
         mcol = CColor::White();
 
         //	CCanvas tmpCanvas(( m_Loader.FL_LOADIMG("Intro/LevelABg.png")
@@ -538,23 +538,23 @@ private:
 
         // Todo simplify this and let 'em load by CTileEngine with a simplified convention for the
         // files
-        // LevelA.til, LevelA.map, LevelA.png ... hmmm no HumbugTiles.til contains descriptions for
+        // LevelA.til, LevelA.map, LevelA.png ... hmmm no HumbugGLTiles.til contains descriptions for
         // the available maps and the png
-        // so HumbugTiles.til can load the LevelA.png, cos that is inside the .til file
+        // so HumbugGLTiles.til can load the LevelA.png, cos that is inside the .til file
         CTileSet* tileSet =
             new CTileSet( m_pMainCanvas, new CTileImage(m_Loader, "data/levels/LevelA/LevelA.png",
-                            "data/levels/LevelA/HumbugTiles.til"),
+                            "data/levels/LevelA/HumbugGLTiles.til"),
                     m_pBackground.get(), CRectangle(0, 0, 1024 * 2, 768 * 2) );
 
         m_pTileEngine.reset( new CTileEngine( m_pMainCanvas, m_pBackground.get() ) );
         m_pTileEngine->AddTileSet(tileSet);
 
         //std::string humbugTilesTil =
-        // m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til");
+        // m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugGLTiles.til");
         //CTileMap *tmap = new
-        // CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugTiles.til"));
+        // CTileMap(m_Loader.FL_LOADASSTRING("data/levels/LevelA/HumbugGLTiles.til"));
         CTileMap* tmap = new CTileMap( m_Loader.FL_LOADASSTRING("data/levels/LevelA/Map1.map") );
-        //FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugTiles.bin");
+        //FileLoadingInfo& finf = m_Loader.FL_LOAD("data/levels/LevelA/HumbugGLTiles.bin");
         //tmap->ReadBinary(finf.Data(), finf.Size());
         m_pTileEngine->AddTileMap(tmap);
         //(*m_pTileEngine)["Map1"].DrawMap(m_pBackground.get());

@@ -1,5 +1,5 @@
-#ifndef HUMBUGSHARED_VFS_ZSTREAMZLIB_H
-#define HUMBUGSHARED_VFS_ZSTREAMZLIB_H
+#ifndef HUMBUGGLSHARED_VFS_ZSTREAMZLIB_H
+#define HUMBUGGLSHARED_VFS_ZSTREAMZLIB_H
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -25,5 +25,5 @@
 //	#endif
 //#endif
 
-#endif // HUMBUGSHARED_VFS_ZSTREAMZLIB_H guard
+#endif // HUMBUGGLSHARED_VFS_ZSTREAMZLIB_H guard
 

@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_GUI_TILEENGINE_CTILEMAP_H
-#define HUMBUG_GUI_TILEENGINE_CTILEMAP_H
+#ifndef HUMBUGGL_GUI_TILEENGINE_CTILEMAP_H
+#define HUMBUGGL_GUI_TILEENGINE_CTILEMAP_H
 #include "TileSet.h"
 #include <string>
 
@@ -67,4 +67,4 @@ private:
   };
 }
 
-#endif // HUMBUG_GUI_TILEENGINE_CTILEMAP_H guard
+#endif // HUMBUGGL_GUI_TILEENGINE_CTILEMAP_H guard

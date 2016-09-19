@@ -11,12 +11,12 @@
 // alternatively you could define init function yourself
 #define BOOST_TEST_MAIN
 //#include <boost/test/unit_test.hpp>
-#define BOOST_TEST_MODULE HumbugSerialization_ZFS
+#define BOOST_TEST_MODULE HumbugGLSerialization_ZFS
 #include <BoostTestTargetConfig.h>
 
 #define LOGMANAGER_NOLOG 1
-//#include <HumbugLib/LogManager.h>
-#include <HumbugSerialization/VFS/zfsystem.h>
+//#include <HumbugGLLib/LogManager.h>
+#include <HumbugGLSerialization/VFS/zfsystem.h>
 
 //
 //#include <build/cmake/include/debug.h>
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE( test1 )
     // reports 'error in "test1": test 2 == 1 failed'
     //BOOST_CHECK( 2 == 1 );
 
-    //std::string m_pBasepath = "E:/Projects/C++/Humbug/build2008x64";
+    //std::string m_pBasepath = "E:/Projects/C++/HumbugGL/build2008x64";
 
     std::string filename = "Blafasel.txt";
     //std::string data;

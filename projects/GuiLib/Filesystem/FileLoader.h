@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
@@ -13,8 +13,8 @@
  * modified    2016-01-09, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_FS_FILELOADER_H
-#define HUMBUG_FS_FILELOADER_H
+#ifndef HUMBUGGL_FS_FILELOADER_H
+#define HUMBUGGL_FS_FILELOADER_H
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/shared_ptr.hpp>
@@ -262,7 +262,7 @@ private:
 };
 
 // File loader exceptions
-#define HUMBUG_FILELOADER_THROW(EX) \
+#define HUMBUGGL_FILELOADER_THROW(EX) \
     throw EX
 /** @class FileLoaderException:
  *  Detailed description.
@@ -324,4 +324,4 @@ private:
     boost::shared_ptr<m_imp> m_imp_ptr;
 };
 
-#endif // HUMBUG_FS_FILELOADER_H
+#endif // HUMBUGGL_FS_FILELOADER_H

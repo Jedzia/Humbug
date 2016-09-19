@@ -1,5 +1,5 @@
 format 76
-"Project-Old" // Humbug::HumbugShared::Project-Old
+"Project-Old" // HumbugGL::HumbugGLShared::Project-Old
   revision 10
   modified_by 2 "root"
   // class settings
@@ -26,8 +26,8 @@ format 76
   package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
   show_infonote default drawing_language default show_stereotype_properties default
   
-  cpp_h_dir "HumbugShared/Project/"
-  cpp_src_dir "HumbugShared/Project/"
+  cpp_h_dir "HumbugGLShared/Project/"
+  cpp_src_dir "HumbugGLShared/Project/"
   oid 187394
   classview 200194 "Project"
     //class diagram settings

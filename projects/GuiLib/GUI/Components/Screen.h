@@ -1,5 +1,5 @@
-#ifndef HUMBUG_GUI_COMPONENTS_SCREEN_H
-#define HUMBUG_GUI_COMPONENTS_SCREEN_H
+#ifndef HUMBUGGL_GUI_COMPONENTS_SCREEN_H
+#define HUMBUGGL_GUI_COMPONENTS_SCREEN_H
 #include "../Visual/Hookable.h"
 #include "../Visual/HookableManager.h"
 //#include "GUI/Components/MainCanvas.h"
@@ -71,4 +71,4 @@ private:
 } // namespace components
 } // namespace gui
 
-#endif // HUMBUG_GUI_COMPONENTS_SCREEN_H
+#endif // HUMBUGGL_GUI_COMPONENTS_SCREEN_H

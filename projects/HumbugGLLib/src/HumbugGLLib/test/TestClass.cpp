@@ -4,7 +4,7 @@
 #include "Subclass.h"
 
 #include "QBounce/Test/SubClass.cpp"
-namespace HumbugLIB_NAMESPACE {
+namespace HumbugGLLIB_NAMESPACE {
 
 namespace test {
 
@@ -21,6 +21,6 @@ void TestClass::getDreck(std::string & muschi, int & hehe) {
 }
 
 
-} // namespace HumbugLIB_NAMESPACE::test
+} // namespace HumbugGLLIB_NAMESPACE::test
 
-} // namespace HumbugLIB_NAMESPACE
+} // namespace HumbugGLLIB_NAMESPACE

@@ -1,5 +1,5 @@
 format 76
-"Humbug" // Humbug
+"HumbugGL" // HumbugGL
   revision 1
   modified_by 2 "root"
   // class settings
@@ -239,11 +239,11 @@ extern \"C\"
 
   package_ref 233218 // build
 
-  package_ref 180482 // Humbug
+  package_ref 180482 // HumbugGL
 
-  package_ref 187138 // HumbugShared
+  package_ref 187138 // HumbugGLShared
 
-  package_ref 233346 // HumbugConsole-deleteMe
+  package_ref 233346 // HumbugGLConsole-deleteMe
 
   package_ref 234242 // QT
 

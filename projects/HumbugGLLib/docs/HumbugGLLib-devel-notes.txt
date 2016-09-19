@@ -1,5 +1,5 @@
 
-The HumbugLib library uses the 
+The HumbugGLLib library uses the 
 > cry::test::TestClass 
 namespace:subnamespace::ClassName (like the STL) naming schema. Source files
 use the .cpp and header files the .h extension. The file name follows the
@@ -113,7 +113,7 @@ void debugBinaryString(const char *data, int64_t maxlen)
 #endif
 
 *******************************
-von D:\E\Projects\C++\Humbug\projects\SupportLibs\Crunchy\src\Crunchy\CrIODevice.cpp
+von D:\E\Projects\C++\HumbugGL\projects\SupportLibs\Crunchy\src\Crunchy\CrIODevice.cpp
 
 #define Q_VOID
 

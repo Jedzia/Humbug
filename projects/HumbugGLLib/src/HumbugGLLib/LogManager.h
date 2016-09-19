@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -18,7 +18,7 @@
 #ifndef __LogManager_H__
 #define __LogManager_H__
 
-#include <HumbugLib/global.h>
+#include <HumbugGLLib/global.h>
 #include <map>
 #include "Log.h"
 #include "Singleton.h"
@@ -63,7 +63,7 @@ protected:
 
 public:
 
-      //HUMBUG_AUTO_MUTEX; // public to allow external locking
+      //HUMBUGGL_AUTO_MUTEX; // public to allow external locking
 
       LogManager();
       ~LogManager();

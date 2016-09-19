@@ -1,4 +1,4 @@
-This is Humbug
+This is HumbugGL
 2016 (c) Jedzia
 -------------------
 
@@ -12,7 +12,7 @@ Build-Dependencies:
 http://www.libsdl.org/ and http://www.libsdl.org/libraries.php
 Windows: Start the build environment (devel2013x64.bat) and call ../BuildDependencies_2013 to
 invoke the automatic build of the necessary SDL Libraries.
-Humbug is using these SDL libraries:
+HumbugGL is using these SDL libraries:
 	SDL2-2.0.4
 	SDL2_gfx-1.0.1
 	SDL2_image-2.0.0

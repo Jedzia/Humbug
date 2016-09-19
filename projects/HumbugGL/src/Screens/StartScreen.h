@@ -1,5 +1,5 @@
-#ifndef HUMBUG_SCREENS_STARTSCREEN_H
-#define HUMBUG_SCREENS_STARTSCREEN_H
+#ifndef HUMBUGGL_SCREENS_STARTSCREEN_H
+#define HUMBUGGL_SCREENS_STARTSCREEN_H
 #include "GUI/Components/Screen.h"
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
@@ -46,4 +46,4 @@ private:
 
 }
 }
-#endif // HUMBUG_SCREENS_STARTSCREEN_H
+#endif // HUMBUGGL_SCREENS_STARTSCREEN_H

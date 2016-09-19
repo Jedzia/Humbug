@@ -1,5 +1,5 @@
-#ifndef _HumbugSpritesGfx_c
-#define _HumbugSpritesGfx_c
+#ifndef _HumbugGLSpritesGfx_c
+#define _HumbugGLSpritesGfx_c
 
 
 #ifndef _GFX_BITMAP_DATA

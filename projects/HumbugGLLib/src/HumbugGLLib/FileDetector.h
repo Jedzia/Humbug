@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2012, EvePanix. All rights reserved.
  *
@@ -14,10 +14,10 @@
  * modified    2013-03-06, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HumbugLIB_NAMESPACE_FILEDETECTOR_H
-#define HumbugLIB_NAMESPACE_FILEDETECTOR_H
+#ifndef HumbugGLLIB_NAMESPACE_FILEDETECTOR_H
+#define HumbugGLLIB_NAMESPACE_FILEDETECTOR_H
 
-#include <HumbugLib/global.h>
+#include <HumbugGLLib/global.h>
 //
 #include <string>
 
@@ -52,5 +52,5 @@ private:
       return m_type;
   }
 
-  HumbugLIB_END_NAMESPACE
-#endif // ifndef HumbugLIB_NAMESPACE_FILEDETECTOR_H
+  HumbugGLLIB_END_NAMESPACE
+#endif // ifndef HumbugGLLIB_NAMESPACE_FILEDETECTOR_H

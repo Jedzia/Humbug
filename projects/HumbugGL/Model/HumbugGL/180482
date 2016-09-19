@@ -1,5 +1,5 @@
 format 76
-"Humbug" // Humbug
+"HumbugGL" // HumbugGL
   revision 6
   modified_by 2 "root"
   // class settings
@@ -28,7 +28,7 @@ format 76
   
   cpp_h_dir "src/"
   cpp_src_dir "src/"
-  comment "Humbug main GUI application"
+  comment "HumbugGL main GUI application"
   package_ref 206978 // Project
 
 end

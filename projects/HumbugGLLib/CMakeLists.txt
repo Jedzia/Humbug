@@ -1,5 +1,5 @@
 
-SET(PACKAGE HumbugLib)
+SET(PACKAGE HumbugGLLib)
 
 ADD_SUBDIRECTORY( src )
 

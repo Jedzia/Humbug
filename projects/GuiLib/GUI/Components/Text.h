@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of Humbug, the strangest game ever.
+ * This file is part of HumbugGL, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
@@ -13,8 +13,8 @@
  * modified    2016-01-09, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUG_GUI_COMPONENTS_TEXT_H
-#define HUMBUG_GUI_COMPONENTS_TEXT_H
+#ifndef HUMBUGGL_GUI_COMPONENTS_TEXT_H
+#define HUMBUGGL_GUI_COMPONENTS_TEXT_H
 
 #include "BaseDrawable.h"
 #include "Color.h"
@@ -220,4 +220,4 @@ public:
 } // namespace components
 } // namespace gui
 
-#endif // HUMBUG_GUI_COMPONENTS_TEXT_H
+#endif // HUMBUGGL_GUI_COMPONENTS_TEXT_H

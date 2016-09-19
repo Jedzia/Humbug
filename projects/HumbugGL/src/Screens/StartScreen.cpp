@@ -75,10 +75,10 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     //m_pBackground = CCanvas::CreateRGBCompatible(NULL, NULL, NULL);
     // Todo: c:\program files\graphviz 2.28\bin\LIBFREETYPE-6.DLL copy from DEPS
 	// Todo: Relative and loaded from VFS.
-	// m_pArialfont = TTF_OpenFont("E:/Projects/C++/Humbug/build/Humbug/src/Debug/arial.ttf", 30);
+	// m_pArialfont = TTF_OpenFont("E:/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/arial.ttf", 30);
 	m_pArialfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 24);
 	// Todo: Linux need a better Error log, that this font CAN'T be loaded.
-	//m_pArialfont = TTF_OpenFont("E:/Projects/C++/Humbug/projects/Humbug/Resources/Fonts/ARIAL.TTF", 24);
+	//m_pArialfont = TTF_OpenFont("E:/Projects/C++/HumbugGL/projects/HumbugGL/Resources/Fonts/ARIAL.TTF", 24);
     mcol = CColor::White();
     SDL_Surface* tmpfsurf = ( m_Loader.FL_LOADIMG("Intro/Intro.png") );
 
@@ -103,12 +103,12 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
 
     //std::string pstr;
     outstring <<
-    "Well, this is Humbug"
+    "Well, this is HumbugGL"
               <<
     "declared in class " <<
     "'boost::noncopyable_::noncopyable'" << "\t" <<
     "Bla bla bla" <<
-    "\t" << "48" << "\t" << "Humbug" << "\r\n" <<
+    "\t" << "48" << "\t" << "HumbugGL" << "\r\n" <<
     "\r\n" <<
     "Error" << "\t" << "3" << "\t" <<
     "error C2248: 'boost::scoped_ptr<T>::scoped_ptr' : cannot access private member declared in "
@@ -116,7 +116,7 @@ bool StartScreen::OnInit( int argc, char* argv[] ){
     "class " <<
     "'boost::scoped_ptr<T>'" << "\t" <<
     "XYZ ABC DEF" << "\t" << "48" << "\t" <<
-    "Humbug" << "\r\n" <<
+    "HumbugGL" << "\r\n" <<
     "";
 
     //m_pScrollText.reset(new CCanvas(TTF_RenderText_Solid(m_pArialfont, outstring.str().c_str(),
