@@ -83,13 +83,17 @@ private:
     bool m_bIsParameterClass;
     CCanvasRendererStorage m_vecRendererVault;
 
-protected:
+private:
 
     //pointer to an SDL_Surface
     SDL_Window* m_pWindow;
+    SDL_GLContext m_glContext;
     SDL_Surface* m_pSurface;
     SDL_Texture* m_pTexture;
     SDL_Renderer* m_pRenderer;
+
+protected:
+    void CanvasSwapWindow();
 
 public:
     //constructor

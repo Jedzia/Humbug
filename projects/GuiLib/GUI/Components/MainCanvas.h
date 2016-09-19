@@ -14,6 +14,8 @@ public:
     CMainCanvas(const char * title, int width, int height, Uint32 flags);
     //destructor
     virtual ~CMainCanvas ( ) ;
+
+    void SwapWindow();
 };
 
 } // namespace components

@@ -39,6 +39,10 @@
 #include "Screens/MenuScreen/SubmenuA.h"
 #include "Screens/MenuScreen/TutorEasing.h"
 #include "Levels/Scroller/ScrollerLevelA.h"
+//
+#include <SDL_opengl.h>
+#include <GL\GLU.h>
+//
 
 namespace humbug {
 
@@ -153,7 +157,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
     //video_flags = SDL_ANYFORMAT;
     //video_flags = SDL_WINDOW_BORDERLESS;
-    video_flags = SDL_WINDOW_SHOWN;
+    //video_flags = SDL_WINDOW_SHOWN;
+    video_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
 
     //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
     //SDL_EnableKeyRepeat(100, 1);
@@ -205,7 +210,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
 	std::string appDir = AppGB::Instance().AppDir();
 	fl.reset(new HumbugGLFileLoader(appDir + "base_data"));
-
+    //return true;
     //FileLoader fl2("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/base_data");
     try
     {
@@ -438,6 +443,35 @@ void CTestEventHandler::OnIdle(int ticks){
     //m_pMainCanvas->Render(m_pDrawCanvas, m_pMainCanvas->GetDimension(), m_pMainCanvas->GetDimension());
 	//m_pMainCanvas->Invalidate();
     // call base method.
+
+
+
+
+
+    //Render flag
+    bool gRenderQuad = true;
+
+
+
+
+    //Clear color buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    //Render quad
+    if (gRenderQuad)
+    {
+        glBegin(GL_QUADS);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.5f, -0.5f);
+        glVertex2f(0.5f, 0.5f);
+        glVertex2f(-0.5f, 0.5f);
+        glEnd();
+    }
+
+    m_pMainCanvas->SwapWindow();
+    //SDL_GL_SwapWindow(gWindow);
+
+
     CApplication::OnIdle(ticks);
 } // OnIdle
 

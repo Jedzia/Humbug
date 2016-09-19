@@ -29,5 +29,10 @@ CMainCanvas::~CMainCanvas() {
     // SDL_FreeSurface ( GetSurface ( ) );
     //SetWindow ( NULL );
 }
+
+void CMainCanvas::SwapWindow()
+{
+    CanvasSwapWindow();
+}
 }   // namespace components
 } // namespace gui

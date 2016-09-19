@@ -22,10 +22,55 @@
 #include <boost/foreach.hpp>
 //
 #include <build/cmake/include/debug.h>
+#include <SDL_opengl.h>
+#include <GL\GLU.h>
 
 namespace gui {
 namespace components {
 using namespace std;
+
+bool initGL()
+{
+    bool success = true;
+    GLenum error = GL_NO_ERROR;
+
+    //Initialize Projection Matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    //Check for error
+    error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        printf("Error initializing OpenGL! %s\n", gluErrorString(error));
+        success = false;
+    }
+
+    //Initialize Modelview Matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    //Check for error
+    error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        printf("Error initializing OpenGL! %s\n", gluErrorString(error));
+        success = false;
+    }
+
+    //Initialize clear color
+    glClearColor(0.f, 0.f, 0.f, 1.f);
+
+    //Check for error
+    error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        printf("Error initializing OpenGL! %s\n", gluErrorString(error));
+        success = false;
+    }
+
+    return success;
+}
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
@@ -35,11 +80,21 @@ CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     m_lstUpdateRects.clear();
 }
 
+void CCanvas::CanvasSwapWindow()
+{
+    SDL_GL_SwapWindow(m_pWindow);
+}
+
 CCanvas::CCanvas (SDL_Window* pWindow)
     : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
+    m_glContext = SDL_GL_CreateContext(pWindow);
+    SDL_GL_SetSwapInterval(1);
+
+    initGL();
+    // Todo: Error checking for context and window.
     m_lstUpdateRects.clear();
 }
 
