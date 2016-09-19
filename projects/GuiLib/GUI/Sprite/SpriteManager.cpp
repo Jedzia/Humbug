@@ -1,6 +1,7 @@
 //
 #include "stdafx.h"
 #define BOOST_CHRONO_HEADER_ONLY 1
+#define PRINT_DEBUG_TIMING_DATA 0
 //
 #include "SpriteManager.h"
 #include "boost/smart_ptr/weak_ptr.hpp"
