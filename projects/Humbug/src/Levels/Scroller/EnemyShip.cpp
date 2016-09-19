@@ -167,7 +167,8 @@ public:
         //m_pBackground->RenderFillRect(CRectangle(100, 100, 200, 200), &sprColor);
 
         if(timing.IsAfter(m_waitTime)) {
-            //m_pShip->Fire(*sprite);
+            // Enemy fires bullet
+            m_pShip->Fire(*sprite, sprite->GetPaintHitbox());
             m_waitTime = CalcWaitTime();
             timing.Reset();
         }
@@ -238,6 +239,7 @@ void EnemyShip::HitBy(
         int id,
         const std::string& tag,
         CSpriteModifierData& mdata) {
+    // Enemy fires bullet when hit
     Fire(hitter, paintHitbox);
     Explode();
 
