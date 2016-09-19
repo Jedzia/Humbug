@@ -1,0 +1,56 @@
+-X-X-X-X- Mittwoch, 17. September 2014 -----------------------------------------------------------------------------
+
+LogManager: auto init with cerr/cout
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Dienstag, 16. September 2014 -----------------------------------------------------------------------------
+
+Linux:
+auto-zip-packaging-system is not working
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Mittwoch, 13. November 2013 -----------------------------------------------------------------------------
+
+debug mode 
+Humbug\projects\build\cmake\include\debug.h(17):
+
+#define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_DEBUG
+// #define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_FILE
+//#        define _CRT_DEBUG_BLOCK_MODE _CRTDBG_MODE_WNDW
+#        define _CRT_DEBUG_BLOCK_OUTPUT _CRTDBG_FILE_STDOUT
+
+_CRTDBG_MODE_DEBUG -> to Visual Studio/stdout.
+_CRTDBG_MODE_FILE -> to file.
+_CRTDBG_MODE_WNDW -> to window (really nasty).
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Dienstag, 29. Oktober 2013 -----------------------------------------------------------------------------
+
+a help command (perl)
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Dienstag, 15. Oktober 2013 -----------------------------------------------------------------------------
+
+auto copy zlibwapi.dll
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Dienstag, 15. Oktober 2013 -----------------------------------------------------------------------------
+Exchange
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL-1.2.15)
+in the SDL find scripts (projects\build\cmake\Modules\FindSDL.cmake, etc.) with
+the proper environment vars, set by config.bat
+----------------------------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 29 Aug 2013 10:48:29 -----------------------------------------------------------
+move GUI/Components/SeamlessImage.cpp to GUI/Controls/SeamlessImage.cpp. it is a control
+-----------------------------------------------------------------------------------------------
+-X-X-X-X- Dienstag, 17. Juli 2012 -----------------------------------------------------------------------------
+
+Use a plugable architecture for a screen model in the main CTestEventHandler. CScreen?
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Dienstag, 3. Juli 2012 -----------------------------------------------------------------------------
+
+-- SDL_LIBRARY_BLA is
+-- SDL_LIBRARY_TEMP is /usr/lib/libSDLmain.a;/usr/lib/libSDLmain.a;/usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a;-lpthread
+;-lpthread;-lpthread
+-- SDL_LIBRARY is /usr/lib/libSDLmain.a;/usr/lib/libSDL.dll.a;-lpthread
+-- ================================================================================
+
+Better front info for options used in bindings.cmake -> macro.
+----------------------------------------------------------------------------------------------------------------
+

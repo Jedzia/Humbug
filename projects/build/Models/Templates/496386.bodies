@@ -1,0 +1,22 @@
+class VisitorClient
+!!!513282.cpp!!!	main() : void
+Color* set[] =
+{
+    new RedColor, new BlueColor, new BlueColor, new RedColor, new RedColor, 0
+};
+CountVisitor count_operation;
+CallVisitor call_operation;
+
+for (int i = 0; set[i]; i++)
+{
+    set[i]->accept(&count_operation);
+    set[i]->accept(&call_operation);
+}
+
+// Report data.
+count_operation.report();
+
+for (int i = 0; set[i]; i++)
+{
+	delete set[i];
+}

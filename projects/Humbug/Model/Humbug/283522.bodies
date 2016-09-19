@@ -1,0 +1,6 @@
+class LogStat
+!!!319746.cpp!!!	getLogger() : LoggerPtr
+return Logger::getRootLogger();
+!!!319874.cpp!!!	getDebugStream() : logstream
+static logstream debuglog(LogStat::getLogger(), Level::getDebug());
+return debuglog;

@@ -1,0 +1,5 @@
+class Singleton
+!!!397186.cpp!!!	getInstance() : Singleton
+return instance;
+!!!397314.cpp!!!	anOperation() : bool
+return true;

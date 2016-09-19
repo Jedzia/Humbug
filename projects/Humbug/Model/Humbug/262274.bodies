@@ -1,0 +1,17 @@
+class CharMessageBuffer
+!!!459650.cpp!!!	~CharMessageBuffer()
+delete stream;
+!!!460034.cpp!!!	operator<<(inout msg : std::basic_string<char>) : CharMessageBuffer&
+if (stream == 0) {
+   buf.append(msg);
+} else {
+   *stream << msg;
+}
+return *this;
+!!!460162.cpp!!!	hasStream() : bool
+return (stream != 0);
+!!!312194.cpp!!!	str(in os : std::basic_ostream<char>) : const std::basic_string<char>&
+buf = stream->str();
+return buf;
+!!!312322.cpp!!!	str(in buf : CharMessageBuffer) : const std::basic_string<char>&
+return buf;

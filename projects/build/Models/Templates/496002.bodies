@@ -1,0 +1,13 @@
+class BlueColor
+!!!512898.cpp!!!	accept(in v : Visitor) : void
+v->visit(this);
+// if this was a container-element with several childs,
+// here we call the accept methods of them, e.g.:
+/*
+for (int i = 0; childs[i]; i++)
+{
+    childs[i]->accept(v);
+}
+*/
+!!!513154.cpp!!!	sky() : void
+std::cout << "Blu::sky\n";

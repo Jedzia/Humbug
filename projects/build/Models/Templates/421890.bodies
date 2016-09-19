@@ -1,0 +1,31 @@
+class Client
+!!!399362.cpp!!!	main(in argc : int, in argv : char) : int
+
+// Create all the instances.
+Document *doc = new Document();
+
+// Hmmm... use pointer or reference?!?
+DocumentCommand *cmdOpen = new OpenCommand(*doc);
+DocumentCommand *cmdCloseAll = new CloseAllCommand(this);
+DocumentCommand *cmdSave = new SaveCommand(*doc);
+
+ToolbarButton *bnOpen = new ToolbarButton(cmdOpen);
+ToolbarButton *bnCloseAll = new ToolbarButton(cmdCloseAll);
+ToolbarButton *bnSave = new ToolbarButton(cmdSave);
+
+// Simulate action
+bnOpen->clicked();
+bnSave->clicked();
+bnCloseAll->clicked();
+
+// Tidy up.
+delete bnSave;
+delete bnCloseAll;
+delete bnOpen;
+delete cmdSave;
+delete cmdCloseAll;
+delete cmdOpen;
+
+return 0;
+!!!399874.cpp!!!	closeAll() : void
+// close_all_documents_here();

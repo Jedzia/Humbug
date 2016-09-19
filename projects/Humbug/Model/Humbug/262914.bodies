@@ -1,0 +1,32 @@
+class Level
+!!!344194.cpp!!!	isGreaterOrEqual(in level1 : LevelPtr) : bool
+return this->level >= level1->level;
+!!!460930.cpp!!!	toString(in dst : string) : void
+// Transcoder::encode(name, dst);
+dst = name;
+!!!313218.cpp!!!	toString() : LogString
+return name;
+!!!326530.cpp!!!	getOff() : LevelPtr
+static LevelPtr level(new Level(Level::OFF_INT, LOGGER_STR("OFF"), 0));
+return level;
+!!!326658.cpp!!!	getFatal() : LevelPtr
+static LevelPtr level(new Level(Level::FATAL_INT, LOGGER_STR("FATAL"), 0));
+return level;
+!!!326786.cpp!!!	getError() : LevelPtr
+static LevelPtr level(new Level(Level::ERROR_INT, LOGGER_STR("ERROR"), 3));
+return level;
+!!!326914.cpp!!!	getWarn() : LevelPtr
+static LevelPtr level(new Level(Level::WARN_INT, LOGGER_STR("WARN"), 4));
+return level;
+!!!327042.cpp!!!	getInfo() : LevelPtr
+static LevelPtr level(new Level(Level::INFO_INT, LOGGER_STR("INFO"), 6));
+return level;
+!!!461058.cpp!!!	getDebug() : LevelPtr
+static LevelPtr level(new Level(Level::DEBUG_INT, LOGGER_STR("DEBUG"), 7));
+return level;
+!!!327170.cpp!!!	getTrace() : LevelPtr
+static LevelPtr level(new Level(Level::TRACE_INT, LOGGER_STR("TRACE"), 7));
+return level;
+!!!327298.cpp!!!	getAll() : LevelPtr
+static LevelPtr level(new Level(Level::ALL_INT, LOGGER_STR("ALL"), 7));
+return level;

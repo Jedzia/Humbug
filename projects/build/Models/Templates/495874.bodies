@@ -1,0 +1,5 @@
+class RedColor
+!!!512770.cpp!!!	accept(in v : Visitor) : void
+v->visit(this);
+!!!513026.cpp!!!	eye() : void
+std::cout << "Red::eye\n";

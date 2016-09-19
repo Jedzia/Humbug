@@ -1,0 +1,38 @@
+class CrZipBase
+!!!286850.cpp!!!	CrZipBase(inout ioDevice : CrIODevice)
+    throw "CrZipBase::CrZipBase(QIODevice * ioDevice) Is Not Implemented";
+!!!286978.cpp!!!	~CrZipBase()
+  if(isOpen())
+    close();
+  delete p;
+!!!287234.cpp!!!	close() : void
+  qWarning("CrZipBase::close()");
+!!!287618.cpp!!!	getFileNameCodec() : QTextCodec
+    return NULL;
+!!!288002.cpp!!!	getCommentCodec() : QTextCodec
+    return NULL;
+!!!288130.cpp!!!	getZipName() : string
+  return p->zipName;
+!!!288258.cpp!!!	setZipName(in zipName : string) : void
+  if(isOpen()) {
+    qWarning("CrZipBase::setZipName(): ZIP is already open!");
+    return;
+  }
+  p->zipName=zipName;
+  //p->ioDevice = NULL;
+!!!288386.cpp!!!	getIoDevice() : CrIODevice
+    return NULL;
+!!!288642.cpp!!!	getMode() : CrZipBase::Mode
+  return p->mode;
+!!!288770.cpp!!!	isOpen() : bool
+  return p->mode!=mdNotOpen;
+!!!288898.cpp!!!	getZipError() : int
+  return p->zipError;
+!!!289282.cpp!!!	setComment(in comment : string) : void
+  p->comment=comment;
+!!!289794.cpp!!!	hasCurrentFile() : bool
+  return p->hasCurrentFile_f;
+!!!193794.cpp!!!	getZipFile()
+  return p->zipFile_f;
+!!!193666.cpp!!!	getUnzFile()
+  return p->unzFile_f;

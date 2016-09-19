@@ -1,0 +1,15 @@
+-y
+--indent-classes
+--indent-switches
+--indent-cases
+--indent-brackets
+--indent-namespaces
+--indent-labels
+--indent-preprocessor
+--pad=oper
+--unpad=paren
+--one-line=keep-blocks
+--convert-tabs
+--indent=spaces=4
+--style=ansi
+--brackets=attach

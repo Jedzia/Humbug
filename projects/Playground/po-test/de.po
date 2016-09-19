@@ -1,0 +1,57 @@
+# German translations for PACKAGE package.
+# Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# root <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: lyx-devel@lists.lyx.org\n"
+"POT-Creation-Date: 2011-09-28 02:35+0200\n"
+"PO-Revision-Date: 2011-06-08 06:48+0200\n"
+"Last-Translator: root <EMAIL@ADDRESS>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1252\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/configure.py:12
+msgid "Tgif"
+msgstr "Arsch"
+
+#: lib/configure.py:15
+msgid "FIG"
+msgstr "Moooo"
+
+#: intl.cpp:65
+#, c-format
+msgid "CHANGE!"
+msgstr "=========LECKMICH=========="
+
+#: intl.cpp:66
+#, c-format
+msgid "Hello, world!\n"
+msgstr "Hallo Welt!\n"
+
+#: intl.cpp:99 intl.cpp:117
+msgid "Thats an docstring!"
+msgstr "Das ist Bockmist"
+
+#: intl.cpp:100
+msgid "Thats another docstring!"
+msgstr "Absoluter Bockmist"
+
+#: intl.cpp:101
+msgid "Yippieh."
+msgstr "Schapuh."
+
+#: intl.cpp:119
+#, c-format
+msgid "The arg %s is now %d"
+msgstr "Das Argument %s ist jetzt %d"
+
+#~ msgid "Fuck, yourself!\n"
+#~ msgstr "Fich dich selber!\n"

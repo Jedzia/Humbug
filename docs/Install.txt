@@ -1,0 +1,121 @@
+SDL_image:
+
+checking whether make sets $(MAKE)... (cached) yes
+checking for windres... windres
+checking for pkg-config... no
+checking for SDL... no
+checking for sdl-config... /usr/local/bin/sdl-config
+checking for SDL - version >= 1.2.10... yes
+checking jpeglib.h usability... no
+checking jpeglib.h presence... no
+checking for jpeglib.h... no
+checking for jpeg_CreateDecompress in -ljpeg... no
+configure: WARNING: *** Unable to find JPEG library (http://www.ijg.org/)
+configure: WARNING: JPG image loading disabled
+checking for LIBPNG... checking png.h usability... no
+checking png.h presence... no
+checking for png.h... no
+checking for png_create_read_struct in -lpng... no
+configure: WARNING: *** Unable to find PNG library (http://www.libpng.org/pub/png/libpng.html)
+configure: WARNING: PNG image loading disabled
+checking tiffio.h usability... no
+checking tiffio.h presence... no
+checking for tiffio.h... no
+checking for TIFFClientOpen in -ltiff... no
+configure: WARNING: *** Unable to find Tiff library (http://www.remotesensing.org/libtiff/)
+configure: WARNING: TIF image loading disabled
+checking for LIBWEBP... checking webp/decode.h usability... no
+checking webp/decode.h presence... no
+checking for webp/decode.h... no
+checking for WebPGetDecoderVersion in -lwebp... no
+configure: WARNING: *** Unable to find WEBP library (http://code.google.com/intl/en-US/speed/webp/index.html)
+configure: WARNING: WEBP Pimage loading disabled
+configure: creating ./config.status
+config.status: creating Makefile
+
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-pic              try to use only PIC/non-PIC objects [default=use
+                          both]
+  --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
+  --with-sdl-prefix=PFX   Prefix where SDL is installed (optional)
+  --with-sdl-exec-prefix=PFX Exec prefix where SDL is installed (optional)
+
+Some influential environment variables:
+  CC          C compiler command
+  CFLAGS      C compiler flags
+  LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+              nonstandard directory <lib dir>
+  LIBS        libraries to pass to the linker, e.g. -l<library>
+  CPPFLAGS    C/C++/Objective C preprocessor flags, e.g. -I<include dir> if
+              you have headers in a nonstandard directory <include dir>
+  CPP         C preprocessor
+  OBJC        Objective C compiler command
+  OBJCFLAGS   Objective C compiler flags
+  PKG_CONFIG  path to pkg-config utility
+  SDL_CFLAGS  C compiler flags for SDL, overriding pkg-config
+  SDL_LIBS    linker flags for SDL, overriding pkg-config
+  LIBPNG_CFLAGS
+              C compiler flags for LIBPNG, overriding pkg-config
+  LIBPNG_LIBS linker flags for LIBPNG, overriding pkg-config
+  LIBWEBP_CFLAGS
+              C compiler flags for LIBWEBP, overriding pkg-config
+  LIBWEBP_LIBS
+              linker flags for LIBWEBP, overriding pkg-config
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SDL_mixer:
+
+checking for libmikmod-config... no
+configure: WARNING: *** Unable to find MikMod library (http://mikmod.raphnet.net/)
+configure: WARNING: MOD support disabled
+checking fluidsynth.h usability... no
+checking fluidsynth.h presence... no
+checking for fluidsynth.h... no
+checking for fluid_player_add_mem in -lfluidsynth... no
+configure: WARNING: *** Unable to find FluidSynth library (http://www.fluidsynth.org/)
+configure: WARNING: FluidSynth support disabled
+checking vorbis/vorbisfile.h usability... no
+checking vorbis/vorbisfile.h presence... no
+checking for vorbis/vorbisfile.h... no
+checking for ov_open_callbacks in -lvorbisfile... no
+configure: WARNING: *** Unable to find Ogg Vorbis library (http://www.xiph.org/)
+configure: WARNING: Ogg Vorbis support disabled
+checking FLAC/export.h usability... no
+checking FLAC/export.h presence... no
+checking for FLAC/export.h... no
+configure: WARNING: *** Unable to find FLAC library (http://flac.sourceforge.net/)
+configure: WARNING: FLAC support disabled
+checking signal.h usability... yes
+checking signal.h presence... yes
+checking for signal.h... yes
+checking for setbuf... yes
+checking for smpeg-config... no
+checking for SMPEG - version >= 0.4.3... no
+*** The smpeg-config script installed by SMPEG could not be found
+*** If SMPEG was installed in PREFIX, make sure PREFIX/bin is in
+*** your path, or set the SMPEG_CONFIG environment variable to the
+*** full path to smpeg-config.
+configure: WARNING: *** Unable to find SMPEG library (http://icculus.org/smpeg/)
+configure: WARNING: MP3 support disabled
+configure: creating ./config.status
+

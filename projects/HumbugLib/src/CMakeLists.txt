@@ -1,0 +1,2 @@
+ADD_SUBDIRECTORY( HumbugLib )
+ADD_SUBDIRECTORY( UnitTests )

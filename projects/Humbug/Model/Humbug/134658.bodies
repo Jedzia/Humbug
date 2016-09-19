@@ -1,0 +1,30 @@
+class TextPosition
+!!!161538.cpp!!!	TextPosition(in text : string, in position : int, in linenr : int, in column : int, in delimiter : string = ":")
+    LOG_DEBUG("++CONSTRUCT++");
+!!!161666.cpp!!!	~TextPosition()
+    LOG_DEBUG("--DESTRUCT--");
+!!!264706.cpp!!!	hasModifier() : bool
+return !mModifier.empty();
+!!!265090.cpp!!!	findName(in source : string) : string
+std::string::size_type modpos = source.find_first_of( delimiter );
+if(modpos != std::string::npos)
+{
+    std::string result(source, 0, modpos);
+    return result;
+}
+return source;
+!!!264578.cpp!!!	findModifier(in source : string) : string
+std::string::size_type modpos = source.find_first_of( delimiter );
+if(modpos != std::string::npos && (modpos-source.length()) > 0 )
+{
+    std::string result(source, modpos + 1, source.length());
+    return result;
+}
+return std::string();
+!!!364802.cpp!!!	getHashCode() : int
+return util::HashHelper::getHashCode(name()) 
+    + 255 * util::HashHelper::getHashCode(modifier());
+!!!384898.cpp!!!	operator<(in lhs : TextPosition) : bool
+return lhs.position < position;
+!!!385026.cpp!!!	less(in lhs : TextPosition, in rhs : TextPosition) : bool
+return lhs.position < rhs.position;

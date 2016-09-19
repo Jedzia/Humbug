@@ -1,0 +1,52 @@
+format 76
+
+classcanvas 128002 class_ref 263938 // CrIODevicePrivate
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 347.8 89.8 2000
+end
+classcanvas 128130 class_ref 263682 // CrIODevicePrivateLinearBuffer
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 605.2 57.4 3005
+end
+classcanvas 128386 class_ref 271234 // Helpers
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 401.8 34.4 2000
+end
+classcanvas 128514 class_ref 278274 // CrIODevice
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  xyz 11.6 7.5 3010
+end
+relationcanvas 128258 relation_ref 196866 // <directional composition>
+  from ref 128002 z 3006 to ref 128130
+  role_a_pos 561 231 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128642 relation_ref 216578 // <directional composition>
+  decenter_begin 52
+  decenter_end 172
+  from ref 128514 z 3011 stereotype "<<auto_ptr>>" xyz 223 110 3000 to ref 128002
+  role_a_pos 306 129 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128770 relation_ref 223106 // <dependency>
+  decenter_begin 754
+  decenter_end 199
+  from ref 128002 z 3011 stereotype "<<friend>>" xyz 233 301 3000 to ref 128514
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 128898 relation_ref 223234 // <directional aggregation>
+  decenter_begin 879
+  decenter_end 230
+  from ref 128002 z 3011 to ref 128514
+  role_a_pos 187 280 3000 no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129026 relation_ref 223362 // <dependency>
+  decenter_begin 150
+  from ref 128514 z 3011 stereotype "<<friend>>" xyz 231 213 3000 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+preferred_whz 0 0 1
+end

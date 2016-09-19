@@ -1,0 +1,26 @@
+class CrIODevicePrivate
+!!!221570.cpp!!!	CrIODevicePrivate()
+
+!!!220674.cpp!!!	~CrIODevicePrivate()
+
+!!!220802.cpp!!!	putCharHelper(in c : char) : bool
+
+    return q_func()->write(&c, 1) == 1;
+!!!221058.cpp!!!	peek(inout data : char, in maxSize : int64_t) : int64_t
+
+    int64_t readBytes = q_func()->read(data, maxSize);
+    if (readBytes <= 0)
+        return readBytes;
+
+    buffer.ungetBlock(data, readBytes);
+    *pPos -= readBytes;
+    return readBytes;
+!!!266370.cpp!!!	peek(in maxSize : int64_t) : std::vector<char>
+    std::vector<char> result = q_func()->read(maxSize);
+
+    if (result.empty())
+        return result;
+
+    buffer.ungetBlock(result.data(), result.size());
+    *pPos -= result.size();
+    return result;

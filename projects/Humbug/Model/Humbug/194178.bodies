@@ -1,0 +1,84 @@
+class ConfigOptionList
+!!!202882.cpp!!!	ConfigOptionList()
+_DEBUG_CTORDTOR("++CONSTRUCT++");
+!!!203010.cpp!!!	~ConfigOptionList()
+_DEBUG_CTORDTOR("--DESTRUCT--");
+!!!203394.cpp!!!	addOption(in option : ConfigOption) : void
+MapType::iterator iter;// = mCategoryDict.begin();
+const std::string& category = option->getCategory();
+iter = mCategoryDict.find(category); // O(log N), siehe Text
+
+if( iter  !=  mCategoryDict.end() )
+{
+    // got the key, insert the new option into the vector.
+    ValueType* optlist = (*iter).second;
+    optlist->push_back(option);
+    std::cout << "Insert into existing: " << (*iter).first << std::endl; // O(1)
+}
+else
+{
+    // not in the map, create new vector and insert the new option into the vector.
+    ValueType* optionlist = new ValueType;
+    optionlist->push_back(option);
+    std::string cat(category);
+    mCategoryDict.insert(cat, optionlist);
+    std::cout << "Insert into new: " << category << std::endl; // O(1)
+    //MapType::_Pairib ins = mCategoryDict.insert(dictpair);
+}
+!!!273282.cpp!!!	getCategoryList(in category : string, inout rCategoryList : ConfigOptionList::TemplateDictionary) : void
+MapType::const_iterator iter;// = mCategoryDict.begin();
+iter = mCategoryDict.find(category); // O(log N), siehe Text
+
+if( iter  !=  mCategoryDict.end() )
+{
+    const ValueType& optlist = *(*iter).second;
+    //std::cout  <<  (*iter).second  <<  std::endl;  // O(1)
+    std::cout << "Found category: " << (*iter).first << std::endl; // O(1)
+    typedef ValueType::const_iterator const_iterator;
+    
+    //std::map<KeyType, const ItemType* const> templateDict;
+    for( const_iterator i = optlist.begin(), end = optlist.end();
+        i != end; ++i )
+    {
+        const ConfigOption& pos = (*i);
+        std::cout << "ConfigOption: " <<  pos.name() <<  std::endl;  // O(1)
+        rCategoryList.insert(std::make_pair(pos.name(), &pos));
+    }
+}
+else
+{
+    std::cout << "Category [" << category << "] not found." << std::endl; // O(1)
+}
+!!!273666.cpp!!!	getCategoryList(in category : string, inout rCategoryList : T) : void
+MapType::const_iterator iter;
+iter = mCategoryDict.find(category);     // O(log N)
+
+if( iter  !=  mCategoryDict.end() )
+{
+    const boost::ptr_vector<ConfigOption>& optlist = *(*iter).second;
+
+    std::cout << "Found category: " << (*iter).first << std::endl; 
+    typedef boost::ptr_vector<ConfigOption>::const_iterator const_iterator;
+
+    for( const_iterator i = optlist.begin(), end = optlist.end();
+        i != end; ++i )
+    {
+        const typename T::mapped_type pos = dynamic_cast<typename T::mapped_type>( &(*i) );
+
+        if (pos == NULL)
+            continue;
+
+        std::cout << "ConfigOption: " << pos->name() << std::endl;
+        rCategoryList.insert( std::make_pair(pos->name(), pos) );
+    }
+}
+else
+    std::cout << "Category [" << category << "] not found." << std::endl; 
+!!!273410.cpp!!!	operator[](in category : string) : ConfigOptionList::TemplateDictionary
+TemplateDictionary dict;
+getCategoryList(category, dict);
+return dict;
+!!!273538.cpp!!!	operator[](in category : string) : T
+T dict;
+getCategoryList(category, dict);
+return dict;

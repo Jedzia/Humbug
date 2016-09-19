@@ -1,0 +1,109 @@
+
+-X-X-X-X- Do, 28 Jan 2016 17:09:20 -----------------------------------------------------------
+// see http://stackoverflow.com/a/582456/1530424 http://stackoverflow.com/questions/582331/is-there-a-way-to-instantiate-objects-from-a-string-holding-their-class-name
+#define REGISTER_DEC_TYPE(NAME) \
+    static DerivedRegister<NAME> reg
+
+#define REGISTER_DEF_TYPE(NAME) \
+    DerivedRegister<NAME> NAME::reg(#NAME)
+
+//struct Foo { int a = 1; REGISTER_DEC_TYPE("Foo"); };
+
+
+struct Foo { int a = 1; };
+struct Bar { int b = 2; };
+struct Baz { int c = 3; };
+
+typedef boost::variant<Foo, Bar, Baz> variant_type;
+//typedef boost::variant<Foo> variant_type;
+
+template<typename T> variant_type createInst() {
+    return variant_type(T());
+}
+
+//typedef std::map<std::string, variant_type(*)()> map_type;
+typedef std::map<std::string, boost::function<variant_type()> > map_type;
+
+
+struct BaseFactory {
+
+    static variant_type createInstance(std::string const& s) {
+        //static boost::function<variant_type()> createInstance(std::string const& s) {
+        map_type::iterator it = getMap()->find(s);
+        if (it == getMap()->end())
+            //return;
+            return variant_type();
+
+        //boost::function0<boost::variant<Foo, Bar, Baz>>::result_type re = it->second();
+        return it->second();
+    }
+
+protected:
+    static map_type * getMap() {
+        // never delete'ed. (exist until program termination)
+        // because we can't guarantee correct destruction order 
+        if (!map) { map = new map_type; }
+        return map;
+    }
+
+private:
+    static map_type * map;
+};
+
+map_type * BaseFactory::map = 0;
+
+template<typename T>
+struct DerivedRegister : BaseFactory {
+    DerivedRegister(std::string const& s)
+    {
+        //boost::function<variant_type()> function = &createInst<T>;
+        //auto val = std::make_pair(s, function);
+        getMap()->insert(std::make_pair(s, &createInst<T>));
+        
+        //getMap()->insert(std::pair<std::string, boost::function<variant_type()>>(s, &createInst<T>));
+    }
+};
+
+//void Foo::Bla()
+//{
+    //DerivedRegister<Foo> reg1("Foo");
+//}
+
+void dingens()
+{
+    DerivedRegister<Foo> reg1("Foo");
+    DerivedRegister<Bar> reg2("Bar");
+    //DerivedRegister<Baz> reg3("Baz");
+    //BaseFactory::getMap()->insert(std::make_pair("Foo", &createInst<Foo>));
+    //BaseFactory::getMap()->insert(std::make_pair("Foo", &createInst<Foo>));
+    //BaseFactory::getMap()->insert(std::pair<std::string, boost::function<variant_type()>>("Foo", &createInst<Foo>));
+
+    auto factory = createInst<Foo>();
+    //factory.
+    auto x = factory.empty();
+    auto y = boost::get<Foo>(factory);;
+
+    auto x1 = BaseFactory::createInstance("Bar");
+    auto y2 = boost::get<Bar>(x1);;
+
+
+    boost::variant< int, std::string > v;
+    v = "hello";
+    std::cout << v << std::endl;
+    std::string& str = boost::get<std::string>(v);
+    str += " world! ";
+}
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 27 Jan 2016 17:03:49 -----------------------------------------------------------
+msbuild Humbug.sln /m /v:n /p:Configuration=Release /t:HumbugConsole && Humbug\src\Release\HumbugConsole.exe -s
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 26 Jan 2016 22:40:05 -----------------------------------------------------------
+some thoughts about text parsing, syntax:
+
+    m_pInfoText->makeCText<CText>(m_pArialfont, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", m_colText);
+
+CText Arial, "Use the up and down arrow or [w] and [s] to move the menu cursor up and down.", DarkRed;
+-----------------------------------------------------------------------------------------------

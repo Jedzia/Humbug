@@ -1,0 +1,11 @@
+class Idle_State
+!!!430850.cpp!!!	_upper(inout stm : Telephone) : Telephone::AnyState
+  return &stm._telephone_state;
+!!!432130.cpp!!!	makecall(inout stm : Telephone) : void
+  if (stm.power) {
+    stm._set_currentState(stm._telephone_state._active_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone.Active");
+#endif
+    stm._telephone_state._active_state.create(stm);
+  }

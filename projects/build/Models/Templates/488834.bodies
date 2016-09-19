@@ -1,0 +1,4 @@
+class ConcreteStrategyMultiply
+!!!505090.cpp!!!	execute(in a : int, in b : int) : int
+std::cout << "Called ConcreteStrategyMultiply's execute()" << std::endl;
+return a * b;   // Do a multiplication with a and b

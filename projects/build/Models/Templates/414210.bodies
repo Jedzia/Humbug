@@ -1,0 +1,3 @@
+class ConcreteCreator
+!!!390530.cpp!!!	FactoryMethod() : Product
+return new ConcreteProduct();

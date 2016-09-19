@@ -1,0 +1,7 @@
+class Lambda
+!!!383362.cpp!!!	lambda(in test : std::vector<int> [*]) : void
+std::vector<int> some_list;
+int total = 0;
+std::for_each(some_list.begin(), some_list.end(), [&total](int x) {
+  total += x;
+});

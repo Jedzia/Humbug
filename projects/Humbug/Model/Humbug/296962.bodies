@@ -1,0 +1,14 @@
+class LogManager
+!!!335490.cpp!!!	getLoggerRepository() : LoggerRepositoryPtr
+//if (getRepositorySelector() == 0)
+//{
+        static spi::LoggerRepositoryPtr hierarchy(new Hierarchy());
+        //RepositorySelectorPtr selector(new DefaultRepositorySelector(hierarchy));
+        //getRepositorySelector() = selector;
+//}
+
+return hierarchy;
+//return getRepositorySelector()->getLoggerRepository();
+!!!334850.cpp!!!	getRootLogger() : LoggerPtr
+// Delegate the actual manufacturing of the logger to the logger repository.
+return getLoggerRepository()->getRootLogger();

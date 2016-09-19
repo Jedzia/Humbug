@@ -1,0 +1,5 @@
+class TmLowerCase
+!!!438530.cpp!!!	transform(inout rInput : string) : string
+return boost::to_lower_copy(rInput);
+!!!223618.cpp!!!	getToken() : string
+return msToken;

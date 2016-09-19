@@ -1,0 +1,511 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 464
+\begin_document
+\begin_header
+\textclass scrbookjed
+\begin_preamble
+% wenn pdflatex benutzt wird:
+\usepackage{ifpdf}
+\ifpdf
+
+% Schriften für bessere PDF-Ansichten
+\IfFileExists{lmodern.sty}
+ {\usepackage{lmodern}}{}
+
+\fi % Ende von: wenn pdflatex benutzt wird
+
+% Setzt den Link fuer Sprünge zu Gleitabbildungen
+% auf den Anfang des Gelitobjekts und nicht aufs Ende
+\usepackage[figure]{hypcap}
+
+% Die Seiten des Inhaltsverzeichnisses werden römisch numeriert,
+% ein PDF-Lesezeichen für das Inhaltsverzeichnis wird hinzugefügt
+\let\myTOC\tableofcontents
+\renewcommand\tableofcontents{%
+  \frontmatter
+  \pdfbookmark[1]{\contentsname}{}
+  \myTOC
+  \mainmatter }
+
+\newcommand{\TabBesBeg}{%
+ \let\MyTable\table
+ \let\MyEndtable\endtable
+ \renewenvironment{table}{\begin{SCtable}}{\end{SCtable}}}
+
+\newcommand{\TabBesEnd}{%
+ \let\table\MyTable
+ \let\endtable\MyEndtable}
+
+\newcommand{\FigBesBeg}{%
+ \let\MyFigure\figure
+ \let\MyEndfigure\endfigure
+ \renewenvironment{figure}{\begin{SCfigure}}{\end{SCfigure}}}
+
+\newcommand{\FigBesEnd}{%
+ \let\figure\MyFigure
+ \let\endfigure\MyEndfigure}
+
+% ermöglicht das Berechnen von Werten
+\usepackage{calc}
+
+% Ermöglicht besondere Tabellenzellen-Ausrichtungen
+\usepackage{dcolumn}
+
+%Vergrößert den Teil der Seite, in dem Gleitobjekte
+% unten angeordnet werden dürfen
+\renewcommand{\bottomfraction}{0.5}
+
+% Vermeidet, dass Gleitobjekte vor ihrem Abschnitt gedruckt werden
+\let\mySection\section\renewcommand{\section}{\suppressfloats[t]\mySection}
+
+% beschleunigt die Berechnung von langen Tabellen
+%\setcounter{LTchunksize}{100}
+\makeatletter
+% wird für skalierte und rotierte Boxen benötigt
+\@ifundefined{rotatebox}{\usepackage{graphicx}}{}
+
+% wird bei farbigen Tabellen benutzt
+\@ifundefined{textcolor}
+ {\usepackage{color}}{}
+\definecolor{dunkelgruen}{cmyk}{0.5, 0, 1, 0}
+\definecolor{hellgrau}{gray}{0.8}
+
+% testen ob paket colortbl installiert ist
+% wird für farbige Tabellenzellen benutzt
+\newboolean{colortbl}
+\IfFileExists{colortbl.sty}
+ {\usepackage{colortbl}
+  \setboolean{colortbl}{true}}
+ {\setboolean{colortbl}{false}}
+
+% wird für Mehrfachzeilen benutzt
+\usepackage{multirow}
+%\renewcommand{\multirowsetup}{\centering}
+
+% wird fuer Tabellen im Buchstil benutzt
+\usepackage{booktabs}
+
+% wird benutzt, um Tabellenzellen zu vergrößern
+\@ifundefined{extrarowheight}
+ {\usepackage{array}}{}
+\setlength{\extrarowheight}{2pt}
+\makeatletter
+
+% wird fuer benutzerdefinierte Tabellen benutzt
+% ---
+\newcolumntype{M}[1]
+ {>{\centering\hspace{0pt}}m{#1}}
+
+\newcolumntype{S}[2]
+ {>{\centering\hspace{0pt}}m{(#1+(2\tabcolsep+\arrayrulewidth)*(1-#2))/#2}}
+
+\newcolumntype{K}[1]
+ {>{\columncolor{#1}\hspace{0pt}}c}
+
+\newcolumntype{V}{!{\vrule width 1.5pt}}
+
+\newcolumntype{W}{!{\color{green}\vline}}
+% ---
+
+% Setzt einen zusaetzlichen Abstand von
+% 1.5 mm zwischen Fussnoten
+\let\myFoot\footnote
+\renewcommand{\footnote}[1]{\myFoot{#1\vspace{1.5mm}}}
+
+% Gleit-Algorithmen werden innerhalb von Kapiteln numeriert
+%\numberwithin{algorithm}{chapter}
+
+% Grauschrift-Notizen in blauer Farbe
+%\renewenvironment{lyxgreyedout}
+ %{\textcolor{blue}\bgroup}{\egroup}
+
+% ------------------------------------
+% Prüfung auf benötigte LaTeXPakete
+\usepackage{ifthen}
+
+% Pruefung auf arydshln
+% für Tabellen mit gestrichelten Linien
+\newboolean{arydshln}
+\IfFileExists{arydshln.sty}
+ {\usepackage{arydshln}
+  \setboolean{arydshln}{true}}
+ {\setboolean{arydshln}{false}}
+
+% Prüfung auf marginnote
+% für Randnotizen
+\newboolean{marginnote}
+\IfFileExists{marginnote.sty}
+ {\usepackage{marginnote}
+  \let\marginpar\marginnote
+  \setboolean{marginnote}{true}}
+ {\setboolean{marginnote}{false}}
+
+% Prüfung auf sidecap
+% für seitliche Beschriftungen
+\newboolean{sidecap}
+\IfFileExists{sidecap.sty}
+ {\usepackage{sidecap}
+  \let\marginpar\marginnote
+  \setboolean{sidecap}{true}}
+ {\setboolean{sidecap}{false}}
+
+% Umdefinieren des Makros \LyX für PDF-Lesezeichen
+\def\LyX{\texorpdfstring{%
+  L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+  {LyX }}
+
+% Damit der Index den Namen "Stichwortverzeichnis" erhält
+\addto\captionsngerman{\renewcommand{\indexname}{Stichwortverzeichnis}}
+\end_preamble
+\options fleqn,liststotoc,bibtotoc,idxtotoc,BCOR7.5mm,titlepage,tablecaptionabove,DIV=15
+\use_default_options false
+\begin_modules
+jed
+\end_modules
+\maintain_unincluded_children false
+\language ngerman
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_title "Das LyX-Handbuch der Einfügungen: Abbildungen, Tabellen, Gleitobjekte, Notizen und Boxen"
+\pdf_author "LyX Team, Uwe Stöhr, deutsche Übersetzung: Hartmut Haase"
+\pdf_subject "LyX-Dokumentation über Abbildungen, Tabellen, Gleitobjekte, Notizen und Boxen"
+\pdf_keywords "LyX, Abbildungen, Tabellen, Gleitobjekte, Notizen, Boxen"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle false
+\pdf_quoted_options "linkcolor=black, citecolor=black, urlcolor=blue, filecolor=blue,  pdfpagelayout=OneColumn, pdfnewwindow=true,  pdfstartview=XYZ, plainpages=false, pdfpagelabels"
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Stichwortverzeichnis
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language german
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\bullet 1 0 9 -1
+\bullet 2 2 35 -1
+\bullet 3 2 7 -1
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict true
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+setcounter{equation}{0}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+providecommand{
+\backslash
+Lux}{L
+\backslash
+kern-.1667em
+\backslash
+lower.25em
+\backslash
+hbox{U}
+\backslash
+kern-.125emX
+\backslash
+@}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+def
+\backslash
+Lux{
+\backslash
+texorpdfstring{%
+\end_layout
+
+\begin_layout Plain Layout
+
+L
+\backslash
+kern-.1667em
+\backslash
+lower.25em
+\backslash
+hbox{U}
+\backslash
+kern-.125emX
+\backslash
+@}
+\end_layout
+
+\begin_layout Plain Layout
+
+  {LyX }} 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+dominitoc
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+doparttoc
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float tableau
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Ovalbox
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+
+\size giant
+THIS IS A TEMPLATE
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset VSpace medskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+parttoc
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Wo ist was
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+verbtocs{
+\backslash
+mmmtoc}|
+\backslash
+minitoc{}|  
+\backslash
+mmmBtoc{}%
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Systemwiederherstellungspunkt
+\end_layout
+
+\begin_layout Standard
+Um einen Systemwiederherstellungspunkt
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Systemwiederherstellungspunkt
+\end_layout
+
+\end_inset
+
+ zu setzen: 
+\emph on
+Start >Programme>Zubehör>Systemprogramme>Systemwiederherstellung
+\end_layout
+
+\begin_layout Section
+xxxx
+\end_layout
+
+\begin_layout Chapter
+anc
+\end_layout
+
+\begin_layout Section
+ccc
+\end_layout
+
+\begin_layout Section
+fff
+\end_layout
+
+\end_body
+\end_document

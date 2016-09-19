@@ -1,0 +1,32 @@
+class Telephone
+!!!429954.cpp!!!	Telephone()
+  _current_state = 0;
+!!!430210.cpp!!!	create() : bool
+if (_current_state == 0)
+(_current_state = &(*this)._telephone_state)->create(*this);
+return (_current_state != 0);
+!!!431490.cpp!!!	doActivity() : void
+  _current_state->_do(*this);
+!!!431618.cpp!!!	_set_currentState(inout st : Telephone::AnyState) : void
+  _current_state = &st;
+!!!431746.cpp!!!	_final() : void
+  _current_state = 0;
+#ifdef VERBOSE_STATE_MACHINE
+  puts("DEBUG : final state reached");
+#endif
+!!!431874.cpp!!!	makecall() : bool
+  if (_current_state != 0) {
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : fire trigger makecall");
+#endif
+    _current_state->makecall(*this);
+  }
+  return (_current_state != 0);
+!!!432642.cpp!!!	makeOnHook() : bool
+  if (_current_state != 0) {
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : fire trigger makeOnHook");
+#endif
+    _current_state->makeOnHook(*this);
+  }
+  return (_current_state != 0);

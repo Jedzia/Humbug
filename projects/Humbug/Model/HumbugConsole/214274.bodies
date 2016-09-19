@@ -1,0 +1,49 @@
+class TemplateModifierFactory
+!!!230146.cpp!!!	TemplateModifierFactory()
+registerInternal();
+!!!244354.cpp!!!	printModifiers() : void
+typedef boost::ptr_map<const std::string, TemplateModifier>::const_iterator const_iterator;
+for( const_iterator i   = mpmapModifiers.begin(),
+              end = mpmapModifiers.end();
+     i != end; ++i )
+{
+	//const TemplateModifier* const basetype = (*i).second;
+	std::cout << "TemplateModifier[" << (*i).first << "]" << std::endl;
+    /*if( i->name() == "Mary" )
+    {
+        to_sell = i;
+        break;
+    }*/
+}
+!!!439042.cpp!!!	registerType() : void
+T* type = new T();
+TemplateModifier* basetype = dynamic_cast<TemplateModifier*>(type);
+const std::string& token = basetype->getToken();
+mpmapModifiers.insert(token, type);
+!!!230658.cpp!!!	registerModifier(inout token : string, inout modifier : TemplateModifier) : bool
+//TmLowerCase* const instance = new TmLowerCase();
+//instance++;
+//instance->transform("XYZ");
+//boost::ptr_map<const std::string, TemplateModifier> xxx;
+//xxx.insert("Bla", instance);
+//mpmapModifiers.insert(token, instance);
+mpmapModifiers.insert(token, modifier);
+return true;
+!!!264834.cpp!!!	getModifier(inout rIdentifier : string) : TemplateModifier
+typedef boost::ptr_map<const std::string, TemplateModifier>::const_iterator const_iterator;
+if (rIdentifier.empty())
+{
+    return NULL;
+}
+
+const_iterator i = mpmapModifiers.find(rIdentifier);
+if (i != mpmapModifiers.end())
+{
+    const TemplateModifier* const tmpl = (*i).second;
+    return tmpl;
+}
+
+return NULL;
+!!!439170.cpp!!!	registerInternal() : void
+registerType<TmLowerCase>();
+registerType<TmUpperCase>();

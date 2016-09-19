@@ -1,0 +1,20 @@
+class FalschEingabe_State
+!!!478082.cpp!!!	_completion(inout stm : SetupProcess) : bool
+  _do(stm);
+  {
+    stm._set_currentState(stm._setupprocess_state._submarine_state._a_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess.Submarine.A");
+#endif
+    stm._setupprocess_state._submarine_state._a_state.create(stm);
+    return (bool) 1;
+  }
+!!!478210.cpp!!!	create(inout stm : SetupProcess) : void
+	_completion(stm);
+!!!478338.cpp!!!	_upper(inout stm : SetupProcess) : SetupProcess::AnyState
+  return &stm._setupprocess_state._submarine_state;
+!!!478466.cpp!!!	_do(inout stm : SetupProcess) : void
+#ifdef VERBOSE_STATE_MACHINE
+	puts("DEBUG : execute do behavior of .SetupProcess.Submarine.FalschEingabe");
+#endif
+puts("Fehler, Du Arsch. grösser als 0");

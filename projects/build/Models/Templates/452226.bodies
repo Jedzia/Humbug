@@ -1,0 +1,13 @@
+class Cool_State
+!!!447234.cpp!!!	_upper(inout stm : Telephone) : Telephone::AnyState
+  return &stm._telephone_state;
+!!!448642.cpp!!!	_completion(inout stm : Telephone) : bool
+  {
+    stm._set_currentState(stm._telephone_state._idle_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone.Idle");
+#endif
+    return (bool) 1;
+  }
+!!!448770.cpp!!!	create(inout stm : Telephone) : void
+	_completion(stm);

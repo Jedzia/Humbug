@@ -1,0 +1,495 @@
+format 76
+"Types" // Templates::Types
+  revision 4
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "Templates/Types"
+  cpp_src_dir "Templates/Types"
+  cpp_namespace "templates::types"
+  classview 252418 "Types"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 252162 // Types
+    classdiagram 141058 "Host"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      size A4
+    end
+
+    class 406914 "AnotherScoped"
+      visibility protected stereotype "scoped_enum"
+      cpp_decl "BOOST_SCOPED_ENUM_START( ${name} ){
+${items}
+};
+BOOST_SCOPED_ENUM_END
+
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      attribute 299138 "first"
+	public type class_ref 406914 // AnotherScoped
+	cpp_decl "  ${name}${value},${comment}"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 299266 "second"
+	public type class_ref 406914 // AnotherScoped
+	cpp_decl "  ${name}${value},${comment}"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 299394 "third"
+	public type class_ref 406914 // AnotherScoped
+	cpp_decl "  ${name}${value},${comment}"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+    end
+
+    class 400002 "Host"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! See http://blogs.msdn.com/b/vcblog/archive/2010/04/06/c-0x-core-language-features-in-vc10-the-table.aspx?PageIndex=2
+! for a MSVC C++0x spec."
+      class 400130 "MyEnum"
+	visibility package stereotype "enum"
+	cpp_decl "${comment}enum ${name} {
+${items}
+};
+"
+	java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+	php_decl "${comment}${visibility}final class ${name} {
+${items}}
+"
+	python_2_2 python_decl "class ${name}:
+${docstring}${members}
+"
+	idl_decl "${comment}enum ${name} {
+${items}};
+"
+	explicit_switch_type ""
+	
+	attribute 291970 "first"
+	  public type class_ref 400130 // MyEnum
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	end
+
+	attribute 292098 "second"
+	  public type class_ref 400130 // MyEnum
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	end
+
+	attribute 292226 "third"
+	  public type class_ref 400130 // MyEnum
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	end
+      end
+
+      class 406786 "ScopedEnum"
+	visibility package stereotype "struct"
+	cpp_decl "${comment}${template}struct PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}struct ${name} {
+${members}};
+"
+	explicit_switch_type ""
+	
+	class 406658 "enum_type"
+	  visibility package stereotype "enum"
+	  cpp_decl "${comment}enum ${name} {
+${items}
+};
+"
+	  java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+	  php_decl "${comment}${visibility}final class ${name} {
+${items}}
+"
+	  python_2_2 python_decl "class ${name}:
+${docstring}${members}
+"
+	  idl_decl "${comment}enum ${name} {
+${items}};
+"
+	  explicit_switch_type ""
+	  
+	  attribute 298754 "first"
+	    public type class_ref 406658 // enum_type
+	    cpp_decl "  ${name}${value},${comment}"
+	    java_decl ""
+	    php_decl ""
+	    python_decl ""
+	    idl_decl ""
+	  end
+
+	  attribute 298882 "second"
+	    public type class_ref 406658 // enum_type
+	    cpp_decl "  ${name}${value},${comment}"
+	    java_decl ""
+	    php_decl ""
+	    python_decl ""
+	    idl_decl ""
+	  end
+
+	  attribute 299010 "third"
+	    public type class_ref 406658 // enum_type
+	    cpp_decl "  ${name}${value},${comment}"
+	    java_decl ""
+	    php_decl ""
+	    python_decl ""
+	    idl_decl ""
+	  end
+	end
+      end
+
+      class 407042 "InsideClass"
+	visibility package stereotype "scoped_enum"
+	cpp_decl "BOOST_SCOPED_ENUM_START( ${name} ){
+${items}
+};
+BOOST_SCOPED_ENUM_END
+
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	attribute 299522 "first"
+	  public type class_ref 407042 // InsideClass
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	end
+
+	attribute 299650 "second"
+	  public type class_ref 407042 // InsideClass
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	end
+
+	attribute 299778 "third"
+	  public type class_ref 407042 // InsideClass
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	end
+      end
+
+      operation 382850 "useNormalEnum"
+	cpp_inline public return_type class_ref 400130 // MyEnum
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 382978 "useScopedEnum"
+	cpp_inline public return_type class_ref 406658 // enum_type
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 383106 "useAnotherScoped"
+	cpp_inline public explicit_return_type "BOOST_SCOPED_ENUM(AnotherScoped)"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 383234 "useInsideClass"
+	cpp_inline public explicit_return_type "BOOST_SCOPED_ENUM(Host::InsideClass)"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    classdiagram 154370 "Interface"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      size A4
+    end
+
+    class 420866 "OutputBuilder"
+      visibility package stereotype "interface"
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl "${comment}interface ${name} {
+${members}}
+"
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${local}interface ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      operation 397826 "anOperation"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 420994 "DOMBuilder"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 141442 // <generalisation>
+	relation 141442 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 141442 // <generalisation>
+	  b parent class_ref 420866 // OutputBuilder
+      end
+
+      operation 398082 "anOperation"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 421122 "XMLBuilder"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 141570 // <generalisation>
+	relation 141570 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 141570 // <generalisation>
+	  b parent class_ref 420866 // OutputBuilder
+      end
+
+      operation 397954 "anOperation"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+  end
+
+  deploymentview 252162 "Types"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 313218 "Host"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+#include <boost/detail/scoped_enum_emulation.hpp>
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 406914 // AnotherScoped
+	class_ref 400002 // Host
+      end
+    end
+
+    artifact 326914 "Interface"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 420866 // OutputBuilder
+	class_ref 420994 // DOMBuilder
+	class_ref 421122 // XMLBuilder
+      end
+    end
+  end
+end

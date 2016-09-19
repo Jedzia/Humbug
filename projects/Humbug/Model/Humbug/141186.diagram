@@ -1,0 +1,13 @@
+format 76
+
+artifactcanvas 128002 artifact_ref 134658 // TextPosition
+  xyz 51 125 2000
+end
+artifactcanvas 128130 artifact_ref 134786 // TextDocument
+  xyz 239 125 2000
+end
+packagecanvas 128258 
+  package_ref 246786 // text
+    xyzwh 39 42 2000 365 179
+end
+end

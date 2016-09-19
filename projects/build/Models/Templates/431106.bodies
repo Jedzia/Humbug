@@ -1,0 +1,32 @@
+class Document
+!!!419330.cpp!!!	Document()
+  _current_state = 0;
+!!!419714.cpp!!!	create() : bool
+if (_current_state == 0)
+(_current_state = &(*this)._document_state)->create(*this);
+return (_current_state != 0);
+!!!421250.cpp!!!	doActivity() : void
+  _current_state->_do(*this);
+!!!421378.cpp!!!	_set_currentState(inout st : Document::AnyState) : void
+  _current_state = &st;
+!!!421506.cpp!!!	_final() : void
+  _current_state = 0;
+#ifdef VERBOSE_STATE_MACHINE
+  puts("DEBUG : final state reached");
+#endif
+!!!422018.cpp!!!	myTrigger() : bool
+  if (_current_state != 0) {
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : fire trigger myTrigger");
+#endif
+    _current_state->myTrigger(*this);
+  }
+  return (_current_state != 0);
+!!!422402.cpp!!!	clostDocument() : bool
+  if (_current_state != 0) {
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : fire trigger clostDocument");
+#endif
+    _current_state->clostDocument(*this);
+  }
+  return (_current_state != 0);

@@ -1,0 +1,7 @@
+class Document
+!!!398466.cpp!!!	open() : void
+std::cout << "Opening Document" << std::endl;
+!!!398978.cpp!!!	close() : void
+std::cout << "Closing Document" << std::endl;
+!!!398850.cpp!!!	save(inout filename : string) : void
+std::cout << "Saving Document" << std::endl;

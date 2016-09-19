@@ -1,0 +1,26 @@
+class StrategyExample
+!!!505218.cpp!!!	main(in argc : int, in argv : char [*]) : int
+{
+    Context* context;
+
+    // Three contexts following different strategies
+    context = new Context( new ConcreteStrategyAdd() );
+    int resultA = context->executeStrategy(3, 4);
+    context = new Context( new ConcreteStrategySubtract() );
+    int resultB = context->executeStrategy(3, 4);
+    context = new Context( new ConcreteStrategyMultiply() );
+    int resultC = context->executeStrategy(3, 4);
+}
+{
+    // as local
+    ConcreteStrategyAdd strategyA;
+    ConcreteStrategySubtract strategyB;
+    ConcreteStrategyMultiply strategyC;
+    Context context(&strategyA);
+    int resultA = context.executeStrategy(3, 4);
+    context.setStrategy(&strategyB);
+    int resultB = context.executeStrategy(3, 4);
+    context.setStrategy(&strategyC);
+    int resultC = context.executeStrategy(3, 4);
+}
+return 0;

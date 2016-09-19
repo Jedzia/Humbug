@@ -1,0 +1,53 @@
+; --------------------------------------------------------
+; Example for exporting binary files from Tile Studio
+;
+; Version 1.0 - June 6, 2004
+; Mike Wiering (mike@wieringsoftware.nl)
+; --------------------------------------------------------
+
+#tileset
+#file <ProjectName>.til
+;"This text will be included"
+;<0><0><0><0><0>
+#tileset
+#tilebitmap <TileSetIdentifier>.png 512
+#end tilebitmap
+<TileWidth>
+<TileHeight>
+<TileCount>
+<HorizontalTileCount>
+<VerticalTileCount>
+<TransparentColorR>
+<TransparentColorG>
+<TransparentColorB>
+<0x55555555>
+<0x55555555>
+;<TileSetIdentifier><0:"8">
+<TileSetIdentifier>
+<TileSetIdentifier>.png
+<MapCount>
+#map
+<MapIdentifier>
+#end map
+#end tileset
+#end file
+
+
+; maps
+#tileset
+#map
+#file <MapIdentifier>.map
+<MapWidth>
+<MapHeight>
+<MapIdentifier>
+<TileSetIdentifier>
+; <Y>:\n
+#mapdata "\n"  ","  ",\n"  ",\n"  ""
+( <TileNumber:"%04d">, <BoundMapValue:"%04d"> ) 
+;( <TileNumber>, <BoundMapValue> ), 
+#end mapdata
+
+#end file
+#end map
+#end tileset
+; --------------------------------------------------------

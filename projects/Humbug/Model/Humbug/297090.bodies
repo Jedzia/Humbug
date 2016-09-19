@@ -1,0 +1,38 @@
+class Hierarchy
+!!!335106.cpp!!!	Hierarchy()
+//synchronized sync(mutex);
+static helpers::Pool pool;
+root.reset(new RootLogger(pool, Level::getDebug()));
+root->setHierarchy(this);
+//defaultFactory = new DefaultLoggerFactory();
+//emittedNoAppenderWarning = false;
+configured = false;
+thresholdInt = Level::ALL_INT;
+threshold = Level::getAll();
+//emittedNoResourceBundleWarning = false;
+!!!334978.cpp!!!	isDisabled(in level : int) : bool
+if(!configured) {
+//   synchronized sync(mutex);
+   if (!configured) {
+//     DefaultConfigurator::configure(
+//         const_cast<Hierarchy*>(this));
+configured = true;
+   }
+}
+
+return thresholdInt > level;
+!!!335618.cpp!!!	getRootLogger() : LoggerPtr
+return root;
+!!!344450.cpp!!!	setThreshold(in l : LevelPtr) : void
+if (l != 0)
+{
+    //synchronized sync(mutex);
+    thresholdInt = l->toInt();
+    threshold = l;
+    if (thresholdInt != Level::ALL_INT) {
+       setConfigured(true);
+    }
+}
+!!!344578.cpp!!!	setConfigured(in newValue : bool) : void
+// synchronized sync(mutex);
+configured = newValue;

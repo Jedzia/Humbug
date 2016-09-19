@@ -1,0 +1,52 @@
+class A_State
+!!!475522.cpp!!!	_completion(inout stm : SetupProcess) : bool
+  _do(stm);
+  if (inp > 0) {
+    stm._setupprocess_state._submarine_state._a_state._doexit(stm);
+    stm._set_currentState(stm._setupprocess_state._submarine_state._b_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess.Submarine.B");
+#endif
+    stm._setupprocess_state._submarine_state._b_state.create(stm);
+    return (bool) 1;
+  }
+  else if (inp == -1) {
+    stm._setupprocess_state._submarine_state._a_state._doexit(stm);
+    stm._set_currentState(stm._setupprocess_state._submarine_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess.Submarine");
+#endif
+    stm._setupprocess_state._submarine_state._exit1(stm);
+    return (bool) 1;
+  }
+  else if (inp == 0) {
+    stm._setupprocess_state._submarine_state._a_state._doexit(stm);
+    stm._set_currentState(stm._setupprocess_state._submarine_state._falscheingabe_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess.Submarine.FalschEingabe");
+#endif
+    stm._setupprocess_state._submarine_state._falscheingabe_state.create(stm);
+    return (bool) 1;
+  }
+  return (bool) 0;
+!!!475778.cpp!!!	_upper(inout stm : SetupProcess) : SetupProcess::AnyState
+  return &stm._setupprocess_state._submarine_state;
+!!!476930.cpp!!!	create(inout stm : SetupProcess) : void
+	_doentry(stm);
+	_completion(stm);
+!!!477058.cpp!!!	_doentry(inout stm : SetupProcess) : void
+#ifdef VERBOSE_STATE_MACHINE
+	puts("DEBUG : execute entry behavior of .SetupProcess.Submarine.A");
+#endif
+puts("Enter number");
+std::cin >> inp;
+!!!477826.cpp!!!	_doexit(inout stm : SetupProcess) : void
+#ifdef VERBOSE_STATE_MACHINE
+	puts("DEBUG : execute exit behavior of .SetupProcess.Submarine.A");
+#endif
+puts("Exit");
+!!!477954.cpp!!!	_do(inout stm : SetupProcess) : void
+#ifdef VERBOSE_STATE_MACHINE
+	puts("DEBUG : execute do behavior of .SetupProcess.Submarine.A");
+#endif
+puts("Do");

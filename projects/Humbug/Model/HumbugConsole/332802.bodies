@@ -1,0 +1,161 @@
+class ProjectModel
+!!!322178.cpp!!!	ProjectModel(inout parent : QObject = 0)
+
+	rootNode = 0;
+	QHash<int, QByteArray> roles = this->roleNames();
+	roles.insertMulti(ProjectModel::FileIconRole, "fileIcon"); // == Qt::decoration
+	roles.insert(ProjectModel::FilePathRole, "filePath");
+	roles.insert(ProjectModel::FileNameRole, "fileName");
+!!!322306.cpp!!!	~ProjectModel()
+
+	delete rootNode;
+!!!322434.cpp!!!	setRootNode(inout node : ProjectNode) : void
+
+	delete rootNode;
+	rootNode = node;
+	reset();
+!!!322562.cpp!!!	index(in row : int, in column : int, in parent : QModelIndex) : QModelIndex
+
+	if (!rootNode || row < 0 || column < 0)
+		return QModelIndex();
+	ProjectNode *parentNode = nodeFromIndex(parent);
+	ProjectNode *childNode = parentNode->children.value(row);
+	if (!childNode)
+		return QModelIndex();
+	return createIndex(row, column, childNode);
+!!!322690.cpp!!!	parent(in child : QModelIndex) : QModelIndex
+
+	ProjectNode *node = nodeFromIndex(child);
+	if (!node)
+		return QModelIndex();
+	ProjectNode *parentNode = node->parent;
+	if (!parentNode)
+		return QModelIndex();
+	ProjectNode *grandparentNode = parentNode->parent;
+	if (!grandparentNode)
+		return QModelIndex();
+
+	int row = grandparentNode->children.indexOf(parentNode);
+	return createIndex(row, 0, parentNode);
+!!!322818.cpp!!!	rowCount(in parent : QModelIndex) : int
+
+	if (parent.column() > 0)
+		return 0;
+	ProjectNode *parentNode = nodeFromIndex(parent);
+	if (!parentNode)
+		return 0;
+	return parentNode->children.count();
+!!!322946.cpp!!!	columnCount(in parent : QModelIndex) : int
+
+	return 2;
+!!!323074.cpp!!!	data(in index : QModelIndex, in role : int) : QVariant
+
+	//	if (role == Qt::ToolTipRole)
+	//		return QVariant();
+
+	//	if (role == Qt::DisplayRole)
+	ProjectNode *node = nodeFromIndex(index);
+	if (!node)
+		return QVariant();
+
+	switch (role)
+	{
+	case FileIconRole:
+		return getIcon(node);
+		break;
+	case Qt::TextColorRole:
+		switch (node->type)
+		{
+		case ProjectNode::Root:
+			return tr("Root");
+		case ProjectNode::Folder:
+			return QColor("Red");
+		case ProjectNode::File:
+			return QColor("Green");
+			break;
+		}
+		break;
+	case Qt::ToolTipRole:
+		return getTooltipRole(node);
+	case Qt::DisplayRole:
+		return getDisplayRole(index, node);
+	}
+	return QVariant();
+!!!323202.cpp!!!	headerData(in section : int, in orientation : Qt::Orientation, in role : int) : QVariant
+
+	if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+		if (section == 0) {
+			return tr("ProjectNode");
+		} else if (section == 1) {
+			return tr("Value");
+		}
+	}
+	return QVariant();
+!!!323330.cpp!!!	getIcon(inout node : ProjectNode) : QVariant
+
+	//dbgOut("------------->FileIconRole called");
+	switch (node->type)
+	{
+		//case ProjectNode::Root:
+		//	return tr("Root");
+	case ProjectNode::Folder :
+		{
+			QIcon icon2;
+			icon2.addFile(QString::fromUtf8(":/icons/fileopen.png"), QSize(), QIcon::Normal, QIcon::Off);
+			return icon2;
+		}
+	case ProjectNode::File :
+		{
+			QIcon icon3;
+			icon3.addFile(QString::fromUtf8(":/icons/filesave.png"), QSize(), QIcon::Normal, QIcon::Off);
+			return icon3;
+		}
+	default:
+		return QVariant();
+	}
+!!!323458.cpp!!!	nodeFromIndex(in index : QModelIndex) : ProjectNode
+
+	if (index.isValid()) {
+		return static_cast<ProjectNode *>(index.internalPointer());
+	} else {
+		return rootNode;
+	}
+!!!323586.cpp!!!	getDisplayRole(in index : QModelIndex, inout node : ProjectNode) : QVariant
+
+	if (index.column() == 0)
+	{
+		switch (node->type)
+		{
+		case ProjectNode::Root:
+			return tr("Root");
+		case ProjectNode::Folder:
+			return tr("Folder");
+		case ProjectNode::File:
+			return tr("File");
+		case ProjectNode::OrExpression:
+			return tr("OR Expression");
+		case ProjectNode::AndExpression:
+			return tr("AND Expression");
+		case ProjectNode::NotExpression:
+			return tr("NOT Expression");
+		case ProjectNode::Atom:
+			return tr("Atom");
+		case ProjectNode::Identifier:
+			return tr("Identifier");
+		case ProjectNode::Operator:
+			return tr("Operator");
+		case ProjectNode::Punctuator:
+			return tr("Punctuator");
+		default:
+			return tr("Unknown");
+		}
+	} else if (index.column() == 1) {
+		return node->str;
+	}
+	return QVariant();
+!!!323714.cpp!!!	getTooltipRole(inout node : ProjectNode) : QVariant
+
+	//if (index.column() == 0) {
+	//} else if (index.column() == 1) {
+	return node->toolTip;
+	//}

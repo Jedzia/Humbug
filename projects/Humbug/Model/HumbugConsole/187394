@@ -1,0 +1,800 @@
+format 76
+"Project-Old" // Humbug::HumbugShared::Project-Old
+  revision 10
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "HumbugShared/Project/"
+  cpp_src_dir "HumbugShared/Project/"
+  oid 187394
+  classview 200194 "Project"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    oid 200194
+    class 332802 "ProjectModel"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 332802
+      classrelation 263810 // <generalisation>
+	relation 263810 ---|>
+	  oid 263810
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 263810 // <generalisation>
+	  b parent class_ref 400514 // QAbstractItemModel
+	oid 263810
+      end
+
+      class 333058 "Roles"
+	visibility package stereotype "enum"
+	cpp_decl "${comment}enum ${name} {
+${items}
+};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	oid 333058
+	attribute 247042 "FileIconRole"
+	  public type class_ref 333058 // Roles
+	  init_value " Qt::DecorationRole"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 247042
+	end
+
+	attribute 247170 "FilePathRole"
+	  public type class_ref 333058 // Roles
+	  init_value " Qt::UserRole + 1"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 247170
+	end
+
+	attribute 247298 "FileNameRole"
+	  public type class_ref 333058 // Roles
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 247298
+	end
+      end
+
+      operation 322178 "ProjectModel"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 1
+	  param inout name "parent" type class_ref 400642 // QObject
+	    defaultvalue "0"
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} * ${p0}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} * ${p0}${)}
+: QAbstractItemModel(parent)
+${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322178
+      end
+
+      operation 322306 "~ProjectModel"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322306
+      end
+
+      operation 322434 "setRootNode"
+	preserve_cpp_body_indent public explicit_return_type "void"
+	nparams 1
+	  param inout name "node" explicit_type "ProjectNode"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322434
+      end
+
+      operation 322562 "index"
+	preserve_cpp_body_indent const public explicit_return_type "QModelIndex"
+	nparams 3
+	  param in name "row" explicit_type "int"
+	  param in name "column" explicit_type "int"
+	  param in name "parent" explicit_type "QModelIndex"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${v0}, ${t1} ${p1}${v1}, const ${t2} & ${p2}${v2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}, const ${t2} & ${p2}${)}${const}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322562
+      end
+
+      operation 322690 "parent"
+	preserve_cpp_body_indent const public explicit_return_type "QModelIndex"
+	nparams 1
+	  param in name "child" explicit_type "QModelIndex"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322690
+      end
+
+      operation 322818 "rowCount"
+	preserve_cpp_body_indent const public explicit_return_type "int"
+	nparams 1
+	  param in name "parent" explicit_type "QModelIndex"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322818
+      end
+
+      operation 322946 "columnCount"
+	preserve_cpp_body_indent const public explicit_return_type "int"
+	nparams 1
+	  param in name "parent" explicit_type "QModelIndex"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 322946
+      end
+
+      operation 323074 "data"
+	preserve_cpp_body_indent const public explicit_return_type "QVariant"
+	nparams 2
+	  param in name "index" explicit_type "QModelIndex"
+	  param in name "role" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 323074
+      end
+
+      operation 323202 "headerData"
+	preserve_cpp_body_indent const public explicit_return_type "QVariant"
+	nparams 3
+	  param in name "section" explicit_type "int"
+	  param in name "orientation" explicit_type "Qt::Orientation"
+	  param in name "role" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${v0}, ${t1} ${p1}${v1}, ${t2} ${p2}${v2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}${)}${const}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 323202
+      end
+
+      operation 323330 "getIcon"
+	preserve_cpp_body_indent const public explicit_return_type "QVariant"
+	nparams 1
+	  param inout name "node" explicit_type "ProjectNode"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 323330
+      end
+
+      operation 323458 "nodeFromIndex"
+	preserve_cpp_body_indent const private explicit_return_type "ProjectNode"
+	nparams 1
+	  param in name "index" explicit_type "QModelIndex"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 323458
+      end
+
+      operation 323586 "getDisplayRole"
+	preserve_cpp_body_indent const private explicit_return_type "QVariant"
+	nparams 2
+	  param in name "index" explicit_type "QModelIndex"
+	  param inout name "node" explicit_type "ProjectNode"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, ${t1} * ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, ${t1} * ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 323586
+      end
+
+      operation 323714 "getTooltipRole"
+	preserve_cpp_body_indent const private explicit_return_type "QVariant"
+	nparams 1
+	  param inout name "node" explicit_type "ProjectNode"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 323714
+      end
+    end
+
+    class 333442 "ProjectParser"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 333442
+      operation 324098 "parse"
+	preserve_cpp_body_indent public explicit_return_type "ProjectNode"
+	nparams 1
+	  param in name "fileName" explicit_type "QString"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "//#include <memory>   // std::auto_ptr
+//#include <project.hxx>
+
+${inline}${type} * ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324098
+      end
+
+      operation 324226 "parseOrExpression"
+	preserve_cpp_body_indent private explicit_return_type "ProjectNode"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324226
+      end
+
+      operation 324354 "parseAndExpression"
+	preserve_cpp_body_indent private explicit_return_type "ProjectNode"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324354
+      end
+
+      operation 324482 "parseNotExpression"
+	preserve_cpp_body_indent private explicit_return_type "ProjectNode"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324482
+      end
+
+      operation 324610 "parseAtom"
+	preserve_cpp_body_indent private explicit_return_type "ProjectNode"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324610
+      end
+
+      operation 324738 "parseIdentifier"
+	preserve_cpp_body_indent private explicit_return_type "ProjectNode"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324738
+      end
+
+      operation 324866 "addChild"
+	preserve_cpp_body_indent private explicit_return_type "void"
+	nparams 2
+	  param inout name "parent" explicit_type "ProjectNode"
+	  param inout name "child" explicit_type "ProjectNode"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}, ${t1} * ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}, ${t1} * ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324866
+      end
+
+      operation 324994 "addToken"
+	preserve_cpp_body_indent private explicit_return_type "void"
+	nparams 3
+	  param inout name "parent" explicit_type "ProjectNode"
+	  param in name "str" explicit_type "QString"
+	  param in name "type" explicit_type "Type"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}, const ${t1} & ${p1}${v1}, ${t2} ${p2}${v2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}, const ${t1} & ${p1}, ${t2} ${p2}${)}${const}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 324994
+      end
+
+      operation 325122 "matchToken"
+	preserve_cpp_body_indent const private explicit_return_type "bool"
+	nparams 1
+	  param in name "str" explicit_type "QString"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325122
+      end
+
+      attribute 248962 "in"
+	private explicit_type "QString"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 248962
+      end
+
+      attribute 249090 "pos"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 249090
+      end
+    end
+
+    class 333570 "project_type"
+      visibility package stereotype "typedef" explicit_base_type "::std::auto_ptr< ::project >"
+      cpp_decl "${comment}typedef ${type} ${name};
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 333570
+    end
+
+    class 333698 "ProjectProcessor"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 333698
+      operation 325250 "ProjectProcessor"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 1
+	  param in name "tmplProject" type class_ref 333570 // project_type
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${v0}${)}${volatile}${throw};
+"
+	cpp_def "// Todo: implement a project manager
+
+${inline}${class}::${name}${(}const ${t0} & ${p0}${)}
+: subcount(0), tmplProject(tmplProject)
+${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325250
+      end
+
+      operation 325378 "~ProjectProcessor"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325378
+      end
+
+      operation 325506 "run"
+	preserve_cpp_body_indent public explicit_return_type "ProjectNode"
+	nparams 1
+	  param inout name "root" explicit_type "ProjectNode"
+	    defaultvalue "NULL"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325506
+      end
+
+      operation 325634 "test"
+	class_operation preserve_cpp_body_indent public explicit_return_type "ProjectNode"
+	nparams 1
+	  param inout name "root" explicit_type "ProjectNode"
+	    defaultvalue "NULL"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} * ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} * ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325634
+      end
+
+      operation 325762 "processFile"
+	preserve_cpp_body_indent private explicit_return_type "void"
+	nparams 3
+	  param in name "files" explicit_type "folderType::file_sequence"
+	  param inout name "parrent" explicit_type "ProjectNode"
+	  param in name "level" explicit_type "int"
+	    defaultvalue "0 "
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, ${t1} * ${p1}${v1}, ${t2} ${p2}${v2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, ${t1} * ${p1}, ${t2} ${p2}${)}${const}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325762
+	comment "void ProcessFile( project::file_sequence &files );
+void ProcessFile( const folderType::file_sequence &files, const folderType& pfolder, int level = 0 );"
+      end
+
+      operation 325890 "processFolder"
+	preserve_cpp_body_indent private explicit_return_type "void"
+	nparams 3
+	  param in name "folders" explicit_type "folderType::folder_sequence"
+	  param inout name "parrent" explicit_type "ProjectNode"
+	  param in name "level" explicit_type "int"
+	    defaultvalue "0 "
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, ${t1} * ${p1}${v1}, ${t2} ${p2}${v2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, ${t1} * ${p1}, ${t2} ${p2}${)}${const}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 325890
+	comment "void ProcessFolder( project::folder_sequence &folders );"
+      end
+
+      operation 326018 "indent"
+	preserve_cpp_body_indent private explicit_return_type "void"
+	nparams 1
+	  param in name "level" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 326018
+      end
+
+      operation 326146 "addChild"
+	class_operation preserve_cpp_body_indent private explicit_return_type "void"
+	nparams 2
+	  param inout name "parent" explicit_type "ProjectNode"
+	  param inout name "child" explicit_type "ProjectNode"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}, ${t1} * ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}, ${t1} * ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 326146
+      end
+
+      attribute 249218 "subcount"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 249218
+      end
+
+      classrelation 264450 // tmplProject (<unidirectional association>)
+	relation 264450 --->
+	  oid 264450
+	  a role_name "tmplProject" const_relation private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} & ${name}${value};
+"
+	    classrelation_ref 264450 // tmplProject (<unidirectional association>)
+	  b parent class_ref 333570 // project_type
+	oid 264450
+      end
+    end
+  end
+
+  deploymentview 206466 "Project"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    oid 206466
+    artifact 260226 "ProjectModel"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+#include \"ProjectParser.h\"
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 332802 // ProjectModel
+      end
+      oid 260226
+    end
+
+    artifact 260482 "ProjectParser"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+#include <QtCore>
+${includes}
+#include \"ProjectNode.h\"
+#include \"ProjectProcessor.h\"
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 333442 // ProjectParser
+      end
+      oid 260482
+    end
+
+    artifact 260610 "ProjectProcessor"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+${includes}
+#include <project.hxx>
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+#include <QList>
+#include <QString>
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 333570 // project_type
+	class_ref 333698 // ProjectProcessor
+      end
+      oid 260610
+    end
+  end
+end

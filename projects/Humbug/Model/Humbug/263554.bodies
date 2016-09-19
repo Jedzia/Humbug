@@ -1,0 +1,30 @@
+class logstream_base
+!!!461698.cpp!!!	logstream_base(in logger1 : LoggerPtr, in level1 : LevelPtr)
+enabled = logger->isEnabledFor(level);
+!!!462466.cpp!!!	isEnabled() : bool
+return enabled;
+!!!462594.cpp!!!	set_stream_state(in dest : std::ios_base, in dstchar : int) : bool
+std::ios_base::fmtflags setval = initset.flags();
+std::ios_base::fmtflags clrval = initclear.flags();
+std::ios_base::fmtflags mask = setval ^ (~clrval);
+dest.setf(clrval, mask);
+if (initset.precision() == initclear.precision()) {
+    dest.precision(initset.precision());
+}
+if (initset.width() == initclear.width()) {
+    dest.width(initset.width());
+}
+dstchar = fillchar;
+return fillset;
+!!!305538.cpp!!!	setLocation(inout newlocation : LocationInfo) : void
+if (LOGGER_UNLIKELY(enabled)) {
+    location = newlocation;
+}
+!!!462722.cpp!!!	end_message() : void
+if (isEnabled()) {
+    log(logger, level, location);
+}
+erase();
+!!!305282.cpp!!!	endmsg(in stream : logstream_base) : logstream_base
+stream.end_message();
+return stream;

@@ -1,0 +1,1750 @@
+format 76
+"Behavioral" // Templates::DesignPatterns::Behavioral
+  revision 6
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "Templates/DesignPatterns"
+  cpp_src_dir "Templates/DesignPatterns"
+  cpp_namespace "templates::designpatterns"
+  classview 265730 "Command"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 278402 // Command
+    classdiagram 154626 "Command"
+      draw_all_relations yes hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      comment "See 
+http://en.wikipedia.org/wiki/Command_pattern 
+or
+http://de.wikipedia.org/wiki/Kommando_%28Entwurfsmuster%29
+or
+http://www.philipphauer.de/study/se/design-pattern/command.php"
+      size A4
+    end
+
+    class 421250 "ToolbarButton"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! The Invoker."
+      classrelation 141698 // m_clickedCommand (<directional aggregation>)
+	relation 141698 o-->
+	  a role_name "m_clickedCommand" multiplicity "1" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} * ${name}${value};
+"
+	    classrelation_ref 141698 // m_clickedCommand (<directional aggregation>)
+	  b parent class_ref 421378 // DocumentCommand
+      end
+
+      operation 399106 "ToolbarButton"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "clickedCommand" type class_ref 421378 // DocumentCommand
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} * ${p0}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} * ${p0}${)}${volatile}${throw} 
+: m_clickedCommand( clickedCommand ) {
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 399234 "clicked"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! Is executed, when the ToolbarButton is pressed."
+      end
+    end
+
+    class 421378 "DocumentCommand"
+      abstract visibility package stereotype "interface"
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl "${comment}interface ${name} {
+${members}}
+"
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${local}interface ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      comment "! The Abstract Command.
+/ Or interface to the execute command."
+      operation 398210 "execute"
+	abstract cpp_virtual public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+      end
+
+      operation 406530 "~DocumentCommand"
+	cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 421506 "OpenCommand"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! A Concrete Command."
+      classrelation 142082 // <generalisation>
+	relation 141954 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 142082 // <generalisation>
+	  b parent class_ref 421378 // DocumentCommand
+      end
+
+      operation 398338 "execute"
+	cpp_virtual public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      attribute 306690 "state"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      classrelation 143234 // doc (<directional composition>)
+	relation 142850 *-->
+	  a role_name "doc" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type}& ${name}${value};
+"
+	    classrelation_ref 143234 // doc (<directional composition>)
+	  b parent class_ref 421634 // Document
+      end
+
+      operation 399490 "OpenCommand"
+	public explicit_return_type ""
+	nparams 1
+	  param inout name "document" type class_ref 421634 // Document
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} & ${p0}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} & ${p0}${)}${volatile}${throw}
+:doc(document) {
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 422018 "CloseAllCommand"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! This one closes all documents,
+/ Therefore it needs a reference to the client."
+      classrelation 142850 // <generalisation>
+	relation 142466 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 142850 // <generalisation>
+	  b parent class_ref 421378 // DocumentCommand
+      end
+
+      operation 398594 "execute"
+	cpp_virtual public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      attribute 306818 "state"
+	private explicit_type "byte"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 399618 "CloseAllCommand"
+	public explicit_return_type ""
+	nparams 1
+	  param inout name "theClient" type class_ref 421890 // Client
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} * ${p0}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} * ${p0}${)}${volatile}${throw} 
+: client(theClient) {
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      classrelation 143490 // client (<directional aggregation>)
+	relation 143106 o-->
+	  a role_name "client" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} * ${name}${value};
+"
+	    classrelation_ref 143490 // client (<directional aggregation>)
+	  b parent class_ref 421890 // Client
+      end
+    end
+
+    class 422146 "SaveCommand"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 142978 // <generalisation>
+	relation 142594 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 142978 // <generalisation>
+	  b parent class_ref 421378 // DocumentCommand
+      end
+
+      operation 398722 "execute"
+	cpp_virtual public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      attribute 306946 "state"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 399746 "SaveCommand"
+	public explicit_return_type ""
+	nparams 1
+	  param inout name "document" type class_ref 421634 // Document
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} & ${p0}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} & ${p0}${)}${volatile}${throw} 
+  : doc(document) {
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      classrelation 143618 // doc (<directional composition>)
+	relation 143234 *-->
+	  a role_name "doc" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type}& ${name}${value};
+"
+	    classrelation_ref 143618 // doc (<directional composition>)
+	  b parent class_ref 421634 // Document
+      end
+    end
+
+    class 421634 "Document"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! The Receiver."
+      operation 398466 "open"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! An Action"
+      end
+
+      operation 398978 "close"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! An Action"
+      end
+
+      operation 398850 "save"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "filename" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! An Action"
+      end
+    end
+
+    class 421890 "Client"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 142722 // <dependency>
+	relation 142338 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 142722 // <dependency>
+	  b parent class_ref 421506 // OpenCommand
+      end
+
+      classrelation 143106 // doc (<directional aggregation>)
+	relation 142722 o-->
+	  a role_name "doc" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} * ${name}${value};
+"
+	    classrelation_ref 143106 // doc (<directional aggregation>)
+	  b parent class_ref 421634 // Document
+      end
+
+      operation 399362 "main"
+	public explicit_return_type "int"
+	nparams 2
+	  param in name "argc" explicit_type "int"
+	  param in name "argv" explicit_type "char"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}, ${t1} ** ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ** ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! Main execution method.
+/ Set up the commands and invoker."
+      end
+
+      classrelation 143362 // <dependency>
+	relation 142978 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 143362 // <dependency>
+	  b parent class_ref 422018 // CloseAllCommand
+      end
+
+      operation 399874 "closeAll"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      classrelation 150146 // <dependency>
+	relation 149762 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 150146 // <dependency>
+	  b parent class_ref 422146 // SaveCommand
+      end
+    end
+  end
+
+  deploymentview 278402 "Command"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 327042 "Command"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+class DocumentCommand;
+class ToolbarButton;
+class SaveCommand;
+class OpenCommand;
+class Document;
+class Client;
+
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 421378 // DocumentCommand
+	class_ref 421250 // ToolbarButton
+	class_ref 421506 // OpenCommand
+	class_ref 422018 // CloseAllCommand
+	class_ref 422146 // SaveCommand
+	class_ref 421634 // Document
+	class_ref 421890 // Client
+      end
+    end
+  end
+
+  classview 266114 "Strategy pattern"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 271874 // Strategy pattern
+    comment "In computer programming, the strategy pattern (also known as the policy pattern) is a particular software design pattern, 
+whereby algorithms can be selected at runtime. Formally speaking, the strategy pattern defines a family of algorithms, 
+encapsulates each one, and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it.[1]
+
+For instance, a class that performs validation on incoming data may use a strategy pattern to select a validation algorithm 
+based on the type of data, the source of the data, user choice, and/or other discriminating factors. These factors are not 
+known for each case until run-time, and may require radically different validation to be performed. The validation strategies, 
+encapsulated separately from the validating object, may be used by other validating objects in different areas of the system
+ (or even different systems) without code duplication.
+
+The essential requirement in the programming language is the ability to store a reference to some code in a data structure and retrieve it. This can be achieved by mechanisms such as the native function pointer, the first-class function, classes or class instances in object-oriented programming languages, or accessing the language implementation's internal storage of code via reflection."
+    classdiagram 193922 "Strategy pattern"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      comment "http://en.wikipedia.org/wiki/Strategy_pattern
+http://www.cppbook.com/index.php?title=Design_pattern_template_method"
+      size A4
+    end
+
+    class 475522 "Context"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 484994 "Context"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "pStrategy" type class_ref 475650 // Strategy
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} * ${p0}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} * ${p0}${)}${throw} 
+: mpStrategy(${p0}){
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 485250 "executeStrategy"
+	public explicit_return_type "int"
+	nparams 2
+	  param in name "a" explicit_type "int"
+	  param in name "b" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${v0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 505346 "setStrategy"
+	force_body_gen public explicit_return_type "void"
+	nparams 1
+	  param in name "value" type class_ref 475650 // Strategy
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  mpStrategy = ${p0};
+}
+"
+	cpp_name_spec "setStrategy"
+	
+	java_name_spec "set${Name}"
+	
+	php_name_spec "set${Name}"
+	
+	python_name_spec "set${Name}"
+	
+	idl_name_spec "set_${name}"
+	set_of_relation classrelation_ref 199938 // mpStrategy (<directional aggregation>)
+      end
+
+      classrelation 199938 // mpStrategy (<directional aggregation>)
+	relation 199298 o-->
+	  a role_name "mpStrategy" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} * ${name}${value};
+"
+	    classrelation_ref 199938 // mpStrategy (<directional aggregation>)
+	  b parent class_ref 475650 // Strategy
+	set_oper operation_ref 505346 // setStrategy
+      end
+    end
+
+    class 475650 "Strategy"
+      abstract visibility package stereotype "interface"
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl "${comment}interface ${name} {
+${members}}
+"
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${local}interface ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      comment "The context class uses this to call the concrete strategy."
+      operation 485122 "execute"
+	abstract cpp_virtual public explicit_return_type "int"
+	nparams 2
+	  param in name "a" explicit_type "int"
+	  param in name "b" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 482178 "ConcreteStrategyAdd"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! Implements the algorithm using the strategy interface."
+      classrelation 206466 // <realization>
+	relation 205826 -_-|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 206466 // <realization>
+	  b parent class_ref 475650 // Strategy
+      end
+
+      operation 498434 "execute"
+	cpp_virtual public explicit_return_type "int"
+	nparams 2
+	  param in name "a" explicit_type "int"
+	  param in name "b" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 488706 "ConcreteStrategySubtract"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! Implements the algorithm using the strategy interface."
+      classrelation 212994 // <realization>
+	relation 212354 -_-|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 212994 // <realization>
+	  b parent class_ref 475650 // Strategy
+      end
+
+      operation 504962 "execute"
+	cpp_virtual public explicit_return_type "int"
+	nparams 2
+	  param in name "a" explicit_type "int"
+	  param in name "b" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 488834 "ConcreteStrategyMultiply"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! Implements the algorithm using the strategy interface."
+      classrelation 213122 // <realization>
+	relation 212482 -_-|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 213122 // <realization>
+	  b parent class_ref 475650 // Strategy
+      end
+
+      operation 505090 "execute"
+	cpp_virtual public explicit_return_type "int"
+	nparams 2
+	  param in name "a" explicit_type "int"
+	  param in name "b" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 488962 "StrategyExample"
+      visibility package stereotype "actor"
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "The client."
+      classrelation 213762 // <dependency>
+	relation 212994 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 213762 // <dependency>
+	  b parent class_ref 475522 // Context
+      end
+
+      classrelation 213890 // <dependency>
+	relation 213122 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 213890 // <dependency>
+	  b parent class_ref 475650 // Strategy
+      end
+
+      classrelation 214018 // <dependency>
+	relation 213250 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 214018 // <dependency>
+	  b parent class_ref 488834 // ConcreteStrategyMultiply
+      end
+
+      classrelation 214146 // <dependency>
+	relation 213378 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 214146 // <dependency>
+	  b parent class_ref 488706 // ConcreteStrategySubtract
+      end
+
+      classrelation 214274 // <dependency>
+	relation 213506 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 214274 // <dependency>
+	  b parent class_ref 482178 // ConcreteStrategyAdd
+      end
+
+      operation 505218 "main"
+	class_operation public explicit_return_type "int"
+	nparams 2
+	  param in name "argc" explicit_type "int"
+	  param in name "argv" explicit_type "char"
+	multiplicity "*"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}, ${t1} * ${p1}[]${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}, ${t1} * ${p1}[]${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+  end
+
+  deploymentview 271874 "Strategy pattern"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 359810 "Context"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 475522 // Context
+      end
+    end
+
+    artifact 359938 "Strategy"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      java_src "${comment}
+${package}
+${imports}
+${definition}"
+      php_src "<?php
+${comment}
+${namespace}
+${require_once}
+${definition}
+?>
+"
+      idl_src "#ifndef ${MODULE}_${NAME}_H
+#define ${MODULE}_${NAME}_H
+
+${comment}
+${includes}
+${module_start}
+${definition}
+${module_end}
+#endif
+"
+      associated_classes
+	class_ref 475650 // Strategy
+      end
+    end
+
+    artifact 360066 "ConcreteStrategy"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 482178 // ConcreteStrategyAdd
+	class_ref 488706 // ConcreteStrategySubtract
+	class_ref 488834 // ConcreteStrategyMultiply
+      end
+    end
+
+    artifact 366594 "StrategyExample"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 488962 // StrategyExample
+      end
+    end
+  end
+
+  classview 265986 "Visitor"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 278786 // Visitor
+    comment "The Visitor design pattern is a software design pattern which provides a a methodology for separation an algorithm from 
+an object structure it operates on. The greatest profit from this separation is the ability to add new operations to existing 
+objects without modifying these interfaces.
+
+Visitor design pattern perform the assumptions of open/closed principle [http://en.wikipedia.org/wiki/Open/closed_principle].
+
+Visitor design pattern is a very clear solution for keeping in container (like std::list, std::map or std::vector) many objects 
+inherited from the same base class, but containing their methods not defined in the base class. In such a case, call the 
+desired operation through iterating elements in the container require a cast the pointer to the correct type - which is very 
+ugly technique - (example below). "
+    classdiagram 200450 "Visitor"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition yes show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      comment "Example from http://sourcemaking.com/design_patterns/visitor/cpp/1
+
+http://www.cppbook.com/index.php?title=Design_pattern_visitor
+http://sourcemaking.com/design_patterns/visitor
+http://en.wikipedia.org/wiki/Visitor_pattern
+http://en.wikibooks.org/wiki/Computer_Science/Design_Patterns/Visitor
+"
+      size A4
+    end
+
+    class 495618 "Visitor"
+      abstract visibility package stereotype "interface"
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl "${comment}interface ${name} {
+${members}}
+"
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${local}interface ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      comment "! Visitor Interface
+/ A user object receives a pointer to another object which implements an algorithm. The first is designated the 
+/ \"element class\" and the latter the \"visitor class.\" The idea is to use a structure of element classes, each of 
+/ which has an accept() method taking a visitor object for an argument. visitor is a protocol (interface in Java) 
+/ having a visit() method for each element class. The accept() method of an element class calls back the visit() 
+/ method for its class."
+      operation 511874 "visit"
+	abstract cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "element" type class_ref 495874 // RedColor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	comment "! One of these visit() methods of a concrete visitor can be thought of as a method not of a single class, 
+/ but rather a method of a pair of classes: the concrete visitor and the particular element class. 
+/ Thus the visitor pattern simulates double dispatch in a conventional single-dispatch object-oriented 
+/ language such as Java, Smalltalk, and C++."
+      end
+
+      operation 512002 "visit"
+	abstract cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "element" type class_ref 496002 // BlueColor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	comment "! One of these visit() methods of a concrete visitor can be thought of as a method not of a single class, 
+/ but rather a method of a pair of classes: the concrete visitor and the particular element class. 
+/ Thus the visitor pattern simulates double dispatch in a conventional single-dispatch object-oriented 
+/ language such as Java, Smalltalk, and C++."
+      end
+    end
+
+    class 496130 "Color"
+      abstract visibility package stereotype "interface"
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl "${comment}${@}${visibility}interface ${name}${extends} {
+${members}}
+"
+      php_decl "${comment}interface ${name} {
+${members}}
+"
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${local}interface ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      comment "! Element"
+      operation 512642 "accept"
+	abstract cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "v" type class_ref 495618 // Visitor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	comment "! The accept() method of an element class calls back the visit() method for its class."
+      end
+    end
+
+    class 495874 "RedColor"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! A Concrete Element."
+      classrelation 220930 // <generalisation>
+	relation 220162 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 220930 // <generalisation>
+	  b parent class_ref 496130 // Color
+      end
+
+      operation 512770 "accept"
+	cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "v" type class_ref 495618 // Visitor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! The accept() method of an element class calls back the visit() method for its class."
+      end
+
+      operation 513026 "eye"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 496002 "BlueColor"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! A Concrete Element."
+      classrelation 221058 // <generalisation>
+	relation 220290 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 221058 // <generalisation>
+	  b parent class_ref 496130 // Color
+      end
+
+      operation 512898 "accept"
+	cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "v" type class_ref 495618 // Visitor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! The accept() method of an element class calls back the visit() method for its class.
+/ The visitor pattern also specifies how iteration occurs over the object structure. 
+/ In the simplest version, where each algorithm needs to iterate in the same way, the accept() 
+/ method of a container element, in addition to calling back the visit() method of the visitor, also 
+/ passes the visitor object to the accept() method of all its constituent child elements."
+      end
+
+      operation 513154 "sky"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 495746 "CountVisitor"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! A Concrete Visitor.
+/ Separate concrete visitor classes can then be written to perform some particular operations, 
+/ by implementing these operations in their respective visit() methods."
+      classrelation 220802 // <realization>
+	relation 220034 -_-|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 220802 // <realization>
+	  b parent class_ref 495618 // Visitor
+      end
+
+      operation 519810 "CountVisitor"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 512130 "visit"
+	cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "element" type class_ref 495874 // RedColor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! One of these visit() methods of a concrete visitor can be thought of as a method not of a single class, 
+/ but rather a method of a pair of classes: the concrete visitor and the particular element class. 
+/ Thus the visitor pattern simulates double dispatch in a conventional single-dispatch object-oriented 
+/ language such as Java, Smalltalk, and C++."
+      end
+
+      operation 512258 "visit"
+	cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "element" type class_ref 496002 // BlueColor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! One of these visit() methods of a concrete visitor can be thought of as a method not of a single class, 
+/ but rather a method of a pair of classes: the concrete visitor and the particular element class. 
+/ Thus the visitor pattern simulates double dispatch in a conventional single-dispatch object-oriented 
+/ language such as Java, Smalltalk, and C++."
+      end
+
+      attribute 351746 "m_num_red"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      attribute 351874 "m_num_blu"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+      end
+
+      operation 519938 "report"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 496258 "CallVisitor"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "! A Concrete Visitor.
+/ Separate concrete visitor classes can then be written to perform some particular operations, 
+/ by implementing these operations in their respective visit() methods."
+      classrelation 221186 // <realization>
+	relation 220418 -_-|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 221186 // <realization>
+	  b parent class_ref 495618 // Visitor
+      end
+
+      operation 512386 "visit"
+	cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "element" type class_ref 495874 // RedColor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! One of these visit() methods of a concrete visitor can be thought of as a method not of a single class, 
+/ but rather a method of a pair of classes: the concrete visitor and the particular element class. 
+/ Thus the visitor pattern simulates double dispatch in a conventional single-dispatch object-oriented 
+/ language such as Java, Smalltalk, and C++."
+      end
+
+      operation 512514 "visit"
+	cpp_virtual public explicit_return_type "void"
+	nparams 1
+	  param in name "element" type class_ref 496002 // BlueColor
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	comment "! One of these visit() methods of a concrete visitor can be thought of as a method not of a single class, 
+/ but rather a method of a pair of classes: the concrete visitor and the particular element class. 
+/ Thus the visitor pattern simulates double dispatch in a conventional single-dispatch object-oriented 
+/ language such as Java, Smalltalk, and C++."
+      end
+    end
+
+    class 496386 "VisitorClient"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      comment "Calling Client."
+      classrelation 227714 // <dependency>
+	relation 226946 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 227714 // <dependency>
+	  b parent class_ref 495746 // CountVisitor
+      end
+
+      classrelation 227842 // <dependency>
+	relation 227074 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 227842 // <dependency>
+	  b parent class_ref 496258 // CallVisitor
+      end
+
+      classrelation 227970 // <dependency>
+	relation 227202 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 227970 // <dependency>
+	  b parent class_ref 496002 // BlueColor
+      end
+
+      classrelation 228098 // <dependency>
+	relation 227330 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 228098 // <dependency>
+	  b parent class_ref 495874 // RedColor
+      end
+
+      operation 513282 "main"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+  end
+
+  deploymentview 278786 "Visitor"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 373250 "Visitor"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      java_src "${comment}
+${package}
+${imports}
+${definition}"
+      php_src "<?php
+${comment}
+${namespace}
+${require_once}
+${definition}
+?>
+"
+      idl_src "#ifndef ${MODULE}_${NAME}_H
+#define ${MODULE}_${NAME}_H
+
+${comment}
+${includes}
+${module_start}
+${definition}
+${module_end}
+#endif
+"
+      associated_classes
+	class_ref 495618 // Visitor
+      end
+    end
+
+    artifact 373762 "Color"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      java_src "${comment}
+${package}
+${imports}
+${definition}"
+      php_src "<?php
+${comment}
+${namespace}
+${require_once}
+${definition}
+?>
+"
+      idl_src "#ifndef ${MODULE}_${NAME}_H
+#define ${MODULE}_${NAME}_H
+
+${comment}
+${includes}
+${module_start}
+${definition}
+${module_end}
+#endif
+"
+      associated_classes
+	class_ref 496130 // Color
+      end
+    end
+
+    artifact 373506 "RedColor"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 495874 // RedColor
+      end
+    end
+
+    artifact 373634 "BlueColor"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 496002 // BlueColor
+      end
+    end
+
+    artifact 373378 "CountVisitor"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 495746 // CountVisitor
+      end
+    end
+
+    artifact 373890 "CallVisitor"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 496258 // CallVisitor
+      end
+    end
+
+    artifact 374018 "VisitorClient"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <build/cmake/include/debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 496386 // VisitorClient
+      end
+    end
+  end
+end

@@ -1,0 +1,87 @@
+class Logger
+!!!334338.cpp!!!	Logger(in p : Pool, in name1 : LogString)
+//synchronized sync(mutex);
+name = name1;
+additive = true;
+!!!461186.cpp!!!	getRootLogger() : LoggerPtr
+return LogManager::getRootLogger();
+//static LoggerPtr logger(new Logger);
+//return logger;
+!!!327426.cpp!!!	getEffectiveLevel() : LevelPtr
+          for(const Logger * l = this; l != 0; l=l->parent.get())
+          {
+                  if(l->level != 0)
+                  {
+                          return l->level;
+                  }
+          }
+  
+          //throw NullPointerException(LOGGER_STR("No level specified for logger or ancestors."));
+          throw LOGGER_STR("No level specified for logger or ancestors.");
+#if LOGGER_RETURN_AFTER_THROW
+          return this->level;
+#endif
+!!!461314.cpp!!!	isDebugEnabled() : bool
+if(repository == 0 || repository->isDisabled(Level::DEBUG_INT))
+{
+        return false;
+}
+
+return getEffectiveLevel()->toInt() <= Level::DEBUG_INT;
+// return true;
+!!!327554.cpp!!!	debug(in msg : string, in location : LocationInfo) : void
+if (isDebugEnabled()) {
+  forcedLog(log4csz::Level::getDebug(), msg, location);
+}
+!!!461442.cpp!!!	debug(in msg : string) : void
+if (isDebugEnabled()) {
+  forcedLog(log4csz::Level::getDebug(), msg);
+}
+!!!461570.cpp!!!	log(in level1 : LevelPtr, in message : string, in location : LocationInfo) : void
+if (isEnabledFor(level1)) {
+  forcedLog(level1, message, location);
+}
+!!!304642.cpp!!!	isEnabledFor(in level1 : LevelPtr) : bool
+if(repository == 0 || repository->isDisabled(level1->toInt()))
+{
+        return false;
+}
+
+return level1->isGreaterOrEqual(getEffectiveLevel());
+return true;
+!!!304898.cpp!!!	forcedLog(in level1 : LevelPtr, in message : string, in location : LocationInfo) : void
+/* 
+Hier werden normalerweise die Appender aufgerufen. Diese loggen dann in die Console
+oder in ein File. Die Appender hängt normalerweise der LogManager ein.
+In der Hierarchy wird der RootLogger generiert. 
+Über 
+        LogManager::getLoggerRepository()->setThreshold(
+            Level::getDebug());
+kann das Repository abgefragt werden. Das ist verantwortlich für Thresholds.
+Eigentlich wird das ja von einem Konfigurationsfile in log4cxx gesteuert aber hier
+hab ich das weggelassen. Ist halt nicht komplett. Erweiterungen je nach Bedarf:)
+*/
+
+/*Pool p;
+LOG4CXX_DECODE_CHAR(msg, message);
+LoggingEventPtr event(new LoggingEvent(name, level1, msg, location));
+callAppenders(event, p);*/
+  
+std::cout << "[" << level1->toString() << "|" 
+    // << location.getFileName() << "(" << location.getLineNumber() << ") "
+    << location.getClassName() << "::"
+    << location.getMethodName()
+    <<  "]> " << message << std::endl;
+!!!305026.cpp!!!	forcedLog(in level1 : LevelPtr, in message : string) : void
+/*Pool p;
+LOG4CXX_DECODE_CHAR(msg, message);
+LoggingEventPtr event(new LoggingEvent(name, level1, msg,
+      LocationInfo::getLocationUnavailable()));
+callAppenders(event, p);
+*/
+std::cout << "[" << level1->toString() <<
+      "]> " << message << std::endl;
+!!!344066.cpp!!!	setHierarchy(in repository1 : LoggerRepository [*]) : void
+this->repository = repository1;
+!!!344322.cpp!!!	setLevel(in level1 : LevelPtr) : void
+this->level = level1;

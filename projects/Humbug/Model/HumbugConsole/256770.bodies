@@ -1,0 +1,262 @@
+class CrZipFile
+!!!207490.cpp!!!	readData(inout data : char, in maxSize : int64_t) : int64_t
+  p->setZipError(UNZ_OK);
+  int64_t bytesRead=unzReadCurrentFile(p->zip->getUnzFile(), data, (unsigned)maxSize);
+  if(bytesRead<0) p->setZipError((int)bytesRead);
+  return bytesRead;
+!!!207618.cpp!!!	writeData(in data : char, in maxSize : int64_t) : int64_t
+  p->setZipError(ZIP_OK);
+  p->setZipError(zipWriteInFileInZip(p->zip->getZipFile(), data, (unsigned int)maxSize));
+  if(p->zipError!=ZIP_OK) return -1;
+  else {
+    p->writePos+=maxSize;
+    return maxSize;
+  }
+!!!208386.cpp!!!	~CrZipFile()
+  if (isOpen())
+    close();
+  delete p;
+!!!208514.cpp!!!	getZipName() : string
+  return p->zip==NULL ? "" : p->zip->getZipName();
+!!!208642.cpp!!!	getZip() : CrZip
+return static_cast<CrZip *>(p->zip);
+!!!208770.cpp!!!	getFileName() : string
+  return p->fileName;
+!!!208898.cpp!!!	getCaseSensitivity() : CrZipBase::CaseSensitivity
+  return p->caseSensitivity;
+!!!209026.cpp!!!	getActualFileName() : string
+  p->setZipError(UNZ_OK);
+  if (p->zip == NULL || (openMode() & WriteOnly))
+    return "";
+  std::string name=p->zip->getCurrentFileName();
+  if(name.empty())
+    p->setZipError(p->zip->getZipError());
+  return name;
+!!!209154.cpp!!!	setZipName(in zipName : string) : void
+  if(isOpen()) {
+    qWarning("CrZipFile::setZipName(): file is already open - can not set ZIP name");
+    return;
+  }
+  if(p->zip!=NULL && p->internal)
+    delete p->zip;
+  p->zip=new CrZip(zipName);
+  p->internal=true;
+!!!209282.cpp!!!	isRaw() : bool
+  return p->raw;
+!!!209410.cpp!!!	setZip(inout zip : CrZip) : void
+  if(isOpen()) {
+    qWarning("CrZipFile::setZip(): file is already open - can not set ZIP");
+    return;
+  }
+  if(p->zip!=NULL && p->internal)
+    delete p->zip;
+  p->zip=zip;
+  p->fileName="";
+  p->internal=false;
+!!!209538.cpp!!!	setFileName(in fileName : string, in cs : CrZipBase::CaseSensitivity) : void
+  if(p->zip==NULL) {
+    qWarning("CrZipFile::setFileName(): call setZipName() first");
+    return;
+
+  }
+  if(!p->internal) {
+    qWarning("CrZipFile::setFileName(): should not be used when not using internal CrZip");
+    return;
+  }
+  if(isOpen()) {
+    qWarning("CrZipFile::setFileName(): can not set file name for already opened file");
+    return;
+  }
+  p->fileName=fileName;
+  p->caseSensitivity=cs;
+!!!209666.cpp!!!	open(in mode : OpenMode) : bool
+  return open(mode, NULL);
+!!!209922.cpp!!!	open(in mode : OpenMode, inout method : int, inout level : int, in raw : bool, in password : char = NULL) : bool
+  p->resetZipError();
+  if(isOpen()) {
+    qWarning("CrZipFile::open(): already opened");
+    return false;
+  }
+  if(mode&Unbuffered) {
+    qWarning("CrZipFile::open(): Unbuffered mode is not supported");
+    return false;
+  }
+  if((mode&ReadOnly)&&!(mode&WriteOnly)) {
+    if(p->internal) {
+      if(!p->zip->open(CrZipBase::mdUnzip)) {
+        p->setZipError(p->zip->getZipError());
+        return false;
+      }
+      if(!p->zip->setCurrentFile(p->fileName, p->caseSensitivity)) {
+        p->setZipError(p->zip->getZipError());
+        p->zip->close();
+        return false;
+      }
+    } else {
+      if(p->zip==NULL) {
+        qWarning("CrZipFile::open(): zip is NULL");
+        return false;
+      }
+      if(p->zip->getMode()!=CrZipBase::mdUnzip) {
+        qWarning("CrZipFile::open(): file open mode %d incompatible with ZIP open mode %d",
+            (int)mode, (int)p->zip->getMode());
+        return false;
+      }
+      if(!p->zip->hasCurrentFile()) {
+        qWarning("CrZipFile::open(): zip does not have current file");
+        return false;
+      }
+    }
+    p->setZipError(unzOpenCurrentFile3(p->zip->getUnzFile(), method, level, (int)raw, password));
+    if(p->zipError==UNZ_OK) {
+      setOpenMode(mode);
+      p->raw=raw;
+      return true;
+    } else
+      return false;
+  }
+  qWarning("CrZipFile::open(): open mode %d not supported by this function", (int)mode);
+  return false;
+!!!210050.cpp!!!	open(in mode : OpenMode, in info : CrZipNewInfo, in password : char = NULL, in crc : uint32_t = 0, in method : int = Z_DEFLATED, in level : int = Z_DEFAULT_COMPRESSION, in raw : bool = false, in windowBits : int = -MAX_WBITS, in memLevel : int = DEF_MEM_LEVEL, in strategy : int = Z_DEFAULT_STRATEGY) : bool
+  zip_fileinfo info_z;
+  p->resetZipError();
+  if(isOpen()) {
+    qWarning("QuaZipFile::open(): already opened");
+    return false;
+  }
+  if((mode&WriteOnly)&&!(mode&ReadOnly)) {
+    if(p->internal) {
+      qWarning("QuaZipFile::open(): write mode is incompatible with internal QuaZip approach");
+      return false;
+    }
+    if(p->zip==NULL) {
+      qWarning("QuaZipFile::open(): zip is NULL");
+      return false;
+    }
+    if(p->zip->getMode()!=CrZipBase::mdCreate&&p->zip->getMode()!=CrZipBase::mdAppend&&p->zip->getMode()!=CrZipBase::mdAdd) {
+      qWarning("QuaZipFile::open(): file open mode %d incompatible with ZIP open mode %d",
+          (int)mode, (int)p->zip->getMode());
+      return false;
+    }
+//     info_z.tmz_date.tm_year=info.dateTime.date().year();
+//     info_z.tmz_date.tm_mon=info.dateTime.date().month() - 1;
+//     info_z.tmz_date.tm_mday=info.dateTime.date().day();
+//     info_z.tmz_date.tm_hour=info.dateTime.time().hour();
+//     info_z.tmz_date.tm_min=info.dateTime.time().minute();
+//     info_z.tmz_date.tm_sec=info.dateTime.time().second();
+    info_z.tmz_date.tm_year=info.dateTime.tm_year;
+    info_z.tmz_date.tm_mon=info.dateTime.tm_mon;
+    info_z.tmz_date.tm_mday=info.dateTime.tm_mday;
+    info_z.tmz_date.tm_hour=info.dateTime.tm_hour;
+    info_z.tmz_date.tm_min=info.dateTime.tm_min;
+    info_z.tmz_date.tm_sec=info.dateTime.tm_sec;
+
+    info_z.dosDate = 0;
+    info_z.internal_fa=(uLong)info.internalAttr;
+    info_z.external_fa=(uLong)info.externalAttr;
+    p->setZipError(zipOpenNewFileInZip3(p->zip->getZipFile(),
+          info.name.c_str(), &info_z,
+          info.extraLocal.data(), info.extraLocal.size(),
+          info.extraGlobal.data(), info.extraGlobal.size(),
+          info.comment.c_str(),
+          method, level, (int)raw,
+          windowBits, memLevel, strategy,
+          password, (uLong)crc));
+    if(p->zipError==UNZ_OK) {
+      p->writePos=0;
+      setOpenMode(mode);
+      p->raw=raw;
+      if(raw) {
+        p->crc=crc;
+        p->uncompressedSize=info.uncompressedSize;
+      }
+      return true;
+    } else
+      return false;
+  }
+  qWarning("QuaZipFile::open(): open mode %d not supported by this function", (int)mode);
+  return false;
+!!!210178.cpp!!!	isSequential() : bool
+  return true;
+!!!210306.cpp!!!	pos() : int64_t
+  if(p->zip==NULL) {
+    qWarning("CrZipFile::pos(): call setZipName() or setZip() first");
+    return -1;
+  }
+  if(!isOpen()) {
+    qWarning("CrZipFile::pos(): file is not open");
+    return -1;
+  }
+  if(openMode()&ReadOnly)
+    return unztell(p->zip->getUnzFile());
+  else
+    return p->writePos;
+!!!210434.cpp!!!	atEnd() : bool
+  if(p->zip==NULL) {
+    qWarning("CrZipFile::atEnd(): call setZipName() or setZip() first");
+    return false;
+  }
+  if(!isOpen()) {
+    qWarning("CrZipFile::atEnd(): file is not open");
+    return false;
+  }
+  if(openMode()&ReadOnly)
+    return unzeof(p->zip->getUnzFile())==1;
+  else
+    return true;
+!!!210562.cpp!!!	size() : int64_t
+  if(!isOpen()) {
+    qWarning("CrZipFile::atEnd(): file is not open");
+    return -1;
+  }
+  if(openMode()&ReadOnly)
+    return p->raw?csize():usize();
+  else
+    return p->writePos;
+!!!210690.cpp!!!	csize() : int64_t
+  unz_file_info info_z;
+  p->setZipError(UNZ_OK);
+  if(p->zip==NULL||p->zip->getMode()!=CrZipBase::mdUnzip) return -1;
+  p->setZipError(unzGetCurrentFileInfo(p->zip->getUnzFile(), &info_z, NULL, 0, NULL, 0, NULL, 0));
+  if(p->zipError!=UNZ_OK)
+    return -1;
+  return info_z.compressed_size;
+!!!210818.cpp!!!	usize() : int64_t
+  unz_file_info info_z;
+  p->setZipError(UNZ_OK);
+  if(p->zip==NULL||p->zip->getMode()!=CrZipBase::mdUnzip) return -1;
+  p->setZipError(unzGetCurrentFileInfo(p->zip->getUnzFile(), &info_z, NULL, 0, NULL, 0, NULL, 0));
+  if(p->zipError!=UNZ_OK)
+    return -1;
+  return info_z.uncompressed_size;
+!!!210946.cpp!!!	getFileInfo(inout info : CrZipFileInfo) : bool
+  if(p->zip==NULL||p->zip->getMode()!=CrZipBase::mdUnzip) return false;
+  p->zip->getCurrentFileInfo(info);
+  p->setZipError(p->zip->getZipError());
+  return p->zipError==UNZ_OK;
+!!!211074.cpp!!!	close() : void
+  p->resetZipError();
+  if(p->zip==NULL||!p->zip->isOpen()) return;
+  if(!isOpen()) {
+    qWarning("CrZipFile::close(): file isn't open");
+    return;
+  }
+  if(openMode()&ReadOnly)
+    p->setZipError(unzCloseCurrentFile(p->zip->getUnzFile()));
+  else if(openMode()&WriteOnly)
+    if(isRaw()) p->setZipError(zipCloseFileInZipRaw(p->zip->getZipFile(), p->uncompressedSize, p->crc));
+    else p->setZipError(zipCloseFileInZip(p->zip->getZipFile()));
+  else {
+    qWarning("Wrong open mode: %d", (int)openMode());
+    return;
+  }
+  if(p->zipError==UNZ_OK) {
+      // setOpenMode(QIODevice::NotOpen);
+  }
+  else return;
+  if(p->internal) {
+    p->zip->close();
+    p->setZipError(p->zip->getZipError());
+  }
+!!!211202.cpp!!!	getZipError() : int
+  return p->zipError;

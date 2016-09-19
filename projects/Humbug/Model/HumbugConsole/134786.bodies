@@ -1,0 +1,58 @@
+class TextDocument
+!!!154882.cpp!!!	TextDocument(in content : string)
+    _DEBUG_CTORDTOR("++CONSTRUCT++");
+	init();
+
+!!!155010.cpp!!!	~TextDocument()
+	_DEBUG_CTORDTOR("--DESTRUCT--");
+!!!148354.cpp!!!	init() : void
+	bool inTemplate = false;
+	int start = 0;
+	int end = 0;
+	int linenr = 1;
+	int position = 0;
+	int startposition, endposition;
+	int startlinenr, endlinenr;
+	for( unsigned int i = 0; i < content.size(); i++ ) {
+		char c = content[i];
+		position++;
+		//std::cout << "Element " << i << " is " << c << std::endl;
+		if( c == '\n')
+		{
+			// Reset on newline.
+			inTemplate = false;
+			linenr++;
+			position = 0;
+			continue;
+		}
+		if( c == '$' && !inTemplate)
+		{
+			// Template starts here.
+			start = i;
+			inTemplate = true;
+			startposition = position;
+			startlinenr = linenr;
+			continue;
+		}
+		if( c == '$' && inTemplate)
+		{
+			// Check for $$
+			if( !(start == i - 1))
+			{	
+				// Template ends here.
+				end = i;
+				endposition = position;
+				endlinenr = linenr;
+				std::string s = content.substr(start + 1, end - start - 1);
+				std::cout << "Template [" << startlinenr << "," << startposition << "] " << s << std::endl;
+				TextPosition p(s, i, startlinenr, startposition);
+				mTemplPositions.push_back( p );
+			}
+			else
+			{
+				std::cout << "Reset inTemplate at " << i << " is " << c << std::endl;
+			}
+			inTemplate = false;
+			continue;
+		}
+	}       

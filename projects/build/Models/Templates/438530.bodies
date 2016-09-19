@@ -1,0 +1,24 @@
+class Telephone_State
+!!!430466.cpp!!!	create(inout stm : Telephone) : void
+  {
+    stm._set_currentState(stm._telephone_state._idle_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone.Idle");
+#endif
+  }
+!!!431362.cpp!!!	_upper(inout stm : Telephone) : Telephone::AnyState
+  return 0;
+!!!446978.cpp!!!	_junction1(inout stm : Telephone) : void
+  if (stm.power) {
+    stm._set_currentState(stm._telephone_state._dump_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone.Dump");
+#endif
+  }
+  else {
+    stm._set_currentState(stm._telephone_state._cool_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone.Cool");
+#endif
+    stm._telephone_state._cool_state.create(stm);
+  }

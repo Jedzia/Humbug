@@ -1,0 +1,840 @@
+format 76
+"config" // Humbug::CppStructz::config
+  revision 15
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "CppStructz/config"
+  cpp_src_dir "CppStructz/config"
+  cpp_namespace "CPPSTRUCTZ_NAMESPACE::config"
+  oid 160770
+  classview 167298 "config"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 245890 // config
+    oid 167298
+    classdiagram 160770 "config"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      oid 160770
+      size A4
+    end
+
+    class 187522 "ConfigOption"
+      abstract visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 187522
+      operation 202498 "ConfigOption"
+	public explicit_return_type ""
+	nparams 2
+	  param inout name "name" explicit_type "string"
+	  param inout name "category" explicit_type "string"
+	    defaultvalue "\"\""
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}${v1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${throw}
+  : m_name(name), m_category(category) {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 202498
+      end
+
+      operation 194946 "~ConfigOption"
+	cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 194946
+      end
+
+      operation 201986 "get_m_name"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return m_name;
+}
+"
+	cpp_name_spec "name"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 167810 // m_name
+	oid 201986
+      end
+
+      operation 202242 "get_m_category"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return m_category;
+}
+"
+	cpp_name_spec "getCategory"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 167938 // m_category
+	oid 202242
+      end
+
+      operation 202114 "set_m_name"
+	force_body_gen protected explicit_return_type "void"
+	nparams 1
+	  param in name "value" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  m_name = ${p0};
+}
+"
+	cpp_name_spec "set${Name}"
+	
+	java_name_spec "set${Name}"
+	
+	php_name_spec "set${Name}"
+	
+	python_name_spec "set${Name}"
+	
+	idl_name_spec "set_${name}"
+	set_of_attribute attribute_ref 167810 // m_name
+	oid 202114
+      end
+
+      operation 202370 "set_m_category"
+	force_body_gen protected explicit_return_type "void"
+	nparams 1
+	  param in name "value" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  m_category = ${p0};
+}
+"
+	cpp_name_spec "set${Name}"
+	
+	java_name_spec "set${Name}"
+	
+	php_name_spec "set${Name}"
+	
+	python_name_spec "set${Name}"
+	
+	idl_name_spec "set_${name}"
+	set_of_attribute attribute_ref 167938 // m_category
+	oid 202370
+      end
+
+      attribute 167810 "m_name"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 201986 // get_m_name
+	set_oper operation_ref 202114 // set_m_name
+	oid 167810
+      end
+
+      attribute 167938 "m_category"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 202242 // get_m_category
+	set_oper operation_ref 202370 // set_m_category
+	oid 167938
+      end
+
+      classrelation 195586 // <generalisation>
+	relation 195586 ---|>
+	  oid 195586
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 195586 // <generalisation>
+	  b parent class_ref 220802 // noncopyable
+	oid 195586
+      end
+    end
+
+    class 194050 "ConfigBool"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 194050
+      classrelation 154626 // <generalisation>
+	relation 154626 ---|>
+	  oid 154626
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 154626 // <generalisation>
+	  b parent class_ref 187522 // ConfigOption
+	oid 154626
+      end
+
+      operation 202754 "ConfigBool"
+	public explicit_return_type ""
+	nparams 2
+	  param inout name "name" explicit_type "string"
+	  param inout name "category" explicit_type "string"
+	    defaultvalue "\"\""
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}${v1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${throw}
+  : ConfigOption(name, category){
+  ${body}}
+"
+	
+	
+	
+	
+	oid 202754
+      end
+
+      operation 201602 "~ConfigBool"
+	cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 201602
+      end
+
+      operation 201730 "getValue"
+	force_body_gen const cpp_inline public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return m_value;
+}
+"
+	cpp_name_spec "getValue"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 167682 // m_value
+	oid 201730
+      end
+
+      operation 201858 "setValue"
+	force_body_gen public explicit_return_type "void"
+	nparams 1
+	  param in name "value" explicit_type "bool"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  m_value = ${p0};
+}
+"
+	cpp_name_spec "setValue"
+	
+	java_name_spec "set${Name}"
+	
+	php_name_spec "set${Name}"
+	
+	python_name_spec "set${Name}"
+	
+	idl_name_spec "set_${name}"
+	set_of_attribute attribute_ref 167682 // m_value
+	oid 201858
+      end
+
+      attribute 167682 "m_value"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 201730 // getValue
+	set_oper operation_ref 201858 // setValue
+	oid 167682
+      end
+    end
+
+    class 194178 "ConfigOptionList"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 194178
+      class 234754 "ItemType"
+	visibility protected stereotype "typedef" base_type class_ref 187522 // ConfigOption
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 234754
+      end
+
+      class 234498 "KeyType"
+	visibility protected stereotype "typedef" explicit_base_type "std::string"
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 234498
+      end
+
+      class 234626 "ValueType"
+	visibility protected stereotype "typedef" explicit_base_type "boost::ptr_vector<ItemType>"
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 234626
+      end
+
+      class 234370 "MapType"
+	visibility protected stereotype "typedef" explicit_base_type "boost::ptr_map<KeyType, ValueType>"
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 234370
+      end
+
+      class 234882 "TemplateDictionary"
+	visibility package stereotype "typedef" explicit_base_type "std::map<KeyType, const ItemType* const>"
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 234882
+      end
+
+      operation 202882 "ConfigOptionList"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 202882
+      end
+
+      operation 203010 "~ConfigOptionList"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 203010
+      end
+
+      operation 203138 "ConfigOptionList"
+	stereotype "copy"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "source" type class_ref 194178 // ConfigOptionList
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${)}${volatile}${throw};
+"
+	
+	
+	
+	
+	oid 203138
+      end
+
+      operation 203266 "operator="
+	private return_type class_ref 194178 // ConfigOptionList
+	nparams 1
+	  param in name "source" type class_ref 194178 // ConfigOptionList
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} & ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 203266
+      end
+
+      operation 203394 "addOption"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "option" type class_ref 187522 // ConfigOption
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * const ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * const ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 203394
+      end
+
+      operation 273282 "getCategoryList"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "category" explicit_type "string"
+	  param inout name "rCategoryList" type class_ref 234882 // TemplateDictionary
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} ${p0}, ${t1} & ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} ${p0}, ${t1} & ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 273282
+      end
+
+      operation 273666 "getCategoryList"
+	cpp_inline public explicit_return_type "void"
+	nparams 2
+	  param in name "category" explicit_type "string"
+	  param inout name "rCategoryList" explicit_type "T"
+	cpp_decl "    ${comment}
+template<typename T> 
+${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} ${p0}, ${t1} & ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}
+template<typename T> 
+${inline}${type} ${class}::${name}${(}const ${t0} ${p0}, ${t1} & ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 273666
+      end
+
+      operation 273410 "operator[]"
+	public return_type class_ref 234882 // TemplateDictionary
+	nparams 1
+	  param in name "category" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 273410
+      end
+
+      operation 273538 "operator[]"
+	cpp_inline public explicit_return_type "T"
+	nparams 1
+	  param in name "category" explicit_type "string"
+	cpp_decl "    ${comment}
+template<typename T> 
+${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}
+    template<typename T> 
+${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 273538
+      end
+
+      classrelation 195458 // mCategoryDict (<directional composition>)
+	relation 195458 *-->
+	  oid 195458
+	  a role_name "mCategoryDict" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 195458 // mCategoryDict (<directional composition>)
+	  b parent class_ref 234370 // MapType
+	oid 195458
+      end
+    end
+
+    class 234114 "ConfigString"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 234114
+      classrelation 195330 // <generalisation>
+	relation 195330 ---|>
+	  oid 195330
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 195330 // <generalisation>
+	  b parent class_ref 187522 // ConfigOption
+	oid 195330
+      end
+
+      class 234242 "ValueType"
+	visibility package stereotype "typedef" explicit_base_type "string"
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 234242
+      end
+
+      operation 272514 "ConfigString"
+	public explicit_return_type ""
+	nparams 3
+	  param inout name "name" explicit_type "string"
+	  param in name "value" type class_ref 234242 // ValueType
+	  param inout name "category" explicit_type "string"
+	    defaultvalue "\"\""
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}, const ${t2} & ${p2}${v2}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}, const ${t2} & ${p2}${)}${throw}
+  : ConfigOption(name, category), mValue(value){
+  ${body}}
+"
+	
+	
+	
+	
+	oid 272514
+      end
+
+      operation 272642 "~ConfigString"
+	cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 272642
+      end
+
+      operation 272770 "get_mValue"
+	force_body_gen const cpp_inline public return_type class_ref 234242 // ValueType
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return mValue;
+}
+"
+	cpp_name_spec "getValue"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 337922 // mValue
+	oid 272770
+      end
+
+      operation 439298 "set_mValue"
+	force_body_gen public explicit_return_type "void"
+	nparams 1
+	  param in name "value" type class_ref 234242 // ValueType
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  mValue = ${p0};
+}
+"
+	cpp_name_spec "setValue"
+	
+	java_name_spec "set${Name}"
+	
+	php_name_spec "set${Name}"
+	
+	python_name_spec "set${Name}"
+	
+	idl_name_spec "set_${name}"
+	set_of_attribute attribute_ref 337922 // mValue
+	oid 439298
+      end
+
+      attribute 337922 "mValue"
+	private type class_ref 234242 // ValueType
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 272770 // get_mValue
+	set_oper operation_ref 439298 // set_mValue
+	oid 337922
+      end
+    end
+  end
+
+  deploymentview 245890 "config"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    oid 245890
+    artifact 187266 "ConfigOption"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include <CppStructz/global.h>
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 187522 // ConfigOption
+      end
+      oid 187266
+    end
+
+    artifact 193794 "ConfigBool"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include <CppStructz/global.h>
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 194050 // ConfigBool
+      end
+      oid 193794
+    end
+
+    artifact 193922 "ConfigOptionList"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include <CppStructz/global.h>
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+//
+#include <debug.h>
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 194178 // ConfigOptionList
+      end
+      oid 193922
+    end
+
+    artifact 220034 "ConfigString"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include <CppStructz/global.h>
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 234114 // ConfigString
+      end
+      oid 220034
+    end
+  end
+end

@@ -1,0 +1,29 @@
+class Active_State
+!!!431234.cpp!!!	_upper(inout stm : Telephone) : Telephone::AnyState
+  return &stm._telephone_state;
+!!!432898.cpp!!!	makeOnHook(inout stm : Telephone) : void
+  _do(stm);
+  if (_completion(stm)) return;
+  {
+    stm._set_currentState(stm._telephone_state._idle_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone.Idle");
+#endif
+  }
+!!!448258.cpp!!!	_completion(inout stm : Telephone) : bool
+  _do(stm);
+  {
+    stm._set_currentState(stm._telephone_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Telephone");
+#endif
+    stm._telephone_state._junction1(stm);
+    return (bool) 1;
+  }
+!!!448386.cpp!!!	create(inout stm : Telephone) : void
+	_completion(stm);
+!!!448514.cpp!!!	_do(inout stm : Telephone) : void
+#ifdef VERBOSE_STATE_MACHINE
+	puts("DEBUG : execute do behavior of .Telephone.Active");
+#endif
+stm.power = false;

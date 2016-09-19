@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by Venom (ICO) -->
+<Project name="Pumpernickel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///D:/E/Projects/C++/Humbug/projects/Humbug/XSD/project.xsd">
+	<File name="Scheiss.cs"/>
+	<Folder name="Zutaten" type="Standard">
+		<File name="Teig.mmz"/>
+		<File name="Ratte.mmz"/>
+		<Folder name="Sub" type="Standard">
+			<Folder name="KackSub" type="Standard">
+				<File name="KackSubFile.doc"/>
+			</Folder>
+			<File name="Atsch.doc"/>
+			<File name="Heheeee.txt"/>
+		</Folder>
+		<File name="OlderDepp"/>
+	</Folder>
+	<Folder name="Lecken" type="Standard">
+		<File name="Deiii.zip"/>
+	</Folder>
+	<File name="Letztes.txt"/>
+	<TemplateSet>
+		<Literal template="Code" translation="MyCodeTempl"/>
+		<Literal template="Mathe"/>
+	</TemplateSet>
+	<TemplateSet name="extra">
+		<Literal template="Code" translation="MyOtherTempl"/>
+		<Literal template="God">
+			<Substitute>
+				<Substitution id="42">
+					<Value>life, the universe and everything</Value>
+				</Substitution>
+			</Substitute>
+		</Literal>
+	</TemplateSet>
+</Project>

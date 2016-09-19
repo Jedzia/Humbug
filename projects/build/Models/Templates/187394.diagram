@@ -1,0 +1,107 @@
+format 76
+
+statecanvas 128130 state_ref 148610 // Setup
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 75 298 2006 61 37
+end
+statecanvas 128386 state_ref 148866 // Cleanup
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 718 314 2006 77 37
+end
+statecanvas 130818 state_ref 148482 // SetupProcess
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 59 71 2000 756 388
+end
+pseudostatecanvas 130946 pseudostate_ref 155010 // initial
+   xyz 95 143 2005
+end
+pseudostatecanvas 131714 pseudostate_ref 155266 // final
+   xyz 750 404 2005
+end
+statecanvas 131970 state_ref 155394 // Submarine
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 228 129 2005 369 265
+end
+statecanvas 132354 state_ref 155522 // A
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 354 283 2010 40 37
+end
+statecanvas 132482 state_ref 155650 // B
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 476 283 2010 40 37
+end
+pseudostatecanvas 132738 pseudostate_ref 161794 // entry_point
+   xyz 289 236 3005 label_xy 272 255
+end
+pseudostatecanvas 132994 pseudostate_ref 161922 // initial
+   xyz 300 338 2010
+end
+pseudostatecanvas 133250 pseudostate_ref 162050 // final
+   xyz 518 353 2010
+end
+pseudostatecanvas 133890 pseudostate_ref 162178 // exit_point
+   xyz 418 344 3005 label_xy 412 363
+end
+statecanvas 134530 state_ref 155906 // FalschEingabe
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  xyzwh 359 189 2015 125 37
+end
+transitioncanvas 131074 transition_ref 156674 // runner
+  
+  from ref 130946 z 2007 label "runner" xyz 86 221 2007 to ref 128130
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 131842 transition_ref 157058 // <transition>
+  
+  from ref 128386 z 2007 to ref 131714
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 132098 transition_ref 163586 // aftersetup
+  
+  from ref 128130 z 2007 label "aftersetup" xyz 152 292 3000 to ref 131970
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 132226 transition_ref 163714 // docleanup
+  
+  from ref 131970 z 2007 label "docleanup" xyz 624 302.5 3000 to ref 128386
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 132610 transition_ref 163842 // goWeiter
+  
+  from ref 132354 z 2011 label "goWeiter" xyz 407 293 3000 to ref 132482
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 132866 transition_ref 163970 // <transition>
+  
+  from ref 132738 z 3006 to ref 132354
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 133122 transition_ref 164098 // <transition>
+  
+  from ref 132994 z 2011 to ref 132354
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 133378 transition_ref 164226 // <transition>
+  
+  from ref 132482 z 2011 to ref 133250
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 134018 transition_ref 164610 // exit
+  decenter_begin 773
+  
+  from ref 132354 z 3006 label "exit" xyz 390 324 3000 to ref 133890
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 134658 transition_ref 164866 // fehler
+  
+  from ref 132354 z 2016 label "fehler" xyz 380 245 3000 to ref 134530
+  write_horizontally default show_definition default drawing_language default
+end
+transitioncanvas 134786 transition_ref 164994 // nochmal
+  decenter_begin 879
+  
+  from ref 134530 z 2016 label "nochmal" xyz 443 232 3000 to point 466 254
+  line 134914 z 2016 to ref 132354
+  write_horizontally default show_definition default drawing_language default
+end
+end

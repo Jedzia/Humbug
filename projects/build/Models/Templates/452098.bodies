@@ -1,0 +1,3 @@
+class Dump_State
+!!!447106.cpp!!!	_upper(inout stm : Telephone) : Telephone::AnyState
+  return &stm._telephone_state;

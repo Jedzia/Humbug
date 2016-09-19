@@ -1,0 +1,5 @@
+class IO
+!!!188290.cpp!!!	open(inout path : string) : /**/ bool
+//std::ifstream abc;
+bool abc = true;
+return abc;

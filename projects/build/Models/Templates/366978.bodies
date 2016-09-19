@@ -1,0 +1,113 @@
+class ProgOptions
+!!!362498.cpp!!!	ProgOptions(in ac : int, inout av : char)
+    dbgOut(__FUNCTION__ << std::endl);
+
+    m_poptions.processingMode = ProcessProject::pmUnknown;
+    m_result = prepare(m_ac, m_av, m_poptions);
+!!!362754.cpp!!!	language(in x : int) : char
+    return "AsciiDoc";
+!!!363138.cpp!!!	prepare(in ac : int, inout av : char, inout m_p : ProcessProject::Options) : ProgOptions::Result
+    try {
+        // Declare three groups of options.
+        po::options_description general("General options");
+        general.add_options()
+        ("help", "produce a help message")
+        //("help-module", value<string>()->implicit(),
+        ("help-module", po::wvalue<wstring>(),
+         "produce a help for a given module")
+        ("version", "output the version number")
+        ("input-file", po::value< vector<string> >(), "input file")
+        ("project-file", po::value< string >(), "project file")
+        ;
+
+        po::options_description gui("GUI options");
+        gui.add_options()
+        ("display", po::wvalue<wstring>(), "display to use")
+        ;
+
+        po::options_description backend("Backend options");
+        backend.add_options()
+        ("num-threads", po::wvalue<int>(), "the initial number of threads")
+        ;
+
+        // Declare an options description instance which will include
+        // all the options
+        po::options_description all("Allowed options");
+        all.add(general).add(gui).add(backend);
+
+        // Declare an options description instance which will be shown
+        // to the user
+        po::options_description visible("Allowed options");
+        visible.add(general).add(gui);
+
+        po::positional_options_description p;
+        p.add("input-file", -1);
+
+
+        po::variables_map vm;
+        //store(parse_command_line(ac, av, all), vm);
+        po::store(po::command_line_parser(ac, av).
+                  options(all).positional(p).run(), vm);
+        po::notify(vm);
+
+        if (vm.count("help")) {
+            cout << visible;
+            return rsHelpRequested;
+        }
+
+        if (vm.count("help-module")) {
+            const wstring& s = vm["help-module"].as<wstring>();
+
+            if (s == _T("gui")) {
+                cout << gui;
+            }
+            else if (s == _T("backend")) {
+                cout << backend;
+            }
+            else {
+                wcout << _T("Unknown module '")
+                << s << _T("' in the --help-module option\n");
+                return rsProgOptionsError;
+            }
+
+            return rsHelpRequested;
+        }
+
+        if (vm.count("num-threads")) {
+            wcout << _T("The 'num-threads' options was set to ")
+            << vm["num-threads"].as<int>() << "\n";
+        }
+
+        if (vm.count("display")) {
+            //wcout << L"The 'display' option was set to "
+            wcout << _T("The 'display' option was set to ")
+            << vm["display"].as<wstring>() << "\n";
+        }
+
+        if (vm.count("input-file")) {
+            m_p.inputfiles = vm["input-file"].as< vector<string> >();
+            cout << _T("Input files are: ")
+            << m_p.inputfiles << "\n";
+			m_p.processingMode = ProcessProject::pmFiles;
+        }
+
+		if (vm.count("project-file"))
+        {
+			m_p.projectfile = vm["project-file"].as<string>();
+			m_p.processingMode = ProcessProject::pmProject;
+        }
+		
+		if (m_p.processingMode == ProcessProject::pmUnknown)
+        {
+			cout << visible;
+			cout << endl;
+			cout << "You have to specify a project-file or input-file(s) on the command line." << endl;
+			return rsNoInputFiles;
+        }
+    }
+    catch (std::exception& e) {
+        cout << ">> " << e.what() << " <<\n";
+        return rsFatalError;
+    }
+
+    return rsOk;

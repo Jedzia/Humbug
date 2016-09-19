@@ -1,0 +1,3 @@
+class xxTmPascalCase
+!!!438914.cpp!!!	transform(inout value : string) : string
+return value;

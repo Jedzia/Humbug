@@ -1,0 +1,927 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 464
+\begin_document
+\begin_header
+\textclass scrbookjed
+\begin_preamble
+% wenn pdflatex benutzt wird:
+\usepackage{ifpdf}
+\ifpdf
+
+% Schriften für bessere PDF-Ansichten
+\IfFileExists{lmodern.sty}
+ {\usepackage{lmodern}}{}
+
+\fi % Ende von: wenn pdflatex benutzt wird
+
+% Setzt den Link fuer Sprünge zu Gleitabbildungen
+% auf den Anfang des Gelitobjekts und nicht aufs Ende
+\usepackage[figure]{hypcap}
+
+% Die Seiten des Inhaltsverzeichnisses werden römisch numeriert,
+% ein PDF-Lesezeichen für das Inhaltsverzeichnis wird hinzugefügt
+\let\myTOC\tableofcontents
+\renewcommand\tableofcontents{%
+  \frontmatter
+  \pdfbookmark[1]{\contentsname}{}
+  \myTOC
+  \mainmatter }
+
+\newcommand{\TabBesBeg}{%
+ \let\MyTable\table
+ \let\MyEndtable\endtable
+ \renewenvironment{table}{\begin{SCtable}}{\end{SCtable}}}
+
+\newcommand{\TabBesEnd}{%
+ \let\table\MyTable
+ \let\endtable\MyEndtable}
+
+\newcommand{\FigBesBeg}{%
+ \let\MyFigure\figure
+ \let\MyEndfigure\endfigure
+ \renewenvironment{figure}{\begin{SCfigure}}{\end{SCfigure}}}
+
+\newcommand{\FigBesEnd}{%
+ \let\figure\MyFigure
+ \let\endfigure\MyEndfigure}
+
+% ermöglicht das Berechnen von Werten
+\usepackage{calc}
+
+% Ermöglicht besondere Tabellenzellen-Ausrichtungen
+\usepackage{dcolumn}
+
+%Vergrößert den Teil der Seite, in dem Gleitobjekte
+% unten angeordnet werden dürfen
+\renewcommand{\bottomfraction}{0.5}
+
+% Vermeidet, dass Gleitobjekte vor ihrem Abschnitt gedruckt werden
+\let\mySection\section\renewcommand{\section}{\suppressfloats[t]\mySection}
+
+% beschleunigt die Berechnung von langen Tabellen
+%\setcounter{LTchunksize}{100}
+\makeatletter
+% wird für skalierte und rotierte Boxen benötigt
+\@ifundefined{rotatebox}{\usepackage{graphicx}}{}
+
+% wird bei farbigen Tabellen benutzt
+\@ifundefined{textcolor}
+ {\usepackage{color}}{}
+\definecolor{dunkelgruen}{cmyk}{0.5, 0, 1, 0}
+\definecolor{hellgrau}{gray}{0.8}
+
+% testen ob paket colortbl installiert ist
+% wird für farbige Tabellenzellen benutzt
+\newboolean{colortbl}
+\IfFileExists{colortbl.sty}
+ {\usepackage{colortbl}
+  \setboolean{colortbl}{true}}
+ {\setboolean{colortbl}{false}}
+
+% wird für Mehrfachzeilen benutzt
+\usepackage{multirow}
+%\renewcommand{\multirowsetup}{\centering}
+
+% wird fuer Tabellen im Buchstil benutzt
+\usepackage{booktabs}
+
+% wird benutzt, um Tabellenzellen zu vergrößern
+\@ifundefined{extrarowheight}
+ {\usepackage{array}}{}
+\setlength{\extrarowheight}{2pt}
+%\makeatother
+% wird fuer benutzerdefinierte Tabellen benutzt
+% ---
+\newcolumntype{M}[1]
+ {>{\centering\hspace{0pt}}m{#1}}
+
+\newcolumntype{S}[2]
+ {>{\centering\hspace{0pt}}m{(#1+(2\tabcolsep+\arrayrulewidth)*(1-#2))/#2}}
+
+\newcolumntype{K}[1]
+ {>{\columncolor{#1}\hspace{0pt}}c}
+
+\newcolumntype{V}{!{\vrule width 1.5pt}}
+
+\newcolumntype{W}{!{\color{green}\vline}}
+% ---
+
+% Setzt einen zusaetzlichen Abstand von
+% 1.5 mm zwischen Fussnoten
+\let\myFoot\footnote
+\renewcommand{\footnote}[1]{\myFoot{#1\vspace{1.5mm}}}
+
+% Gleit-Algorithmen werden innerhalb von Kapiteln numeriert
+%\numberwithin{algorithm}{chapter}
+
+% Grauschrift-Notizen in blauer Farbe
+%\renewenvironment{lyxgreyedout}
+ %{\textcolor{blue}\bgroup}{\egroup}
+
+% ------------------------------------
+% Prüfung auf benötigte LaTeXPakete
+\usepackage{ifthen}
+
+% Pruefung auf arydshln
+% für Tabellen mit gestrichelten Linien
+\newboolean{arydshln}
+\IfFileExists{arydshln.sty}
+ {\usepackage{arydshln}
+  \setboolean{arydshln}{true}}
+ {\setboolean{arydshln}{false}}
+
+% Prüfung auf marginnote
+% für Randnotizen
+\newboolean{marginnote}
+\IfFileExists{marginnote.sty}
+ {\usepackage{marginnote}
+  \let\marginpar\marginnote
+  \setboolean{marginnote}{true}}
+ {\setboolean{marginnote}{false}}
+
+% Prüfung auf sidecap
+% für seitliche Beschriftungen
+\newboolean{sidecap}
+\IfFileExists{sidecap.sty}
+ {\usepackage{sidecap}
+  \let\marginpar\marginnote
+  \setboolean{sidecap}{true}}
+ {\setboolean{sidecap}{false}}
+
+% Umdefinieren des Makros \LyX für PDF-Lesezeichen
+\def\LyX{\texorpdfstring{%
+  L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+  {LyX }}
+
+% Damit der Index den Namen "Stichwortverzeichnis" erhält
+\addto\captionsngerman{\renewcommand{\indexname}{Stichwortverzeichnis}}
+\end_preamble
+\options fleqn,liststotoc,bibtotoc,idxtotoc,BCOR7.5mm,titlepage,tablecaptionabove
+\use_default_options false
+\begin_modules
+jedminitoc
+\end_modules
+\maintain_unincluded_children false
+\language ngerman
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_title "Das LyX-Handbuch der Einfügungen: Abbildungen, Tabellen, Gleitobjekte, Notizen und Boxen"
+\pdf_author "LyX Team, Uwe Stöhr, deutsche Übersetzung: Hartmut Haase"
+\pdf_subject "LyX-Dokumentation über Abbildungen, Tabellen, Gleitobjekte, Notizen und Boxen"
+\pdf_keywords "LyX, Abbildungen, Tabellen, Gleitobjekte, Notizen, Boxen"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle false
+\pdf_quoted_options "linkcolor=black, citecolor=black, urlcolor=blue, filecolor=blue,  pdfpagelayout=OneColumn, pdfnewwindow=true,  pdfstartview=XYZ, plainpages=false, pdfpagelabels"
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Stichwortverzeichnis
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language german
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\bullet 1 0 9 -1
+\bullet 2 2 35 -1
+\bullet 3 2 7 -1
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+setboolean{frontIncluded}{true}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+pagenumbering{roman} 
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{1cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size huge
+T4 Text Templating
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{2cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+Jedzia
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+vfill
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+A Thesis presented for the degree of
+\begin_inset Newline newline
+\end_inset
+
+ Doctor of Sexuality
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{0.9cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename Pictures/logo.eps
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+University Heidelberg
+\begin_inset Newline newline
+\end_inset
+
+ Department of Astrophysical Sciences
+\begin_inset Newline newline
+\end_inset
+
+ Room 23
+\begin_inset Newline newline
+\end_inset
+
+ Germany
+\begin_inset Newline newline
+\end_inset
+
+ 01/2011
+\end_layout
+
+\begin_layout Standard
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Ko_mbl[oo]der is like my Grandma talks
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{0.8cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{2cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\shape italic
+\size large
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LARGE Dedicated to
+\end_layout
+
+\end_inset
+
+
+\shape default
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+Christine and the Kids 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty} 
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+addcontentsline{toc}{chapter}{
+\backslash
+numberline{}{Abstract}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+textbf{
+\backslash
+Large
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+Computers are strange!}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{1cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+Jedzia
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{0.5cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\size large
+Submitted for the degree of Doctor of Hegemonothy
+\begin_inset Newline newline
+\end_inset
+
+ 01 2011
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace*{1cm}
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\series bold
+\size large
+Abstract
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+noindent
+\end_layout
+
+\end_inset
+
+ Dieses Dokument dient dem Wissen.
+ Obwohl wir nicht wissen.
+ Da wir vergessen.
+ Und vermissen.
+ Unter der GPL v2 kann Frau viel veröffentlichen, aber ICH hoffe das Sie
+ finden was sie suchen .....
+ ALLE und niemand.
+ Wie sagte XYZ einst: 
+\begin_inset Quotes gld
+\end_inset
+
+Hajo
+\begin_inset Quotes grd
+\end_inset
+
+.
+ In diesem Sinne viel Spaß beim Essen und ihren sexuellen Aktivitäten.
+ Dies hier ist leider nur ein Buch.
+\end_layout
+
+\begin_layout Chapter*
+Declaration
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+addcontentsline{toc}{chapter}{
+\backslash
+numberline{}{Declaration}}
+\end_layout
+
+\end_inset
+
+ The work in this thesis is based on research carried out at the Oberhirnis,
+ Germany.
+ No part of this thesis has been submitted elsewhere for any other degree
+ or qualification and it all my own work unless referenced to the contrary
+ in the text.
+ [If your thesis based on joint research , you have to mention what part
+ of it is your individual constribution, see Rules for the Submission of
+ Work for Higher Degrees for detail.
+ You will get one from the Graduate School.]
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{2in}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+noindent
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+Copyright
+\series default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+ $
+\backslash
+mathbf{
+\backslash
+copyright}$
+\end_layout
+
+\end_inset
+
+ 
+\series bold
+2011 by Jedzia
+\series default
+.
+\begin_inset Newline newline
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+The copyright of this thesis rests with the author.
+ No quotations from it should be published without the author's prior written
+ consent and information derived from it should be acknowledged
+\begin_inset Quotes erd
+\end_inset
+
+.
+ <- d.h Quote Jedzia!
+\end_layout
+
+\begin_layout Chapter*
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{chapter}{
+\backslash
+numberline{}{Acknowledgements}}
+\backslash
+mtcaddchapter
+\end_layout
+
+\end_inset
+
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.Thank to someone who prepared
+ this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Thank to someone who prepared this template.
+ Fresse da vorne !
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+tableofcontents
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{roman}
+\backslash
+listoffigures
+\backslash
+mtcaddchapter
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{roman}
+\backslash
+listoftables
+\backslash
+mtcaddchapter
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstlistoflistings
+\backslash
+mtcaddchapter
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+listof{pexafloat}{Beispiel-Verzeichnis}
+\backslash
+mtcaddchapter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\backslash
+pagenumbering{arabic} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

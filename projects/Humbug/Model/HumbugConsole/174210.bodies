@@ -1,0 +1,23 @@
+class DocLoader
+!!!175106.cpp!!!	loadFromDisk(in filepath : string) : bool
+
+	char str[255];
+	valid = false;
+	std::ifstream in(filepath.c_str(), std::ios::in | std::ios::binary);
+	if(!in)
+		return false;
+
+	while (in)
+	{
+		in.getline(str, 255);
+		content += str;
+		content += "\r\n";
+	}
+	
+
+	valid = true;
+	return true;
+!!!175234.cpp!!!	getValid() : bool
+  return valid;
+!!!181762.cpp!!!	getContent() : string
+  return content;

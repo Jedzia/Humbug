@@ -1,0 +1,362 @@
+format 76
+"HumbugShared" // HumbugShared
+  revision 15
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "HumbugShared/"
+  cpp_src_dir "HumbugShared/"
+  classview 260098 "toplevel"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    class 380290 "GB"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 382850 "getProjectDirectory"
+	class_operation force_body_gen cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return projectDirectory;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 298498 // projectDirectory
+      end
+
+      operation 390018 "getProjectExtension"
+	class_operation force_body_gen cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return projectExtension;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 305026 // projectExtension
+      end
+
+      operation 425090 "get_templateDirectory"
+	class_operation force_body_gen cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return templateDirectory;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 318338 // templateDirectory
+      end
+
+      attribute 298498 "projectDirectory"
+	class_attribute unique private explicit_type "string"
+	init_value "\"D:/E/Projects/C++/Humbug/projects/Humbug/XSD\""
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 382850 // getProjectDirectory
+	comment "! Path to the project directory"
+      end
+
+      attribute 305026 "projectExtension"
+	class_attribute private explicit_type "string"
+	init_value "\".tmplproj\""
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 390018 // getProjectExtension
+      end
+
+      attribute 318338 "templateDirectory"
+	class_attribute unique private explicit_type "string"
+	init_value "\"D:\\\\E\\\\Projects\\\\C++\\\\Humbug\\\\projects\\\\Humbug\\\\TEMPLATES\""
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 425090 // get_templateDirectory
+	comment "! Path to the project directory"
+      end
+    end
+
+    class 406914 "global"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+    end
+
+    class 407042 "stdafx"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+    end
+  end
+
+  deploymentview 226050 "toplevel"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 313090 "GB"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+// #include \"global.h\"
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"stdafx.h\"
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 380290 // GB
+      end
+    end
+
+    artifact 299906 "defs"
+      stereotype "source"
+      cpp_h "#ifndef DEFS_H
+#define DEFS_H
+
+
+#include <iostream>
+/*#include \"qtextstream.h\"
+
+//Q_CORE_EXPORT QTextStream &endlw(QTextStream &s);
+
+    QTextStream &endlw(QTextStream &stream) {
+        return stream << \"\\r\\n\" << \"--- FUCK \\r\\n\" << flush;
+    };*/
+
+#ifndef QT_VERSION_STR
+#if defined(_MSC_VER)
+#  define TMPL_OUTOFLINE_TEMPLATE inline
+#endif
+template <typename ForwardIterator>
+TMPL_OUTOFLINE_TEMPLATE void qDeleteAll(ForwardIterator begin, ForwardIterator end)
+{
+    while (begin != end) {
+        delete *begin;
+        ++begin;
+    }
+}
+
+template <typename Container>
+inline void qDeleteAll(const Container &c)
+{
+    qDeleteAll(c.begin(), c.end());
+}
+#endif
+
+
+#endif
+"
+      associated_classes
+      end
+    end
+
+    artifact 333826 "global"
+      stereotype "source"
+      cpp_h "#ifndef HumbugSHARED_GLOBAL_H
+#define HumbugSHARED_GLOBAL_H
+
+
+#endif
+"
+      associated_classes
+	class_ref 406914 // global
+      end
+    end
+
+    artifact 333954 "stdafx"
+      stereotype "source"
+      cpp_h "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the definition of
+ *             the stdafx.h class.
+ * \\folder     $(folder)
+ * \\file       stdafx.h
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-09-17, Jedzia
+ */
+/*---------------------------------------------------------*/
+#ifndef STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
+#define STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
+#ifdef _DEBUG
+  #  define dbgOut(x) std::cout << x
+#else
+  #  define dbgOut(x)
+#endif // _DEBUG
+#include <QApplication>
+#include <QDomDocument>
+#include <QMainWindow>
+#include <Qsci/qscilexercpp.h>
+#include <QtCore>
+#include <QtGui>
+#include <iostream>
+#include <memory>   // std::auto_ptr
+#include <wchar.h>
+#if defined(USE_LIB_BOOST)
+
+// You MUST use FS Version 3 ! <- is obsolete.
+// Since boost 1.46.0 V3 ist the default.
+//#define BOOST_FILESYSTEM_VERSION 3
+#include <boost/function.hpp>
+  #  include <boost/filesystem.hpp>
+  #  include <boost/progress.hpp>
+  #  include <boost/smart_ptr.hpp>
+#endif //USE_LIB_BOOST
+#include <xsd/cxx/pre.hxx>
+#include <xsd/cxx/xml/dom/parsing-source.hxx>
+#include <xsd/cxx/xml/string.hxx>
+#ifdef WIN32
+
+// \\todo: Under linux, the pch generator does not include the correct
+// dependency to the xsd generator target.
+  #  include <project.hxx>
+#endif
+#include <CppStructz/log/LogHelper.h>
+//#include <Crunchy/global.h>
+
+//#include \"TestClass.h\"
+//class __declspec(dllimport) TestClass;
+#endif //STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H
+"
+      cpp_src "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the implementation of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.cpp
+ * \\date       2011-09-17
+ * \\author     Jedzia.
+ *
+ * modified    2011-09-17, Jedzia
+ */
+/*---------------------------------------------------------*/
+
+${comment}
+#include \"stdafx.h\"
+"
+      associated_classes
+	class_ref 407042 // stdafx
+      end
+    end
+  end
+
+  package_ref 200450 // Project
+
+end

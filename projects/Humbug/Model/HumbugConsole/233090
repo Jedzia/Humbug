@@ -1,0 +1,255 @@
+format 76
+"Humbug" // Humbug
+  revision 1
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "src/"
+  cpp_src_dir "src/"
+  oid -1
+  ncouples 13
+  key "gxmi path" value "C:/Documents and Settings/root/My Documents/zipper.xmi"
+  key "gxmi no model" value "no"
+  key "gxmi gen views" value "no"
+  key "gxmi encoding" value "UTF-8"
+  key "gxmi umlversion" value "21"
+  key "gxmi pk prefix" value "no"
+  key "gxmi vis prefix" value "no"
+  key "gxmi primitive type" value "no"
+  key "gxmi gen extensions" value "no"
+  key "gxmi gen eclipse" value "no"
+  key "gxmi comment exporter" value "yes"
+  key "gxmi linefeed" value "no"
+  key "gxmi taggedvalue" value "0"
+  classview 252418 "toplevel"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    oid 141186
+    class 400002 "project"
+      visibility package 
+      cpp_external cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 340354
+    end
+
+    class 400130 "global"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 141314
+    end
+
+    class 400258 "stdafx"
+      visibility package 
+      cpp_external cpp_decl "${name}
+#include \"${name}.h\"
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 147970
+    end
+  end
+
+  deploymentview 252162 "toplevel"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    oid 141186
+    artifact 326274 "global"
+      stereotype "source"
+      cpp_h "#ifndef CPLUG_GLOBAL_H
+#define CPLUG_GLOBAL_H
+
+#ifdef __cplusplus
+extern \"C\"
+{
+#endif
+
+#define STRING2(x) #x
+#define STRING(x) STRING2(x)
+
+#define CRUNCHY_NAMESPACE cry
+#define CRUNCHY_BEGIN_NAMESPACE namespace Support { namespace CRUNCHY_NAMESPACE {
+#define CRUNCHY_END_NAMESPACE } }
+#define CRUNCHY_USE_NAMESPACE using namespace Support::CRUNCHY_NAMESPACE;
+
+#undef PRJ_NAMESPACE
+#define PRJ_NAMESPACE Support::CRUNCHY_NAMESPACE
+
+// Set the function export visibility and reset all global
+// PLATFORM vars cause they interfere with multiple libraries and the
+// use of library.cmake. This behavior can be overridden by defining
+// EXPLICITELY_USE_PLATFORM_VARS.
+#ifndef EXPLICITELY_USE_PLATFORM_VARS
+#undef PLATFORM_ALL_DYN_LINK
+#ifdef Crunchy_ALL_DYN_LINK
+#	ifndef PLATFORM_ALL_DYN_LINK
+#		define PLATFORM_ALL_DYN_LINK 1
+#	endif
+#endif
+
+#undef PLATFORM_SOURCE
+#ifdef Crunchy_SOURCE
+#	define PLATFORM_SOURCE 1
+#endif
+
+#undef PLATFORM_ALL_STATIC_LINK
+#ifdef Crunchy_ALL_STATIC_LINK
+#	ifndef PLATFORM_ALL_STATIC_LINK
+#		define PLATFORM_ALL_STATIC_LINK 1
+#	endif
+#endif
+#endif // EXPLICITELY_USE_PLATFORM_VARS
+
+#undef PLATFORM_DECL
+#include \"build/cmake/include/platform.h\"
+
+#ifndef qWarning
+#  define qWarning printf
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+#endif //CPLUG_GLOBAL_H
+"
+      associated_classes
+	class_ref 400130 // global
+      end
+      oid 141314
+    end
+
+    artifact 326402 "stdafx"
+      stereotype "source"
+      cpp_h "#ifndef STDAFX_0662284F7DB45ec699439C6DE3179A19_H
+#define STDAFX_0662284F7DB45ec699439C6DE3179A19_H
+
+//#define MyDECLSPEC __declspec(dllexport)
+//class __declspec(dllexport) TestClass;
+
+#include \"Crunchy/global.h\"
+
+#ifdef HAVE_CONFIG_H
+#	include <config.h>
+#endif
+
+//#include \"Crunchy/support/strfwd.h\"
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <list>
+
+
+#if defined(USE_LIB_QT4)
+    #include <QApplication>
+    #include <QtCore>
+    #include <QtGui>
+    #include <QMainWindow>
+    #include <QDomDocument>
+    #include <Qsci/qscilexercpp.h>
+#endif //defined(USE_LIB_QT4)
+
+
+#if defined(USE_LIB_BOOST)
+// You MUST use FS Version 3 ! <- is obsolete.
+// Since boost 1.46.0 V3 ist the default.
+//#define BOOST_FILESYSTEM_VERSION 3
+    #include \"boost/filesystem.hpp\"
+
+    #include \"boost/regex.hpp\"
+    #include \"boost/progress.hpp\"
+    #include \"boost/scoped_ptr.hpp\"
+
+    #include \"boost/bind.hpp\"
+#endif //defined(USE_LIB_BOOST)
+
+//#include <CppStructz/TestClass.h>
+
+#endif //STDAFX_0662284F7DB45ec699439C6DE3179A19_H
+"
+      associated_classes
+	class_ref 400258 // stdafx
+      end
+      oid 147970
+    end
+
+    artifact 326530 "project"
+      stereotype "source"
+      associated_classes
+	class_ref 400002 // project
+      end
+      oid 267138
+    end
+  end
+
+  package_ref 134658 // main
+
+  package_ref 233218 // build
+
+  package_ref 180482 // Humbug
+
+  package_ref 187138 // HumbugShared
+
+  package_ref 233346 // HumbugConsole-deleteMe
+
+  package_ref 234242 // QT
+
+  package_ref 234370 // extern
+
+  package_ref 240130 // Arschloch
+
+  package_ref 246658 // CppStructz
+end

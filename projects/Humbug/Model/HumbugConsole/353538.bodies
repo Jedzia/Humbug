@@ -1,0 +1,32 @@
+class ProjectParser
+!!!339330.cpp!!!	parse(in fileName : string) : ProjectNode
+
+	ProjectNode *node = new ProjectNode(ProjectNode::Root);
+	if (fileName.empty())
+	{
+		return node;
+	}
+
+	xml_schema::properties p = xml_schema::properties();
+	// \Todo: This should be configured by the build system or the 
+	// schema as builtin resource. 
+	p.no_namespace_schema_location(GB::getProjectDirectory() + "/project.xsd");
+	Project_type tmplProject(Project_(fileName,0, p));
+	ProjectProcessor cp(tmplProject);
+
+	dbgOut(fileName << std::endl);
+
+	return cp.run();
+	/* exit 
+    in = expr;
+    in.replace(" ", "");
+    pos = 0;
+
+    addChild(node, parseOrExpression());
+    return node;*/
+!!!340098.cpp!!!	addChild(inout parent : ProjectNode, inout child : ProjectNode) : void
+    if (child) {
+        parent->children.push_back(child);
+        parent->str += child->str;
+        child->parent = parent;
+    }

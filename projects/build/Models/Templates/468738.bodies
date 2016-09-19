@@ -1,0 +1,14 @@
+class B_State
+!!!475906.cpp!!!	_upper(inout stm : SetupProcess) : SetupProcess::AnyState
+  return &stm._setupprocess_state._submarine_state;
+!!!476162.cpp!!!	_completion(inout stm : SetupProcess) : bool
+  {
+    stm._set_currentState(stm._setupprocess_state._submarine_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .SetupProcess.Submarine");
+#endif
+    stm._final();
+    return (bool) 1;
+  }
+!!!476290.cpp!!!	create(inout stm : SetupProcess) : void
+	_completion(stm);

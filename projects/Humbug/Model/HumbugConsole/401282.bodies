@@ -1,0 +1,124 @@
+class ProcessProjectPrivate
+!!!417794.cpp!!!	ProcessProjectPrivate(in parent : ProcessProject)
+m_LookupPaths.push_back(GB::getProjectDirectory());
+m_LookupPaths.push_back(GB::getTemplateDirectory());
+//m_LookupPaths.push_back(GB::getWorkDirectory());
+!!!418306.cpp!!!	runTextProject(inout projectPath : string) : void
+    _DEBUG_COUT("-------------------------------------");
+    _DEBUG_COUT("PRIVATE: Running ftText");
+
+    ProjectNode* prjRoot = NULL;
+    {
+        ProjectParser pp;
+        prjRoot = pp.parse(projectPath);
+        //prjRoot->children.sort();
+        //std::sort( prjRoot->children.begin(), prjRoot->children.end(), ::cmp );            
+
+
+    _DEBUG_COUT("----------processNode(prjRoot)----------");
+        processNode(prjRoot);
+
+
+    }
+
+    if(prjRoot)
+        delete prjRoot; 
+!!!419842.cpp!!!	evaluateFile(inout projectPath : string) : void
+    _DEBUG_COUT("-------------------------------------");
+    _DEBUG_COUT("PRIVATE: Running ftText");
+
+    ProjectNode* prjRoot = NULL;
+    {
+        ProjectParser pp;
+        prjRoot = pp.parse(projectPath);
+        //prjRoot->children.sort();
+        //std::sort( prjRoot->children.begin(), prjRoot->children.end(), ::cmp );            
+
+
+    _DEBUG_COUT("----------processNode(prjRoot)----------");
+        processNode(prjRoot);
+
+
+    }
+
+    if(prjRoot)
+        delete prjRoot; 
+!!!418434.cpp!!!	processNode(in node : ProjectNode, in depth : int = 0) : void
+    // sort the nodes.
+    std::sort( node->children.begin(), node->children.end(), ::cmp );            
+
+    // store the end iterator, which doesn't change
+    ProjectNode::child_const_iterator childs_end = node->children.end();
+
+    // display each element followed by the element separator
+    for( ProjectNode::child_const_iterator i = node->children.begin();
+        i != childs_end; ++i )
+    {
+        ProjectNode *curnode = *i;
+        fs::path nodepath(curnode->str);
+        if(curnode->type == ProjectNode::Type::File)
+        {
+            printSpaces(depth);
+            std::cout << "FileNode: " << curnode->str << std::endl;
+        }
+        else if(curnode->type == ProjectNode::Type::Folder)
+        {
+            printSpaces(depth);
+            std::cout << "FolderNode: " << curnode->str << std::endl;
+            processNode(curnode, depth + 2);
+        }
+    }
+!!!425218.cpp!!!	locateFile(inout location : string, inout filename : string, in pathsToLookup : std::vector<std::string> = NULL, inout defaultExtension : string = "") : bool
+fs::path filePath(filename);
+filePath.make_preferred();
+
+if( fs::exists(filePath) )
+{
+    location = fs::absolute(filePath).make_preferred().string();
+    return true;
+}
+
+if ( filePath.is_relative() )
+{
+    if (pathsToLookup == NULL)
+        pathsToLookup = &m_LookupPaths;
+
+    std::vector<std::string>::const_iterator iter, iter_end;
+    iter_end = (*pathsToLookup).end();
+
+    for (iter = (*pathsToLookup).begin(); iter != iter_end; iter++) {
+        fs::path lookup(*iter);
+        lookup /= filePath;
+
+        if( fs::exists(lookup) )
+        {
+            location = fs::absolute(lookup).make_preferred().string();
+            return true;
+        }
+    }
+}
+
+/*fs::path resultPath;
+fs::path prjPath(options->projectfile);
+prjPath.make_preferred();
+if( prjPath.is_relative() )
+{
+fs::path prjDir( GB::getProjectDirectory() );
+prjDir.make_preferred();
+
+if( !prjPath.has_extension() )
+prjPath.replace_extension( GB::getProjectExtension() );
+
+resultPath = prjDir / prjPath;
+resultPath.make_preferred();
+std::cout << "prjDir                   : " << prjDir << std::endl;
+std::cout << "prjPath                  : " << prjPath << std::endl;
+}
+else
+resultPath = prjPath;
+*/
+location = "";
+return false;
+!!!418562.cpp!!!	printSpaces(in amount : int) : void
+    while(--amount > 0)
+        std::cout << " ";

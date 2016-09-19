@@ -1,0 +1,90 @@
+class ProcessProject
+!!!417538.cpp!!!	run() : void
+    using cry::FileDetector;
+    const std::string prjname =
+        "D:/E/Projects/C++/Humbug/projects/Humbug/XSD/Nummer1.tmplproj";
+    std::cout << std::endl;
+    std::cout << "GB::getProjectDirectory(): " << GB::getProjectDirectory() << std::endl;
+
+    if(options->processingMode == ProcessProject::pmFiles)
+    {
+        std::cout << std::endl;
+        std::cout << "Files mode:" << options->processingMode << std::endl;
+        std::vector<std::string>::const_iterator iter, iter_end;
+
+        if(options->inputfiles.size() == 0)
+            return;
+
+        ProcessTemplateFile ptf(options);
+
+        // store the end iterator, which doesn't change
+        iter_end = options->inputfiles.end();
+
+        for (iter = options->inputfiles.begin(); iter != iter_end; iter++) {
+            std::cout << "[ProcessProject] Processing> " << *iter << " ..." << std::endl;
+
+            fs::path filePath(*iter);
+            filePath.make_preferred();
+            std::string filename;
+
+            if( !d->locateFile(filename, filePath.string() /*,d->m_LookupPaths*/) )
+            {
+                std::cout << "filePath not existant: " << filename << std::endl;
+                continue;
+            }
+            else
+            {
+                std::cout << "filePath exists: " << filename << std::endl;
+                std::cout << "fullFilePath: " << filename << std::endl;
+                ptf.transform(filename);
+            }
+
+            /*DocLoader docloader;
+
+            if( docloader.loadFromDisk(*iter) )
+                TextDocument doc( docloader.getContent() );
+            else
+                cout << "Can't load " << *iter << " " << endl;*/
+
+            //TextDocument doc("Testerei von $Code$ ist geil.");
+        }
+    }
+    else
+    {
+        fs::path resultPath;
+        fs::path prjPath(options->projectfile);
+        prjPath.make_preferred();
+
+        if( prjPath.is_relative() )
+        {
+            fs::path prjDir( GB::getProjectDirectory() );
+            prjDir.make_preferred();
+
+            if( !prjPath.has_extension() )
+                prjPath.replace_extension( GB::getProjectExtension() );
+
+            resultPath = prjDir / prjPath;
+            resultPath.make_preferred();
+            std::cout << "prjDir                   : " << prjDir << std::endl;
+            std::cout << "prjPath                  : " << prjPath << std::endl;
+        }
+        else
+            resultPath = prjPath;
+
+        std::cout << "resultPath               : " << resultPath << std::endl;
+        std::cout << std::endl;
+
+        std::string resultPathStr( resultPath.string() );
+        FileDetector fileIdentity( resultPathStr );
+
+        switch( fileIdentity.getType() ) {
+        case FileDetector::ftText:
+            _DEBUG_COUT("Running ftText");
+            d->runTextProject(resultPathStr);
+            break;
+        case FileDetector::ftZip:
+            break;
+        default:
+            break;
+        }
+    }

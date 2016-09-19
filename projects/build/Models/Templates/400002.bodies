@@ -1,0 +1,12 @@
+class Host
+!!!382850.cpp!!!	useNormalEnum() : Host::MyEnum
+return first;
+!!!382978.cpp!!!	useScopedEnum() : Host::ScopedEnum::enum_type
+return ScopedEnum::first;
+!!!383106.cpp!!!	useAnotherScoped() : BOOST_SCOPED_ENUM(AnotherScoped)
+//return BOOST_SCOPED_ENUM(AnotherScoped)::first;
+// give a nonstandard extension used: enum 'templates::types::AnotherScoped::enum_type'
+// used in qualified name
+return AnotherScoped::first;
+!!!383234.cpp!!!	useInsideClass() : BOOST_SCOPED_ENUM(Host::InsideClass)
+return Host::InsideClass::first;

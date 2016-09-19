@@ -1,0 +1,479 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 417
+\begin_document
+\begin_header
+\textclass scrbookjed
+\begin_preamble
+% wenn pdflatex benutzt wird:
+\usepackage{ifpdf}
+\ifpdf
+
+% Schriften für bessere PDF-Ansichten
+\IfFileExists{lmodern.sty}
+ {\usepackage{lmodern}}{}
+
+\fi % Ende von: wenn pdflatex benutzt wird
+
+% Setzt den Link fuer Sprünge zu Gleitabbildungen
+% auf den Anfang des Gelitobjekts und nicht aufs Ende
+\usepackage[figure]{hypcap}
+
+% Die Seiten des Inhaltsverzeichnisses werden römisch numeriert,
+% ein PDF-Lesezeichen für das Inhaltsverzeichnis wird hinzugefügt
+\let\myTOC\tableofcontents
+\renewcommand\tableofcontents{%
+  \frontmatter
+  \pdfbookmark[1]{\contentsname}{}
+  \myTOC
+  \mainmatter }
+
+\newcommand{\TabBesBeg}{%
+ \let\MyTable\table
+ \let\MyEndtable\endtable
+ \renewenvironment{table}{\begin{SCtable}}{\end{SCtable}}}
+
+\newcommand{\TabBesEnd}{%
+ \let\table\MyTable
+ \let\endtable\MyEndtable}
+
+\newcommand{\FigBesBeg}{%
+ \let\MyFigure\figure
+ \let\MyEndfigure\endfigure
+ \renewenvironment{figure}{\begin{SCfigure}}{\end{SCfigure}}}
+
+\newcommand{\FigBesEnd}{%
+ \let\figure\MyFigure
+ \let\endfigure\MyEndfigure}
+
+% ermöglicht das Berechnen von Werten
+\usepackage{calc}
+
+% Ermöglicht besondere Tabellenzellen-Ausrichtungen
+\usepackage{dcolumn}
+
+%Vergrößert den Teil der Seite, in dem Gleitobjekte
+% unten angeordnet werden dürfen
+\renewcommand{\bottomfraction}{0.5}
+
+% Vermeidet, dass Gleitobjekte vor ihrem Abschnitt gedruckt werden
+\let\mySection\section\renewcommand{\section}{\suppressfloats[t]\mySection}
+
+% beschleunigt die Berechnung von langen Tabellen
+%\setcounter{LTchunksize}{100}
+\makeatletter
+% wird für skalierte und rotierte Boxen benötigt
+\@ifundefined{rotatebox}{\usepackage{graphicx}}{}
+
+% wird bei farbigen Tabellen benutzt
+\@ifundefined{textcolor}
+ {\usepackage{color}}{}
+\definecolor{dunkelgruen}{cmyk}{0.5, 0, 1, 0}
+\definecolor{hellgrau}{gray}{0.8}
+
+% testen ob paket colortbl installiert ist
+% wird für farbige Tabellenzellen benutzt
+\newboolean{colortbl}
+\IfFileExists{colortbl.sty}
+ {\usepackage{colortbl}
+  \setboolean{colortbl}{true}}
+ {\setboolean{colortbl}{false}}
+
+% wird für Mehrfachzeilen benutzt
+\usepackage{multirow}
+%\renewcommand{\multirowsetup}{\centering}
+
+% wird fuer Tabellen im Buchstil benutzt
+\usepackage{booktabs}
+
+% wird benutzt, um Tabellenzellen zu vergrößern
+\@ifundefined{extrarowheight}
+ {\usepackage{array}}{}
+\setlength{\extrarowheight}{2pt}
+%\makeatother
+% wird fuer benutzerdefinierte Tabellen benutzt
+% ---
+\newcolumntype{M}[1]
+ {>{\centering\hspace{0pt}}m{#1}}
+
+\newcolumntype{S}[2]
+ {>{\centering\hspace{0pt}}m{(#1+(2\tabcolsep+\arrayrulewidth)*(1-#2))/#2}}
+
+\newcolumntype{K}[1]
+ {>{\columncolor{#1}\hspace{0pt}}c}
+
+\newcolumntype{V}{!{\vrule width 1.5pt}}
+
+\newcolumntype{W}{!{\color{green}\vline}}
+% ---
+
+% Setzt einen zusaetzlichen Abstand von
+% 1.5 mm zwischen Fussnoten
+\let\myFoot\footnote
+\renewcommand{\footnote}[1]{\myFoot{#1\vspace{1.5mm}}}
+
+% Gleit-Algorithmen werden innerhalb von Kapiteln numeriert
+%\numberwithin{algorithm}{chapter}
+
+% Grauschrift-Notizen in blauer Farbe
+%\renewenvironment{lyxgreyedout}
+ %{\textcolor{blue}\bgroup}{\egroup}
+
+% ------------------------------------
+% Prüfung auf benötigte LaTeXPakete
+\usepackage{ifthen}
+
+% Pruefung auf arydshln
+% für Tabellen mit gestrichelten Linien
+\newboolean{arydshln}
+\IfFileExists{arydshln.sty}
+ {\usepackage{arydshln}
+  \setboolean{arydshln}{true}}
+ {\setboolean{arydshln}{false}}
+
+% Prüfung auf marginnote
+% für Randnotizen
+\newboolean{marginnote}
+\IfFileExists{marginnote.sty}
+ {\usepackage{marginnote}
+  \let\marginpar\marginnote
+  \setboolean{marginnote}{true}}
+ {\setboolean{marginnote}{false}}
+
+% Prüfung auf sidecap
+% für seitliche Beschriftungen
+\newboolean{sidecap}
+\IfFileExists{sidecap.sty}
+ {\usepackage{sidecap}
+  \let\marginpar\marginnote
+  \setboolean{sidecap}{true}}
+ {\setboolean{sidecap}{false}}
+
+% Umdefinieren des Makros \LyX für PDF-Lesezeichen
+\def\LyX{\texorpdfstring{%
+  L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+  {LyX }}
+
+% Damit der Index den Namen "Stichwortverzeichnis" erhält
+\addto\captionsngerman{\renewcommand{\indexname}{Stichwortverzeichnis}}
+\end_preamble
+\options fleqn,liststotoc,bibtotoc,idxtotoc,BCOR7.5mm,titlepage,tablecaptionabove
+\use_default_options false
+\maintain_unincluded_children false
+\language ngerman
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_title "Das LyX-Handbuch der Einfügungen: Abbildungen, Tabellen, Gleitobjekte, Notizen und Boxen"
+\pdf_author "LyX Team, Uwe Stöhr, deutsche Übersetzung: Hartmut Haase"
+\pdf_subject "LyX-Dokumentation über Abbildungen, Tabellen, Gleitobjekte, Notizen und Boxen"
+\pdf_keywords "LyX, Abbildungen, Tabellen, Gleitobjekte, Notizen, Boxen"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle false
+\pdf_quoted_options "linkcolor=black, citecolor=black, urlcolor=blue, filecolor=blue,  pdfpagelayout=OneColumn, pdfnewwindow=true,  pdfstartview=XYZ, plainpages=false, pdfpagelabels"
+\papersize a4paper
+\use_geometry false
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\use_undertilde 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Stichwortverzeichnis
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language german
+\papercolumns 1
+\papersides 2
+\paperpagestyle default
+\bullet 1 0 9 -1
+\bullet 2 2 35 -1
+\bullet 3 2 7 -1
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict true
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+addcontentsline{toc}{chapter}{
+\backslash
+numberline{}{Bibliography}}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintAll"
+bibfiles "Bib/web,Bib/Programmieren/c++/C++,Bib/Programmieren/CLI/C++-CLI,Bib/Programmieren/CSharp/CSharp,Bib/Latex"
+options "IEEEtran"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BB:1995"
+
+\end_inset
+
+J.
+ W.
+ Barrett and J.
+ F.
+ Blowey
+\begin_inset space ~
+\end_inset
+
+(1995), 
+\shape italic
+An error bound for the finite element approximation of the Cahn-Hilliard
+ equation with logarithmic free energy
+\shape default
+, Numerische Mathematics, 
+\series bold
+72
+\series default
+, pp
+\begin_inset space ~
+\end_inset
+
+1--20.
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BB:1997"
+
+\end_inset
+
+J.
+ W.
+ Barrett and J.
+ F.
+ Blowey
+\begin_inset space ~
+\end_inset
+
+(1997), 
+\shape italic
+Finite element approximation of a model for phase separation of a multi-componen
+t alloy with non-smooth free energy
+\shape default
+, Numerische Mathematics, 
+\series bold
+77
+\series default
+, pp
+\begin_inset space ~
+\end_inset
+
+1--34.
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BB:2001"
+
+\end_inset
+
+J.
+ W.
+ Barrett and J.
+ F.
+ Blowey
+\begin_inset space ~
+\end_inset
+
+(2001), 
+\shape italic
+An improved error bound for finite element approximation of a model for
+ phase separation of a multi-component alloy with a concentration dependent
+ mobility matrix
+\shape default
+, Numerische Mathematics, 
+\series bold
+88
+\series default
+, pp
+\begin_inset space ~
+\end_inset
+
+255--297.
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "BR:1969"
+
+\end_inset
+
+G.
+ Birkhoff and G.
+ C.
+ Rota
+\begin_inset space ~
+\end_inset
+
+(1969), 
+\series bold
+Ordinary Differential Equations
+\series default
+, Second Ed., Xerox College Publishing, Lexington, Massachusetts
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "Tho:1997"
+
+\end_inset
+
+V.
+ Thomé
+\begin_inset space ~
+\end_inset
+
+(1997), 
+\series bold
+Galerkin Finite Element Methods for Parabolic Problems
+\series default
+, Springer-Verlag, Berlin-Heidelberg.
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "HTTP:Riptide"
+
+\end_inset
+
+Keith Young, Riptide Plugin for Cinema 4d 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://skinprops.com/download.php"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "HTTP:Cin4dCollada"
+
+\end_inset
+
+C4 Engine Wiki:
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.terathon.com/wiki/index.php?title=Cinema_4D"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ZBrush:DisExp"
+
+\end_inset
+
+Pixologic Release - Displacement Exporter (Now included in ZBrush 3.1) 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.zbrushcentral.com/zbc/showthread.php?t=029789"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Bibliography
+\labelwidthstring Literaturverzeichnis
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "ZBrush:ADE"
+
+\end_inset
+
+Amanda Knight, ZBrush to Cinema4D.
+ ZBrush Info, 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://www.pixologic.com/docs/index.php/ZBrush_to_Cinema4D#The_ADE_plugin"
+target "http://www.pixologic.com/docs/index.php/ZBrush_to_Cinema4D#The_ADE_plugin"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

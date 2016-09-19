@@ -1,0 +1,453 @@
+
+-X-X-X-X- Sa, 27 Feb 2016 01:52:00 -----------------------------------------------------------
+BSP for collisions?
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 23 Feb 2016 05:59:14 -----------------------------------------------------------
+maybe build a map to store the already checked collisions
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- So, 21 Feb 2016 01:45:39 -----------------------------------------------------------
+Sprite row setup ... like 
+"   A   A   A   "
+" B B       B B "
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 18 Feb 2016 22:10:51 -----------------------------------------------------------
+Todo:
+- Billboards ( maybe the sprite clone draw is better than this)
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 13 Feb 2016 23:40:15 -----------------------------------------------------------
+Todo: 
+- continue work on Humbug\projects\Humbug\src\Screens\InfoText.h
+- implement Zoom in for text and CCanvas or CImage, Humbug\projects\Humbug\src\Screens\ZoomInScreen.cpp
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 13 Feb 2016 18:05:35 -----------------------------------------------------------
+copy old:
+Copy_Files_To_Target(Humbug "${SDLIMAGE_LIBRARY_DLLS_EXT}")
+Todo: use a copy-func that copies a text file to a test lua dir in DEBUG and package it when in RELEASE.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 21:59:20 -----------------------------------------------------------
+Todo: Artwork should run before all MakeVFS. So MakeVFS should be dependant on it.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 16:32:43 -----------------------------------------------------------
+msbuild Humbug.sln /m /v:n /p:Configuration=Debug /t:"External Library\LuaBind"
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 15:36:34 -----------------------------------------------------------
+Boost build:
+
+bootstrap
+b2 headers
+
+MSVC12
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-git_latest
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-filesystem stage
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Fr, 12 Feb 2016 15:34:07 -----------------------------------------------------------
+http://kalyanchakravarthy.net/blog/git-discard-submodule-changes.html
+
+E:\Devel\CPP\Libs\boost\boost-git_latest>
+git reset --hard
+git submodule update --init
+
+or
+https://gist.github.com/codeswimmer/1377447
+git submodule foreach git submodule init && git submodule update --recursive
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 28 Jan 2016 10:05:28 -----------------------------------------------------------
+Todo:
+Statemachine
+Info:
+that term i searched was "ease in, ease out" ... for animation curves.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 26 Jan 2016 02:53:13 -----------------------------------------------------------
+MakeVFS or something should copy 
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Tutor\Images\Tutor\A1\Class Diagram Screen01.jpg
+to 
+E:\Projects\C++\Humbug\projects\Humbug\Artwork\Work\Images\Tutor\A1\Class Diagram Screen01.jpg
+
+means 
+	Artwork\Tutor\Images
+to 	Artwork\Work\Images\
+
+*******
+
+    tmpfsurf = m_Loader.FL_LOADIMG("Images/Tutor/A1/Class Diagram Screen01");
+should be able to auto-load "Images/Tutor/A1/Class Diagram Screen01.png"
+
+*******
+projects\build\cmake\Modules\PackageCreate.cmake
+winzip part is broken
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 20 Jan 2016 14:58:29 -----------------------------------------------------------
+Todo:
+ - Timeline
+ - Animation
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 14 Jan 2016 01:31:18 -----------------------------------------------------------
+char names: pippa and felicity
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 13 Jan 2016 03:34:05 -----------------------------------------------------------
+Todo
+Scrolling Text 
+	x from left to right
+	- from top to bottom
+	- star wars
+hookable das sich einklinken laesst vom screen und automatisch in draw, idle und update mit keyboard usw. eingebunden wird	
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 12 Jan 2016 02:26:18 -----------------------------------------------------------
+Todo
+
+CLabel:
+correct offset (from SetPosition) when rendering CControls.
+
+CImage: 
+transform operations ( resize, move, rotate )
+- for init from surface 
+- or for the CCanvas itself
+- or as modifier when rendering
+
+need a standardized or normalized system for CCanvasRenderer, etc. modifiers. moving things by degrees in a rectangle coord system
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- So, 10 Jan 2016 00:27:39 -----------------------------------------------------------
+Todo: Canvas.h  CImage docs
+make a list of what the components are used for.
+like 
+CImage -> easy to use Canvas with Renderput( CPoint destination) ... 1:1 render)
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 09 Jan 2016 00:48:35 -----------------------------------------------------------
+Todo: Integrate 
+SET(GuiLib_documents
+		Readme.md
+		docs/!DevelNotes.txt
+)
+SOURCE_GROUP(Docs FILES ${GuiLib_documents})
+
+(from E:\Projects\C++\Humbug\projects\GuiLib\CMakeLists.txt)
+into ADD_LIBRARY_X macro to enforce the usage of docs and Readme
+
+This is now: 
+ENSURE_DOCS_ARE_PRESENT(HumbugCore_documents)
+and include the var HumbugCore_documents in
+
+ADD_LIBRARY_X(HumbugCore ${LIBRARY_TYPE}
+        stdafx.h
+		...
+		${HumbugCore_documents}
+)
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 04 Jan 2016 14:56:47 -----------------------------------------------------------
+TestLevel with CSeamlessImage needs a camera that can be positioned via WASD keys like in BlaScreen::OnEvent
+see       m_pKeyHandler2 = new PlayerKeys(400, 200);
+
+so Todo: implement WASD move of seamless Image. aka scroller game
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 04 Jan 2016 11:11:03 -----------------------------------------------------------
+Todo: 
+- scroll seamless image around
+- add music
+- add selection menu screen
+- trails?
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mo, 04 Jan 2016 00:15:55 -----------------------------------------------------------
+    else if( sym == SDLK_1 )   {
+        HookMgr()->EnableHookable("StartScreen");
+    else if( sym == SDLK_2 )   {
+        HookMgr()->EnableHookable("Highscores");
+    else if( sym == SDLK_3 )   {
+        HookMgr()->EnableHookable("TestLevel");
+	else if( sym == SDLK_4 )   {
+		HookMgr()->EnableHookable("Bla");
+	else if( sym == SDLK_5 )   {
+		HookMgr()->EnableHookable("Tiles");
+	else if( sym == SDLK_6 )   {
+		HookMgr()->EnableHookable("Lua");
+	else if( sym == SDLK_7 )   {
+		HookMgr()->EnableHookable("Hopper");
+	else if( sym == SDLK_8 )   {
+		HookMgr()->EnableHookable("LevelA");
+    else if (sym == SDLK_9)   {
+        HookMgr()->EnableHookable("Simple");
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 01 Jul 2015 14:47:40 -----------------------------------------------------------
+Error	1	error LNK2019: unresolved external symbol "__declspec(dllimport) protected: __cdecl boost::archive::detail::basic_iarchive::~basic_iarchive(void)" (__imp_??1basic_iarchive@detail@archive@boost@@IEAA@XZ) referenced in function "int `protected: __cdecl boost::archive::detail::common_iarchive<class boost::archive::binary_iarchive>::common_iarchive<class boost::archive::binary_iarchive>(unsigned int)'::`1'::dtor$0" (?dtor$0@?0???0?$common_iarchive@Vbinary_iarchive@archive@boost@@@detail@archive@boost@@IEAA@I@Z@4HA)	E:\Projects\C++\Humbug\build2013x64\Playground\boost_serialization01.obj	boost_serialization01
+
+fixed ... buggered lib compilation :/
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 01 Jul 2015 13:26:27 -----------------------------------------------------------
+switch to boost Boost.Signals2 !
+
+see E:\Devel\CPP\Libs\boost\boost-1.55.0\libs\signals\src\named_slot_map.cpp
+#if BOOST_WORKAROUND(_MSC_VER, <= 1800)
+void named_slot_map_iterator::decrement() { assert(false); }
+void named_slot_map_iterator::advance(difference_type) { assert(false); }
+#endif
+
+
+Porting from Boost.Signals to Boost.Signals2 http://www.boost.org/doc/libs/1_39_0/doc/html/signals2/porting.html
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Mi, 01 Jul 2015 12:11:25 -----------------------------------------------------------
+build examples
+set PATH=E:\Devel\CPP\Libs\boost\boost-1.55.0;E:\Devel\CPP\Libs\boost\boost-1.55.0\lib\x64\lib;%PATH%
+b2 -j6 --build-dir=".\build" --toolset=msvc-12.0 address-model=64
+-----------------------------------------------------------------------------------------------
+
+
+-X-X-X-X- Mi, 01 Jul 2015 13:02:55 -----------------------------------------------------------
+MT-GD class boost::signals::detail::named_slot_map_iterator & boost::iterators::detail::iterator_facade_base<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::iterators::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64,0,0>::derived(void)
+   GD class boost::signals::detail::named_slot_map_iterator & boost::iterator_facade<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64>::derived(void)
+MT-GD class boost::signals::detail::named_slot_map_iterator const & boost::iterators::detail::iterator_facade_base<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::iterators::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64,0,0>::derived(void)
+   GD class boost::signals::detail::named_slot_map_iterator const & boost::iterator_facade<class boost::signals::detail::named_slot_map_iterator,struct boost::signals::detail::connection_slot_pair,struct boost::forward_traversal_tag,struct boost::signals::detail::connection_slot_pair &,__int64>::derived(void)
+   
+-> E:\Devel\CPP\Libs\boost\boost-1.55.0\boost\iterator\iterator_facade.hpp(604)    
+-----------------------------------------------------------------------------------------------
+
+
+-X-X-X-X- Montag, 29. Juni 2015 -----------------------------------------------------------------------------
+Boost build:
+
+MSVC12
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-1.55.0
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-12.0 address-model=64 --stagedir=lib\x64 --with-filesystem stage
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Sonntag, 28. Dezember 2014 -----------------------------------------------------------------------------
+
+Git Nerft !
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Mittwoch, 17. September 2014 -----------------------------------------------------------------------------
+
+For Unit Testing
+E:\Projects\C++\Humbug\build2008x64>
+msbuild Humbug.sln /p:Configuration=Debug /t:UnitTests\boosttest-Humbug_HumbugShared_UnitTests-gameobjects && Humbug\HumbugShared\UnitTests\Debug\boosttest-Humbug_HumbugShared_UnitTests-gameobjects.exe -r detailed
+
+----------------------------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 08 Mrz 2014 23:03:38 -----------------------------------------------------------
+; --------------------------------------------------------
+; Example for exporting binary files from Tile Studio
+;
+; Version 1.0 - June 6, 2004
+; Mike Wiering (mike@wieringsoftware.nl)
+; --------------------------------------------------------
+
+
+#binfile <ProjectName>.bin 16
+
+;"This text will be included"
+;<0><0><0><0><0>
+#tileset
+;#tilebitmap <TileSetIdentifier>.png 256
+;#end tilebitmap
+
+<TileCount>
+<TileWidth>
+<TileHeight>
+<0x55555555>
+<0x55555555>
+<0x55555555>
+<0x55555555>
+<0x55555555>
+<TileSetIdentifier><0:"8">
+
+#map
+
+<MapWidth><MapHeight>
+<MapIdentifier><0:"8">
+
+#mapdata  
+<TileNumber>
+<BoundMapValue>
+#end mapdata
+
+#end map
+#end tileset
+#end binfile
+; --------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-X-X-X-X- Samstag, 8. März 2014 -----------------------------------------------------------------------------
+
+; --------------------------------------------------------
+; Example for exporting binary files from Tile Studio
+;
+; Version 1.0 - June 6, 2004
+; Mike Wiering (mike@wieringsoftware.nl)
+; --------------------------------------------------------
+
+
+#binfile <ProjectName>.bin 8
+
+"This text will be included"
+<0><0><0><0><0>
+
+#tileset
+
+<TileWidth:"32">
+<TileHeight:"32">
+<TileCount:"32">
+
+#map
+
+<MapWidth>
+<TileSetIdentifier><MapIdentifier><MapHeight>
+
+<TileSetIdentifier><MapIdentifier>
+<MapWidth><MapHeight>
+
+#mapdata  
+<TileNumber:32>
+#end mapdata
+
+<TileSetIdentifier><MapIdentifier><MapHeight><MapWidth>
+#mapdata
+<BoundMapValue>
+#end mapdata
+
+#end map
+
+#end tileset
+
+#end binfile
+
+; --------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Montag, 13. Mai 2013 -----------------------------------------------------------------------------
+
+HAL Institut für geistesgestörte Roboter.
+----------------------------------------------------------------------------------------------------------------
+-X-X-X-X- Mittwoch, 28. September 2011 -----------------------------------------------------------------------------
+
+CMake Variable Mappings
+
+As example, if the iconv library is found, ${HAVE_ICONV}
+is set to true and in the corresponding config.h
+  #define HAVE_ICONV 1
+ist set available as defined like above.
+
+If there is a CMake User Option like USE_NLS (For enabling
+native language support in your program), that enables a project
+or library controlling CMake Variable like ${YourProgram_NLS}
+  #ifdef Humbug_NLS
+  #  define ENABLE_NLS 1
+  ... other NLS related options ...
+  #endif
+a config.h define with ENABLE_NLS should signal that. It is better
+to wrap that Humbug_NLS define with ENABLE_NLS for later 
+changes.
+
+As a summary:
+
+      Type       |  CMake    maps to |   config.h
+========================================================
+configure Option | HAVE_ICONV        |  HAVE_ICONV
+CMake Option     | YourProgram_NLS   |  YourProgram_NLS
+Global Option    | USE_NLS           |  ENABLE_NLS
+
+----------------------------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 28 Jul 2011 14:55:31 -----------------------------------------------------------
+
+Coding Style
+http://www.vtk.org/Wiki/ITK_Coding_Style_Guide
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 23 Jul 2011 04:13:56 -----------------------------------------------------------
+
+- Xerxes für vc100 einstellen.
+- NLS Problem. Wenn NLS ausgeschaltet ist zeigt CMake einen Fehler an.
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Do, 21 Jul 2011 05:33:42 -----------------------------------------------------------
+
+- Eine ZipLib bauen, die auf miniunz und minizip basiert 
+  (c:\devel\zlib-1.2.5\contrib\minizip\miniunz.c).
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 11 Jun 2011 08:34:25 -----------------------------------------------------------
+
+global.h 
+========
+Muss in jede Interface-Header-Datei, also die .h Dateien, die der Benutzer 
+einbindet, als Erste #include eingetragen werden.
+global.h definiert den Haupt-Namespace, einfache warning Macros und legt die Grobstruktur
+fest, wie "build/cmake/include/platform.h" die Sichtbarkeit der Bibliotheksfunktionen
+definiert.
+EXPLICITELY_USE_PLATFORM_VARS	Es werden die nachfolgenden Variablen in der globalen 
+								PLATFORM-Form genutzt. 
+								* PLATFORM_ALL_DYN_LINK
+								* PLATFORM_SOURCE
+								* PLATFORM_ALL_STATIC_LINK
+								
+CppStructz_ALL_DYN_LINK			Interface als DLL Export oder Import Funktionen
+								bereitstellen. Im Code 
+									class PLATFORM_DECL TestClass { ... };
+								benutzen. Todo: Vielleicht hier CSZ_EXPORT benutzen.
+								
+CppStructz_SOURCE				Zur Erstellung einer DLL setzen. Funktionen sind dann
+								dllspec(dllexport) unter Windows.
+								
+CppStructz_ALL_STATIC_LINK		Alles statisch linken, keine DLL-Erzeugung.
+
+Korrespondierend dazu ist im Macro ADD_LIBRARY_X aus library.cmake der zweite Parameter
+SHARED oder STATIC zu setzen. Dieser definiert automatisch die benötigten Preprocessor-
+Parameter. Dieses Macro setzt z.B. ADD_DEFINITIONS("-D${PROJECT_NAME}_SOURCE") und
+ADD_DEFINITIONS("-DPLATFORM_SOURCE").
+Die CMake eigene Variable {Projektname}_EXPORTS (z.B. CppStructz_EXPORTS), die eine
+DLL Erstellung anzeigt, wird nicht benötigt. Die ${PROJECT_NAME}_SOURCE Definitionen
+sind vorzuziehen.
+
+stdafx.h 
+========
+Muss als Pre-Compiled-Header in jede cpp source Datei. In stdafx.h wird auch 
+global.h und danach dann 
+	#ifdef HAVE_CONFIG_H
+	#	include <config.h>
+	#endif
+eingebunden. Damit ist die config für den Bibliotheks-Benutzer nicht sichtbar.
+-----------------------------------------------------------------------------------------------
+
+
+
+
+Check for boost usage:
+
+root@Pubsi /cygdrive/d/E/Projects/C++/Humbug/projects/CppStructz/src/CppStructz
+$ grep -li -R boost * | grep -v \.svn
+
+-X-X-X-X- Mo, 13 Jun 2011 01:16:26 -----------------------------------------------------------
+
+Generate a project skeleton
+D:\E\Projects\C++\Humbug\projects\QBounce>
+..\build\scripts\createskeleton.bat QBounce
+-----------------------------------------------------------------------------------------------

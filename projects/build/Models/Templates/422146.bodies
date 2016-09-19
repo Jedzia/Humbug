@@ -1,0 +1,5 @@
+class SaveCommand
+!!!398722.cpp!!!	execute() : void
+// open a file browser window to specify a save-file.
+std::string filename("example.txt");
+doc.save(filename);

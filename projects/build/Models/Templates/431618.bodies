@@ -1,0 +1,23 @@
+class Closed_State
+!!!420226.cpp!!!	_completion(inout stm : Document) : bool
+  if (false) {
+    stm._set_currentState(stm._document_state._deleted_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Document.Deleted");
+#endif
+    stm._document_state._deleted_state.create(stm);
+    return (bool) 1;
+  }
+  return (bool) 0;
+!!!420354.cpp!!!	create(inout stm : Document) : void
+	_completion(stm);
+!!!420482.cpp!!!	_upper(inout stm : Document) : Document::AnyState
+  return &stm._document_state;
+!!!422274.cpp!!!	myTrigger(inout stm : Document) : void
+  if (_completion(stm)) return;
+  {
+    stm._set_currentState(stm._document_state._open_state);
+#ifdef VERBOSE_STATE_MACHINE
+    puts("DEBUG : current state is now .Document.Open");
+#endif
+  }

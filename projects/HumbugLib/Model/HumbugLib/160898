@@ -1,0 +1,379 @@
+format 76
+"shared" // shared
+  revision 8
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "HumbugLib/shared/"
+  cpp_src_dir "HumbugLib/shared/"
+  cpp_namespace "HumbugLIB_NAMESPACE"
+  classview 173954 "shared"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 193410 // shared
+    class 271234 "Helpers"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+    end
+
+    class 312322 "Txt"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 298498 "upperCase"
+	class_operation public explicit_return_type "string"
+	nparams 1
+	  param in name "s" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+
+      operation 298626 "lowerCase"
+	class_operation public explicit_return_type "string"
+	nparams 1
+	  param in name "s" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+
+    class 318850 "FileHelper"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      operation 305154 "extension"
+	class_operation public explicit_return_type "string"
+	nparams 1
+	  param in name "fullpath" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+      end
+    end
+  end
+
+  deploymentview 193410 "shared"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    artifact 214018 "Helpers"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+//#include \"HumbugLib/global.h\"
+${includes}
+${declarations}
+${namespace_start}
+
+#ifndef CR_INT64_C
+template <typename T>
+inline const T &qMin(const T &a, const T &b) { if (a < b) return a; return b; }
+template <typename T>
+inline const T &qMax(const T &a, const T &b) { if (a < b) return b; return a; }
+template <typename T>
+inline const T &qBound(const T &min, const T &val, const T &max)
+{ return qMax(min, qMin(max, val)); }
+
+#if defined(WIN32) && !defined(Q_CC_GNU) && !defined(Q_CC_MWERKS)
+#  define CR_INT64_C(c) c ## i64    /* signed 64 bit constant */
+#  define CR_UINT64_C(c) c ## ui64   /* unsigned 64 bit constant */
+typedef __int64 qint64;            /* 64 bit signed */
+typedef unsigned __int64 quint64;  /* 64 bit unsigned */
+#else
+#  define CR_INT64_C(c) static_cast<long long>(c ## LL)     /* signed 64 bit constant */
+#  define CR_UINT64_C(c) static_cast<unsigned long long>(c ## ULL) /* unsigned 64 bit constant */
+typedef long long qint64;           /* 64 bit signed */
+typedef unsigned long long quint64; /* 64 bit unsigned */
+#endif
+
+
+//template <typename T> static inline T *qGetPtrHelper(T *ptr) { return ptr; }
+//template <typename T> static inline T *qGetPtrHelper(T *ptr) { return ptr.get(); }
+//template <typename T> static inline T *qGetPtrHelper(T ptr) { return ptr.get(); }
+//template <typename Wrapper> static inline typename Wrapper::pointer qGetPtrHelper(const Wrapper &p) { return p.data(); }
+//template <typename Wrapper> static inline typename Wrapper::pointer qGetPtrHelper(const Wrapper &p) { return p.get(); }
+
+#define CR_DECLARE_PRIVATEX(Class) \\
+    inline Class##Private* d_func() { return reinterpret_cast<Class##Private *>(qGetPtrHelper(d_ptr)); } \\
+    inline const Class##Private* d_func() const { return reinterpret_cast<const Class##Private *>(qGetPtrHelper(d_ptr)); } \\
+    friend class Class##Private;
+
+#define CR_DECLARE_PRIVATE(Class) \\
+    inline Class##Private* d_func() { return reinterpret_cast<Class##Private *>(d_ptr.get()); } \\
+    inline const Class##Private* d_func() const { return reinterpret_cast<const Class##Private *>(d_ptr.get()); } \\
+    friend class Class##Private;
+
+#define CR_DECLARE_PRIVATE_D(Dptr, Class) \\
+    inline Class##Private* d_func() { return reinterpret_cast<Class##Private *>(Dptr); } \\
+    inline const Class##Private* d_func() const { return reinterpret_cast<const Class##Private *>(Dptr); } \\
+    friend class Class##Private;
+
+#define CR_DECLARE_PUBLIC(Class)                                    \\
+    inline Class* q_func() { return static_cast<Class *>(q_ptr); } \\
+    inline const Class* q_func() const { return static_cast<const Class *>(q_ptr); } \\
+    friend class Class;
+
+#define CR_D(Class) Class##Private * const d = d_func()
+#define CR_Q(Class) Class * const q = q_func()
+
+
+class PLATFORM_DECL CrFlag
+{
+    int i;
+public:
+    inline CrFlag(int i);
+    inline operator int() const { return i; }
+};
+
+inline CrFlag::CrFlag(int ai) : i(ai) {}
+
+class PLATFORM_DECL CrIncompatibleFlag
+{
+    int i;
+public:
+    inline explicit CrIncompatibleFlag(int i);
+    inline operator int() const { return i; }
+};
+
+inline CrIncompatibleFlag::CrIncompatibleFlag(int ai) : i(ai) {}
+
+
+template<typename Enum>
+class CrFlags
+{
+    typedef void **Zero;
+    int i;
+public:
+    typedef Enum enum_type;
+    inline CrFlags(const CrFlags &f) : i(f.i) {}
+    inline CrFlags(Enum f) : i(f) {}
+    inline CrFlags(Zero = 0) : i(0) {}
+    inline CrFlags(CrFlag f) : i(f) {}
+
+    inline CrFlags &operator=(const CrFlags &f) { i = f.i; return *this; }
+    inline CrFlags &operator&=(int mask) { i &= mask; return *this; }
+    inline CrFlags &operator&=(unsigned int mask) { i &= mask; return *this; }
+    inline CrFlags &operator|=(CrFlags f) { i |= f.i; return *this; }
+    inline CrFlags &operator|=(Enum f) { i |= f; return *this; }
+    inline CrFlags &operator^=(CrFlags f) { i ^= f.i; return *this; }
+    inline CrFlags &operator^=(Enum f) { i ^= f; return *this; }
+
+    inline operator int() const { return i; }
+
+    inline CrFlags operator|(CrFlags f) const { CrFlags g; g.i = i | f.i; return g; }
+    inline CrFlags operator|(Enum f) const { CrFlags g; g.i = i | f; return g; }
+    inline CrFlags operator^(CrFlags f) const { CrFlags g; g.i = i ^ f.i; return g; }
+    inline CrFlags operator^(Enum f) const { CrFlags g; g.i = i ^ f; return g; }
+    inline CrFlags operator&(int mask) const { CrFlags g; g.i = i & mask; return g; }
+    inline CrFlags operator&(unsigned int mask) const { CrFlags g; g.i = i & mask; return g; }
+    inline CrFlags operator&(Enum f) const { CrFlags g; g.i = i & f; return g; }
+    inline CrFlags operator~() const { CrFlags g; g.i = ~i; return g; }
+
+    inline bool operator!() const { return !i; }
+
+    inline bool testFlag(Enum f) const { return (i & f) == f && (f != 0 || i == int(f) ); }
+};
+
+#define CR_DECLARE_FLAGS(Flags, Enum)\\
+    typedef CrFlags<Enum> Flags;
+
+#if defined WIN32 && _MSC_VER < 1300
+# define CR_DECLARE_INCOMPATIBLE_FLAGS(Flags)
+#else
+# define CR_DECLARE_INCOMPATIBLE_FLAGS(Flags) \\
+    inline CrIncompatibleFlag operator|(Flags::enum_type f1, int f2) \\
+{ return CrIncompatibleFlag(int(f1) | f2); }
+#endif
+
+#define CR_DECLARE_OPERATORS_FOR_FLAGS(Flags) \\
+    inline CrFlags<Flags::enum_type> operator|(Flags::enum_type f1, Flags::enum_type f2) \\
+{ return CrFlags<Flags::enum_type>(f1) | f2; } \\
+    inline CrFlags<Flags::enum_type> operator|(Flags::enum_type f1, CrFlags<Flags::enum_type> f2) \\
+{ return f2 | f1; } CR_DECLARE_INCOMPATIBLE_FLAGS(Flags)
+
+
+#if defined(Q_CC_INTEL) && !defined(Q_OS_WIN) || defined(Q_CC_RVCT)
+template <typename T>
+inline void qUnused(T &x) { (void)x; }
+#  define CR_UNUSED(x) qUnused(x);
+#else
+#  define CR_UNUSED(x) (void)x;
+#endif
+
+#endif // ifndef CR_INT64_C
+
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"HumbugLib/stdafx.h\"
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 271234 // Helpers
+      end
+    end
+
+    artifact 240258 "Txt"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"HumbugLib/global.h\"
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"HumbugLib/stdafx.h\"
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 312322 // Txt
+      end
+    end
+
+    artifact 246786 "FileHelper"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"HumbugLib/global.h\"
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"HumbugLib/stdafx.h\"
+${includes}
+${namespace_start}
+
+# ifdef XXXBOOST_WINDOWS_API
+
+    const wchar_t separator = L'/';
+    const wchar_t preferred_separator = L'\\\\';
+    const wchar_t* const separators = L\"/\\\\\";
+    const wchar_t* separator_string = L\"/\";
+    const wchar_t* preferred_separator_string = L\"\\\\\";
+    const wchar_t colon = L':';
+    const wchar_t dot = L'.';
+    const std::string dot_path(L\".\");
+    const std::string dot_dot_path(L\"..\");
+
+# else
+
+    const char separator = '/';
+    const char preferred_separator = '/';
+    const char* const separators = \"/\";
+    const char* separator_string = \"/\";
+    const char* preferred_separator_string = \"/\";
+    const char colon = ':';
+    const char dot = '.';
+    const std::string dot_path(\".\");
+    const std::string dot_dot_path(\"..\");
+
+# endif
+
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 318850 // FileHelper
+      end
+    end
+  end
+end

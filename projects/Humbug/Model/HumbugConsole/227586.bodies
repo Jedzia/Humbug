@@ -1,0 +1,38 @@
+class Transformer
+!!!264962.cpp!!!	transform(in rTextPosition : TextPosition) : string
+if (rTextPosition.hasModifier())
+{
+    const std::string& modifier = rTextPosition.modifier();
+    const TemplateModifier* const tmplmod = mrFactory.getModifier(modifier);
+    std::cout << "[Transformer] Has modifier [" << modifier << "]";
+    std::cout << std::endl;
+    if (tmplmod == NULL)
+    {
+        return rTextPosition.name();
+    }
+    
+    return tmplmod->transform(rTextPosition.name());
+} 
+else
+{
+    std::cout << "[Transformer] No modifier" << std::endl;
+}
+return rTextPosition.name();
+!!!244610.cpp!!!	templatize(in rDoc : TextDocument) : void
+std::cout << "Starting Transformation" << std::endl;
+typedef std::list<const TextPosition>::const_iterator const_iterator;
+const std::list<const TextPosition>& mTemplPositions = rDoc.templatePositions();
+for( const_iterator i = mTemplPositions.begin(), end = mTemplPositions.end();
+    i != end; ++i )
+{
+    const TextPosition& pos = (*i);
+    const std::string& modifier = pos.modifier();
+    //std::cout << "Template [" << pos << "," << startposition << "] " << s << std::endl;
+    std::cout << "Template [" << pos.getLinenr() << "," << pos.getColumn() 
+        << "](" << modifier << ") \"" << pos.getText() << "\"" << std::endl;
+    std::string& result = transform(pos);
+    std::cout << "Result " << result;
+    std::cout << std::endl;
+}
+!!!272386.cpp!!!	checkTemplates(in rTemplateList : ConfigOptionList [*]) : bool
+return false;

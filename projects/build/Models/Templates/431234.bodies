@@ -1,0 +1,19 @@
+class AnyState
+!!!422146.cpp!!!	myTrigger(inout stm : Document) : void
+  AnyState * st = _upper(stm);
+
+  if (st != 0)
+    st->myTrigger(stm);
+#ifdef VERBOSE_STATE_MACHINE
+  else
+    puts("DEBUG : transition myTrigger not expected");
+#endif
+!!!422530.cpp!!!	clostDocument(inout stm : Document) : void
+  AnyState * st = _upper(stm);
+
+  if (st != 0)
+    st->clostDocument(stm);
+#ifdef VERBOSE_STATE_MACHINE
+  else
+    puts("DEBUG : transition clostDocument not expected");
+#endif

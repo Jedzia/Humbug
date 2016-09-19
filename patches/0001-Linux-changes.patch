@@ -1,0 +1,282 @@
+From cbc9cdff1331457f826f6e411efe0d2a4997d81b Mon Sep 17 00:00:00 2001
+Message-Id: <cbc9cdff1331457f826f6e411efe0d2a4997d81b.1385848350.git.jedzia@fish.(none)>
+From: Jedzia <jedzia@fish.(none)>
+Date: Sat, 30 Nov 2013 22:29:55 +0100
+Subject: [PATCH] Linux changes
+
+---
+ projects/CMakeLists.txt                            |    2 +-
+ projects/Humbug/Artwork/CMakeLists.txt             |    5 +++++
+ .../Humbug/HumbugShared/ScriptHost/LuaScript.h     |    4 +++-
+ .../Humbug/HumbugShared/ScriptHost/ScriptHost.cpp  |    4 ++--
+ projects/Humbug/HumbugShared/VFS/stdint.h          |    4 ++--
+ projects/Humbug/src/Screens/BlaScreen.h            |    2 ++
+ projects/Humbug/src/Screens/HighscoreScreen.h      |    2 ++
+ projects/Humbug/src/Screens/LuaScreen.cpp          |    2 +-
+ projects/Humbug/src/TestEventHandler.cpp           |   10 +++++-----
+ projects/HumbugLib/src/HumbugLib/LogManager.cpp    |    7 ++++---
+ projects/SupportLibs/luabind/CMakeLists.txt        |    3 ++-
+ projects/bindings.cmake                            |    6 +++---
+ 12 files changed, 32 insertions(+), 19 deletions(-)
+
+diff --git a/projects/CMakeLists.txt b/projects/CMakeLists.txt
+index 9be52f3..d2880e6 100644
+--- a/projects/CMakeLists.txt
++++ b/projects/CMakeLists.txt
+@@ -14,7 +14,7 @@
+ ## !!!!!! CMake Help: http://www.cmake.org/cmake/help/cmake-2-8-docs.html !!!!!
+ ## CMake Useful Variables: http://cmake.org/Wiki/CMake_Useful_Variables
+ 
+-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.10)
++CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7)
+ if ( CYGWIN )
+   set(CMAKE_LEGACY_CYGWIN_WIN32 1)
+ endif( CYGWIN )
+diff --git a/projects/Humbug/Artwork/CMakeLists.txt b/projects/Humbug/Artwork/CMakeLists.txt
+index 0581315..2b6fc9b 100644
+--- a/projects/Humbug/Artwork/CMakeLists.txt
++++ b/projects/Humbug/Artwork/CMakeLists.txt
+@@ -89,9 +89,14 @@ FUNCTION(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
+ 		#SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_file_name}.${_format}\"")
+ 		SET(Build_Image_ARGUMENTS "\"${_image_source_file}\" \"${_out_file_fullpath}\"")
+ 		#SET(Build_Image_ARGUMENTS "${_image_source_file}")
++
++		IF(UNIX)
++		  SEPARATE_ARGUMENTS(Build_Image_ARGUMENTS UNIX_COMMAND "${Build_Image_ARGUMENTS}")
++		ENDIF(UNIX)
+ 	ENDIF()
+ 
+ 	#SEPARATE_ARGUMENTS(Build_Image_ARGUMENTS_LIST WINDOWS_COMMAND "${Build_Image_ARGUMENTS}")
++
+ #	MESSAGE(STATUS "[IMGCONV-X] DEPENDS ${_image_source_file}")
+ #	MESSAGE(STATUS "[IMGCONV-X] OUTPUT ${_out_file_fullpath}")
+ 	
+diff --git a/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h b/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h
+index db17526..5317bb7 100644
+--- a/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h
++++ b/projects/Humbug/HumbugShared/ScriptHost/LuaScript.h
+@@ -23,6 +23,7 @@
+ #include <lua.hpp>
+ #include <luabind/luabind.hpp>
+ #include <string>
++//#include "ScriptHost.h"
+ 
+ namespace shost {
+   /** @class LuaRegHelper:
+@@ -48,7 +49,8 @@ public:
+       typedef LuaScript<Callee, X1, X2> type;
+ 
+       ~LuaScript(){
+-          ScriptHost::closeLua(m_L);
++          //ScriptHost::closeLua(m_L);
++	  lua_close(m_L);
+       }
+       /** LuaScript, run_script:
+        *  Detailed description.
+diff --git a/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp b/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp
+index 09d6f1a..0f0d202 100644
+--- a/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp
++++ b/projects/Humbug/HumbugShared/ScriptHost/ScriptHost.cpp
+@@ -95,7 +95,7 @@ private:
+ 
+           // *** Bind a class with functions that can be instantiated in Lua ***
+           // module(pimpl_->L) or
+-          module_& bindModule = module(pimpl_->L);
++          module_ bindModule = module(pimpl_->L);
+           bindModule
+           [
+               class_<testclass>("testclass")
+@@ -137,7 +137,7 @@ private:
+           // *** Bind a static function ***
+           //IOReg::createIO(pimpl_->L);
+           //luabind::def("sin", &std::sin);
+-          luabind::scope& fn = luabind::def("greet2", greet2);
++          luabind::scope fn = luabind::def("greet2", greet2);
+           bindModule[fn];
+ 
+           // A file
+diff --git a/projects/Humbug/HumbugShared/VFS/stdint.h b/projects/Humbug/HumbugShared/VFS/stdint.h
+index 203fdad..cf92a19 100644
+--- a/projects/Humbug/HumbugShared/VFS/stdint.h
++++ b/projects/Humbug/HumbugShared/VFS/stdint.h
+@@ -31,7 +31,7 @@ typedef unsigned __int64	uint_least64_t;
+ 
+ #elif defined UNIX
+ 
+-typedef signed char			int8_t;
++/*typedef signed char			int8_t;
+ typedef unsigned char		uint8_t;
+ typedef signed short		int16_t;
+ typedef unsigned short		uint16_t;
+@@ -47,7 +47,7 @@ typedef unsigned short		uint_least16_t;
+ typedef signed int			int_least32_t;
+ typedef unsigned int		uint_least32_t;
+ typedef signed long long	int_least64_t;
+-typedef unsigned long long	uint_least64_t;
++typedef unsigned long long	uint_least64_t;*/
+ 
+ #endif
+ 
+diff --git a/projects/Humbug/src/Screens/BlaScreen.h b/projects/Humbug/src/Screens/BlaScreen.h
+index 0d05c25..0fdb2f8 100644
+--- a/projects/Humbug/src/Screens/BlaScreen.h
++++ b/projects/Humbug/src/Screens/BlaScreen.h
+@@ -19,6 +19,8 @@
+ #include "GUI/Components/Screen.h"
+ #include "boost/smart_ptr/scoped_ptr.hpp"
+ 
++typedef struct _TTF_Font TTF_Font;
++
+ namespace gui {
+   class CSprite;
+   class CSpriteManager;
+diff --git a/projects/Humbug/src/Screens/HighscoreScreen.h b/projects/Humbug/src/Screens/HighscoreScreen.h
+index 0927b7e..bf0ab4a 100644
+--- a/projects/Humbug/src/Screens/HighscoreScreen.h
++++ b/projects/Humbug/src/Screens/HighscoreScreen.h
+@@ -4,6 +4,8 @@
+ #include <boost/smart_ptr/scoped_ptr.hpp>
+ #include <boost/ptr_container/ptr_vector.hpp>
+ 
++typedef struct _TTF_Font TTF_Font;
++
+ namespace gui { namespace components {
+ 	class CCanvas;
+ 	class CText;
+diff --git a/projects/Humbug/src/Screens/LuaScreen.cpp b/projects/Humbug/src/Screens/LuaScreen.cpp
+index acd91bf..efebebf 100644
+--- a/projects/Humbug/src/Screens/LuaScreen.cpp
++++ b/projects/Humbug/src/Screens/LuaScreen.cpp
+@@ -231,7 +231,7 @@ public:
+ 		pimpl_->script = s;
+ 
+         world.FPS = CApplication::FramesCap();
+-        CRectangle& screenRect = m_pMainCanvas->GetDimension();
++        CRectangle screenRect = m_pMainCanvas->GetDimension();
+         world.ScreenX = screenRect.GetW();
+         world.ScreenY = screenRect.GetH();
+ 
+diff --git a/projects/Humbug/src/TestEventHandler.cpp b/projects/Humbug/src/TestEventHandler.cpp
+index f1687a9..fb2818a 100644
+--- a/projects/Humbug/src/TestEventHandler.cpp
++++ b/projects/Humbug/src/TestEventHandler.cpp
+@@ -555,14 +555,14 @@ bool CTestEventHandler::OnMessage(MSGID MsgID, MSGPARM Parm1, MSGPARM Parm2, MSG
+             //successful lock
+             //set pixel
+             //m_pDrawCanvas->SetPixel( (Sint16)Parm1, (Sint16)Parm2, CColor(255, 255, 255) );
+-            CRectangle frect( (Sint16)(int)Parm1, (Sint16)(int)Parm2, 1, 1 );
+-
++            CRectangle frect( (Sint16)(long)Parm1, (Sint16)(long)Parm2, 1, 1 );
++            
+             //m_pMainCanvas->FillRect(frect, CColor::Red());
+             //m_pDrawCanvas->AddUpdateRect(frect);
+-            m_pBlue->Put( m_pDrawCanvas, CPoint( (Sint16)(int)Parm1, (Sint16)(int)Parm2 ) );
++            m_pBlue->Put( m_pDrawCanvas, CPoint( (Sint16)(long)Parm1, (Sint16)(long)Parm2 ) );
+ 
+             for (int i = 0; i < 50; i++) {
+-                m_pMainCanvas->AddUpdateRect( CRectangle( (Sint16)(int)Parm1, (Sint16)(int)Parm2,
++                m_pMainCanvas->AddUpdateRect( CRectangle( (Sint16)(long)Parm1, (Sint16)(long)Parm2,
+                                 m_pBlue->GetCanvas()->GetWidth(), m_pBlue->GetCanvas()->GetHeight() ) );
+             }
+ //            m_pMainCanvas->AddUpdateRect(CRectangle((Sint16)Parm1, (Sint16)Parm2,(Sint16)Parm1+1,
+@@ -591,4 +591,4 @@ bool CTestEventHandler::FilterEvent(SDL_Event* pEvent){
+ //declare application variable
+ CTestEventHandler TheApp;
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/projects/HumbugLib/src/HumbugLib/LogManager.cpp b/projects/HumbugLib/src/HumbugLib/LogManager.cpp
+index 2b0ad12..a781b36 100644
+--- a/projects/HumbugLib/src/HumbugLib/LogManager.cpp
++++ b/projects/HumbugLib/src/HumbugLib/LogManager.cpp
+@@ -18,6 +18,7 @@
+ //
+ #include "LogManager.h"
+ #include <algorithm>
++#include <stdexcept>
+ //#include <boost/thread.hpp>
+ #define HUMBUG_AUTO_MUTEX_NAME mutex
+ #define HUMBUG_LOCK_AUTO_MUTEX
+@@ -110,7 +111,7 @@ Log * LogManager::getLog( const std::string& name){
+     }
+     else {
+         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
+-        throw std::exception("Log not found. LogManager::getLog");
++        throw std::runtime_error("Log not found. LogManager::getLog");
+     }
+ }
+ 
+@@ -137,7 +138,7 @@ void LogManager::destroyLog(const std::string& name){
+ void LogManager::destroyLog(Log* log){
+     if(!log) {
+         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
+-        throw std::exception("Cannot destroy a null log. LogManager::destroyLog");
++        throw std::runtime_error("Cannot destroy a null log. LogManager::destroyLog");
+     }
+ 
+     destroyLog( log->getName() );
+@@ -170,7 +171,7 @@ Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
+     }
+     else {
+         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
+-        throw std::exception("Default log not found. LogManager::stream");
++        throw std::runtime_error("Default log not found. LogManager::stream");
+     }
+ }
+ 
+diff --git a/projects/SupportLibs/luabind/CMakeLists.txt b/projects/SupportLibs/luabind/CMakeLists.txt
+index 491c88a..aff5ba6 100644
+--- a/projects/SupportLibs/luabind/CMakeLists.txt
++++ b/projects/SupportLibs/luabind/CMakeLists.txt
+@@ -120,7 +120,6 @@ if(MSVC)
+         # ("comma operator within array index expression")
+         _luabind_add_flag(/wd4709 SUPPORTS_WD4709_FLAG)
+     endif()
+-    set( LUABIND_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Include-directory for Luabind." FORCE )
+ else()
+ 
+     set(possible_flags)
+@@ -190,6 +189,8 @@ else()
+     endif()
+ endif()
+ 
++set( LUABIND_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Include-directory for Luabind." FORCE )
++
+ include_directories(${Boost_INCLUDE_DIRS}
+     "${CMAKE_CURRENT_SOURCE_DIR}"
+     "${CMAKE_CURRENT_BINARY_DIR}"
+diff --git a/projects/bindings.cmake b/projects/bindings.cmake
+index 63f7709..471debb 100644
+--- a/projects/bindings.cmake
++++ b/projects/bindings.cmake
+@@ -102,7 +102,7 @@ SET(boost_tmp_component_list)
+     SET(_plural "")
+   ENDIF()
+   IF( boost_tmp_component_list_count GREATER 0 AND Boost_INCLUDE_DIR)
+-    MESSAGE( FATAL_ERROR "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
++    MESSAGE( WARNING "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
+ 	  "bindings.cmake in that way is not implemented, yet :(\n"
+ 	  "Include the \"${boost_tmp_component_list}\" component${_plural} at a call to FIND_PACKAGE( Boost ) at one central location:"
+ 	  " Here, in this script above at \nSET(USE_LIB_BOOST_COMPONENTS ...)\n"
+@@ -258,7 +258,7 @@ IF(USE_SDL_GFX)
+ ENDIF(USE_SDL_GFX)
+ 
+ IF(USE_LUA)
+-	FIND_PACKAGE(LUA52 REQUIRED)
++	FIND_PACKAGE(Lua52 REQUIRED)
+ 	IF( NOT LUA52_FOUND )
+ 		MESSAGE(FATAL_ERROR "LUA Library not found!")
+ 	ENDIF( NOT LUA52_FOUND )
+@@ -315,7 +315,7 @@ ENDIF(CHECK_STRINGS)
+ #...
+ #SET(CHECK_STRINGS )
+ # Besser wird es sein den PROJECT_NAME Ansatz zu nehmen, da die Variablen sonnst
+-# für den Aufrufer verloren sind.
++# f\FCr den Aufrufer verloren sind.
+ 
+ IF(USE_MAGICK)
+ 	FIND_PACKAGE(ImageMagick)
+-- 
+1.7.9.5
+
