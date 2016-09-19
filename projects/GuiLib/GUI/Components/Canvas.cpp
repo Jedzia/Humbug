@@ -115,7 +115,8 @@ void CCanvas::SetWindow(SDL_Window* pWindow) {
 
     if(pWindow) {
         m_pSurface = SDL_GetWindowSurface(pWindow);
-        m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED);
+        m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        dbgOut(__FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow << ")");
         m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
     }
 }
