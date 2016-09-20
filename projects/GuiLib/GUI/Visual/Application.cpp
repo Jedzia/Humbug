@@ -219,6 +219,7 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 //idle behavior
 void CApplication::OnIdle(int ticks)
 {
+    //m_pMainCanvas->MainRenderClear();
 	//by default, do nothing
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
     RaiseOnIdle(ticks);

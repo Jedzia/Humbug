@@ -21,16 +21,15 @@
 #include <GuiLib/GUI/Visual/Application.h>
 #include <boost/foreach.hpp>
 //
-#include <build/cmake/include/debug.h>
-#include <SDL_opengl.h>
 #include <GL\GLU.h>
+#include <SDL_opengl.h>
+#include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
 using namespace std;
 
-bool initGL()
-{
+bool initGL() {
     bool success = true;
     GLenum error = GL_NO_ERROR;
 
@@ -40,8 +39,7 @@ bool initGL()
 
     //Check for error
     error = glGetError();
-    if (error != GL_NO_ERROR)
-    {
+    if(error != GL_NO_ERROR) {
         printf("Error initializing OpenGL! %s\n", gluErrorString(error));
         success = false;
     }
@@ -52,8 +50,7 @@ bool initGL()
 
     //Check for error
     error = glGetError();
-    if (error != GL_NO_ERROR)
-    {
+    if(error != GL_NO_ERROR) {
         printf("Error initializing OpenGL! %s\n", gluErrorString(error));
         success = false;
     }
@@ -63,30 +60,30 @@ bool initGL()
 
     //Check for error
     error = glGetError();
-    if (error != GL_NO_ERROR)
-    {
+    if(error != GL_NO_ERROR) {
         printf("Error initializing OpenGL! %s\n", gluErrorString(error));
         success = false;
     }
 
     return success;
-}
+} // initGL
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
+    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_glContext(nullptr), m_pSurface(nullptr),
+    m_pTexture(nullptr),
     m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
     m_lstUpdateRects.clear();
 }
 
-void CCanvas::CanvasSwapWindow()
-{
+void CCanvas::CanvasSwapWindow() {
     SDL_GL_SwapWindow(m_pWindow);
 }
 
 CCanvas::CCanvas (SDL_Window* pWindow)
-    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_pSurface(nullptr), m_pTexture(nullptr),
+    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_glContext(nullptr), m_pSurface(nullptr),
+    m_pTexture(nullptr),
     m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
@@ -172,7 +169,9 @@ void CCanvas::SetWindow(SDL_Window* pWindow) {
         m_pSurface = SDL_GetWindowSurface(pWindow);
         // Renderer uses VSYNC
         m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-        dbgOut(__FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow << ")");
+        dbgOut(
+                __FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow <<
+                ")");
         m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
     }
 }
@@ -234,7 +233,8 @@ bool CCanvas::ApplyRenderers(CCanvasRendererStorage& storage,
             (*it)(target, const_cast<CCanvas *>(source), mdata);
             if(mdata.markedForDeletion) {
                 CCanvasRendererStorage::iterator it2 = it;
-                // it has to be checked, if removing has no side effects. see CSpriteManager::OnIdle for a solution with "while".
+                // it has to be checked, if removing has no side effects. see CSpriteManager::OnIdle
+                // for a solution with "while".
                 //removeList.push_back(it2);
                 removeList.insert(removeList.begin(), it2);
             }
@@ -322,11 +322,58 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
     FinalRenderCopy(texture, dstRect, srcRect);
 } // CCanvas::CanvasRenderCopy
 
+float rangeMap(float input, float outMin, float outMax, float inMin, float inMax) {
+    float slope = 1.0f * (outMax - outMin) / (inMax - inMin);
+    //float result = outMin + round(slope * (input - inMin));
+    float result = outMin + (slope * (input - inMin));
+
+    return result;
+}
+
+
 void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const {
     // all RenderCopy calls flow here
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
+
+    if (!sdl_src_rect) {
+        return;
+    }
+
+    //float x = sdl_dst_rect->x / static_cast<float>(m_pSurface->w);
+    //float y = sdl_dst_rect->y / static_cast<float>(m_pSurface->h);
+    //float x1 = sdl_dst_rect->x + sdl_dst_rect->w / static_cast<float>(m_pSurface->w);
+    //float y1 = sdl_dst_rect->y + sdl_dst_rect->h / static_cast<float>(m_pSurface->h);
+   
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
+    //glLoadIdentity();
+
+    SDL_Rect mrect;
+    mrect.x = 1024 / 2 - 50 + 00;
+    mrect.y = 768 / 2 - 50 + 00;
+    mrect.w = 100;
+    mrect.h = 100;
+
+    //const SDL_Rect* prect = sdl_src_rect;
+    const SDL_Rect* prect = sdl_dst_rect;
+    //sdl_src_rect = &mrect;
+
+    float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
+    float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
+    float y = rangeMap(prect->y, 1.0f, -1.0f, 0, 768);
+    float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
+
+    int aaa = 0;
+    glBegin(GL_QUADS);
+       glVertex2f(x, y);
+       glVertex2f(x, y1);
+       glVertex2f(x1, y1);
+       glVertex2f(x1, y);
+    glEnd();
+
+    SDL_GL_SwapWindow(m_pWindow);
+
 }
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
@@ -338,6 +385,7 @@ void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangl
     //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
     UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);
     RenderCopy(GetTexture(), dstRect, srcRect);
+    //  FinalRenderCopy(GetTexture(), dstRect, srcRect);
 }
 
 void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcRect) {
@@ -559,7 +607,7 @@ bool CCanvas::RenderDrawRect(const CRectangle& rect, const CColor* color) const 
 bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor* color) const {
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
     int ret = 0;
-    if (color) {
+    if(color) {
         ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
     }
 
@@ -568,7 +616,7 @@ bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor* color) const 
 }
 
 bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor& color) const {
-    int   ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA());
+    int ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA());
     ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
     return true;
 }

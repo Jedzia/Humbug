@@ -457,18 +457,23 @@ void CTestEventHandler::OnIdle(int ticks){
     //Clear color buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
+    float mod = (ticks % 60) / 60.0f;
+
+    /*
     //Render quad
     if (gRenderQuad)
     {
         glBegin(GL_QUADS);
-        glVertex2f(-0.5f, -0.5f);
-        glVertex2f(0.5f, -0.5f);
-        glVertex2f(0.5f, 0.5f);
-        glVertex2f(-0.5f, 0.5f);
+        glVertex2f(-0.5f*mod, -0.5f);
+        glVertex2f(0.5f, -0.5f*mod);
+        glVertex2f(0.5f*mod, 0.5f);
+        glVertex2f(-0.5f, 0.5f*mod);
         glEnd();
-    }
+    }*/
 
+    //m_pMainCanvas->MainUpdateAndRenderCopy();
     m_pMainCanvas->SwapWindow();
+
     //SDL_GL_SwapWindow(gWindow);
 
 
