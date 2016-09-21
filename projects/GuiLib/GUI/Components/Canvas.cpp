@@ -1,17 +1,16 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of HumbugGL, the strangest game ever.
+ * This file is part of Playground, your C++ vacation spot.
  * License details can be found in the file COPYING.
- * Copyright (c) 2013, EvePanix. All rights reserved.
+ * Copyright (c) 2016, EvePanix. All rights reserved.
  *
  * \brief      This file contains the definition of
  *             the Canvas.cpp class.
- * \folder     $(folder)
  * \file       Canvas.cpp
- * \date       2013-11-22
+ * \date       2016-04-26 $(date)
  * \author     Jedzia.
  *
- * modified    2013-11-22, Jedzia
+ * modified    2016-04-26, Jedzia
  */
 /*---------------------------------------------------------*/
 #include "../../stdafx.h"
@@ -20,54 +19,17 @@
 //
 #include <GuiLib/GUI/Visual/Application.h>
 #include <boost/foreach.hpp>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_real_distribution.hpp>
 //
 #include <GL\GLU.h>
 #include <SDL_opengl.h>
+//
 #include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
 using namespace std;
-
-bool initGL() {
-    bool success = true;
-    GLenum error = GL_NO_ERROR;
-
-    //Initialize Projection Matrix
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    //Check for error
-    error = glGetError();
-    if(error != GL_NO_ERROR) {
-        printf("Error initializing OpenGL! %s\n", gluErrorString(error));
-        success = false;
-    }
-
-    //Initialize Modelview Matrix
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    //Check for error
-    error = glGetError();
-    if(error != GL_NO_ERROR) {
-        printf("Error initializing OpenGL! %s\n", gluErrorString(error));
-        success = false;
-    }
-
-    //Initialize clear color
-    glClearColor(0.f, 0.f, 0.f, 1.f);
-
-    //Check for error
-    error = glGetError();
-    if(error != GL_NO_ERROR) {
-        printf("Error initializing OpenGL! %s\n", gluErrorString(error));
-        success = false;
-    }
-
-    return success;
-} // initGL
-
 
 struct CCanvas::CCanvasImpl {
 private:
@@ -77,31 +39,82 @@ private:
     float glColorR;
     float glColorG;
     float glColorB;
+    static boost::random::mt19937 gen;
 
-    static float RandomFloat(float a, float b) {
+    static float RandomFloatOld(float min, float max) {
         float random = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        float diff = b - a;
+        float diff = max - min;
         float r = random * diff;
-        return a + r;
+        return min + r;
+        //return min + (rnd / (RAND_MAX / (max - min)));
+    }
+
+    static float RandomFloat(float min, float max) {
+        boost::random::uniform_real_distribution<> dist(min, max);
+        //float rnd = std::floor(dist(gen));
+        float rnd = dist(gen);
+        return rnd;
     }
 
 public:
 
-    explicit CCanvasImpl()
-    {
+    explicit CCanvasImpl() {
         glColorR = RandomFloat(0.0f, 1.0f);
         glColorG = RandomFloat(0.0f, 1.0f);
         glColorB = RandomFloat(0.0f, 1.0f);
     }
 
     float GetGlColorR() const { return glColorR; }
+
     float GetGlColorG() const { return glColorG; }
+
     float GetGlColorB() const { return glColorB; }
 
+    static bool InitGL() {
+        bool success = true;
+        GLenum error = GL_NO_ERROR;
+
+        //Initialize Projection Matrix
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        //Check for error
+        error = glGetError();
+        if(error != GL_NO_ERROR) {
+            printf("Error initializing OpenGL! %s\n", gluErrorString(error));
+            success = false;
+        }
+
+        //Initialize Modelview Matrix
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        //Check for error
+        error = glGetError();
+        if(error != GL_NO_ERROR) {
+            printf("Error initializing OpenGL! %s\n", gluErrorString(error));
+            success = false;
+        }
+
+        //Initialize clear color
+        glClearColor(0.f, 0.f, 0.f, 1.f);
+
+        //Check for error
+        error = glGetError();
+        if(error != GL_NO_ERROR) {
+            printf("Error initializing OpenGL! %s\n", gluErrorString(error));
+            success = false;
+        }
+
+        return success;
+    } // initGL
 };
 
+boost::random::mt19937 CCanvas::CCanvasImpl::gen;
+
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
+    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr),
+    m_glContext(nullptr),
     m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
@@ -122,7 +135,7 @@ CCanvas::CCanvas (SDL_Window* pWindow)
     m_glContext = SDL_GL_CreateContext(pWindow);
     SDL_GL_SetSwapInterval(1);
 
-    initGL();
+    CCanvasImpl::InitGL();
     // Todo: Error checking for context and window.
     m_lstUpdateRects.clear();
 }
@@ -203,7 +216,7 @@ void CCanvas::SetWindow(SDL_Window* pWindow) {
         m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         dbgOut(
                 __FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow <<
-                ")");
+                    ")");
         m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
     }
 }
@@ -368,7 +381,7 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
 
-    if (!sdl_src_rect) {
+    if(!sdl_src_rect) {
         return;
     }
 
@@ -376,8 +389,9 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
     //float y = sdl_dst_rect->y / static_cast<float>(m_pSurface->h);
     //float x1 = sdl_dst_rect->x + sdl_dst_rect->w / static_cast<float>(m_pSurface->w);
     //float y1 = sdl_dst_rect->y + sdl_dst_rect->h / static_cast<float>(m_pSurface->h);
-   
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And The Depth Buffer
+
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);               // Clear The Screen And The
+    // Depth Buffer
     //glLoadIdentity();
 
     SDL_Rect mrect;
@@ -400,15 +414,14 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
     glColor3f(pimpl_->GetGlColorR(), pimpl_->GetGlColorG(), pimpl_->GetGlColorB());
 
     glBegin(GL_QUADS);
-       glVertex2f(x, y);
-       glVertex2f(x, y1);
-       glVertex2f(x1, y1);
-       glVertex2f(x1, y);
+    glVertex2f(x, y);
+    glVertex2f(x, y1);
+    glVertex2f(x1, y1);
+    glVertex2f(x1, y);
     glEnd();
 
     //SDL_GL_SwapWindow(m_pWindow);
-
-}
+} // CCanvas::FinalRenderCopy
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
     // this works only for the main canvas
