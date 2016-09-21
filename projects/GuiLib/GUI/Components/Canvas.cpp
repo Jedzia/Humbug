@@ -68,9 +68,41 @@ bool initGL() {
     return success;
 } // initGL
 
+
+struct CCanvas::CCanvasImpl {
+private:
+
+    //prv::EyeMover eyemover;
+    //prv::WormMover wormmover;
+    float glColorR;
+    float glColorG;
+    float glColorB;
+
+    static float RandomFloat(float a, float b) {
+        float random = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        float diff = b - a;
+        float r = random * diff;
+        return a + r;
+    }
+
+public:
+
+    explicit CCanvasImpl()
+    {
+        glColorR = RandomFloat(0.0f, 1.0f);
+        glColorG = RandomFloat(0.0f, 1.0f);
+        glColorB = RandomFloat(0.0f, 1.0f);
+    }
+
+    float GetGlColorR() const { return glColorR; }
+    float GetGlColorG() const { return glColorG; }
+    float GetGlColorB() const { return glColorB; }
+
+};
+
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_glContext(nullptr), m_pSurface(nullptr),
-    m_pTexture(nullptr),
+    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
+    m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
@@ -82,8 +114,8 @@ void CCanvas::CanvasSwapWindow() {
 }
 
 CCanvas::CCanvas (SDL_Window* pWindow)
-    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), m_pWindow(nullptr), m_glContext(nullptr), m_pSurface(nullptr),
-    m_pTexture(nullptr),
+    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
+    m_pSurface(nullptr), m_pTexture(nullptr),
     m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
@@ -166,7 +198,7 @@ void CCanvas::SetWindow(SDL_Window* pWindow) {
     m_pWindow = pWindow;
 
     if(pWindow) {
-        m_pSurface = SDL_GetWindowSurface(pWindow);
+        SetSurface(SDL_GetWindowSurface(pWindow));
         // Renderer uses VSYNC
         m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         dbgOut(
@@ -330,7 +362,6 @@ float rangeMap(float input, float outMin, float outMax, float inMin, float inMax
     return result;
 }
 
-
 void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const {
     // all RenderCopy calls flow here
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
@@ -365,6 +396,9 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
     float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
 
     int aaa = 0;
+
+    glColor3f(pimpl_->GetGlColorR(), pimpl_->GetGlColorG(), pimpl_->GetGlColorB());
+
     glBegin(GL_QUADS);
        glVertex2f(x, y);
        glVertex2f(x, y1);
@@ -372,7 +406,7 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
        glVertex2f(x1, y);
     glEnd();
 
-    SDL_GL_SwapWindow(m_pWindow);
+    //SDL_GL_SwapWindow(m_pWindow);
 
 }
 
@@ -404,6 +438,7 @@ void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcR
 
 void CCanvas::MainRenderFinal() {
     SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+    CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
 }
 
 void CCanvas::MainRenderClear() {

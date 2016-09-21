@@ -85,6 +85,9 @@ private:
 
 private:
 
+    struct CCanvasImpl;
+    boost::scoped_ptr<CCanvasImpl> pimpl_;
+
     //pointer to an SDL_Surface
     SDL_Window* m_pWindow;
     SDL_GLContext m_glContext;

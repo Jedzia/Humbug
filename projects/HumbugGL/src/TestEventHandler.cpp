@@ -472,7 +472,7 @@ void CTestEventHandler::OnIdle(int ticks){
     }*/
 
     //m_pMainCanvas->MainUpdateAndRenderCopy();
-    m_pMainCanvas->SwapWindow();
+    //m_pMainCanvas->SwapWindow();
 
     //SDL_GL_SwapWindow(gWindow);
 
