@@ -41,34 +41,28 @@ private:
     float glColorB;
     static boost::random::mt19937 gen;
 
-    static float RandomFloatOld(float min, float max) {
-        float random = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-        float diff = max - min;
-        float r = random * diff;
-        return min + r;
-        //return min + (rnd / (RAND_MAX / (max - min)));
-    }
-
     static float RandomFloat(float min, float max) {
         boost::random::uniform_real_distribution<> dist(min, max);
-        //float rnd = std::floor(dist(gen));
-        float rnd = dist(gen);
+        float rnd = static_cast<float>(dist(gen));
         return rnd;
     }
 
+    float rangeMap(float input, float outMin, float outMax, float inMin, float inMax) {
+        float slope = 1.0f * (outMax - outMin) / (inMax - inMin);
+        //float result = outMin + round(slope * (input - inMin));
+        float result = outMin + (slope * (input - inMin));
+
+        return result;
+    }
+
 public:
+    GLuint m_glTextureId;
 
     explicit CCanvasImpl() {
         glColorR = RandomFloat(0.0f, 1.0f);
         glColorG = RandomFloat(0.0f, 1.0f);
         glColorB = RandomFloat(0.0f, 1.0f);
     }
-
-    float GetGlColorR() const { return glColorR; }
-
-    float GetGlColorG() const { return glColorG; }
-
-    float GetGlColorB() const { return glColorB; }
 
     static bool InitGL() {
         bool success = true;
@@ -80,7 +74,7 @@ public:
 
         //Check for error
         error = glGetError();
-        if(error != GL_NO_ERROR) {
+        if (error != GL_NO_ERROR) {
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
@@ -91,7 +85,7 @@ public:
 
         //Check for error
         error = glGetError();
-        if(error != GL_NO_ERROR) {
+        if (error != GL_NO_ERROR) {
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
@@ -101,22 +95,134 @@ public:
 
         //Check for error
         error = glGetError();
-        if(error != GL_NO_ERROR) {
+        if (error != GL_NO_ERROR) {
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
 
         return success;
     } // initGL
+
+    float GetGlColorR() const { return glColorR; }
+
+    float GetGlColorG() const { return glColorG; }
+
+    float GetGlColorB() const { return glColorB; }
+
+    GLuint GLAttachTexture(SDL_Surface *surface, int *textw = nullptr, int *texth = nullptr) {
+
+        GLuint textureid;
+        int mode;
+
+        // Or if you don't use SDL_image you can use SDL_LoadBMP here instead:
+        // surface = SDL_LoadBMP(filename);
+
+        // could not load filename
+        if (!surface) {
+
+            return 0;
+
+        }
+
+        // work out what format to tell glTexImage2D to use...
+        if (surface->format->BytesPerPixel == 3) { // RGB 24bit
+
+            mode = GL_RGB;
+
+        }
+        else if (surface->format->BytesPerPixel == 4) { // RGBA 32bit
+
+            mode = GL_RGBA;
+
+        }
+        else {
+
+            //SDL_FreeSurface(surface);
+            return 0;
+        }
+
+        if (textw)
+            *textw = surface->w;
+        if (texth)
+            *texth = surface->h;
+        // create one texture name
+        glGenTextures(1, &textureid);
+
+        // tell opengl to use the generated texture name
+        glBindTexture(GL_TEXTURE_2D, textureid);
+
+        // this reads from the sdl surface and puts it into an opengl texture
+        glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
+
+        // these affect how this texture is drawn later on...
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        // clean up
+        //SDL_FreeSurface(surface);
+        m_glTextureId = textureid;
+        return textureid;
+
+    }
+
+    void GLDrawTexture(const CRectangle* rect)
+    {
+        //return;
+        if (!rect) {
+            return;
+        }
+
+        //float x = sdl_dst_rect->x / static_cast<float>(m_pSurface->w);
+        //float y = sdl_dst_rect->y / static_cast<float>(m_pSurface->h);
+        //float x1 = sdl_dst_rect->x + sdl_dst_rect->w / static_cast<float>(m_pSurface->w);
+        //float y1 = sdl_dst_rect->y + sdl_dst_rect->h / static_cast<float>(m_pSurface->h);
+
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);               // Clear The Screen And The
+        // Depth Buffer
+        //glLoadIdentity();
+
+        SDL_Rect mrect;
+        mrect.x = 1024 / 2 - 50 + 00;
+        mrect.y = 768 / 2 - 50 + 00;
+        mrect.w = 100;
+        mrect.h = 100;
+
+        //const SDL_Rect* prect = sdl_src_rect;
+        const SDL_Rect* prect = rect->SDLRectCP();
+        //sdl_src_rect = &mrect;
+
+        float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
+        float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
+        float y = rangeMap(prect->y, 1.0f, -1.0f, 0, 768);
+        float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
+
+        int aaa = 0;
+
+        glColor3f(GetGlColorR(), GetGlColorG(), GetGlColorB());
+
+        GLuint m_gl_texture_id = m_glTextureId;
+        glBindTexture(GL_TEXTURE_2D, m_gl_texture_id);
+        glEnable(GL_TEXTURE_2D);
+
+        glBegin(GL_QUADS);
+        glTexCoord2i(0, 0); glVertex2f(x, y);
+        glTexCoord2i(1, 0); glVertex2f(x, y1);
+        glTexCoord2i(1, 1); glVertex2f(x1, y1);
+        glTexCoord2i(0, 1); glVertex2f(x1, y);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+
+        //SDL_GL_SwapWindow(m_pWindow);
+    }
 };
 
 boost::random::mt19937 CCanvas::CCanvasImpl::gen;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr),
-    m_glContext(nullptr),
-    m_pSurface(nullptr), m_pTexture(nullptr),
-    m_pRenderer(nullptr) {
+    m_glContext(nullptr), m_pSurface(nullptr),
+    m_pTexture(nullptr), m_pRenderer(nullptr){
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
     m_lstUpdateRects.clear();
@@ -128,8 +234,7 @@ void CCanvas::CanvasSwapWindow() {
 
 CCanvas::CCanvas (SDL_Window* pWindow)
     : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
-    m_pSurface(nullptr), m_pTexture(nullptr),
-    m_pRenderer(nullptr) {
+    m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr){
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
     m_glContext = SDL_GL_CreateContext(pWindow);
@@ -143,6 +248,10 @@ CCanvas::CCanvas (SDL_Window* pWindow)
 CCanvas::~CCanvas () {
     // Clean up
     ClearUpdateRects();
+    if (pimpl_->m_glTextureId)
+    {
+        glDeleteTextures(1, &pimpl_->m_glTextureId);
+    }
 
     if(m_pTexture) {
         if(m_bTextureOwner && m_pTexture) {
@@ -205,6 +314,7 @@ void CCanvas::SetSurface(SDL_Surface* pSurface) {
     }
 
     m_pSurface = pSurface;
+    pimpl_->GLAttachTexture(m_pSurface);
 }
 
 void CCanvas::SetWindow(SDL_Window* pWindow) {
@@ -308,6 +418,7 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* dstRect, const CR
     }
 
     CanvasRenderCopy(source->GetTexture(), dstRect, srcRect);
+    source->pimpl_->GLDrawTexture(dstRect);
 } // CCanvas::RenderPutCopy
 
 void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) {
@@ -365,62 +476,16 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
     }
 
     FinalRenderCopy(texture, dstRect, srcRect);
+    //pimpl_->GLDrawTexture(dstRect);
 } // CCanvas::CanvasRenderCopy
-
-float rangeMap(float input, float outMin, float outMax, float inMin, float inMax) {
-    float slope = 1.0f * (outMax - outMin) / (inMax - inMin);
-    //float result = outMin + round(slope * (input - inMin));
-    float result = outMin + (slope * (input - inMin));
-
-    return result;
-}
 
 void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const {
     // all RenderCopy calls flow here
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
-
-    if(!sdl_src_rect) {
-        return;
-    }
-
-    //float x = sdl_dst_rect->x / static_cast<float>(m_pSurface->w);
-    //float y = sdl_dst_rect->y / static_cast<float>(m_pSurface->h);
-    //float x1 = sdl_dst_rect->x + sdl_dst_rect->w / static_cast<float>(m_pSurface->w);
-    //float y1 = sdl_dst_rect->y + sdl_dst_rect->h / static_cast<float>(m_pSurface->h);
-
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);               // Clear The Screen And The
-    // Depth Buffer
-    //glLoadIdentity();
-
-    SDL_Rect mrect;
-    mrect.x = 1024 / 2 - 50 + 00;
-    mrect.y = 768 / 2 - 50 + 00;
-    mrect.w = 100;
-    mrect.h = 100;
-
-    //const SDL_Rect* prect = sdl_src_rect;
-    const SDL_Rect* prect = sdl_dst_rect;
-    //sdl_src_rect = &mrect;
-
-    float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
-    float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
-    float y = rangeMap(prect->y, 1.0f, -1.0f, 0, 768);
-    float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
-
-    int aaa = 0;
-
-    glColor3f(pimpl_->GetGlColorR(), pimpl_->GetGlColorG(), pimpl_->GetGlColorB());
-
-    glBegin(GL_QUADS);
-    glVertex2f(x, y);
-    glVertex2f(x, y1);
-    glVertex2f(x1, y1);
-    glVertex2f(x1, y);
-    glEnd();
-
-    //SDL_GL_SwapWindow(m_pWindow);
+    
+    //pimpl_->GLDrawTexture(dstRect);
 } // CCanvas::FinalRenderCopy
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
