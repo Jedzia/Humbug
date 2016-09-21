@@ -455,7 +455,7 @@ void CTestEventHandler::OnIdle(int ticks){
 
 
     //Clear color buffer
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
     float mod = (ticks % 60) / 60.0f;
 

@@ -14,6 +14,7 @@
 #include "GUI/Visual/Console.h"
 #include <HumbugGLLib/LogManager.h>
 #include "../../TimingDefs.h"
+#include <SDL_opengl.h>
 
 extern int bmain(int argc,char* argv[]);
 
@@ -219,6 +220,7 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 //idle behavior
 void CApplication::OnIdle(int ticks)
 {
+    glClear(GL_COLOR_BUFFER_BIT);
     //m_pMainCanvas->MainRenderClear();
 	//by default, do nothing
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
