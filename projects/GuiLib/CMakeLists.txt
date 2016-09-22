@@ -25,6 +25,8 @@ INCLUDE (PCHSupport)
 INCLUDE (helpers)
 INCLUDE (library)
 
+find_package(OpenGL)
+find_package(GLUT)
 
 SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;serialization")
 # Use Boost libraries for this project.
@@ -292,6 +294,11 @@ TARGET_LINK_LIBRARIES(GuiLib ${SDL_LIBRARY})
 TARGET_LINK_LIBRARIES(GuiLib ${SDLIMAGE_LIBRARY})
 TARGET_LINK_LIBRARIES(GuiLib ${SDLTTF_LIBRARY})
 TARGET_LINK_LIBRARIES(GuiLib ${SDLGFX_LIBRARY})
+TARGET_LINK_LIBRARIES(GuiLib ${OPENGL_gl_LIBRARY})
+TARGET_LINK_LIBRARIES(GuiLib ${OPENGL_glu_LIBRARY}) # this works on windows with VC2013
+#TARGET_LINK_LIBRARIES(GuiLib ${GLUT_LIBRARIES})
+
+#D:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64/
 
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header,
