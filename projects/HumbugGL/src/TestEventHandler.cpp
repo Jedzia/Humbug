@@ -36,6 +36,7 @@
 #include "GUI/Components/Text.h"
 #include "Screens/SimpleScreen.h"
 #include "Screens/ZoomInScreen.h"
+//#include "Screens/ZoomInScreen2.h"
 #include "Screens/MenuScreen/SubmenuA.h"
 #include "Screens/MenuScreen/TutorEasing.h"
 #include "Levels/Scroller/ScrollerLevelA.h"
@@ -87,7 +88,8 @@ CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
     /*m_pTileSet(NULL),*/
     m_uiLastTicks2(0),
-    m_uiNumFrames(0){
+    m_uiNumFrames(0), m_bUseOpenGL(false)
+{
     //dbgOut(__FUNCTION__ << std::endl);
 //	_CRT_DEBUG_BLOCK
 }
@@ -401,6 +403,11 @@ void CTestEventHandler::OnIdle(int ticks){
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
     //m_pMainCanvas->Lock();
 
+    glColor3f(1, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    //m_pMainCanvas->MainRenderClear();
+
 	//CRectangle screenrect = m_pMainCanvas->GetDimension();
 	//m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
 	//m_pMainCanvas->Invalidate();
@@ -419,7 +426,6 @@ void CTestEventHandler::OnIdle(int ticks){
             m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH() -
             //m_pHud->GetCanvas()->GetDimension().GetH() );
 	200 );
-
 
     //m_pHud->Invalidate();
 //    CControl::Redraw();
@@ -476,8 +482,18 @@ void CTestEventHandler::OnIdle(int ticks){
 
     //SDL_GL_SwapWindow(gWindow);
 
-
+    // calls RaiseOnIdle, RaiseOnDraw, m_pMainCanvas->UpdateRects and m_pMainCanvas->MainRenderFinal 
     CApplication::OnIdle(ticks);
+
+    if (m_bUseOpenGL)
+    {
+        m_pMainCanvas->SwapWindow();
+    }
+    else
+    {
+        m_pMainCanvas->MainRenderFinal();
+    }
+
 } // OnIdle
 
 //update loop
@@ -616,6 +632,10 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     else if (sym == SDLK_0)   {
         //
         HookMgr()->EnableHookable("Menu");
+    }
+    else if (sym == SDLK_F1)   {
+        //
+        m_bUseOpenGL = !m_bUseOpenGL;
     }
 
 } // OnKeyDown
