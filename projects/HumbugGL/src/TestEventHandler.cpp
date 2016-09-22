@@ -36,6 +36,7 @@
 #include "GUI/Components/Text.h"
 #include "Screens/SimpleScreen.h"
 #include "Screens/ZoomInScreen.h"
+#include "Screens/ZoomInScreen2.h"
 #include "Screens/MenuScreen/SubmenuA.h"
 #include "Screens/MenuScreen/TutorEasing.h"
 #include "Levels/Scroller/ScrollerLevelA.h"
@@ -354,7 +355,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     //HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
-    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<ZoomInScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<ZoomInScreen2>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<levels::ScrollerLevelA>(*fl, m_pMainCanvas)));

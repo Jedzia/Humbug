@@ -65,6 +65,7 @@ SET(HumbugGL_MyGUI_headers
 		Screens/TileScreen.h
 		Screens/SimpleScreen.h
 		Screens/ZoomInScreen.h
+		Screens/ZoomInScreen2.h
 
 		Screens/InfoText.h
 		Screens/MenuScreen.h
@@ -92,6 +93,7 @@ SET(HumbugGL_MyGUI_sources
 		Screens/TileScreen.cpp
 		Screens/SimpleScreen.cpp
 		Screens/ZoomInScreen.cpp
+		Screens/ZoomInScreen2.cpp
 
 		Screens/MenuScreen.cpp
 		Screens/MenuScreen/SubmenuA.cpp
