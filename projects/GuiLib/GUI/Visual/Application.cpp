@@ -220,8 +220,6 @@ void CApplication::OnEvent(SDL_Event* pEvent)
 //idle behavior
 void CApplication::OnIdle(int ticks)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    //m_pMainCanvas->MainRenderClear();
 	//by default, do nothing
 	// Todo: make a DebugTiming sink std::cout << "---APP Before m_sigOnIdle---" << std::endl;
     RaiseOnIdle(ticks);
@@ -239,7 +237,7 @@ void CApplication::OnIdle(int ticks)
     //bool result = m_pMainCanvas->FillRect(frect, components::CColor(133, 55, 99));
 
 	m_pMainCanvas->UpdateRects ( );
-    m_pMainCanvas->MainRenderFinal();
+    //m_pMainCanvas->MainRenderFinal();
 }
 
 //update loop

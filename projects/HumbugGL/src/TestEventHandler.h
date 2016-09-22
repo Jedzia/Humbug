@@ -51,6 +51,7 @@ private:
     Uint32 m_uiStartTime;
     void PutBlue();
     unsigned int m_uiNumFrames; 
+    bool m_bUseOpenGL;
 
     gui::Screen* m_scrStart;
 protected:

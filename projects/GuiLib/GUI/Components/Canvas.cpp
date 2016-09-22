@@ -26,6 +26,7 @@
 #include <SDL_opengl.h>
 //
 #include <build/cmake/include/debug.h>
+#include <SDL_opengl.h>
 
 namespace gui {
 namespace components {
@@ -133,6 +134,7 @@ public:
         else if (surface->format->BytesPerPixel == 4) { // RGBA 32bit
 
             mode = GL_RGBA;
+            //mode = GL_RGBA16;
 
         }
         else {
@@ -197,18 +199,24 @@ public:
         float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
 
         int aaa = 0;
+        float texfac = 1.0f;
 
         glColor3f(GetGlColorR(), GetGlColorG(), GetGlColorB());
 
         GLuint m_gl_texture_id = m_glTextureId;
-        glBindTexture(GL_TEXTURE_2D, m_gl_texture_id);
-        glEnable(GL_TEXTURE_2D);
+        if (m_gl_texture_id)
+        {
+            //glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+            glEnable(GL_BLEND); glBlendFunc(GL_ONE, GL_ONE);
+            glBindTexture(GL_TEXTURE_2D, m_gl_texture_id);
+            glEnable(GL_TEXTURE_2D);
+        }
 
         glBegin(GL_QUADS);
-        glTexCoord2i(0, 0); glVertex2f(x, y);
-        glTexCoord2i(1, 0); glVertex2f(x, y1);
-        glTexCoord2i(1, 1); glVertex2f(x1, y1);
-        glTexCoord2i(0, 1); glVertex2f(x1, y);
+        glTexCoord2f(0, 0); glVertex2f(x, y);
+        glTexCoord2f(1.0f*texfac, 0); glVertex2f(x, y1);
+        glTexCoord2f(1.0f*texfac, 1.0f*texfac); glVertex2f(x1, y1);
+        glTexCoord2f(0, 1.0f*texfac); glVertex2f(x1, y);
         glEnd();
 
         glDisable(GL_TEXTURE_2D);
@@ -516,7 +524,7 @@ void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcR
 
 void CCanvas::MainRenderFinal() {
     SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
-    CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+    //CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
 }
 
 void CCanvas::MainRenderClear() {
