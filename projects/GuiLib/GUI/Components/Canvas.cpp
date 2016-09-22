@@ -183,11 +183,11 @@ public:
         // Depth Buffer
         //glLoadIdentity();
 
-        SDL_Rect mrect;
+        /*SDL_Rect mrect;
         mrect.x = 1024 / 2 - 50 + 00;
         mrect.y = 768 / 2 - 50 + 00;
         mrect.w = 100;
-        mrect.h = 100;
+        mrect.h = 100;*/
 
         //const SDL_Rect* prect = sdl_src_rect;
         const SDL_Rect* prect = rect->SDLRectCP();
@@ -435,6 +435,8 @@ void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const 
 
 void CCanvas::RenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
     CanvasRenderCopy(GetTexture(), dstRect, srcRect);
+    CRectangle rect(0, 0, GetSurface()->w, GetSurface()->h);
+    pimpl_->GLDrawTexture(dstRect ? dstRect : &rect);
 }
 
 void CCanvas::RenderCopy(const CPoint& offset) {
