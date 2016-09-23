@@ -158,7 +158,8 @@ public:
 
         // these affect how this texture is drawn later on...
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         // clean up
         //SDL_FreeSurface(surface);
@@ -201,23 +202,67 @@ public:
         int aaa = 0;
         float texfac = 1.0f;
 
-        glColor3f(GetGlColorR(), GetGlColorG(), GetGlColorB());
+        //glColor3f(GetGlColorR(), GetGlColorG(), GetGlColorB());
 
         GLuint m_gl_texture_id = m_glTextureId;
         if (m_gl_texture_id)
         {
-            //glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-            glEnable(GL_BLEND); glBlendFunc(GL_ONE, GL_ONE);
+            glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+            //glEnable(GL_BLEND); glBlendFunc(GL_ONE, GL_ONE);
             glBindTexture(GL_TEXTURE_2D, m_gl_texture_id);
             glEnable(GL_TEXTURE_2D);
         }
 
+        //glFrontFace(GL_CCW); 
+        
+        /*glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(x1, y);
+        glTexCoord2f(1.0f*texfac, 0);
+        glVertex2f(x1, y1);
+        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+        glVertex2f(x, y1);
+        glTexCoord2f(0, 1.0f*texfac);
+        glVertex2f(x, y);
+        glEnd();*/
+
+        float rotation = 180.0f;
+        //glRotatef(rotation, 0, 0, 1);
+
         glBegin(GL_QUADS);
-        glTexCoord2f(0, 0); glVertex2f(x, y);
-        glTexCoord2f(1.0f*texfac, 0); glVertex2f(x, y1);
-        glTexCoord2f(1.0f*texfac, 1.0f*texfac); glVertex2f(x1, y1);
-        glTexCoord2f(0, 1.0f*texfac); glVertex2f(x1, y);
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);
+        glTexCoord2f(0, 1.0f*texfac);
+        glVertex2f(x, y1);
+        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+        glVertex2f(x1, y1);
+        glTexCoord2f(1.0f*texfac, 0);
+        glVertex2f(x1, y);
         glEnd();
+
+        /*glBegin(GL_QUADS);
+        glTexCoord2f(0, 1.0f*texfac);
+        glVertex2f(x, y);
+        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+        glVertex2f(x, y1);
+        glTexCoord2f(1.0f*texfac, 0);
+        glVertex2f(x1, y1);
+        glTexCoord2f(0, 0);
+        glVertex2f(x1, y);
+        glEnd();*/
+
+        /*glBegin(GL_QUADS);
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);
+        glTexCoord2f(1.0f*texfac, 0);
+        glVertex2f(x, y1);
+        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+        glVertex2f(x1, y1);
+        glTexCoord2f(0, 1.0f*texfac);
+        glVertex2f(x1, y);
+        glEnd();*/
+
+        //glRotatef(-rotation, 0, 0, 1);
 
         glDisable(GL_TEXTURE_2D);
 
