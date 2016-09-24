@@ -221,7 +221,8 @@ namespace humbug {
 
       {
           static int coldelta = 0;
-          m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+          //m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pBackground->GetDimension() );
+          m_pBackground->RenderCopy();
           CRectangle frect(700, 100, 185, 185);
           SDL_Color* wavemap = ColorData::Instance()->Wavemap();
           int index = (coldelta * 2 & 63);

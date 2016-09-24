@@ -8,6 +8,8 @@
 #include <list>
 #include <string>
 
+#define DEPRECATED __declspec(deprecated)
+
 namespace gui {
 namespace components {
     struct CCanvasRenderModifierData
@@ -314,6 +316,7 @@ public:
     //clear entire surface to a color
     bool Clear ( const CColor& color ) const;
 
+    DEPRECATED
     //blit to this surface from another surface
     bool Blit ( const CRectangle& rectDst, const CCanvas& cnvSrc, const CRectangle& rectSrc ) const;
 
