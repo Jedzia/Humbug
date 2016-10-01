@@ -1,4 +1,21 @@
 
+-X-X-X-X- Sa, 01 Okt 2016 23:45:54 -----------------------------------------------------------
+in HumbugGL\projects\SupportLibs\glm\glm\detail\setup.hpp
+// Version
+
+#define GLM_VERSION					98
+#define GLM_VERSION_MAJOR			0
+#define GLM_VERSION_MINOR			9
+#define GLM_VERSION_PATCH			8
+#define GLM_VERSION_REVISION		2
+
+#if GLM_MESSAGES == GLM_MESSAGES_ENABLED && !defined(GLM_MESSAGE_VERSION_DISPLAYED)
+#	define GLM_MESSAGE_VERSION_DISPLAYED
+#	pragma message ("GLM: version 0.9.8.2")
+#endif//GLM_MESSAGES
+
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Sa, 27 Feb 2016 01:52:00 -----------------------------------------------------------
 BSP for collisions?
 -----------------------------------------------------------------------------------------------

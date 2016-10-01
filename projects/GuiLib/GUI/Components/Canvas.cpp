@@ -25,8 +25,13 @@
 #include <GL\GLU.h>
 #include <SDL_opengl.h>
 //
+#include <glm/vec3.hpp> // glm::vec3
+#include <glm/vec4.hpp> // glm::vec4
+#include <glm/mat4x4.hpp> // glm::mat4
+#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
+#include <glm/gtc/constants.hpp> // glm::pi
+//
 #include <build/cmake/include/debug.h>
-#include <SDL_opengl.h>
 
 namespace gui {
 namespace components {
@@ -41,7 +46,8 @@ private:
     float glColorG;
     float glColorB;
     static boost::random::mt19937 gen;
-
+	glm::mat4 cam;
+	
     static float RandomFloat(float min, float max) {
         boost::random::uniform_real_distribution<> dist(min, max);
         float rnd = static_cast<float>(dist(gen));
@@ -56,6 +62,16 @@ private:
         return result;
     }
 
+	static glm::mat4 camera(float Translate, glm::vec2 const & Rotate)
+	{
+		glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
+		glm::mat4 View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -Translate));
+		View = glm::rotate(View, Rotate.y, glm::vec3(-1.0f, 0.0f, 0.0f));
+		View = glm::rotate(View, Rotate.x, glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 Model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
+		return Projection * View * Model;
+	}	
+	
 public:
     GLuint m_glTextureId;
 
@@ -100,9 +116,14 @@ public:
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
-
+		
         return success;
     } // initGL
+
+	glm::mat4 UpdateCamera() {
+		cam = camera(1.0f, glm::vec2(0.5f, 0.5f));
+		return cam;
+	}
 
     float GetGlColorR() const { return glColorR; }
 
