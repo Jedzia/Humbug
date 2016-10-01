@@ -755,7 +755,7 @@ private:
         // (*m_pTileEngine)["Map1"].DrawMap(); sollte einen canvas zurueckgeben, der weiss wie gross
         // er sein muss
         m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pTiles, m_pTiles->GetDimension() + pTilesDelta );
-
+        
         m_pMainCanvas->AddUpdateRect( m_pMainCanvas->GetDimension() );
         /*CRectangle frect(700, 500, 185, 185);
            SDL_Color* wavemap = ColorData::Instance()->Wavemap();
