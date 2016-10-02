@@ -99,6 +99,7 @@ private:
 
 protected:
     void CanvasSwapWindow();
+    void MainWindowClosing();
 
 public:
     //constructor

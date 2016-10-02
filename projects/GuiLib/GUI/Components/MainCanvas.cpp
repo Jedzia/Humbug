@@ -28,6 +28,7 @@ CMainCanvas::CMainCanvas(const char* title, int width, int height, Uint32 flags)
 CMainCanvas::~CMainCanvas() {
     // SDL_FreeSurface ( GetSurface ( ) );
     //SetWindow ( NULL );
+    MainWindowClosing();
 }
 
 void CMainCanvas::SwapWindow()

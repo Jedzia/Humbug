@@ -53,6 +53,11 @@ private:
     bool isShaderInitialized;
 
 public:
+    bool IsShaderInitialized() const
+    {
+        return isShaderInitialized;
+    }
+
     explicit GpuProgram()
         : isShaderInitialized(false)
     {
@@ -114,67 +119,28 @@ private:
 
     oglplus::Context gl;
 
-    oglplus::VertexShader vs;
-
-    oglplus::FragmentShader fs;
-
-    oglplus::Program prog;
+    static boost::scoped_ptr<GpuProgram> gprog;
 
     oglplus::VertexArray triangle;
 
-private:
     oglplus::Buffer verts;
-    bool isShaderInitialized;
     bool isVertexInitialized;
 
 public:
 
     bool IsInitialized() const
     {
-        return isShaderInitialized && isVertexInitialized;
-    }
-
-    void InitShaders()
-    {
-        // Set the vertex shader source
-        vs.Source(
-            " \
-        #version 120\n \
-        attribute vec3 Position; \
-        void main(void) \
-        { \
-        gl_Position = vec4(Position, 1.0); \
-        } \
-        ");
-        // compile it
-        vs.Compile();
-
-        // set the fragment shader source
-        fs.Source(
-            " \
-        #version 120\n \
-        void main(void) \
-        { \
-        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \
-        } \
-        ");
-        // compile it
-        fs.Compile();
-
-        // attach the shaders to the program
-        prog.AttachShader(vs);
-        prog.AttachShader(fs);
-        // link and use it
-        prog.Link();
-        prog.Use();
-
-        isShaderInitialized = true;
+        return gprog && gprog->IsShaderInitialized() && isVertexInitialized;
     }
 
     void InitVerts()
     {
         using namespace oglplus;
 
+        if (!gprog)
+        {
+            gprog.reset(new GpuProgram);
+        }
 
         // bind the VAO for the triangle
         triangle.Bind();
@@ -184,6 +150,7 @@ public:
             0.1f, 0.0f, 0.0f,
             0.0f, 0.1f, 0.0f
         };
+
         // bind the VBO for the triangle vertices
         verts.Bind(Buffer::Target::Array);
         // upload the data
@@ -193,7 +160,7 @@ public:
             triangle_verts
         );
         // setup the vertex attribs array for the vertices
-        VertexArrayAttrib vert_attr(prog, "Position");
+        VertexArrayAttrib vert_attr(gprog->GetProgram(), "Position");
         vert_attr.Setup<GLfloat>(3);
         vert_attr.Enable();
 
@@ -203,7 +170,7 @@ public:
         isVertexInitialized = true;
     }
 
-    Example(void): isShaderInitialized(false), isVertexInitialized(false)
+    Example(void): isVertexInitialized(false)
     {
         //InitShaders();
         //InitVerts();
@@ -212,11 +179,18 @@ public:
     void Display(void) {
         using namespace oglplus;
 
-        //gl.Clear().ColorBuffer().DepthBuffer();
+        gl.Clear().ColorBuffer().DepthBuffer();
 
         gl.DrawArrays(PrimitiveType::Triangles, 0, 3);
     }
+
+    void Cleanup()
+    {
+        gprog.reset();
+    }
 };
+
+boost::scoped_ptr<GpuProgram> Example::gprog;
 
 /** @class SingleExample:
 *  Detailed description.
@@ -320,6 +294,13 @@ public:
 
         // beware: under the hood the context is all static
         m_context.reset(new oglplus::Context);
+    }
+
+    void Cleanup()
+    {
+        // the static shader programs have to be cleaned up before leaving
+        m_example->Cleanup();
+        m_example.reset();
     }
 
     static bool InitGL() {
@@ -436,7 +417,15 @@ public:
         }
 
         m_example.reset(new Example);
-        m_example->InitShaders();
+        //m_example->InitShaders();
+        m_example->InitVerts();
+
+        return success;
+    } // initGL
+
+    bool InitRenderSetup() {
+        bool success = true;
+        m_example.reset(new Example);
         m_example->InitVerts();
 
         return success;
@@ -647,6 +636,7 @@ CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
+    pimpl_->InitRenderSetup();
     m_lstUpdateRects.clear();
 }
 
@@ -654,7 +644,13 @@ void CCanvas::CanvasSwapWindow() {
     SDL_GL_SwapWindow(m_pWindow);
 }
 
-CCanvas::CCanvas (SDL_Window* pWindow)
+    void CCanvas::MainWindowClosing()
+    {
+        //pimpl_->m_example.reset();
+        pimpl_->Cleanup();
+    }
+
+    CCanvas::CCanvas (SDL_Window* pWindow)
     : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
     m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
