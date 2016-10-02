@@ -7,3 +7,9 @@
 [submodule "projects/SupportLibs/glfw"]
 	path = projects/SupportLibs/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "projects/SupportLibs/oglplus"]
+	path = projects/SupportLibs/oglplus
+	url = https://github.com/matus-chochlik/oglplus.git
+[submodule "projects/SupportLibs/gl3w"]
+	path = projects/SupportLibs/gl3w
+	url = https://github.com/skaslev/gl3w.git

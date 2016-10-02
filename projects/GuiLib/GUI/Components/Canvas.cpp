@@ -22,7 +22,8 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_real_distribution.hpp>
 //
-#include <GL\GLU.h>
+#include <GL/glew.h>
+#include <GL/GLU.h>
 #include <SDL_opengl.h>
 //
 #include <glm/vec3.hpp> // glm::vec3
@@ -30,6 +31,9 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
 #include <glm/gtc/constants.hpp> // glm::pi
+//
+#include <oglplus/gl.hpp>
+#include <oglplus/all.hpp>
 //
 #include <build/cmake/include/debug.h>
 
@@ -116,6 +120,15 @@ public:
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
+		
+		GLenum err = glewInit();
+		if (GLEW_OK != err)
+		{
+		  /* Problem: glewInit failed, something is seriously wrong. */
+		  fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+		  success = false;
+		}
+		fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));		
 		
         return success;
     } // initGL
