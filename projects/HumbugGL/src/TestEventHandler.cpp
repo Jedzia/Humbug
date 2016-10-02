@@ -487,6 +487,7 @@ void CTestEventHandler::OnIdle(int ticks){
 
     if (m_bUseOpenGL)
     {
+        // later, this should be in MainRenderFinal();
         m_pMainCanvas->SwapWindow();
     }
     else

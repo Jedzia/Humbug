@@ -51,6 +51,9 @@ private:
     Uint32 m_uiStartTime;
     void PutBlue();
     unsigned int m_uiNumFrames; 
+    /**
+     * \brief Debug SDL/OpenGL switch.
+     */
     bool m_bUseOpenGL;
 
     gui::Screen* m_scrStart;

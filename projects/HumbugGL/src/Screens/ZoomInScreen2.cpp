@@ -263,7 +263,7 @@ void ZoomInScreen2::OnDraw() {
     CMainCanvas* m_pMainCanvas = Master()->GetMainCanvas();
     m_pMainCanvas->Lock();
 
-//    m_pBackground->RenderCopy();
+    m_pBackground->RenderCopy();
     //CRectangle frect(700, 500, 185, 185);
     SDL_Color* wavemap = ColorData::Instance()->Wavemap();
     int index = (coldelta * 2 & 63);
