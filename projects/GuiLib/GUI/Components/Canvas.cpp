@@ -44,6 +44,28 @@ using namespace std;
 struct CCanvas::CCanvasImpl {
 private:
 
+
+	// For OGLPLUS use 
+	//   OGLPLUS_FORCE_GL_API_LIB = GLEW
+	//   OGLPLUS_FORCE_GL_INIT_LIB = SDL
+	// ***************************************
+	// wrapper around the current OpenGL context
+	//oglplus::Context gl;
+
+	// Vertex shader
+	//oglplus::VertexShader vs;
+
+	// Fragment shader
+	//oglplus::FragmentShader fs;
+
+	// Program
+	//oglplus::Program prog;
+
+	// A vertex array object for the rendered triangle
+	//oglplus::VertexArray triangle;
+	// VBO for the triangle's vertices
+	//oglplus::Buffer verts;
+	// ***************************************
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
     float glColorR;
@@ -120,7 +142,7 @@ public:
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
-		
+
 		GLenum err = glewInit();
 		if (GLEW_OK != err)
 		{
@@ -129,6 +151,9 @@ public:
 		  success = false;
 		}
 		fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));		
+
+		oglplus::Context context;
+		oglplus::VertexShader vs;
 		
         return success;
     } // initGL

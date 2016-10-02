@@ -13,3 +13,6 @@
 [submodule "projects/SupportLibs/gl3w"]
 	path = projects/SupportLibs/gl3w
 	url = https://github.com/skaslev/gl3w.git
+[submodule "projects/SupportLibs/FreeGLUT"]
+	path = projects/SupportLibs/FreeGLUT
+	url = https://github.com/Timeswitch/FreeGLUT.git
