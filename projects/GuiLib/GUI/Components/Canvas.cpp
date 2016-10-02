@@ -44,6 +44,17 @@ using namespace std;
 
 
 class GpuProgram {
+    /* Todo: Make the render Engine modular
+     * a RenderEngineFacility
+     * with: 
+     *  Setup()
+     *  Clear()
+     *  Render()
+     *  Detach()
+     *  Cleanup()
+     *  etc.
+     */
+
 private:
     oglplus::VertexShader vs;
 
@@ -72,26 +83,58 @@ public:
 private:
     void InitShaders()
     {
+        try
+        {
         // Set the vertex shader source
-        vs.Source(
+        /*vs.Source(
         " \
         #version 120\n \
         attribute vec3 Position; \
+        //  	    out vec4 color; \
         void main(void) \
         { \
         gl_Position = vec4(Position, 1.0); \
+        //            color = vec4(0.0, 0.3, 0.7, 1.0);  \
+        } \
+        ");*/
+
+        vs.Source(
+        " \
+        #version 140\n \
+        uniform vec3 colorIn; \
+        attribute vec3 Position; \
+        out vec4 color; \
+        void main(void) \
+        { \
+            gl_Position = vec4(Position, 1.0); \
+            color = vec4(colorIn, 1.0);  \
         } \
         ");
         // compile it
         vs.Compile();
 
         // set the fragment shader source
-        fs.Source(
+        /*fs.Source(
         " \
         #version 120\n \
+        //        in vec4 color; \
+        //        out vec4 gl_FragColor; \
         void main(void) \
         { \
+        //        gl_FragColor = color; \
         gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0); \
+        \
+        } \
+        ");*/
+
+        fs.Source(
+        " \
+        #version 140\n \
+        in vec4 color; \
+        out vec4 fragColor; \
+        void main(void) \
+        { \
+        fragColor = color; \
         } \
         ");
         // compile it
@@ -105,6 +148,23 @@ private:
         prog.Use();
 
         isShaderInitialized = true;
+
+        }
+        catch (oglplus::Error& err)
+        {
+            std::cerr
+                << "Error (in "
+                << err.GLFunc()
+                << "'): "
+                << err.what()
+                << " ["
+                << err.SourceFile()
+                << ":"
+                << err.SourceLine()
+                << "] "
+                << std::endl;
+            throw err;
+        }
     }
 
 
@@ -119,6 +179,7 @@ private:
 
     oglplus::Context gl;
 
+    // for now only one Shader can exist.
     static boost::scoped_ptr<GpuProgram> gprog;
 
     oglplus::VertexArray triangle;
@@ -172,10 +233,15 @@ public:
         vert_attr.Setup<GLfloat>(3);
         vert_attr.Enable();
 
+
         gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.ClearDepth(1.0f);
 
         isVertexInitialized = true;
+    }
+
+    void SetColor(float r, float g, float b ) {
+        (gprog->GetProgram() / "colorIn") = oglplus::Vec3f(r, g, b);
     }
 
     void Display(void) {
@@ -449,6 +515,10 @@ public:
 
     float GetGlColorB() const { return glColorB; }
 
+    void SetColor(float r, float g, float b) {
+        m_example->SetColor(r, g, b);
+    }
+
     GLuint GLAttachTexture(SDL_Surface* surface, int* textw = nullptr, int* texth = nullptr) {
         GLuint textureid;
         int mode;
@@ -640,6 +710,7 @@ public:
 
         if (m_example->IsInitialized())
         {
+            m_example->SetColor(GetGlColorR(), GetGlColorG(), GetGlColorB());
             m_example->Display();
         }
 
