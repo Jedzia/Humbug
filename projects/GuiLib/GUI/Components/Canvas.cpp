@@ -23,17 +23,18 @@
 #include <boost/random/uniform_real_distribution.hpp>
 //
 #include <GL/glew.h>
+//
 #include <GL/GLU.h>
 #include <SDL_opengl.h>
 //
+#include <glm/gtc/constants.hpp> // glm::pi
+#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
+#include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/vec3.hpp> // glm::vec3
 #include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
-#include <glm/gtc/constants.hpp> // glm::pi
 //
-#include <oglplus/gl.hpp>
 #include <oglplus/all.hpp>
+#include <oglplus/gl.hpp>
 //
 #include <build/cmake/include/debug.h>
 
@@ -41,39 +42,39 @@ namespace gui {
 namespace components {
 using namespace std;
 
+
 struct CCanvas::CCanvasImpl {
 private:
 
+    // For OGLPLUS use
+    //   OGLPLUS_FORCE_GL_API_LIB = GLEW
+    //   OGLPLUS_FORCE_GL_INIT_LIB = SDL
+    // ***************************************
+    // wrapper around the current OpenGL context
+    //oglplus::Context gl;
 
-	// For OGLPLUS use 
-	//   OGLPLUS_FORCE_GL_API_LIB = GLEW
-	//   OGLPLUS_FORCE_GL_INIT_LIB = SDL
-	// ***************************************
-	// wrapper around the current OpenGL context
-	//oglplus::Context gl;
+    // Vertex shader
+    //oglplus::VertexShader vs;
 
-	// Vertex shader
-	//oglplus::VertexShader vs;
+    // Fragment shader
+    //oglplus::FragmentShader fs;
 
-	// Fragment shader
-	//oglplus::FragmentShader fs;
+    // Program
+    //oglplus::Program prog;
 
-	// Program
-	//oglplus::Program prog;
-
-	// A vertex array object for the rendered triangle
-	//oglplus::VertexArray triangle;
-	// VBO for the triangle's vertices
-	//oglplus::Buffer verts;
-	// ***************************************
+    // A vertex array object for the rendered triangle
+    //oglplus::VertexArray triangle;
+    // VBO for the triangle's vertices
+    //oglplus::Buffer verts;
+    // ***************************************
     //prv::EyeMover eyemover;
     //prv::WormMover wormmover;
     float glColorR;
     float glColorG;
     float glColorB;
     static boost::random::mt19937 gen;
-	glm::mat4 cam;
-	
+    glm::mat4 cam;
+
     static float RandomFloat(float min, float max) {
         boost::random::uniform_real_distribution<> dist(min, max);
         float rnd = static_cast<float>(dist(gen));
@@ -88,17 +89,17 @@ private:
         return result;
     }
 
-	static glm::mat4 camera(float Translate, glm::vec2 const & Rotate)
-	{
-		glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
-		glm::mat4 View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -Translate));
-		View = glm::rotate(View, Rotate.y, glm::vec3(-1.0f, 0.0f, 0.0f));
-		View = glm::rotate(View, Rotate.x, glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 Model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
-		return Projection * View * Model;
-	}	
-	
+    static glm::mat4 camera(float Translate, glm::vec2 const & Rotate) {
+        glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
+        glm::mat4 View = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -Translate));
+        View = glm::rotate(View, Rotate.y, glm::vec3(-1.0f, 0.0f, 0.0f));
+        View = glm::rotate(View, Rotate.x, glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 Model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
+        return Projection * View * Model;
+    }
+
 public:
+
     GLuint m_glTextureId;
 
     explicit CCanvasImpl() {
@@ -117,7 +118,7 @@ public:
 
         //Check for error
         error = glGetError();
-        if (error != GL_NO_ERROR) {
+        if(error != GL_NO_ERROR) {
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
@@ -128,7 +129,7 @@ public:
 
         //Check for error
         error = glGetError();
-        if (error != GL_NO_ERROR) {
+        if(error != GL_NO_ERROR) {
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
@@ -138,30 +139,86 @@ public:
 
         //Check for error
         error = glGetError();
-        if (error != GL_NO_ERROR) {
+        if(error != GL_NO_ERROR) {
             printf("Error initializing OpenGL! %s\n", gluErrorString(error));
             success = false;
         }
 
-		GLenum err = glewInit();
-		if (GLEW_OK != err)
-		{
-		  /* Problem: glewInit failed, something is seriously wrong. */
-		  fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
-		  success = false;
-		}
-		fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));		
+        GLenum err = glewInit();
+        if(GLEW_OK != err) {
+            /* Problem: glewInit failed, something is seriously wrong. */
+            fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+            success = false;
 
-		oglplus::Context context;
-		oglplus::VertexShader vs;
-		
+            fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+        }
+        else {
+        }
+
         return success;
     } // initGL
 
-	glm::mat4 UpdateCamera() {
-		cam = camera(1.0f, glm::vec2(0.5f, 0.5f));
-		return cam;
-	}
+    bool InitOGLplus() {
+        bool success = true;
+
+        try
+        {
+            glGetError();
+            oglplus::Context context;
+
+            std::cout << "Vendor: " << context.Vendor() << std::endl;
+            std::cout << "Version: " << context.Version() << std::endl;
+            std::cout << "Major version: " << context.MajorVersion() << std::endl;
+            std::cout << "Minor version: " << context.MinorVersion() << std::endl;
+            std::cout << "GLSL Version: " << context.ShadingLanguageVersion() << std::endl;
+            std::cout << "Renderer: " << context.Renderer() << std::endl;
+            std::cout << "Extensions:" << std::endl;
+
+            for(auto r = context.Extensions(); !r.Empty(); r.Next()) {
+                std::cout << '\t' << r.Front() << std::endl;
+            }
+            /*std::cout << "Limits:" << std::endl;
+               //
+               std::size_t w = 0;
+               for(auto r=oglplus::EnumValueRange<oglplus::LimitQuery>(); !r.Empty(); r.Next())
+               {
+               std::size_t n = EnumValueName(r.Front()).size();
+               if(w < n) w = n;
+               }
+               for(auto r=oglplus::EnumValueRange<oglplus::LimitQuery>(); !r.Empty(); r.Next())
+               {
+               auto ev = r.Front();
+               std::cout << std::setw(int(w)) << EnumValueName(ev).c_str() << ": ";
+               try { std::cout << context.FloatLimit(ev); }
+               catch(...){ std::cout << "N/A"; }
+               std::cout << std::endl;
+               }*/
+
+            //oglplus::VertexShader vs;
+        }
+        catch(oglplus::Error& err)
+        {
+            std::cerr <<
+                "Error (in " <<
+                err.GLFunc() <<
+                "'): " <<
+                err.what() <<
+                " [" <<
+                err.SourceFile() <<
+                ":" <<
+                err.SourceLine() <<
+                "] " <<
+                std::endl;
+            success = false;
+        }
+
+        return success;
+    } // initGL
+
+    glm::mat4 UpdateCamera() {
+        cam = camera(1.0f, glm::vec2(0.5f, 0.5f));
+        return cam;
+    }
 
     float GetGlColorR() const { return glColorR; }
 
@@ -169,8 +226,7 @@ public:
 
     float GetGlColorB() const { return glColorB; }
 
-    GLuint GLAttachTexture(SDL_Surface *surface, int *textw = nullptr, int *texth = nullptr) {
-
+    GLuint GLAttachTexture(SDL_Surface* surface, int* textw = nullptr, int* texth = nullptr) {
         GLuint textureid;
         int mode;
 
@@ -178,34 +234,31 @@ public:
         // surface = SDL_LoadBMP(filename);
 
         // could not load filename
-        if (!surface) {
-
+        if(!surface) {
             return 0;
-
         }
 
         // work out what format to tell glTexImage2D to use...
-        if (surface->format->BytesPerPixel == 3) { // RGB 24bit
-
+        if(surface->format->BytesPerPixel == 3) {  // RGB 24bit
             mode = GL_RGB;
-
         }
-        else if (surface->format->BytesPerPixel == 4) { // RGBA 32bit
-
+        else if(surface->format->BytesPerPixel == 4) {  // RGBA 32bit
             mode = GL_RGBA;
             //mode = GL_RGBA16;
-
         }
         else {
-
             //SDL_FreeSurface(surface);
             return 0;
         }
 
-        if (textw)
+        if(textw) {
             *textw = surface->w;
-        if (texth)
+        }
+
+        if(texth) {
             *texth = surface->h;
+        }
+
         // create one texture name
         glGenTextures(1, &textureid);
 
@@ -224,13 +277,11 @@ public:
         //SDL_FreeSurface(surface);
         m_glTextureId = textureid;
         return textureid;
+    } // GLAttachTexture
 
-    }
-
-    void GLDrawTexture(const CRectangle* rect)
-    {
+    void GLDrawTexture(const CRectangle* rect) {
         //return;
-        if (!rect) {
+        if(!rect) {
             return;
         }
 
@@ -239,15 +290,16 @@ public:
         //float x1 = sdl_dst_rect->x + sdl_dst_rect->w / static_cast<float>(m_pSurface->w);
         //float y1 = sdl_dst_rect->y + sdl_dst_rect->h / static_cast<float>(m_pSurface->h);
 
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);               // Clear The Screen And The
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);               // Clear The Screen And
+        // The
         // Depth Buffer
         //glLoadIdentity();
 
         /*SDL_Rect mrect;
-        mrect.x = 1024 / 2 - 50 + 00;
-        mrect.y = 768 / 2 - 50 + 00;
-        mrect.w = 100;
-        mrect.h = 100;*/
+           mrect.x = 1024 / 2 - 50 + 00;
+           mrect.y = 768 / 2 - 50 + 00;
+           mrect.w = 100;
+           mrect.h = 100;*/
 
         //const SDL_Rect* prect = sdl_src_rect;
         const SDL_Rect* prect = rect->SDLRectCP();
@@ -264,26 +316,26 @@ public:
         //glColor3f(GetGlColorR(), GetGlColorG(), GetGlColorB());
 
         GLuint m_gl_texture_id = m_glTextureId;
-        if (m_gl_texture_id)
-        {
-            glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+        if(m_gl_texture_id) {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             //glEnable(GL_BLEND); glBlendFunc(GL_ONE, GL_ONE);
             glBindTexture(GL_TEXTURE_2D, m_gl_texture_id);
             glEnable(GL_TEXTURE_2D);
         }
 
-        //glFrontFace(GL_CCW); 
-        
+        //glFrontFace(GL_CCW);
+
         /*glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(x1, y);
-        glTexCoord2f(1.0f*texfac, 0);
-        glVertex2f(x1, y1);
-        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
-        glVertex2f(x, y1);
-        glTexCoord2f(0, 1.0f*texfac);
-        glVertex2f(x, y);
-        glEnd();*/
+           glTexCoord2f(0, 0);
+           glVertex2f(x1, y);
+           glTexCoord2f(1.0f*texfac, 0);
+           glVertex2f(x1, y1);
+           glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+           glVertex2f(x, y1);
+           glTexCoord2f(0, 1.0f*texfac);
+           glVertex2f(x, y);
+           glEnd();*/
 
         float rotation = 180.0f;
         //glRotatef(rotation, 0, 0, 1);
@@ -291,42 +343,42 @@ public:
         glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex2f(x, y);
-        glTexCoord2f(0, 1.0f*texfac);
+        glTexCoord2f(0, 1.0f * texfac);
         glVertex2f(x, y1);
-        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+        glTexCoord2f(1.0f * texfac, 1.0f * texfac);
         glVertex2f(x1, y1);
-        glTexCoord2f(1.0f*texfac, 0);
+        glTexCoord2f(1.0f * texfac, 0);
         glVertex2f(x1, y);
         glEnd();
 
         /*glBegin(GL_QUADS);
-        glTexCoord2f(0, 1.0f*texfac);
-        glVertex2f(x, y);
-        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
-        glVertex2f(x, y1);
-        glTexCoord2f(1.0f*texfac, 0);
-        glVertex2f(x1, y1);
-        glTexCoord2f(0, 0);
-        glVertex2f(x1, y);
-        glEnd();*/
+           glTexCoord2f(0, 1.0f*texfac);
+           glVertex2f(x, y);
+           glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+           glVertex2f(x, y1);
+           glTexCoord2f(1.0f*texfac, 0);
+           glVertex2f(x1, y1);
+           glTexCoord2f(0, 0);
+           glVertex2f(x1, y);
+           glEnd();*/
 
         /*glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(x, y);
-        glTexCoord2f(1.0f*texfac, 0);
-        glVertex2f(x, y1);
-        glTexCoord2f(1.0f*texfac, 1.0f*texfac);
-        glVertex2f(x1, y1);
-        glTexCoord2f(0, 1.0f*texfac);
-        glVertex2f(x1, y);
-        glEnd();*/
+           glTexCoord2f(0, 0);
+           glVertex2f(x, y);
+           glTexCoord2f(1.0f*texfac, 0);
+           glVertex2f(x, y1);
+           glTexCoord2f(1.0f*texfac, 1.0f*texfac);
+           glVertex2f(x1, y1);
+           glTexCoord2f(0, 1.0f*texfac);
+           glVertex2f(x1, y);
+           glEnd();*/
 
         //glRotatef(-rotation, 0, 0, 1);
 
         glDisable(GL_TEXTURE_2D);
 
         //SDL_GL_SwapWindow(m_pWindow);
-    }
+    } // GLDrawTexture
 };
 
 boost::random::mt19937 CCanvas::CCanvasImpl::gen;
@@ -334,7 +386,7 @@ boost::random::mt19937 CCanvas::CCanvasImpl::gen;
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr),
     m_glContext(nullptr), m_pSurface(nullptr),
-    m_pTexture(nullptr), m_pRenderer(nullptr){
+    m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
     m_lstUpdateRects.clear();
@@ -346,13 +398,16 @@ void CCanvas::CanvasSwapWindow() {
 
 CCanvas::CCanvas (SDL_Window* pWindow)
     : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
-    m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr){
+    m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
     m_glContext = SDL_GL_CreateContext(pWindow);
     SDL_GL_SetSwapInterval(1);
 
-    CCanvasImpl::InitGL();
+    if(CCanvasImpl::InitGL()) {
+        //pimpl_->InitOGLplus();
+    }
+
     // Todo: Error checking for context and window.
     m_lstUpdateRects.clear();
 }
@@ -360,8 +415,7 @@ CCanvas::CCanvas (SDL_Window* pWindow)
 CCanvas::~CCanvas () {
     // Clean up
     ClearUpdateRects();
-    if (pimpl_->m_glTextureId)
-    {
+    if(pimpl_->m_glTextureId) {
         glDeleteTextures(1, &pimpl_->m_glTextureId);
     }
 
@@ -598,7 +652,7 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
-    
+
     //pimpl_->GLDrawTexture(dstRect);
 } // CCanvas::FinalRenderCopy
 

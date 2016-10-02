@@ -35,12 +35,143 @@
 #include <cstdlib>
 #include <GuiLib/Animation.h>
 //
+//
+#include <GL/glew.h>
+//
+//
+#include <oglplus/all.hpp>
+#include <oglplus/gl.hpp>
+//
 //#include <build/cmake/include/debug.h>
 
 using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
+
+    /** @class Example:
+    *  Detailed description.
+    *
+    */
+    class Example {
+    private:
+
+        oglplus::Context gl;
+
+        oglplus::VertexShader vs;
+
+        oglplus::FragmentShader fs;
+
+        oglplus::Program prog;
+
+        oglplus::VertexArray triangle;
+
+        oglplus::Buffer verts;
+
+    public:
+
+        Example(void) {
+            using namespace oglplus;
+
+            // Set the vertex shader source
+            vs.Source(
+                " \
+                #version 120\n \
+                attribute vec3 Position; \
+                void main(void) \
+                { \
+                gl_Position = vec4(Position, 1.0); \
+                } \
+                ");
+            // compile it
+            vs.Compile();
+
+            // set the fragment shader source
+            fs.Source(
+                " \
+                #version 120\n \
+                void main(void) \
+                { \
+                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \
+                } \
+                ");
+            // compile it
+            fs.Compile();
+
+            // attach the shaders to the program
+            prog.AttachShader(vs);
+            prog.AttachShader(fs);
+            // link and use it
+            prog.Link();
+            prog.Use();
+
+            // bind the VAO for the triangle
+            triangle.Bind();
+
+            GLfloat triangle_verts[9] = {
+                0.0f, 0.0f, 0.0f,
+                0.1f, 0.0f, 0.0f,
+                0.0f, 0.1f, 0.0f
+            };
+            // bind the VBO for the triangle vertices
+            verts.Bind(Buffer::Target::Array);
+            // upload the data
+            Buffer::Data(
+                Buffer::Target::Array,
+                9,
+                triangle_verts
+                );
+            // setup the vertex attribs array for the vertices
+            VertexArrayAttrib vert_attr(prog, "Position");
+            vert_attr.Setup<GLfloat>(3);
+            vert_attr.Enable();
+
+            gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            gl.ClearDepth(1.0f);
+        }
+
+        void Display(void) {
+            using namespace oglplus;
+
+            //gl.Clear().ColorBuffer().DepthBuffer();
+
+            gl.DrawArrays(PrimitiveType::Triangles, 0, 3);
+        }
+    };
+
+    /** @class SingleExample:
+    *  Detailed description.
+    *  @return TODO
+    */
+    class SingleExample {
+    private:
+
+        static Example *& SingleInstance(void) {
+            static Example* test = nullptr;
+            return test;
+        }
+
+        SingleExample(const SingleExample&);
+
+    public:
+
+        SingleExample(void) {
+            assert(!SingleInstance());
+            SingleInstance() = new Example();
+        }
+
+        ~SingleExample(void) {
+            assert(SingleInstance());
+            delete SingleInstance();
+            SingleInstance() = nullptr;
+        }
+
+        static void Display(void) {
+            assert(SingleInstance());
+            SingleInstance()->Display();
+            //glutSwapBuffers();
+        }
+    };
 
 struct ZoomInScreen2::ZoomInScreen2Impl {
     //prv::EyeMover eyemover;
@@ -50,6 +181,7 @@ struct ZoomInScreen2::ZoomInScreen2Impl {
     boost::scoped_ptr<CImage> m_pZoomingImage;
     Timing timing;
     boost::shared_ptr<AnimatedRectangle> animRect1;
+    SingleExample example;
 
     ZoomInScreen2Impl(ZoomInScreen2* host)
         : m_host(host), x(0), timing{host} {
@@ -80,7 +212,7 @@ struct ZoomInScreen2::ZoomInScreen2Impl {
         m_pZoomingImage->RenderPut(canvas, growRect);
 
         //canvas->RenderDrawRect(*animRect1, &textColor);
-
+        SingleExample::Display();
         x++;
     } // draw
 };
