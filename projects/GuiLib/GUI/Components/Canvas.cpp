@@ -74,26 +74,26 @@ private:
     {
         // Set the vertex shader source
         vs.Source(
-            " \
-                    #version 120\n \
-                            attribute vec3 Position; \
-                                    void main(void) \
-                                            { \
-                                                    gl_Position = vec4(Position, 1.0); \
-                                                            } \
-                                                                    ");
+        " \
+        #version 120\n \
+        attribute vec3 Position; \
+        void main(void) \
+        { \
+        gl_Position = vec4(Position, 1.0); \
+        } \
+        ");
         // compile it
         vs.Compile();
 
         // set the fragment shader source
         fs.Source(
-            " \
-                    #version 120\n \
-                            void main(void) \
-                                    { \
-                                            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \
-                                                    } \
-                                                            ");
+        " \
+        #version 120\n \
+        void main(void) \
+        { \
+        gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0); \
+        } \
+        ");
         // compile it
         fs.Compile();
 
@@ -114,7 +114,7 @@ private:
 *  Detailed description.
 *
 */
-class Example {
+class QuadRenderer {
 private:
 
     oglplus::Context gl;
@@ -124,16 +124,23 @@ private:
     oglplus::VertexArray triangle;
 
     oglplus::Buffer verts;
+    oglplus::SizeType vertexCount;
     bool isVertexInitialized;
 
 public:
+    explicit QuadRenderer()
+        : vertexCount(0), isVertexInitialized(false)
+    {
+        //InitShaders();
+        //InitVerts();
+    }
 
     bool IsInitialized() const
     {
         return gprog && gprog->IsShaderInitialized() && isVertexInitialized;
     }
-
-    void InitVerts()
+    
+    void InitVerts(const GLfloat* triangle_verts, const oglplus::SizeType& vertexCountX)
     {
         using namespace oglplus;
 
@@ -145,18 +152,19 @@ public:
         // bind the VAO for the triangle
         triangle.Bind();
 
-        GLfloat triangle_verts[9] = {
+        /*GLfloat triangle_verts[9] = {
             0.0f, 0.0f, 0.0f,
             0.1f, 0.0f, 0.0f,
             0.0f, 0.1f, 0.0f
-        };
+        };*/
+        vertexCount = vertexCountX;
 
         // bind the VBO for the triangle vertices
         verts.Bind(Buffer::Target::Array);
         // upload the data
         Buffer::Data(
             Buffer::Target::Array,
-            9,
+            vertexCount * 3,
             triangle_verts
         );
         // setup the vertex attribs array for the vertices
@@ -170,18 +178,17 @@ public:
         isVertexInitialized = true;
     }
 
-    Example(void): isVertexInitialized(false)
-    {
-        //InitShaders();
-        //InitVerts();
-    }
-
     void Display(void) {
         using namespace oglplus;
 
-        gl.Clear().ColorBuffer().DepthBuffer();
+        //gl.Clear().ColorBuffer().DepthBuffer();
 
-        gl.DrawArrays(PrimitiveType::Triangles, 0, 3);
+        if (!IsInitialized())
+        {
+            return;
+        }
+
+        gl.DrawArrays(PrimitiveType::Triangles, 0, vertexCount);
     }
 
     void Cleanup()
@@ -190,7 +197,7 @@ public:
     }
 };
 
-boost::scoped_ptr<GpuProgram> Example::gprog;
+boost::scoped_ptr<GpuProgram> QuadRenderer::gprog;
 
 /** @class SingleExample:
 *  Detailed description.
@@ -199,8 +206,8 @@ boost::scoped_ptr<GpuProgram> Example::gprog;
 class SingleExample {
 private:
 
-    static Example *& SingleInstance(void) {
-        static Example* test = nullptr;
+    static QuadRenderer *& SingleInstance(void) {
+        static QuadRenderer* test = nullptr;
         return test;
     }
 
@@ -210,7 +217,7 @@ public:
 
     SingleExample(void) {
         assert(!SingleInstance());
-        SingleInstance() = new Example();
+        SingleInstance() = new QuadRenderer();
     }
 
     ~SingleExample(void) {
@@ -258,7 +265,7 @@ private:
     static boost::random::mt19937 gen;
     glm::mat4 cam;
     boost::scoped_ptr<oglplus::Context> m_context;
-    boost::scoped_ptr<Example> m_example;
+    boost::scoped_ptr<QuadRenderer> m_example;
 
     static float RandomFloat(float min, float max) {
         boost::random::uniform_real_distribution<> dist(min, max);
@@ -416,17 +423,17 @@ public:
             success = false;
         }
 
-        m_example.reset(new Example);
+        m_example.reset(new QuadRenderer);
         //m_example->InitShaders();
-        m_example->InitVerts();
+        //m_example->InitVerts();
 
         return success;
     } // initGL
 
     bool InitRenderSetup() {
         bool success = true;
-        m_example.reset(new Example);
-        m_example->InitVerts();
+        m_example.reset(new QuadRenderer);
+        //m_example->InitVerts();
 
         return success;
     } // initGL
@@ -618,6 +625,18 @@ public:
         //glRotatef(-rotation, 0, 0, 1);
 
         glDisable(GL_TEXTURE_2D);
+
+        GLfloat triangle_verts[18] = {
+            x, y, 0.0f,
+            x, y1, 0.0f,
+            x1, y1, 0.0f,
+
+            x1, y, 0.0f,
+            x1, y1, 0.0f,
+            x, y, 0.0f
+        };
+
+        m_example->InitVerts(triangle_verts, 6);
 
         if (m_example->IsInitialized())
         {
@@ -942,7 +961,10 @@ void CCanvas::MainRenderFinal() {
 }
 
 void CCanvas::MainRenderClear() {
-    SDL_RenderClear(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+    //SDL_RenderClear(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+    //glColor3f(1, 1, 1);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    oglplus::Context::Clear().ColorBuffer().DepthBuffer();
 }
 
 void CCanvas::SetTextureColorMod(const CColor& sdl_color) {

@@ -5,7 +5,6 @@
 #include "stdafx.h"
 
 //#include "windows.h"
-//#include <build/cmake/include/debug.h>
 //
 #include "HumbugGLFileLoader.h"
 //#include "Filesystem/FileLoader.h"
@@ -44,6 +43,7 @@
 #include <SDL_opengl.h>
 #include <GL\GLU.h>
 //
+//#include <build/cmake/include/debug.h>
 
 namespace humbug {
 
@@ -403,10 +403,10 @@ void CTestEventHandler::OnIdle(int ticks){
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
     //m_pMainCanvas->Lock();
 
-    glColor3f(1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    //m_pMainCanvas->MainRenderClear();
+//    glColor3f(1, 1, 1);
+//    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+//    oglplus::Context::Clear().ColorBuffer().DepthBuffer();
+    m_pMainCanvas->MainRenderClear();
 
 	//CRectangle screenrect = m_pMainCanvas->GetDimension();
 	//m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
