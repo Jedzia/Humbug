@@ -649,6 +649,9 @@ public:
 
 boost::random::mt19937 CCanvas::CCanvasImpl::gen;
 
+bool CCanvas::m_bUseOpenGL = false;
+
+
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr),
     m_glContext(nullptr), m_pSurface(nullptr),
@@ -956,8 +959,14 @@ void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcR
 }
 
 void CCanvas::MainRenderFinal() {
-    SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
-    //CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+    if (m_bUseOpenGL)
+    {
+        CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+    }
+    else
+    {
+        SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+    }
 }
 
 void CCanvas::MainRenderClear() {

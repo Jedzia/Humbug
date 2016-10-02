@@ -85,6 +85,12 @@ private:
     bool m_bIsParameterClass;
     CCanvasRendererStorage m_vecRendererVault;
 
+    /**
+    * \brief Debug SDL/OpenGL switch.
+    */
+    static bool m_bUseOpenGL;
+
+
 private:
 
     struct CCanvasImpl;
@@ -110,6 +116,12 @@ public:
 
     //destructor
     virtual ~CCanvas ( );
+
+    bool ToggleOpenGL() const
+    {
+        m_bUseOpenGL = !m_bUseOpenGL;
+        return m_bUseOpenGL;
+    }
 
     // getter for the SDL_Surface*
     SDL_Surface * GetSurface() const;

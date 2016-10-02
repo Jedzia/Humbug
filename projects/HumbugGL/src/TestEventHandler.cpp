@@ -88,7 +88,7 @@ CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
     /*m_pTileSet(NULL),*/
     m_uiLastTicks2(0),
-    m_uiNumFrames(0), m_bUseOpenGL(false)
+    m_uiNumFrames(0)
 {
     //dbgOut(__FUNCTION__ << std::endl);
 //	_CRT_DEBUG_BLOCK
@@ -485,15 +485,7 @@ void CTestEventHandler::OnIdle(int ticks){
     // calls RaiseOnIdle, RaiseOnDraw, m_pMainCanvas->UpdateRects and m_pMainCanvas->MainRenderFinal 
     CApplication::OnIdle(ticks);
 
-    if (m_bUseOpenGL)
-    {
-        // later, this should be in MainRenderFinal();
-        m_pMainCanvas->SwapWindow();
-    }
-    else
-    {
-        m_pMainCanvas->MainRenderFinal();
-    }
+    m_pMainCanvas->MainRenderFinal();
 
 } // OnIdle
 
@@ -636,7 +628,7 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     }
     else if (sym == SDLK_F1)   {
         //
-        m_bUseOpenGL = !m_bUseOpenGL;
+        m_pMainCanvas->ToggleOpenGL();
     }
 
 } // OnKeyDown
