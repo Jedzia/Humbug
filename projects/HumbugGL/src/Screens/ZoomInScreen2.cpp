@@ -48,6 +48,7 @@ using namespace gui::components;
 using namespace gui;
 
 namespace humbug {
+#if 0
 
     /** @class Example:
     *  Detailed description.
@@ -172,6 +173,7 @@ namespace humbug {
             //glutSwapBuffers();
         }
     };
+#endif // 0
 
 struct ZoomInScreen2::ZoomInScreen2Impl {
     //prv::EyeMover eyemover;
@@ -181,7 +183,7 @@ struct ZoomInScreen2::ZoomInScreen2Impl {
     boost::scoped_ptr<CImage> m_pZoomingImage;
     Timing timing;
     boost::shared_ptr<AnimatedRectangle> animRect1;
-    SingleExample example;
+    //SingleExample example;
 
     ZoomInScreen2Impl(ZoomInScreen2* host)
         : m_host(host), x(0), timing{host} {
@@ -212,7 +214,7 @@ struct ZoomInScreen2::ZoomInScreen2Impl {
         m_pZoomingImage->RenderPut(canvas, growRect);
 
         //canvas->RenderDrawRect(*animRect1, &textColor);
-        SingleExample::Display();
+        //SingleExample::Display();
         x++;
     } // draw
 };

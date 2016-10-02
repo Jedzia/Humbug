@@ -340,7 +340,7 @@ public:
         float rotation = 180.0f;
         //glRotatef(rotation, 0, 0, 1);
 
-        glBegin(GL_QUADS);
+        /*glBegin(GL_QUADS);
         glTexCoord2f(0, 0);
         glVertex2f(x, y);
         glTexCoord2f(0, 1.0f * texfac);
@@ -349,6 +349,33 @@ public:
         glVertex2f(x1, y1);
         glTexCoord2f(1.0f * texfac, 0);
         glVertex2f(x1, y);
+        glEnd();*/
+
+        /*
+         * B  D
+         *
+         * A  C
+         * 
+         *
+         *
+         *
+         *
+         */
+        glBegin(GL_TRIANGLES);
+        glTexCoord2f(0, 0); 
+        glVertex2f(x, y);                               // A
+        glTexCoord2f(0, 1.0f * texfac);             
+        glVertex2f(x, y1);                              // B
+        glTexCoord2f(1.0f * texfac, 1.0f * texfac);
+        glVertex2f(x1, y1);                             // C
+
+
+        glTexCoord2f(1.0f * texfac, 0);
+        glVertex2f(x1, y);                              // D
+        glTexCoord2f(1.0f * texfac, 1.0f * texfac);
+        glVertex2f(x1, y1);                             // C
+        glTexCoord2f(0, 0);
+        glVertex2f(x, y);                               // A
         glEnd();
 
         /*glBegin(GL_QUADS);
