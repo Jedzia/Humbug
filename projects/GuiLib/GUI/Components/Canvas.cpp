@@ -55,7 +55,6 @@ class GpuProgram {
      *  etc.
      */
 
-private:
     oglplus::VertexShader vs;
 
     oglplus::FragmentShader fs;
@@ -78,6 +77,11 @@ public:
     const oglplus::Program& GetProgram() const
     {
         return prog;
+    }
+
+    void SetColor(float r, float g, float b) const
+    {
+        (GetProgram() / "colorIn") = oglplus::Vec3f(r, g, b);
     }
 
 private:
@@ -167,7 +171,6 @@ private:
         }
     }
 
-
 };
 
 /** @class Example:
@@ -241,7 +244,7 @@ public:
     }
 
     void SetColor(float r, float g, float b ) {
-        (gprog->GetProgram() / "colorIn") = oglplus::Vec3f(r, g, b);
+        gprog->SetColor(r, g, b);
     }
 
     void Display(void) {
