@@ -43,6 +43,215 @@ namespace components {
 using namespace std;
 
 
+class GpuProgram {
+private:
+    oglplus::VertexShader vs;
+
+    oglplus::FragmentShader fs;
+
+    oglplus::Program prog;
+    bool isShaderInitialized;
+
+public:
+    explicit GpuProgram()
+        : isShaderInitialized(false)
+    {
+        InitShaders();
+    }
+
+    const oglplus::Program& GetProgram() const
+    {
+        return prog;
+    }
+
+private:
+    void InitShaders()
+    {
+        // Set the vertex shader source
+        vs.Source(
+            " \
+                    #version 120\n \
+                            attribute vec3 Position; \
+                                    void main(void) \
+                                            { \
+                                                    gl_Position = vec4(Position, 1.0); \
+                                                            } \
+                                                                    ");
+        // compile it
+        vs.Compile();
+
+        // set the fragment shader source
+        fs.Source(
+            " \
+                    #version 120\n \
+                            void main(void) \
+                                    { \
+                                            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \
+                                                    } \
+                                                            ");
+        // compile it
+        fs.Compile();
+
+        // attach the shaders to the program
+        prog.AttachShader(vs);
+        prog.AttachShader(fs);
+        // link and use it
+        prog.Link();
+        prog.Use();
+
+        isShaderInitialized = true;
+    }
+
+
+};
+
+/** @class Example:
+*  Detailed description.
+*
+*/
+class Example {
+private:
+
+    oglplus::Context gl;
+
+    oglplus::VertexShader vs;
+
+    oglplus::FragmentShader fs;
+
+    oglplus::Program prog;
+
+    oglplus::VertexArray triangle;
+
+private:
+    oglplus::Buffer verts;
+    bool isShaderInitialized;
+    bool isVertexInitialized;
+
+public:
+
+    bool IsInitialized() const
+    {
+        return isShaderInitialized && isVertexInitialized;
+    }
+
+    void InitShaders()
+    {
+        // Set the vertex shader source
+        vs.Source(
+            " \
+        #version 120\n \
+        attribute vec3 Position; \
+        void main(void) \
+        { \
+        gl_Position = vec4(Position, 1.0); \
+        } \
+        ");
+        // compile it
+        vs.Compile();
+
+        // set the fragment shader source
+        fs.Source(
+            " \
+        #version 120\n \
+        void main(void) \
+        { \
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); \
+        } \
+        ");
+        // compile it
+        fs.Compile();
+
+        // attach the shaders to the program
+        prog.AttachShader(vs);
+        prog.AttachShader(fs);
+        // link and use it
+        prog.Link();
+        prog.Use();
+
+        isShaderInitialized = true;
+    }
+
+    void InitVerts()
+    {
+        using namespace oglplus;
+
+
+        // bind the VAO for the triangle
+        triangle.Bind();
+
+        GLfloat triangle_verts[9] = {
+            0.0f, 0.0f, 0.0f,
+            0.1f, 0.0f, 0.0f,
+            0.0f, 0.1f, 0.0f
+        };
+        // bind the VBO for the triangle vertices
+        verts.Bind(Buffer::Target::Array);
+        // upload the data
+        Buffer::Data(
+            Buffer::Target::Array,
+            9,
+            triangle_verts
+        );
+        // setup the vertex attribs array for the vertices
+        VertexArrayAttrib vert_attr(prog, "Position");
+        vert_attr.Setup<GLfloat>(3);
+        vert_attr.Enable();
+
+        gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        gl.ClearDepth(1.0f);
+
+        isVertexInitialized = true;
+    }
+
+    Example(void): isShaderInitialized(false), isVertexInitialized(false)
+    {
+        //InitShaders();
+        //InitVerts();
+    }
+
+    void Display(void) {
+        using namespace oglplus;
+
+        //gl.Clear().ColorBuffer().DepthBuffer();
+
+        gl.DrawArrays(PrimitiveType::Triangles, 0, 3);
+    }
+};
+
+/** @class SingleExample:
+*  Detailed description.
+*  @return TODO
+*/
+class SingleExample {
+private:
+
+    static Example *& SingleInstance(void) {
+        static Example* test = nullptr;
+        return test;
+    }
+
+    SingleExample(const SingleExample&);
+
+public:
+
+    SingleExample(void) {
+        assert(!SingleInstance());
+        SingleInstance() = new Example();
+    }
+
+    ~SingleExample(void) {
+        assert(SingleInstance());
+        delete SingleInstance();
+        SingleInstance() = nullptr;
+    }
+
+    static void Display(void) {
+        assert(SingleInstance());
+        SingleInstance()->Display();
+        //glutSwapBuffers();
+    }
+};
+
 struct CCanvas::CCanvasImpl {
 private:
 
@@ -74,6 +283,8 @@ private:
     float glColorB;
     static boost::random::mt19937 gen;
     glm::mat4 cam;
+    boost::scoped_ptr<oglplus::Context> m_context;
+    boost::scoped_ptr<Example> m_example;
 
     static float RandomFloat(float min, float max) {
         boost::random::uniform_real_distribution<> dist(min, max);
@@ -106,6 +317,9 @@ public:
         glColorR = RandomFloat(0.0f, 1.0f);
         glColorG = RandomFloat(0.0f, 1.0f);
         glColorB = RandomFloat(0.0f, 1.0f);
+
+        // beware: under the hood the context is all static
+        m_context.reset(new oglplus::Context);
     }
 
     static bool InitGL() {
@@ -160,11 +374,20 @@ public:
 
     bool InitOGLplus() {
         bool success = true;
+        static bool isInitialized = false;
+
+        if (isInitialized)
+        {
+            throw  std::runtime_error("CCanvas::CCanvasImpl::InitOGLplus initialized twice.");
+        }
+        isInitialized = true;
 
         try
         {
             glGetError();
-            oglplus::Context context;
+            //oglplus::Context context;
+            //m_context.reset(new oglplus::Context);
+            oglplus::Context& context = *m_context;
 
             std::cout << "Vendor: " << context.Vendor() << std::endl;
             std::cout << "Version: " << context.Version() << std::endl;
@@ -211,6 +434,10 @@ public:
                 std::endl;
             success = false;
         }
+
+        m_example.reset(new Example);
+        m_example->InitShaders();
+        m_example->InitVerts();
 
         return success;
     } // initGL
@@ -315,12 +542,11 @@ public:
 
         //glColor3f(GetGlColorR(), GetGlColorG(), GetGlColorB());
 
-        GLuint m_gl_texture_id = m_glTextureId;
-        if(m_gl_texture_id) {
+        if(m_glTextureId) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             //glEnable(GL_BLEND); glBlendFunc(GL_ONE, GL_ONE);
-            glBindTexture(GL_TEXTURE_2D, m_gl_texture_id);
+            glBindTexture(GL_TEXTURE_2D, m_glTextureId);
             glEnable(GL_TEXTURE_2D);
         }
 
@@ -404,6 +630,11 @@ public:
 
         glDisable(GL_TEXTURE_2D);
 
+        if (m_example->IsInitialized())
+        {
+            m_example->Display();
+        }
+
         //SDL_GL_SwapWindow(m_pWindow);
     } // GLDrawTexture
 };
@@ -432,7 +663,7 @@ CCanvas::CCanvas (SDL_Window* pWindow)
     SDL_GL_SetSwapInterval(1);
 
     if(CCanvasImpl::InitGL()) {
-        //pimpl_->InitOGLplus();
+        pimpl_->InitOGLplus();
     }
 
     // Todo: Error checking for context and window.
