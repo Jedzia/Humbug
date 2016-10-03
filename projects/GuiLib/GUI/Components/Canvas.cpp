@@ -734,7 +734,7 @@ class BothDisplayApi : public CanvasDisplayApi {
     bool m_bIsParameterClass;
 public:
 
-    SDL_Renderer * GetRenderer() const override
+    SDL_Renderer * GetRenderer() const
     {
         if(this->m_pRenderer) {
             return m_pRenderer;
@@ -841,6 +841,7 @@ public:
         return m_bUseOpenGL;
     }
 
+/*
     void Final() override {
         if(m_bUseOpenGL) {
             CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
@@ -848,9 +849,11 @@ public:
         else {
             // error, later the SDL renderer should be a class member
             //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
-            SDL_RenderPresent(MainApi->m_pRenderer);
+            CApplication::GetApplication()->GetMainCanvas()->dApi_->RenderPresent();
+            //SDL_RenderPresent(MainApi->m_pRenderer);
         }
     }
+*/
 
     void SetWindow(SDL_Window* pWindow) override {
         m_pWindow = pWindow;
@@ -906,6 +909,11 @@ public:
         sourceApi->m_pTexture = texture;
     }
 
+    void RenderPresent() override
+    {
+        SDL_RenderPresent(GetRenderer());
+    }
+
     static void MainRenderFinal() {
         if (m_bUseOpenGL) {
             //CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
@@ -913,7 +921,8 @@ public:
         }
         else {
             //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
-            SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->dApi_->GetRenderer());
+            //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->dApi_->GetRenderer());
+            CApplication::GetApplication()->GetMainCanvas()->dApi_->RenderPresent();
         }
     }
 
@@ -930,6 +939,7 @@ public:
 
     void FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const override
     {
+        // *** OpenGL incomplete ***
         // all RenderCopy calls flow here
         const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
         const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
@@ -1306,9 +1316,9 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
     // this works only for the main canvas
-    if(!dApi_->GetRenderer()) {
+    /*if(!dApi_->GetRenderer()) {
         return;
-    }
+    }*/
 
     //SDL_Texture *tex = SDL_CreateTextureFromSurface(this->m_pRenderer, GetSurface());
     UpdateTexture(GetTexture(), srcRect, GetSurface()->pixels, GetSurface()->pitch);

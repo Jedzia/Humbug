@@ -69,12 +69,12 @@ public:
     virtual bool ToggleOpenGL() = 0;
     virtual void SetSurface(SDL_Surface* pSurface) = 0;
     virtual void SetWindow(SDL_Window* pWindow) = 0;
-    virtual void Final() = 0;
+    //virtual void Final() = 0;
     virtual SDL_Texture * GetTexture() = 0;
     virtual bool ClearColorKey() const = 0;
     virtual SDL_Surface * GetSurface() const = 0;
     virtual void CanvasSwapWindow() = 0;
-    virtual SDL_Renderer * GetRenderer() const = 0;
+    //virtual SDL_Renderer * GetRenderer() const = 0;
     virtual bool Clear(const CColor& color) const = 0;
     virtual void SetupParameterClass(CCanvas* source, SDL_Texture* texture) const = 0;
 
@@ -89,6 +89,8 @@ public:
     virtual bool RenderFillRect(const CRectangle& rect, const CColor* color) const = 0;
     virtual bool RenderFillRect(const CRectangle& rect, const CColor& color) const = 0;
 
+//protected:
+    virtual void RenderPresent() = 0;
 };
 
 //CCanvas class
