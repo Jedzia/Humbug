@@ -12,7 +12,8 @@
 
 namespace gui {
 namespace components {
-struct CCanvasRenderModifierData
+
+    struct CCanvasRenderModifierData
 {
     /** contains the source rectangle. */
     CRectangle* srcRect;
@@ -51,12 +52,16 @@ typedef enum {
     BLENDMODE_MOD = 0x00000004
 } BlendMode;
 
+class CCanvas;
+
 /** @class RenderApi:
  *  Detailed description.
  *
  */
 class CanvasDisplayApi {
 public:
+    //static void MainRenderFinal();
+    //static void MainRenderClear();
 
     virtual ~CanvasDisplayApi()
     {}
@@ -65,6 +70,13 @@ public:
     virtual void SetSurface(SDL_Surface* pSurface) = 0;
     virtual void SetWindow(SDL_Window* pWindow) = 0;
     virtual void Final() = 0;
+    virtual SDL_Texture * GetTexture() = 0;
+    virtual bool ClearColorKey() const = 0;
+    virtual SDL_Surface * GetSurface() const = 0;
+    virtual void CanvasSwapWindow() = 0;
+    virtual SDL_Renderer * GetRenderer() const = 0;
+    virtual bool Clear(const CColor& color) const = 0;
+    virtual void SetupParameterClass(CCanvas* source, SDL_Texture* texture) const = 0;
 };
 
 //CCanvas class
@@ -101,14 +113,14 @@ private:
 
     std::list<SDL_Rect *> m_lstUpdateRects;
     bool m_bOwner;
-    bool m_bTextureOwner;
-    bool m_bIsParameterClass;
+    //bool m_bTextureOwner;
+    //bool m_bIsParameterClass;
     CCanvasRendererStorage m_vecRendererVault;
 
     /**
      * \brief Debug SDL/OpenGL switch.
      */
-    static bool m_bUseOpenGL;
+    //static bool m_bUseOpenGL;
 
 private:
 
@@ -117,11 +129,11 @@ private:
     boost::scoped_ptr<CanvasDisplayApi> dApi_;
 
     //pointer to an SDL_Surface
-    SDL_Window* m_pWindow;
-    SDL_GLContext m_glContext;
-    SDL_Surface* m_pSurface;
-    SDL_Texture* m_pTexture;
-    SDL_Renderer* m_pRenderer;
+//    SDL_Window* m_pWindow;
+//    SDL_GLContext m_glContext;
+//    SDL_Surface* m_pSurface;
+//    SDL_Texture* m_pTexture;
+//    SDL_Renderer* m_pRenderer;
 
 protected:
 

@@ -719,6 +719,7 @@ boost::random::mt19937 CCanvas::CCanvasImpl::gen;
  */
 class BothDisplayApi : public CanvasDisplayApi {
     static bool m_bUseOpenGL;
+    CCanvas* host_;
     CCanvas::CCanvasImpl* pimpl_;
     BothDisplayApi* MainApi;
 
@@ -729,9 +730,12 @@ class BothDisplayApi : public CanvasDisplayApi {
     SDL_Renderer* m_pRenderer;
 
     bool m_bTextureOwner;
-    bool m_bOwner;
+    //bool m_bOwner;
+    bool m_bIsParameterClass;
+public:
 
-    SDL_Renderer * GetRenderer() const {
+    SDL_Renderer * GetRenderer() const override
+    {
         if(this->m_pRenderer) {
             return m_pRenderer;
         }
@@ -741,7 +745,8 @@ class BothDisplayApi : public CanvasDisplayApi {
         }
     }
 
-    SDL_Texture * GetTexture() {
+    SDL_Texture * GetTexture() override
+    {
         // Lazy Texture
         if(m_pTexture == nullptr) {
             if(this->m_pRenderer) {
@@ -761,43 +766,42 @@ class BothDisplayApi : public CanvasDisplayApi {
         return m_pTexture;
     } // GetTexture
 
-public:
-
-    explicit BothDisplayApi(CCanvas::CCanvasImpl* pimpl)
-        : pimpl_(pimpl),
+    explicit BothDisplayApi(CCanvas* host, CCanvas::CCanvasImpl* pimpl)
+        : host_(host),
+        pimpl_(pimpl),
         m_pWindow(nullptr),
         m_glContext(nullptr),
         m_pSurface(nullptr),
         m_pTexture(nullptr),
-        m_pRenderer(nullptr),
-        m_bTextureOwner(false), m_bOwner(false) {
+        m_pRenderer(nullptr), m_bTextureOwner(false), /*m_bOwner(false),*/ m_bIsParameterClass(false)
+    {
         CMainCanvas* main_canvas = CApplication::GetApplication()->GetMainCanvas();
         if(!main_canvas) {
             MainApi = this;
             return;
         }
 
-        MainApi = dynamic_cast<BothDisplayApi *>(main_canvas->dApi_.get());
+        MainApi = static_cast<BothDisplayApi *>(main_canvas->dApi_.get());
     }
 
     ~BothDisplayApi() {
-        return;
+        //return;
         // Clean up
         if (pimpl_->m_glTextureId) {
             glDeleteTextures(1, &pimpl_->m_glTextureId);
         }
 
         if (m_pTexture) {
-            if (m_bTextureOwner && m_pTexture) {
+            if (m_bTextureOwner) {
                 SDL_DestroyTexture(m_pTexture);
                 m_pTexture = nullptr;
             }
         }
 
         // do not Clean up when used as parameter
-        /*if (m_bIsParameterClass) {
+        if (m_bIsParameterClass) {
             return;
-        }*/
+        }
 
         if (m_pRenderer) {
             SDL_DestroyRenderer(m_pRenderer);
@@ -809,12 +813,17 @@ public:
             BothDisplayApi::SetWindow(NULL);
         }
 
-        if (m_bOwner && m_pSurface) {
+        if (host_->m_bOwner && m_pSurface) {
             SDL_FreeSurface(m_pSurface);
             m_pSurface = nullptr;
         }
 
         //dbgOut(__FUNCTION__ << std::endl);
+    }
+  
+    SDL_Surface * GetSurface() const override
+    {
+        return (m_pSurface);
     }
 
     void SetSurface(SDL_Surface* pSurface) override {
@@ -854,27 +863,89 @@ public:
                     __FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow <<
                         ")");
             m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, m_pSurface);
+
+            m_glContext = SDL_GL_CreateContext(pWindow);
+            SDL_GL_SetSwapInterval(1);
         }
     }
+
+    bool ClearColorKey() const override
+    {
+        if (m_pTexture) {
+            SDL_SetTextureColorMod(m_pTexture, 255, 255, 255);
+        }
+
+        return (SDL_SetColorKey(GetSurface(), 0, 0) == 0);
+    }
+
+    void CanvasSwapWindow() override
+    {
+        SDL_GL_SwapWindow(m_pWindow);
+    }
+
+    bool Clear(const CColor& color) const override
+    {
+        Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
+
+        if (m_pTexture) {
+            CRectangle dimension = host_->GetDimension();
+            host_->RenderFillRect(dimension, &color);
+            //SDL_RenderClear(GetRenderer());
+        }
+
+        return (SDL_FillRect(GetSurface(), NULL, col) == 0);
+    }
+
+
+    void SetupParameterClass(CCanvas* source, SDL_Texture* texture) const override
+    {
+        auto sourceApi = static_cast<BothDisplayApi *>(source->dApi_.get());
+
+        sourceApi->m_bIsParameterClass = true;
+        sourceApi->m_pRenderer = GetRenderer();
+        sourceApi->m_pTexture = texture;
+    }
+
+    static void MainRenderFinal() {
+        if (m_bUseOpenGL) {
+            CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+        }
+        else {
+            SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+        }
+    }
+
+    static void MainRenderClear() {
+        //SDL_RenderClear(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+        //glColor3f(1, 1, 1);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        if (m_bUseOpenGL)
+        {
+            oglplus::Context::Clear().ColorBuffer().DepthBuffer();
+        }
+    }
+
+
 };
 
-bool CCanvas::m_bUseOpenGL = false;
+//bool CCanvas::m_bUseOpenGL = false;
 bool BothDisplayApi::m_bUseOpenGL = false;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(pimpl_.get())),
+    : m_bOwner(owner), /*m_bTextureOwner(false), m_bIsParameterClass(false),*/ pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(this, pimpl_.get()))/*,
     m_pWindow(nullptr),
     m_glContext(nullptr), m_pSurface(nullptr),
-    m_pTexture(nullptr), m_pRenderer(nullptr) {
+    m_pTexture(nullptr), m_pRenderer(nullptr)*/ {
     //dbgOut(__FUNCTION__ << std::endl);
-    SetSurface(pSurface);
-    //dApi_->SetSurface(pSurface);
+    //SetSurface(pSurface);
+    dApi_->SetSurface(pSurface);
     pimpl_->InitRenderSetup();
     m_lstUpdateRects.clear();
 }
 
 void CCanvas::CanvasSwapWindow() {
-    SDL_GL_SwapWindow(m_pWindow);
+    //SDL_GL_SwapWindow(m_pWindow);
+    dApi_->CanvasSwapWindow();
 }
 
 void CCanvas::MainWindowClosing() {
@@ -883,14 +954,12 @@ void CCanvas::MainWindowClosing() {
 }
 
 CCanvas::CCanvas (SDL_Window* pWindow)
-    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(pimpl_.get())),
+    : m_bOwner(true), /*m_bTextureOwner(false), m_bIsParameterClass(false),*/ pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(this, pimpl_.get()))/*,
     m_pWindow(nullptr), m_glContext(nullptr),
-    m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
+    m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr)*/ {
     //dbgOut(__FUNCTION__ << std::endl);
-    SetWindow(pWindow);
-    //dApi_->SetWindow(pWindow);
-    m_glContext = SDL_GL_CreateContext(pWindow);
-    SDL_GL_SetSwapInterval(1);
+    //SetWindow(pWindow);
+    dApi_->SetWindow(pWindow);
 
     if(CCanvasImpl::InitGL()) {
         pimpl_->InitOGLplus();
@@ -914,40 +983,41 @@ CCanvas::~CCanvas () {
         glDeleteTextures(1, &pimpl_->m_glTextureId);
     }
 
-    if(m_pTexture) {
-        if(m_bTextureOwner && m_pTexture) {
-            SDL_DestroyTexture(m_pTexture);
-            m_pTexture = nullptr;
-        }
-    }
-
-    // do not Clean up when used as parameter
-    if(m_bIsParameterClass) {
-        return;
-    }
-
-    if(m_pRenderer) {
-        SDL_DestroyRenderer(m_pRenderer);
-        m_pRenderer = nullptr;
-    }
-
-    if(m_pWindow) {
-        SDL_DestroyWindow(m_pWindow);
-        SetWindow(NULL);
-    }
-
-    if(m_bOwner && m_pSurface) {
-        SDL_FreeSurface(m_pSurface);
-        m_pSurface = nullptr;
-    }
+//    if(m_pTexture) {
+//        if(m_bTextureOwner && m_pTexture) {
+//            SDL_DestroyTexture(m_pTexture);
+//            m_pTexture = nullptr;
+//        }
+//    }
+//
+//    // do not Clean up when used as parameter
+//    if(m_bIsParameterClass) {
+//        return;
+//    }
+//
+//    if(m_pRenderer) {
+//        SDL_DestroyRenderer(m_pRenderer);
+//        m_pRenderer = nullptr;
+//    }
+//
+//    if(m_pWindow) {
+//        SDL_DestroyWindow(m_pWindow);
+//        SetWindow(NULL);
+//    }
+//
+//    if(m_bOwner && m_pSurface) {
+//        SDL_FreeSurface(m_pSurface);
+//        m_pSurface = nullptr;
+//    }
 
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
 bool CCanvas::ToggleOpenGL() {
-    dApi_->ToggleOpenGL();
-    m_bUseOpenGL = !m_bUseOpenGL;
-    return m_bUseOpenGL;
+    //dApi_->ToggleOpenGL();
+    //m_bUseOpenGL = !m_bUseOpenGL;
+    //return m_bUseOpenGL;
+    return dApi_->ToggleOpenGL();
 }
 
 void CCanvas::AddModifier(const CCanvasRenderer& updfunc) {
@@ -955,37 +1025,39 @@ void CCanvas::AddModifier(const CCanvasRenderer& updfunc) {
 }
 
 SDL_Surface * CCanvas::GetSurface() const {
-    return (m_pSurface);
+    return dApi_->GetSurface();
 }
 
 SDL_Texture * CCanvas::GetTexture() {
     // Lazy Texture
-    if(m_pTexture == nullptr) {
-        if(this->m_pRenderer) {
-            m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
-        }
-        else {
-            m_pTexture = SDL_CreateTextureFromSurface(
-                    CApplication::GetApplication()->GetMainCanvas()->m_pRenderer, m_pSurface);
-        }
+//    if(m_pTexture == nullptr) {
+//        if(this->m_pRenderer) {
+//            m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
+//        }
+//        else {
+//            m_pTexture = SDL_CreateTextureFromSurface(
+//                    CApplication::GetApplication()->GetMainCanvas()->m_pRenderer, m_pSurface);
+//        }
+//
+//        m_bTextureOwner = true;
+//    }
 
-        m_bTextureOwner = true;
-    }
-
-    return m_pTexture;
+    return dApi_->GetTexture();
 }
 
 void CCanvas::SetSurface(SDL_Surface* pSurface) {
-    if(!pSurface) {
+    /*if(!pSurface) {
         return;
     }
 
-    m_pSurface = pSurface;
-    pimpl_->GLAttachTexture(m_pSurface);
+    m_pSurface = pSurface;*/
+    dApi_->SetSurface(pSurface);
+    pimpl_->GLAttachTexture(pSurface);
 }
 
 void CCanvas::SetWindow(SDL_Window* pWindow) {
-    m_pWindow = pWindow;
+    dApi_->SetWindow(pWindow);
+    /*m_pWindow = pWindow;
 
     if(pWindow) {
         SetSurface(SDL_GetWindowSurface(pWindow));
@@ -995,16 +1067,17 @@ void CCanvas::SetWindow(SDL_Window* pWindow) {
                 __FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow <<
                     ")");
         m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
-    }
+    }*/
 }
 
 SDL_Renderer * CCanvas::GetRenderer() const {
-    if(this->m_pRenderer) {
+    return dApi_->GetRenderer();
+    /*if(this->m_pRenderer) {
         return m_pRenderer;
     }
     else {
         return CApplication::GetApplication()->GetMainCanvas()->m_pRenderer;
-    }
+    }*/
 }
 
 void CCanvas::UpdateTexture(CCanvas* source, const CRectangle* dstRect, const CRectangle* srcRect) {
@@ -1126,9 +1199,11 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
     if(!m_vecRendererVault.empty()) {
         // Todo: problematic ? ... other way to do it? only used in TutorA1
         CCanvas source(this->GetSurface());
-        source.m_bIsParameterClass = true;
-        source.m_pRenderer = GetRenderer();
-        source.m_pTexture = texture;
+        dApi_->SetupParameterClass(&source, texture);
+        
+//        source.m_bIsParameterClass = true;
+//        source.dApi_->m_pRenderer = GetRenderer();
+//        source.m_pTexture = texture;
 
         if(ApplyRenderers(m_vecRendererVault, this, &source, dstRect, srcRect)) {
             return;
@@ -1161,7 +1236,7 @@ void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, c
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
     // this works only for the main canvas
-    if(!m_pRenderer) {
+    if(!dApi_->GetRenderer()) {
         return;
     }
 
@@ -1186,15 +1261,20 @@ void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcR
 }
 
 void CCanvas::MainRenderFinal() {
+    BothDisplayApi::MainRenderFinal();
+/*
     if(m_bUseOpenGL) {
         CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
     }
     else {
         SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
     }
+*/
 }
 
 void CCanvas::MainRenderClear() {
+    BothDisplayApi::MainRenderClear();
+/*
     //SDL_RenderClear(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
     //glColor3f(1, 1, 1);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -1202,6 +1282,7 @@ void CCanvas::MainRenderClear() {
     {
         oglplus::Context::Clear().ColorBuffer().DepthBuffer();
     }
+*/
 }
 
 void CCanvas::SetTextureColorMod(const CColor& sdl_color) {
@@ -1345,11 +1426,12 @@ CColor CCanvas::GetColorKey () const {
 }
 
 bool CCanvas::ClearColorKey () const {
-    if(m_pTexture) {
+    return dApi_->ClearColorKey();
+    /*if(m_pTexture) {
         SDL_SetTextureColorMod(m_pTexture, 255, 255, 255);
     }
 
-    return (SDL_SetColorKey(GetSurface(), 0, 0) == 0);
+    return (SDL_SetColorKey(GetSurface(), 0, 0) == 0);*/
 }
 
 void CCanvas::SetClipRect (CRectangle* pRect) const {
@@ -1416,7 +1498,8 @@ bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor& color) const 
 }
 
 bool CCanvas::Clear(const CColor& color) const {
-    Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
+    return dApi_->Clear(color);
+    /*Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
 
     if(m_pTexture) {
         CRectangle dimension = GetDimension();
@@ -1424,7 +1507,7 @@ bool CCanvas::Clear(const CColor& color) const {
         //SDL_RenderClear(GetRenderer());
     }
 
-    return (SDL_FillRect(GetSurface(), NULL, col) == 0);
+    return (SDL_FillRect(GetSurface(), NULL, col) == 0);*/
 }
 
 bool CCanvas::Blit (const CRectangle& rectDst, const CCanvas& cnvSrc, const CRectangle& rectSrc) const {
