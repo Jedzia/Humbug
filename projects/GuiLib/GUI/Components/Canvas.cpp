@@ -730,7 +730,7 @@ class BothDisplayApi : public CanvasDisplayApi {
     SDL_Renderer* m_pRenderer;
 
     bool m_bTextureOwner;
-    //bool m_bOwner;
+    bool m_bOwner;
     bool m_bIsParameterClass;
 public:
 
@@ -766,14 +766,14 @@ public:
         return m_pTexture;
     } // GetTexture
 
-    explicit BothDisplayApi(CCanvas* host, CCanvas::CCanvasImpl* pimpl)
+    explicit BothDisplayApi(CCanvas* host, CCanvas::CCanvasImpl* pimpl, bool owner)
         : host_(host),
         pimpl_(pimpl),
         m_pWindow(nullptr),
         m_glContext(nullptr),
         m_pSurface(nullptr),
         m_pTexture(nullptr),
-        m_pRenderer(nullptr), m_bTextureOwner(false), /*m_bOwner(false),*/ m_bIsParameterClass(false)
+        m_pRenderer(nullptr), m_bTextureOwner(false), m_bOwner(owner), m_bIsParameterClass(false)
     {
         CMainCanvas* main_canvas = CApplication::GetApplication()->GetMainCanvas();
         if(!main_canvas) {
@@ -813,7 +813,7 @@ public:
             BothDisplayApi::SetWindow(NULL);
         }
 
-        if (host_->m_bOwner && m_pSurface) {
+        if (m_bOwner && m_pSurface) {
             SDL_FreeSurface(m_pSurface);
             m_pSurface = nullptr;
         }
@@ -932,7 +932,7 @@ public:
 bool BothDisplayApi::m_bUseOpenGL = false;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), /*m_bTextureOwner(false), m_bIsParameterClass(false),*/ pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(this, pimpl_.get()))/*,
+    : /*m_bOwner(owner),*/ /*m_bTextureOwner(false), m_bIsParameterClass(false),*/ pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(this, pimpl_.get(), owner))/*,
     m_pWindow(nullptr),
     m_glContext(nullptr), m_pSurface(nullptr),
     m_pTexture(nullptr), m_pRenderer(nullptr)*/ {
@@ -954,7 +954,7 @@ void CCanvas::MainWindowClosing() {
 }
 
 CCanvas::CCanvas (SDL_Window* pWindow)
-    : m_bOwner(true), /*m_bTextureOwner(false), m_bIsParameterClass(false),*/ pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(this, pimpl_.get()))/*,
+    : /*m_bOwner(true),*/ /*m_bTextureOwner(false), m_bIsParameterClass(false),*/ pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(this, pimpl_.get(), true))/*,
     m_pWindow(nullptr), m_glContext(nullptr),
     m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr)*/ {
     //dbgOut(__FUNCTION__ << std::endl);
@@ -1519,11 +1519,10 @@ bool CCanvas::Blit (const CRectangle& rectDst, const CCanvas& cnvSrc, const CRec
 CCanvas * CCanvas::CreateRGB (Uint32 flags, int width, int height, int depth, Uint32 Rmask,
         Uint32 Gmask, Uint32 Bmask,
         Uint32 Amask) {
-    CCanvas* pCanvas = new CCanvas(static_cast<SDL_Surface *>(NULL));
+    CCanvas* pCanvas = new CCanvas(static_cast<SDL_Surface *>(NULL), true);
     pCanvas->SetSurface(SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask,
                     Amask));
-    pCanvas->m_bOwner = true;
-    return (pCanvas);
+    return pCanvas;
 }
 
 CCanvas * CCanvas::CreateRGBCompatible (Uint32 flags, int width, int height) {

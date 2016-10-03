@@ -112,7 +112,7 @@ private:
     SDL_Renderer * GetRenderer() const;
 
     std::list<SDL_Rect *> m_lstUpdateRects;
-    bool m_bOwner;
+    //bool m_bOwner;
     //bool m_bTextureOwner;
     //bool m_bIsParameterClass;
     CCanvasRendererStorage m_vecRendererVault;
