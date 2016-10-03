@@ -172,13 +172,12 @@ private:
     } // InitShaders
 };
 
-/** @class Example:
- *  Detailed description.
+/** @class QuadRenderer:
+ *  Setup Shaders and vertex buffer objects. Draw with Display();
+ *  Associated with the GpuProgram.
  *
  */
 class QuadRenderer {
-private:
-
     oglplus::Context gl;
 
     // for now only one Shader can exist.
@@ -265,6 +264,7 @@ boost::scoped_ptr<GpuProgram> QuadRenderer::gprog;
  *  Detailed description.
  *  @return TODO
  */
+/*
 class SingleExample {
 private:
 
@@ -294,6 +294,7 @@ public:
         //glutSwapBuffers();
     }
 };
+*/
 
 struct CCanvas::CCanvasImpl {
 private:
@@ -372,10 +373,17 @@ public:
 
     void Cleanup() {
         // the static shader programs have to be cleaned up before leaving
-        m_example->Cleanup();
-        m_example.reset();
+        if (m_example)
+        {
+            m_example->Cleanup();
+            m_example.reset();
+        }
     }
 
+    /**
+     * \brief Initialize OpenGL and glew.
+     * \return true on success
+     */
     static bool InitGL() {
         bool success = true;
         GLenum error = GL_NO_ERROR;
@@ -426,6 +434,12 @@ public:
         return success;
     } // initGL
 
+    /**
+     * \brief Initialize the OGLplus OpenGL wrapper library.
+     * This is the static way and should only happen in the
+     * main window creation path.
+     * \return true on success
+     */
     bool InitOGLplus() {
         bool success = true;
         static bool isInitialized = false;
@@ -610,25 +624,7 @@ public:
             return;
         }
 
-        //float x = sdl_dst_rect->x / static_cast<float>(m_pSurface->w);
-        //float y = sdl_dst_rect->y / static_cast<float>(m_pSurface->h);
-        //float x1 = sdl_dst_rect->x + sdl_dst_rect->w / static_cast<float>(m_pSurface->w);
-        //float y1 = sdl_dst_rect->y + sdl_dst_rect->h / static_cast<float>(m_pSurface->h);
-
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);               // Clear The Screen And
-        // The
-        // Depth Buffer
-        //glLoadIdentity();
-
-        /*SDL_Rect mrect;
-           mrect.x = 1024 / 2 - 50 + 00;
-           mrect.y = 768 / 2 - 50 + 00;
-           mrect.w = 100;
-           mrect.h = 100;*/
-
-        //const SDL_Rect* prect = sdl_src_rect;
         const SDL_Rect* prect = rect->SDLRectCP();
-        //sdl_src_rect = &mrect;
 
         float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
         float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
@@ -648,40 +644,10 @@ public:
             glEnable(GL_TEXTURE_2D);
         }
 
-        //glFrontFace(GL_CCW);
-
-        /*glBegin(GL_QUADS);
-           glTexCoord2f(0, 0);
-           glVertex2f(x1, y);
-           glTexCoord2f(1.0f*texfac, 0);
-           glVertex2f(x1, y1);
-           glTexCoord2f(1.0f*texfac, 1.0f*texfac);
-           glVertex2f(x, y1);
-           glTexCoord2f(0, 1.0f*texfac);
-           glVertex2f(x, y);
-           glEnd();*/
-
-        float rotation = 180.0f;
-        //glRotatef(rotation, 0, 0, 1);
-
-        /*glBegin(GL_QUADS);
-           glTexCoord2f(0, 0);
-           glVertex2f(x, y);
-           glTexCoord2f(0, 1.0f * texfac);
-           glVertex2f(x, y1);
-           glTexCoord2f(1.0f * texfac, 1.0f * texfac);
-           glVertex2f(x1, y1);
-           glTexCoord2f(1.0f * texfac, 0);
-           glVertex2f(x1, y);
-           glEnd();*/
-
         /*
          * B  D
          *
          * A  C
-         *
-         *
-         *
          *
          *
          */
@@ -701,28 +667,6 @@ public:
         glVertex2f(x, y);                               // A
         glEnd();
 
-        /*glBegin(GL_QUADS);
-           glTexCoord2f(0, 1.0f*texfac);
-           glVertex2f(x, y);
-           glTexCoord2f(1.0f*texfac, 1.0f*texfac);
-           glVertex2f(x, y1);
-           glTexCoord2f(1.0f*texfac, 0);
-           glVertex2f(x1, y1);
-           glTexCoord2f(0, 0);
-           glVertex2f(x1, y);
-           glEnd();*/
-
-        /*glBegin(GL_QUADS);
-           glTexCoord2f(0, 0);
-           glVertex2f(x, y);
-           glTexCoord2f(1.0f*texfac, 0);
-           glVertex2f(x, y1);
-           glTexCoord2f(1.0f*texfac, 1.0f*texfac);
-           glVertex2f(x1, y1);
-           glTexCoord2f(0, 1.0f*texfac);
-           glVertex2f(x1, y);
-           glEnd();*/
-
         //glRotatef(-rotation, 0, 0, 1);
 
         glDisable(GL_TEXTURE_2D);
@@ -732,6 +676,8 @@ public:
 };
 
 boost::random::mt19937 CCanvas::CCanvasImpl::gen;
+
+#define USE_NEW_GL_METHOD 1
 
 /** @class BothRenderApi:
  *  Detailed description.
@@ -752,8 +698,6 @@ class BothDisplayApi : public CanvasDisplayApi {
     bool m_bTextureOwner;
     bool m_bOwner;
     bool m_bIsParameterClass;
-
-public:
 
     SDL_Renderer * GetRenderer() const {
         if(this->m_pRenderer) {
@@ -784,6 +728,8 @@ public:
 
         return m_pTexture;
     } // GetTexture
+
+public:
 
     explicit BothDisplayApi(CCanvas* host, CCanvas::CCanvasImpl* pimpl, bool owner)
         : host_(host),
@@ -1044,7 +990,9 @@ CCanvas::CCanvas (SDL_Window* pWindow)
     dApi_->SetWindow(pWindow);
 
     if(CCanvasImpl::InitGL()) {
+#ifdef USE_NEW_GL_METHOD
         pimpl_->InitOGLplus();
+#endif
     }
 
     // Todo: Error checking for context and window.
@@ -1173,7 +1121,11 @@ void CCanvas::RenderPutCopy(CCanvas* source, const CRectangle* dstRect, const CR
     }
 
     CanvasRenderCopy(source->GetTexture(), dstRect, srcRect);
+#ifdef USE_NEW_GL_METHOD
     source->pimpl_->GLDrawTexture(dstRect);
+#else
+    source->pimpl_->GLDrawTextureOld(dstRect);
+#endif
 } // CCanvas::RenderPutCopy
 
 void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) {
@@ -1183,7 +1135,11 @@ void CCanvas::RenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const 
 void CCanvas::RenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
     CanvasRenderCopy(GetTexture(), dstRect, srcRect);
     CRectangle rect(0, 0, GetSurface()->w, GetSurface()->h);
+#ifdef USE_NEW_GL_METHOD
     pimpl_->GLDrawTexture(dstRect ? dstRect : &rect);
+#else
+    pimpl_->GLDrawTextureOld(dstRect ? dstRect : &rect);
+#endif
 }
 
 void CCanvas::RenderCopy(const CPoint& offset) {
