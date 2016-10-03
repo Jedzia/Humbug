@@ -61,6 +61,8 @@ public:
     virtual ~CanvasDisplayApi()
     {}
 
+    virtual bool ToggleOpenGL() = 0;
+
 private:
 
     virtual void Final() = 0;
@@ -75,12 +77,12 @@ public:
 
 private:
 
-    // remove them
+/*    // remove them
     // Render from other Canvas
     void Render(CCanvas* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     // Render from a surface
-    void Render(SDL_Surface* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
+    void Render(SDL_Surface* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);*/
 
 private:
 
@@ -128,6 +130,8 @@ protected:
 
     void MainWindowClosing();
 
+    friend class BothRenderApi;
+
 public:
 
     //constructor
@@ -143,10 +147,7 @@ public:
      *  Detailed description.
      *  @return TODO
      */
-    bool ToggleOpenGL() const {
-        m_bUseOpenGL = !m_bUseOpenGL;
-        return m_bUseOpenGL;
-    }
+    bool ToggleOpenGL();
 
     // getter for the SDL_Surface*
     SDL_Surface * GetSurface() const;

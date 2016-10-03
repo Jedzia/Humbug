@@ -715,22 +715,83 @@ boost::random::mt19937 CCanvas::CCanvasImpl::gen;
 
 class BothRenderApi : public CanvasDisplayApi {
         static bool m_bUseOpenGL;
-        void Final() override
-        {
-            if (m_bUseOpenGL) {
-                CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+        CCanvas::CCanvasImpl* pimpl_;
+
+        SDL_Window* m_pWindow;
+        SDL_GLContext m_glContext;
+        SDL_Surface* m_pSurface;
+        SDL_Texture* m_pTexture;
+        SDL_Renderer* m_pRenderer;
+
+        bool m_bTextureOwner;
+
+
+    SDL_Renderer * GetRenderer() const {
+            if (this->m_pRenderer) {
+                return m_pRenderer;
             }
             else {
-                // error, later the SDL renderer should be a class member
-                //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+                return CApplication::GetApplication()->GetMainCanvas()->m_pRenderer;
             }
         }
+    SDL_Texture * GetTexture() {
+        // Lazy Texture
+        if (m_pTexture == nullptr) {
+            if (this->m_pRenderer) {
+                m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
+            }
+            else {
+                m_pTexture = SDL_CreateTextureFromSurface(
+                    CApplication::GetApplication()->GetMainCanvas()->m_pRenderer, m_pSurface);
+            }
+
+            m_bTextureOwner = true;
+        }
+
+        return m_pTexture;
+    }
+
+    void SetSurface(SDL_Surface* pSurface) {
+        if (!pSurface) {
+            return;
+        }
+
+        m_pSurface = pSurface;
+        pimpl_->GLAttachTexture(m_pSurface);
+    }
+
 public:
     // ReSharper disable once CppMemberFunctionMayBeStatic
-    bool ToggleOpenGL() const {
+    bool ToggleOpenGL() override {
         m_bUseOpenGL = !m_bUseOpenGL;
         return m_bUseOpenGL;
     }
+
+    void Final() override
+    {
+        if (m_bUseOpenGL) {
+            CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+        }
+        else {
+            // error, later the SDL renderer should be a class member
+            //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+        }
+    }
+
+    void SetWindow(SDL_Window* pWindow) {
+        m_pWindow = pWindow;
+
+        if (pWindow) {
+            SetSurface(SDL_GetWindowSurface(pWindow));
+            // Renderer uses VSYNC
+            m_pRenderer = SDL_CreateRenderer(pWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            dbgOut(
+                __FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow <<
+                ")");
+            m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
+        }
+    }
+
 };
 
 
@@ -815,6 +876,13 @@ CCanvas::~CCanvas () {
 
     //dbgOut(__FUNCTION__ << std::endl);
 }
+
+    bool CCanvas::ToggleOpenGL()
+    {
+        rApi_->ToggleOpenGL();
+        m_bUseOpenGL = !m_bUseOpenGL;
+        return m_bUseOpenGL;
+    }
 
 void CCanvas::AddModifier(const CCanvasRenderer& updfunc) {
     m_vecRendererVault.push_back(updfunc);
@@ -970,18 +1038,20 @@ void CCanvas::RenderCopy(const CPoint& offset) {
     //RenderCopy(static_cast<const CRectangle*>(NULL), &sdl_rect);
 }
 
-void CCanvas::Render(CCanvas* source, const CRectangle* dstRect, const CRectangle* srcRect) {
+/*void CCanvas::Render(CCanvas* source, const CRectangle* dstRect, const CRectangle* srcRect) {
+    // Todo: this has to be a checked update: Is there a texture present? Then delete. (obsolete?)
     m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source->GetSurface());
     UpdateTexture(GetTexture(), srcRect, source->GetSurface()->pixels, source->GetSurface()->pitch);
     RenderCopy(GetTexture(), dstRect, srcRect);
 }
 
 void CCanvas::Render(SDL_Surface* source, const CRectangle* dstRect, const CRectangle* srcRect) {
+    // Todo: this has to be a checked update: Is there a texture present? Then delete. (obsolete?)
     m_pTexture = SDL_CreateTextureFromSurface(GetRenderer(), source);
     const SDL_Rect* sdl_src_rect = NULL;
     UpdateTexture(GetTexture(), srcRect, source->pixels, source->pitch);
     RenderCopy(GetTexture(), dstRect, srcRect);
-}
+}*/
 
 void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) {
     // all RenderCopy calls flow here
