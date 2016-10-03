@@ -36,17 +36,21 @@
 #include <oglplus/all.hpp>
 #include <oglplus/gl.hpp>
 //
+#include <HumbugGLLib/Log.h>
 #include <build/cmake/include/debug.h>
 
 namespace gui {
 namespace components {
 using namespace std;
 
-
+/** @class GpuProgram:
+ *  Detailed description.
+ *  @return TODO
+ */
 class GpuProgram {
     /* Todo: Make the render Engine modular
      * a RenderEngineFacility
-     * with: 
+     * with:
      *  Setup()
      *  Clear()
      *  Render()
@@ -63,47 +67,44 @@ class GpuProgram {
     bool isShaderInitialized;
 
 public:
-    bool IsShaderInitialized() const
-    {
+
+    bool IsShaderInitialized() const {
         return isShaderInitialized;
     }
 
     explicit GpuProgram()
-        : isShaderInitialized(false)
-    {
+        : isShaderInitialized(false) {
         InitShaders();
     }
 
-    const oglplus::Program& GetProgram() const
-    {
+    const oglplus::Program& GetProgram() const {
         return prog;
     }
 
-    void SetColor(float r, float g, float b) const
-    {
+    void SetColor(float r, float g, float b) const {
         (GetProgram() / "colorIn") = oglplus::Vec3f(r, g, b);
     }
 
 private:
-    void InitShaders()
-    {
+
+    void InitShaders() {
         try
         {
-        // Set the vertex shader source
-        /*vs.Source(
-        " \
-        #version 120\n \
-        attribute vec3 Position; \
-        //  	    out vec4 color; \
-        void main(void) \
-        { \
-        gl_Position = vec4(Position, 1.0); \
-        //            color = vec4(0.0, 0.3, 0.7, 1.0);  \
-        } \
-        ");*/
+            // Set the vertex shader source
+            /*vs.Source(
+               " \
+               #version 120\n \
+               attribute vec3 Position; \
+               //           out vec4 color; \
+               void main(void) \
+               { \
+               gl_Position = vec4(Position, 1.0); \
+               //            color = vec4(0.0, 0.3, 0.7, 1.0);  \
+               } \
+               ");*/
 
-        vs.Source(
-        " \
+            vs.Source(
+                    " \
         #version 140\n \
         uniform vec3 colorIn; \
         attribute vec3 Position; \
@@ -114,25 +115,25 @@ private:
             color = vec4(colorIn, 1.0);  \
         } \
         ");
-        // compile it
-        vs.Compile();
+            // compile it
+            vs.Compile();
 
-        // set the fragment shader source
-        /*fs.Source(
-        " \
-        #version 120\n \
-        //        in vec4 color; \
-        //        out vec4 gl_FragColor; \
-        void main(void) \
-        { \
-        //        gl_FragColor = color; \
-        gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0); \
-        \
-        } \
-        ");*/
+            // set the fragment shader source
+            /*fs.Source(
+               " \
+               #version 120\n \
+               //        in vec4 color; \
+               //        out vec4 gl_FragColor; \
+               void main(void) \
+               { \
+               //        gl_FragColor = color; \
+               gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0); \
+             \
+               } \
+               ");*/
 
-        fs.Source(
-        " \
+            fs.Source(
+                    " \
         #version 140\n \
         in vec4 color; \
         out vec4 fragColor; \
@@ -141,42 +142,40 @@ private:
         fragColor = color; \
         } \
         ");
-        // compile it
-        fs.Compile();
+            // compile it
+            fs.Compile();
 
-        // attach the shaders to the program
-        prog.AttachShader(vs);
-        prog.AttachShader(fs);
-        // link and use it
-        prog.Link();
-        prog.Use();
+            // attach the shaders to the program
+            prog.AttachShader(vs);
+            prog.AttachShader(fs);
+            // link and use it
+            prog.Link();
+            prog.Use();
 
-        isShaderInitialized = true;
-
+            isShaderInitialized = true;
         }
-        catch (oglplus::Error& err)
+        catch(oglplus::Error& err)
         {
-            std::cerr
-                << "Error (in "
-                << err.GLFunc()
-                << "'): "
-                << err.what()
-                << " ["
-                << err.SourceFile()
-                << ":"
-                << err.SourceLine()
-                << "] "
-                << std::endl;
+            std::cerr <<
+                "Error (in " <<
+                err.GLFunc() <<
+                "'): " <<
+                err.what() <<
+                " [" <<
+                err.SourceFile() <<
+                ":" <<
+                err.SourceLine() <<
+                "] " <<
+                std::endl;
             throw err;
         }
-    }
-
+    } // InitShaders
 };
 
 /** @class Example:
-*  Detailed description.
-*
-*/
+ *  Detailed description.
+ *
+ */
 class QuadRenderer {
 private:
 
@@ -192,24 +191,21 @@ private:
     bool isVertexInitialized;
 
 public:
+
     explicit QuadRenderer()
-        : vertexCount(0), isVertexInitialized(false)
-    {
+        : vertexCount(0), isVertexInitialized(false) {
         //InitShaders();
         //InitVerts();
     }
 
-    bool IsInitialized() const
-    {
+    bool IsInitialized() const {
         return gprog && gprog->IsShaderInitialized() && isVertexInitialized;
     }
-    
-    void InitVerts(const GLfloat* triangle_verts, const oglplus::SizeType& vertexCountX)
-    {
+
+    void InitVerts(const GLfloat* triangle_verts, const oglplus::SizeType& vertexCountX) {
         using namespace oglplus;
 
-        if (!gprog)
-        {
+        if(!gprog) {
             gprog.reset(new GpuProgram);
         }
 
@@ -220,30 +216,29 @@ public:
             0.0f, 0.0f, 0.0f,
             0.1f, 0.0f, 0.0f,
             0.0f, 0.1f, 0.0f
-        };*/
+           };*/
         vertexCount = vertexCountX;
 
         // bind the VBO for the triangle vertices
         verts.Bind(Buffer::Target::Array);
         // upload the data
         Buffer::Data(
-            Buffer::Target::Array,
-            vertexCount * 3,
-            triangle_verts
-        );
+                Buffer::Target::Array,
+                vertexCount * 3,
+                triangle_verts
+                );
         // setup the vertex attribs array for the vertices
         VertexArrayAttrib vert_attr(gprog->GetProgram(), "Position");
         vert_attr.Setup<GLfloat>(3);
         vert_attr.Enable();
 
-
         gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.ClearDepth(1.0f);
 
         isVertexInitialized = true;
-    }
+    } // InitVerts
 
-    void SetColor(float r, float g, float b ) {
+    void SetColor(float r, float g, float b) {
         gprog->SetColor(r, g, b);
     }
 
@@ -252,16 +247,14 @@ public:
 
         //gl.Clear().ColorBuffer().DepthBuffer();
 
-        if (!IsInitialized())
-        {
+        if(!IsInitialized()) {
             return;
         }
 
         gl.DrawArrays(PrimitiveType::Triangles, 0, vertexCount);
     }
 
-    void Cleanup()
-    {
+    void Cleanup() {
         gprog.reset();
     }
 };
@@ -269,9 +262,9 @@ public:
 boost::scoped_ptr<GpuProgram> QuadRenderer::gprog;
 
 /** @class SingleExample:
-*  Detailed description.
-*  @return TODO
-*/
+ *  Detailed description.
+ *  @return TODO
+ */
 class SingleExample {
 private:
 
@@ -372,8 +365,7 @@ public:
         m_context.reset(new oglplus::Context);
     }
 
-    void Cleanup()
-    {
+    void Cleanup() {
         // the static shader programs have to be cleaned up before leaving
         m_example->Cleanup();
         m_example.reset();
@@ -433,10 +425,10 @@ public:
         bool success = true;
         static bool isInitialized = false;
 
-        if (isInitialized)
-        {
+        if(isInitialized) {
             throw  std::runtime_error("CCanvas::CCanvasImpl::InitOGLplus initialized twice.");
         }
+
         isInitialized = true;
 
         try
@@ -636,34 +628,33 @@ public:
         //glRotatef(rotation, 0, 0, 1);
 
         /*glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(x, y);
-        glTexCoord2f(0, 1.0f * texfac);
-        glVertex2f(x, y1);
-        glTexCoord2f(1.0f * texfac, 1.0f * texfac);
-        glVertex2f(x1, y1);
-        glTexCoord2f(1.0f * texfac, 0);
-        glVertex2f(x1, y);
-        glEnd();*/
+           glTexCoord2f(0, 0);
+           glVertex2f(x, y);
+           glTexCoord2f(0, 1.0f * texfac);
+           glVertex2f(x, y1);
+           glTexCoord2f(1.0f * texfac, 1.0f * texfac);
+           glVertex2f(x1, y1);
+           glTexCoord2f(1.0f * texfac, 0);
+           glVertex2f(x1, y);
+           glEnd();*/
 
         /*
          * B  D
          *
          * A  C
-         * 
+         *
          *
          *
          *
          *
          */
         glBegin(GL_TRIANGLES);
-        glTexCoord2f(0, 0); 
+        glTexCoord2f(0, 0);
         glVertex2f(x, y);                               // A
-        glTexCoord2f(0, 1.0f * texfac);             
+        glTexCoord2f(0, 1.0f * texfac);
         glVertex2f(x, y1);                              // B
         glTexCoord2f(1.0f * texfac, 1.0f * texfac);
         glVertex2f(x1, y1);                             // C
-
 
         glTexCoord2f(1.0f * texfac, 0);
         glVertex2f(x1, y);                              // D
@@ -711,8 +702,7 @@ public:
 
         m_example->InitVerts(triangle_verts, 6);
 
-        if (m_example->IsInitialized())
-        {
+        if(m_example->IsInitialized()) {
             m_example->SetColor(GetGlColorR(), GetGlColorG(), GetGlColorB());
             m_example->Display();
         }
@@ -724,7 +714,6 @@ public:
 boost::random::mt19937 CCanvas::CCanvasImpl::gen;
 
 bool CCanvas::m_bUseOpenGL = false;
-
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr),
@@ -740,13 +729,12 @@ void CCanvas::CanvasSwapWindow() {
     SDL_GL_SwapWindow(m_pWindow);
 }
 
-    void CCanvas::MainWindowClosing()
-    {
-        //pimpl_->m_example.reset();
-        pimpl_->Cleanup();
-    }
+void CCanvas::MainWindowClosing() {
+    //pimpl_->m_example.reset();
+    pimpl_->Cleanup();
+}
 
-    CCanvas::CCanvas (SDL_Window* pWindow)
+CCanvas::CCanvas (SDL_Window* pWindow)
     : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
     m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
@@ -760,6 +748,13 @@ void CCanvas::CanvasSwapWindow() {
 
     // Todo: Error checking for context and window.
     m_lstUpdateRects.clear();
+#if defined GL_VERSION_4_5
+    GLint sup_major = 0;
+    GLint sup_minor = 0;
+    glGetIntegerv(GL_MAJOR_VERSION, &sup_major);
+    glGetIntegerv(GL_MINOR_VERSION, &sup_minor);
+    dbgOut("we have opengl 4.5. detected:" << sup_major << "." << sup_minor << " .");
+#endif
 }
 
 CCanvas::~CCanvas () {
@@ -1033,12 +1028,10 @@ void CCanvas::MainRenderCopyTo(const CRectangle* dstRect, const CRectangle* srcR
 }
 
 void CCanvas::MainRenderFinal() {
-    if (m_bUseOpenGL)
-    {
+    if(m_bUseOpenGL) {
         CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
     }
-    else
-    {
+    else {
         SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
     }
 }
