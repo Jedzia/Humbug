@@ -729,27 +729,7 @@ class BothRenderApi : public CanvasDisplayApi {
     SDL_Renderer* m_pRenderer;
 
     bool m_bTextureOwner;
-
-public:
-
-    BothRenderApi(CCanvas::CCanvasImpl* pimpl)
-        : pimpl_(pimpl),
-        m_pWindow(nullptr),
-        m_glContext(nullptr),
-        m_pSurface(nullptr),
-        m_pTexture(nullptr),
-        m_pRenderer(nullptr),
-        m_bTextureOwner(false) {
-        CMainCanvas* main_canvas = CApplication::GetApplication()->GetMainCanvas();
-        if(!main_canvas) {
-            MainApi = this;
-            return;
-        }
-
-        MainApi = dynamic_cast<BothRenderApi *>(main_canvas->rApi_.get());
-    }
-
-private:
+    bool m_bOwner;
 
     SDL_Renderer * GetRenderer() const {
         if(this->m_pRenderer) {
@@ -781,7 +761,63 @@ private:
         return m_pTexture;
     } // GetTexture
 
-    void SetSurface(SDL_Surface* pSurface) {
+public:
+
+    explicit BothRenderApi(CCanvas::CCanvasImpl* pimpl)
+        : pimpl_(pimpl),
+        m_pWindow(nullptr),
+        m_glContext(nullptr),
+        m_pSurface(nullptr),
+        m_pTexture(nullptr),
+        m_pRenderer(nullptr),
+        m_bTextureOwner(false), m_bOwner(false) {
+        CMainCanvas* main_canvas = CApplication::GetApplication()->GetMainCanvas();
+        if(!main_canvas) {
+            MainApi = this;
+            return;
+        }
+
+        MainApi = dynamic_cast<BothRenderApi *>(main_canvas->rApi_.get());
+    }
+
+    ~BothRenderApi() {
+        return;
+        // Clean up
+        if (pimpl_->m_glTextureId) {
+            glDeleteTextures(1, &pimpl_->m_glTextureId);
+        }
+
+        if (m_pTexture) {
+            if (m_bTextureOwner && m_pTexture) {
+                SDL_DestroyTexture(m_pTexture);
+                m_pTexture = nullptr;
+            }
+        }
+
+        // do not Clean up when used as parameter
+        /*if (m_bIsParameterClass) {
+            return;
+        }*/
+
+        if (m_pRenderer) {
+            SDL_DestroyRenderer(m_pRenderer);
+            m_pRenderer = nullptr;
+        }
+
+        if (m_pWindow) {
+            SDL_DestroyWindow(m_pWindow);
+            BothRenderApi::SetWindow(NULL);
+        }
+
+        if (m_bOwner && m_pSurface) {
+            SDL_FreeSurface(m_pSurface);
+            m_pSurface = nullptr;
+        }
+
+        //dbgOut(__FUNCTION__ << std::endl);
+    }
+
+    void SetSurface(SDL_Surface* pSurface) override {
         if(!pSurface) {
             return;
         }
@@ -789,8 +825,6 @@ private:
         m_pSurface = pSurface;
         pimpl_->GLAttachTexture(m_pSurface);
     }
-
-public:
 
     // ReSharper disable once CppMemberFunctionMayBeStatic
     bool ToggleOpenGL() override {
@@ -809,7 +843,7 @@ public:
         }
     }
 
-    void SetWindow(SDL_Window* pWindow) {
+    void SetWindow(SDL_Window* pWindow) override {
         m_pWindow = pWindow;
 
         if(pWindow) {
@@ -834,6 +868,7 @@ CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
+    //rApi_->SetSurface(pSurface);
     pimpl_->InitRenderSetup();
     m_lstUpdateRects.clear();
 }
@@ -853,6 +888,7 @@ CCanvas::CCanvas (SDL_Window* pWindow)
     m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
+    //rApi_->SetWindow(pWindow);
     m_glContext = SDL_GL_CreateContext(pWindow);
     SDL_GL_SetSwapInterval(1);
 
@@ -1088,6 +1124,7 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
     // canvas based renderer, this instance modifier
 
     if(!m_vecRendererVault.empty()) {
+        // Todo: problematic ? ... other way to do it? only used in TutorA1
         CCanvas source(this->GetSurface());
         source.m_bIsParameterClass = true;
         source.m_pRenderer = GetRenderer();

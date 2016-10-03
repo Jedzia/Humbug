@@ -62,9 +62,8 @@ public:
     {}
 
     virtual bool ToggleOpenGL() = 0;
-
-private:
-
+    virtual void SetSurface(SDL_Surface* pSurface) = 0;
+    virtual void SetWindow(SDL_Window* pWindow) = 0;
     virtual void Final() = 0;
 };
 
