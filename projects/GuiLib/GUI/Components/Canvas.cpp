@@ -328,6 +328,7 @@ private:
     glm::mat4 cam;
     boost::scoped_ptr<oglplus::Context> m_context;
     boost::scoped_ptr<QuadRenderer> m_example;
+    GLuint m_glTextureId;
 
     static float RandomFloat(float min, float max) {
         boost::random::uniform_real_distribution<> dist(min, max);
@@ -354,15 +355,19 @@ private:
 
 public:
 
-    GLuint m_glTextureId;
-
-    explicit CCanvasImpl() {
+    explicit CCanvasImpl() : m_glTextureId(0) {
         glColorR = RandomFloat(0.0f, 1.0f);
         glColorG = RandomFloat(0.0f, 1.0f);
         glColorB = RandomFloat(0.0f, 1.0f);
 
         // beware: under the hood the context is all static
         m_context.reset(new oglplus::Context);
+    }
+
+    ~CCanvasImpl() {
+        if(m_glTextureId) {
+            glDeleteTextures(1, &m_glTextureId);
+        }
     }
 
     void Cleanup() {
@@ -424,7 +429,7 @@ public:
     bool InitOGLplus() {
         bool success = true;
         static bool isInitialized = false;
-
+        //return true;
         if(isInitialized) {
             throw  std::runtime_error("CCanvas::CCanvasImpl::InitOGLplus initialized twice.");
         }
@@ -484,7 +489,8 @@ public:
             success = false;
         }
 
-        m_example.reset(new QuadRenderer);
+        //m_example.reset(new QuadRenderer);
+        InitRenderSetup();
         //m_example->InitShaders();
         //m_example->InitVerts();
 
@@ -568,6 +574,37 @@ public:
     } // GLAttachTexture
 
     void GLDrawTexture(const CRectangle* rect) {
+        //return;
+        if(!rect) {
+            return;
+        }
+
+        const SDL_Rect* prect = rect->SDLRectCP();
+
+        float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
+        float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
+        float y = rangeMap(prect->y, 1.0f, -1.0f, 0, 768);
+        float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
+
+        GLfloat triangle_verts[18] = {
+            x, y, 0.0f,
+            x, y1, 0.0f,
+            x1, y1, 0.0f,
+
+            x1, y, 0.0f,
+            x1, y1, 0.0f,
+            x, y, 0.0f
+        };
+
+        m_example->InitVerts(triangle_verts, 6);
+
+        if(m_example->IsInitialized()) {
+            m_example->SetColor(GetGlColorR(), GetGlColorG(), GetGlColorB());
+            m_example->Display();
+        }
+    } // GLDrawTexture
+
+    void GLDrawTextureOld(const CRectangle* rect) {
         //return;
         if(!rect) {
             return;
@@ -690,23 +727,6 @@ public:
 
         glDisable(GL_TEXTURE_2D);
 
-        GLfloat triangle_verts[18] = {
-            x, y, 0.0f,
-            x, y1, 0.0f,
-            x1, y1, 0.0f,
-
-            x1, y, 0.0f,
-            x1, y1, 0.0f,
-            x, y, 0.0f
-        };
-
-        m_example->InitVerts(triangle_verts, 6);
-
-        if(m_example->IsInitialized()) {
-            m_example->SetColor(GetGlColorR(), GetGlColorG(), GetGlColorB());
-            m_example->Display();
-        }
-
         //SDL_GL_SwapWindow(m_pWindow);
     } // GLDrawTexture
 };
@@ -785,9 +805,9 @@ public:
     ~BothDisplayApi() {
         //return;
         // Clean up
-        if(pimpl_->m_glTextureId) {
-            glDeleteTextures(1, &pimpl_->m_glTextureId);
-        }
+        //if(pimpl_->m_glTextureId) {
+        //    glDeleteTextures(1, &pimpl_->m_glTextureId);
+        //}
 
         if(m_pTexture) {
             if(m_bTextureOwner) {
@@ -1041,10 +1061,12 @@ CCanvas::CCanvas (SDL_Window* pWindow)
 CCanvas::~CCanvas () {
     // Clean up
     ClearUpdateRects();
+/*
     if(pimpl_->m_glTextureId) {
         glDeleteTextures(1, &pimpl_->m_glTextureId);
     }
 
+ */
     //dbgOut(__FUNCTION__ << std::endl);
 }
 
