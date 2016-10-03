@@ -114,7 +114,7 @@ private:
 
     struct CCanvasImpl;
     boost::scoped_ptr<CCanvasImpl> pimpl_;
-    boost::scoped_ptr<CanvasDisplayApi> rApi_;
+    boost::scoped_ptr<CanvasDisplayApi> dApi_;
 
     //pointer to an SDL_Surface
     SDL_Window* m_pWindow;
@@ -129,7 +129,7 @@ protected:
 
     void MainWindowClosing();
 
-    friend class BothRenderApi;
+    friend class BothDisplayApi;
 
 public:
 

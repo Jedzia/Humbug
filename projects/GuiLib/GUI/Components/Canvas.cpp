@@ -717,10 +717,10 @@ boost::random::mt19937 CCanvas::CCanvasImpl::gen;
  *  Detailed description.
  *  @return TODO
  */
-class BothRenderApi : public CanvasDisplayApi {
+class BothDisplayApi : public CanvasDisplayApi {
     static bool m_bUseOpenGL;
     CCanvas::CCanvasImpl* pimpl_;
-    BothRenderApi* MainApi;
+    BothDisplayApi* MainApi;
 
     SDL_Window* m_pWindow;
     SDL_GLContext m_glContext;
@@ -750,8 +750,8 @@ class BothRenderApi : public CanvasDisplayApi {
             else {
                 //m_pTexture = SDL_CreateTextureFromSurface(
                 //    CApplication::GetApplication()->GetMainCanvas()->m_pRenderer, m_pSurface);
-                //BothRenderApi* api =
-                // dynamic_cast<BothRenderApi*>(CApplication::GetApplication()->GetMainCanvas()->rApi_.get());
+                //BothDisplayApi* api =
+                // dynamic_cast<BothDisplayApi*>(CApplication::GetApplication()->GetMainCanvas()->dApi_.get());
                 m_pTexture = SDL_CreateTextureFromSurface(MainApi->m_pRenderer, m_pSurface);
             }
 
@@ -763,7 +763,7 @@ class BothRenderApi : public CanvasDisplayApi {
 
 public:
 
-    explicit BothRenderApi(CCanvas::CCanvasImpl* pimpl)
+    explicit BothDisplayApi(CCanvas::CCanvasImpl* pimpl)
         : pimpl_(pimpl),
         m_pWindow(nullptr),
         m_glContext(nullptr),
@@ -777,10 +777,10 @@ public:
             return;
         }
 
-        MainApi = dynamic_cast<BothRenderApi *>(main_canvas->rApi_.get());
+        MainApi = dynamic_cast<BothDisplayApi *>(main_canvas->dApi_.get());
     }
 
-    ~BothRenderApi() {
+    ~BothDisplayApi() {
         return;
         // Clean up
         if (pimpl_->m_glTextureId) {
@@ -806,7 +806,7 @@ public:
 
         if (m_pWindow) {
             SDL_DestroyWindow(m_pWindow);
-            BothRenderApi::SetWindow(NULL);
+            BothDisplayApi::SetWindow(NULL);
         }
 
         if (m_bOwner && m_pSurface) {
@@ -859,16 +859,16 @@ public:
 };
 
 bool CCanvas::m_bUseOpenGL = false;
-bool BothRenderApi::m_bUseOpenGL = false;
+bool BothDisplayApi::m_bUseOpenGL = false;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), rApi_(new BothRenderApi(pimpl_.get())),
+    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(pimpl_.get())),
     m_pWindow(nullptr),
     m_glContext(nullptr), m_pSurface(nullptr),
     m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetSurface(pSurface);
-    //rApi_->SetSurface(pSurface);
+    //dApi_->SetSurface(pSurface);
     pimpl_->InitRenderSetup();
     m_lstUpdateRects.clear();
 }
@@ -883,12 +883,12 @@ void CCanvas::MainWindowClosing() {
 }
 
 CCanvas::CCanvas (SDL_Window* pWindow)
-    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), rApi_(new BothRenderApi(pimpl_.get())),
+    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), dApi_(new BothDisplayApi(pimpl_.get())),
     m_pWindow(nullptr), m_glContext(nullptr),
     m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
-    //rApi_->SetWindow(pWindow);
+    //dApi_->SetWindow(pWindow);
     m_glContext = SDL_GL_CreateContext(pWindow);
     SDL_GL_SetSwapInterval(1);
 
@@ -945,7 +945,7 @@ CCanvas::~CCanvas () {
 }
 
 bool CCanvas::ToggleOpenGL() {
-    rApi_->ToggleOpenGL();
+    dApi_->ToggleOpenGL();
     m_bUseOpenGL = !m_bUseOpenGL;
     return m_bUseOpenGL;
 }
