@@ -1198,7 +1198,10 @@ void CCanvas::MainRenderClear() {
     //SDL_RenderClear(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
     //glColor3f(1, 1, 1);
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    oglplus::Context::Clear().ColorBuffer().DepthBuffer();
+    if (m_bUseOpenGL)
+    {
+        oglplus::Context::Clear().ColorBuffer().DepthBuffer();
+    }
 }
 
 void CCanvas::SetTextureColorMod(const CColor& sdl_color) {
