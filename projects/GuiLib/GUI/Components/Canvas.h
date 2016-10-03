@@ -11,10 +11,13 @@
 #define DEPRECATED __declspec(deprecated)
 
 namespace gui {
+/** @class CConsole:
+ *  Detailed description.
+ *  @return TODO
+ */
 class CConsole;
 namespace components {
-
-    struct CCanvasRenderModifierData
+struct CCanvasRenderModifierData
 {
     /** contains the source rectangle. */
     CRectangle* srcRect;
@@ -53,6 +56,10 @@ typedef enum {
     BLENDMODE_MOD = 0x00000004
 } BlendMode;
 
+/** @class CCanvas:
+ *  Detailed description.
+ *  @return TODO
+ */
 class CCanvas;
 
 /** @class RenderApi:
@@ -61,39 +68,46 @@ class CCanvas;
  */
 class CanvasDisplayApi {
 public:
-    //static void MainRenderFinal();
-    //static void MainRenderClear();
 
     virtual ~CanvasDisplayApi()
     {}
 
     virtual bool ToggleOpenGL() = 0;
-    virtual void SetSurface(SDL_Surface* pSurface) = 0;
-    virtual void SetWindow(SDL_Window* pWindow) = 0;
-    //virtual void Final() = 0;
-    virtual SDL_Texture * GetTexture() = 0;
-    virtual bool ClearColorKey() const = 0;
+
     virtual SDL_Surface * GetSurface() const = 0;
-    virtual void CanvasSwapWindow() = 0;
-    //virtual SDL_Renderer * GetRenderer() const = 0;
-    virtual bool Clear(const CColor& color) const = 0;
+
+    virtual void SetSurface(SDL_Surface* pSurface) = 0;
+
+    virtual void SetWindow(SDL_Window* pWindow) = 0;
+
+    virtual SDL_Texture * GetTexture() = 0;
+
     virtual void SetupParameterClass(CCanvas* source, SDL_Texture* texture) const = 0;
+
+    virtual bool Clear(const CColor& color) const = 0;
 
     virtual void FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const = 0;
 
+    virtual void RenderPresent() = 0;
+
+    virtual void CanvasSwapWindow() = 0;
+
     virtual void SetRenderDrawBlendMode(BlendMode mode) const = 0;
 
+    virtual bool ClearColorKey() const = 0;
+
     virtual bool FillRect(const CRectangle& rect, const CColor& color) const = 0;
+
     virtual void RenderDrawPoint(const CPoint& coordinates, const CColor* color) const = 0;
+
     virtual void RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const = 0;
+
     virtual bool RenderDrawRect(const CRectangle& rect, const CColor* color) const = 0;
+
     virtual bool RenderFillRect(const CRectangle& rect, const CColor* color) const = 0;
+
     virtual bool RenderFillRect(const CRectangle& rect, const CColor& color) const = 0;
-
-//protected:
-    virtual void RenderPresent() = 0;
 };
-
 
 //CCanvas class
 class CCanvas {
@@ -119,12 +133,9 @@ private:
     // getter for the SDL_Surface*
     SDL_Surface * GetSurface() const;
 
-
-
     std::list<SDL_Rect *> m_lstUpdateRects;
     CCanvasRendererStorage m_vecRendererVault;
 
-    
     struct CCanvasImpl;
     boost::scoped_ptr<CCanvasImpl> pimpl_;
     boost::scoped_ptr<CanvasDisplayApi> dApi_;
@@ -140,9 +151,13 @@ protected:
     // when this instance is destroyed.
     void SetSurface(SDL_Surface* pSurface);
 
+    /** @class BothDisplayApi:
+     *  Detailed description.
+     *  @return TODO
+     */
     friend class BothDisplayApi;
     friend class ::gui::CConsole;
-    
+
 public:
 
     //constructor
@@ -182,9 +197,9 @@ public:
 
     /** RenderCopy the texture from source to this canvas.
      *  Use this function to copy a portion of the texture to this rendering target. If no texture
-     *at the source is
+     * at the source is
      *  present, one is created. All modifiers of the source CCanvas are executed. If the modifiers
-     *return isHandled
+     * return isHandled
      *  as true, then no CanvasRenderCopy is called, so the modifier has to handle the rendering.
      *
      *  As there is only one rendering target at the moment, this is the same as calling
@@ -192,7 +207,7 @@ public:
      *  @param source The source canvas to get the texture from.
      *  @param srcRect the source CRectangle structure or NULL for the entire texture
      * @param dstRect the destination CRectangle structure or NULL for the entire rendering target;
-     *the texture will be stretched to fill the given rectangle
+     * the texture will be stretched to fill the given rectangle
      */
     void RenderPutCopy(CCanvas* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
@@ -201,27 +216,27 @@ public:
      *  @param source The source texture to render.
      *  @param srcRect the source CRectangle structure or NULL for the entire texture
      * @param dstRect the destination CRectangle structure or NULL for the entire rendering target;
-     *the texture will be stretched to fill the given rectangle
+     * the texture will be stretched to fill the given rectangle
      */
     void RenderCopy(SDL_Texture* texture, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy the texture of this canvas.
      *  Use this function to copy a portion of the texture to the main window rendering target. If
-     *no texture is
+     * no texture is
      *  present, one is created. As there is only one rendering target at the moment, this is the
-     *same as calling
+     * same as calling
      *  CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect).
      *  @param srcRect the source CRectangle structure or NULL for the entire texture
      * @param dstRect the destination CRectangle structure or NULL for the entire rendering target;
-     *the texture will be stretched to fill the given rectangle
+     * the texture will be stretched to fill the given rectangle
      */
     void RenderCopy(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy the texture of this canvas with a point offset:
      *  Use this function to copy the full texture to the main window rendering target. If no
-     *texture is
+     * texture is
      *  present, one is created. As there is only one rendering target at the moment, this is the
-     *same as calling
+     * same as calling
      *  CCanvas::MainRenderCopyTo(const CRectangle* srcRect, const CRectangle* dstRect).
      *  @param offset the location where to render the canvas.
      */
@@ -234,22 +249,22 @@ public:
 
     /** Update Texture from surface and RenderCopy to the main render target.
      *  Works only on the main canvas. Gets or possibly creates the texture, runs UpdateTexture and
-     *finally RenderCopy.
+     * finally RenderCopy.
      *  @param srcRect the source CRectangle structure or NULL for the entire texture
      * @param dstRect the destination CRectangle structure or NULL for the entire rendering target;
-     *the texture will be stretched to fill the given rectangle
+     * the texture will be stretched to fill the given rectangle
      */
     void MainUpdateAndRenderCopy(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
     /** RenderCopy to the main render target.
      *  Use this function to copy a portion of the texture to the main window rendering target. If
-     *no texture is
+     * no texture is
      *  present, one is created. As there is only one rendering target at the moment, this is the
-     *same as calling
+     * same as calling
      *  CCanvas::RenderCopy(const CRectangle* srcRect, const CRectangle* dstRect).
      *  @param srcRect the source CRectangle structure or NULL for the entire texture
      * @param dstRect the destination CRectangle structure or NULL for the entire rendering target;
-     *the texture will be stretched to fill the given rectangle
+     * the texture will be stretched to fill the given rectangle
      */
     void MainRenderCopyTo(const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
 
@@ -259,10 +274,10 @@ public:
 
     /** Use this function to set an additional color value multiplied into render copy operations.
      *  When this texture is rendered, during the copy operation each source color channel is
-     *modulated by the appropriate color value according to the following formula:
+     * modulated by the appropriate color value according to the following formula:
      *  "srcC = srcC * (color / 255)"
      *  Color modulation is not always supported by the renderer; it will return -1 if color
-     *modulation is not supported.
+     * modulation is not supported.
      *  A new texture is instantiated when there is no one.
      *  @param color the color values multiplied into copy operations. Only r,g and b are used.
      */
@@ -270,10 +285,10 @@ public:
 
     /** Use this function to set an additional alpha value multiplied into render copy operations.
      *  When this texture is rendered, during the copy operation the source alpha value is modulated
-     *by this alpha value according to the following formula:
+     * by this alpha value according to the following formula:
      *  "srcA = srcA * (alpha / 255)"
      *  Alpha modulation is not always supported by the renderer; it will return -1 if alpha
-     *modulation is not supported.
+     * modulation is not supported.
      *  A new texture is instantiated when there is no one.
      *  @param alpha The source alpha value multiplied into copy operations.
      */
@@ -323,10 +338,11 @@ public:
 
     //set a color key
     bool SetColorKey(Uint32 key);
+
     //set a color key
     bool SetColorKey(CColor& color);
 
-    bool SetPaletteColors(const SDL_Color * colors, int firstcolor, int ncolors) const;
+    bool SetPaletteColors(const SDL_Color* colors, int firstcolor, int ncolors) const;
 
     bool SetSurfaceAlphaMod(Uint8 alpha);
 
@@ -369,7 +385,7 @@ public:
 
     /** Fill a rectangle.
      *  Use this function to fill a rectangle on the current rendering target with the drawing
-     *color.
+     * color.
      *  @param rect a CRectangle representing the rectangle to draw.
      *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
      */
@@ -377,7 +393,7 @@ public:
 
     /** Fill a rectangle.
      *  Use this function to fill a rectangle on the current rendering target with the drawing
-     *color.
+     * color.
      *  @param rect a CRectangle representing the rectangle to draw.
      *  @param color The drawing color of the rectangle or NULL if no color change is wanted.
      */
@@ -397,7 +413,9 @@ public:
 
     //create an rgb surface of the display format
     static CCanvas * CreateRGBCompatible (Uint32 flags, int width, int height);
+
     static CCanvas * CreateConvertSurfaceFormat(SDL_Surface* tmpfsurf, Uint32 pixel_format, Uint32 flags);
+
     CCanvas * CreateConvertSurfaceFormat(SDL_Surface* tmpfsurf) const;
 
     //load a bitmap
