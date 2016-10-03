@@ -47,8 +47,9 @@ namespace humbug {
 	  m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", 12);
 
       m_pTmpCanvas = GetCanvas()->CreateRGBCompatible( NULL, CControl::GetWidth(), CControl::GetHeight() );
-      SDL_SetSurfaceAlphaMod(m_pTmpCanvas->GetSurface(), 122);
-      
+      //SDL_SetSurfaceAlphaMod(m_pTmpCanvas->GetSurface(), 122);
+      m_pTmpCanvas->SetSurfaceAlphaMod(122);
+
 	  //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
       //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
       //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);

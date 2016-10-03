@@ -88,10 +88,11 @@ namespace humbug {
 public:
 
         Introplayer(FileLoader& loader, CCanvas* background)
-            : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_done(false), m_step(0){
+            : m_pBackground(background), m_lastTick(0), m_firstTick(-1), m_step(0), m_done(false){
             m_pArialfont = loader.FL_LOADFONT("Fonts/ARIAL.TTF", 48);
             m_canvas = background->CreateRGBCompatible( NULL, background->GetWidth(), background->GetHeight() );
-            SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 5);
+            //SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 5);
+            m_canvas->SetSurfaceAlphaMod(5);
         }
 
 		~Introplayer()
@@ -141,15 +142,17 @@ public:
                 m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
             }
 			else if ((m_step == 0) &&(curTicks > 200 && curTicks < 220 )) {
-                SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 255);
-				m_canvas->Clear(CColor::LightGray());
+                //SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 255);
+                m_canvas->SetSurfaceAlphaMod(255);
+                m_canvas->Clear(CColor::LightGray());
 				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
 				m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );
 				m_step++;
 			}
 			else if ((m_step == 1) &&(curTicks > 220 && curTicks < 320 )) {
-                SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 11);
-				CText infoText( m_pArialfont, "To Something Completely Different!", CColor::Blue() );
+                //SDL_SetSurfaceAlphaMod(m_canvas->GetSurface(), 11);
+                m_canvas->SetSurfaceAlphaMod(11);
+                CText infoText(m_pArialfont, "To Something Completely Different!", CColor::Blue());
 				infoText.Put( m_canvas, m_canvas->GetDimension() + CPoint(100, 200) );
 				m_pBackground->Blit( m_pBackground->GetDimension(), *m_canvas, m_canvas->GetDimension() );
 				m_pBackground->AddUpdateRect( m_pBackground->GetDimension() );

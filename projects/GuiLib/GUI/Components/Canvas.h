@@ -11,6 +11,7 @@
 #define DEPRECATED __declspec(deprecated)
 
 namespace gui {
+class CConsole;
 namespace components {
 
     struct CCanvasRenderModifierData
@@ -93,6 +94,7 @@ public:
     virtual void RenderPresent() = 0;
 };
 
+
 //CCanvas class
 class CCanvas {
 public:
@@ -114,10 +116,15 @@ private:
 
     void SetWindow(SDL_Window* pWindow);
 
+    // getter for the SDL_Surface*
+    SDL_Surface * GetSurface() const;
+
+
+
     std::list<SDL_Rect *> m_lstUpdateRects;
     CCanvasRendererStorage m_vecRendererVault;
 
-
+    
     struct CCanvasImpl;
     boost::scoped_ptr<CCanvasImpl> pimpl_;
     boost::scoped_ptr<CanvasDisplayApi> dApi_;
@@ -128,8 +135,14 @@ protected:
 
     void MainWindowClosing();
 
-    friend class BothDisplayApi;
+    // setter for the SDL Surface
+    // Note: If m_bOwner is set to true takes ownership of the pSurface pointer that gets deleted,
+    // when this instance is destroyed.
+    void SetSurface(SDL_Surface* pSurface);
 
+    friend class BothDisplayApi;
+    friend class ::gui::CConsole;
+    
 public:
 
     //constructor
@@ -147,19 +160,11 @@ public:
      */
     bool ToggleOpenGL();
 
-    // getter for the SDL_Surface*
-    SDL_Surface * GetSurface() const;
-
     /// <summary>
     /// Gets the texture or creates one if none exists.
     /// </summary>
     /// <returns>the texture of this canvas.</returns>
     SDL_Texture * GetTexture();
-
-    // setter for the SDL Surface
-    // Note: If m_bOwner is set to true takes ownership of the pSurface pointer that gets deleted,
-    // when this instance is destroyed.
-    void SetSurface(SDL_Surface* pSurface);
 
     /** Update Texture from surface.
      *  Draw the underlying surface to the texture. You should use texture only functions.
@@ -317,7 +322,13 @@ public:
     bool Flip ();
 
     //set a color key
-    bool SetColorKey (CColor& color);
+    bool SetColorKey(Uint32 key);
+    //set a color key
+    bool SetColorKey(CColor& color);
+
+    bool SetPaletteColors(const SDL_Color * colors, int firstcolor, int ncolors) const;
+
+    bool SetSurfaceAlphaMod(Uint8 alpha);
 
     //retrieve the color key
     CColor GetColorKey () const;
@@ -386,6 +397,8 @@ public:
 
     //create an rgb surface of the display format
     static CCanvas * CreateRGBCompatible (Uint32 flags, int width, int height);
+    static CCanvas * CreateConvertSurfaceFormat(SDL_Surface* tmpfsurf, Uint32 pixel_format, Uint32 flags);
+    CCanvas * CreateConvertSurfaceFormat(SDL_Surface* tmpfsurf) const;
 
     //load a bitmap
     static CCanvas * LoadBMP (std::string sFileName);

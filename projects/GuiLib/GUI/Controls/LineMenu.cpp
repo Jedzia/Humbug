@@ -51,8 +51,8 @@ CLineMenu::CLineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const s
     m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", LABELFONTSIZE);
 
     m_tmpcanvas = GetCanvas()->CreateRGBCompatible(NULL, CControl::GetWidth(), CControl::GetHeight());
-    SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
-
+    //SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
+    m_tmpcanvas->SetSurfaceAlphaMod(122);
     //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
     //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
     //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);

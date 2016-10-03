@@ -1491,11 +1491,27 @@ bool CCanvas::Flip () {
     return true;
 }
 
-bool CCanvas::SetColorKey (CColor& color) {
+bool CCanvas::SetColorKey(Uint32 key) {
+    int result = SDL_SetColorKey(GetSurface(), SDL_TRUE, key);
+    return (result == 0);
+}
+bool CCanvas::SetColorKey(CColor& color) {
     Uint32 col = SDL_MapRGB(GetSurface()->format, color.R(), color.G(), color.B());
     SetTextureColorMod(color);
     int result = SDL_SetColorKey(GetSurface(), SDL_TRUE, col);
-    return (result == 0);
+    return result == 0;
+}
+
+    bool CCanvas::SetPaletteColors(const SDL_Color* colors, int firstcolor, int ncolors) const
+    {
+        int result = SDL_SetPaletteColors(GetSurface()->format->palette, colors, firstcolor, ncolors);
+        return result == 0;
+    }
+
+    bool CCanvas::SetSurfaceAlphaMod(Uint8 alpha)
+{
+    int result = SDL_SetSurfaceAlphaMod(GetSurface(), alpha);
+    return result == 0;
 }
 
 CColor CCanvas::GetColorKey () const {
@@ -1635,7 +1651,18 @@ CCanvas * CCanvas::CreateRGBCompatible (Uint32 flags, int width, int height) {
                     format->Bmask, format->Amask));
 }
 
-CCanvas * CCanvas::LoadBMP (string sFileName) {
+    CCanvas* CCanvas::CreateConvertSurfaceFormat(SDL_Surface* tmpfsurf, Uint32 pixel_format, Uint32 flags)
+    {
+        CCanvas* result = new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, pixel_format, flags), true);
+        return result;
+    }
+
+    CCanvas* CCanvas::CreateConvertSurfaceFormat(SDL_Surface* tmpfsurf) const
+    {
+        return CreateConvertSurfaceFormat(tmpfsurf, GetSurface()->format->format, GetSurface()->flags);
+    }
+
+    CCanvas * CCanvas::LoadBMP (string sFileName) {
     SDL_Surface* pSurface = SDL_LoadBMP(sFileName.c_str());
     return (new CCanvas(pSurface, true));
 }

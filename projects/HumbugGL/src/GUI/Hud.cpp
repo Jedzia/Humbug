@@ -72,7 +72,7 @@ namespace humbug {
       //SetMouseHover(this);
 
       tmpcanvas = GetCanvas()->CreateRGBCompatible( NULL, GetWidth(), GetHeight() );
-      SDL_SetSurfaceAlphaMod(tmpcanvas->GetSurface(), 122);
+      tmpcanvas->SetSurfaceAlphaMod(122);
       footerImage->Put( GetCanvas(), CPoint(0, 0) );
       const CRectangle& ownDimensions = GetCanvas()->GetDimension();
       GetCanvas()->Blit(ownDimensions, *tmpcanvas, ownDimensions);
