@@ -77,6 +77,18 @@ public:
     virtual SDL_Renderer * GetRenderer() const = 0;
     virtual bool Clear(const CColor& color) const = 0;
     virtual void SetupParameterClass(CCanvas* source, SDL_Texture* texture) const = 0;
+
+    virtual void FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const = 0;
+
+    virtual void SetRenderDrawBlendMode(BlendMode mode) const = 0;
+
+    virtual bool FillRect(const CRectangle& rect, const CColor& color) const = 0;
+    virtual void RenderDrawPoint(const CPoint& coordinates, const CColor* color) const = 0;
+    virtual void RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const = 0;
+    virtual bool RenderDrawRect(const CRectangle& rect, const CColor* color) const = 0;
+    virtual bool RenderFillRect(const CRectangle& rect, const CColor* color) const = 0;
+    virtual bool RenderFillRect(const CRectangle& rect, const CColor& color) const = 0;
+
 };
 
 //CCanvas class
@@ -85,15 +97,6 @@ public:
 
     typedef boost::function<void (const CCanvas * target, CCanvas * source, CCanvasRenderModifierData& mdata)> CCanvasRenderer;
     void AddModifier(const CCanvasRenderer& updfunc);
-
-private:
-
-/*    // remove them
-    // Render from other Canvas
-    void Render(CCanvas* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);
-
-    // Render from a surface
-    void Render(SDL_Surface* source, const CRectangle* dstRect = NULL, const CRectangle* srcRect = NULL);*/
 
 private:
 
@@ -109,31 +112,13 @@ private:
 
     void SetWindow(SDL_Window* pWindow);
 
-    SDL_Renderer * GetRenderer() const;
-
     std::list<SDL_Rect *> m_lstUpdateRects;
-    //bool m_bOwner;
-    //bool m_bTextureOwner;
-    //bool m_bIsParameterClass;
     CCanvasRendererStorage m_vecRendererVault;
 
-    /**
-     * \brief Debug SDL/OpenGL switch.
-     */
-    //static bool m_bUseOpenGL;
-
-private:
 
     struct CCanvasImpl;
     boost::scoped_ptr<CCanvasImpl> pimpl_;
     boost::scoped_ptr<CanvasDisplayApi> dApi_;
-
-    //pointer to an SDL_Surface
-//    SDL_Window* m_pWindow;
-//    SDL_GLContext m_glContext;
-//    SDL_Surface* m_pSurface;
-//    SDL_Texture* m_pTexture;
-//    SDL_Renderer* m_pRenderer;
 
 protected:
 

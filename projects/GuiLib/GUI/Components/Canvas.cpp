@@ -908,10 +908,12 @@ public:
 
     static void MainRenderFinal() {
         if (m_bUseOpenGL) {
-            CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+            //CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+            CApplication::GetApplication()->GetMainCanvas()->dApi_->CanvasSwapWindow();
         }
         else {
-            SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+            //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+            SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->dApi_->GetRenderer());
         }
     }
 
@@ -926,6 +928,81 @@ public:
     }
 
 
+    void FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const override
+    {
+        // all RenderCopy calls flow here
+        const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
+        const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
+        int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
+
+        //pimpl_->GLDrawTexture(dstRect);
+    }
+
+    void SetRenderDrawBlendMode(BlendMode mode) const override
+    {
+        // *** OpenGL incomplete ***
+        SDL_SetRenderDrawBlendMode(GetRenderer(), static_cast<SDL_BlendMode>(mode));
+    }
+
+    bool FillRect(const CRectangle& rect, const CColor& color) const override
+    {
+        // *** OpenGL incomplete ***
+        Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
+        return (SDL_FillRect(GetSurface(), rect.SDLRectCP(), col) == 0);
+    }
+
+    void RenderDrawPoint(const CPoint& coordinates, const CColor* color) const override
+    {
+        // *** OpenGL incomplete ***
+        if (color) {
+            SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+        }
+
+        SDL_RenderDrawPoint(GetRenderer(), coordinates.GetX(), coordinates.GetY());
+    }
+
+    void RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const override
+    {
+        // *** OpenGL incomplete ***
+        if (color) {
+            SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+        }
+
+        SDL_RenderDrawLine(GetRenderer(), pStart.GetX(), pStart.GetY(), pEnd.GetX(), pEnd.GetY());
+    }
+
+    bool RenderDrawRect(const CRectangle& rect, const CColor* color) const override
+    {
+        // *** OpenGL incomplete ***
+        int ret = 0;
+        if (color) {
+            ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+        }
+
+        ret = SDL_RenderDrawRect(GetRenderer(), rect.SDLRectCP());
+        return true;
+    }
+
+    bool RenderFillRect(const CRectangle& rect, const CColor* color) const override
+    {
+        // *** OpenGL incomplete ***
+        // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
+        int ret = 0;
+        if (color) {
+            ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
+        }
+
+        ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
+        return true;
+    }
+
+    bool RenderFillRect(const CRectangle& rect, const CColor& color) const override
+    {
+        // *** OpenGL incomplete ***
+        int ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA());
+        ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
+        return true;
+    }
 };
 
 //bool CCanvas::m_bUseOpenGL = false;
@@ -1067,16 +1144,6 @@ void CCanvas::SetWindow(SDL_Window* pWindow) {
                 __FUNCTION__ << " [" << this << "]" << " created Renderer " << " (" << m_pRenderer << ")" << " for Window " << " (" << pWindow <<
                     ")");
         m_pTexture = SDL_CreateTextureFromSurface(this->m_pRenderer, m_pSurface);
-    }*/
-}
-
-SDL_Renderer * CCanvas::GetRenderer() const {
-    return dApi_->GetRenderer();
-    /*if(this->m_pRenderer) {
-        return m_pRenderer;
-    }
-    else {
-        return CApplication::GetApplication()->GetMainCanvas()->m_pRenderer;
     }*/
 }
 
@@ -1226,12 +1293,15 @@ void CCanvas::CanvasRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, 
 } // CCanvas::CanvasRenderCopy
 
 void CCanvas::FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const {
+/*
     // all RenderCopy calls flow here
     const SDL_Rect* sdl_src_rect = srcRect ? srcRect->SDLRectCP() : NULL;
     const SDL_Rect* sdl_dst_rect = dstRect ? dstRect->SDLRectCP() : NULL;
     int result = SDL_RenderCopy(GetRenderer(), texture, sdl_src_rect, sdl_dst_rect);
 
     //pimpl_->GLDrawTexture(dstRect);
+*/
+    dApi_->FinalRenderCopy(texture, dstRect, srcRect);
 } // CCanvas::FinalRenderCopy
 
 void CCanvas::MainUpdateAndRenderCopy(const CRectangle* dstRect, const CRectangle* srcRect) {
@@ -1303,7 +1373,8 @@ void CCanvas::SetTextureAlphaMod(Uint8 alpha) {
 }
 
 void CCanvas::SetRenderDrawBlendMode(BlendMode mode) const {
-    SDL_SetRenderDrawBlendMode(GetRenderer(), static_cast<SDL_BlendMode>(mode));
+    //SDL_SetRenderDrawBlendMode(GetRenderer(), static_cast<SDL_BlendMode>(mode));
+    dApi_->SetRenderDrawBlendMode(mode);
 }
 
 bool CCanvas::Lock() const {
@@ -1450,27 +1521,37 @@ CRectangle CCanvas::GetClipRect () const {
 }
 
 bool CCanvas::FillRect(const CRectangle& rect, const CColor& color) const {
+/*
     Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
     return (SDL_FillRect(GetSurface(), rect.SDLRectCP(), col) == 0);
+*/
+    return dApi_->FillRect(rect, color);
 }
 
 void CCanvas::RenderDrawPoint(const CPoint& coordinates, const CColor* color) const {
+/*
     if(color) {
         SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
     }
 
     SDL_RenderDrawPoint(GetRenderer(), coordinates.GetX(), coordinates.GetY());
+*/
+    dApi_->RenderDrawPoint(coordinates, color);
 }
 
 void CCanvas::RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const {
+/*
     if(color) {
         SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
     }
 
     SDL_RenderDrawLine(GetRenderer(), pStart.GetX(), pStart.GetY(), pEnd.GetX(), pEnd.GetY());
+*/
+    dApi_->RenderDrawLine(pStart, pEnd, color);
 }
 
 bool CCanvas::RenderDrawRect(const CRectangle& rect, const CColor* color) const {
+/*
     int ret = 0;
     if(color) {
         ret = SDL_SetRenderDrawColor(GetRenderer(), color->GetR(), color->GetG(), color->GetB(), color->GetA());
@@ -1478,9 +1559,12 @@ bool CCanvas::RenderDrawRect(const CRectangle& rect, const CColor* color) const 
 
     ret = SDL_RenderDrawRect(GetRenderer(), rect.SDLRectCP());
     return true;
+*/
+    return dApi_->RenderDrawRect(rect, color);
 }
 
 bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor* color) const {
+/*
     // Uint32 col = SDL_MapRGB(GetSurface()->format, color.GetR(), color.GetG(), color.GetB());
     int ret = 0;
     if(color) {
@@ -1489,12 +1573,17 @@ bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor* color) const 
 
     ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
     return true;
+*/
+    return dApi_->RenderFillRect(rect, color);
 }
 
 bool CCanvas::RenderFillRect(const CRectangle& rect, const CColor& color) const {
+/*
     int ret = SDL_SetRenderDrawColor(GetRenderer(), color.GetR(), color.GetG(), color.GetB(), color.GetA());
     ret = SDL_RenderFillRect(GetRenderer(), rect.SDLRectCP());
     return true;
+*/
+    return dApi_->RenderFillRect(rect, color);
 }
 
 bool CCanvas::Clear(const CColor& color) const {
@@ -1519,9 +1608,11 @@ bool CCanvas::Blit (const CRectangle& rectDst, const CCanvas& cnvSrc, const CRec
 CCanvas * CCanvas::CreateRGB (Uint32 flags, int width, int height, int depth, Uint32 Rmask,
         Uint32 Gmask, Uint32 Bmask,
         Uint32 Amask) {
-    CCanvas* pCanvas = new CCanvas(static_cast<SDL_Surface *>(NULL), true);
-    pCanvas->SetSurface(SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask,
-                    Amask));
+    auto surface = SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask, Amask);
+    CCanvas* pCanvas = new CCanvas(surface, true);
+    //CCanvas* pCanvas = new CCanvas(static_cast<SDL_Surface *>(NULL), true);
+    //pCanvas->SetSurface(SDL_CreateRGBSurface(flags, width, height, depth, Rmask, Gmask, Bmask,
+    //                Amask));
     return pCanvas;
 }
 
