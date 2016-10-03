@@ -713,10 +713,32 @@ public:
 
 boost::random::mt19937 CCanvas::CCanvasImpl::gen;
 
+class BothRenderApi : public CanvasDisplayApi {
+        static bool m_bUseOpenGL;
+        void Final() override
+        {
+            if (m_bUseOpenGL) {
+                CApplication::GetApplication()->GetMainCanvas()->SwapWindow();
+            }
+            else {
+                // error, later the SDL renderer should be a class member
+                //SDL_RenderPresent(CApplication::GetApplication()->GetMainCanvas()->GetRenderer());
+            }
+        }
+public:
+    // ReSharper disable once CppMemberFunctionMayBeStatic
+    bool ToggleOpenGL() const {
+        m_bUseOpenGL = !m_bUseOpenGL;
+        return m_bUseOpenGL;
+    }
+};
+
+
 bool CCanvas::m_bUseOpenGL = false;
+bool BothRenderApi::m_bUseOpenGL = false;
 
 CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
-    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr),
+    : m_bOwner(owner), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), rApi_(new BothRenderApi), m_pWindow(nullptr),
     m_glContext(nullptr), m_pSurface(nullptr),
     m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
@@ -735,7 +757,7 @@ void CCanvas::MainWindowClosing() {
 }
 
 CCanvas::CCanvas (SDL_Window* pWindow)
-    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), m_pWindow(nullptr), m_glContext(nullptr),
+    : m_bOwner(true), m_bTextureOwner(false), m_bIsParameterClass(false), pimpl_(new CCanvasImpl), rApi_(new BothRenderApi), m_pWindow(nullptr), m_glContext(nullptr),
     m_pSurface(nullptr), m_pTexture(nullptr), m_pRenderer(nullptr) {
     //dbgOut(__FUNCTION__ << std::endl);
     SetWindow(pWindow);
