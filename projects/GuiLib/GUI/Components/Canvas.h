@@ -76,6 +76,8 @@ public:
 
     virtual SDL_Surface * GetSurface() const = 0;
 
+    virtual void InitGPU() = 0;
+
     virtual void SetSurface(SDL_Surface* pSurface) = 0;
 
     virtual void SetWindow(SDL_Window* pWindow) = 0;
@@ -107,6 +109,10 @@ public:
     virtual bool RenderFillRect(const CRectangle& rect, const CColor* color) const = 0;
 
     virtual bool RenderFillRect(const CRectangle& rect, const CColor& color) const = 0;
+
+    virtual void GLDrawTexture(const CRectangle* rect) = 0;
+
+    virtual void Cleanup() = 0;
 };
 
 //CCanvas class
@@ -138,9 +144,11 @@ private:
 
     struct CCanvasImpl;
     boost::scoped_ptr<CCanvasImpl> pimpl_;
-    boost::scoped_ptr<CanvasDisplayApi> dApi_;
+    //boost::scoped_ptr<CanvasDisplayApi> dApi_;
 
 protected:
+
+    CanvasDisplayApi * dAPI() const;
 
     void CanvasSwapWindow();
 
