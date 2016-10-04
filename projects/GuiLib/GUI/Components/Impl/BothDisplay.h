@@ -334,7 +334,7 @@ public:
         GLDrawTextureOld(rect);
 #endif
     }
-
+     
     void InstRenderer()
     {
         try {
