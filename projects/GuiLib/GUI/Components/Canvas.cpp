@@ -245,7 +245,7 @@ public:
         }
 
         //m_example.reset(new QuadRenderer);
-        InitRenderSetup();
+        //InitRenderSetup();
         //m_example->InitShaders();
         //m_example->InitVerts();
 
@@ -255,7 +255,7 @@ public:
     bool InitRenderSetup() {
         bool success = true;
         //dApi_->m_example.reset(new QuadRenderer);
-        //dApi_->InitGPU();
+        dApi_->InitGPU();
         //m_example->InitVerts();
 
         return success;
@@ -273,7 +273,6 @@ CCanvas::CCanvas(SDL_Surface* pSurface, bool owner)
     :  pimpl_(new CCanvasImpl(new BothDisplay(this, owner))) {
     //dbgOut(__FUNCTION__ << std::endl);
     //SetSurface(pSurface);
-    pimpl_->InitRenderSetup();
     dAPI()->SetSurface(pSurface);
 
     m_lstUpdateRects.clear();
@@ -290,6 +289,8 @@ CCanvas::CCanvas (SDL_Window* pWindow)
         pimpl_->InitOGLplus();
 #endif
     }
+
+    pimpl_->InitRenderSetup();
 
     // Todo: Error checking for context and window.
     m_lstUpdateRects.clear();

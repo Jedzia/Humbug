@@ -340,8 +340,10 @@ public:
         m_pSurface(nullptr),
         m_pTexture(nullptr),
         m_pRenderer(nullptr), m_bTextureOwner(false), m_bOwner(owner), m_bIsParameterClass(false) {
+
+
         CMainCanvas* main_canvas = CApplication::GetApplication()->GetMainCanvas();
-        if(!main_canvas) {
+        if (!main_canvas) {
             MainApi = this;
             return;
         }
@@ -361,6 +363,10 @@ public:
      */
     void InitGPU() override {
         //m_example.reset(new QuadRenderer);
+        if (!m_example) {
+            m_example.reset(new QuadRenderer);
+        }
+        m_example->InitGPUProgram();
     }
 
     ~BothDisplay() {

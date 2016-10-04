@@ -212,6 +212,13 @@ public:
         return gprog && gprog->IsShaderInitialized() && isVertexInitialized;
     }
 
+    void InitGPUProgram()
+    {
+        if(!gprog) {
+            gprog.reset(new GpuProgram);
+        }
+    }
+
     /** Brief description of QuadRenderer, InitVerts
      *  Detailed description.
      *  @param triangle_verts TODO
@@ -220,9 +227,7 @@ public:
     void InitVerts(const GLfloat* triangle_verts, const oglplus::SizeType& vertexCountX) {
         using namespace oglplus;
 
-        if(!gprog) {
-            gprog.reset(new GpuProgram);
-        }
+        InitGPUProgram();
 
         // bind the VAO for the triangle
         triangle.Bind();
