@@ -15,7 +15,7 @@
 /*---------------------------------------------------------*/
 #include "../../stdafx.h"
 //
-//#define USE_NEW_GL_METHOD 1
+#define USE_NEW_GL_METHOD 1
 #include "Canvas.h"
 #include "CanvasDisplayApi.h"
 #include "Impl/BothDisplay.h"

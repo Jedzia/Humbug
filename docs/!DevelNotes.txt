@@ -1,10 +1,19 @@
 
+-X-X-X-X- Di, 04 Okt 2016 13:23:29 -----------------------------------------------------------
+ 	HumbugGL.exe!shost::LuaVars::copyGlobalString(struct lua_State *,char const *)	C++
+ 	HumbugGL.exe!shost::ScriptHost::RunScript(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)	C++
+ 	HumbugGL.exe!humbug::screens::LuaScreen::OnInit(int,char * * const)	C++
+
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Di, 04 Okt 2016 07:06:37 -----------------------------------------------------------
 CLabel generates that fucking release build error
 
 07:05:07.07: gui::controls::CLabel::CLabel
 07:05:07.07: gui::components::BothDisplay::InstRenderer [class gui::components::BothDisplay] (0000000006494CE0)
 07:05:07.07: Fucking Error (in GenVertexArrays'): OpenGL numeric argument out of range [E:\Projects\C++\HumbugGL\projects\SupportLibs\oglplus\include\oglplus/vertex_array.hpp:40] 
+
+with OGLplus version 0.68 this is not happening
 -----------------------------------------------------------------------------------------------
 
 -X-X-X-X- Sa, 01 Okt 2016 23:45:54 -----------------------------------------------------------
