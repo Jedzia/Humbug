@@ -216,12 +216,14 @@ public:
 
     void InitGPUProgram()
     {
-        if(!gprog) {
+#ifdef USE_NEW_GL_METHOD
+        if (!gprog) {
             gprog.reset(new GpuProgram);
         }
+#endif
         //vert_attr.reset(new oglplus::VertexArrayAttrib(gprog->GetProgram(), "Position"));
     }
-
+    
     /** Brief description of QuadRenderer, InitVerts
      *  Detailed description.
      *  @param triangle_verts TODO

@@ -15,7 +15,7 @@
 /*---------------------------------------------------------*/
 #include "../../stdafx.h"
 //
-#define USE_NEW_GL_METHOD 1
+//#define USE_NEW_GL_METHOD 1
 #include "Canvas.h"
 #include "CanvasDisplayApi.h"
 #include "Impl/BothDisplay.h"
@@ -225,7 +225,7 @@ public:
                catch(...){ std::cout << "N/A"; }
                std::cout << std::endl;
                }*/
-
+             
             //oglplus::VertexShader vs;
         }
         catch(oglplus::Error& err)

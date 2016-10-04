@@ -181,6 +181,7 @@ namespace gui {
                     //pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
                     pcnvDest->RenderPutCopy(GetCanvas(), &diffrec2, &painton);
 
+#ifdef DEBUG_SEAMLESSIMAGE
                     if (m_pLoader)
                     {
                         // show a label for each part of the image
@@ -194,6 +195,7 @@ namespace gui {
                         CRectangle diffrec3 = diffrec2 + CPoint((m_rcDst.GetW() / 2) - labelWidth, (m_rcDst.GetH() / 2) - labelHeight);
                         label.RenderPut(pcnvDest, diffrec3);
                     }
+#endif
                 }
             }
         }

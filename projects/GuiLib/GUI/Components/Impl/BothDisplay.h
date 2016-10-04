@@ -236,10 +236,10 @@ class BothDisplay : public CanvasDisplayApi {
 
         const SDL_Rect* prect = rect->SDLRectCP();
 
-        float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
-        float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
-        float y = rangeMap(prect->y, 1.0f, -1.0f, 0, 768);
-        float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
+        float x = rangeMap(static_cast<float>(prect->x), -1.0f, 1.0f, 0, 1024);
+        float x1 = rangeMap(static_cast<float>(prect->x + prect->w), -1.0f, 1.0f, 0, 1024);
+        float y = rangeMap(static_cast<float>(prect->y), 1.0f, -1.0f, 0, 768);
+        float y1 = rangeMap(static_cast<float>(prect->y + prect->h), 1.0f, -1.0f, 0, 768);
 
         GLfloat triangle_verts[18] = {
             x, y, 0.0f,
@@ -271,10 +271,10 @@ class BothDisplay : public CanvasDisplayApi {
 
         const SDL_Rect* prect = rect->SDLRectCP();
 
-        float x = rangeMap(prect->x, -1.0f, 1.0f, 0, 1024);
-        float x1 = rangeMap(prect->x + prect->w, -1.0f, 1.0f, 0, 1024);
-        float y = rangeMap(prect->y, 1.0f, -1.0f, 0, 768);
-        float y1 = rangeMap(prect->y + prect->h, 1.0f, -1.0f, 0, 768);
+        float x = rangeMap(static_cast<float>(prect->x), -1.0f, 1.0f, 0, 1024);
+        float x1 = rangeMap(static_cast<float>(prect->x + prect->w), -1.0f, 1.0f, 0, 1024);
+        float y = rangeMap(static_cast<float>(prect->y), 1.0f, -1.0f, 0, 768);
+        float y1 = rangeMap(static_cast<float>(prect->y + prect->h), 1.0f, -1.0f, 0, 768);
 
         int aaa = 0;
         float texfac = 1.0f;
@@ -335,6 +335,28 @@ public:
 #endif
     }
 
+    void InstRenderer()
+    {
+        try {
+            dbgOut(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
+            m_example.reset(new QuadRenderer);
+        }
+        catch (oglplus::Error& err)
+        {
+            dbgOut(
+                "Fucking Error (in " <<
+                err.GLFunc() <<
+                "'): " <<
+                err.what() <<
+                " [" <<
+                err.SourceFile() <<
+                ":" <<
+                err.SourceLine() <<
+                "] ");
+        }
+
+    }
+
     explicit BothDisplay(CCanvas* host, bool owner)
         : host_(host),
         m_pWindow(nullptr),
@@ -355,7 +377,7 @@ public:
 
         MainApi = static_cast<BothDisplay *>(main_canvas->dAPI());
 
-        m_example.reset(new QuadRenderer);
+        InstRenderer();
     }
 
     /** Brief description of BothDisplay, InitGPU
@@ -365,9 +387,11 @@ public:
     void InitGPU() override {
         //m_example.reset(new QuadRenderer);
         if (!m_example) {
-            m_example.reset(new QuadRenderer);
+            InstRenderer();
         }
+#ifdef USE_NEW_GL_METHOD
         m_example->InitGPUProgram();
+#endif
     }
 
     ~BothDisplay() {
