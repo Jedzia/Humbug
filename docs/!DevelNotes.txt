@@ -266,6 +266,12 @@ MT-GD class boost::signals::detail::named_slot_map_iterator const & boost::itera
 
 -X-X-X-X- Montag, 29. Juni 2015 -----------------------------------------------------------------------------
 Boost build:
+MSVC14
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-1.55.0
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-14.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
 
 MSVC12
 ==========
