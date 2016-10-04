@@ -338,7 +338,7 @@ public:
     void InstRenderer()
     {
         try {
-            LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
+            //LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
             m_example.reset(new QuadRenderer);
         }
         catch (oglplus::Error& err)
@@ -353,6 +353,7 @@ public:
                 ":" <<
                 err.SourceLine() <<
                 "] ");
+				throw err; 
         }
 
     }

@@ -67,7 +67,6 @@ public:
 
     explicit GpuProgram()
         : isShaderInitialized(false) {
-        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         InitShaders();
     }
 
@@ -96,7 +95,6 @@ private:
      *
      */
     void InitShaders() {
-        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         try
         {
             // Set the vertex shader source
@@ -191,8 +189,8 @@ class QuadRenderer {
 
     // for now only one Shader can exist.
     static boost::scoped_ptr<GpuProgram> gprog;
-    static int nr;
-    boost::scoped_ptr<oglplus::VertexArray> triangle;
+
+    oglplus::VertexArray triangle;
 
     oglplus::Buffer verts;
     oglplus::SizeType vertexCount;
@@ -202,13 +200,9 @@ public:
 
     explicit QuadRenderer()
         : vertexCount(0), isVertexInitialized(false) {
-        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         //InitShaders();
         //InitVerts();
-        triangle.reset(new oglplus::VertexArray);
-        LOGSTD(__FUNCTION__ << "-After [" << typeid(*this).name() << "] (" << this << ")");
     }
-
 
     /** Brief description of QuadRenderer, IsInitialized
      *  Detailed description.
@@ -224,7 +218,6 @@ public:
     {
 #ifdef USE_NEW_GL_METHOD
         if (!gprog) {
-            LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
             gprog.reset(new GpuProgram);
         }
 #endif
@@ -242,13 +235,11 @@ public:
         {
             LOGSTD("PANIC !!! this is NULLPTR !!! ");
         }
-        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
+        //LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         InitGPUProgram();
 
         // bind the VAO for the triangle
-        LOGSTD(__FUNCTION__ << "+Triangle("<< triangle->HasValidName() << ") [" << typeid(*this).name() << "] (" << this << ")");
-        triangle->Bind();
-        LOGSTD(__FUNCTION__ << "-Triangle [" << typeid(*this).name() << "] (" << this << ")");
+        triangle.Bind();
 
         /*GLfloat triangle_verts[9] = {
            0.0f, 0.0f, 0.0f,
@@ -259,8 +250,6 @@ public:
 
         // bind the VBO for the triangle vertices
         verts.Bind(Buffer::Target::Array);
-        LOGSTD(__FUNCTION__ << "-Bind [" << typeid(*this).name() << "] (" << this << ")");
-
         // upload the data
         Buffer::Data(
                 Buffer::Target::Array,
@@ -303,7 +292,6 @@ public:
             return;
         }
 
-        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         gl.DrawArrays(PrimitiveType::Triangles, 0, vertexCount);
     }
 
@@ -317,7 +305,6 @@ public:
 };
 
 boost::scoped_ptr<GpuProgram> QuadRenderer::gprog;
-int QuadRenderer::nr = 0;
 
 /** @class SingleExample:
  *  Detailed description.

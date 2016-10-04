@@ -171,7 +171,8 @@ public:
         }
         else {
         }
-
+		glGetError();
+		
         return success;
     } // initGL
 
