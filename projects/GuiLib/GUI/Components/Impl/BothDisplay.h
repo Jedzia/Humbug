@@ -462,7 +462,9 @@ public:
         }
 
         m_pSurface = pSurface;
+#ifndef USE_NEW_GL_METHOD
         GLAttachTexture(pSurface);
+#endif
     }
 
     // ReSharper disable once CppMemberFunctionMayBeStatic
