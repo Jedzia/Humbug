@@ -169,15 +169,34 @@ public:
 #define LOGSTD(x) std::cout << x
 #define LOGSTREAM std::cerr
 #else
+/**
+* \brief log to the logmanager stream, log always.
+* \param x the chars to log.
+*/
 #define dbgOut(x) humbuglib::LogManager::getSingleton().stream() << x
 #if _DEBUG
+/**
+ * \brief log to the logmanager stream, conditional: only in debug.
+ * \param x the chars to log.
+ */
 #define dbgcOut(x) humbuglib::LogManager::getSingleton().stream() << x
+/**
+* \brief log to the std::cerr, conditional: only in debug.
+* \param x the chars to log.
+*/
 #define stdcOut(x) std::cerr << x << std::endl
 #else
 #define dbgcOut(x) 
 #define stdcOut(x) 
 #endif
+/**
+* \brief log to the logmanager stream, log always.
+* \param x the chars to log.
+*/
 #define LOGSTD(x) humbuglib::LogManager::getSingleton().stream() << x
+/**
+* \brief The logmanager stream, log always.
+*/
 #define LOGSTREAM humbuglib::LogManager::getSingleton().stream()
 #endif
 #endif // ifndef __LogManager_H__

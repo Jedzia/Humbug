@@ -1,4 +1,12 @@
 
+-X-X-X-X- Di, 04 Okt 2016 07:06:37 -----------------------------------------------------------
+CLabel generates that fucking release build error
+
+07:05:07.07: gui::controls::CLabel::CLabel
+07:05:07.07: gui::components::BothDisplay::InstRenderer [class gui::components::BothDisplay] (0000000006494CE0)
+07:05:07.07: Fucking Error (in GenVertexArrays'): OpenGL numeric argument out of range [E:\Projects\C++\HumbugGL\projects\SupportLibs\oglplus\include\oglplus/vertex_array.hpp:40] 
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Sa, 01 Okt 2016 23:45:54 -----------------------------------------------------------
 in HumbugGL\projects\SupportLibs\glm\glm\detail\setup.hpp
 // Version

@@ -338,12 +338,12 @@ public:
     void InstRenderer()
     {
         try {
-            dbgOut(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
+            LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
             m_example.reset(new QuadRenderer);
         }
         catch (oglplus::Error& err)
         {
-            dbgOut(
+            LOGSTD(
                 "Fucking Error (in " <<
                 err.GLFunc() <<
                 "'): " <<
