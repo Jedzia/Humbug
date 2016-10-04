@@ -62,7 +62,7 @@ CControl::CControl(CControl* pParent, gui::components::CRectangle rcDimensions, 
     m_bUsesSDL2Render(usesSDL2Render),
     m_ID(id),
     m_pParent(NULL), m_ptIsDirty(invalidate) {
-    dbgOut(__FUNCTION__);
+    dbgOut(__FUNCTION__ << " (" << m_ID << ")");
     //set parent
     SetParent(pParent);
     //create an rgb compatible surface
@@ -679,6 +679,8 @@ void CControl::SetPosition(gui::components::CPoint ptPosition) {
 gui::components::CCanvas * CControl::GetCanvas() const {
     //get the canvas
     return(m_pCanvas);
+    // only for debugging
+    //return(CApplication::GetApplication()->GetMainCanvas());
 }
 
 //get main control

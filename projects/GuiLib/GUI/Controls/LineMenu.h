@@ -127,7 +127,7 @@ private:
     std::string m_sName;
     CRectangle m_rPadding;
     bool m_bOldstate;
-    CCanvas* m_tmpcanvas;
+    //CCanvas* m_tmpcanvas;
     bool m_bFlank;
     int m_iTicks;
     int m_iSelectedLabel;

@@ -30,7 +30,7 @@ namespace gui {
 namespace components {
 //#include <build/cmake/include/debug.h>
 
-int CLineMenu::LabelId = 6000;
+int CLineMenu::LabelId = 7000;
 std::string CLineMenu::BackSelected = "-1";
 const int LABELFONTSIZE = 32;
 
@@ -50,9 +50,9 @@ CLineMenu::CLineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const s
 
     m_pDebugfont = m_Loader.FL_LOADFONT("Fonts/ARIAL.TTF", LABELFONTSIZE);
 
-    m_tmpcanvas = GetCanvas()->CreateRGBCompatible(NULL, CControl::GetWidth(), CControl::GetHeight());
+//    m_tmpcanvas = GetCanvas()->CreateRGBCompatible(NULL, CControl::GetWidth(), CControl::GetHeight());
     //SDL_SetSurfaceAlphaMod(m_tmpcanvas->GetSurface(), 122);
-    m_tmpcanvas->SetSurfaceAlphaMod(122);
+//    m_tmpcanvas->SetSurfaceAlphaMod(122);
     //m_pFooterImage->Put( GetCanvas(), CPoint(0, 0) );
     //const CRectangle& ownDimensions = GetCanvas()->GetDimension();
     //GetCanvas()->Blit(ownDimensions, *m_pTmpCanvas, ownDimensions);
@@ -61,7 +61,7 @@ CLineMenu::CLineMenu(FileLoader& m_Loader, CControl* pParent, Uint32 id, const s
 
 CLineMenu::~CLineMenu(void) {
     //delete m_pFooterImage;
-    delete m_tmpcanvas;
+    //delete m_tmpcanvas;
     dbgOut(__FUNCTION__);
 }
 
