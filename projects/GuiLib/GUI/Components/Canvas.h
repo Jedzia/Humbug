@@ -2,6 +2,7 @@
 #ifndef __CANVAS_H__
 #define __CANVAS_H__
 
+#include "BlendMode.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include "SDL.h"
@@ -11,10 +12,6 @@
 #define DEPRECATED __declspec(deprecated)
 
 namespace gui {
-/** @class CConsole:
- *  Detailed description.
- *  @return TODO
- */
 class CConsole;
 namespace components {
 struct CCanvasRenderModifierData
@@ -35,86 +32,7 @@ struct CCanvasRenderModifierData
     {}
 };
 
-typedef enum {
-    /**< no blending
-       dstRGBA = srcRGBA */
-    BLENDMODE_NONE = 0x00000000,
-
-    /**< alpha blending
-       dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA))
-       dstA = srcA + (dstA * (1-srcA)) */
-    BLENDMODE_BLEND = 0x00000001,
-
-    /**< additive blending
-       dstRGB = (srcRGB * srcA) + dstRGB
-       dstA = dstA */
-    BLENDMODE_ADD = 0x00000002,
-
-    /**< color modulate
-       dstRGB = srcRGB * dstRGB
-       dstA = dstA */
-    BLENDMODE_MOD = 0x00000004
-} BlendMode;
-
-/** @class CCanvas:
- *  Detailed description.
- *  @return TODO
- */
-class CCanvas;
-
-/** @class RenderApi:
- *  Detailed description.
- *
- */
-class CanvasDisplayApi {
-public:
-
-    virtual ~CanvasDisplayApi()
-    {}
-
-    virtual bool ToggleOpenGL() = 0;
-
-    virtual SDL_Surface * GetSurface() const = 0;
-
-    virtual void InitGPU() = 0;
-
-    virtual void SetSurface(SDL_Surface* pSurface) = 0;
-
-    virtual void SetWindow(SDL_Window* pWindow) = 0;
-
-    virtual SDL_Texture * GetTexture() = 0;
-
-    virtual void SetupParameterClass(CCanvas* source, SDL_Texture* texture) const = 0;
-
-    virtual bool Clear(const CColor& color) const = 0;
-
-    virtual void FinalRenderCopy(SDL_Texture* texture, const CRectangle* dstRect, const CRectangle* srcRect) const = 0;
-
-    virtual void RenderPresent() = 0;
-
-    virtual void CanvasSwapWindow() = 0;
-
-    virtual void SetRenderDrawBlendMode(BlendMode mode) const = 0;
-
-    virtual bool ClearColorKey() const = 0;
-
-    virtual bool FillRect(const CRectangle& rect, const CColor& color) const = 0;
-
-    virtual void RenderDrawPoint(const CPoint& coordinates, const CColor* color) const = 0;
-
-    virtual void RenderDrawLine(const CPoint& pStart, const CPoint& pEnd, const CColor* color) const = 0;
-
-    virtual bool RenderDrawRect(const CRectangle& rect, const CColor* color) const = 0;
-
-    virtual bool RenderFillRect(const CRectangle& rect, const CColor* color) const = 0;
-
-    virtual bool RenderFillRect(const CRectangle& rect, const CColor& color) const = 0;
-
-    virtual void GLDrawTexture(const CRectangle* rect) = 0;
-
-    virtual void Cleanup() = 0;
-};
-
+class CanvasDisplayApi;
 //CCanvas class
 class CCanvas {
 public:
@@ -163,7 +81,7 @@ protected:
      *  Detailed description.
      *  @return TODO
      */
-    friend class BothDisplayApi;
+    friend class BothDisplay;
     friend class ::gui::CConsole;
 
 public:

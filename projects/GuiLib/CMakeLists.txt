@@ -101,8 +101,12 @@ SET(GuiLib_Component_headers
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
 		GUI/Components/Color.h
+		GUI/Components/Blendmode.h
 		GUI/Components/Canvas.h
 		GUI/Components/CanvasRendererImpl.h
+		GUI/Components/CanvasDisplayApi.h
+		GUI/Components/Impl/BothDisplay.h
+		GUI/Components/Impl/QuadRenderer.h
 		GUI/Components/Image.h
 		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
@@ -144,6 +148,8 @@ SET(GuiLib_Component_sources
 		GUI/Components/Color.cpp
 		GUI/Components/Canvas.cpp
 		GUI/Components/CanvasRendererImpl.cpp
+		GUI/Components/Impl/BothDisplay.cpp
+		GUI/Components/Impl/QuadRenderer.cpp
 		GUI/Components/Image.cpp
 		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
