@@ -58,7 +58,7 @@ namespace gui {
 
             virtual bool RenderFillRect(const CRectangle& rect, const CColor& color) const = 0;
 
-            virtual void GLDrawTexture(const CRectangle* rect) = 0;
+            inline virtual void GLDrawTexture(const CRectangle* rect) = 0;
 
             virtual void Cleanup() = 0;
         };

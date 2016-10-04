@@ -326,6 +326,8 @@ public:
      *  @param rect TODO
      */
     void GLDrawTexture(const CRectangle* rect) override {
+        if (!m_bUseOpenGL)
+            return;
 #ifdef USE_NEW_GL_METHOD
         GLDrawTextureNew(rect);
 #else
@@ -341,6 +343,9 @@ public:
         m_pTexture(nullptr),
         m_pRenderer(nullptr), m_bTextureOwner(false), m_bOwner(owner), m_bIsParameterClass(false) {
 
+        glColorR = RandomFloat(0.0f, 1.0f);
+        glColorG = RandomFloat(0.0f, 1.0f);
+        glColorB = RandomFloat(0.0f, 1.0f);
 
         CMainCanvas* main_canvas = CApplication::GetApplication()->GetMainCanvas();
         if (!main_canvas) {
@@ -350,10 +355,6 @@ public:
 
         MainApi = static_cast<BothDisplay *>(main_canvas->dAPI());
 
-        glColorR = RandomFloat(0.0f, 1.0f);
-        glColorG = RandomFloat(0.0f, 1.0f);
-        glColorB = RandomFloat(0.0f, 1.0f);
-       
         m_example.reset(new QuadRenderer);
     }
 

@@ -212,11 +212,14 @@ public:
         return gprog && gprog->IsShaderInitialized() && isVertexInitialized;
     }
 
+    //boost::scoped_ptr<oglplus::VertexArrayAttrib> vert_attr;
+
     void InitGPUProgram()
     {
         if(!gprog) {
             gprog.reset(new GpuProgram);
         }
+        //vert_attr.reset(new oglplus::VertexArrayAttrib(gprog->GetProgram(), "Position"));
     }
 
     /** Brief description of QuadRenderer, InitVerts
@@ -249,11 +252,13 @@ public:
                 );
         // setup the vertex attribs array for the vertices
         VertexArrayAttrib vert_attr(gprog->GetProgram(), "Position");
+        //vert_attr->Setup<GLfloat>(3);
+       // vert_attr->Enable();
         vert_attr.Setup<GLfloat>(3);
         vert_attr.Enable();
 
-        gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        gl.ClearDepth(1.0f);
+        //gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        //gl.ClearDepth(1.0f);
 
         isVertexInitialized = true;
     }         // InitVerts
