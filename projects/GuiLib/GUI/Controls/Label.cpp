@@ -21,9 +21,11 @@ CRectangle CLabel::CreateTextCanvas(const std::string& sCaption,
     //m_pcnvText = NULL;
     if (sCaption != "" && m_pLabelFont != NULL) {
         // Todo: when no font ... throw? ... or warn?
+        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         m_pcnvText.reset(
                 new CCanvas(TTF_RenderText_Blended( m_pLabelFont, sCaption.c_str(), colText.SDLColor() ),
                         true) );
+        LOGSTD(__FUNCTION__ << "-After [" << typeid(*this).name() << "] (" << this << ")");
     }
 
     //SetCaption(sCaption);
@@ -184,7 +186,9 @@ void CLabel::OnDraw(){
         }
         //GetCanvas()->UpdateTexture(m_pcnvText, rcSrc, rcDst);
         //GetCanvas()->UpdateTexture(m_pcnvText);
+        LOGSTD(__FUNCTION__ << " [" << typeid(*this).name() << "] (" << this << ")");
         GetCanvas()->RenderPutCopy(m_pcnvText.get(), &rcDst, &rcSrc);
+        LOGSTD(__FUNCTION__ << "-After [" << typeid(*this).name() << "] (" << this << ")");
         //auto painter = LabelPainter(downrect, &m_colBack, overflowDown)
     }
     else {
