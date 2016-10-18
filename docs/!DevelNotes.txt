@@ -78,6 +78,14 @@ Boost build:
 bootstrap
 b2 headers
 
+MSVC14
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-git_latest
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-14.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-14.0 address-model=64 --stagedir=lib\x64 stage
+
 MSVC12
 ==========
 
