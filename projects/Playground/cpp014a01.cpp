@@ -12,6 +12,10 @@
  *
  * modified    2016-01-30, Jedzia
  */
+// check for c++14
+#if __cplusplus >= 201402L
+// Visual Studio 2015
+//#if _MSC_VER >= 1900
 /*---------------------------------------------------------*/
 //#define _SCL_SECURE_NO_WARNINGS 1
 //#include <boost/assert.hpp>
@@ -67,4 +71,6 @@ int main(int argc, char* argv[]) {
 
     std::cout << "The end." << std::endl;
 }
-
+#else
+int main(int argc, char* argv[]) { return 0; }
+#endif
