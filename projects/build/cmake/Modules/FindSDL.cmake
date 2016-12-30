@@ -66,12 +66,12 @@
 #  License text for the above reference.)
 
 #Todo: There are problems on Win7 VS2010 when SDLMain is not found. Write a check for that
-#SET(SDL_LIBRARY_TEMP "X" )
+#set(SDL_LIBRARY_TEMP "X" )
 
-SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL-1.2.15)
-#MESSAGE(STATUS "_DEP_PATH: ${_DEP_PATH}")
+set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL-1.2.15)
+#message(STATUS "_DEP_PATH: ${_DEP_PATH}")
 
-FIND_PATH(SDL_INCLUDE_DIR SDL.h
+find_path(SDL_INCLUDE_DIR SDL.h
   HINTS
   $ENV{SDLDIR}
   PATH_SUFFIXES include/SDL include
@@ -88,19 +88,19 @@ FIND_PATH(SDL_INCLUDE_DIR SDL.h
   /opt
   ${_DEP_PATH}
 )
-#MESSAGE("SDL_INCLUDE_DIR is ${SDL_INCLUDE_DIR}")
+#message("SDL_INCLUDE_DIR is ${SDL_INCLUDE_DIR}")
 
-#SET(SDL_LIBRARY_BLA "" )
+#set(SDL_LIBRARY_BLA "" )
 
-IF(WIN32)
+if(WIN32)
 
-    FIND_FILE(SDL_LIBRARY_DLL_RELEASE NAMES SDL.dll PATHS
+    find_file(SDL_LIBRARY_DLL_RELEASE NAMES SDL.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/SDL/Release
     )
-    FIND_FILE(SDL_LIBRARY_DLL_DEBUG NAMES SDL.dll PATHS
+    find_file(SDL_LIBRARY_DLL_DEBUG NAMES SDL.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
@@ -108,21 +108,21 @@ IF(WIN32)
 		${_DEP_PATH}/VisualC/Debug
     )
     
-ENDIF(WIN32)
+endif(WIN32)
 
-IF(MINGW)
-    FIND_LIBRARY(SDL_LIBRARY_TEMP NAMES libSDL.dll.a PATHS
+if(MINGW)
+    find_library(SDL_LIBRARY_TEMP NAMES libSDL.dll.a PATHS
     #C:/MinGW/msys/1.0/lib
     /lib
 	/usr/lib
 	/usr/local/lib
     )
 
-ELSE(MINGW)
+else(MINGW)
 
 # SDL-1.1 is the name used by FreeBSD ports...
 # don't confuse it for the version number.
-FIND_LIBRARY(SDL_LIBRARY_TEMP 
+find_library(SDL_LIBRARY_TEMP 
   NAMES SDL SDL-1.1
   HINTS
   $ENV{SDLDIR}
@@ -137,30 +137,30 @@ FIND_LIBRARY(SDL_LIBRARY_TEMP
   ${_DEP_PATH}/VisualC/Release
 )
 
-ENDIF(MINGW)
-#MESSAGE(FATAL_ERROR "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
+endif(MINGW)
+#message(FATAL_ERROR "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
 	 
-    #FIND_FILE(SDL_LIBRARY_BLA NAMES libSDL.dll.a PATHS
+    #find_file(SDL_LIBRARY_BLA NAMES libSDL.dll.a PATHS
     #	C:/MinGW/msys/1.0/lib
 #	/usr/lib
 #	/usr/local/lib
 #	 NO_DEFAULT_PATH)
 
-#SET(SDL_LIBRARY_BLA "--> ${SDL_LIBRARY_BLA1} <--" CACHE STRING "")
+#set(SDL_LIBRARY_BLA "--> ${SDL_LIBRARY_BLA1} <--" CACHE STRING "")
 	 
 	 
 
-#MESSAGE(FATAL_ERROR "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
+#message(FATAL_ERROR "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
 #// BUG: ${SDL_LIBRARY_TEMP} is growing on every CMake run!
-#MESSAGE(STATUS "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
+#message(STATUS "SDL_LIBRARY_TEMP is ${SDL_LIBRARY_TEMP}")
 
-IF(NOT SDL_BUILDING_LIBRARY)
-  IF(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
+if(NOT SDL_BUILDING_LIBRARY)
+  if(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
     # Non-OS X framework versions expect you to also dynamically link to 
     # SDLmain. This is mainly for Windows and OS X. Other (Unix) platforms 
     # seem to provide SDLmain for compatibility even though they don't
     # necessarily need it.
-    FIND_LIBRARY(SDLMAIN_LIBRARY 
+    find_library(SDLMAIN_LIBRARY 
       NAMES SDLmain SDLmain-1.1
       HINTS
       $ENV{SDLDIR}
@@ -173,32 +173,32 @@ IF(NOT SDL_BUILDING_LIBRARY)
   	  ${_DEP_PATH}/VisualC/SDLmain/Release
   	  ${_DEP_PATH}/VisualC/SDLmain/x64/Release
     )
-  ENDIF(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
-ENDIF(NOT SDL_BUILDING_LIBRARY)
+  endif(NOT ${SDL_INCLUDE_DIR} MATCHES ".framework")
+endif(NOT SDL_BUILDING_LIBRARY)
 
 # SDL may require threads on your system.
 # The Apple build may not need an explicit flag because one of the 
 # frameworks may already provide it. 
 # But for non-OSX systems, I will use the CMake Threads package.
-IF(NOT APPLE)
-  FIND_PACKAGE(Threads)
-ENDIF(NOT APPLE)
+if(NOT APPLE)
+  find_package(Threads)
+endif(NOT APPLE)
 
 # MinGW needs an additional library, mwindows
 # It's total link flags should look like -lmingw32 -lSDLmain -lSDL -lmwindows
 # (Actually on second look, I think it only needs one of the m* libraries.)
-IF(MINGW)
-  SET(MINGW32_LIBRARY mingw32 CACHE STRING "mwindows for MinGW")
-ENDIF(MINGW)
+if(MINGW)
+  set(MINGW32_LIBRARY mingw32 CACHE STRING "mwindows for MinGW")
+endif(MINGW)
 
-SET(SDL_FOUND "NO")
-IF(SDL_LIBRARY_TEMP)
+set(SDL_FOUND "NO")
+if(SDL_LIBRARY_TEMP)
   # For SDLmain
-  IF(NOT SDL_BUILDING_LIBRARY)
-    IF(SDLMAIN_LIBRARY)
-      SET(SDL_LIBRARY_TEMP ${SDLMAIN_LIBRARY} ${SDL_LIBRARY_TEMP})
-    ENDIF(SDLMAIN_LIBRARY)
-  ENDIF(NOT SDL_BUILDING_LIBRARY)
+  if(NOT SDL_BUILDING_LIBRARY)
+    if(SDLMAIN_LIBRARY)
+      set(SDL_LIBRARY_TEMP ${SDLMAIN_LIBRARY} ${SDL_LIBRARY_TEMP})
+    endif(SDLMAIN_LIBRARY)
+  endif(NOT SDL_BUILDING_LIBRARY)
 
   # For OS X, SDL uses Cocoa as a backend so it must link to Cocoa.
   # CMake doesn't display the -framework Cocoa string in the UI even 
@@ -206,29 +206,29 @@ IF(SDL_LIBRARY_TEMP)
   # I think it has something to do with the CACHE STRING.
   # So I use a temporary variable until the end so I can set the 
   # "real" variable in one-shot.
-  IF(APPLE)
-    SET(SDL_LIBRARY_TEMP ${SDL_LIBRARY_TEMP} "-framework Cocoa")
-  ENDIF(APPLE)
+  if(APPLE)
+    set(SDL_LIBRARY_TEMP ${SDL_LIBRARY_TEMP} "-framework Cocoa")
+  endif(APPLE)
     
   # For threads, as mentioned Apple doesn't need this.
   # In fact, there seems to be a problem if I used the Threads package
   # and try using this line, so I'm just skipping it entirely for OS X.
-  IF(NOT APPLE)
-    SET(SDL_LIBRARY_TEMP ${SDL_LIBRARY_TEMP} ${CMAKE_THREAD_LIBS_INIT})
-  ENDIF(NOT APPLE)
+  if(NOT APPLE)
+    set(SDL_LIBRARY_TEMP ${SDL_LIBRARY_TEMP} ${CMAKE_THREAD_LIBS_INIT})
+  endif(NOT APPLE)
 
   # For MinGW library
-  IF(MINGW)
-    SET(SDL_LIBRARY_TEMP ${MINGW32_LIBRARY} ${SDL_LIBRARY_TEMP})
-  ENDIF(MINGW)
+  if(MINGW)
+    set(SDL_LIBRARY_TEMP ${MINGW32_LIBRARY} ${SDL_LIBRARY_TEMP})
+  endif(MINGW)
 
   # Set the final string here so the GUI reflects the final state.
-  SET(SDL_LIBRARY ${SDL_LIBRARY_TEMP} CACHE STRING "Where the SDL Library can be found")
+  set(SDL_LIBRARY ${SDL_LIBRARY_TEMP} CACHE STRING "Where the SDL Library can be found")
   # Set the temp variable to INTERNAL so it is not seen in the CMake GUI
-  SET(SDL_LIBRARY_TEMP "${SDL_LIBRARY_TEMP}" CACHE INTERNAL "")
+  set(SDL_LIBRARY_TEMP "${SDL_LIBRARY_TEMP}" CACHE INTERNAL "")
 
-  SET(SDL_FOUND "YES")
-ENDIF(SDL_LIBRARY_TEMP)
+  set(SDL_FOUND "YES")
+endif(SDL_LIBRARY_TEMP)
 
-#MESSAGE("SDL_LIBRARY is ${SDL_LIBRARY}")
+#message("SDL_LIBRARY is ${SDL_LIBRARY}")
 

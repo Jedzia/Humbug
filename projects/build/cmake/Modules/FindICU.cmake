@@ -30,23 +30,23 @@ find_library(
 mark_as_advanced(ICU_LIBRARY)
 
 if(WIN32)
- #       SET(__QSCINTILLA_LIBNAME_REL qscintilla2.lib)
- #       SET(__QSCINTILLA_LIBNAME_DEB qscintilla2d.lib)
-        SET(__ICU_DLL_REL icuin44.dll)
-        SET(__ICU_DLL_DEB icuin44d.dll)
+ #       set(__QSCINTILLA_LIBNAME_REL qscintilla2.lib)
+ #       set(__QSCINTILLA_LIBNAME_DEB qscintilla2d.lib)
+        set(__ICU_DLL_REL icuin44.dll)
+        set(__ICU_DLL_DEB icuin44d.dll)
 else(WIN32)
-#        SET(__QSCINTILLA_LIBNAME_REL qscintilla2)
-#        SET(__QSCINTILLA_LIBNAME_DEB qscintilla2)
+#        set(__QSCINTILLA_LIBNAME_REL qscintilla2)
+#        set(__QSCINTILLA_LIBNAME_DEB qscintilla2)
 endif(WIN32)
 
 if(WIN32)
-FIND_FILE(ICU_DLL_DEBUG NAMES ${__ICU_DLL_DEB} PATHS 
+find_file(ICU_DLL_DEBUG NAMES ${__ICU_DLL_DEB} PATHS 
 /usr/lib
 /usr/local/lib
 D:/boost/icu/bin
  NO_DEFAULT_PATH)
 
-FIND_FILE(ICU_DLL_RELEASE NAMES ${__ICU_DLL_REL} PATHS 
+find_file(ICU_DLL_RELEASE NAMES ${__ICU_DLL_REL} PATHS 
 /usr/lib
 /usr/local/lib
 D:/boost/icu/bin
@@ -63,13 +63,13 @@ if(ICU_INCLUDE_DIR AND ICU_LIBRARY)
   set(ICU_MAJOR_VERSION 0)
   set(ICU_MINOR_VERSION 0)
   if (EXISTS "${ICU_INCLUDE_DIR}/unicode/uvernum.h")
-    FILE(READ "${ICU_INCLUDE_DIR}/unicode/uvernum.h" _ICU_VERSION_CONENTS)
+    file(READ "${ICU_INCLUDE_DIR}/unicode/uvernum.h" _ICU_VERSION_CONENTS)
   else()
-    FILE(READ "${ICU_INCLUDE_DIR}/unicode/uversion.h" _ICU_VERSION_CONENTS)
+    file(READ "${ICU_INCLUDE_DIR}/unicode/uversion.h" _ICU_VERSION_CONENTS)
   endif()
 
-  STRING(REGEX REPLACE ".*#define U_ICU_VERSION_MAJOR_NUM ([0-9]+).*" "\\1" ICU_MAJOR_VERSION "${_ICU_VERSION_CONENTS}")
-  STRING(REGEX REPLACE ".*#define U_ICU_VERSION_MINOR_NUM ([0-9]+).*" "\\1" ICU_MINOR_VERSION "${_ICU_VERSION_CONENTS}")
+  string(REGEX REPLACE ".*#define U_ICU_VERSION_MAJOR_NUM ([0-9]+).*" "\\1" ICU_MAJOR_VERSION "${_ICU_VERSION_CONENTS}")
+  string(REGEX REPLACE ".*#define U_ICU_VERSION_MINOR_NUM ([0-9]+).*" "\\1" ICU_MINOR_VERSION "${_ICU_VERSION_CONENTS}")
 
   set(ICU_VERSION "${ICU_MAJOR_VERSION}.${ICU_MINOR_VERSION}")
 
@@ -97,18 +97,18 @@ else(ICU_INCLUDE_DIR AND ICU_LIBRARY)
   set(ICU_MINOR_VERSION)
 endif(ICU_INCLUDE_DIR AND ICU_LIBRARY)
 
-IF(ICU_FOUND)
-  IF( NOT ICU_FIND_QUIETLY )
-    MESSAGE( STATUS "Found ICU header files in ${ICU_INCLUDE_DIRS}")
-    MESSAGE( STATUS "Found ICU libraries: ${ICU_LIBRARIES}")
-  ENDIF( NOT ICU_FIND_QUIETLY )
-MARK_AS_ADVANCED(ICU_DLL_DEBUG)
-MARK_AS_ADVANCED(ICU_DLL_RELEASE)
-ELSE(ICU_FOUND)
-	IF(ICU_FIND_REQUIRED)
-		MESSAGE( FATAL_ERROR "Could not find ICU" )
-	ELSE(ICU_FIND_REQUIRED)
-		MESSAGE( STATUS "Optional package ICU was not found" )
-	ENDIF(ICU_FIND_REQUIRED)
-ENDIF(ICU_FOUND)
+if(ICU_FOUND)
+  if( NOT ICU_FIND_QUIETLY )
+    message( STATUS "Found ICU header files in ${ICU_INCLUDE_DIRS}")
+    message( STATUS "Found ICU libraries: ${ICU_LIBRARIES}")
+  endif( NOT ICU_FIND_QUIETLY )
+mark_as_advanced(ICU_DLL_DEBUG)
+mark_as_advanced(ICU_DLL_RELEASE)
+else(ICU_FOUND)
+	if(ICU_FIND_REQUIRED)
+		message( FATAL_ERROR "Could not find ICU" )
+	else(ICU_FIND_REQUIRED)
+		message( STATUS "Optional package ICU was not found" )
+	endif(ICU_FIND_REQUIRED)
+endif(ICU_FOUND)
 

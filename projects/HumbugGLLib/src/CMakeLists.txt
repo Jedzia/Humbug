@@ -1,2 +1,2 @@
-ADD_SUBDIRECTORY( HumbugGLLib )
-ADD_SUBDIRECTORY( UnitTests )
+add_subdirectory( HumbugGLLib )
+add_subdirectory( UnitTests )

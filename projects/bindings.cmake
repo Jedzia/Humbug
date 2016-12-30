@@ -11,109 +11,109 @@
 #
 # ---------------------------------------------------------------------------------
 
-MESSAGE( STATUS "binding setup")
+message( STATUS "binding setup")
 
-#INCLUDE (${CMAKE_ROOT}/Modules/FindDoxygen.cmake OPTIONAL)
-#INCLUDE (${CMAKE_ROOT}/Modules/FindPerl.cmake    OPTIONAL)
-IF(USE_PERL)
-	FIND_PACKAGE(Perl)
-	MESSAGE( STATUS "PERL_EXECUTABLE: " ${PERL_EXECUTABLE} )
-ENDIF(USE_PERL)
+#include (${CMAKE_ROOT}/Modules/FindDoxygen.cmake OPTIONAL)
+#include (${CMAKE_ROOT}/Modules/FindPerl.cmake    OPTIONAL)
+if(USE_PERL)
+	find_package(Perl)
+	message( STATUS "PERL_EXECUTABLE: " ${PERL_EXECUTABLE} )
+endif(USE_PERL)
 
-IF(USE_DOXYGEN)
-	FIND_PACKAGE(Doxygen)
-	MESSAGE( STATUS "DOXYGEN_EXECUTABLE: " ${DOXYGEN_EXECUTABLE} )
-ENDIF(USE_DOXYGEN)
+if(USE_DOXYGEN)
+	find_package(Doxygen)
+	message( STATUS "DOXYGEN_EXECUTABLE: " ${DOXYGEN_EXECUTABLE} )
+endif(USE_DOXYGEN)
 
 
-IF(USE_LIB_BOOST)
+if(USE_LIB_BOOST)
 
-  #IF(NOT USE_LIB_BOOST_COMPONENTS)
-	#SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;unit_test_framework")
-	SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;regex;program_options;unit_test_framework;serialization")
-  #ENDIF()
+  #if(NOT USE_LIB_BOOST_COMPONENTS)
+	#set(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;unit_test_framework")
+	set(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;regex;program_options;unit_test_framework;serialization")
+  #endif()
 
-  SET(boost_local_root $ENV{BOOST_ROOTDIR})
-  IF(NOT boost_local_root)
-    SET(boost_local_root "E:/Devel/CPP/Libs/boost/boost-1.55.0")
-  ENDIF()
-  #SET(boost_local_root E:/Devel/CPP/Libs/boost/boost-svn)
-  IF(EXISTS "${boost_local_root}" AND NOT BOOST_ROOT)
-	SET(BOOST_ROOT "${boost_local_root}" CACHE PATH "Boost root directory" FORCE)
-  ELSE()
-  	#SET(BOOST_ROOT "" CACHE PATH "Boost root directory")
-  ENDIF()
-	#### SET(BOOST_ROOT "E:/Devel/CPP/Libs/boost/boost-svn" CACHE PATH "Boost root directory")
-	#MESSAGE( FATAL_ERROR " BLAAAA " )
+  set(boost_local_root $ENV{BOOST_ROOTDIR})
+  if(NOT boost_local_root)
+    set(boost_local_root "E:/Devel/CPP/Libs/boost/boost-1.55.0")
+  endif()
+  #set(boost_local_root E:/Devel/CPP/Libs/boost/boost-svn)
+  if(EXISTS "${boost_local_root}" AND NOT BOOST_ROOT)
+	set(BOOST_ROOT "${boost_local_root}" CACHE PATH "Boost root directory" FORCE)
+  else()
+  	#set(BOOST_ROOT "" CACHE PATH "Boost root directory")
+  endif()
+	#### set(BOOST_ROOT "E:/Devel/CPP/Libs/boost/boost-svn" CACHE PATH "Boost root directory")
+	#message( FATAL_ERROR " BLAAAA " )
 
-  IF(BOOST_ROOT)
+  if(BOOST_ROOT)
     # If the user specified a non system path for the boost libraries,
     # then prevent from using the systems boost libraries.
-    SET(Boost_NO_SYSTEM_PATHS TRUE)
-  ENDIF(BOOST_ROOT)
-  #SET(Boost_INCLUDE_DIR "" CACHE PATH "Boost root directory")
-  #SET(Boost_COMPILER "")
-  #SET(Boost_ADDITIONAL_VERSIONS "1.45" "1.45.1" "1.46" "1.46.0")
+    set(Boost_NO_SYSTEM_PATHS TRUE)
+  endif(BOOST_ROOT)
+  #set(Boost_INCLUDE_DIR "" CACHE PATH "Boost root directory")
+  #set(Boost_COMPILER "")
+  #set(Boost_ADDITIONAL_VERSIONS "1.45" "1.45.1" "1.46" "1.46.0")
 
 #Check for additional boost libs
-SET(Boost_FIND_COMPONENTS ${USE_LIB_BOOST_COMPONENTS})
-SET(boost_tmp_component_list)
+set(Boost_FIND_COMPONENTS ${USE_LIB_BOOST_COMPONENTS})
+set(boost_tmp_component_list)
 
   foreach(mCOMPONENT ${Boost_FIND_COMPONENTS})
     string(TOUPPER ${mCOMPONENT} COMPONENT)
     if("${Boost_${COMPONENT}_LIBRARY}" STREQUAL "")
-      #MESSAGE("NOT YET FOUND: ${COMPONENT}")
+      #message("NOT YET FOUND: ${COMPONENT}")
        list(APPEND boost_tmp_component_list ${mCOMPONENT})
     else()
-      #MESSAGE("ALREADY FOUND: ${COMPONENT}: ${Boost_${COMPONENT}_LIBRARY}")
+      #message("ALREADY FOUND: ${COMPONENT}: ${Boost_${COMPONENT}_LIBRARY}")
     endif()
   endforeach(mCOMPONENT)
 
 
-  SET(BOOST_ALWAYS_RERUN ON)
-  SET(Boost_USE_STATIC_LIBS   OFF)
-  SET(Boost_USE_MULTITHREADED ON)
-  #SET(Boost_USE_STATIC_RUNTIME    ON)
-  #SET(Boost_COMPAT_STATIC_RUNTIME ON)
-  #SET(Boost_INCLUDE_DIR "")
+  set(BOOST_ALWAYS_RERUN ON)
+  set(Boost_USE_STATIC_LIBS   OFF)
+  set(Boost_USE_MULTITHREADED ON)
+  #set(Boost_USE_STATIC_RUNTIME    ON)
+  #set(Boost_COMPAT_STATIC_RUNTIME ON)
+  #set(Boost_INCLUDE_DIR "")
   # Detailed findboost output
   #set(Boost_DEBUG TRUE)
 
-  # You can call #ADD_DEFINITIONS(${Boost_LIB_DIAGNOSTIC_DEFINITIONS}) to have diagnostic
+  # You can call #add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS}) to have diagnostic
   # information about Boost's #automatic linking outputted during compilation time.
-  ADD_DEFINITIONS(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
-  ADD_DEFINITIONS("-DUSE_LIB_BOOST")
+  add_definitions(${Boost_LIB_DIAGNOSTIC_DEFINITIONS})
+  add_definitions("-DUSE_LIB_BOOST")
 
-  IF(NOT Boost_USE_STATIC_LIBS)
-	MESSAGE( STATUS " Using dynamically linked boost libs " )
+  if(NOT Boost_USE_STATIC_LIBS)
+	message( STATUS " Using dynamically linked boost libs " )
 	# Linker Flag to use the dynamically linked boost libs.
-	ADD_DEFINITIONS("-DBOOST_ALL_DYN_LINK")
+	add_definitions("-DBOOST_ALL_DYN_LINK")
 	# mal schauen wie ich das einbaue
-	#ADD_DEFINITIONS("-DBOOST_DYN_LINK")
-	#ADD_DEFINITIONS("-DBOOST_ALL_DYN_LINK")
-  ENDIF()
+	#add_definitions("-DBOOST_DYN_LINK")
+	#add_definitions("-DBOOST_ALL_DYN_LINK")
+  endif()
 
 #  # Only run the modified boost check if the library not yet detected.
 #  # Correct this fuck with an END of the day libfetch...
-#  #MESSAGE( " boost_tmp_component_list: ${boost_tmp_component_list} " )
+#  #message( " boost_tmp_component_list: ${boost_tmp_component_list} " )
 #  list(LENGTH boost_tmp_component_list boost_tmp_component_list_count)
-#  #MESSAGE( " boost_tmp_component_list_count: ${boost_tmp_component_list_count} " )
-#  #MESSAGE( " Boost_FOUND_INT: ${Boost_FOUND_INT} " )
-#  IF( boost_tmp_component_list_count GREATER 1)
-#    SET(_plural "s")
-#  ELSE()	
-#    SET(_plural "")
-#  ENDIF()
-#  IF( boost_tmp_component_list_count GREATER 0 AND Boost_INCLUDE_DIR)
-#    MESSAGE( WARNING "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
+#  #message( " boost_tmp_component_list_count: ${boost_tmp_component_list_count} " )
+#  #message( " Boost_FOUND_INT: ${Boost_FOUND_INT} " )
+#  if( boost_tmp_component_list_count GREATER 1)
+#    set(_plural "s")
+#  else()	
+#    set(_plural "")
+#  endif()
+#  if( boost_tmp_component_list_count GREATER 0 AND Boost_INCLUDE_DIR)
+#    message( WARNING "\n\nAttempting to load additional boost libraries with a rerun. But rerunning "
 #	  "bindings.cmake in that way is not implemented, yet :(\n"
-#	  "Include the \"${boost_tmp_component_list}\" component${_plural} at a call to FIND_PACKAGE( Boost ) at one central location:"
+#	  "Include the \"${boost_tmp_component_list}\" component${_plural} at a call to find_package( Boost ) at one central location:"
 #	  " Here, in this script above at \nSET(USE_LIB_BOOST_COMPONENTS ...)\n"
 #	  "After that, erase all Boost* CMake-Variables and reconfigure ${_prj_name}.\n"
 #	)
-#  ENDIF()
+#  endif()
 
-    FIND_PACKAGE( Boost 1.46.0 REQUIRED COMPONENTS ${boost_tmp_component_list} )
+    find_package( Boost 1.46.0 REQUIRED COMPONENTS ${boost_tmp_component_list} )
     if("${Boost_VERSION}0" LESS "1046000")
 	set(_shared_msg
 		"NOTE: boost:: targets and tests cannot "
@@ -123,171 +123,171 @@ SET(boost_tmp_component_list)
 	${_shared_msg}
 	"You may install the boost libraries on your system and set the"
 	"BOOST_ROOT config var.")
-    ENDIF()
-    #IF( Boost_FOUND )
+    endif()
+    #if( Boost_FOUND )
 	#  set(Boost_FOUND_INT Boost_FOUND CACHE INTERNAL BOOL)
-    #ENDIF( Boost_FOUND )
+    #endif( Boost_FOUND )
 
-    #SET(Boost_TMP_INCLUDE_DIR ${Boost_INCLUDE_DIR})
-  #ENDIF()
-  #SET(Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIR})
+    #set(Boost_TMP_INCLUDE_DIR ${Boost_INCLUDE_DIR})
+  #endif()
+  #set(Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIR})
 
   # Additional check for ICU Library
-  FIND_PACKAGE( ICU )
-  MARK_AS_ADVANCED(ICU_DLL_DEBUG)
-  MARK_AS_ADVANCED(ICU_DLL_RELEASE)
+  find_package( ICU )
+  mark_as_advanced(ICU_DLL_DEBUG)
+  mark_as_advanced(ICU_DLL_RELEASE)
 
-ENDIF(USE_LIB_BOOST)
+endif(USE_LIB_BOOST)
 
-IF(USE_LIB_QT4)
-	MESSAGE( STATUS " Using QT4 libs " )
+if(USE_LIB_QT4)
+	message( STATUS " Using QT4 libs " )
 
-	FIND_PACKAGE(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml REQUIRED )
-	#FIND_PACKAGE(Qt4 4.4.3 COMPONENTS QtCore QtGui REQUIRED )
-	INCLUDE(${QT_USE_FILE})
-	ADD_DEFINITIONS("-DUSE_LIB_QT4")
+	find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui QtXml REQUIRED )
+	#find_package(Qt4 4.4.3 COMPONENTS QtCore QtGui REQUIRED )
+	include(${QT_USE_FILE})
+	add_definitions("-DUSE_LIB_QT4")
 
 
-ELSE(USE_LIB_QT4)
-	MACRO(QT4_WRAP_CPP)
-	ENDMACRO(QT4_WRAP_CPP)
-	MACRO(QT4_WRAP_UI)
-	ENDMACRO(QT4_WRAP_UI)
-	MACRO(QT4_ADD_RESOURCES)
-	ENDMACRO(QT4_ADD_RESOURCES)
-ENDIF(USE_LIB_QT4)
+else(USE_LIB_QT4)
+	macro(QT4_WRAP_CPP)
+	endmacro(QT4_WRAP_CPP)
+	macro(QT4_WRAP_UI)
+	endmacro(QT4_WRAP_UI)
+	macro(QT4_ADD_RESOURCES)
+	endmacro(QT4_ADD_RESOURCES)
+endif(USE_LIB_QT4)
 
-IF(USE_LIB_QSCINTILLA)
+if(USE_LIB_QSCINTILLA)
 #QSCINTILLA2 Library
 if(WIN32)
-        SET(__QSCINTILLA_LIBNAME_REL qscintilla2.lib)
-        SET(__QSCINTILLA_LIBNAME_DEB qscintilla2d.lib)
-        SET(__QSCINTILLA_DLL_REL qscintilla2.dll)
-        SET(__QSCINTILLA_DLL_DEB qscintilla2d.dll)
+        set(__QSCINTILLA_LIBNAME_REL qscintilla2.lib)
+        set(__QSCINTILLA_LIBNAME_DEB qscintilla2d.lib)
+        set(__QSCINTILLA_DLL_REL qscintilla2.dll)
+        set(__QSCINTILLA_DLL_DEB qscintilla2d.dll)
 else(WIN32)
-        SET(__QSCINTILLA_LIBNAME_REL qscintilla2)
-        SET(__QSCINTILLA_LIBNAME_DEB qscintilla2)
+        set(__QSCINTILLA_LIBNAME_REL qscintilla2)
+        set(__QSCINTILLA_LIBNAME_DEB qscintilla2)
 endif(WIN32)
 
-    FIND_LIBRARY(QSCINTILLA_LIBRARY_RELEASE NAMES ${__QSCINTILLA_LIBNAME_REL} PATHS
+    find_library(QSCINTILLA_LIBRARY_RELEASE NAMES ${__QSCINTILLA_LIBNAME_REL} PATHS
 	/usr/lib
 	/usr/local/lib
 	${QT_LIBRARY_DIR}
 	 NO_DEFAULT_PATH)
 
-    FIND_LIBRARY(QSCINTILLA_LIBRARY_DEBUG NAMES ${__QSCINTILLA_LIBNAME_DEB} PATHS
+    find_library(QSCINTILLA_LIBRARY_DEBUG NAMES ${__QSCINTILLA_LIBNAME_DEB} PATHS
 	/usr/lib
 	/usr/local/lib
 	${QT_LIBRARY_DIR}
 	 NO_DEFAULT_PATH)
 
-    FIND_FILE(QSCINTILLA_DLL_DEBUG NAMES ${__QSCINTILLA_DLL_DEB} PATHS
+    find_file(QSCINTILLA_DLL_DEBUG NAMES ${__QSCINTILLA_DLL_DEB} PATHS
 	/usr/lib
 	/usr/local/lib
 	${QT_LIBRARY_DIR}
 	 NO_DEFAULT_PATH)
 
-    FIND_FILE(QSCINTILLA_DLL_RELEASE NAMES ${__QSCINTILLA_DLL_REL} PATHS
+    find_file(QSCINTILLA_DLL_RELEASE NAMES ${__QSCINTILLA_DLL_REL} PATHS
 	/usr/lib
 	/usr/local/lib
 	${QT_LIBRARY_DIR}
 	 NO_DEFAULT_PATH)
 
-	 SET(QSCINTILLA2_LIB "optimized;${QSCINTILLA_LIBRARY_RELEASE};debug;${QSCINTILLA_LIBRARY_DEBUG}"  CACHE STRING "qscintilla library" FORCE)
-	 #MESSAGE( STATUS "QSCINTILLA2_LIB ${QSCINTILLA2_LIB}  " )
-     MARK_AS_ADVANCED(QSCINTILLA2_LIB)
-     MARK_AS_ADVANCED(QSCINTILLA_LIBRARY_DEBUG)
-     MARK_AS_ADVANCED(QSCINTILLA_LIBRARY_RELEASE)
-     MARK_AS_ADVANCED(QSCINTILLA_DLL_DEBUG)
-     MARK_AS_ADVANCED(QSCINTILLA_DLL_RELEASE)
-ENDIF(USE_LIB_QSCINTILLA)
+	 set(QSCINTILLA2_LIB "optimized;${QSCINTILLA_LIBRARY_RELEASE};debug;${QSCINTILLA_LIBRARY_DEBUG}"  CACHE STRING "qscintilla library" FORCE)
+	 #message( STATUS "QSCINTILLA2_LIB ${QSCINTILLA2_LIB}  " )
+     mark_as_advanced(QSCINTILLA2_LIB)
+     mark_as_advanced(QSCINTILLA_LIBRARY_DEBUG)
+     mark_as_advanced(QSCINTILLA_LIBRARY_RELEASE)
+     mark_as_advanced(QSCINTILLA_DLL_DEBUG)
+     mark_as_advanced(QSCINTILLA_DLL_RELEASE)
+endif(USE_LIB_QSCINTILLA)
 
 
 
-IF(USE_LIB_XSD)
-	MESSAGE( STATUS " Using XSD xerces libs " )
+if(USE_LIB_XSD)
+	message( STATUS " Using XSD xerces libs " )
 
-	#FIND_PACKAGE( XSDE REQUIRED )
-	FIND_PACKAGE(XSD REQUIRED )
-    ADD_DEFINITIONS("-DUSE_LIB_XSD")
-ENDIF(USE_LIB_XSD)
+	#find_package( XSDE REQUIRED )
+	find_package(XSD REQUIRED )
+    add_definitions("-DUSE_LIB_XSD")
+endif(USE_LIB_XSD)
 
-IF(USE_LIB_ZLIB)
-	IF(${${_prj_name}_EXTERNAL_ZLIB})
-	FIND_PACKAGE(ZLIBex)
-	MESSAGE( STATUS "ZLIB: " ${PERL_EXECUTABLE} )
-	ELSE()
-		SET(ZLIB_LIBRARY zlib)
-	ENDIF()
-ENDIF(USE_LIB_ZLIB)
+if(USE_LIB_ZLIB)
+	if(${${_prj_name}_EXTERNAL_ZLIB})
+	find_package(ZLIBex)
+	message( STATUS "ZLIB: " ${PERL_EXECUTABLE} )
+	else()
+		set(ZLIB_LIBRARY zlib)
+	endif()
+endif(USE_LIB_ZLIB)
 
 
-IF(${${ROOT_PROJECT_NAME}_USE_SDL})
-	STRING(TOUPPER ${PROJECT_NAME} PRJNAME_UPPER)
-	ADD_DEFINITIONS("-DSDL_${PRJNAME_UPPER}_ENABLED")
-ENDIF()
+if(${${ROOT_PROJECT_NAME}_USE_SDL})
+	string(TOUPPER ${PROJECT_NAME} PRJNAME_UPPER)
+	add_definitions("-DSDL_${PRJNAME_UPPER}_ENABLED")
+endif()
 
-IF(USE_SDL)
-	FIND_PACKAGE(SDL2 REQUIRED)
-	IF( NOT SDL_FOUND )
-		MESSAGE(FATAL_ERROR "SDL2 Library not found!")
-	ENDIF( NOT SDL_FOUND )
+if(USE_SDL)
+	find_package(SDL2 REQUIRED)
+	if( NOT SDL_FOUND )
+		message(FATAL_ERROR "SDL2 Library not found!")
+	endif( NOT SDL_FOUND )
 	MODUSE_SUMMARY(SDL               "SDL has ${SDL_LIBRARY}" ON MSVC)
-ENDIF(USE_SDL)
+endif(USE_SDL)
 
-IF(USE_SDL_IMAGE)
-	FIND_PACKAGE(SDL2_image REQUIRED)
-	IF( NOT SDLIMAGE_FOUND )
-		MESSAGE(FATAL_ERROR "SDL2_image Library not found!")
-	ENDIF( NOT SDLIMAGE_FOUND )
+if(USE_SDL_IMAGE)
+	find_package(SDL2_image REQUIRED)
+	if( NOT SDLIMAGE_FOUND )
+		message(FATAL_ERROR "SDL2_image Library not found!")
+	endif( NOT SDLIMAGE_FOUND )
 	MODUSE_SUMMARY(SDL_IMAGE               "SDL has ${SDLIMAGE_LIBRARY}" ON MSVC)
-ENDIF(USE_SDL_IMAGE)
+endif(USE_SDL_IMAGE)
 
-IF(USE_SDL_TTF)
-	FIND_PACKAGE(SDL2_ttf REQUIRED)
-	IF( NOT SDLTTF_FOUND )
-		MESSAGE(FATAL_ERROR "SDL2_ttf Library not found!")
-	ENDIF( NOT SDLTTF_FOUND )
+if(USE_SDL_TTF)
+	find_package(SDL2_ttf REQUIRED)
+	if( NOT SDLTTF_FOUND )
+		message(FATAL_ERROR "SDL2_ttf Library not found!")
+	endif( NOT SDLTTF_FOUND )
 	MODUSE_SUMMARY(SDL_TTF               "SDL has ${SDLTTF_LIBRARY}" ON MSVC)
-ENDIF(USE_SDL_TTF)
+endif(USE_SDL_TTF)
 
-IF(USE_SDL_GFX)
-	FIND_PACKAGE(SDL2_gfx REQUIRED)
-	IF( NOT SDLGFX_FOUND )
-		MESSAGE(FATAL_ERROR "SDL2_gfx Library not found!")
-	ENDIF( NOT SDLGFX_FOUND )
+if(USE_SDL_GFX)
+	find_package(SDL2_gfx REQUIRED)
+	if( NOT SDLGFX_FOUND )
+		message(FATAL_ERROR "SDL2_gfx Library not found!")
+	endif( NOT SDLGFX_FOUND )
 	MODUSE_SUMMARY(SDL_GFX               "SDL has ${SDLGFX_LIBRARY}" ON MSVC)
-ENDIF(USE_SDL_GFX)
+endif(USE_SDL_GFX)
 
-IF(USE_SDL_NET)
-	FIND_PACKAGE(SDL2_net REQUIRED)
-	IF( NOT SDLNET_FOUND )
-		MESSAGE(FATAL_ERROR "SDL2_net Library not found!")
-	ENDIF( NOT SDLNET_FOUND )
+if(USE_SDL_NET)
+	find_package(SDL2_net REQUIRED)
+	if( NOT SDLNET_FOUND )
+		message(FATAL_ERROR "SDL2_net Library not found!")
+	endif( NOT SDLNET_FOUND )
 	MODUSE_SUMMARY(SDL_GFX               "SDL has ${SDLNET_LIBRARY}" ON MSVC)
-ENDIF(USE_SDL_NET)
+endif(USE_SDL_NET)
 
-IF(USE_SDL_MIXER)
-	FIND_PACKAGE(SDL2_mixer REQUIRED)
-	IF( NOT SDLMIXER_FOUND )
-		MESSAGE(FATAL_ERROR "SDL2_mixer Library not found!")
-	ENDIF( NOT SDLMIXER_FOUND )
+if(USE_SDL_MIXER)
+	find_package(SDL2_mixer REQUIRED)
+	if( NOT SDLMIXER_FOUND )
+		message(FATAL_ERROR "SDL2_mixer Library not found!")
+	endif( NOT SDLMIXER_FOUND )
 	MODUSE_SUMMARY(SDL_MIXER               "SDL has ${SDLMIXER_LIBRARY}" ON MSVC)
-ENDIF(USE_SDL_MIXER)
+endif(USE_SDL_MIXER)
 
-IF(USE_LUA)
-	FIND_PACKAGE(Lua52 REQUIRED)
-	IF( NOT LUA52_FOUND )
-		MESSAGE(FATAL_ERROR "LUA Library not found!")
-	ENDIF( NOT LUA52_FOUND )
+if(USE_LUA)
+	find_package(Lua52 REQUIRED)
+	if( NOT LUA52_FOUND )
+		message(FATAL_ERROR "LUA Library not found!")
+	endif( NOT LUA52_FOUND )
 	MODUSE_SUMMARY(LUA               "LUA has ${LUA_LIBRARY}" ON MSVC)
-ENDIF(USE_LUA)
+endif(USE_LUA)
 
-IF(USE_NLS)
+if(USE_NLS)
 # --------- Native Language Support (NLS) -------------
 
 #if(${${_prj_name}_NLS})
-	FIND_PROGRAM(PYTHON_EXECUTABLE python HINTS ${GNUWIN32_DIR}/bin/python)
+	find_program(PYTHON_EXECUTABLE python HINTS ${GNUWIN32_DIR}/bin/python)
 	if(${LYX_PYTHON_EXECUTABLE} MATCHES "-NOTFOUND")
 		message(FATAL_ERROR "Python 2.6 needed!")
 	endif()
@@ -312,39 +312,39 @@ IF(USE_NLS)
 #endif()
 
 find_package(ICONV REQUIRED)
-ENDIF(USE_NLS)
+endif(USE_NLS)
 
-IF(CHECK_STRINGS)
-	#SET(HAVE_WCHAR_T 1)
-	INCLUDE (CheckTypeSize)
-	SET(CMAKE_EXTRA_INCLUDE_FILES wchar.h)
+if(CHECK_STRINGS)
+	#set(HAVE_WCHAR_T 1)
+	include (CheckTypeSize)
+	set(CMAKE_EXTRA_INCLUDE_FILES wchar.h)
 	CHECK_TYPE_SIZE(wchar_t SIZEOF_WCHAR_T)
-	IF(SIZEOF_WCHAR_T)
-		SET(HAVE_WCHAR_T 1)
-	ENDIF()
-ENDIF(CHECK_STRINGS)
+	if(SIZEOF_WCHAR_T)
+		set(HAVE_WCHAR_T 1)
+	endif()
+endif(CHECK_STRINGS)
 
-#ADD_DEFINITIONS("-DPACKAGE=${PACKAGE}")
+#add_definitions("-DPACKAGE=${PACKAGE}")
 
 # \Todo: USE_PERL ... usw hier entweder zuruecksetzen oder alles in richtung
 # ${PROJECT_NAME}_USES_PERL umbauen ... Die defines dann auch 
-#MESSAGE(FATAL_ERROR "DEPP ${PROJECT_NAME}_USES_PERL")
-#SET(USE_PERL )
+#message(FATAL_ERROR "DEPP ${PROJECT_NAME}_USES_PERL")
+#set(USE_PERL )
 #...
-#SET(CHECK_STRINGS )
+#set(CHECK_STRINGS )
 # Besser wird es sein den PROJECT_NAME Ansatz zu nehmen, da die Variablen sonnst
 # f\FCr den Aufrufer verloren sind.
 
-IF(USE_MAGICK)
-	FIND_PACKAGE(ImageMagick)
-	IF( NOT ImageMagick_FOUND )
-#		MESSAGE(FATAL_ERROR "SDL_image Library not found!")
-	ENDIF( NOT ImageMagick_FOUND )
+if(USE_MAGICK)
+	find_package(ImageMagick)
+	if( NOT ImageMagick_FOUND )
+#		message(FATAL_ERROR "SDL_image Library not found!")
+	endif( NOT ImageMagick_FOUND )
 	MODUSE_SUMMARY(ImageMagick_EXE               "at ${ImageMagick_EXECUTABLE_DIR}" USE ALL)
-ENDIF(USE_MAGICK)
+endif(USE_MAGICK)
 
-IF(USE_INKSCAPE)
-	FIND_PROGRAM(INKSCAPE_EXECUTABLE
+if(USE_INKSCAPE)
+	find_program(INKSCAPE_EXECUTABLE
 	  NAMES inkscape.exe inkscape
 	  PATHS
 #		"[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\doxygen_is1;Inno Setup: App Path]/bin"
@@ -357,13 +357,13 @@ IF(USE_INKSCAPE)
 #		/Applications/Doxygen.app/Contents/MacOS
 	  DOC "Inkscape .... (http://www.inkscape.org)"
 	)
-	IF( INKSCAPE_EXECUTABLE )
-#		MESSAGE(FATAL_ERROR "SDL_image Library not found!")
-		MESSAGE(STATUS "Inkscape_executable found: ${INKSCAPE_EXECUTABLE}")
-		SET(INKSCAPE_EXECUTABLE_FOUND TRUE)
-	ELSE()
-		MESSAGE(WARNING "Inkscape executable not found.")
-	ENDIF()
+	if( INKSCAPE_EXECUTABLE )
+#		message(FATAL_ERROR "SDL_image Library not found!")
+		message(STATUS "Inkscape_executable found: ${INKSCAPE_EXECUTABLE}")
+		set(INKSCAPE_EXECUTABLE_FOUND TRUE)
+	else()
+		message(WARNING "Inkscape executable not found.")
+	endif()
 	MODUSE_SUMMARY(Inkscape_EXE               "at ${INKSCAPE_EXECUTABLE}" USE ALL)
-ENDIF(USE_INKSCAPE)
+endif(USE_INKSCAPE)
 

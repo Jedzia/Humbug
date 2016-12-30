@@ -48,7 +48,7 @@
 #     libraries with a few exceptions (Boost.Python is one).
 #
 #     Please see the section below near Boost_LIB_DIAGNOSTIC_DEFINITIONS for
-#     more details.  Adding a TARGET_LINK_LIBRARIES() as shown in the example
+#     more details.  Adding a target_link_libraries() as shown in the example
 #     above appears to cause VS to link dynamically if Boost_USE_STATIC_LIBS
 #     gets set to OFF.  It is suggested you avoid automatic linking since it
 #     will make your application less portable.
@@ -425,12 +425,12 @@ set(Boost_ERROR_REASON)
 #if(NOT ${BOOST_LAST_ROOT})
 #endif()
 if(NOT ("${BOOST_ROOT}" STREQUAL "${BOOST_LAST_ROOT}"))
-	MESSAGE(WARNING " BOOST_ROOT changed " )
+	message(WARNING " BOOST_ROOT changed " )
 	unset( Boost_INCLUDE_DIR CACHE )
 	unset( Boost_LIBRARY_DIRS CACHE )
 	foreach(COMPONENT ${Boost_FIND_COMPONENTS})
 		string(TOUPPER ${COMPONENT} UPPERCOMPONENT)
-	    #MESSAGE(WARNING "-----> HAVE '${UPPERCOMPONENT}' - '${Boost_${UPPERCOMPONENT}_FOUND}'")
+	    #message(WARNING "-----> HAVE '${UPPERCOMPONENT}' - '${Boost_${UPPERCOMPONENT}_FOUND}'")
 		#TODO: this bitch does not delete the cached vars
 
 		set( Boost_${UPPERCOMPONENT}_LIBRARY "Boost_${UPPERCOMPONENT}_LIBRARY-NOTFOUND" )
@@ -464,7 +464,7 @@ if(Boost_INCLUDE_DIR)
 
   foreach(COMPONENT ${Boost_FIND_COMPONENTS})
     string(TOUPPER ${COMPONENT} COMPONENT)
-#MESSAGE(WARNING "-----> HAVE '${COMPONENT}' - '${Boost_${COMPONENT}_FOUND}'")
+#message(WARNING "-----> HAVE '${COMPONENT}' - '${Boost_${COMPONENT}_FOUND}'")
     if(NOT Boost_${COMPONENT}_FOUND)
       set( _boost_IN_CACHE FALSE)
     endif(NOT Boost_${COMPONENT}_FOUND)
@@ -474,9 +474,9 @@ else(Boost_INCLUDE_DIR)
 endif(Boost_INCLUDE_DIR)
 
 # Changed for my purposes, Jedzia.
-#IF(NOT "${Boost_TMP_INCLUDE_DIR}" STREQUAL "")
-#  SET(Boost_INCLUDE_DIR ${Boost_TMP_INCLUDE_DIR})
-#ENDIF()
+#if(NOT "${Boost_TMP_INCLUDE_DIR}" STREQUAL "")
+#  set(Boost_INCLUDE_DIR ${Boost_TMP_INCLUDE_DIR})
+#endif()
 
 
 if(_boost_IN_CACHE)

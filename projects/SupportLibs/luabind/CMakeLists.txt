@@ -136,7 +136,7 @@ if(MSVC)
         # ("comma operator within array index expression")
         _luabind_add_flag(/wd4709 SUPPORTS_WD4709_FLAG)
 
-        IF (MSVC_VERSION GREATER 1899) # 1900 = MSVC 14 (2015)
+        if (MSVC_VERSION GREATER 1899) # 1900 = MSVC 14 (2015)
             # Disable overly pendantic warning C4459 "declaration of 'var' hides
             # global declaration" which is issued a lot for 'result' which is
             # globally declared for policies.  See also

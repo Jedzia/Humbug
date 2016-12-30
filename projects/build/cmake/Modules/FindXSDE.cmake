@@ -41,7 +41,7 @@ find_package_handle_standard_args(XSDE DEFAULT_MSG XSDE_BIN XSDE_LIBRARY_DR XSDE
 
 # Output variables
 if(XSDE_FOUND)
-  MESSAGE("setting xsde vars")
+  message("setting xsde vars")
   # Include dirs
   set(XSDE_EXECUTABLE ${XSDE_BIN})
 

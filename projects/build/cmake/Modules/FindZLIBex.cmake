@@ -32,21 +32,21 @@
 #  License text for the above reference.)
 
 
-SET(ZLIBVER $ENV{ZLIBVER})
-IF(NOT ZLIBVER)
-  SET(ZLIBVER "1.2.8")
-ENDIF()
+set(ZLIBVER $ENV{ZLIBVER})
+if(NOT ZLIBVER)
+  set(ZLIBVER "1.2.8")
+endif()
 #message(FATAL_ERROR "ERROR: ${ZLIBVER} bla bla.")
 
-SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/zlib-${ZLIBVER})
+set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/zlib-${ZLIBVER})
 
-FIND_PATH(ZLIB_INCLUDE_DIR zlib.h
+find_path(ZLIB_INCLUDE_DIR zlib.h
     "[HKEY_LOCAL_MACHINE\\SOFTWARE\\GnuWin32\\Zlib;InstallPath]/include"
 	${_DEP_PATH}
 )
 
-SET(ZLIB_NAMES z zlib zdll zlib1 zlibd zlibd1 zlibwapi)
-FIND_LIBRARY(ZLIB_LIBRARY
+set(ZLIB_NAMES z zlib zdll zlib1 zlibd zlibd1 zlibwapi)
+find_library(ZLIB_LIBRARY
     NAMES
         ${ZLIB_NAMES}
     PATHS
@@ -56,36 +56,36 @@ FIND_LIBRARY(ZLIB_LIBRARY
 		${_DEP_PATH}/contrib/vstudio/vc10/x64/ZlibDllRelease
 		${_DEP_PATH}/contrib/vstudio/vc10/x86/ZlibDllRelease
 )
-MARK_AS_ADVANCED(ZLIB_LIBRARY ZLIB_INCLUDE_DIR)
+mark_as_advanced(ZLIB_LIBRARY ZLIB_INCLUDE_DIR)
 
-IF(ZLIB_INCLUDE_DIR AND EXISTS "${ZLIB_INCLUDE_DIR}/zlib.h")
-    FILE(STRINGS "${ZLIB_INCLUDE_DIR}/zlib.h" ZLIB_H REGEX "^#define ZLIB_VERSION \"[^\"]*\"$")
+if(ZLIB_INCLUDE_DIR AND EXISTS "${ZLIB_INCLUDE_DIR}/zlib.h")
+    file(STRINGS "${ZLIB_INCLUDE_DIR}/zlib.h" ZLIB_H REGEX "^#define ZLIB_VERSION \"[^\"]*\"$")
 
-    STRING(REGEX REPLACE "^.*ZLIB_VERSION \"([0-9]+).*$" "\\1" ZLIB_VERSION_MAJOR "${ZLIB_H}")
-    STRING(REGEX REPLACE "^.*ZLIB_VERSION \"[0-9]+\\.([0-9]+).*$" "\\1" ZLIB_VERSION_MINOR  "${ZLIB_H}")
-    STRING(REGEX REPLACE "^.*ZLIB_VERSION \"[0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" ZLIB_VERSION_PATCH "${ZLIB_H}")
-    SET(ZLIB_VERSION_STRING "${ZLIB_VERSION_MAJOR}.${ZLIB_VERSION_MINOR}.${ZLIB_VERSION_PATCH}")
+    string(REGEX REPLACE "^.*ZLIB_VERSION \"([0-9]+).*$" "\\1" ZLIB_VERSION_MAJOR "${ZLIB_H}")
+    string(REGEX REPLACE "^.*ZLIB_VERSION \"[0-9]+\\.([0-9]+).*$" "\\1" ZLIB_VERSION_MINOR  "${ZLIB_H}")
+    string(REGEX REPLACE "^.*ZLIB_VERSION \"[0-9]+\\.[0-9]+\\.([0-9]+).*$" "\\1" ZLIB_VERSION_PATCH "${ZLIB_H}")
+    set(ZLIB_VERSION_STRING "${ZLIB_VERSION_MAJOR}.${ZLIB_VERSION_MINOR}.${ZLIB_VERSION_PATCH}")
 
     # only append a TWEAK version if it exists:
-    SET(ZLIB_VERSION_TWEAK "")
-    IF( "${ZLIB_H}" MATCHES "^.*ZLIB_VERSION \"[0-9]+\\.[0-9]+\\.[0-9]+\\.([0-9]+).*$")
-        SET(ZLIB_VERSION_TWEAK "${CMAKE_MATCH_1}")
-        SET(ZLIB_VERSION_STRING "${ZLIB_VERSION_STRING}.${ZLIB_VERSION_TWEAK}")
-    ENDIF( "${ZLIB_H}" MATCHES "^.*ZLIB_VERSION \"[0-9]+\\.[0-9]+\\.[0-9]+\\.([0-9]+).*$")
+    set(ZLIB_VERSION_TWEAK "")
+    if( "${ZLIB_H}" MATCHES "^.*ZLIB_VERSION \"[0-9]+\\.[0-9]+\\.[0-9]+\\.([0-9]+).*$")
+        set(ZLIB_VERSION_TWEAK "${CMAKE_MATCH_1}")
+        set(ZLIB_VERSION_STRING "${ZLIB_VERSION_STRING}.${ZLIB_VERSION_TWEAK}")
+    endif( "${ZLIB_H}" MATCHES "^.*ZLIB_VERSION \"[0-9]+\\.[0-9]+\\.[0-9]+\\.([0-9]+).*$")
 
-    SET(ZLIB_MAJOR_VERSION "${ZLIB_VERSION_MAJOR}")
-    SET(ZLIB_MINOR_VERSION "${ZLIB_VERSION_MINOR}")
-    SET(ZLIB_PATCH_VERSION "${ZLIB_VERSION_PATCH}")
-ENDIF()
+    set(ZLIB_MAJOR_VERSION "${ZLIB_VERSION_MAJOR}")
+    set(ZLIB_MINOR_VERSION "${ZLIB_VERSION_MINOR}")
+    set(ZLIB_PATCH_VERSION "${ZLIB_VERSION_PATCH}")
+endif()
 
 # handle the QUIETLY and REQUIRED arguments and set ZLIB_FOUND to TRUE if 
 # all listed variables are TRUE
-INCLUDE(FindPackageHandleStandardArgs)
+include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(ZLIB REQUIRED_VARS ZLIB_INCLUDE_DIR ZLIB_LIBRARY
                                        VERSION_VAR ZLIB_VERSION_STRING)
 
-IF(ZLIB_FOUND)
-    SET(ZLIB_INCLUDE_DIRS ${ZLIB_INCLUDE_DIR})
-    SET(ZLIB_LIBRARIES ${ZLIB_LIBRARY})
-ENDIF()
+if(ZLIB_FOUND)
+    set(ZLIB_INCLUDE_DIRS ${ZLIB_INCLUDE_DIR})
+    set(ZLIB_LIBRARIES ${ZLIB_LIBRARY})
+endif()
 

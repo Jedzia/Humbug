@@ -16,39 +16,39 @@
 #cmake_policy(SET CMP0005 NEW) # 
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugGL )
+project( HumbugGL )
 
-MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
-INCLUDE (BoostExtensions)
-#INCLUDE (PCHSupport_MSVC)
-INCLUDE (PCHSupport)
-INCLUDE (CopyResourcesToBuildTree)
-INCLUDE (helpers)
-INCLUDE (PackageCreate)
+message(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
+include (BoostExtensions)
+#include (PCHSupport_MSVC)
+include (PCHSupport)
+include (CopyResourcesToBuildTree)
+include (helpers)
+include (PackageCreate)
 
-SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;serialization")
-#SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
+set(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;serialization")
+#set(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
-SET(USE_LIB_BOOST TRUE)
+set(USE_LIB_BOOST TRUE)
 
-SET(USE_SDL TRUE)
-SET(USE_SDL_IMAGE TRUE)
-SET(USE_SDL_TTF TRUE)
-#SET(USE_SDL_GFX TRUE)
+set(USE_SDL TRUE)
+set(USE_SDL_IMAGE TRUE)
+set(USE_SDL_TTF TRUE)
+#set(USE_SDL_GFX TRUE)
 
-SET(USE_LUA TRUE)
+set(USE_LUA TRUE)
 
 # local project settings
-INCLUDE (bindings)
+include (bindings)
 
 # Link explicitely to Microsoft.VC90.CRT version=9.0.30729.1
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_VCLIBS_VERSION=1")
+#add_definitions("-D_BIND_TO_CURRENT_VCLIBS_VERSION=1")
 # this does the same as above
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
+#add_definitions("-D_BIND_TO_CURRENT_MFC_VERSION=2")
+#add_definitions("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
 # GUI implementation
-SET(HumbugGL_MyGUI_headers 
+set(HumbugGL_MyGUI_headers 
 		GUI/Hud.h
 		GUI/DebugOverlay.h
 
@@ -76,7 +76,7 @@ SET(HumbugGL_MyGUI_headers
 
 		Screens/WavyTextFloat.h
 )
-SET(HumbugGL_MyGUI_sources 
+set(HumbugGL_MyGUI_sources 
 		GUI/Hud.cpp
 		GUI/DebugOverlay.cpp
 
@@ -104,7 +104,7 @@ SET(HumbugGL_MyGUI_sources
 		Screens/WavyTextFloat.cpp
 )
 
-SET(HumbugGL_Level_headers 
+set(HumbugGL_Level_headers 
 		Levels/TestLevel.h
 		Levels/LevelA.h
 		Levels/Scroller/ScrollerLevelA.h
@@ -115,7 +115,7 @@ SET(HumbugGL_Level_headers
 		Levels/Scroller/EnemyWaveSTM.h
 		Levels/Scroller/EnemyShip.h
 )
-SET(HumbugGL_Level_sources 
+set(HumbugGL_Level_sources 
 		Levels/TestLevel.cpp
 		Levels/LevelA.cpp
 		Levels/Scroller/ScrollerLevelA.cpp
@@ -126,7 +126,7 @@ SET(HumbugGL_Level_sources
 )
 
 # putting the sources together
-SET(HumbugGL_headers 
+set(HumbugGL_headers 
 		${HumbugGL_MyGUI_headers}
 		${HumbugGL_Level_headers}
 
@@ -140,7 +140,7 @@ SET(HumbugGL_headers
 	    Project/ProjectModel.h
 )
 
-SET(HumbugGL_sources 
+set(HumbugGL_sources 
 		${HumbugGL_MyGUI_sources}
 		${HumbugGL_Level_sources}
 
@@ -154,7 +154,7 @@ SET(HumbugGL_sources
 	    Project/ProjectModel.cpp
 )
 
-SET(HumbugGL_LUA_sources 
+set(HumbugGL_LUA_sources 
 		Lua/funcret.lua
 		Lua/globalclass.lua
 		Lua/hello.lua
@@ -164,78 +164,78 @@ SET(HumbugGL_LUA_sources
 		Lua/sprite1.lua
 )
 
-SET(HumbugGL_LUAsprite_sources 
+set(HumbugGL_LUAsprite_sources 
 		Lua/male_sprites.spr
 		Lua/male_spritesA.spr
 )
 
 
-#SET(CMAKE_BUILD_TYPE DEBUG)
+#set(CMAKE_BUILD_TYPE DEBUG)
 
-#INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
-INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugGLShared_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugGLLib_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${GuiLib_INTERFACE_DIR})
-INCLUDE_DIRECTORIES(${HumbugGLSerialization_INTERFACE_DIR})
-INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${glm_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${GLEW_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${OGLPLUS_INCLUDE_DIR})
+#include_directories( ${CppStructz_INCLUDE_DIR} )
+include_directories(${SDL_INCLUDE_DIR})
+include_directories(${SDLIMAGE_INCLUDE_DIR})
+include_directories(${SDLTTF_INCLUDE_DIR})
+include_directories(${SDLGFX_INCLUDE_DIR})
+include_directories(${HumbugGLShared_INCLUDE_DIR})
+include_directories(${HumbugGLLib_INCLUDE_DIR})
+include_directories(${GuiLib_INTERFACE_DIR})
+include_directories(${HumbugGLSerialization_INTERFACE_DIR})
+include_directories(${ZLIB_INCLUDE_DIR})
+include_directories(${LUA_INCLUDE_DIR})
+include_directories(${LUABIND_INCLUDE_DIR})
+include_directories(${glm_INCLUDE_DIR})
+include_directories(${GLEW_INCLUDE_DIR})
+include_directories(${OGLPLUS_INCLUDE_DIR})
 # Move to bindings
-IF(LINUX)
-  INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
-ENDIF(LINUX)
+if(LINUX)
+  include_directories( ${PROJECT_SOURCE_DIR} )
+endif(LINUX)
 
 
-ADD_DEFINITIONS(${HumbugGLShared_DEFINITIONS})
-IF(SDLIMAGE_FOUND)
-  ADD_DEFINITIONS("-DHAVE_SDLIMAGE")
-ENDIF(SDLIMAGE_FOUND)
+add_definitions(${HumbugGLShared_DEFINITIONS})
+if(SDLIMAGE_FOUND)
+  add_definitions("-DHAVE_SDLIMAGE")
+endif(SDLIMAGE_FOUND)
 
 # Move to bindings
-IF(LINUX)
-  ADD_DEFINITIONS("-DLINUX")
-ENDIF(LINUX)
+if(LINUX)
+  add_definitions("-DLINUX")
+endif(LINUX)
 
 if(CMAKE_GENERATOR MATCHES Visual*)
 	# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
-	ADD_DEFINITIONS("/wd4996")
+	add_definitions("/wd4996")
 	# error C3859: virtual memory range for PCH exceeded; please recompile with a command line option of '-Zm118' or greater
 	# fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
-	ADD_DEFINITIONS("-Zm150")
+	add_definitions("-Zm150")
 endif()
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugGL_sources)
 
-SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugGL_resfiles})
-SOURCE_GROUP(GUI FILES ${HumbugGL_uifiles})
-SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(THeaders FILES ${HumbugGL_headers})
-SOURCE_GROUP(TSources FILES ${HumbugGL_sources})
-SOURCE_GROUP(Lua FILES ${HumbugGL_LUA_sources})
-SOURCE_GROUP(LuaSprites FILES ${HumbugGL_LUAsprite_sources})
+source_group(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
+source_group(Resources FILES ${HumbugGL_resfiles})
+source_group(GUI FILES ${HumbugGL_uifiles})
+source_group(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+source_group(THeaders FILES ${HumbugGL_headers})
+source_group(TSources FILES ${HumbugGL_sources})
+source_group(Lua FILES ${HumbugGL_LUA_sources})
+source_group(LuaSprites FILES ${HumbugGL_LUAsprite_sources})
 
 
-SET(HumbugGL_documents
+set(HumbugGL_documents
 		../Readme.md
 		../docs/!DevelNotes.txt
 )
-SOURCE_GROUP(Docs FILES ${HumbugGL_documents})
+source_group(Docs FILES ${HumbugGL_documents})
 
 # Move to bindings
-SET(_GUI_DEP )
-IF(WIN32)
+set(_GUI_DEP )
+if(WIN32)
   # Maybe here is the point for a HumbugGL_WINDOWS_CONSOLE subsystem switch.
-  SET(_GUI_DEP WIN32)
-ENDIF(WIN32)
-ADD_EXECUTABLE(HumbugGL ${_GUI_DEP}
+  set(_GUI_DEP WIN32)
+endif(WIN32)
+add_executable(HumbugGL ${_GUI_DEP}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
         defs.h 
@@ -249,7 +249,7 @@ ADD_EXECUTABLE(HumbugGL ${_GUI_DEP}
 
 
 
-SET(Pak01_PACKAGE_SOURCE_FILES 
+set(Pak01_PACKAGE_SOURCE_FILES 
 		${PROJECT_SOURCE_DIR}/Icons/
 	    ${HumbugGL_Artwork_DIR}/data/
 	    ${HumbugGL_Artwork_DIR}/Tutor/
@@ -268,20 +268,20 @@ SET(Pak01_PACKAGE_SOURCE_FILES
 	    ${HumbugGL_Artwork_DIR}/Tiles/gfx/Tiles1.bmp
 )
 CREATEPACKAGE(HumbugGL MakeVFS "${Pak01_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
-#SET(Pak01x_PACKAGE_SOURCE_FILES 
+#set(Pak01x_PACKAGE_SOURCE_FILES 
 #	    ${HumbugGL_Artwork_DIR}/Tutor/Images
 #)
 #CREATEPACKAGE(HumbugGL MakeVFSx "${Pak01x_PACKAGE_SOURCE_FILES}" base_data Pak01.zip)
-#ADD_DEPENDENCIES(MakeVFS Artwork)
+#add_dependencies(MakeVFS Artwork)
 
-SET(Pak02_PACKAGE_SOURCE_FILES 
+set(Pak02_PACKAGE_SOURCE_FILES 
 	    ${HumbugGL_Artwork_WORKDIR}/Sprites/
 	    ${HumbugGL_Artwork_DIR}/Hud/footer.psd
 )
 CREATEPACKAGE(MakeVFS MakeVFS01 "${Pak02_PACKAGE_SOURCE_FILES}" base_data Pak02.zip)
 
 # copy to build dir based on language
-SET_SOURCE_FILES_PROPERTIES( ${HumbugGL_LUA_sources} 
+set_source_files_properties( ${HumbugGL_LUA_sources} 
         PROPERTIES LANGUAGE LUA_Script
 )
 copy_language_to_build_tree(HumbugGL LUA_Script base_data)
@@ -289,7 +289,7 @@ copy_language_to_build_tree(HumbugGL LUA_Script base_data)
 # copy to build dir based on file list
 copy_files_to_build_tree(HumbugGL "${HumbugGL_LUAsprite_sources}" base_data/Sprites)
 
-#ADD_CUSTOM_TARGET(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
+#add_custom_target(generate_foo DEPENDS ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${XSD_LIBRARY_DEBUG})
 
 Copy_DLL_To_Target(HumbugGL SDL_LIBRARY)
 Copy_DLL_To_Target(HumbugGL SDLIMAGE_LIBRARY)
@@ -299,47 +299,47 @@ Copy_Files_To_Target(HumbugGL "${SDLTTF_LIBRARY_DLLS_EXT}")
 #Copy_ReleaseDLL_To_Target(HumbugGL ICU)
 
 TargetLinkBoost(HumbugGL "filesystem;system;regex;signals;serialization")
-TARGET_LINK_LIBRARIES(HumbugGL HumbugGLLib)
-TARGET_LINK_LIBRARIES(HumbugGL HumbugGLShared)
-TARGET_LINK_LIBRARIES(HumbugGL GuiLib)
-TARGET_LINK_LIBRARIES(HumbugGL HumbugGLSerialization)
-TARGET_LINK_LIBRARIES(HumbugGL ${SDL_LIBRARY})
-TARGET_LINK_LIBRARIES(HumbugGL ${SDLMAIN_LIBRARY})
-TARGET_LINK_LIBRARIES(HumbugGL ${SDLIMAGE_LIBRARY})
-TARGET_LINK_LIBRARIES(HumbugGL ${SDLTTF_LIBRARY})
-IF(USE_SDL_GFX)
-    TARGET_LINK_LIBRARIES(HumbugGL ${SDLGFX_LIBRARY})
-ENDIF()
+target_link_libraries(HumbugGL HumbugGLLib)
+target_link_libraries(HumbugGL HumbugGLShared)
+target_link_libraries(HumbugGL GuiLib)
+target_link_libraries(HumbugGL HumbugGLSerialization)
+target_link_libraries(HumbugGL ${SDL_LIBRARY})
+target_link_libraries(HumbugGL ${SDLMAIN_LIBRARY})
+target_link_libraries(HumbugGL ${SDLIMAGE_LIBRARY})
+target_link_libraries(HumbugGL ${SDLTTF_LIBRARY})
+if(USE_SDL_GFX)
+    target_link_libraries(HumbugGL ${SDLGFX_LIBRARY})
+endif()
 
 
 #TODO: without this does not compile under linux
-IF(LINUX)
-	TARGET_LINK_LIBRARIES(HumbugGL boost_serialization)
-ENDIF(LINUX)
+if(LINUX)
+	target_link_libraries(HumbugGL boost_serialization)
+endif(LINUX)
 
 
-#TARGET_LINK_LIBRARIES(HumbugGL ${LUA_LIBRARY})
-#TARGET_LINK_LIBRARIES(HumbugGL ${LUABIND_LIBRARY})
-#TARGET_LINK_LIBRARIES(HumbugGL luabind)
-#ADD_DEPENDENCIES(HumbugGL luabind)
-#TARGET_LINK_LIBRARIES(HumbugGL ${LUABIND_LIBRARY})
-# Message(WARNING "LUABIND: ${LUABIND}")
+#target_link_libraries(HumbugGL ${LUA_LIBRARY})
+#target_link_libraries(HumbugGL ${LUABIND_LIBRARY})
+#target_link_libraries(HumbugGL luabind)
+#add_dependencies(HumbugGL luabind)
+#target_link_libraries(HumbugGL ${LUABIND_LIBRARY})
+# message(WARNING "LUABIND: ${LUABIND}")
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header, 
 #    warn on invalid header(-Winvalid-pch), source files with header
 ADD_PRECOMPILED_HEADER(HumbugGL stdafx.h stdafx.h.gch TRUE "${HumbugGL_sources}")
 
-#SET_SOURCE_FILES_PROPERTIES( main.cpp
+#set_source_files_properties( main.cpp
 #       PROPERTIES OBJECT_DEPENDS ${CppStructz_DLL_DEBUG}
 #)
 
-INSTALL(TARGETS HumbugGL 
+install(TARGETS HumbugGL 
 	COMPONENT Application
 		RUNTIME DESTINATION bin
 		LIBRARY DESTINATION lib
 		ARCHIVE DESTINATION lib/static
 )
-INSTALL(FILES 
+install(FILES 
 		${SDL_LIBRARY_DLL_RELEASE} 
 		${SDLIMAGE_LIBRARY_DLL_RELEASE} 
 		${SDLIMAGE_LIBRARY_DLLS_EXT} 
@@ -351,14 +351,14 @@ INSTALL(FILES
 
 # ===========================  HumbugGLConsole Executable  ===========================
 
-SET(HumbugGLConsole_headers 
+set(HumbugGLConsole_headers 
 #        HumbugGLConsole/GB.h
         HumbugGLConsole/ProgOptions.h 
 		HumbugGLConsole/HumbugGLFileLoader.h
 #        HumbugGLConsole/ProcessProject.h 
 )
 
-SET(HumbugGLConsole_sources 
+set(HumbugGLConsole_sources 
 #        HumbugGLConsole/GB.cpp 
         HumbugGLConsole/ProgOptions.cpp 
 		HumbugGLConsole/HumbugGLFileLoader.cpp
@@ -367,14 +367,14 @@ SET(HumbugGLConsole_sources
 )
 
 # see http://www.mail-archive.com/cmake@cmake.org/msg17661.html
-ADD_DEFINITIONS(-DUNICODE -D_UNICODE)
+add_definitions(-DUNICODE -D_UNICODE)
 ADD_MSVC_PRECOMPILED_HEADER("HumbugGLConsole/stdafx.h" "HumbugGLConsole/stdafx.cpp" HumbugGLConsole_sources)
-INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
-INCLUDE_DIRECTORIES( ${HumbugGLShared_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugGLSerialization_INTERFACE_DIR})
-#INCLUDE_DIRECTORIES( ${Crunchy_INCLUDE_DIR})
+include_directories( ${PROJECT_SOURCE_DIR} )
+include_directories( ${HumbugGLShared_INCLUDE_DIR})
+include_directories(${HumbugGLSerialization_INTERFACE_DIR})
+#include_directories( ${Crunchy_INCLUDE_DIR})
 
-ADD_EXECUTABLE(HumbugGLConsole #WIN32
+add_executable(HumbugGLConsole #WIN32
         HumbugGLConsole/stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
         #defs.h 
@@ -390,14 +390,14 @@ ADD_EXECUTABLE(HumbugGLConsole #WIN32
 
 TargetLinkBoost(HumbugGLConsole "program_options")
 TargetLinkBoost(HumbugGLConsole "filesystem;system;regex;serialization")
-#TARGET_LINK_LIBRARIES(HumbugGLConsole CppStructz)
-TARGET_LINK_LIBRARIES(HumbugGLConsole GuiLib)
-TARGET_LINK_LIBRARIES(HumbugGLConsole HumbugGLShared)
-TARGET_LINK_LIBRARIES(HumbugGLConsole HumbugGLSerialization)
+#target_link_libraries(HumbugGLConsole CppStructz)
+target_link_libraries(HumbugGLConsole GuiLib)
+target_link_libraries(HumbugGLConsole HumbugGLShared)
+target_link_libraries(HumbugGLConsole HumbugGLSerialization)
 #Copy_DLL_To_Target(HumbugGLConsole CppStructz)
-IF(USE_NLS)
+if(USE_NLS)
   Copy_DLL_To_Target(HumbugGLConsole LIBINTL)
   Copy_DLL_To_Target(HumbugGLConsole ICONV)
-ENDIF(USE_NLS)
+endif(USE_NLS)
 
 

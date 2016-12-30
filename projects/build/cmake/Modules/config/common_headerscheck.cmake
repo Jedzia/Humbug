@@ -1,16 +1,16 @@
 # common_headerscheck.cmake
 # Check for common header files.
 
-INCLUDE(CheckIncludeFile)
-INCLUDE(CheckIncludeFiles)
+include(CheckIncludeFile)
+include(CheckIncludeFiles)
 
-SET(INCLUDES "")
-MACRO (LA_CHECK_INCLUDE_FILE header var)
+set(INCLUDES "")
+macro (LA_CHECK_INCLUDE_FILE header var)
       CHECK_INCLUDE_FILES("${INCLUDES};${header}" ${var})
-      IF (${var})
-         SET(INCLUDES ${INCLUDES} ${header})
-      ENDIF (${var})
-ENDMACRO (LA_CHECK_INCLUDE_FILE)
+      if (${var})
+         set(INCLUDES ${INCLUDES} ${header})
+      endif (${var})
+endmacro (LA_CHECK_INCLUDE_FILE)
 
 # Few headers that must precede other headers
 # Must precede sys/extattr.h on FreeBSD

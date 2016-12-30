@@ -16,47 +16,47 @@
 #cmake_policy(SET CMP0005 NEW) # 
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugGLSerialization )
-#SET(LIBRARY_TYPE SHARED)
-SET(LIBRARY_TYPE STATIC)
+project( HumbugGLSerialization )
+#set(LIBRARY_TYPE SHARED)
+set(LIBRARY_TYPE STATIC)
 
-MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
-INCLUDE (BoostExtensions)
-INCLUDE (PCHSupport)
-INCLUDE (library)
-INCLUDE (CopyResourcesToBuildTree)
-INCLUDE (helpers)
+message(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
+include (BoostExtensions)
+include (PCHSupport)
+include (library)
+include (CopyResourcesToBuildTree)
+include (helpers)
 
 ENSURE_DOCS_ARE_PRESENT(HumbugGLSerialization_documents)
 
-SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
-#SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
+set(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
+#set(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
-SET(USE_LIB_BOOST TRUE)
-SET(USE_LIB_ZLIB TRUE)
-SET(USE_LUA TRUE)
+set(USE_LIB_BOOST TRUE)
+set(USE_LIB_ZLIB TRUE)
+set(USE_LUA TRUE)
 
-#SET(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
+#set(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
 # Use QT4 libraries for this project.
-#SET(USE_LIB_QT4 TRUE)
+#set(USE_LIB_QT4 TRUE)
 
 # Use QSCINTILLA libraries for this project.
-#SET(USE_LIB_QSCINTILLA TRUE)
+#set(USE_LIB_QSCINTILLA TRUE)
 
-#SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
+#set(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.
-#SET(USE_LIB_XSD TRUE)
+#set(USE_LIB_XSD TRUE)
 
 # local project settings
-INCLUDE (bindings)
+include (bindings)
 
 # Link explicitely to Microsoft.VC90.CRT version=9.0.30729.1
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_VCLIBS_VERSION=1")
+#add_definitions("-D_BIND_TO_CURRENT_VCLIBS_VERSION=1")
 # this does the same as above
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
+#add_definitions("-D_BIND_TO_CURRENT_MFC_VERSION=2")
+#add_definitions("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
-SET(HumbugGLSerialization_GameObject_headers 
+set(HumbugGLSerialization_GameObject_headers 
 #	GameObjects/Template.h
 #	GameObjects/GameObject.h
 #	GameObjects/GVector2D.h
@@ -64,7 +64,7 @@ SET(HumbugGLSerialization_GameObject_headers
 #	GameObjects/Player.h
 )
 
-SET(HumbugGLSerialization_GameObject_sources 
+set(HumbugGLSerialization_GameObject_sources 
 #	GameObjects/Template.cpp
 #	GameObjects/GameObject.cpp
 #	GameObjects/GVector2D.cpp
@@ -72,7 +72,7 @@ SET(HumbugGLSerialization_GameObject_sources
 #	GameObjects/Player.cpp
 )
 
-SET(HumbugGLSerialization_Serialization_headers 
+set(HumbugGLSerialization_Serialization_headers 
 	Serialization/Test.h
 	Serialization/LoadTest.h
 	Serialization/SerializationHelpers.h
@@ -82,7 +82,7 @@ SET(HumbugGLSerialization_Serialization_headers
 	Serialization/InfoTextLoader.h
 )
 
-SET(HumbugGLSerialization_Serialization_sources 
+set(HumbugGLSerialization_Serialization_sources 
 	Serialization/Test.cpp
 	Serialization/LoadTest.cpp
 	Serialization/SerializationHelpers.cpp
@@ -93,68 +93,68 @@ SET(HumbugGLSerialization_Serialization_sources
 )
 
 
-SET(HumbugGLSerialization_headers 
+set(HumbugGLSerialization_headers 
 #	GB.h
 
 #	Project/ProcessProjectPrivate.h
 )
 
-SET(HumbugGLSerialization_sources 
+set(HumbugGLSerialization_sources 
 #	GB.cpp
 
 #	Project/ProcessProjectPrivate.cpp
 )
 
-#SET(HumbugGLSerialization_INCLUDE_DIR ${HumbugGLSerialization_IncludePath} CACHE PATH "HumbugGLSerialization include directory." FORCE)
+#set(HumbugGLSerialization_INCLUDE_DIR ${HumbugGLSerialization_IncludePath} CACHE PATH "HumbugGLSerialization include directory." FORCE)
 
 
-SET(HumbugGLSerialization_resfiles 
+set(HumbugGLSerialization_resfiles 
 #  mainwindow.qrc
 )
 
-#SET(CMAKE_BUILD_TYPE DEBUG)
+#set(CMAKE_BUILD_TYPE DEBUG)
 
 
-INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugGLLib_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
-#INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
+include_directories(${PROJECT_BINARY_DIR})
+include_directories(${ZLIB_INCLUDE_DIR})
+include_directories(${HumbugGLLib_INCLUDE_DIR})
+include_directories(${LUA_INCLUDE_DIR})
+include_directories(${LUABIND_INCLUDE_DIR})
+#include_directories( ${CppStructz_INCLUDE_DIR} )
 
-IF(LINUX)
-  INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
-ENDIF(LINUX)
-
-
-#ADD_DEFINITIONS(${CppStructz_DEFINITIONS})
-IF(LINUX)
-  ADD_DEFINITIONS("-DLINUX")
-  ADD_DEFINITIONS("-DUNIX")
-ENDIF(LINUX)
-IF(MSYS)
-  ADD_DEFINITIONS("-DUNIX")
-ENDIF(MSYS)
+if(LINUX)
+  include_directories( ${PROJECT_SOURCE_DIR} )
+endif(LINUX)
 
 
-SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugGLSerialization_resfiles})
-SOURCE_GROUP(GameObject FILES ${HumbugGLSerialization_GameObject_headers})
-SOURCE_GROUP(GameObject FILES ${HumbugGLSerialization_GameObject_sources})
-SOURCE_GROUP(SerializationHeader FILES ${HumbugGLSerialization_Serialization_headers})
-SOURCE_GROUP(SerializationSources FILES ${HumbugGLSerialization_Serialization_sources})
-SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(THeaders FILES ${HumbugGLSerialization_headers})
-SOURCE_GROUP(TSources FILES ${HumbugGLSerialization_sources})
+#add_definitions(${CppStructz_DEFINITIONS})
+if(LINUX)
+  add_definitions("-DLINUX")
+  add_definitions("-DUNIX")
+endif(LINUX)
+if(MSYS)
+  add_definitions("-DUNIX")
+endif(MSYS)
 
-SET(HumbugGLSerialization_pre_sources 
+
+source_group(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
+source_group(Resources FILES ${HumbugGLSerialization_resfiles})
+source_group(GameObject FILES ${HumbugGLSerialization_GameObject_headers})
+source_group(GameObject FILES ${HumbugGLSerialization_GameObject_sources})
+source_group(SerializationHeader FILES ${HumbugGLSerialization_Serialization_headers})
+source_group(SerializationSources FILES ${HumbugGLSerialization_Serialization_sources})
+source_group(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+source_group(THeaders FILES ${HumbugGLSerialization_headers})
+source_group(TSources FILES ${HumbugGLSerialization_sources})
+
+set(HumbugGLSerialization_pre_sources 
     ${HumbugGLSerialization_GameObject_sources}
     ${HumbugGLSerialization_Serialization_sources}
     ${HumbugGLSerialization_sources} 
 )
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugGLSerialization_pre_sources)
-#ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
+#add_definitions("-DMYENGINE_EXPORTS")
 ADD_LIBRARY_X(HumbugGLSerialization ${LIBRARY_TYPE}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
@@ -171,12 +171,12 @@ ADD_LIBRARY_X(HumbugGLSerialization ${LIBRARY_TYPE}
 		${HumbugGLSerialization_documents}
 )
 
-TARGET_LINK_LIBRARIES(HumbugGLSerialization ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES(HumbugGLSerialization luabind)
-ADD_DEPENDENCIES(HumbugGLSerialization luabind)
+target_link_libraries(HumbugGLSerialization ${ZLIB_LIBRARY} )
+target_link_libraries(HumbugGLSerialization luabind)
+add_dependencies(HumbugGLSerialization luabind)
 TargetLinkBoost(HumbugGLSerialization "filesystem;system;regex")
-#ADD_DEPENDENCIES(HumbugGLSerialization CppStructz)
+#add_dependencies(HumbugGLSerialization CppStructz)
 ADD_PRECOMPILED_HEADER(HumbugGLSerialization stdafx.h stdafx.h.gch)
 
-ADD_SUBDIRECTORY( docs )
-ADD_SUBDIRECTORY( UnitTests )
+add_subdirectory( docs )
+add_subdirectory( UnitTests )

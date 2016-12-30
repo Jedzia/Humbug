@@ -63,7 +63,7 @@ find_library(ICONV_LIBRARY_DEBUG NAMES ${POTENTIAL_ICONV_LIBS}
 find_library(ICONV_LIBRARY_DEBUG NAMES ${POTENTIAL_ICONV_LIBS}
 	PATHS ${SYSTEM_LIB_DIRS} )
 
-SET(ICONV_LIBRARY "optimized;${ICONV_LIBRARY_RELEASE};debug;${ICONV_LIBRARY_DEBUG}"  CACHE STRING "iconv library" FORCE)
+set(ICONV_LIBRARY "optimized;${ICONV_LIBRARY_RELEASE};debug;${ICONV_LIBRARY_DEBUG}"  CACHE STRING "iconv library" FORCE)
 	
 
 if(WIN32)
@@ -81,8 +81,8 @@ if(WIN32)
 					PATHS ENV PATH
 					${ICONV_INCLUDE_DIR}/../bin)
 					
-	SET(ICONV_DLL_RELEASE "${ICONV_DLL}"  CACHE STRING "iconv release dll" FORCE)
-#	SET(ICONV_DLL_DEBUG "${ICONV_DLL}"  CACHE STRING "iconv debug dll" FORCE)
+	set(ICONV_DLL_RELEASE "${ICONV_DLL}"  CACHE STRING "iconv release dll" FORCE)
+#	set(ICONV_DLL_DEBUG "${ICONV_DLL}"  CACHE STRING "iconv debug dll" FORCE)
 	set(ICONV_DLL_NAMES libiconv2jd.dll iconvd.dll  libiconvd.dll libiconv2d.dll)
 	find_file(ICONV_DLL_DEBUG
 					NAMES ${ICONV_DLL_NAMES}

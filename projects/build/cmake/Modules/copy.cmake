@@ -26,21 +26,21 @@
 # the file specified with -Dreleasesrc. 
 # ---------------------------------------------------------------------------------
 
-#MESSAGE( STATUS "*COPY* config: ${config}")
-IF(no_intdir)
-	SET(target "${tgt}")
-ELSE()
-	SET(target "${tgt}${config}/")
-ENDIF()
+#message( STATUS "*COPY* config: ${config}")
+if(no_intdir)
+	set(target "${tgt}")
+else()
+	set(target "${tgt}${config}/")
+endif()
 
-IF(${config} STREQUAL "Debug")
-  SET(src ${debugsrc})
-ELSE()
-  SET(src ${releasesrc})
-ENDIF()
+if(${config} STREQUAL "Debug")
+  set(src ${debugsrc})
+else()
+  set(src ${releasesrc})
+endif()
 
-#MESSAGE( STATUS "*COPY* copy src: ${src} to target: ${target}   ")
+#message( STATUS "*COPY* copy src: ${src} to target: ${target}   ")
 
-EXECUTE_PROCESS(
+execute_process(
    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${src} ${target}
  )

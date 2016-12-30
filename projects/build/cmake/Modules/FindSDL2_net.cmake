@@ -26,9 +26,9 @@
 #  License text for the above reference.)
 
 # Todo: in all FindSDL scripts, use a way to find the lib via "SDL2_gfx", not the versioned path
-SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_net-2.0.0)
+set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_net-2.0.0)
 
-FIND_PATH(SDLNET_INCLUDE_DIR SDL_net.h
+find_path(SDLNET_INCLUDE_DIR SDL_net.h
   HINTS
   $ENV{SDLNETDIR}
   $ENV{SDLDIR}
@@ -54,7 +54,7 @@ FIND_PATH(SDLNET_INCLUDE_DIR SDL_net.h
   /opt/include
   ${_DEP_PATH}
 )
-FIND_LIBRARY(SDLNET_LIBRARY_RELEASE 
+find_library(SDLNET_LIBRARY_RELEASE 
   NAMES SDL2_net
   HINTS
   $ENV{SDLNETDIR}
@@ -71,7 +71,7 @@ FIND_LIBRARY(SDLNET_LIBRARY_RELEASE
   /opt
   ${_DEP_PATH}/VisualC/x64/Release
 )
-FIND_LIBRARY(SDLNET_LIBRARY_DEBUG 
+find_library(SDLNET_LIBRARY_DEBUG 
   NAMES SDL2_net
   HINTS
   $ENV{SDLNETDIR}
@@ -88,26 +88,26 @@ FIND_LIBRARY(SDLNET_LIBRARY_DEBUG
   /opt
   ${_DEP_PATH}/VisualC/x64/Debug
 )
-SET(SDLNET_LIBRARY "optimized;${SDLNET_LIBRARY_RELEASE};debug;${SDLNET_LIBRARY_DEBUG}"  CACHE STRING "SDL networking library" FORCE)
+set(SDLNET_LIBRARY "optimized;${SDLNET_LIBRARY_RELEASE};debug;${SDLNET_LIBRARY_DEBUG}"  CACHE STRING "SDL networking library" FORCE)
 
-IF(WIN32)
-    FIND_FILE(SDLNET_LIBRARY_DLL_RELEASE NAMES SDL2_net.dll PATHS
+if(WIN32)
+    find_file(SDLNET_LIBRARY_DLL_RELEASE NAMES SDL2_net.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Release
 		${_DEP_PATH}/VisualC/x64/Release
     )
-    FIND_FILE(SDLNET_LIBRARY_DLL_DEBUG NAMES SDL2_net.dll PATHS
+    find_file(SDLNET_LIBRARY_DLL_DEBUG NAMES SDL2_net.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Debug
 		${_DEP_PATH}/VisualC/x64/Debug
     )
-ENDIF(WIN32)
+endif(WIN32)
 
-INCLUDE(FindPackageHandleStandardArgs)
+include(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLNET
                                   REQUIRED_VARS SDLNET_LIBRARY SDLNET_INCLUDE_DIR)
