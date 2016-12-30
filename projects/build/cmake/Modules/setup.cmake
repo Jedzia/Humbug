@@ -10,109 +10,109 @@
 # Setup some usefuls vars.
 #
 # ---------------------------------------------------------------------------------
-cmake_minimum_required(VERSION 2.8.2)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
 
-message(STATUS "Setting up global Vars")
-message(STATUS "PROJECT_BINARY_DIR:  ${PROJECT_BINARY_DIR}")
-message(STATUS "CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+MESSAGE(STATUS "Setting up global Vars")
+MESSAGE(STATUS "PROJECT_BINARY_DIR:  ${PROJECT_BINARY_DIR}")
+MESSAGE(STATUS "CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
-set(PACKAGE ${PROJECT_NAME})
+SET(PACKAGE ${PROJECT_NAME})
 
-#get_filename_component(${_prj_name}_dir_readme ${CMAKE_SOURCE_DIR}/README ABSOLUTE)
-get_filename_component(${_prj_name}_dir_readme ${CMAKE_CURRENT_SOURCE_DIR}/README ABSOLUTE)
-get_filename_component(TOP_SRC_DIR ${${_prj_name}_dir_readme} PATH)
+#GET_FILENAME_COMPONENT(${_prj_name}_dir_readme ${CMAKE_SOURCE_DIR}/README ABSOLUTE)
+GET_FILENAME_COMPONENT(${_prj_name}_dir_readme ${CMAKE_CURRENT_SOURCE_DIR}/README ABSOLUTE)
+GET_FILENAME_COMPONENT(TOP_SRC_DIR ${${_prj_name}_dir_readme} PATH)
 
-include(GlobalPaths)
+INCLUDE(GlobalPaths)
 
-include(GetOperatingSystemArchitectureBitness)
+INCLUDE(GetOperatingSystemArchitectureBitness)
 GetOperatingSystemArchitectureBitness(VAR_PREFIX ${PROJECT_NAME})
 message(STATUS "Configuring ${PROJECT_NAME} for ${${PROJECT_NAME}_OS}-${${PROJECT_NAME}_ARCHITECTURE} ${${PROJECT_NAME}_BITNESS}-bit")
 if(${${PROJECT_NAME}_BITNESS} EQUAL 32)
 #	message(STATUS "32-bit build")
-	set(CMAKE_SYSTEM_X86 TRUE)
+	SET(CMAKE_SYSTEM_X86 TRUE)
 else(${${PROJECT_NAME}_BITNESS} EQUAL 64)
 #	message(STATUS "64-bit build")
-	set(CMAKE_SYSTEM_X64 TRUE)
+	SET(CMAKE_SYSTEM_X64 TRUE)
 else()
 	message(FATAL_ERROR "Can't determine bitness of the build system.")
 endif()
 
 
 
-include(ProjectMacros)
+INCLUDE(ProjectMacros)
 
 PRJ_OPTION_INIT()
 
 string(COMPARE EQUAL "Linux" ${CMAKE_SYSTEM_NAME} LINUX)
 
-if(MINGW)
-	set(MSYS 1)
-endif(MINGW)
+IF(MINGW)
+	SET(MSYS 1)
+ENDIF(MINGW)
 
-if(MSYS)
-	#add_definitions(-g -DMSYS -DDEBUG)
-	add_definitions(-DMSYS)
-endif(MSYS)
+IF(MSYS)
+	#ADD_DEFINITIONS(-g -DMSYS -DDEBUG)
+	ADD_DEFINITIONS(-DMSYS)
+ENDIF(MSYS)
 
-if(LINUX)
-        set(CMAKE_BUILD_TYPE DEBUG)
-endif(LINUX)
+IF(LINUX)
+        SET(CMAKE_BUILD_TYPE DEBUG)
+ENDIF(LINUX)
 
 
-if(CMAKE_BUILD_TYPE STREQUAL Debug)
+IF(CMAKE_BUILD_TYPE STREQUAL Debug)
     message(STATUS "Do debug stuff")
-elseif(CMAKE_BUILD_TYPE STREQUAL Release)
+ELSEIF(CMAKE_BUILD_TYPE STREQUAL Release)
     message(STATUS "Do release stuff")
-elseif(CMAKE_BUILD_TYPE STREQUAL RelWithDebInfo)
+ELSEIF(CMAKE_BUILD_TYPE STREQUAL RelWithDebInfo)
     message(STATUS "Do release with debug info stuff")
-elseif(CMAKE_BUILD_TYPE STREQUAL MinSizeRel)
+ELSEIF(CMAKE_BUILD_TYPE STREQUAL MinSizeRel)
     message(STATUS "Do minimal size release stuff")
-endif()
+ENDIF()
 
 # gcc -std=c++0x
-if(CMAKE_COMPILER_IS_GNUCXX)
-        #set(CMAKE_CXX_FLAGS_DEBUG      "${CMAKE_CXX_FLAGS_DEBUG} -std=c++0x")
-        #set(CMAKE_CXX_FLAGS_RELEASE      "${CMAKE_CXX_FLAGS_RELEASE} -std=c++0x")
-        #set(CMAKE_CXX_FLAGS      "${CMAKE_CXX_FLAGS} -std=c++0x")
-	add_definitions(-std=c++0x)
-        #message( "GGGGGG CCCCCCCCCCCCCCCCCCCC")
-endif(CMAKE_COMPILER_IS_GNUCXX)
+IF(CMAKE_COMPILER_IS_GNUCXX)
+        #SET(CMAKE_CXX_FLAGS_DEBUG      "${CMAKE_CXX_FLAGS_DEBUG} -std=c++0x")
+        #SET(CMAKE_CXX_FLAGS_RELEASE      "${CMAKE_CXX_FLAGS_RELEASE} -std=c++0x")
+        #SET(CMAKE_CXX_FLAGS      "${CMAKE_CXX_FLAGS} -std=c++0x")
+	ADD_DEFINITIONS(-std=c++0x)
+        #MESSAGE( "GGGGGG CCCCCCCCCCCCCCCCCCCC")
+ENDIF(CMAKE_COMPILER_IS_GNUCXX)
 
 # Single build directory option
-set(USE_SINGLE_BUILDDIR FALSE CACHE BOOL "One build directory is used for all executables and libraries.")
+SET(USE_SINGLE_BUILDDIR FALSE CACHE BOOL "One build directory is used for all executables and libraries.")
 mark_as_advanced(USE_SINGLE_BUILDDIR)
-if(USE_SINGLE_BUILDDIR)
+IF(USE_SINGLE_BUILDDIR)
 	# ---------- Setup output Directories -------------------------
-	set (CMAKE_LIBRARY_OUTPUT_DIRECTORY
+	SET (CMAKE_LIBRARY_OUTPUT_DIRECTORY
 	   ${PROJECT_BINARY_DIR}/bin
 	   CACHE PATH
 	   "Single Directory for all Libraries"
 	)
 
 	# --------- Setup the Executable output Directory -------------
-	set (CMAKE_RUNTIME_OUTPUT_DIRECTORY
+	SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY
 	   ${PROJECT_BINARY_DIR}/bin
 	   CACHE PATH
 	   "Single Directory for all Executables."
 	)
 
 	# --------- Setup the Executable output Directory -------------
-	set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+	SET (CMAKE_ARCHIVE_OUTPUT_DIRECTORY
 	   ${PROJECT_BINARY_DIR}/bin
 	   CACHE PATH
 	   "Single Directory for all static libraries."
 	)
-endif(USE_SINGLE_BUILDDIR)
+ENDIF(USE_SINGLE_BUILDDIR)
 
 
 #Use Solution Folders
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #Variable for test building the test projects
-set(BUILD_TESTING FALSE CACHE BOOL "Build the test projects.")
-if(BUILD_TESTING)
-	enable_testing()
-endif(BUILD_TESTING)
+SET(BUILD_TESTING FALSE CACHE BOOL "Build the test projects.")
+IF(BUILD_TESTING)
+	ENABLE_TESTING()
+ENDIF(BUILD_TESTING)
 
 
 # --------- Linker: Link Time Compile Generated Code Optimization (LTCG/LTO) -------------
@@ -172,11 +172,11 @@ PRJ_OPTION(WCHAR_EXTERNAL               "Treat wchar_t as external type." OFF MS
 	endif()
 	if(MSVC)
 	if(${${_prj_name}_WCHAR_EXTERNAL})
-		set(CMAKE_CXX_FLAGS_DEBUG      "${CMAKE_CXX_FLAGS_DEBUG} /Zc:wchar_t-")
-		set(CMAKE_CXX_FLAGS_RELEASE    "${CMAKE_CXX_FLAGS_RELEASE} /Zc:wchar_t-")
-		set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} /Zc:wchar_t-")
+		SET(CMAKE_CXX_FLAGS_DEBUG      "${CMAKE_CXX_FLAGS_DEBUG} /Zc:wchar_t-")
+		SET(CMAKE_CXX_FLAGS_RELEASE    "${CMAKE_CXX_FLAGS_RELEASE} /Zc:wchar_t-")
+		SET(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} /Zc:wchar_t-")
 	endif()
-		add_definitions(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -DNOMINMAX)
+		ADD_DEFINITIONS(-D_CRT_SECURE_NO_DEPRECATE -D_CRT_NONSTDC_NO_DEPRECATE -DNOMINMAX)
 		if(${${_prj_name}_LTO})
 		# disable checked iterators for msvc release builds to get maximum speed
 			# enable link time code generation stuff
@@ -193,15 +193,15 @@ endif(WIN32)
 
 # ---------  PCH Debugging -------------
 PRJ_OPTION(PCH_DEBUG               "Output GCC Precompiled Header Debugging." OFF CMAKE_COMPILER_IS_GNUCXX)
-        if(${${_prj_name}_PCH_DEBUG})
-                set( PCH_ADDITIONAL_COMPILER_FLAGS "-H" )
-        endif(${${_prj_name}_PCH_DEBUG})
+        IF(${${_prj_name}_PCH_DEBUG})
+                SET( PCH_ADDITIONAL_COMPILER_FLAGS "-H" )
+        ENDIF(${${_prj_name}_PCH_DEBUG})
 
 # ---------  NLS Support -------------
 PRJ_OPTION(NLS              "Enable Native Language Support (NLS)" OFF ALL)
-        if(${${_prj_name}_NLS})
-                #set( PCH_ADDITIONAL_COMPILER_FLAGS "-H" )
-                set(USE_NLS TRUE)
+        IF(${${_prj_name}_NLS})
+                #SET( PCH_ADDITIONAL_COMPILER_FLAGS "-H" )
+                SET(USE_NLS TRUE)
 				# LOCALE Directory
 				if(NOT ${_prj_name}_LOCALEDIR)
 					if (WIN32)
@@ -210,7 +210,7 @@ PRJ_OPTION(NLS              "Enable Native Language Support (NLS)" OFF ALL)
 						set(${_prj_name}_LOCALEDIR "locale" CACHE STRING "NLS locale subdirectory for all ${_prj_name}-language-data" FORCE)
 					endif()
 				endif()
-        endif(${${_prj_name}_NLS})
+        ENDIF(${${_prj_name}_NLS})
 
 
 PRJ_OPTION(EXTERNAL_ZLIB "Use external zlib" ON ALL)
@@ -218,7 +218,7 @@ PRJ_OPTION(EXTERNAL_ZLIB "Use external zlib" ON ALL)
 # --------- Set GNUWIN Directory -------------
 
 if(WIN32)
-set (GNUWIN32_DIR C:/gnuwin32 CACHE PATH
+SET (GNUWIN32_DIR C:/gnuwin32 CACHE PATH
 	   "GNUWIN32 binary directory"
 )
 endif()
@@ -256,13 +256,13 @@ set(${_prj_name}_ABS_TOP_SRCDIR "${TOP_SRC_DIR}")
 
 # --------- Help Display -------------
 
-if(help OR HELP)
+IF(help OR HELP)
 	message(STATUS)
 	message(STATUS "Available options: (dis/enable with -D[Option_Name]=0/1)")
 	message(STATUS)
 	PRJ_OPTION_LIST_ALL(help)
 	message(STATUS)
 	STOP()
-endif()
+ENDIF()
 
 

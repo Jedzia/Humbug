@@ -69,11 +69,11 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-set(SDL_SOUND_EXTRAS "" CACHE STRING "SDL_sound extra flags")
-mark_as_advanced(SDL_SOUND_EXTRAS)
+SET(SDL_SOUND_EXTRAS "" CACHE STRING "SDL_sound extra flags")
+MARK_AS_ADVANCED(SDL_SOUND_EXTRAS)
 
 # Find SDL_sound.h
-find_path(SDL_SOUND_INCLUDE_DIR SDL_sound.h
+FIND_PATH(SDL_SOUND_INCLUDE_DIR SDL_sound.h
   HINTS
   $ENV{SDLSOUNDDIR}/include
   $ENV{SDLSOUNDDIR}
@@ -98,7 +98,7 @@ find_path(SDL_SOUND_INCLUDE_DIR SDL_sound.h
   /opt/include
   )
 
-find_library(SDL_SOUND_LIBRARY 
+FIND_LIBRARY(SDL_SOUND_LIBRARY 
   NAMES SDL_sound
   HINTS
   $ENV{SDLSOUNDDIR}/lib
@@ -114,7 +114,7 @@ find_library(SDL_SOUND_LIBRARY
   /opt/lib
   )
 
-if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
+IF(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
 
   # CMake is giving me problems using TRY_COMPILE with the CMAKE_FLAGS
   # for the :STRING syntax if I have multiple values contained in a
@@ -125,12 +125,12 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
   # To get multiple single variables to work, I must separate them with a "\;"
   # I could go back and modify the FindSDL.cmake module, but that's kind of painful.
   # The solution would be to try something like:
-  # set(SDL_TRY_COMPILE_LIBRARY_LIST "${SDL_TRY_COMPILE_LIBRARY_LIST}\;${CMAKE_THREAD_LIBS_INIT}")
+  # SET(SDL_TRY_COMPILE_LIBRARY_LIST "${SDL_TRY_COMPILE_LIBRARY_LIST}\;${CMAKE_THREAD_LIBS_INIT}")
   # Instead, it was suggested on the mailing list to write a temporary CMakeLists.txt
   # with a temporary test project and invoke that with TRY_COMPILE.
   # See message thread "Figuring out dependencies for a library in order to build"
   # 2005-07-16  
-  #     try_compile( 
+  #     TRY_COMPILE( 
   #             MY_RESULT
   #             ${CMAKE_BINARY_DIR}
   #             ${PROJECT_SOURCE_DIR}/DetermineSoundLibs.c
@@ -143,7 +143,7 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
   # To minimize external dependencies, create a sdlsound test program
   # which will be used to figure out if additional link dependencies are
   # required for the link phase.
-  file(WRITE ${PROJECT_BINARY_DIR}/CMakeTmp/DetermineSoundLibs.c
+  FILE(WRITE ${PROJECT_BINARY_DIR}/CMakeTmp/DetermineSoundLibs.c
     "#include \"SDL_sound.h\"
     #include \"SDL.h\"
     int main(int argc, char* argv[])
@@ -167,32 +167,32 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
      )
 
    # Calling 
-   # target_link_libraries(DetermineSoundLibs "${SDL_SOUND_LIBRARY} ${SDL_LIBRARY})
+   # TARGET_LINK_LIBRARIES(DetermineSoundLibs "${SDL_SOUND_LIBRARY} ${SDL_LIBRARY})
    # causes problems when SDL_LIBRARY looks like
    # /Library/Frameworks/SDL.framework;-framework Cocoa
    # The ;-framework Cocoa seems to be confusing CMake once the OS X
    # framework support was added. I was told that breaking up the list 
    # would fix the problem.
-   set(TMP_TRY_LIBS)
-   foreach(lib ${SDL_SOUND_LIBRARY} ${SDL_LIBRARY})
-     set(TMP_TRY_LIBS "${TMP_TRY_LIBS} \"${lib}\"")
-   endforeach(lib)
+   SET(TMP_TRY_LIBS)
+   FOREACH(lib ${SDL_SOUND_LIBRARY} ${SDL_LIBRARY})
+     SET(TMP_TRY_LIBS "${TMP_TRY_LIBS} \"${lib}\"")
+   ENDFOREACH(lib)
 
-   # message("TMP_TRY_LIBS ${TMP_TRY_LIBS}")
+   # MESSAGE("TMP_TRY_LIBS ${TMP_TRY_LIBS}")
    
    # Write the CMakeLists.txt and test project
    # Weird, this is still sketchy. If I don't quote the variables
    # in the TARGET_LINK_LIBRARIES, I seem to loose everything 
    # in the SDL_LIBRARY string after the "-framework".
    # But if I quote the stuff in INCLUDE_DIRECTORIES, it doesn't work.
-   file(WRITE ${PROJECT_BINARY_DIR}/CMakeTmp/CMakeLists.txt
-     "project(DetermineSoundLibs)
-        include_directories(${SDL_INCLUDE_DIR} ${SDL_SOUND_INCLUDE_DIR})
-        add_executable(DetermineSoundLibs DetermineSoundLibs.c)
-        target_link_libraries(DetermineSoundLibs ${TMP_TRY_LIBS})"
+   FILE(WRITE ${PROJECT_BINARY_DIR}/CMakeTmp/CMakeLists.txt
+     "PROJECT(DetermineSoundLibs)
+        INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR} ${SDL_SOUND_INCLUDE_DIR})
+        ADD_EXECUTABLE(DetermineSoundLibs DetermineSoundLibs.c)
+        TARGET_LINK_LIBRARIES(DetermineSoundLibs ${TMP_TRY_LIBS})"
      )
 
-   try_compile( 
+   TRY_COMPILE( 
      MY_RESULT
      ${PROJECT_BINARY_DIR}/CMakeTmp
      ${PROJECT_BINARY_DIR}/CMakeTmp
@@ -200,20 +200,20 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
      OUTPUT_VARIABLE MY_OUTPUT
      )
    
-   # message("${MY_RESULT}")
-   # message(${MY_OUTPUT})
+   # MESSAGE("${MY_RESULT}")
+   # MESSAGE(${MY_OUTPUT})
    
-   if(NOT MY_RESULT)
+   IF(NOT MY_RESULT)
      
      # I expect that MPGLIB, VOC, WAV, AIFF, and SHN are compiled in statically.
      # I think Timidity is also compiled in statically.
      # I've never had to explcitly link against Quicktime, so I'll skip that for now.
      
-     set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARY})
+     SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARY})
      
      # Find MikMod
-     if("${MY_OUTPUT}" MATCHES "MikMod_")
-     find_library(MIKMOD_LIBRARY
+     IF("${MY_OUTPUT}" MATCHES "MikMod_")
+     FIND_LIBRARY(MIKMOD_LIBRARY
          NAMES libmikmod-coreaudio mikmod
          PATHS
          $ENV{MIKMODDIR}/lib
@@ -229,14 +229,14 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
        ) 
-       if(MIKMOD_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${MIKMOD_LIBRARY})
-       endif(MIKMOD_LIBRARY)
-     endif("${MY_OUTPUT}" MATCHES "MikMod_")
+       IF(MIKMOD_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${MIKMOD_LIBRARY})
+       ENDIF(MIKMOD_LIBRARY)
+     ENDIF("${MY_OUTPUT}" MATCHES "MikMod_")
      
      # Find ModPlug
-     if("${MY_OUTPUT}" MATCHES "MODPLUG_")
-       find_library(MODPLUG_LIBRARY
+     IF("${MY_OUTPUT}" MATCHES "MODPLUG_")
+       FIND_LIBRARY(MODPLUG_LIBRARY
          NAMES modplug
          PATHS
          $ENV{MODPLUGDIR}/lib
@@ -252,15 +252,15 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
        )
-       if(MODPLUG_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${MODPLUG_LIBRARY})
-       endif(MODPLUG_LIBRARY)
-     endif("${MY_OUTPUT}" MATCHES "MODPLUG_")
+       IF(MODPLUG_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${MODPLUG_LIBRARY})
+       ENDIF(MODPLUG_LIBRARY)
+     ENDIF("${MY_OUTPUT}" MATCHES "MODPLUG_")
 
      
      # Find Ogg and Vorbis
-     if("${MY_OUTPUT}" MATCHES "ov_")
-       find_library(VORBIS_LIBRARY
+     IF("${MY_OUTPUT}" MATCHES "ov_")
+       FIND_LIBRARY(VORBIS_LIBRARY
          NAMES vorbis Vorbis VORBIS
          PATHS
          $ENV{VORBISDIR}/lib
@@ -278,11 +278,11 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
          )
-       if(VORBIS_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${VORBIS_LIBRARY})
-       endif(VORBIS_LIBRARY)
+       IF(VORBIS_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${VORBIS_LIBRARY})
+       ENDIF(VORBIS_LIBRARY)
        
-       find_library(OGG_LIBRARY
+       FIND_LIBRARY(OGG_LIBRARY
          NAMES ogg Ogg OGG
          PATHS
          $ENV{OGGDIR}/lib
@@ -300,15 +300,15 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
          )
-       if(OGG_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${OGG_LIBRARY})
-       endif(OGG_LIBRARY)
-     endif("${MY_OUTPUT}" MATCHES "ov_")
+       IF(OGG_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${OGG_LIBRARY})
+       ENDIF(OGG_LIBRARY)
+     ENDIF("${MY_OUTPUT}" MATCHES "ov_")
      
      
      # Find SMPEG
-     if("${MY_OUTPUT}" MATCHES "SMPEG_")
-       find_library(SMPEG_LIBRARY
+     IF("${MY_OUTPUT}" MATCHES "SMPEG_")
+       FIND_LIBRARY(SMPEG_LIBRARY
          NAMES smpeg SMPEG Smpeg SMpeg
          PATHS
          $ENV{SMPEGDIR}/lib
@@ -324,15 +324,15 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
          )
-       if(SMPEG_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${SMPEG_LIBRARY})
-       endif(SMPEG_LIBRARY)
-     endif("${MY_OUTPUT}" MATCHES "SMPEG_")
+       IF(SMPEG_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${SMPEG_LIBRARY})
+       ENDIF(SMPEG_LIBRARY)
+     ENDIF("${MY_OUTPUT}" MATCHES "SMPEG_")
      
      
      # Find FLAC
-     if("${MY_OUTPUT}" MATCHES "FLAC_")
-       find_library(FLAC_LIBRARY
+     IF("${MY_OUTPUT}" MATCHES "FLAC_")
+       FIND_LIBRARY(FLAC_LIBRARY
          NAMES flac FLAC
          PATHS
          $ENV{FLACDIR}/lib
@@ -348,18 +348,18 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
          )
-       if(FLAC_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${FLAC_LIBRARY})
-       endif(FLAC_LIBRARY)
-     endif("${MY_OUTPUT}" MATCHES "FLAC_")
+       IF(FLAC_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${FLAC_LIBRARY})
+       ENDIF(FLAC_LIBRARY)
+     ENDIF("${MY_OUTPUT}" MATCHES "FLAC_")
      
      
      # Hmmm...Speex seems to depend on Ogg. This might be a problem if
      # the TRY_COMPILE attempt gets blocked at SPEEX before it can pull
      # in the Ogg symbols. I'm not sure if I should duplicate the ogg stuff
      # above for here or if two ogg entries will screw up things.
-     if("${MY_OUTPUT}" MATCHES "speex_")
-       find_library(SPEEX_LIBRARY
+     IF("${MY_OUTPUT}" MATCHES "speex_")
+       FIND_LIBRARY(SPEEX_LIBRARY
          NAMES speex SPEEX
          PATHS
          $ENV{SPEEXDIR}/lib
@@ -375,14 +375,14 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
          /opt/csw/lib
        /opt/lib
          )
-       if(SPEEX_LIBRARY)
-         set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${SPEEX_LIBRARY})
-       endif(SPEEX_LIBRARY)
+       IF(SPEEX_LIBRARY)
+         SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${SPEEX_LIBRARY})
+       ENDIF(SPEEX_LIBRARY)
        
        # Find OGG (needed for Speex)
      # We might have already found Ogg for Vorbis, so skip it if so.
-       if(NOT OGG_LIBRARY)
-         find_library(OGG_LIBRARY
+       IF(NOT OGG_LIBRARY)
+         FIND_LIBRARY(OGG_LIBRARY
            NAMES ogg Ogg OGG
            PATHS
            $ENV{OGGDIR}/lib
@@ -402,20 +402,20 @@ if(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
            /opt/csw/lib
          /opt/lib
            )
-         if(OGG_LIBRARY)
-           set(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${OGG_LIBRARY})
-         endif(OGG_LIBRARY)
-       endif(NOT OGG_LIBRARY)
-     endif("${MY_OUTPUT}" MATCHES "speex_")
+         IF(OGG_LIBRARY)
+           SET(SDL_SOUND_LIBRARIES_TMP ${SDL_SOUND_LIBRARIES_TMP} ${OGG_LIBRARY})
+         ENDIF(OGG_LIBRARY)
+       ENDIF(NOT OGG_LIBRARY)
+     ENDIF("${MY_OUTPUT}" MATCHES "speex_")
      
-   else(NOT MY_RESULT)
-     set(SDL_SOUND_LIBRARIES "${SDL_SOUND_EXTRAS} ${SDL_SOUND_LIBRARY}" CACHE INTERNAL "SDL_sound and dependent libraries")
-   endif(NOT MY_RESULT)
+   ELSE(NOT MY_RESULT)
+     SET(SDL_SOUND_LIBRARIES "${SDL_SOUND_EXTRAS} ${SDL_SOUND_LIBRARY}" CACHE INTERNAL "SDL_sound and dependent libraries")
+   ENDIF(NOT MY_RESULT)
 
-   set(SDL_SOUND_LIBRARIES "${SDL_SOUND_EXTRAS} ${SDL_SOUND_LIBRARIES_TMP}" CACHE INTERNAL "SDL_sound and dependent libraries")
- endif(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
+   SET(SDL_SOUND_LIBRARIES "${SDL_SOUND_EXTRAS} ${SDL_SOUND_LIBRARIES_TMP}" CACHE INTERNAL "SDL_sound and dependent libraries")
+ ENDIF(SDL_FOUND AND SDL_SOUND_INCLUDE_DIR AND SDL_SOUND_LIBRARY)
 
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL_SOUND
                                   REQUIRED_VARS SDL_SOUND_LIBRARIES SDL_SOUND_INCLUDE_DIR)

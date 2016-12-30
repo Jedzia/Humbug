@@ -1,9 +1,9 @@
-//  (C) Copyright John Maddock 2001 - 2003.
-//  (C) Copyright Bill Kempf 2001.
-//  (C) Copyright Aleksey Gurtovoy 2003.
+//  (C) Copyright John Maddock 2001 - 2003. 
+//  (C) Copyright Bill Kempf 2001. 
+//  (C) Copyright Aleksey Gurtovoy 2003. 
 //  (C) Copyright Rene Rivera 2005.
-//  Use, modification and distribution are subject to the
-//  Boost Software License, Version 1.0. (See accompanying file
+//  Use, modification and distribution are subject to the 
+//  Boost Software License, Version 1.0. (See accompanying file 
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for most recent version.
@@ -31,30 +31,55 @@
 #  define PLATFORM_SYMBOL_IMPORT __declspec(dllimport)
 #endif
 
-
 #if defined(__MINGW32__) && ((__MINGW32_MAJOR_VERSION > 2) || ((__MINGW32_MAJOR_VERSION == 2) && (__MINGW32_MINOR_VERSION >= 0)))
 #  define PLATFORM_HAS_STDINT_H
-#  define __STDC_LIMIT_MACROS
+#  ifndef __STDC_LIMIT_MACROS
+#     define __STDC_LIMIT_MACROS
+#  endif
 #  define PLATFORM_HAS_DIRENT_H
 #  define PLATFORM_HAS_UNISTD_H
 #endif
 
+#if defined(__MINGW32__) && (__GNUC__ >= 4)
+// Mingw has these functions but there are persistent problems
+// with calls to these crashing, so disable for now:
+//#  define PLATFORM_HAS_EXPM1
+//#  define PLATFORM_HAS_LOG1P
+#  define PLATFORM_HAS_GETTIMEOFDAY
+#endif
 //
 // Win32 will normally be using native Win32 threads,
 // but there is a pthread library avaliable as an option,
-// we used to disable this when PLATFORM_DISABLE_WIN32 was
+// we used to disable this when PLATFORM_DISABLE_WIN32 was 
 // defined but no longer - this should allow some
 // files to be compiled in strict mode - while maintaining
 // a consistent setting of PLATFORM_HAS_THREADS across
 // all translation units (needed for shared_ptr etc).
 //
 
-#ifdef _WIN32_WCE
-#  define PLATFORM_NO_ANSI_APIS
-#endif
-
 #ifndef PLATFORM_HAS_PTHREADS
 #  define PLATFORM_HAS_WINTHREADS
+#endif
+
+//
+// WinCE configuration:
+//
+#if defined(_WIN32_WCE) || defined(UNDER_CE)
+#  define PLATFORM_NO_ANSI_APIS
+// Windows CE does not have a conforming signature for swprintf
+#  define PLATFORM_NO_SWPRINTF
+#else
+#  define PLATFORM_HAS_GETSYSTEMTIMEASFILETIME
+#  define PLATFORM_HAS_THREADEX
+#  define PLATFORM_HAS_GETSYSTEMTIMEASFILETIME
+#endif
+
+//
+// Windows Runtime
+//
+#if defined(WINAPI_FAMILY) && \
+  (WINAPI_FAMILY == WINAPI_FAMILY_APP || WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP)
+#  define PLATFORM_NO_ANSI_APIS
 #endif
 
 #ifndef PLATFORM_DISABLE_WIN32

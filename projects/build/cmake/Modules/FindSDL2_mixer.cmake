@@ -26,9 +26,9 @@
 #  License text for the above reference.)
 
 # Todo: in all FindSDL scripts, use a way to find the lib via "SDL2_gfx", not the versioned path
-set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_mixer-2.0.0)
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_mixer-2.0.0)
 
-find_path(SDLMIXER_INCLUDE_DIR SDL_mixer.h
+FIND_PATH(SDLMIXER_INCLUDE_DIR SDL_mixer.h
   HINTS
   $ENV{SDLMIXERDIR}
   $ENV{SDLDIR}
@@ -55,7 +55,7 @@ find_path(SDLMIXER_INCLUDE_DIR SDL_mixer.h
   ${_DEP_PATH}
 )
 
-find_library(SDLMIXER_LIBRARY_RELEASE 
+FIND_LIBRARY(SDLMIXER_LIBRARY_RELEASE 
   NAMES SDL2_mixer
   HINTS
   $ENV{SDLMIXERDIR}
@@ -72,7 +72,7 @@ find_library(SDLMIXER_LIBRARY_RELEASE
   /opt
   ${_DEP_PATH}/VisualC/x64/Release
 )
-find_library(SDLMIXER_LIBRARY_DEBUG 
+FIND_LIBRARY(SDLMIXER_LIBRARY_DEBUG 
   NAMES SDL2_mixer
   HINTS
   $ENV{SDLMIXERDIR}
@@ -89,26 +89,26 @@ find_library(SDLMIXER_LIBRARY_DEBUG
   /opt
   ${_DEP_PATH}/VisualC/x64/Debug
 )
-set(SDLMIXER_LIBRARY "optimized;${SDLMIXER_LIBRARY_RELEASE};debug;${SDLMIXER_LIBRARY_DEBUG}"  CACHE STRING "SDL mixer library" FORCE)
+SET(SDLMIXER_LIBRARY "optimized;${SDLMIXER_LIBRARY_RELEASE};debug;${SDLMIXER_LIBRARY_DEBUG}"  CACHE STRING "SDL mixer library" FORCE)
 
-if(WIN32)
-    find_file(SDLMIXER_LIBRARY_DLL_RELEASE NAMES SDL2_mixer.dll PATHS
+IF(WIN32)
+    FIND_FILE(SDLMIXER_LIBRARY_DLL_RELEASE NAMES SDL2_mixer.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Release
 		${_DEP_PATH}/VisualC/x64/Release
     )
-    find_file(SDLMIXER_LIBRARY_DLL_DEBUG NAMES SDL2_mixer.dll PATHS
+    FIND_FILE(SDLMIXER_LIBRARY_DLL_DEBUG NAMES SDL2_mixer.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Debug
 		${_DEP_PATH}/VisualC/x64/Debug
     )
-endif(WIN32)
+ENDIF(WIN32)
 
-include(FindPackageHandleStandardArgs)
+INCLUDE(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLMIXER
                                   REQUIRED_VARS SDLMIXER_LIBRARY SDLMIXER_INCLUDE_DIR)

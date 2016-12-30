@@ -25,7 +25,7 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-find_path(SDLMIXER_INCLUDE_DIR SDL_mixer.h
+FIND_PATH(SDLMIXER_INCLUDE_DIR SDL_mixer.h
   HINTS
   $ENV{SDLMIXERDIR}
   $ENV{SDLDIR}
@@ -51,7 +51,7 @@ find_path(SDLMIXER_INCLUDE_DIR SDL_mixer.h
   /opt/include
 )
 
-find_library(SDLMIXER_LIBRARY 
+FIND_LIBRARY(SDLMIXER_LIBRARY 
   NAMES SDL_mixer
   HINTS
   $ENV{SDLMIXERDIR}
@@ -68,7 +68,7 @@ find_library(SDLMIXER_LIBRARY
   /opt
 )
 
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLMIXER
                                   REQUIRED_VARS SDLMIXER_LIBRARY SDLMIXER_INCLUDE_DIR)

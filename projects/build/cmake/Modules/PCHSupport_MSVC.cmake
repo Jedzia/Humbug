@@ -10,43 +10,43 @@
 #   ADD_NATIVE_PRECOMPILED_HEADER _targetName _input _dowarn
 #   GET_NATIVE_PRECOMPILED_HEADER _targetName _input
 
-if(MSVC)
-  set(PCHSupport_FOUND TRUE)
-endif(MSVC)
+IF(MSVC)
+  SET(PCHSupport_FOUND TRUE)
+ENDIF(MSVC)
 
 
-macro(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
-  if(MSVC)
-	#get_filename_component(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-	set(PrecompiledBasename ${PROJECT_NAME})
-	set(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
+MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
+  IF(MSVC)
+	#GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
+	SET(PrecompiledBasename ${PROJECT_NAME})
+	SET(PrecompiledBinary "$(IntDir)/${PrecompiledBasename}.pch")
 
-	foreach( component ${${SourcesVar}} )
-		get_filename_component(component_ex ${component} EXT)
-		string( TOLOWER ${component_ex} _component_ex )
-		#message( STATUS "component ${component}")
-		if(${_component_ex} STREQUAL ".h" OR ${_component_ex} STREQUAL ".hxx"
+	FOREACH( component ${${SourcesVar}} )
+		GET_FILENAME_COMPONENT(component_ex ${component} EXT)
+		STRING( TOLOWER ${component_ex} _component_ex )
+		#MESSAGE( STATUS "component ${component}")
+		IF(${_component_ex} STREQUAL ".h" OR ${_component_ex} STREQUAL ".hxx"
 		   OR ${_component_ex} STREQUAL ".hpp")
 			#get_source_file_property(FileType ${component} HEADER_FILE_ONLY)
-			#message( STATUS "No PCH for ${component}")
-		else()
-			#message( STATUS "PCH for ${component}")
+			#MESSAGE( STATUS "No PCH for ${component}")
+		ELSE()
+			#MESSAGE( STATUS "PCH for ${component}")
 			list(APPEND Sources ${component})
-		endif()
-	endforeach( component )
-	#message( STATUS "Sources ${Sources}")
+		ENDIF()
+	ENDFOREACH( component )
+	#MESSAGE( STATUS "Sources ${Sources}")
 
 
-	#set(Sources ${${SourcesVar}})
-	#message( STATUS "Sources ${Sources}")
+	#SET(Sources ${${SourcesVar}})
+	#MESSAGE( STATUS "Sources ${Sources}")
 
-	set_source_files_properties(${PrecompiledSource}
+	SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
 								PROPERTIES COMPILE_FLAGS "/Yc\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
 										   OBJECT_OUTPUTS "${PrecompiledBinary}")
-	set_source_files_properties(${Sources}
+	SET_SOURCE_FILES_PROPERTIES(${Sources}
 								PROPERTIES COMPILE_FLAGS "/Yu\"${PrecompiledHeader}\" /FI\"${PrecompiledHeader}\" /Fp\"${PrecompiledBinary}\""
 										   OBJECT_DEPENDS "${PrecompiledBinary}")
 	# Add precompiled header to SourcesVar
-	list(APPEND ${SourcesVar} ${PrecompiledSource})
-  endif(MSVC)
-endmacro(ADD_MSVC_PRECOMPILED_HEADER)
+	LIST(APPEND ${SourcesVar} ${PrecompiledSource})
+  ENDIF(MSVC)
+ENDMACRO(ADD_MSVC_PRECOMPILED_HEADER)

@@ -25,7 +25,7 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-find_path(SDLNET_INCLUDE_DIR SDL_net.h
+FIND_PATH(SDLNET_INCLUDE_DIR SDL_net.h
   HINTS
   $ENV{SDLNETDIR}
   $ENV{SDLDIR}
@@ -50,7 +50,7 @@ find_path(SDLNET_INCLUDE_DIR SDL_net.h
   /opt/include/SDL
   /opt/include
 )
-find_library(SDLNET_LIBRARY 
+FIND_LIBRARY(SDLNET_LIBRARY 
   NAMES SDL_net
   HINTS
   $ENV{SDLNETDIR}
@@ -67,7 +67,7 @@ find_library(SDLNET_LIBRARY
   /opt
 )
 
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLNET
                                   REQUIRED_VARS SDLNET_LIBRARY SDLNET_INCLUDE_DIR)

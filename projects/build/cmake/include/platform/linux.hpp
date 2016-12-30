@@ -1,6 +1,5 @@
 //  (C) Copyright John Maddock 2001 - 2003. 
 //  (C) Copyright Jens Maurer 2001 - 2003. 
-// (C) Copyright Bryce Lelbach 2010
 //  Use, modification and distribution are subject to the 
 //  Boost Software License, Version 1.0. (See accompanying file 
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,14 +11,11 @@
 #define PLATFORM_PLATFORM "linux"
 
 // make sure we have __GLIBC_PREREQ if available at all
+#ifdef __cplusplus
 #include <cstdlib>
-
-#define PLATFORM_NIX            1 
-//#define PLATFORM_GENETIC_NIX    1
-//#define PLATFORM_TRADEMARK_NIX  1
-#define PLATFORM_FUNCTIONAL_NIX 1
-
-#define PLATFORM_LINUX 1
+#else
+#include <stdlib.h>
+#endif
 
 //
 // <stdint.h> added to glibc 2.1.1
@@ -75,7 +71,10 @@
 
 // boilerplate code:
 #define PLATFORM_HAS_UNISTD_H
-#include <build/cmake/include/posix_features.hpp>
+#include <boost/config/posix_features.hpp>
+#if defined(__USE_GNU) && !defined(__ANDROID__) && !defined(ANDROID)
+#define PLATFORM_HAS_PTHREAD_YIELD
+#endif
 
 #ifndef __GNUC__
 //

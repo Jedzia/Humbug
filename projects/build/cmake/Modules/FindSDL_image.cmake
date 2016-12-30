@@ -25,12 +25,12 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-#message(FATAL_ERROR "SDL_image Library not ${CMAKE_SOURCE_DIR}!")
-set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL_image-1.2.12)
-message(STATUS "_DEP_PATH: ${_DEP_PATH}")
+#MESSAGE(FATAL_ERROR "SDL_image Library not ${CMAKE_SOURCE_DIR}!")
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL_image-1.2.12)
+MESSAGE(STATUS "_DEP_PATH: ${_DEP_PATH}")
 
 
-find_path(SDLIMAGE_INCLUDE_DIR SDL_image.h
+FIND_PATH(SDLIMAGE_INCLUDE_DIR SDL_image.h
   HINTS
   $ENV{SDLIMAGEDIR}
   $ENV{SDLDIR}
@@ -57,7 +57,7 @@ find_path(SDLIMAGE_INCLUDE_DIR SDL_image.h
   ${_DEP_PATH}
 )
 
-find_library(SDLIMAGE_LIBRARY_RELEASE 
+FIND_LIBRARY(SDLIMAGE_LIBRARY_RELEASE 
   NAMES SDL_image
   HINTS
   $ENV{SDLIMAGEDIR}
@@ -75,18 +75,18 @@ find_library(SDLIMAGE_LIBRARY_RELEASE
   ${_DEP_PATH}/VisualC/Release
   ${_DEP_PATH}/VisualC/x64/Release
 )
-set(SDLIMAGE_LIBRARY "optimized;${SDLIMAGE_LIBRARY_RELEASE};debug;${SDLIMAGE_LIBRARY_RELEASE}"  CACHE STRING "SDL image library" FORCE)
+SET(SDLIMAGE_LIBRARY "optimized;${SDLIMAGE_LIBRARY_RELEASE};debug;${SDLIMAGE_LIBRARY_RELEASE}"  CACHE STRING "SDL image library" FORCE)
 
-if(WIN32)
+IF(WIN32)
 
-    find_file(SDLIMAGE_LIBRARY_DLL_RELEASE NAMES SDL_image.dll PATHS
+    FIND_FILE(SDLIMAGE_LIBRARY_DLL_RELEASE NAMES SDL_image.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Release
 		${_DEP_PATH}/VisualC/x64/Release
     )
-    find_file(SDLIMAGE_LIBRARY_DLL_DEBUG NAMES SDL_image.dll PATHS
+    FIND_FILE(SDLIMAGE_LIBRARY_DLL_DEBUG NAMES SDL_image.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
@@ -94,23 +94,23 @@ if(WIN32)
 		${_DEP_PATH}/VisualC/x64/Debug
     )
 
-    #find_file(SDLIMAGE_LIBRARY_DLL_EXT NAMES libjpeg-8.dll libpng15-15.dll PATHS
+    #FIND_FILE(SDLIMAGE_LIBRARY_DLL_EXT NAMES libjpeg-8.dll libpng15-15.dll PATHS
 	#	${_DEP_PATH}/VisualC/external/lib/x86
     #)
 	# check 64 bit
-	if( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-	 set( _sdlimage_library_dlls_ext_path x86 )
-	else( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-	 set( _sdlimage_library_dlls_ext_path x64 )
-	endif( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	IF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlimage_library_dlls_ext_path x86 )
+	ELSE( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlimage_library_dlls_ext_path x64 )
+	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 
-    file(GLOB SDLIMAGE_LIBRARY_DLLS_EXT ${_DEP_PATH}/VisualC/external/lib/${_sdlimage_library_dlls_ext_path}/*.dll)
-	set(SDLIMAGE_LIBRARY_DLLS_EXT "${SDLIMAGE_LIBRARY_DLLS_EXT}"  CACHE STRING "SDL image helper libraries" FORCE)
+    FILE(GLOB SDLIMAGE_LIBRARY_DLLS_EXT ${_DEP_PATH}/VisualC/external/lib/${_sdlimage_library_dlls_ext_path}/*.dll)
+	SET(SDLIMAGE_LIBRARY_DLLS_EXT "${SDLIMAGE_LIBRARY_DLLS_EXT}"  CACHE STRING "SDL image helper libraries" FORCE)
 
-endif(WIN32)
+ENDIF(WIN32)
 
-#include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
-include(FindPackageHandleStandardArgs)
+#INCLUDE(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+INCLUDE(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLIMAGE
                                   REQUIRED_VARS SDLIMAGE_LIBRARY SDLIMAGE_INCLUDE_DIR)

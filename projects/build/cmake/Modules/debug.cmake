@@ -18,27 +18,27 @@
 #
 # ---------------------------------------------------------------------------------
 
-message( STATUS "Setting Debug Vars")
+MESSAGE( STATUS "Setting Debug Vars")
 
-set(DEBUG_MEMORY FALSE CACHE BOOL "Use CRT Memory Debugging")
-set(DEBUG_MEMORY_STDOUT FALSE CACHE BOOL "Memory Debugging to console")
+SET(DEBUG_MEMORY FALSE CACHE BOOL "Use CRT Memory Debugging")
+SET(DEBUG_MEMORY_STDOUT FALSE CACHE BOOL "Memory Debugging to console")
 
-include_directories(${CMAKE_SOURCE_DIR})
-set (DEBUG_DEFINITION_INCLUDES 
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+SET (DEBUG_DEFINITION_INCLUDES 
 	${CMAKE_SOURCE_DIR}/build/cmake/include/debug.h  
 )
 
-source_group(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-#set_source_files_properties( ${DEBUG_DEFINITION_INCLUDES}
+SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+#SET_SOURCE_FILES_PROPERTIES( ${DEBUG_DEFINITION_INCLUDES}
 #	PROPERTIES SOURCE_GROUP "GlobalHeader"
 #)
 
-if(MSVC)
-  if(DEBUG_MEMORY)
-    add_definitions("-DDEBUG_MEMORY")
-    #add_definitions("-DDEBUG_MEMORY_INCLUDE=<build/cmake/include/debug.h>")
-	if(DEBUG_MEMORY_STDOUT)
-		add_definitions("-DDEBUG_MEMORY_STDOUT")
-	endif(DEBUG_MEMORY_STDOUT)
-  endif(DEBUG_MEMORY)
-endif(MSVC)
+IF(MSVC)
+  IF(DEBUG_MEMORY)
+    ADD_DEFINITIONS("-DDEBUG_MEMORY")
+    #ADD_DEFINITIONS("-DDEBUG_MEMORY_INCLUDE=<build/cmake/include/debug.h>")
+	IF(DEBUG_MEMORY_STDOUT)
+		ADD_DEFINITIONS("-DDEBUG_MEMORY_STDOUT")
+	ENDIF(DEBUG_MEMORY_STDOUT)
+  ENDIF(DEBUG_MEMORY)
+ENDIF(MSVC)

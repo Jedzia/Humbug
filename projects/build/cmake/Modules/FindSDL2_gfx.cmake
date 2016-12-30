@@ -26,9 +26,9 @@
 #  License text for the above reference.)
 
 # Todo: in all FindSDL scripts, use a way to find the lib via "SDL2_gfx", not the versioned path
-set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_gfx-1.0.1)
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_gfx-1.0.1)
 
-find_path(SDLGFX_INCLUDE_DIR SDL2_gfxPrimitives.h
+FIND_PATH(SDLGFX_INCLUDE_DIR SDL2_gfxPrimitives.h
   HINTS
   $ENV{SDLGFXDIR}
   $ENV{SDLDIR}
@@ -55,7 +55,7 @@ find_path(SDLGFX_INCLUDE_DIR SDL2_gfxPrimitives.h
   ${_DEP_PATH}
 )
 
-find_library(SDLGFX_LIBRARY_RELEASE 
+FIND_LIBRARY(SDLGFX_LIBRARY_RELEASE 
   NAMES SDL2_gfx
   HINTS
   $ENV{SDLGFXDIR}
@@ -73,7 +73,7 @@ find_library(SDLGFX_LIBRARY_RELEASE
   ${_DEP_PATH}/x64/Release
     PATH_SUFFIXES lib64 lib
 )
-find_library(SDLGFX_LIBRARY_DEBUG 
+FIND_LIBRARY(SDLGFX_LIBRARY_DEBUG 
   NAMES SDL2_gfx
   HINTS
   $ENV{SDLGFXDIR}
@@ -91,18 +91,18 @@ find_library(SDLGFX_LIBRARY_DEBUG
   ${_DEP_PATH}/x64/Debug
     PATH_SUFFIXES lib64 lib
 )
-set(SDLGFX_LIBRARY "optimized;${SDLGFX_LIBRARY_RELEASE};debug;${SDLGFX_LIBRARY_DEBUG}"  CACHE STRING "SDL true type font library" FORCE)
+SET(SDLGFX_LIBRARY "optimized;${SDLGFX_LIBRARY_RELEASE};debug;${SDLGFX_LIBRARY_DEBUG}"  CACHE STRING "SDL true type font library" FORCE)
 
-if(WIN32)
+IF(WIN32)
 
-    find_file(SDLGFX_LIBRARY_DLL_RELEASE NAMES SDL2_gfx.dll PATHS
+    FIND_FILE(SDLGFX_LIBRARY_DLL_RELEASE NAMES SDL2_gfx.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/Release
 		${_DEP_PATH}/x64/Release
     )
-    find_file(SDLGFX_LIBRARY_DLL_DEBUG NAMES SDL2_gfx.dll PATHS
+    FIND_FILE(SDLGFX_LIBRARY_DLL_DEBUG NAMES SDL2_gfx.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
@@ -110,15 +110,15 @@ if(WIN32)
 		${_DEP_PATH}/x64/Debug
     )
 
-    #find_file(SDLIMAGE_LIBRARY_DLL_EXT NAMES libjpeg-8.dll libpng15-15.dll PATHS
+    #FIND_FILE(SDLIMAGE_LIBRARY_DLL_EXT NAMES libjpeg-8.dll libpng15-15.dll PATHS
 	#	${_DEP_PATH}/VisualC/external/lib/x86
     #)
-    #file(GLOB SDLIMAGE_LIBRARY_DLLS_EXT ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
-	#set(SDLIMAGE_LIBRARY_DLLS_EXT "${SDLIMAGE_LIBRARY_DLLS_EXT}"  CACHE STRING "SDL image helper libraries" FORCE)
+    #FILE(GLOB SDLIMAGE_LIBRARY_DLLS_EXT ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
+	#SET(SDLIMAGE_LIBRARY_DLLS_EXT "${SDLIMAGE_LIBRARY_DLLS_EXT}"  CACHE STRING "SDL image helper libraries" FORCE)
 
-endif(WIN32)
+ENDIF(WIN32)
 
-include(FindPackageHandleStandardArgs)
+INCLUDE(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLGFX
                                   REQUIRED_VARS SDLGFX_LIBRARY SDLGFX_INCLUDE_DIR)

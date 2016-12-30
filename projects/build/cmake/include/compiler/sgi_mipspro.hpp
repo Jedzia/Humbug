@@ -7,20 +7,20 @@
 
 //  SGI C++ compiler setup:
 
-#define BOOST_COMPILER "SGI Irix compiler version " BOOST_STRINGIZE(_COMPILER_VERSION)
+#define PLATFORM_COMPILER "SGI Irix compiler version " PLATFORM_STRINGIZE(_COMPILER_VERSION)
 
-#include "boost/config/compiler/common_edg.hpp"
+#include <boost/config/compiler/common_edg.hpp>
 
 //
 // Threading support:
 // Turn this on unconditionally here, it will get turned off again later
 // if no threading API is detected.
 //
-#define BOOST_HAS_THREADS
-#define BOOST_NO_TWO_PHASE_NAME_LOOKUP
+#define PLATFORM_HAS_THREADS
+#define PLATFORM_NO_TWO_PHASE_NAME_LOOKUP
 
-#undef BOOST_NO_SWPRINTF
-#undef BOOST_DEDUCED_TYPENAME
+#undef PLATFORM_NO_SWPRINTF
+#undef PLATFORM_DEDUCED_TYPENAME
 
 //
 // version check:

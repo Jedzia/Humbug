@@ -1,67 +1,40 @@
-//  (C) Copyright John Maddock 2001 - 2003. 
-//  (C) Copyright Darin Adler 2001 - 2002. 
-//  (C) Copyright Jens Maurer 2001 - 2002. 
-//  (C) Copyright Beman Dawes 2001 - 2003. 
-//  (C) Copyright Douglas Gregor 2002. 
-//  (C) Copyright David Abrahams 2002 - 2003. 
-//  (C) Copyright Synge Todo 2003. 
-//  Use, modification and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
+//  (C) Copyright John Maddock 2001 - 2003.
+//  (C) Copyright Darin Adler 2001 - 2002.
+//  (C) Copyright Jens Maurer 2001 - 2002.
+//  (C) Copyright Beman Dawes 2001 - 2003.
+//  (C) Copyright Douglas Gregor 2002.
+//  (C) Copyright David Abrahams 2002 - 2003.
+//  (C) Copyright Synge Todo 2003.
+//  Use, modification and distribution are subject to the
+//  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for most recent version.
 
-//  GNU C++ compiler setup:
+//  GNU C++ compiler setup.
 
-#if __GNUC__ < 3
-#   if __GNUC_MINOR__ == 91
-       // egcs 1.1 won't parse shared_ptr.hpp without this:
-#      define PLATFORM_NO_AUTO_PTR
-#   endif
-#   if __GNUC_MINOR__ < 95
-      //
-      // Prior to gcc 2.95 member templates only partly
-      // work - define PLATFORM_MSVC6_MEMBER_TEMPLATES
-      // instead since inline member templates mostly work.
-      //
-#     define PLATFORM_NO_MEMBER_TEMPLATES
-#     if __GNUC_MINOR__ >= 9
-#       define PLATFORM_MSVC6_MEMBER_TEMPLATES
-#     endif
-#   endif
+//
+// Define PLATFORM_GCC so we know this is "real" GCC and not some pretender:
+//
+#define PLATFORM_GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
+#if !defined(__CUDACC__)
+#define PLATFORM_GCC PLATFORM_GCC_VERSION
+#endif
 
-#   if __GNUC_MINOR__ < 96
-#     define PLATFORM_NO_SFINAE
-#   endif
+#if defined(__GXX_EXPERIMENTAL_CXX0X__) || (__cplusplus >= 201103L)
+#  define PLATFORM_GCC_CXX11
+#endif
 
-#   if __GNUC_MINOR__ <= 97
-#     define PLATFORM_NO_MEMBER_TEMPLATE_FRIENDS
-#     define PLATFORM_NO_OPERATORS_IN_NAMESPACE
-#   endif
-
-#   define PLATFORM_NO_USING_DECLARATION_OVERLOADS_FROM_TYPENAME_BASE
-#   define PLATFORM_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL
-#   define PLATFORM_NO_IS_ABSTRACT
-#   define PLATFORM_NO_EXTERN_TEMPLATE
-// Variadic macros do not exist for gcc versions before 3.0
-#   define PLATFORM_NO_VARIADIC_MACROS
-#elif __GNUC__ == 3
+#if __GNUC__ == 3
 #  if defined (__PATHSCALE__)
 #     define PLATFORM_NO_TWO_PHASE_NAME_LOOKUP
 #     define PLATFORM_NO_IS_ABSTRACT
 #  endif
-   //
-   // gcc-3.x problems:
-   //
-   // Bug specific to gcc 3.1 and 3.2:
-   //
-#  if ((__GNUC_MINOR__ == 1) || (__GNUC_MINOR__ == 2))
-#     define PLATFORM_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS
-#  endif
+
 #  if __GNUC_MINOR__ < 4
 #     define PLATFORM_NO_IS_ABSTRACT
 #  endif
-#  define PLATFORM_NO_EXTERN_TEMPLATE
+#  define PLATFORM_NO_CXX11_EXTERN_TEMPLATE
 #endif
 #if __GNUC__ < 4
 //
@@ -73,7 +46,12 @@
 #  endif
 #endif
 
-#if __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ < 4 )
+// GCC prior to 3.4 had #pragma once too but it didn't work well with filesystem links
+#if PLATFORM_GCC_VERSION >= 30400
+#define PLATFORM_HAS_PRAGMA_ONCE
+#endif
+
+#if PLATFORM_GCC_VERSION < 40400
 // Previous versions of GCC did not completely implement value-initialization:
 // GCC Bug 30111, "Value-initialization of POD base class doesn't initialize
 // members", reported by Jonathan Wakely in 2006,
@@ -89,6 +67,7 @@
 # define PLATFORM_NO_EXCEPTIONS
 #endif
 
+
 //
 // Threading support: Turn this on unconditionally here (except for
 // those platforms where we can know for sure). It will get turned off again
@@ -96,45 +75,51 @@
 //
 #if !defined(__MINGW32__) && !defined(linux) && !defined(__linux) && !defined(__linux__)
 # define PLATFORM_HAS_THREADS
-#endif 
+#endif
 
 //
 // gcc has "long long"
+// Except on Darwin with standard compliance enabled (-pedantic)
+// Apple gcc helpfully defines this macro we can query
 //
-#define PLATFORM_HAS_LONG_LONG
+#if !defined(__DARWIN_NO_LONG_LONG)
+# define PLATFORM_HAS_LONG_LONG
+#endif
 
 //
 // gcc implements the named return value optimization since version 3.1
 //
-#if __GNUC__ > 3 || ( __GNUC__ == 3 && __GNUC_MINOR__ >= 1 )
 #define PLATFORM_HAS_NRVO
-#endif
+
+// Branch prediction hints
+#define PLATFORM_LIKELY(x) __builtin_expect(x, 1)
+#define PLATFORM_UNLIKELY(x) __builtin_expect(x, 0)
 
 //
 // Dynamic shared object (DSO) and dynamic-link library (DLL) support
 //
 #if __GNUC__ >= 4
 #  if (defined(_WIN32) || defined(__WIN32__) || defined(WIN32)) && !defined(__CYGWIN__)
-     // All Win32 development environments, including 64-bit Windows and MinGW, define 
+     // All Win32 development environments, including 64-bit Windows and MinGW, define
      // _WIN32 or one of its variant spellings. Note that Cygwin is a POSIX environment,
      // so does not define _WIN32 or its variants.
 #    define PLATFORM_HAS_DECLSPEC
-#    define PLATFORM_SYMBOL_EXPORT __attribute__((dllexport))
-#    define PLATFORM_SYMBOL_IMPORT __attribute__((dllimport))
+#    define PLATFORM_SYMBOL_EXPORT __attribute__((__dllexport__))
+#    define PLATFORM_SYMBOL_IMPORT __attribute__((__dllimport__))
 #  else
-#    define PLATFORM_SYMBOL_EXPORT __attribute__((visibility("default")))
+#    define PLATFORM_SYMBOL_EXPORT __attribute__((__visibility__("default")))
 #    define PLATFORM_SYMBOL_IMPORT
 #  endif
-#  define PLATFORM_SYMBOL_VISIBLE __attribute__((visibility("default")))
+#  define PLATFORM_SYMBOL_VISIBLE __attribute__((__visibility__("default")))
 #else
-// config/platform/win32.hpp will define PLATFORM_SYMBOL_EXPORT, etc., unless already defined  
+// config/platform/win32.hpp will define PLATFORM_SYMBOL_EXPORT, etc., unless already defined
 #  define PLATFORM_SYMBOL_EXPORT
 #endif
 
 //
 // RTTI and typeinfo detection is possible post gcc-4.3:
 //
-#if __GNUC__ * 100 + __GNUC_MINOR__ >= 403
+#if PLATFORM_GCC_VERSION > 40300
 #  ifndef __GXX_RTTI
 #     ifndef PLATFORM_NO_TYPEID
 #        define PLATFORM_NO_TYPEID
@@ -145,13 +130,49 @@
 #  endif
 #endif
 
-// C++0x features not implemented in any GCC version
 //
-#define PLATFORM_NO_TEMPLATE_ALIASES
+// Recent GCC versions have __int128 when in 64-bit mode.
+//
+// We disable this if the compiler is really nvcc with C++03 as it
+// doesn't actually support __int128 as of CUDA_VERSION=7500
+// even though it defines __SIZEOF_INT128__.
+// See https://svn.boost.org/trac/boost/ticket/8048
+//     https://svn.boost.org/trac/boost/ticket/11852
+// Only re-enable this for nvcc if you're absolutely sure
+// of the circumstances under which it's supported:
+//
+#if defined(__CUDACC__)
+#  if defined(PLATFORM_GCC_CXX11)
+#    define PLATFORM_NVCC_CXX11
+#  else
+#    define PLATFORM_NVCC_CXX03
+#  endif
+#endif
+
+#if defined(__SIZEOF_INT128__) && !defined(PLATFORM_NVCC_CXX03)
+#  define PLATFORM_HAS_INT128
+#endif
+//
+// Recent GCC versions have a __float128 native type, we need to
+// include a std lib header to detect this - not ideal, but we'll
+// be including <cstddef> later anyway when we select the std lib.
+//
+// Nevertheless, as of CUDA 7.5, using __float128 with the host
+// compiler in pre-C++11 mode is still not supported.
+// See https://svn.boost.org/trac/boost/ticket/11852
+//
+#ifdef __cplusplus
+#include <cstddef>
+#else
+#include <stddef.h>
+#endif
+#if defined(_GLIBCXX_USE_FLOAT128) && !defined(__STRICT_ANSI__) && !defined(PLATFORM_NVCC_CXX03)
+# define PLATFORM_HAS_FLOAT128
+#endif
 
 // C++0x features in 4.3.n and later
 //
-#if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ > 2)) && defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if (PLATFORM_GCC_VERSION >= 40300) && defined(PLATFORM_GCC_CXX11)
 // C++0x features are only enabled when -std=c++0x or -std=gnu++0x are
 // passed on the command line, which in turn defines
 // __GXX_EXPERIMENTAL_CXX0X__.
@@ -160,59 +181,125 @@
 #  define PLATFORM_HAS_STATIC_ASSERT
 #  define PLATFORM_HAS_VARIADIC_TMPL
 #else
-#  define PLATFORM_NO_DECLTYPE
-#  define PLATFORM_NO_FUNCTION_TEMPLATE_DEFAULT_ARGS
-#  define PLATFORM_NO_RVALUE_REFERENCES
-#  define PLATFORM_NO_STATIC_ASSERT
-
-// Variadic templates compiler: 
-//   http://www.generic-programming.org/~dgregor/cpp/variadic-templates.html
-#  ifdef __VARIADIC_TEMPLATES
-#    define PLATFORM_HAS_VARIADIC_TMPL
-#  else
-#    define PLATFORM_NO_VARIADIC_TEMPLATES
-#  endif
+#  define PLATFORM_NO_CXX11_DECLTYPE
+#  define PLATFORM_NO_CXX11_FUNCTION_TEMPLATE_DEFAULT_ARGS
+#  define PLATFORM_NO_CXX11_RVALUE_REFERENCES
+#  define PLATFORM_NO_CXX11_STATIC_ASSERT
 #endif
 
 // C++0x features in 4.4.n and later
 //
-#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 4) || !defined(__GXX_EXPERIMENTAL_CXX0X__)
-#  define PLATFORM_NO_AUTO_DECLARATIONS
-#  define PLATFORM_NO_AUTO_MULTIDECLARATIONS
-#  define PLATFORM_NO_CHAR16_T
-#  define PLATFORM_NO_CHAR32_T
-#  define PLATFORM_NO_DEFAULTED_FUNCTIONS
-#  define PLATFORM_NO_DELETED_FUNCTIONS
-#  define PLATFORM_NO_INITIALIZER_LISTS
-#  define PLATFORM_NO_SCOPED_ENUMS  
+#if (PLATFORM_GCC_VERSION < 40400) || !defined(PLATFORM_GCC_CXX11)
+#  define PLATFORM_NO_CXX11_AUTO_DECLARATIONS
+#  define PLATFORM_NO_CXX11_AUTO_MULTIDECLARATIONS
+#  define PLATFORM_NO_CXX11_CHAR16_T
+#  define PLATFORM_NO_CXX11_CHAR32_T
+#  define PLATFORM_NO_CXX11_HDR_INITIALIZER_LIST
+#  define PLATFORM_NO_CXX11_DEFAULTED_FUNCTIONS
+#  define PLATFORM_NO_CXX11_DELETED_FUNCTIONS
+#  define PLATFORM_NO_CXX11_TRAILING_RESULT_TYPES
+#  define PLATFORM_NO_CXX11_INLINE_NAMESPACES
+#  define PLATFORM_NO_CXX11_VARIADIC_TEMPLATES
 #endif
 
-#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 4)
+#if PLATFORM_GCC_VERSION < 40500
 #  define PLATFORM_NO_SFINAE_EXPR
 #endif
 
-// C++0x features in 4.4.1 and later
+// GCC 4.5 forbids declaration of defaulted functions in private or protected sections
+#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ == 5) || !defined(PLATFORM_GCC_CXX11)
+#  define PLATFORM_NO_CXX11_NON_PUBLIC_DEFAULTED_FUNCTIONS
+#endif
+
+// C++0x features in 4.5.0 and later
 //
-#if (__GNUC__*10000 + __GNUC_MINOR__*100 + __GNUC_PATCHLEVEL__ < 40401) || !defined(__GXX_EXPERIMENTAL_CXX0X__)
-// scoped enums have a serious bug in 4.4.0, so define PLATFORM_NO_SCOPED_ENUMS before 4.4.1
+#if (PLATFORM_GCC_VERSION < 40500) || !defined(PLATFORM_GCC_CXX11)
+#  define PLATFORM_NO_CXX11_EXPLICIT_CONVERSION_OPERATORS
+#  define PLATFORM_NO_CXX11_LAMBDAS
+#  define PLATFORM_NO_CXX11_LOCAL_CLASS_TEMPLATE_PARAMETERS
+#  define PLATFORM_NO_CXX11_RAW_LITERALS
+#  define PLATFORM_NO_CXX11_UNICODE_LITERALS
+#endif
+
+// C++0x features in 4.5.1 and later
+//
+#if (PLATFORM_GCC_VERSION < 40501) || !defined(PLATFORM_GCC_CXX11)
+// scoped enums have a serious bug in 4.4.0, so define PLATFORM_NO_CXX11_SCOPED_ENUMS before 4.5.1
 // See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=38064
-#  define PLATFORM_NO_SCOPED_ENUMS
+#  define PLATFORM_NO_CXX11_SCOPED_ENUMS
 #endif
 
-// C++0x features in 4.5.n and later
+// C++0x features in 4.6.n and later
 //
-#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 5) || !defined(__GXX_EXPERIMENTAL_CXX0X__)
-#  define PLATFORM_NO_EXPLICIT_CONVERSION_OPERATORS
-#  define PLATFORM_NO_LAMBDAS
-#  define PLATFORM_NO_RAW_LITERALS
-#  define PLATFORM_NO_UNICODE_LITERALS
+#if (PLATFORM_GCC_VERSION < 40600) || !defined(PLATFORM_GCC_CXX11)
+#define PLATFORM_NO_CXX11_CONSTEXPR
+#define PLATFORM_NO_CXX11_NOEXCEPT
+#define PLATFORM_NO_CXX11_NULLPTR
+#define PLATFORM_NO_CXX11_RANGE_BASED_FOR
+#define PLATFORM_NO_CXX11_UNIFIED_INITIALIZATION_SYNTAX
 #endif
 
-// C++0x features in 4.5.n and later
+// C++0x features in 4.7.n and later
 //
-#if __GNUC__ < 4 || (__GNUC__ == 4 && __GNUC_MINOR__ < 6) || !defined(__GXX_EXPERIMENTAL_CXX0X__)
-#define PLATFORM_NO_CONSTEXPR
-#define PLATFORM_NO_NULLPTR
+#if (PLATFORM_GCC_VERSION < 40700) || !defined(PLATFORM_GCC_CXX11)
+#  define PLATFORM_NO_CXX11_FINAL
+#  define PLATFORM_NO_CXX11_TEMPLATE_ALIASES
+#  define PLATFORM_NO_CXX11_USER_DEFINED_LITERALS
+#  define PLATFORM_NO_CXX11_FIXED_LENGTH_VARIADIC_TEMPLATE_EXPANSION_PACKS
+#endif
+
+// C++0x features in 4.8.n and later
+//
+#if (PLATFORM_GCC_VERSION < 40800) || !defined(PLATFORM_GCC_CXX11)
+#  define PLATFORM_NO_CXX11_ALIGNAS
+#  define PLATFORM_NO_CXX11_THREAD_LOCAL
+#endif
+
+// C++0x features in 4.8.1 and later
+//
+#if (PLATFORM_GCC_VERSION < 40801) || !defined(PLATFORM_GCC_CXX11)
+#  define PLATFORM_NO_CXX11_DECLTYPE_N3276
+#  define PLATFORM_NO_CXX11_REF_QUALIFIERS
+#  define PLATFORM_NO_CXX14_BINARY_LITERALS
+#endif
+
+// C++14 features in 4.9.0 and later
+//
+#if (PLATFORM_GCC_VERSION < 40900) || (__cplusplus < 201300)
+#  define PLATFORM_NO_CXX14_RETURN_TYPE_DEDUCTION
+#  define PLATFORM_NO_CXX14_GENERIC_LAMBDAS
+#  define PLATFORM_NO_CXX14_DIGIT_SEPARATORS
+#  define PLATFORM_NO_CXX14_DECLTYPE_AUTO
+#  if !((PLATFORM_GCC_VERSION >= 40801) && (PLATFORM_GCC_VERSION < 40900) && defined(PLATFORM_GCC_CXX11))
+#     define PLATFORM_NO_CXX14_INITIALIZED_LAMBDA_CAPTURES
+#  endif
+#endif
+
+
+// C++ 14:
+#if !defined(__cpp_aggregate_nsdmi) || (__cpp_aggregate_nsdmi < 201304)
+#  define PLATFORM_NO_CXX14_AGGREGATE_NSDMI
+#endif
+#if !defined(__cpp_constexpr) || (__cpp_constexpr < 201304)
+#  define PLATFORM_NO_CXX14_CONSTEXPR
+#endif
+#if !defined(__cpp_variable_templates) || (__cpp_variable_templates < 201304)
+#  define PLATFORM_NO_CXX14_VARIABLE_TEMPLATES
+#endif
+
+//
+// Unused attribute:
+#if __GNUC__ >= 4
+#  define PLATFORM_ATTRIBUTE_UNUSED __attribute__((__unused__))
+#endif
+//
+// __builtin_unreachable:
+#if PLATFORM_GCC_VERSION >= 40800
+#define PLATFORM_UNREACHABLE_RETURN(x) __builtin_unreachable();
+#endif
+
+#ifndef PLATFORM_COMPILER
+#  define PLATFORM_COMPILER "GNU C++ version " __VERSION__
 #endif
 
 // ConceptGCC compiler:
@@ -220,23 +307,16 @@
 #ifdef __GXX_CONCEPTS__
 #  define PLATFORM_HAS_CONCEPTS
 #  define PLATFORM_COMPILER "ConceptGCC version " __VERSION__
-#else
-#  define PLATFORM_NO_CONCEPTS
 #endif
 
-#ifndef PLATFORM_COMPILER
-#  define PLATFORM_COMPILER "GNU C++ version " __VERSION__
-#endif
-
-//
 // versions check:
-// we don't know gcc prior to version 2.90:
-#if (__GNUC__ == 2) && (__GNUC_MINOR__ < 90)
+// we don't know gcc prior to version 3.30:
+#if (PLATFORM_GCC_VERSION< 30300)
 #  error "Compiler not configured - please reconfigure"
 #endif
 //
-// last known and checked version is 4.6 (Pre-release):
-#if (__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ > 6))
+// last known and checked version is 4.9:
+#if (PLATFORM_GCC_VERSION > 40900)
 #  if defined(PLATFORM_ASSERT_CONFIG)
 #     error "Unknown compiler version - please run the configure tests and report the results"
 #  else
@@ -245,5 +325,4 @@
 //#     warning "Unknown compiler version - please run the configure tests and report the results"
 #  endif
 #endif
-
 

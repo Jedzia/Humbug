@@ -9,12 +9,12 @@
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
 
-macro(MACRO_BOOL_TO_01 FOUND_VAR )
-   foreach (_current_VAR ${ARGN})
-      if(${FOUND_VAR})
-         set(${_current_VAR} 1)
-      else(${FOUND_VAR})
-         set(${_current_VAR} 0)
-      endif(${FOUND_VAR})
-   endforeach(_current_VAR)
-endmacro(MACRO_BOOL_TO_01)
+MACRO(MACRO_BOOL_TO_01 FOUND_VAR )
+   FOREACH (_current_VAR ${ARGN})
+      IF(${FOUND_VAR})
+         SET(${_current_VAR} 1)
+      ELSE(${FOUND_VAR})
+         SET(${_current_VAR} 0)
+      ENDIF(${FOUND_VAR})
+   ENDFOREACH(_current_VAR)
+ENDMACRO(MACRO_BOOL_TO_01)

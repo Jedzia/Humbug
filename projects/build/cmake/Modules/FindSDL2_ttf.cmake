@@ -25,9 +25,9 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-set(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_ttf-2.0.12)
+SET(_DEP_PATH ${CMAKE_BINARY_DIR}/DEPS/SDL2_ttf-2.0.12)
 
-find_path(SDLTTF_INCLUDE_DIR SDL_ttf.h
+FIND_PATH(SDLTTF_INCLUDE_DIR SDL_ttf.h
   HINTS
   $ENV{SDLTTFDIR}
   $ENV{SDLDIR}
@@ -54,7 +54,7 @@ find_path(SDLTTF_INCLUDE_DIR SDL_ttf.h
   ${_DEP_PATH}
 )
 
-find_library(SDLTTF_LIBRARY_RELEASE 
+FIND_LIBRARY(SDLTTF_LIBRARY_RELEASE 
   NAMES SDL2_ttf
   HINTS
   $ENV{SDLTTFDIR}
@@ -72,7 +72,7 @@ find_library(SDLTTF_LIBRARY_RELEASE
   ${_DEP_PATH}/VisualC/x64/Release
     PATH_SUFFIXES lib64 lib
 )
-find_library(SDLTTF_LIBRARY_DEBUG 
+FIND_LIBRARY(SDLTTF_LIBRARY_DEBUG 
   NAMES SDL2_ttf
   HINTS
   $ENV{SDLTTFDIR}
@@ -90,18 +90,18 @@ find_library(SDLTTF_LIBRARY_DEBUG
   ${_DEP_PATH}/VisualC/x64/Debug
     PATH_SUFFIXES lib64 lib
 )
-set(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_DEBUG}"  CACHE STRING "SDL true type font library" FORCE)
+SET(SDLTTF_LIBRARY "optimized;${SDLTTF_LIBRARY_RELEASE};debug;${SDLTTF_LIBRARY_DEBUG}"  CACHE STRING "SDL true type font library" FORCE)
 
-if(WIN32)
+IF(WIN32)
 
-    find_file(SDLTTF_LIBRARY_DLL_RELEASE NAMES SDL2_ttf.dll PATHS
+    FIND_FILE(SDLTTF_LIBRARY_DLL_RELEASE NAMES SDL2_ttf.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
 		${_DEP_PATH}/VisualC/Release
 		${_DEP_PATH}/VisualC/x64/Release
     )
-    find_file(SDLTTF_LIBRARY_DLL_DEBUG NAMES SDL2_ttf.dll PATHS
+    FIND_FILE(SDLTTF_LIBRARY_DLL_DEBUG NAMES SDL2_ttf.dll PATHS
     	/lib
 		/usr/lib
 		/usr/local/lib
@@ -110,24 +110,24 @@ if(WIN32)
     )
 
     # // Todo: extra libfreetype-6
-    #find_file(SDLTTF_LIBRARY_DLL_EXT NAMES libfreetype-6 PATHS
+    #FIND_FILE(SDLTTF_LIBRARY_DLL_EXT NAMES libfreetype-6 PATHS
 	#	${_DEP_PATH}/VisualC/external/lib/x86
     #)
-    #file(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
-	#set(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
-	if( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-	 set( _sdlttf_library_dlls_ext_path x86 )
-	else( CMAKE_SIZEOF_VOID_P EQUAL 4 )
-	 set( _sdlttf_library_dlls_ext_path x64 )
-	endif( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+    #FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/x86/*.dll)
+	#SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
+	IF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlttf_library_dlls_ext_path x86 )
+	ELSE( CMAKE_SIZEOF_VOID_P EQUAL 4 )
+	 SET( _sdlttf_library_dlls_ext_path x64 )
+	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 
-    file(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/${_sdlttf_library_dlls_ext_path}/*.dll)
-	set(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
+    FILE(GLOB SDLTTF_LIBRARY_DLLS_EXTS ${_DEP_PATH}/VisualC/external/lib/${_sdlttf_library_dlls_ext_path}/*.dll)
+	SET(SDLTTF_LIBRARY_DLLS_EXT "${SDLTTF_LIBRARY_DLLS_EXTS}"  CACHE STRING "SDL ttf helper libraries" FORCE)
 
 	
-endif(WIN32)
+ENDIF(WIN32)
 
-include(FindPackageHandleStandardArgs)
+INCLUDE(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDLTTF
                                   REQUIRED_VARS SDLTTF_LIBRARY SDLTTF_INCLUDE_DIR)

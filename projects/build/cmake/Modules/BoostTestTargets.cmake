@@ -211,14 +211,14 @@ function(add_boost_test _name)
 
 		# Build the test.
 		add_executable(${_target_name} ${SOURCES})
-		#set_property(TARGET ${_target_name} PROPERTY FOLDER "${PROJECT_NAME}/UnitTests")
-		set_property(TARGET ${_target_name} PROPERTY FOLDER "UnitTests")
+		#SET_PROPERTY(TARGET ${_target_name} PROPERTY FOLDER "${PROJECT_NAME}/UnitTests")
+		SET_PROPERTY(TARGET ${_target_name} PROPERTY FOLDER "UnitTests")
 		
 		# Copy the boost dll to the test dir.
-		if(_boosttesttargets_libs)
-			include(helpers)
+		IF(_boosttesttargets_libs)
+			INCLUDE(helpers)
 			Copy_Boost_DLL_To_Target(${_target_name} unit_test_framework)
-		endif(_boosttesttargets_libs)
+		ENDIF(_boosttesttargets_libs)
 
 		list(APPEND LIBRARIES ${_boosttesttargets_libs})
 

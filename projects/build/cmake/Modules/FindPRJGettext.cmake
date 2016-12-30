@@ -13,64 +13,64 @@
 #    building the default target.
 
 set(hints "HINTS ${GNUWIN32_DIR}/bin")
-#message(FATAL_ERROR "   hints ${hints}")
-find_program(GETTEXT_MSGMERGE_EXECUTABLE msgmerge  HINTS ${GNUWIN32_DIR}/bin )
-find_program(GETTEXT_MSGFMT_EXECUTABLE   msgfmt    HINTS ${GNUWIN32_DIR}/bin )
-find_program(GETTEXT_XGETTEXT_EXECUTABLE xgettext  HINTS ${GNUWIN32_DIR}/bin )
-find_program(GETTEXT_MSGUNIQ_EXECUTABLE  msguniq   HINTS ${GNUWIN32_DIR}/bin )
+#MESSAGE(FATAL_ERROR "   hints ${hints}")
+FIND_PROGRAM(GETTEXT_MSGMERGE_EXECUTABLE msgmerge  HINTS ${GNUWIN32_DIR}/bin )
+FIND_PROGRAM(GETTEXT_MSGFMT_EXECUTABLE   msgfmt    HINTS ${GNUWIN32_DIR}/bin )
+FIND_PROGRAM(GETTEXT_XGETTEXT_EXECUTABLE xgettext  HINTS ${GNUWIN32_DIR}/bin )
+FIND_PROGRAM(GETTEXT_MSGUNIQ_EXECUTABLE  msguniq   HINTS ${GNUWIN32_DIR}/bin )
 
-macro(GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFile)
+MACRO(GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFile)
 
-   set(_gmoFiles)
+   SET(_gmoFiles)
    # remove only the last extension e.g
    # 	LyX2.0.pot ==> LyX2.0
    # and not LyX2.0.pot ==> LyX2
    # as it would be with NAME_WE
-   # get_filename_component(_potBasename ${_potFile} NAME_WE)
-   get_filename_component(_potname ${_potFile} NAME)
+   # GET_FILENAME_COMPONENT(_potBasename ${_potFile} NAME_WE)
+   GET_FILENAME_COMPONENT(_potname ${_potFile} NAME)
    if (_potname MATCHES "^\(.+\)\\.[^\\.]+$")
        set(_potBasename ${CMAKE_MATCH_1})
    else()
        set(_potBasename ${_potname})
    endif()
-   get_filename_component(_absPotFile ${_potFile} ABSOLUTE)
+   GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
 
-   set(_addToAll)
-   if(${_firstPoFile} STREQUAL "ALL")
-      set(_addToAll "ALL")
-      set(_firstPoFile)
-   endif(${_firstPoFile} STREQUAL "ALL")
+   SET(_addToAll)
+   IF(${_firstPoFile} STREQUAL "ALL")
+      SET(_addToAll "ALL")
+      SET(_firstPoFile)
+   ENDIF(${_firstPoFile} STREQUAL "ALL")
 
-   foreach (_currentPoFile ${ARGN})
-      get_filename_component(_absFile ${_currentPoFile} ABSOLUTE)
-      get_filename_component(_abs_PATH ${_absFile} PATH)
-      get_filename_component(_lang ${_absFile} NAME_WE)
-      set(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo)
+   FOREACH (_currentPoFile ${ARGN})
+      GET_FILENAME_COMPONENT(_absFile ${_currentPoFile} ABSOLUTE)
+      GET_FILENAME_COMPONENT(_abs_PATH ${_absFile} PATH)
+      GET_FILENAME_COMPONENT(_lang ${_absFile} NAME_WE)
+      SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo)
 
-      add_custom_command( 
+      ADD_CUSTOM_COMMAND( 
          OUTPUT ${_gmoFile} 
          COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --quiet --update --backup=none ${_absFile} ${_absPotFile}
          COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} -o ${_gmoFile} ${_absFile}
          DEPENDS ${_absPotFile} ${_absFile} 
       )
 
-      install(FILES ${_gmoFile} DESTINATION ${${_prj_name}_DATA_SUBDIR}${${_prj_name}_LOCALEDIR}/${_lang}/LC_MESSAGES RENAME ${_potBasename}.mo) 
-      set(_gmoFiles ${_gmoFiles} ${_gmoFile})
+      INSTALL(FILES ${_gmoFile} DESTINATION ${${_prj_name}_DATA_SUBDIR}${${_prj_name}_LOCALEDIR}/${_lang}/LC_MESSAGES RENAME ${_potBasename}.mo) 
+      SET(_gmoFiles ${_gmoFiles} ${_gmoFile})
 
-   endforeach (_currentPoFile )
+   ENDFOREACH (_currentPoFile )
 
-   add_custom_target(${PACKAGE}_translations ${_addToAll} DEPENDS ${_gmoFiles})
+   ADD_CUSTOM_TARGET(${PACKAGE}_translations ${_addToAll} DEPENDS ${_gmoFiles})
 
-endmacro(GETTEXT_CREATE_TRANSLATIONS )
+ENDMACRO(GETTEXT_CREATE_TRANSLATIONS )
 
-if (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
-   set(GETTEXT_FOUND TRUE)
-else (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
-   set(GETTEXT_FOUND FALSE)
-   if (GetText_REQUIRED)
-      message(FATAL_ERROR "GetText not found")
-   endif (GetText_REQUIRED)
-endif (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
+IF (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
+   SET(GETTEXT_FOUND TRUE)
+ELSE (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
+   SET(GETTEXT_FOUND FALSE)
+   IF (GetText_REQUIRED)
+      MESSAGE(FATAL_ERROR "GetText not found")
+   ENDIF (GetText_REQUIRED)
+ENDIF (GETTEXT_MSGMERGE_EXECUTABLE AND GETTEXT_MSGFMT_EXECUTABLE )
 
 mark_as_advanced(GETTEXT_MSGMERGE_EXECUTABLE GETTEXT_MSGFMT_EXECUTABLE GETTEXT_XGETTEXT_EXECUTABLE GETTEXT_MSGUNIQ_EXECUTABLE)
 

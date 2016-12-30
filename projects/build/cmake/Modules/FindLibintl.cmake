@@ -38,13 +38,13 @@ if(LIBINTL_INCLUDE_DIR)
   else (LIBINTL_LIBC_HAS_DGETTEXT)
 
 if(WIN32)
-        set(__LIBINTL_LIBNAME_REL LIBINTL3j.lib)
-        set(__LIBINTL_LIBNAME_DEB LIBINTL3jd.lib)
-        set(__LIBINTL_DLL_REL libintl3j.dll libintl3.dll)
-        set(__LIBINTL_DLL_DEB libintl3j.dll libintl3.dll)
+        SET(__LIBINTL_LIBNAME_REL LIBINTL3j.lib)
+        SET(__LIBINTL_LIBNAME_DEB LIBINTL3jd.lib)
+        SET(__LIBINTL_DLL_REL libintl3j.dll libintl3.dll)
+        SET(__LIBINTL_DLL_DEB libintl3j.dll libintl3.dll)
 else(WIN32)
-        set(__LIBINTL_LIBNAME_REL LIBINTL2)
-        set(__LIBINTL_LIBNAME_DEB LIBINTL2)
+        SET(__LIBINTL_LIBNAME_REL LIBINTL2)
+        SET(__LIBINTL_LIBNAME_DEB LIBINTL2)
 endif(WIN32)
 
   find_library(LIBINTL_LIBRARIES NAMES libintl3j intl libintl  HINTS c:/usr/lib)
@@ -53,14 +53,14 @@ endif(WIN32)
       set(LIBINTL_LIB_FOUND TRUE)
 
 	  
-	find_file(LIBINTL_DLL_DEBUG NAMES ${__LIBINTL_DLL_DEB} PATHS 
+	FIND_FILE(LIBINTL_DLL_DEBUG NAMES ${__LIBINTL_DLL_DEB} PATHS 
 	/usr/lib
 	/usr/local/lib
 	c:/usr/bin 
 	${GNUWIN32_DIR}/bin
 	NO_DEFAULT_PATH)
 
-	find_file(LIBINTL_DLL_RELEASE NAMES ${__LIBINTL_DLL_REL} PATHS 
+	FIND_FILE(LIBINTL_DLL_RELEASE NAMES ${__LIBINTL_DLL_REL} PATHS 
 	/usr/lib
 	/usr/local/lib
 	c:/usr/bin 
