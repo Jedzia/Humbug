@@ -196,12 +196,12 @@ index 2b0ad12..a781b36 100644
  #include <algorithm>
 +#include <stdexcept>
  //#include <boost/thread.hpp>
- #define HUMBUGGL_AUTO_MUTEX_NAME mutex
- #define HUMBUGGL_LOCK_AUTO_MUTEX
+ #define HUMBUG_AUTO_MUTEX_NAME mutex
+ #define HUMBUG_LOCK_AUTO_MUTEX
 @@ -110,7 +111,7 @@ Log * LogManager::getLog( const std::string& name){
      }
      else {
-         HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
+         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
 -        throw std::exception("Log not found. LogManager::getLog");
 +        throw std::runtime_error("Log not found. LogManager::getLog");
      }
@@ -210,7 +210,7 @@ index 2b0ad12..a781b36 100644
 @@ -137,7 +138,7 @@ void LogManager::destroyLog(const std::string& name){
  void LogManager::destroyLog(Log* log){
      if(!log) {
-         HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
+         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
 -        throw std::exception("Cannot destroy a null log. LogManager::destroyLog");
 +        throw std::runtime_error("Cannot destroy a null log. LogManager::destroyLog");
      }
@@ -219,7 +219,7 @@ index 2b0ad12..a781b36 100644
 @@ -170,7 +171,7 @@ Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
      }
      else {
-         HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
+         HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
 -        throw std::exception("Default log not found. LogManager::stream");
 +        throw std::runtime_error("Default log not found. LogManager::stream");
      }

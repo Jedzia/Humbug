@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef __HUMBUGGL_GUI_KEYBOARDHANDLER_H
-#define __HUMBUGGL_GUI_KEYBOARDHANDLER_H
+#ifndef __HUMBUG_GUI_KEYBOARDHANDLER_H
+#define __HUMBUG_GUI_KEYBOARDHANDLER_H
 #include "SDL.h"
 
 namespace gui {
@@ -53,4 +53,4 @@ private:
     std::map<int, int> keyState;
 };
 }
-#endif // __HUMBUGGL_GUI_KEYBOARDHANDLER_H guard
+#endif // __HUMBUG_GUI_KEYBOARDHANDLER_H guard

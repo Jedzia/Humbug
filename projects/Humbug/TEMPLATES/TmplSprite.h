@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_Template_CTemplate_H
-#define HUMBUGGL_GUI_Template_CTemplate_H
+#ifndef HUMBUG_GUI_Template_CTemplate_H
+#define HUMBUG_GUI_Template_CTemplate_H
 #include "..\Components\Point.h"
 #include "..\Components\Rectangle.h"
 #include <string>
@@ -86,4 +86,4 @@ private:
 
   std::ostream& operator<<(std::ostream& o, const CTemplate& r);
 }
-#endif // HUMBUGGL_GUI_Template_CTemplate_H guard
+#endif // HUMBUG_GUI_Template_CTemplate_H guard

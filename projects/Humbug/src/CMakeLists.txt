@@ -254,7 +254,7 @@ set(Pak01_PACKAGE_SOURCE_FILES
 	    ${Humbug_Artwork_DIR}/data/
 	    ${Humbug_Artwork_DIR}/Tutor/
 #	    ${Humbug_Artwork_DIR}/Tutor/Images
-		${HUMBUGGL_RESOURCES_DIR}/Fonts/
+		${HUMBUG_RESOURCES_DIR}/Fonts/
 	    ${Humbug_Artwork_WORKDIR}/Hud/
 	    ${Humbug_Artwork_WORKDIR}/Intro/
 	    #${Humbug_Artwork_WORKDIR}/Screens/

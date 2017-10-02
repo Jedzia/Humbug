@@ -1,5 +1,5 @@
-#ifndef HUMBUGGLSHARED_VFS_STATICASSERT_H
-#define HUMBUGGLSHARED_VFS_STATICASSERT_H
+#ifndef HUMBUGSHARED_VFS_STATICASSERT_H
+#define HUMBUGSHARED_VFS_STATICASSERT_H
 
 /*
 namespace static_assert_l {
@@ -18,4 +18,4 @@ namespace static_assert_l {
 #define static_assert_l(expr)				
 #define static_assert_l_msg(expr, msg)	
 
-#endif // HUMBUGGLSHARED_VFS_STATICASSERT_H guard
+#endif // HUMBUGSHARED_VFS_STATICASSERT_H guard

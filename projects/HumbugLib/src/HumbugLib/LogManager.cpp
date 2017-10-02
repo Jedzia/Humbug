@@ -20,14 +20,14 @@
 #include <algorithm>
 #include <stdexcept>
 //#include <boost/thread.hpp>
-#define HUMBUGGL_AUTO_MUTEX_NAME mutex
-#define HUMBUGGL_LOCK_AUTO_MUTEX
-//#define HUMBUGGL_LOCK_AUTO_MUTEX boost::unique_lock<boost::recursive_mutex>
+#define HUMBUG_AUTO_MUTEX_NAME mutex
+#define HUMBUG_LOCK_AUTO_MUTEX
+//#define HUMBUG_LOCK_AUTO_MUTEX boost::unique_lock<boost::recursive_mutex>
 // ogreAutoMutexLock(OGRE_AUTO_MUTEX_NAME)
-#ifndef HUMBUGGL_EXCEPT
-//#define HUMBUGGL_EXCEPT(num, desc, src) throw HumbugLib::ExceptionFactory::create( \
+#ifndef HUMBUG_EXCEPT
+//#define HUMBUG_EXCEPT(num, desc, src) throw HumbugLib::ExceptionFactory::create( \
 // //	HumbugLib::ExceptionCodeType<num>(), desc, src, __FILE__, __LINE__ );
-#  define HUMBUGGL_EXCEPT(num, desc, src);
+#  define HUMBUG_EXCEPT(num, desc, src);
 #endif
 //
 #include <debug.h>
@@ -61,7 +61,7 @@ LogManager::LogManager(){
 
 //-----------------------------------------------------------------------
 LogManager::~LogManager(){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
     // Destroy all logs
     LogList::iterator i;
 
@@ -74,7 +74,7 @@ LogManager::~LogManager(){
 //-----------------------------------------------------------------------
 Log * LogManager::createLog( const std::string& name, bool defaultLog, bool debuggerOutput,
         bool suppressFileOutput){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
 
     Log* newLog = new Log(name, debuggerOutput, suppressFileOutput);
 
@@ -89,13 +89,13 @@ Log * LogManager::createLog( const std::string& name, bool defaultLog, bool debu
 
 //-----------------------------------------------------------------------
 Log * LogManager::getDefaultLog(){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
     return mDefaultLog;
 }
 
 //-----------------------------------------------------------------------
 Log * LogManager::setDefaultLog(Log* newLog){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
     Log* oldLog = mDefaultLog;
     mDefaultLog = newLog;
     return oldLog;
@@ -103,14 +103,14 @@ Log * LogManager::setDefaultLog(Log* newLog){
 
 //-----------------------------------------------------------------------
 Log * LogManager::getLog( const std::string& name){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
     LogList::iterator i = mLogs.find(name);
 
     if ( i != mLogs.end() ) {
         return i->second;
     }
     else {
-        HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
+        HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Log not found. ", "LogManager::getLog");
         throw std::runtime_error("Log not found. LogManager::getLog");
     }
 }
@@ -137,7 +137,7 @@ void LogManager::destroyLog(const std::string& name){
 //-----------------------------------------------------------------------
 void LogManager::destroyLog(Log* log){
     if(!log) {
-        HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
+        HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Cannot destroy a null log.", "LogManager::destroyLog");
         throw std::runtime_error("Cannot destroy a null log. LogManager::destroyLog");
     }
 
@@ -146,7 +146,7 @@ void LogManager::destroyLog(Log* log){
 
 //-----------------------------------------------------------------------
 void LogManager::logMessage( const std::string& message, LogMessageLevel lml, bool maskDebug){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
 
     if (mDefaultLog) {
         mDefaultLog->logMessage(message, lml, maskDebug);
@@ -155,7 +155,7 @@ void LogManager::logMessage( const std::string& message, LogMessageLevel lml, bo
 
 //-----------------------------------------------------------------------
 void LogManager::setLogDetail(LoggingLevel ll){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
 
     if (mDefaultLog) {
         mDefaultLog->setLogDetail(ll);
@@ -164,13 +164,13 @@ void LogManager::setLogDetail(LoggingLevel ll){
 
 //---------------------------------------------------------------------
 Log::Stream LogManager::stream(LogMessageLevel lml, bool maskDebug){
-    HUMBUGGL_LOCK_AUTO_MUTEX;
+    HUMBUG_LOCK_AUTO_MUTEX;
 
     if (mDefaultLog) {
         return mDefaultLog->stream(lml, maskDebug);
     }
     else {
-        HUMBUGGL_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
+        HUMBUG_EXCEPT(Exception::ERR_INVALIDPARAMS, "Default log not found. ", "LogManager::stream");
         throw std::runtime_error("Default log not found. LogManager::stream");
     }
 }

@@ -1,5 +1,5 @@
-#ifndef HUMBUGGL_SCREENS_HIGHSCORESCREEN_H
-#define HUMBUGGL_SCREENS_HIGHSCORESCREEN_H
+#ifndef HUMBUG_SCREENS_HIGHSCORESCREEN_H
+#define HUMBUG_SCREENS_HIGHSCORESCREEN_H
 #include "GUI/Components/Screen.h"
 #include <boost/smart_ptr/scoped_ptr.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
@@ -50,4 +50,4 @@ private:
 
 }
 }
-#endif // HUMBUGGL_SCREENS_HIGHSCORESCREEN_H
+#endif // HUMBUG_SCREENS_HIGHSCORESCREEN_H

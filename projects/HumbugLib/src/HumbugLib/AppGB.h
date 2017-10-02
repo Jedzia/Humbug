@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGLLIB_APPGB_H
-#define HUMBUGGLLIB_APPGB_H
+#ifndef HUMBUGLIB_APPGB_H
+#define HUMBUGLIB_APPGB_H
 #include <string>
 class AppGB {
 public:
@@ -39,4 +39,4 @@ private:
     std::string exePath;
     std::string appDir;
 };
-#endif // HUMBUGGLLIB_APPGB_H
+#endif // HUMBUGLIB_APPGB_H

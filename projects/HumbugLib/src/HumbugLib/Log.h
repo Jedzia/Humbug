@@ -34,8 +34,8 @@ namespace humbuglib {
 /** \addtogroup General
  *  @{
  */
-// LogMessageLevel + LoggingLevel > HUMBUGGLLIB_LOG_THRESHOLD = message logged
-#define HUMBUGGLLIB_LOG_THRESHOLD 4
+// LogMessageLevel + LoggingLevel > HUMBUGLIB_LOG_THRESHOLD = message logged
+#define HUMBUGLIB_LOG_THRESHOLD 4
 
 /** The level of detail to which the log will go into.
  */
@@ -104,7 +104,7 @@ public:
 
     class Stream;
 
-    //HUMBUGGLLIB_AUTO_MUTEX; // public to allow external locking
+    //HUMBUGLIB_AUTO_MUTEX; // public to allow external locking
     /**
        @remarks
         Usual constructor - called by LogManager.
@@ -130,7 +130,7 @@ public:
     bool isTimeStampEnabled() const { return mTimeStamp; }
 
     /** Log a message to the debugger and to log file (the default is
-        "<code>HUMBUGGLLIB.log</code>"),
+        "<code>HUMBUGLIB.log</code>"),
      */
     void logMessage( const std::string& message, LogMessageLevel lml = LML_NORMAL, bool maskDebug = false );
 
@@ -272,6 +272,6 @@ public:
 /** @} */
 }
 
-//#include "HUMBUGGLLIBHeaderSuffix.h"
+//#include "HUMBUGLIBHeaderSuffix.h"
 
 #endif // ifndef __Log_H__

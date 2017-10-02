@@ -1,5 +1,5 @@
-#ifndef HUMBUGGLSHARED_VFS_ZSTREAM_H
-#define HUMBUGGLSHARED_VFS_ZSTREAM_H
+#ifndef HUMBUGSHARED_VFS_ZSTREAM_H
+#define HUMBUGSHARED_VFS_ZSTREAM_H
 
 // zstream.h: interface for the zstream classes.
 //
@@ -172,4 +172,4 @@ protected:
 
 } // namespace zip_file_system;
 
-#endif // HUMBUGGLSHARED_VFS_ZSTREAM_H guard
+#endif // HUMBUGSHARED_VFS_ZSTREAM_H guard

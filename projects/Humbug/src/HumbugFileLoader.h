@@ -1,5 +1,5 @@
-#ifndef HUMBUGGL_FS_HumbugFileLoader_H
-#define HUMBUGGL_FS_HumbugFileLoader_H
+#ifndef HUMBUG_FS_HumbugFileLoader_H
+#define HUMBUG_FS_HumbugFileLoader_H
 #include <GuiLib/Filesystem/FileLoader.h>
 
 
@@ -20,4 +20,4 @@ private:
     boost::scoped_ptr<HumbugFileLoaderImpl> pimpl_;
 };
 
-#endif // HUMBUGGL_FS_HumbugFileLoader_H guard
+#endif // HUMBUG_FS_HumbugFileLoader_H guard

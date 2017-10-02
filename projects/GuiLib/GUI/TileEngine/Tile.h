@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_TILEENGINE_CTILE_H
-#define HUMBUGGL_GUI_TILEENGINE_CTILE_H
+#ifndef HUMBUG_GUI_TILEENGINE_CTILE_H
+#define HUMBUG_GUI_TILEENGINE_CTILE_H
 #include "../Components/Point.h"
 //#include "../Components/Rectangle.h"
 #include <string>
@@ -50,4 +50,4 @@ std::ostream& operator<<(std::ostream& o, const CTile& r);
 
 }
 
-#endif // HUMBUGGL_GUI_TILEENGINE_CTILE_H guard
+#endif // HUMBUG_GUI_TILEENGINE_CTILE_H guard

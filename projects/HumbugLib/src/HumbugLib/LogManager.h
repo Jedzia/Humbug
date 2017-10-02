@@ -63,7 +63,7 @@ protected:
 
 public:
 
-      //HUMBUGGL_AUTO_MUTEX; // public to allow external locking
+      //HUMBUG_AUTO_MUTEX; // public to allow external locking
 
       LogManager();
       ~LogManager();

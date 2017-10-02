@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_LEVELS_ScrollerLevelA_H
-#define HUMBUGGL_LEVELS_ScrollerLevelA_H
+#ifndef HUMBUG_LEVELS_ScrollerLevelA_H
+#define HUMBUG_LEVELS_ScrollerLevelA_H
 #include <GUI/Components/Screen.h>
 #include <boost/smart_ptr/scoped_ptr.hpp>
 #include "HumbugShared/GameObjects/Player.h"
@@ -81,4 +81,4 @@ public:
   }
 }
 
-#endif // HUMBUGGL_LEVELS_ScrollerLevelA_H
+#endif // HUMBUG_LEVELS_ScrollerLevelA_H

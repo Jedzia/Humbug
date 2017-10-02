@@ -1,5 +1,5 @@
-#ifndef HUMBUGGLSHARED_VFS_FILEIO_H
-#define HUMBUGGLSHARED_VFS_FILEIO_H
+#ifndef HUMBUGSHARED_VFS_FILEIO_H
+#define HUMBUGSHARED_VFS_FILEIO_H
 // bfileio.h: interface for the binary file i/o.
 //
 //////////////////////////////////////////////////////////////////////
@@ -248,4 +248,4 @@ inline std::string search_iterator::Name() const {
 } // namespace io_facilities
 
 
-#endif // HUMBUGGLSHARED_VFS_FILEIO_H guard
+#endif // HUMBUGSHARED_VFS_FILEIO_H guard

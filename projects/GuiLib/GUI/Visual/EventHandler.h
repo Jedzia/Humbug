@@ -1,5 +1,5 @@
-#ifndef HUMBUGGL_GUI_VISUAL_EVENTHANDLER_H_
-#define HUMBUGGL_GUI_VISUAL_EVENTHANDLER_H_
+#ifndef HUMBUG_GUI_VISUAL_EVENTHANDLER_H_
+#define HUMBUG_GUI_VISUAL_EVENTHANDLER_H_
 
 #include "Application.h"
 #include <boost/smart_ptr/scoped_ptr.hpp>
@@ -99,4 +99,4 @@ private:
 
 } // namespace gui
 
-#endif //#ifndef HUMBUGGL_GUI_VISUAL_EVENTHANDLER_H_
+#endif //#ifndef HUMBUG_GUI_VISUAL_EVENTHANDLER_H_

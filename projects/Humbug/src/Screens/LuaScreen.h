@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_SCREENS_LUASCREEN_H
-#define HUMBUGGL_SCREENS_LUASCREEN_H
+#ifndef HUMBUG_SCREENS_LUASCREEN_H
+#define HUMBUG_SCREENS_LUASCREEN_H
 #include "GUI/Components/Screen.h"
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/smart_ptr/scoped_ptr.hpp>
@@ -79,4 +79,4 @@ private:
     };
   }
 }
-#endif // HUMBUGGL_SCREENS_LUASCREEN_H
+#endif // HUMBUG_SCREENS_LUASCREEN_H

@@ -13,8 +13,8 @@
  * modified    2016-01-09, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_COMPONENTS_TEXT_H
-#define HUMBUGGL_GUI_COMPONENTS_TEXT_H
+#ifndef HUMBUG_GUI_COMPONENTS_TEXT_H
+#define HUMBUG_GUI_COMPONENTS_TEXT_H
 
 #include "BaseDrawable.h"
 #include "Color.h"
@@ -220,4 +220,4 @@ public:
 } // namespace components
 } // namespace gui
 
-#endif // HUMBUGGL_GUI_COMPONENTS_TEXT_H
+#endif // HUMBUG_GUI_COMPONENTS_TEXT_H

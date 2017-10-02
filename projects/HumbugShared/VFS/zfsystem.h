@@ -1,5 +1,5 @@
-#ifndef HUMBUGGLSHARED_VFS_ZFSYSTEM_H
-#define HUMBUGGLSHARED_VFS_ZFSYSTEM_H
+#ifndef HUMBUGSHARED_VFS_ZFSYSTEM_H
+#define HUMBUGSHARED_VFS_ZFSYSTEM_H
 // zfsystem.h: interface for the zip file system classes.
 //
 //////////////////////////////////////////////////////////////////////
@@ -231,4 +231,4 @@ inline void filesystem::MakeDefault() const {
 
 }	// namespace zip_file_system
 
-#endif // HUMBUGGLSHARED_VFS_ZFSYSTEM_H guard
+#endif // HUMBUGSHARED_VFS_ZFSYSTEM_H guard

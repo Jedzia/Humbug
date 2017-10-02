@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_SPRITE_SPRITEMANAGER_H
-#define HUMBUGGL_GUI_SPRITE_SPRITEMANAGER_H
+#ifndef HUMBUG_GUI_SPRITE_SPRITEMANAGER_H
+#define HUMBUG_GUI_SPRITE_SPRITEMANAGER_H
 
 //
 #include "Sprite.h"
@@ -126,4 +126,4 @@ private:
 
 std::ostream& operator<<(std::ostream& o, const CSpriteManager& r);
 }
-#endif // HUMBUGGL_GUI_SPRITE_SPRITEMANAGER_H guard
+#endif // HUMBUG_GUI_SPRITE_SPRITEMANAGER_H guard

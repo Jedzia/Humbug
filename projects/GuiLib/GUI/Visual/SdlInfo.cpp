@@ -87,14 +87,14 @@ bool SdlInfo::CastSDLBool( SDL_bool v ) const {
         return true;
     }
 
-#ifdef HUMBUGGL_ENUMCHECK
+#ifdef HUMBUG_ENUMCHECK
 
     if (v != SDL_FALSE) {
         //throw_exception();
         throw "[SdlInfo::CastSDLBool] SDL_bool in an invalid state.";
     }
 
-#endif // HUMBUGGL_ENUMCHECK
+#endif // HUMBUG_ENUMCHECK
     return false;
 }
 

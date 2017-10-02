@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_COMPONENTS_TEXTSCROLLER_H
-#define HUMBUGGL_GUI_COMPONENTS_TEXTSCROLLER_H
+#ifndef HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H
+#define HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H
 
 #include "Canvas.h"
 #include "Point.h"
@@ -54,4 +54,4 @@ private:
 } // namespace components
 } // namespace gui
 
-#endif // HUMBUGGL_GUI_COMPONENTS_TEXTSCROLLER_H
+#endif // HUMBUG_GUI_COMPONENTS_TEXTSCROLLER_H

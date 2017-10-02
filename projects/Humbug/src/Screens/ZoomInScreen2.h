@@ -13,8 +13,8 @@
 * modified    2016-01-09, Jedzia
 */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_SCREENS_ZoomInScreen2_H
-#define HUMBUGGL_SCREENS_ZoomInScreen2_H
+#ifndef HUMBUG_SCREENS_ZoomInScreen2_H
+#define HUMBUG_SCREENS_ZoomInScreen2_H
 #include "boost/smart_ptr/scoped_ptr.hpp"
 #include <GuiLib/GUI/Components/Screen.h>
 
@@ -82,4 +82,4 @@ private:
 };
 }
 
-#endif // ifndef HUMBUGGL_SCREENS_ZoomInScreen2_H
+#endif // ifndef HUMBUG_SCREENS_ZoomInScreen2_H

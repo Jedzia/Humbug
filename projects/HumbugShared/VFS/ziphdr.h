@@ -1,5 +1,5 @@
-#ifndef HUMBUGGLSHARED_VFS_ZIPHDR_H
-#define HUMBUGGLSHARED_VFS_ZIPHDR_H
+#ifndef HUMBUGSHARED_VFS_ZIPHDR_H
+#define HUMBUGSHARED_VFS_ZIPHDR_H
 // zfsystem.h: interface for the zip header classes.
 //
 //////////////////////////////////////////////////////////////////////
@@ -142,4 +142,4 @@ struct eofcd_header
 
 } // namespace zip_file_system
 
-#endif // HUMBUGGLSHARED_VFS_ZIPHDR_H guard
+#endif // HUMBUGSHARED_VFS_ZIPHDR_H guard

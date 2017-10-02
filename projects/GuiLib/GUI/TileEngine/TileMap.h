@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_TILEENGINE_CTILEMAP_H
-#define HUMBUGGL_GUI_TILEENGINE_CTILEMAP_H
+#ifndef HUMBUG_GUI_TILEENGINE_CTILEMAP_H
+#define HUMBUG_GUI_TILEENGINE_CTILEMAP_H
 #include "TileSet.h"
 #include <string>
 
@@ -67,4 +67,4 @@ private:
   };
 }
 
-#endif // HUMBUGGL_GUI_TILEENGINE_CTILEMAP_H guard
+#endif // HUMBUG_GUI_TILEENGINE_CTILEMAP_H guard

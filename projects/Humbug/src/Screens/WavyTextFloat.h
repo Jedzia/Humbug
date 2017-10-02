@@ -14,8 +14,8 @@
  * modified    2013-03-06, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_SCREENS_WAVYTEXTFLOAT_H
-#define HUMBUGGL_SCREENS_WAVYTEXTFLOAT_H
+#ifndef HUMBUG_SCREENS_WAVYTEXTFLOAT_H
+#define HUMBUG_SCREENS_WAVYTEXTFLOAT_H
 #include "GUI/Components/Screen.h"
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/smart_ptr/scoped_ptr.hpp>
@@ -46,4 +46,4 @@ public:
     };
   }
 }
-#endif // HUMBUGGL_SCREENS_WAVYTEXTFLOAT_H
+#endif // HUMBUG_SCREENS_WAVYTEXTFLOAT_H

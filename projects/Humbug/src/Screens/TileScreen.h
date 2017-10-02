@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_SCREENS_TileScreen_H
-#define HUMBUGGL_SCREENS_TileScreen_H
+#ifndef HUMBUG_SCREENS_TileScreen_H
+#define HUMBUG_SCREENS_TileScreen_H
 #include "GUI/Components/Screen.h"
 #include "boost/smart_ptr/scoped_ptr.hpp"
 
@@ -58,4 +58,4 @@ private:
   };
 }
 
-#endif // ifndef HUMBUGGL_SCREENS_TileScreen_H
+#endif // ifndef HUMBUG_SCREENS_TileScreen_H

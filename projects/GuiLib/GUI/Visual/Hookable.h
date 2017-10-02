@@ -1,5 +1,5 @@
-#ifndef HUMBUGGL_GUI_VISUAL_HOOKABLE_H
-#define HUMBUGGL_GUI_VISUAL_HOOKABLE_H
+#ifndef HUMBUG_GUI_VISUAL_HOOKABLE_H
+#define HUMBUG_GUI_VISUAL_HOOKABLE_H
 
 //#include "Eventhandler.h"
 #include <boost/ptr_container/ptr_vector.hpp>
@@ -92,4 +92,4 @@ private:
 
 } // namespace gui
 
-#endif // HUMBUGGL_GUI_VISUAL_HOOKABLE_H guard
+#endif // HUMBUG_GUI_VISUAL_HOOKABLE_H guard

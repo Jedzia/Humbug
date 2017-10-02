@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_TILEENGINE_CTILESET_H
-#define HUMBUGGL_GUI_TILEENGINE_CTILESET_H
+#ifndef HUMBUG_GUI_TILEENGINE_CTILESET_H
+#define HUMBUG_GUI_TILEENGINE_CTILESET_H
 #include "../Components/Point.h"
 #include "../Components/Rectangle.h"
 #include "Tile.h"
@@ -68,4 +68,4 @@ private:
   std::ostream& operator<<(std::ostream& o, const CTileSet& r);
 }
 
-#endif // HUMBUGGL_GUI_TILEENGINE_CTILESET_H guard
+#endif // HUMBUG_GUI_TILEENGINE_CTILESET_H guard

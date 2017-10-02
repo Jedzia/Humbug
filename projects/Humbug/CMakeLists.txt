@@ -1,6 +1,6 @@
 
 set(PACKAGE Humbug)
-set(HUMBUGGL_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
+set(HUMBUG_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
 add_subdirectory( Artwork )
 #add_subdirectory( HumbugShared )

@@ -14,8 +14,8 @@
  * modified    2013-03-06, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef __HUMBUGGL_GUI_VISUAL_CCONSOLE_H
-#define __HUMBUGGL_GUI_VISUAL_CCONSOLE_H
+#ifndef __HUMBUG_GUI_VISUAL_CCONSOLE_H
+#define __HUMBUG_GUI_VISUAL_CCONSOLE_H
 
 #include "../Components/Canvas.h"
 #include "../Components/Rectangle.h"
@@ -60,4 +60,4 @@ private:
 //std::ostream& operator<<(std::ostream& o, const CConsole& r);
 } // namespace gui
 
-#endif // __HUMBUGGL_GUI_VISUAL_CCONSOLE_H guard
+#endif // __HUMBUG_GUI_VISUAL_CCONSOLE_H guard

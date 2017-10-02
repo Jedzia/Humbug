@@ -14,8 +14,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_GUI_SPRITE_CSPRITE_H
-#define HUMBUGGL_GUI_SPRITE_CSPRITE_H
+#ifndef HUMBUG_GUI_SPRITE_CSPRITE_H
+#define HUMBUG_GUI_SPRITE_CSPRITE_H
 #include "../Components/Point.h"
 #include "../Components/Rectangle.h"
 #include "../Components//BaseDrawable.h"
@@ -104,4 +104,4 @@ public:
 
   std::ostream& operator<<(std::ostream& o, const CSprite& r);
 }
-#endif // HUMBUGGL_GUI_SPRITE_CSPRITE_H guard
+#endif // HUMBUG_GUI_SPRITE_CSPRITE_H guard

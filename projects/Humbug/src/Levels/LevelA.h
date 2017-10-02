@@ -14,8 +14,8 @@
  * modified    2013-11-22, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_SCREENS_LEVELA_H
-#define HUMBUGGL_SCREENS_LEVELA_H
+#ifndef HUMBUG_SCREENS_LEVELA_H
+#define HUMBUG_SCREENS_LEVELA_H
 #include "../Screens/LuaScreen.h"
 #include "GUI/Components/Screen.h"
 #include <boost/ptr_container/ptr_vector.hpp>
@@ -82,4 +82,4 @@ private:
     };
   }
 }
-#endif // HUMBUGGL_SCREENS_LEVELA_H
+#endif // HUMBUG_SCREENS_LEVELA_H

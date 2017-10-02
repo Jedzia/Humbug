@@ -15,8 +15,8 @@
  * modified    2012-07-10, Jedzia
  */
 /*---------------------------------------------------------*/
-#ifndef HUMBUGGL_SDLINFO_H
-#define HUMBUGGL_SDLINFO_H
+#ifndef HUMBUG_SDLINFO_H
+#define HUMBUG_SDLINFO_H
 
 //
 #include <string>
@@ -99,4 +99,4 @@ std::ostream& operator<<(std::ostream& o, const SdlInfo& r);
 
 } // namespace gui
 
-#endif // HUMBUGGL_SDLINFO_H
+#endif // HUMBUG_SDLINFO_H

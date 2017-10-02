@@ -77,7 +77,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 			LOGSTREAM << "ERROR: Can't load:" + filename;
 
 			// Todo: does not show filename with the exception.
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadImg-slurp5]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
         }
@@ -123,7 +123,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
 			LOGSTREAM << "ERROR: Can't load:" + filename;
 
 			// Todo: does not show filename with the exception.
-			HUMBUGGL_FILELOADER_THROW(
+			HUMBUG_FILELOADER_THROW(
 				FileLoaderException("[HumbugFileLoader::LoadChar]", filename,
 				boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
 		}
@@ -145,7 +145,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (! imgmem)
         {
             //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadImg-imgmem]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
         }
@@ -161,7 +161,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
             // load a internal error image.
             const char *imgMsg = IMG_GetError();
 
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException(std::string("[HumbugFileLoader::LoadImg-sdlsurface]: '" ) + filename + "' " + imgMsg, 1));
             // generic_category
         }
@@ -180,7 +180,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (! imgmem)
         {
             //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadFont]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
         }
@@ -194,7 +194,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (!font) {
             //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
             // load a internal error image.
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException(std::string("[HumbugFileLoader::LoadFont]: '" ) + filename + "' " + TTF_GetError(), 1));
             // generic_category
         }
@@ -213,7 +213,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (! file)
         {
             //std::cerr << "[HumbugFileLoader::LoadImg-slurp5] Error: " << filename << " could not be opened." << std::endl;
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException("[HumbugFileLoader::LoadImg-slurp5]", filename,
                 boost::system::error_code(HumbugFileLoader_ERRNO, boost::system::system_category())));
         }
@@ -229,7 +229,7 @@ struct HumbugFileLoader::HumbugFileLoaderImpl {
         if (!sdlsurface) {
             //fprintf(stderr, "Error: '%s' could not be opened: %s\n", filename.c_str(), IMG_GetError());
             // load a internal error image.
-            HUMBUGGL_FILELOADER_THROW(
+            HUMBUG_FILELOADER_THROW(
                 FileLoaderException(std::string("[HumbugFileLoader::LoadImg-slurp5]: '" ) + filename + "' " + IMG_GetError(), 1));
 
             // generic_category

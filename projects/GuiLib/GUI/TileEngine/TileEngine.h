@@ -1,5 +1,5 @@
-#ifndef HUMBUGGL_GUI_TILEENGINE_CTILEENGINE_H
-#define HUMBUGGL_GUI_TILEENGINE_CTILEENGINE_H
+#ifndef HUMBUG_GUI_TILEENGINE_CTILEENGINE_H
+#define HUMBUG_GUI_TILEENGINE_CTILEENGINE_H
 
 #include <boost/ptr_container/ptr_vector.hpp>
 #include "TileSet.h"
@@ -53,4 +53,4 @@ std::ostream& operator<<(std::ostream& o, const CTileEngine& r);
 
 }
 
-#endif // HUMBUGGL_GUI_TILEENGINE_CTILEENGINE_H guard
+#endif // HUMBUG_GUI_TILEENGINE_CTILEENGINE_H guard
