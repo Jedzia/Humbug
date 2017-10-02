@@ -1,11 +1,11 @@
 
-SET(PACKAGE Humbug)
-SET(HUMBUG_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
+set(PACKAGE Humbug)
+set(HUMBUG_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Resources)
 
-ADD_SUBDIRECTORY( Artwork )
-#ADD_SUBDIRECTORY( HumbugShared )
-ADD_SUBDIRECTORY( src )
+add_subdirectory( Artwork )
+#add_subdirectory( HumbugShared )
+add_subdirectory( src )
 
-#SET(POTSRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-#ADD_SUBDIRECTORY( po )
-ADD_SUBDIRECTORY( docs )
+#set(POTSRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+#add_subdirectory( po )
+add_subdirectory( docs )

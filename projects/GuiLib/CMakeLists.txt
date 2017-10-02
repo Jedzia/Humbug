@@ -16,49 +16,51 @@
 #cmake_policy(SET CMP0005 NEW) #
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( GuiLib )
-ADD_SUBDIRECTORY( docs )
+project( GuiLib )
+add_subdirectory( docs )
 
-MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
-INCLUDE (BoostExtensions)
-INCLUDE (PCHSupport)
-INCLUDE (helpers)
-INCLUDE (library)
+message(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
+include (BoostExtensions)
+include (PCHSupport)
+include (helpers)
+include (library)
 
+find_package(OpenGL)
+find_package(GLUT)
 
-SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;serialization")
+set(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options;serialization")
 # Use Boost libraries for this project.
-SET(USE_LIB_BOOST TRUE)
+set(USE_LIB_BOOST TRUE)
 
-	SET(USE_SDL TRUE)
-	SET(USE_SDL_IMAGE TRUE)
-	SET(USE_SDL_TTF TRUE)
-#	SET(USE_SDL_GFX TRUE)
+	set(USE_SDL TRUE)
+	set(USE_SDL_IMAGE TRUE)
+	set(USE_SDL_TTF TRUE)
+#	set(USE_SDL_GFX TRUE)
 
 # local project settings
-INCLUDE (bindings)
+include (bindings)
 
-SET(GuiLib_GLOBAL_headers
+set(GuiLib_GLOBAL_headers
 		MathDefs.h
 		TimingDefs.h
 )
 
 # User-Interface skeleton
-SET(GuiLib_GUI_Data_headers
+set(GuiLib_GUI_Data_headers
 		GUI/Data/ColorData.h
 )
-SET(GuiLib_GUI_Data_sources
+set(GuiLib_GUI_Data_sources
 		GUI/Data/ColorData.cpp
 )
 
-SET(GuiLib_OTHER_headers
+set(GuiLib_OTHER_headers
 		Input/KeyboardHandler.h
 )
-SET(GuiLib_OTHER_sources
+set(GuiLib_OTHER_sources
 		Input/KeyboardHandler.cpp
 )
 
-SET(GuiLib_GUI_headers
+set(GuiLib_GUI_headers
 		GUI/GuiFontMetrics.h
 
 		GUI/Visual/Application.h
@@ -71,7 +73,7 @@ SET(GuiLib_GUI_headers
 		GUI/Visual/SdlInfo.h
 		GUI/Visual/Console.h
 )
-SET(GuiLib_GUI_sources
+set(GuiLib_GUI_sources
 		GUI/GuiFontMetrics.cpp
 
 		GUI/Visual/Application.cpp
@@ -86,7 +88,7 @@ SET(GuiLib_GUI_sources
 )
 
 # Component set (Canvas, Controls, etc.)
-SET(GuiLib_Component_headers
+set(GuiLib_Component_headers
 		Timing.h
 		TimingChain.h
 		Timing2.h
@@ -99,8 +101,12 @@ SET(GuiLib_Component_headers
 		GUI/Components/Point.h
 		GUI/Components/Rectangle.h
 		GUI/Components/Color.h
+		GUI/Components/Blendmode.h
 		GUI/Components/Canvas.h
 		GUI/Components/CanvasRendererImpl.h
+		GUI/Components/CanvasDisplayApi.h
+		GUI/Components/Impl/BothDisplay.h
+		GUI/Components/Impl/QuadRenderer.h
 		GUI/Components/Image.h
 		GUI/Components/SeamlessImage.h
 		GUI/Components/MainCanvas.h
@@ -132,7 +138,7 @@ SET(GuiLib_Component_headers
 		GUI/TileEngine/TileMap.h
 		GUI/TileEngine/TileEngine.h
 )
-SET(GuiLib_Component_sources
+set(GuiLib_Component_sources
 		Timing.cpp
 		TimingChain.cpp
 		GUI/Disposable.cpp
@@ -142,6 +148,8 @@ SET(GuiLib_Component_sources
 		GUI/Components/Color.cpp
 		GUI/Components/Canvas.cpp
 		GUI/Components/CanvasRendererImpl.cpp
+		GUI/Components/Impl/BothDisplay.cpp
+		GUI/Components/Impl/QuadRenderer.cpp
 		GUI/Components/Image.cpp
 		GUI/Components/SeamlessImage.cpp
 		GUI/Components/MainCanvas.cpp
@@ -175,13 +183,13 @@ SET(GuiLib_Component_sources
 )
 
 # Console stuff
-SET(GuiLib_GuiConsole_headers
+set(GuiLib_GuiConsole_headers
 		GUI/Visual/DT_drawtext.h
 		GUI/Visual/internal.h
 		GUI/Visual/SDL_console.h
 		GUI/Visual/split.h
 )
-SET(GuiLib_GuiConsole_sources
+set(GuiLib_GuiConsole_sources
 		GUI/Visual/DT_drawtext.c
 		GUI/Visual/internal.c
 		GUI/Visual/SDL_console.c
@@ -189,7 +197,7 @@ SET(GuiLib_GuiConsole_sources
 )
 
 # putting the sources together
-SET(GuiLib_headers
+set(GuiLib_headers
 		${GuiLib_OTHER_headers}
 		${GuiLib_GUI_Data_headers}
 		${GuiLib_GUI_headers}
@@ -198,7 +206,7 @@ SET(GuiLib_headers
 		Filesystem/FileLoader.h
 )
 
-SET(GuiLib_sources
+set(GuiLib_sources
 		${GuiLib_OTHER_sources}
 		${GuiLib_GUI_Data_sources}
 		${GuiLib_GUI_sources}
@@ -208,66 +216,73 @@ SET(GuiLib_sources
 )
 
 
-INCLUDE_DIRECTORIES(${SDL_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${SDLIMAGE_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${SDLTTF_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${SDLGFX_INCLUDE_DIR})
-#INCLUDE_DIRECTORIES(${HumbugShared_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
+include_directories(${SDL_INCLUDE_DIR})
+include_directories(${SDLIMAGE_INCLUDE_DIR})
+include_directories(${SDLTTF_INCLUDE_DIR})
+include_directories(${SDLGFX_INCLUDE_DIR})
+#include_directories(${HumbugShared_INCLUDE_DIR})
+include_directories(${HumbugLib_INCLUDE_DIR})
+include_directories(${ZLIB_INCLUDE_DIR})
+include_directories(${PROJECT_SOURCE_DIR})
+#include_directories(${GL3W_INCLUDE_DIRS})
+include_directories(${glm_INCLUDE_DIR})
+include_directories(${GLEW_INCLUDE_DIR})
+
+#add_definitions("-DGL_VERSION_4_1")
+include_directories(${OGLPLUS_INCLUDE_DIR})
 
 # Move to bindings
-IF(LINUX)
-  INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
-ENDIF(LINUX)
+if(LINUX)
+  include_directories(${PROJECT_SOURCE_DIR})
+endif(LINUX)
 
 
-ADD_DEFINITIONS(${GuiLibShared_DEFINITIONS})
-IF(SDLIMAGE_FOUND)
-  ADD_DEFINITIONS("-DHAVE_SDLIMAGE")
-ENDIF(SDLIMAGE_FOUND)
+add_definitions(${GuiLibShared_DEFINITIONS})
+if(SDLIMAGE_FOUND)
+  add_definitions("-DHAVE_SDLIMAGE")
+endif(SDLIMAGE_FOUND)
 
 # Move to bindings
-IF(LINUX)
-  ADD_DEFINITIONS("-DLINUX")
-ENDIF(LINUX)
+if(LINUX)
+  add_definitions("-DLINUX")
+endif(LINUX)
 
 #if(WIN32)
 #endif(WIN32)
 
 if(CMAKE_GENERATOR MATCHES Visual*)
 	# disable warning C4996: 'std::_Uninitialized_copy0': Function call with parameters that may be unsafe
-	ADD_DEFINITIONS("/wd4996")
+	add_definitions("/wd4996")
 	# error C3859: virtual memory range for PCH exceeded; please recompile with a command line option of '-Zm118' or greater
 	# fatal error C1076: compiler limit : internal heap limit reached; use /Zm to specify a higher limit
-	ADD_DEFINITIONS("-Zm118")
+	add_definitions("-Zm118")
 endif()
 
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" GuiLib_sources)
 
-SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${GuiLib_resfiles})
-SOURCE_GROUP(GUI FILES ${GuiLib_uifiles})
-SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(GlobalHeader FILES ${GuiLib_GLOBAL_headers})
-SOURCE_GROUP(THeaders FILES ${GuiLib_headers})
-SOURCE_GROUP(TSources FILES ${GuiLib_sources})
-SOURCE_GROUP(GuiHeaders FILES ${GuiLib_GUI_headers})
-SOURCE_GROUP(GuiSources FILES ${GuiLib_GUI_sources})
-SOURCE_GROUP(CompHeaders FILES ${GuiLib_Component_headers})
-SOURCE_GROUP(CompSources FILES ${GuiLib_Component_sources})
+source_group(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
+source_group(Resources FILES ${GuiLib_resfiles})
+source_group(GUI FILES ${GuiLib_uifiles})
+source_group(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+source_group(GlobalHeader FILES ${GuiLib_GLOBAL_headers})
+source_group(THeaders FILES ${GuiLib_headers})
+source_group(TSources FILES ${GuiLib_sources})
+source_group(GuiHeaders FILES ${GuiLib_GUI_headers})
+source_group(GuiSources FILES ${GuiLib_GUI_sources})
+source_group(CompHeaders FILES ${GuiLib_Component_headers})
+source_group(CompSources FILES ${GuiLib_Component_sources})
 
-#SET(GuiLib_documents
+#set(GuiLib_documents
 #		Readme.md
 #		docs/!DevelNotes.txt
 #)
-#SOURCE_GROUP(Docs FILES ${GuiLib_documents})
+#source_group(Docs FILES ${GuiLib_documents})
 ENSURE_DOCS_ARE_PRESENT(GuiLib_documents)
 
-SET(LIBRARY_TYPE STATIC)
-ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
+set(LIBRARY_TYPE STATIC)
+add_definitions("-DMYENGINE_EXPORTS")
+add_definitions("-DGLEW_STATIC")
 
 # Move to bindings
 ADD_LIBRARY_X(GuiLib ${LIBRARY_TYPE}
@@ -286,25 +301,31 @@ ADD_LIBRARY_X(GuiLib ${LIBRARY_TYPE}
 
 
 TargetLinkBoost(GuiLib "filesystem;system;regex;signals")
-TARGET_LINK_LIBRARIES(GuiLib HumbugLib)
-#TARGET_LINK_LIBRARIES(GuiLib HumbugShared)
-TARGET_LINK_LIBRARIES(GuiLib ${SDL_LIBRARY})
-TARGET_LINK_LIBRARIES(GuiLib ${SDLIMAGE_LIBRARY})
-TARGET_LINK_LIBRARIES(GuiLib ${SDLTTF_LIBRARY})
-TARGET_LINK_LIBRARIES(GuiLib ${SDLGFX_LIBRARY})
+target_link_libraries(GuiLib HumbugLib)
+#target_link_libraries(GuiLib HumbugShared)
+target_link_libraries(GuiLib ${SDL_LIBRARY})
+target_link_libraries(GuiLib ${SDLIMAGE_LIBRARY})
+target_link_libraries(GuiLib ${SDLTTF_LIBRARY})
+target_link_libraries(GuiLib ${SDLGFX_LIBRARY})
+target_link_libraries(GuiLib ${OPENGL_gl_LIBRARY})
+target_link_libraries(GuiLib ${OPENGL_glu_LIBRARY}) # this works on windows with VC2013
+#target_link_libraries(GuiLib ${GLUT_LIBRARIES})
+target_link_libraries(GuiLib ${GLEW_LIBRARY})
+
+#D:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64/
 
 # A) Target-centric: target, header-file, precompiled header, [ warn on invalid header(-Winvalid-pch) ]
 # B) individual sources specified: target, header-file, precompiled header,
 #    warn on invalid header(-Winvalid-pch), source files with header
 ADD_PRECOMPILED_HEADER(GuiLib stdafx.h stdafx.h.gch TRUE "${GuiLib_sources}")
 
-INSTALL(TARGETS GuiLib
+install(TARGETS GuiLib
 	COMPONENT Application
 		RUNTIME DESTINATION bin
 		LIBRARY DESTINATION lib
 		ARCHIVE DESTINATION lib/static
 )
-#INSTALL(FILES
+#install(FILES
 #		${SDL_LIBRARY_DLL_RELEASE}
 #		${SDLIMAGE_LIBRARY_DLL_RELEASE}
 #		${SDLIMAGE_LIBRARY_DLLS_EXT}

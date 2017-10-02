@@ -25,6 +25,18 @@ IF(_HELPER_COPY_ENABLED)
 ENDIF(_HELPER_COPY_ENABLED)
 ENDMACRO()
 
+MACRO(Copy_DLL_To_TargetDep target libname dependency)
+IF(_HELPER_COPY_ENABLED)
+	ADD_CUSTOM_COMMAND(
+		TARGET ${target} 
+		POST_BUILD
+		COMMAND ${CMAKE_COMMAND} ${_HELPERS_COPY_CMAKE_DEBUG_STR} -Dconfig=${CMAKE_CFG_INTDIR} -Dtgt="${PROJECT_BINARY_DIR}/" -Dreleasesrc="${${libname}_DLL_RELEASE}" -Ddebugsrc="${${libname}_DLL_DEBUG}" -P "${P_MODULE_PATH}/copy.cmake"
+		DEPENDS ${dependency}
+		COMMENT "Copy ${libname} DLL." 
+	)
+ENDIF(_HELPER_COPY_ENABLED)
+ENDMACRO()
+
 MACRO(Copy_ReleaseDLL_To_Target target libname)
 IF(_HELPER_COPY_ENABLED)
 	ADD_CUSTOM_COMMAND(

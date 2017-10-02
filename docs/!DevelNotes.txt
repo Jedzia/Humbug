@@ -1,4 +1,38 @@
 
+-X-X-X-X- Di, 04 Okt 2016 13:23:29 -----------------------------------------------------------
+ 	Humbug.exe!shost::LuaVars::copyGlobalString(struct lua_State *,char const *)	C++
+ 	Humbug.exe!shost::ScriptHost::RunScript(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)	C++
+ 	Humbug.exe!humbug::screens::LuaScreen::OnInit(int,char * * const)	C++
+
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Di, 04 Okt 2016 07:06:37 -----------------------------------------------------------
+CLabel generates that fucking release build error
+
+07:05:07.07: gui::controls::CLabel::CLabel
+07:05:07.07: gui::components::BothDisplay::InstRenderer [class gui::components::BothDisplay] (0000000006494CE0)
+07:05:07.07: Fucking Error (in GenVertexArrays'): OpenGL numeric argument out of range [E:\Projects\C++\Humbug\projects\SupportLibs\oglplus\include\oglplus/vertex_array.hpp:40] 
+
+with OGLplus version 0.68 this is not happening
+-----------------------------------------------------------------------------------------------
+
+-X-X-X-X- Sa, 01 Okt 2016 23:45:54 -----------------------------------------------------------
+in Humbug\projects\SupportLibs\glm\glm\detail\setup.hpp
+// Version
+
+#define GLM_VERSION					98
+#define GLM_VERSION_MAJOR			0
+#define GLM_VERSION_MINOR			9
+#define GLM_VERSION_PATCH			8
+#define GLM_VERSION_REVISION		2
+
+#if GLM_MESSAGES == GLM_MESSAGES_ENABLED && !defined(GLM_MESSAGE_VERSION_DISPLAYED)
+#	define GLM_MESSAGE_VERSION_DISPLAYED
+#	pragma message ("GLM: version 0.9.8.2")
+#endif//GLM_MESSAGES
+
+-----------------------------------------------------------------------------------------------
+
 -X-X-X-X- Sa, 27 Feb 2016 01:52:00 -----------------------------------------------------------
 BSP for collisions?
 -----------------------------------------------------------------------------------------------
@@ -43,6 +77,14 @@ Boost build:
 
 bootstrap
 b2 headers
+
+MSVC14
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-git_latest
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-14.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-14.0 address-model=64 --stagedir=lib\x64 stage
 
 MSVC12
 ==========
@@ -232,6 +274,12 @@ MT-GD class boost::signals::detail::named_slot_map_iterator const & boost::itera
 
 -X-X-X-X- Montag, 29. Juni 2015 -----------------------------------------------------------------------------
 Boost build:
+MSVC14
+==========
+
+x64:
+E:\Devel\CPP\Libs\boost\boost-1.55.0
+b2 -j6 --build-type=complete --build-dir="..\build" --toolset=msvc-14.0 address-model=64 --stagedir=lib\x64 --with-log --with-system --with-filesystem --with-signals --with-regex --with-program_options --with-test --with-serialization stage
 
 MSVC12
 ==========

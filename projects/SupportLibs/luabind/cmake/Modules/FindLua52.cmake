@@ -47,7 +47,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #=============================================================================
 
-FIND_PATH(LUA_INCLUDE_DIR lua.h
+find_path(LUA_INCLUDE_DIR lua.h
   HINTS
   $ENV{LUA_DIR}
   PATH_SUFFIXES include/lua52 include/lua5.2 include/lua include
@@ -60,7 +60,7 @@ FIND_PATH(LUA_INCLUDE_DIR lua.h
   /opt
 )
 
-FIND_LIBRARY(_LUA_LIBRARY_RELEASE
+find_library(_LUA_LIBRARY_RELEASE
   NAMES lua52 lua5.2 lua-5.2 lua
   HINTS
   $ENV{LUA_DIR}
@@ -74,7 +74,7 @@ FIND_LIBRARY(_LUA_LIBRARY_RELEASE
   /opt
 )
 
-FIND_LIBRARY(_LUA_LIBRARY_DEBUG
+find_library(_LUA_LIBRARY_DEBUG
   NAMES lua52-d lua5.2-d lua-5.2-d lua-d
   HINTS
   $ENV{LUA_DIR}
@@ -88,42 +88,42 @@ FIND_LIBRARY(_LUA_LIBRARY_DEBUG
   /opt
 )
 
-IF(_LUA_LIBRARY_RELEASE OR _LUA_LIBRARY_DEBUG)
-  IF(_LUA_LIBRARY_RELEASE AND _LUA_LIBRARY_DEBUG)
-    SET(_LUA_LIBRARY optimized ${_LUA_LIBRARY_RELEASE}
+if(_LUA_LIBRARY_RELEASE OR _LUA_LIBRARY_DEBUG)
+  if(_LUA_LIBRARY_RELEASE AND _LUA_LIBRARY_DEBUG)
+    set(_LUA_LIBRARY optimized ${_LUA_LIBRARY_RELEASE}
                      debug     ${_LUA_LIBRARY_DEBUG})
-  ELSEIF(_LUA_LIBRARY_RELEASE)
-    SET(_LUA_LIBRARY ${_LUA_LIBRARY_RELEASE})
-  ELSE()
-    SET(_LUA_LIBRARY ${_LUA_LIBRARY_DEBUG})
-  ENDIF()
+  elseif(_LUA_LIBRARY_RELEASE)
+    set(_LUA_LIBRARY ${_LUA_LIBRARY_RELEASE})
+  else()
+    set(_LUA_LIBRARY ${_LUA_LIBRARY_DEBUG})
+  endif()
 
-  IF(UNIX AND NOT APPLE)
-    FIND_LIBRARY(_LUA_MATH_LIBRARY m)
+  if(UNIX AND NOT APPLE)
+    find_library(_LUA_MATH_LIBRARY m)
     mark_as_advanced(_LUA_MATH_LIBRARY)
-  ENDIF(UNIX AND NOT APPLE)
+  endif(UNIX AND NOT APPLE)
    # For Windows and Mac, don't need to explicitly include the math library
-ENDIF()
+endif()
 
-IF(_LUA_LIBRARY)
-    SET(LUA_LIBRARIES
+if(_LUA_LIBRARY)
+    set(LUA_LIBRARIES
         "${_LUA_LIBRARY}" "${_LUA_MATH_LIBRARY}" CACHE STRING "Lua 5.2 Libraries")
-ENDIF(_LUA_LIBRARY)
+endif(_LUA_LIBRARY)
 
 
-IF(LUA_INCLUDE_DIR AND EXISTS "${LUA_INCLUDE_DIR}/lua.h")
-  FILE(STRINGS "${LUA_INCLUDE_DIR}/lua.h" lua_version_str REGEX "^#define[ \t]+LUA_RELEASE[ \t]+\"Lua .+\"")
+if(LUA_INCLUDE_DIR AND EXISTS "${LUA_INCLUDE_DIR}/lua.h")
+  file(STRINGS "${LUA_INCLUDE_DIR}/lua.h" lua_version_str REGEX "^#define[ \t]+LUA_RELEASE[ \t]+\"Lua .+\"")
 
-  STRING(REGEX REPLACE "^#define[ \t]+LUA_RELEASE[ \t]+\"Lua ([^\"]+)\".*" "\\1" LUA_VERSION_STRING "${lua_version_str}")
-  UNSET(lua_version_str)
-ENDIF()
+  string(REGEX REPLACE "^#define[ \t]+LUA_RELEASE[ \t]+\"Lua ([^\"]+)\".*" "\\1" LUA_VERSION_STRING "${lua_version_str}")
+  unset(lua_version_str)
+endif()
 
-INCLUDE(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
+include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 # handle the QUIETLY and REQUIRED arguments and set LUA_FOUND to TRUE if
 # all listed variables are TRUE
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(Lua52
                                   REQUIRED_VARS LUA_INCLUDE_DIR LUA_LIBRARIES
                                   VERSION_VAR LUA_VERSION_STRING)
 
-MARK_AS_ADVANCED(LUA_INCLUDE_DIR LUA_LIBRARIES LUA_LIBRARY LUA_MATH_LIBRARY
+mark_as_advanced(LUA_INCLUDE_DIR LUA_LIBRARIES LUA_LIBRARY LUA_MATH_LIBRARY
                  _LUA_LIBRARY_RELEASE _LUA_LIBRARY_DEBUG)

@@ -1,8 +1,8 @@
 
-SET(PACKAGE HumbugLib)
+set(PACKAGE HumbugLib)
 
-ADD_SUBDIRECTORY( src )
+add_subdirectory( src )
 
-#SET(POTSRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
-#ADD_SUBDIRECTORY( po )
-ADD_SUBDIRECTORY( docs )
+#set(POTSRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+#add_subdirectory( po )
+add_subdirectory( docs )

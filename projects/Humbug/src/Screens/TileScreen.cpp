@@ -148,7 +148,8 @@ namespace humbug {
 
 	  //m_pMainCanvas->Blit( screenWithoutHud, *m_pBackground, screenWithoutHud + CPoint(scrdel, 0) );
 	  m_pMainCanvas->Blit( m_pMainCanvas->GetDimension(), *m_pBackground, m_pMainCanvas->GetDimension() + CPoint(scrdel, 0));
-	  if(m_inScreenDelta != 0) {
+      //m_pBackground->RenderCopy(m_pMainCanvas->GetDimension().SDLRectCP(), (m_pMainCanvas->GetDimension() + CPoint(scrdel, 0)).SDLRectCP());
+      if (m_inScreenDelta != 0) {
 		  m_pMainCanvas->AddUpdateRect( CRectangle( 0, 0, m_pMainCanvas->GetWidth(),
 		  //m_pMainCanvas->GetHeight() - m_pHud->GetHeight() ) );
 		  	  m_pMainCanvas->GetHeight() - 200 ) );

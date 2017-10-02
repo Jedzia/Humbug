@@ -14,7 +14,6 @@
 // name (for example "linux" is a macro on linux systems).
 // if we don't have a compiler config set, try and find one:
 
-
 #if !defined(PLATFORM_COMPILER_CONFIG) && !defined(PLATFORM_NO_COMPILER_CONFIG) && !defined(PLATFORM_NO_CONFIG)
 #  include <build/cmake/include/select_compiler_config.hpp>
 #endif
@@ -50,7 +49,7 @@
 
 #elif defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 // win32:
-#  define PLATFORM_CONFIG "platform/win32.h"
+#  define PLATFORM_CONFIG "platform/win32.hpp"
 
 #elif defined(__BEOS__)
 // BeOS

@@ -139,7 +139,7 @@ namespace gui {
         CRectangle painton = pcnvDest->GetDimension();
         CRectangle diffrec = m_rcDst + ptDst;
         pcnvDest->Blit ( diffrec, *GetCanvas ( ), m_rcSrc );
-		
+		 
 		CRectangle diffrec2 = diffrec + CPoint(2400,0);
 		pcnvDest->Blit ( diffrec2, *GetCanvas ( ), m_rcSrc );
         //DstRect ( ) -= ptDst;
@@ -181,6 +181,7 @@ namespace gui {
                     //pcnvDest->RenderCopy(GetCanvas(), painton, diffrec);
                     pcnvDest->RenderPutCopy(GetCanvas(), &diffrec2, &painton);
 
+#ifdef DEBUG_SEAMLESSIMAGE
                     if (m_pLoader)
                     {
                         // show a label for each part of the image
@@ -194,6 +195,7 @@ namespace gui {
                         CRectangle diffrec3 = diffrec2 + CPoint((m_rcDst.GetW() / 2) - labelWidth, (m_rcDst.GetH() / 2) - labelHeight);
                         label.RenderPut(pcnvDest, diffrec3);
                     }
+#endif
                 }
             }
         }

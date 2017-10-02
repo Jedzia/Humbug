@@ -460,7 +460,7 @@ ${inlines}
 	comment "Load a Textdocument from disk.
 \\todo: Verdammt! Kleinbuchstaben bei funcs! Nee halt, nur privaten und get/set, bzw
 statischen(/globalen aus Hilfslibs). 
-m_variablenName für private Daten.
+m_variablenName f??r private Daten.
 "
       end
 

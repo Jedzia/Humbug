@@ -16,45 +16,45 @@
 #cmake_policy(SET CMP0005 NEW) # 
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugShared )
-#SET(LIBRARY_TYPE SHARED)
-SET(LIBRARY_TYPE STATIC)
+project( HumbugShared )
+#set(LIBRARY_TYPE SHARED)
+set(LIBRARY_TYPE STATIC)
 
-MESSAGE(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
-INCLUDE (BoostExtensions)
-INCLUDE (PCHSupport)
-INCLUDE (library)
-INCLUDE (CopyResourcesToBuildTree)
-INCLUDE (helpers)
+message(STATUS         "!!!!!!!!!!!!!!!! CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME} !!!!!!!!!!")
+include (BoostExtensions)
+include (PCHSupport)
+include (library)
+include (CopyResourcesToBuildTree)
+include (helpers)
 
-SET(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
-#SET(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
+set(USE_LIB_BOOST_COMPONENTS "system;filesystem;signals;program_options")
+#set(USE_LIB_BOOST TRUE CACHE BOOL "Use Boost libraries")
 # Use Boost libraries for this project.
-SET(USE_LIB_BOOST TRUE)
-SET(USE_LIB_ZLIB TRUE)
-SET(USE_LUA TRUE)
+set(USE_LIB_BOOST TRUE)
+set(USE_LIB_ZLIB TRUE)
+set(USE_LUA TRUE)
 
-#SET(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
+#set(USE_LIB_QT4 TRUE CACHE BOOL "Use QT4 libraries")
 # Use QT4 libraries for this project.
-#SET(USE_LIB_QT4 TRUE)
+#set(USE_LIB_QT4 TRUE)
 
 # Use QSCINTILLA libraries for this project.
-#SET(USE_LIB_QSCINTILLA TRUE)
+#set(USE_LIB_QSCINTILLA TRUE)
 
-#SET(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
+#set(USE_LIB_XSD TRUE CACHE BOOL "Use XSD xerces libraries")
 # Use XSD xerces libraries for this project.
-#SET(USE_LIB_XSD TRUE)
+#set(USE_LIB_XSD TRUE)
 
 # local project settings
-INCLUDE (bindings)
+include (bindings)
 
 # Link explicitely to Microsoft.VC90.CRT version=9.0.30729.1
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_VCLIBS_VERSION=1")
+#add_definitions("-D_BIND_TO_CURRENT_VCLIBS_VERSION=1")
 # this does the same as above
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_MFC_VERSION=2")
-#ADD_DEFINITIONS("-D_BIND_TO_CURRENT_CRT_VERSION=2")
+#add_definitions("-D_BIND_TO_CURRENT_MFC_VERSION=2")
+#add_definitions("-D_BIND_TO_CURRENT_CRT_VERSION=2")
 
-SET(HumbugShared_headers 
+set(HumbugShared_headers 
 	GB.h
 	
 	VFS/fileio.h
@@ -69,7 +69,7 @@ SET(HumbugShared_headers
 #	Project/ProcessProjectPrivate.h
 )
 
-SET(HumbugShared_GameObject_headers 
+set(HumbugShared_GameObject_headers 
 	GameObjects/Template.h
 	GameObjects/GameObject.h
 	GameObjects/GVector2D.h
@@ -77,7 +77,7 @@ SET(HumbugShared_GameObject_headers
 	GameObjects/Player.h
 )
 
-SET(HumbugShared_GameObject_sources 
+set(HumbugShared_GameObject_sources 
 	GameObjects/Template.cpp
 	GameObjects/GameObject.cpp
 	GameObjects/GVector2D.cpp
@@ -85,7 +85,7 @@ SET(HumbugShared_GameObject_sources
 	GameObjects/Player.cpp
 )
 
-SET(HumbugShared_ScriptHost_headers 
+set(HumbugShared_ScriptHost_headers 
 	ScriptHost/LuaScript.h
 	ScriptHost/ScriptHostIO.h
 	ScriptHost/ScriptHostPrivate.h
@@ -93,13 +93,13 @@ SET(HumbugShared_ScriptHost_headers
 	ScriptHost/ScriptHost.h
 )
 
-SET(HumbugShared_ScriptHost_sources 
+set(HumbugShared_ScriptHost_sources 
 	ScriptHost/ScriptHost.cpp
 	ScriptHost/LuaScript.cpp
 )
 
 
-SET(HumbugShared_sources 
+set(HumbugShared_sources 
 	GB.cpp
 
 	VFS/zfsystem.cpp
@@ -109,56 +109,56 @@ SET(HumbugShared_sources
 #	Project/ProcessProjectPrivate.cpp
 )
 
-#SET(HumbugShared_INCLUDE_DIR ${HumbugShared_IncludePath} CACHE PATH "HumbugShared include directory." FORCE)
+#set(HumbugShared_INCLUDE_DIR ${HumbugShared_IncludePath} CACHE PATH "HumbugShared include directory." FORCE)
 
 
-SET(HumbugShared_resfiles 
+set(HumbugShared_resfiles 
 #  mainwindow.qrc
 )
 
-#SET(CMAKE_BUILD_TYPE DEBUG)
+#set(CMAKE_BUILD_TYPE DEBUG)
 
 
-INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${ZLIB_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${HumbugLib_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR})
-INCLUDE_DIRECTORIES(${LUABIND_INCLUDE_DIR})
-#INCLUDE_DIRECTORIES( ${CppStructz_INCLUDE_DIR} )
+include_directories(${PROJECT_BINARY_DIR})
+include_directories(${ZLIB_INCLUDE_DIR})
+include_directories(${HumbugLib_INCLUDE_DIR})
+include_directories(${LUA_INCLUDE_DIR})
+include_directories(${LUABIND_INCLUDE_DIR})
+#include_directories( ${CppStructz_INCLUDE_DIR} )
 
-IF(LINUX)
-  INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
-ENDIF(LINUX)
-
-
-#ADD_DEFINITIONS(${CppStructz_DEFINITIONS})
-IF(LINUX)
-  ADD_DEFINITIONS("-DLINUX")
-  ADD_DEFINITIONS("-DUNIX")
-ENDIF(LINUX)
-IF(MSYS)
-  ADD_DEFINITIONS("-DUNIX")
-ENDIF(MSYS)
+if(LINUX)
+  include_directories( ${PROJECT_SOURCE_DIR} )
+endif(LINUX)
 
 
-SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugShared_resfiles})
-SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_headers})
-SOURCE_GROUP(GameObject FILES ${HumbugShared_GameObject_sources})
-SOURCE_GROUP(ScriptHost FILES ${HumbugShared_ScriptHost_headers})
-SOURCE_GROUP(ScriptHost FILES ${HumbugShared_ScriptHost_sources})
-SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(THeaders FILES ${HumbugShared_headers})
-SOURCE_GROUP(TSources FILES ${HumbugShared_sources})
+#add_definitions(${CppStructz_DEFINITIONS})
+if(LINUX)
+  add_definitions("-DLINUX")
+  add_definitions("-DUNIX")
+endif(LINUX)
+if(MSYS)
+  add_definitions("-DUNIX")
+endif(MSYS)
 
-SET(HumbugShared_pre_sources 
+
+source_group(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
+source_group(Resources FILES ${HumbugShared_resfiles})
+source_group(GameObject FILES ${HumbugShared_GameObject_headers})
+source_group(GameObject FILES ${HumbugShared_GameObject_sources})
+source_group(ScriptHost FILES ${HumbugShared_ScriptHost_headers})
+source_group(ScriptHost FILES ${HumbugShared_ScriptHost_sources})
+source_group(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+source_group(THeaders FILES ${HumbugShared_headers})
+source_group(TSources FILES ${HumbugShared_sources})
+
+set(HumbugShared_pre_sources 
     ${HumbugShared_GameObject_sources}
     ${HumbugShared_ScriptHost_sources}
     ${HumbugShared_sources} 
 )
 
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugShared_pre_sources)
-#ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
+#add_definitions("-DMYENGINE_EXPORTS")
 ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
         stdafx.h
         ${DEBUG_DEFINITION_INCLUDES}
@@ -173,11 +173,11 @@ ADD_LIBRARY_X(HumbugShared ${LIBRARY_TYPE}
         ${ui_outfiles}
 )
 
-TARGET_LINK_LIBRARIES(HumbugShared ${ZLIB_LIBRARY} )
-TARGET_LINK_LIBRARIES(HumbugShared luabind)
-ADD_DEPENDENCIES(HumbugShared luabind)
+target_link_libraries(HumbugShared ${ZLIB_LIBRARY} )
+target_link_libraries(HumbugShared luabind)
+add_dependencies(HumbugShared luabind)
 TargetLinkBoost(HumbugShared "filesystem;system;regex")
-#ADD_DEPENDENCIES(HumbugShared CppStructz)
+#add_dependencies(HumbugShared CppStructz)
 ADD_PRECOMPILED_HEADER(HumbugShared stdafx.h stdafx.h.gch)
 
-ADD_SUBDIRECTORY( UnitTests )
+add_subdirectory( UnitTests )

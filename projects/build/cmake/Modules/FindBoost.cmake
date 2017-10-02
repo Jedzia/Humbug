@@ -732,6 +732,8 @@ else(_boost_IN_CACHE)
       set(_boost_COMPILER "-vc110")
     elseif (MSVC12)
       set(_boost_COMPILER "-vc120")
+    elseif (MSVC14)
+      set(_boost_COMPILER "-vc140")
     elseif (MSVC80)
       set(_boost_COMPILER "-vc80")
     elseif (MSVC71)
@@ -852,7 +854,8 @@ if(BOOST_ROOT)
 		${BOOST_ROOT}/lib/x64/lib
 		${BOOST_ROOT}/lib
 		${BOOST_ROOT}/stage/lib
-		${BOOST_ROOT}/lib64-msvc-12.0)
+		${BOOST_ROOT}/lib64-msvc-12.0
+		${BOOST_ROOT}/lib64-msvc-14.0)
 	else()	
 	set(_boost_LIBRARY_SEARCH_DIRS_ALWAYS
 		${BOOST_ROOT}/lib

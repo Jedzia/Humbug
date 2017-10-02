@@ -13,8 +13,8 @@
 ##---------------------------------------------------
 ## !!!!!! CMake Help: http://www.cmake.org/cmake/help/cmake-2-8-docs.html !!!!!
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
-PROJECT( HumbugLibDocs )
+cmake_minimum_required(VERSION 2.8.2)
+project( HumbugLibDocs )
 
 include(DoxygenTargets)
 #add_doxygen(<doxyfile> [OUTPUT_DIRECTORY <outputdir>]

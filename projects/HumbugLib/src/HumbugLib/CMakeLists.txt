@@ -12,43 +12,43 @@
 ## 
 ##--------------------------------------------------- 
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
-PROJECT( HumbugLib )
-SET(PACKAGE ${PROJECT_NAME})
+project( HumbugLib )
+set(PACKAGE ${PROJECT_NAME})
 
-INCLUDE (BoostExtensions)
-INCLUDE (PCHSupport)
-INCLUDE (library)
+include (BoostExtensions)
+include (PCHSupport)
+include (library)
 
 
 # Check for wchar_t
-#SET(CHECK_STRINGS TRUE)
+#set(CHECK_STRINGS TRUE)
 
-#SET(USE_SDL TRUE)
-#SET(USE_LUA TRUE)
+#set(USE_SDL TRUE)
+#set(USE_LUA TRUE)
 # apply the local project settings
-INCLUDE (bindings)
+include (bindings)
 
-IF(MSVC)
+if(MSVC)
   #  Disable C4251 Compiler Warning
-  ADD_DEFINITIONS("/wd4251")
-ENDIF(MSVC)
+  add_definitions("/wd4251")
+endif(MSVC)
 
-IF(LINUX)
-  ADD_DEFINITIONS("-DLINUX")
-ENDIF(LINUX)
+if(LINUX)
+  add_definitions("-DLINUX")
+endif(LINUX)
 
 
 # HumbugLib Library
-SET(HumbugLib_interface 
+set(HumbugLib_interface 
   ${HumbugLib_INTERFACE_DIR}/global.h
 #  ${HumbugLib_INTERFACE_DIR}/TestClass.h
   ${HumbugLib_INTERFACE_DIR}/FileDetector.h
 )
 #Todo: Ein macro das in die SOURCE_GROUP Interface_FileSystem einordnet. Je nach directory.
 
-SET(HumbugLib_headers 
+set(HumbugLib_headers 
   stdafx.h
   AppGB.h
   Log.h
@@ -58,7 +58,7 @@ SET(HumbugLib_headers
 #  shared/FileHelper.h
 )
 
-SET(HumbugLib_sources 
+set(HumbugLib_sources 
 #  shared/Txt.cpp
   FileDetector.cpp
   AppGB.cpp
@@ -67,42 +67,42 @@ SET(HumbugLib_sources
 #  Unzipper.cpp
 #  Zipper.cpp
 )
-IF(WIN32)
-	SET(HumbugLib_sources ${HumbugLib_sources}
+if(WIN32)
+	set(HumbugLib_sources ${HumbugLib_sources}
 		win32/appinit.cpp
 	)  
-ENDIF(WIN32)
-IF(UNIX OR LINUX)
-	SET(HumbugLib_sources ${HumbugLib_sources}
+endif(WIN32)
+if(UNIX OR LINUX)
+	set(HumbugLib_sources ${HumbugLib_sources}
 		unix/appinit.cpp
 	)  
-ENDIF(UNIX OR LINUX)
-ADD_DEFINITIONS(-DUNICODE=1)
+endif(UNIX OR LINUX)
+add_definitions(-DUNICODE=1)
 
 
-#SET(CMAKE_BUILD_TYPE DEBUG)
+#set(CMAKE_BUILD_TYPE DEBUG)
 
 
-#INCLUDE_DIRECTORIES( ${PROJECT_SOURCE_DIR} )
-#INCLUDE_DIRECTORIES( ${PROJECT_BINARY_DIR} )
+#include_directories( ${PROJECT_SOURCE_DIR} )
+#include_directories( ${PROJECT_BINARY_DIR} )
 
 # Source file filtering for the project.
-SOURCE_GROUP(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
-SOURCE_GROUP(Resources FILES ${HumbugLib_resfiles})
-SOURCE_GROUP(GUI FILES ${HumbugLib_uifiles})
-SOURCE_GROUP(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
-SOURCE_GROUP(GlobalHeader FILES ${LIBRARY_DEFINITION_INCLUDES})
-SOURCE_GROUP(Interface FILES ${HumbugLib_interface})
-SOURCE_GROUP(HumbugLib FILES ${HumbugLib_sources})
-SOURCE_GROUP("Header Files" FILES ${HumbugLib_headers})
-SOURCE_GROUP(Global FILES "stdafx.cpp")
+source_group(Generated FILES ${res_outfiles} ${moc_outfiles} ${ui_outfiles} )
+source_group(Resources FILES ${HumbugLib_resfiles})
+source_group(GUI FILES ${HumbugLib_uifiles})
+source_group(GlobalHeader FILES ${DEBUG_DEFINITION_INCLUDES})
+source_group(GlobalHeader FILES ${LIBRARY_DEFINITION_INCLUDES})
+source_group(Interface FILES ${HumbugLib_interface})
+source_group(HumbugLib FILES ${HumbugLib_sources})
+source_group("Header Files" FILES ${HumbugLib_headers})
+source_group(Global FILES "stdafx.cpp")
 
-#SET(LIBRARY_TYPE SHARED)
-SET(LIBRARY_TYPE STATIC)
+#set(LIBRARY_TYPE SHARED)
+set(LIBRARY_TYPE STATIC)
 
-#INCLUDE(config)
+#include(config)
 
-ADD_DEFINITIONS("-DMYENGINE_EXPORTS")
+add_definitions("-DMYENGINE_EXPORTS")
 ADD_MSVC_PRECOMPILED_HEADER("stdafx.h" "stdafx.cpp" HumbugLib_sources )
 ADD_LIBRARY_X(HumbugLib ${LIBRARY_TYPE}
         ${HumbugLib_CONFIG_FILES}
@@ -112,10 +112,10 @@ ADD_LIBRARY_X(HumbugLib ${LIBRARY_TYPE}
         ${LIBRARY_DEFINITION_INCLUDES}
         ${HumbugLib_sources} 
 )
-#TARGET_LINK_LIBRARIES(HumbugLib HumbugLibPackers)
+#target_link_libraries(HumbugLib HumbugLibPackers)
 
 # Precompiled header support.
 ADD_PRECOMPILED_HEADER(HumbugLib stdafx.h stdafx.h.gch)
 
-#INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR} )
-#INCLUDE_DIRECTORIES( ${CMAKE_CURRENT_BINARY_DIR}/../ )
+#include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
+#include_directories( ${CMAKE_CURRENT_BINARY_DIR}/../ )

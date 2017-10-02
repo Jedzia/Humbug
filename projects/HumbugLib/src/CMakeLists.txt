@@ -1,2 +1,2 @@
-ADD_SUBDIRECTORY( HumbugLib )
-ADD_SUBDIRECTORY( UnitTests )
+add_subdirectory( HumbugLib )
+add_subdirectory( UnitTests )

@@ -1,0 +1,18 @@
+[submodule "projects/SupportLibs/glm"]
+	path = projects/SupportLibs/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "projects/SupportLibs/glew"]
+	path = projects/SupportLibs/glew
+	url = https://github.com/nigels-com/glew.git
+[submodule "projects/SupportLibs/glfw"]
+	path = projects/SupportLibs/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "projects/SupportLibs/oglplus"]
+	path = projects/SupportLibs/oglplus
+	url = https://github.com/matus-chochlik/oglplus.git
+[submodule "projects/SupportLibs/gl3w"]
+	path = projects/SupportLibs/gl3w
+	url = https://github.com/skaslev/gl3w.git
+[submodule "projects/SupportLibs/FreeGLUT"]
+	path = projects/SupportLibs/FreeGLUT
+	url = https://github.com/Timeswitch/FreeGLUT.git

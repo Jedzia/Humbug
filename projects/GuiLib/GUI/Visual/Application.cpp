@@ -14,6 +14,7 @@
 #include "GUI/Visual/Console.h"
 #include <HumbugLib/LogManager.h>
 #include "../../TimingDefs.h"
+#include <SDL_opengl.h>
 
 extern int bmain(int argc,char* argv[]);
 
@@ -236,7 +237,7 @@ void CApplication::OnIdle(int ticks)
     //bool result = m_pMainCanvas->FillRect(frect, components::CColor(133, 55, 99));
 
 	m_pMainCanvas->UpdateRects ( );
-    m_pMainCanvas->MainRenderFinal();
+    //m_pMainCanvas->MainRenderFinal();
 }
 
 //update loop
@@ -362,8 +363,18 @@ int CApplication::Execute(int argc,char* argv[])
                 //delaynumber++;
                 //fprintf(stdout, "Curdelay: '%d', %d \n", curdelay, delaynumber);
                 
-                SDL_Delay( curdelay );
                 
+                float freq = SDL_GetPerformanceFrequency();
+
+                Uint64 t0 = SDL_GetPerformanceCounter();
+                //SDL_Delay(30);
+                SDL_Delay(curdelay);
+                Uint64 t1 = SDL_GetPerformanceCounter();
+
+                char msg[256];
+                sprintf(msg, "curdelay: %02d, time slept: %.2f msecs\r\n", curdelay, (t1 - t0) / freq * 1000.0f);
+                LOGSTREAM << msg;
+
                 /*while (curdelay > 0)
                 {
                     SDL_Delay( capfactor );

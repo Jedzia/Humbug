@@ -7,9 +7,9 @@
 
 //  Greenhills C++ compiler setup:
 
-#define BOOST_COMPILER "Greenhills C++ version " BOOST_STRINGIZE(__ghs)
+#define PLATFORM_COMPILER "Greenhills C++ version " PLATFORM_STRINGIZE(__ghs)
 
-#include "boost/config/compiler/common_edg.hpp"
+#include <boost/config/compiler/common_edg.hpp>
 
 //
 // versions check:
@@ -20,7 +20,7 @@
 //
 // last known and checked version is 0:
 #if (__ghs > 0)
-#  if defined(BOOST_ASSERT_CONFIG)
+#  if defined(PLATFORM_ASSERT_CONFIG)
 #     error "Unknown compiler version - please run the configure tests and report the results"
 #  endif
 #endif

@@ -140,7 +140,7 @@ bool SimpleScreen::OnInit(int argc, char* argv[]){
     //SDL_SetColorKey(m_pMainCanvas->GetSurface(), SDL_SRCCOLORKEY, 0xff00ff);
     //SDL_SetAlpha(tmpfsurf, SDL_SRCALPHA, 0);
     //SDL_SetAlpha(m_pMainCanvas->GetSurface(), SDL_SRCALPHA, 128);
-    auto surface = m_pMainCanvas->GetSurface();
+    //auto surface = m_pMainCanvas->GetSurface();
     //SDL_PixelFormat my_format = *surface->format;
     // my_format.Amask = 0x000000ff;  // A guess...  Try 0xff000000 too?
     //SDL_Surface* tmpfsurf2 = SDL_ConvertSurfaceFormat(tmpfsurf, my_format.format, 0);
@@ -152,10 +152,14 @@ bool SimpleScreen::OnInit(int argc, char* argv[]){
     // 0), true));
     //SDL_Surface* tmpfsurf2 = tmpfsurf;
 
-    m_pBackground.reset( new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format,
-                            surface->flags), true) );
-    m_pDrawCanvas.reset( new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, surface->format->format,
-                            surface->flags), true) );
+    //Uint32 pixel_format = surface->format->format;
+    //Uint32 flags = surface->flags;
+    //m_pBackground.reset( new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, pixel_format, flags), true) );
+    //m_pDrawCanvas.reset( new CCanvas(SDL_ConvertSurfaceFormat(tmpfsurf, pixel_format, flags), true) );
+
+    m_pBackground.reset(m_pMainCanvas->CreateConvertSurfaceFormat(tmpfsurf));
+    m_pDrawCanvas.reset(m_pMainCanvas->CreateConvertSurfaceFormat(tmpfsurf));
+
     //m_pDrawCanvas.reset(m_pBackground->CreateRGBCompatible(surface->flags,
     // m_pBackground->GetWidth(), m_pBackground->GetHeight()));
 

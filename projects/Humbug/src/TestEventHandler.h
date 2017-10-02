@@ -51,7 +51,6 @@ private:
     Uint32 m_uiStartTime;
     void PutBlue();
     unsigned int m_uiNumFrames; 
-
     gui::Screen* m_scrStart;
 protected:
     //idle behavior

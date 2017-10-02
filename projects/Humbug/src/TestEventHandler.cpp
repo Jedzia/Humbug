@@ -5,7 +5,6 @@
 #include "stdafx.h"
 
 //#include "windows.h"
-//#include <build/cmake/include/debug.h>
 //
 #include "HumbugFileLoader.h"
 //#include "Filesystem/FileLoader.h"
@@ -36,9 +35,15 @@
 #include "GUI/Components/Text.h"
 #include "Screens/SimpleScreen.h"
 #include "Screens/ZoomInScreen.h"
+#include "Screens/ZoomInScreen2.h"
 #include "Screens/MenuScreen/SubmenuA.h"
 #include "Screens/MenuScreen/TutorEasing.h"
 #include "Levels/Scroller/ScrollerLevelA.h"
+//
+#include <SDL_opengl.h>
+#include <GL\GLU.h>
+//
+//#include <build/cmake/include/debug.h>
 
 namespace humbug {
 
@@ -83,7 +88,8 @@ CTestEventHandler::CTestEventHandler() :
     m_uiLastTicks(0),
     /*m_pTileSet(NULL),*/
     m_uiLastTicks2(0),
-    m_uiNumFrames(0){
+    m_uiNumFrames(0)
+{
     //dbgOut(__FUNCTION__ << std::endl);
 //	_CRT_DEBUG_BLOCK
 }
@@ -153,7 +159,8 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     //video_flags = SDL_ANYFORMAT | SDL_FULLSCREEN;
     //video_flags = SDL_ANYFORMAT;
     //video_flags = SDL_WINDOW_BORDERLESS;
-    video_flags = SDL_WINDOW_SHOWN;
+    //video_flags = SDL_WINDOW_SHOWN;
+    video_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
 
     //video_flags = SDL_HWSURFACE|SDL_DOUBLEBUF| SDL_FULLSCREEN;
     //SDL_EnableKeyRepeat(100, 1);
@@ -205,7 +212,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
 
 	std::string appDir = AppGB::Instance().AppDir();
 	fl.reset(new HumbugFileLoader(appDir + "base_data"));
-
+    //return true;
     //FileLoader fl2("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/base_data");
     try
     {
@@ -349,7 +356,7 @@ bool CTestEventHandler::OnInit(int argc, char* argv[]){
     
     //HookMgr()->RegisterHookable("Test2", HookCreatorPtr(new DefaultHookCreator<TestHookable>()));
     //HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<StartScreen>(*fl, m_pMainCanvas)));
-    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<ZoomInScreen>(*fl, m_pMainCanvas)));
+    HookMgr()->RegisterHookable("StartScreen", HookCreatorPtr(new ScreenCreator<ZoomInScreen2>(*fl, m_pMainCanvas)));
 	HookMgr()->RegisterHookable("TestScreen", HookCreatorPtr(new ScreenCreator<TestScreen>(*fl, m_pMainCanvas)));
     //HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<TestLevel>(*fl, m_pMainCanvas)));
     HookMgr()->RegisterHookable("TestLevel", HookCreatorPtr(new ScreenCreator<levels::ScrollerLevelA>(*fl, m_pMainCanvas)));
@@ -396,6 +403,11 @@ void CTestEventHandler::OnIdle(int ticks){
     CMainCanvas* m_pMainCanvas = GetMainCanvas();
     //m_pMainCanvas->Lock();
 
+//    glColor3f(1, 1, 1);
+//    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+//    oglplus::Context::Clear().ColorBuffer().DepthBuffer();
+    m_pMainCanvas->MainRenderClear();
+
 	//CRectangle screenrect = m_pMainCanvas->GetDimension();
 	//m_pMainCanvas->Blit(screenrect, *m_pBackground, screenrect);
 	//m_pMainCanvas->Invalidate();
@@ -414,7 +426,6 @@ void CTestEventHandler::OnIdle(int ticks){
             m_pMainCanvas->GetDimension().GetW(), m_pMainCanvas->GetDimension().GetH() -
             //m_pHud->GetCanvas()->GetDimension().GetH() );
 	200 );
-
 
     //m_pHud->Invalidate();
 //    CControl::Redraw();
@@ -438,7 +449,44 @@ void CTestEventHandler::OnIdle(int ticks){
     //m_pMainCanvas->Render(m_pDrawCanvas, m_pMainCanvas->GetDimension(), m_pMainCanvas->GetDimension());
 	//m_pMainCanvas->Invalidate();
     // call base method.
+
+
+
+
+
+    //Render flag
+    bool gRenderQuad = true;
+
+
+
+
+    //Clear color buffer
+    //glClear(GL_COLOR_BUFFER_BIT);
+
+    float mod = (ticks % 60) / 60.0f;
+
+    /*
+    //Render quad
+    if (gRenderQuad)
+    {
+        glBegin(GL_QUADS);
+        glVertex2f(-0.5f*mod, -0.5f);
+        glVertex2f(0.5f, -0.5f*mod);
+        glVertex2f(0.5f*mod, 0.5f);
+        glVertex2f(-0.5f, 0.5f*mod);
+        glEnd();
+    }*/
+
+    //m_pMainCanvas->MainUpdateAndRenderCopy();
+    //m_pMainCanvas->SwapWindow();
+
+    //SDL_GL_SwapWindow(gWindow);
+
+    // calls RaiseOnIdle, RaiseOnDraw, m_pMainCanvas->UpdateRects and m_pMainCanvas->MainRenderFinal 
     CApplication::OnIdle(ticks);
+
+    m_pMainCanvas->MainRenderFinal();
+
 } // OnIdle
 
 //update loop
@@ -577,6 +625,10 @@ void CTestEventHandler::OnKeyDown(SDL_Keycode sym, Uint16 mod){
     else if (sym == SDLK_0)   {
         //
         HookMgr()->EnableHookable("Menu");
+    }
+    else if (sym == SDLK_F1)   {
+        //
+        m_pMainCanvas->ToggleOpenGL();
     }
 
 } // OnKeyDown

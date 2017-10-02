@@ -220,6 +220,7 @@ namespace gui {
       dbgOut(__FUNCTION__);
 
       pimpl_->m_ceParent = parent;
+          // Todo: the surface should not be exposed.
       pimpl_->m_pConsole = CON_Init(font, displayScreen->GetSurface(), lines, rect);
       pimpl_->ListCommands(pimpl_->m_pConsole);
 

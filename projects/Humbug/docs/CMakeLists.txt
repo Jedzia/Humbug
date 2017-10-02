@@ -13,8 +13,8 @@
 ##---------------------------------------------------
 ## !!!!!! CMake Help: http://www.cmake.org/cmake/help/cmake-2-8-docs.html !!!!!
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
-PROJECT( HumbugDocs )
+cmake_minimum_required(VERSION 2.8.2)
+project( HumbugDocs )
 
 # See http://www.stack.nl/~dimitri/doxygen/grouping.html and 
 # http://www.stack.nl/~dimitri/doxygen/commands.html#cmdcode for 

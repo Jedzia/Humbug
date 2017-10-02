@@ -55,7 +55,9 @@ namespace humbug {
         }
         //SDL_SetPalette(m_pText->GetSurface(), SDL_LOGPAL, wavemap, boatcols, 32);
         //SDL_SetPalette(textcanvas->GetSurface(), SDL_LOGPAL, cmap, 0, 256);
-        SDL_SetPaletteColors(textcanvas->GetSurface()->format->palette, cmap, 0, 256);
+        //SDL_SetPaletteColors(textcanvas->GetSurface()->format->palette, cmap, 0, 256);
+        textcanvas->SetPaletteColors( cmap, 0, 256);
+
         //boatcols++;
         mdata.DeltaX = m_iFrames % 32;
         mdata.DeltaY = 2 - ( m_iFrames % 16 );

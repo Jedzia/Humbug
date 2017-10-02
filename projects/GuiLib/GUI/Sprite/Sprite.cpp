@@ -172,9 +172,11 @@ components::CRectangle CSprite::GetPaintHitbox() const
          * @return TODO
          */
   void CSprite::SetColorAndAlpha( Uint32 key, Uint8 alpha ){
-      SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
-      SDL_SetColorKey(alphasurf, SDL_TRUE, key);
-      SDL_SetSurfaceAlphaMod(alphasurf, alpha);
+      //SDL_Surface* alphasurf = m_pSprImage->GetCanvas()->GetSurface();
+      m_pSprImage->GetCanvas()->SetColorKey(key);
+      //SDL_SetColorKey(alphasurf, SDL_TRUE, key);
+      //SDL_SetSurfaceAlphaMod(alphasurf, alpha);
+      m_pSprImage->GetCanvas()->SetSurfaceAlphaMod(alpha);
   }
 
 void CSprite::Render()

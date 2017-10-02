@@ -7,9 +7,9 @@
 
 //  Tru64 C++ compiler setup (now HP):
 
-#define BOOST_COMPILER "HP Tru64 C++ " BOOST_STRINGIZE(__DECCXX_VER)
+#define PLATFORM_COMPILER "HP Tru64 C++ " PLATFORM_STRINGIZE(__DECCXX_VER)
 
-#include "boost/config/compiler/common_edg.hpp"
+#include <boost/config/compiler/common_edg.hpp>
 
 //
 // versions check:

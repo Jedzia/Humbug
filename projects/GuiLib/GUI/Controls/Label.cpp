@@ -55,7 +55,7 @@ CLabel::CLabel(CControl* pParent, CRectangle rcDimensions, Uint32 id, std::strin
         CColor colShadow) :
         CControl(pParent, CalculateDimensions(sCaption, rcDimensions, colText, labelFont), id, true, usesSDL2Render), m_pLabelFont(labelFont),
     m_bPressed(false){
-    dbgOut(__FUNCTION__);
+    dbgOut(__FUNCTION__ << " (" << GetID() << ")");
 //        //set the caption
 //        SetCaption(sCaption);
     m_sCaption = sCaption;
@@ -74,6 +74,7 @@ CLabel::~CLabel(){
     //set caption to nothing
     SetCaption("");
     dbgOut(__FUNCTION__);
+    dbgOut(__FUNCTION__ << " (" << GetID() << ")");
 }
 
 /*CRectangle CLabel::Intersects(const CRectangle& paintDestination)

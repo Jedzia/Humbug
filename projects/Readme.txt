@@ -1,3 +1,7 @@
+build system:
+-----------------------------------
+svn co svn://jedzia.dyndns.org/Templates/trunk/Templates/C++/CMake/build
+
 addressbook
 -------------------
 Example with hardcoded GUI-Design.

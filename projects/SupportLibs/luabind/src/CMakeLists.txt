@@ -136,14 +136,14 @@ set_property(TARGET
     ${CMAKE_SHARED_LIBRARY_C_FLAGS})
 
 if(MSVC)
-#Message(WARNING "LUABIND: ${CMAKE_CURRENT_BINARY_DIR}")
+#message(WARNING "LUABIND: ${CMAKE_CURRENT_BINARY_DIR}")
 set( LUABIND_LIBRARY_DEBUG   "${CMAKE_CURRENT_BINARY_DIR}/Debug/luabind-d.lib" CACHE STRING "Debug Library for Luabind." FORCE )
 set( LUABIND_LIBRARY_RELEASE "${CMAKE_CURRENT_BINARY_DIR}/Release/luabind.lib" CACHE STRING "Release Library for Luabind." FORCE )
-SET( LUABIND_LIBRARY optimized ${LUABIND_LIBRARY_RELEASE} debug ${LUABIND_LIBRARY_DEBUG} CACHE PATH "$(PROJECT) project link-library." FORCE)
-#SET( LUABIND optimized ${LUABIND_LIBRARY_RELEASE} debug ${LUABIND_LIBRARY_DEBUG} CACHE PATH "$(PROJECT) project link-library." FORCE)
-#SET( ${PROJECT_NAME}_DLL_DEBUG ${TEMP_EXE_D} CACHE PATH "$(PROJECT) project debug library." FORCE)
-#SET( ${PROJECT_NAME}_DLL_RELEASE ${TEMP_EXE_R} CACHE PATH "$(PROJECT) project debug library." FORCE)
-#SET( ${PROJECT_NAME}_DLL ${TEMP_EXE} CACHE PATH "$(PROJECT) project debug library." FORCE)
+set( LUABIND_LIBRARY optimized ${LUABIND_LIBRARY_RELEASE} debug ${LUABIND_LIBRARY_DEBUG} CACHE PATH "$(PROJECT) project link-library." FORCE)
+#set( LUABIND optimized ${LUABIND_LIBRARY_RELEASE} debug ${LUABIND_LIBRARY_DEBUG} CACHE PATH "$(PROJECT) project link-library." FORCE)
+#set( ${PROJECT_NAME}_DLL_DEBUG ${TEMP_EXE_D} CACHE PATH "$(PROJECT) project debug library." FORCE)
+#set( ${PROJECT_NAME}_DLL_RELEASE ${TEMP_EXE_R} CACHE PATH "$(PROJECT) project debug library." FORCE)
+#set( ${PROJECT_NAME}_DLL ${TEMP_EXE} CACHE PATH "$(PROJECT) project debug library." FORCE)
 endif(MSVC)
 	
 set_property(TARGET
