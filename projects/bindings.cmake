@@ -276,10 +276,10 @@ if(USE_SDL_MIXER)
 endif(USE_SDL_MIXER)
 
 if(USE_LUA)
-	find_package(Lua52 REQUIRED)
-	if( NOT LUA52_FOUND )
+	find_package(Lua53 REQUIRED)
+	if( NOT LUA53_FOUND )
 		message(FATAL_ERROR "LUA Library not found!")
-	endif( NOT LUA52_FOUND )
+	endif( NOT LUA53_FOUND )
 	MODUSE_SUMMARY(LUA               "LUA has ${LUA_LIBRARY}" ON MSVC)
 endif(USE_LUA)
 

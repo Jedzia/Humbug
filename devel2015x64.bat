@@ -18,6 +18,7 @@ if "%PLATFORM%" == "X64" (
 )
 
 SET BOOST_ROOTDIR=E:\Devel\CPP\Libs\boost\boost-git_master
+SET BOOST_LIBRARYDIR=E:\Devel\CPP\Libs\boost\boost-git_master\lib\x64\lib
 REM set QTDIR=E:\Devel\CPP\Libs\QT4
 SET SDLDIR=%~dp0%builddir%\DEPS\SDL2-%SDLVER%
 SET LUA_DIR=E:\Devel\CPP\Libs\Lua\5.3.3\vc14\x64\static
