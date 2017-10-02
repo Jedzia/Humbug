@@ -1,6 +1,6 @@
 /*---------------------------------------------------------*/
 /*!
- * This file is part of HumbugGL, the strangest game ever.
+ * This file is part of Humbug, the strangest game ever.
  * License details can be found in the file COPYING.
  * Copyright (c) 2013, EvePanix. All rights reserved.
  *
@@ -18,7 +18,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
-#include <HumbugGLLib/LogManager.h>
+#include <HumbugLib/LogManager.h>
 
 FileLoadingInfo::FileLoadingInfo(const std::string name, SDL_Surface* surface)
     : m_strName(name), m_pSurface(surface), m_pFont(NULL), m_pArea(NULL), m_pData(NULL), m_fsize(0), m_refcount(0){

@@ -22,7 +22,7 @@ if ( CYGWIN )
   set(CMAKE_LEGACY_CYGWIN_WIN32 1)
 endif( CYGWIN )
 
-project( HumbugGL )
+project( Humbug )
 set(CMAKE_BUILD_TYPE "Debug"  CACHE STRING "CMake Build Type")
 
 set(P_ROOT_PATH "${CMAKE_SOURCE_DIR}/../")
@@ -58,13 +58,13 @@ set(LUABIND_USE_CXX11 OFF)# "Build Luabind using C++11 features?" ${LUABIND_CXX1
 # Include CMakeLists.txt from subdirectories. Say, here comes the project stuff.
 add_subdirectory(SupportLibs)
 #add_subdirectory(CppStructz)
-add_subdirectory(HumbugGLLib)
-add_subdirectory(HumbugGLShared)
+add_subdirectory(HumbugLib)
+add_subdirectory(HumbugShared)
 
 add_subdirectory(GuiLib)
-add_subdirectory(HumbugGLCore)
-add_subdirectory(HumbugGLSerialization)
-add_subdirectory(HumbugGL )
+add_subdirectory(HumbugCore)
+add_subdirectory(HumbugSerialization)
+add_subdirectory(Humbug )
 add_subdirectory(Playground)
 #add_subdirectory(build/Templates/src/Templates)
 

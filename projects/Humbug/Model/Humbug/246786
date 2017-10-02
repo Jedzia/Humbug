@@ -1,0 +1,1954 @@
+format 76
+"text" // CppStructz::text
+  revision 50
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "CppStructz/text"
+  cpp_src_dir "CppStructz/text"
+  cpp_namespace "CPPSTRUCTZ_NAMESPACE::text"
+  oid 134658
+  classview 193666 "text"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    oid 193666
+    classdiagram 154242 "File"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      oid 154242
+      size A4
+    end
+
+    classdiagram 134658 "Text"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      oid 134658
+      size A4
+    end
+
+    class 134658 "TextPosition"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 134658
+      comment "! Provides information about a template-position inside a TextDocument."
+      operation 161538 "TextPosition"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 5
+	  param in name "text" explicit_type "string"
+	  param in name "position" explicit_type "int"
+	  param in name "linenr" explicit_type "int"
+	  param in name "column" explicit_type "int"
+	  param in name "delimiter" explicit_type "string"
+	    defaultvalue "\":\""
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} ${p0}${v0}, ${t1} ${p1}${v1}, ${t2} ${p2}${v2}, ${t3} ${p3}${v3}, ${t4} ${p4}${v4}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}, ${t2} ${p2}, ${t3} ${p3}, ${t4} ${p4}${)}
+: text(${p0}), length(${p0}.length()), position(${p1}), linenr(${p2}), column(${p3}), delimiter(${p4})
+, mName(findName(${p0})) , mModifier(findModifier(${p0})) ${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 161538
+	comment "! Creates a Textposition object.
+/ \\param text Template text.
+/ \\param position The position (char number) inside the TextDocument.
+/ \\param linenr The line containing the text inside theTextDocument.
+/ \\param column The column of the text inside theTextDocument.
+/ \\param delimiter A char that separates the template text from the 
+/ template modifier token.
+/ See \\sa name and \\sa modifier."
+      end
+
+      operation 161666 "~TextPosition"
+	preserve_cpp_body_indent cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 161666
+      end
+
+      operation 251266 "get_column"
+	force_body_gen const cpp_inline public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return column;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 147842 // column
+	oid 251266
+	comment "! Gets the column number containing the text inside theTextDocument."
+      end
+
+      operation 280194 "get_delimiter"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return delimiter;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 194178 // delimiter
+	oid 280194
+      end
+
+      operation 257922 "get_length"
+	force_body_gen const cpp_inline public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return length;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 128130 // length
+	oid 257922
+	comment "! Gets the length of the text inside the TextDocument."
+      end
+
+      operation 251394 "get_linenr"
+	force_body_gen const cpp_inline public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return linenr;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 147970 // linenr
+	oid 251394
+	comment "! Gets the line number containing the text inside theTextDocument."
+      end
+
+      operation 264450 "get_position"
+	force_body_gen const cpp_inline public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return position;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 128002 // position
+	oid 264450
+	comment "! Gets the position (character number) of the text inside the TextDocument."
+      end
+
+      operation 244738 "get_text"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return text;
+}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 134786 // text
+	oid 244738
+	comment "! Gets the template text."
+      end
+
+      operation 384770 "set_length"
+	force_body_gen public explicit_return_type "void"
+	nparams 1
+	  param in name "value" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  length = ${p0};
+}
+"
+	cpp_name_spec "set${Name}"
+	
+	java_name_spec "set${Name}"
+	
+	php_name_spec "set${Name}"
+	
+	python_name_spec "set${Name}"
+	
+	idl_name_spec "set_${name}"
+	set_of_attribute attribute_ref 128130 // length
+	oid 384770
+      end
+
+      operation 365058 "name"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return mName;
+}
+"
+	cpp_name_spec "name"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 239234 // mName
+	oid 365058
+      end
+
+      operation 365186 "modifier"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return mModifier;
+}
+"
+	cpp_name_spec "modifier"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 239362 // mModifier
+	oid 365186
+      end
+
+      operation 264706 "hasModifier"
+	const public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 264706
+	comment "! Identifies that the template has a modifier.
+/ \\returns \\b true if the template has a modifier attached; otherwise
+/ \\b false."
+      end
+
+      operation 265090 "findName"
+	const public explicit_return_type "string"
+	nparams 1
+	  param in name "source" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 265090
+	comment "! Gets the template string.
+/ This is the part of the string preceding the delimiter.
+/ \\sa modifier \\delimiter."
+      end
+
+      operation 264578 "findModifier"
+	const public explicit_return_type "string"
+	nparams 1
+	  param in name "source" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 264578
+	comment "/  Gets the template modifier string.
+/ The part of the template token after the delimiter.
+/ \\sa delimiter \\sa modifier. "
+      end
+
+      operation 364802 "getHashCode"
+	const cpp_virtual public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 364802
+	comment "! Returns the hash code for this object.
+/ \\returns A 32-bit signed integer hash code."
+      end
+
+      operation 384898 "operator<"
+	public explicit_return_type "bool"
+	nparams 1
+	  param in name "lhs" type class_ref 134658 // TextPosition
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 384898
+      end
+
+      operation 385026 "less"
+	public explicit_return_type "bool"
+	nparams 2
+	  param in name "lhs" type class_ref 134658 // TextPosition
+	  param in name "rhs" type class_ref 134658 // TextPosition
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 385026
+      end
+
+      attribute 134786 "text"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 244738 // get_text
+	oid 134786
+	comment "The textual content of the stored position."
+      end
+
+      attribute 128002 "position"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 264450 // get_position
+	oid 128002
+	comment "The position of the text inside of a document."
+      end
+
+      attribute 128130 "length"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 257922 // get_length
+	set_oper operation_ref 384770 // set_length
+	oid 128130
+	comment "The length of the phrase."
+      end
+
+      attribute 147842 "column"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 251266 // get_column
+	oid 147842
+      end
+
+      attribute 147970 "linenr"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 251394 // get_linenr
+	oid 147970
+      end
+
+      attribute 194178 "delimiter"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 280194 // get_delimiter
+	oid 194178
+      end
+
+      attribute 239234 "mName"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 365058 // name
+	oid 239234
+	comment "! Backing field for the template string."
+      end
+
+      attribute 239362 "mModifier"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 365186 // modifier
+	oid 239362
+	comment "! Backing field for the modifier string."
+      end
+
+      classrelation 141570 // <dependency>
+	relation 141570 -_->
+	  stereotype "import"
+	  oid 141570
+	  a package
+	    cpp default "#include in source"
+	    classrelation_ref 141570 // <dependency>
+	  b parent class_ref 413826 // debug
+	oid 141570
+      end
+
+      classrelation 229506 // <dependency>
+	relation 229506 -_->
+	  stereotype "import"
+	  oid 229506
+	  a package
+	    cpp default "#include in source"
+	    classrelation_ref 229506 // <dependency>
+	  b parent class_ref 276994 // LogHelper
+	oid 229506
+      end
+
+      classrelation 236034 // <dependency>
+	relation 236034 -_->
+	  stereotype "import"
+	  oid 236034
+	  a package
+	    cpp default "#include in source"
+	    classrelation_ref 236034 // <dependency>
+	  b parent class_ref 317186 // HashHelper
+	oid 236034
+      end
+    end
+
+    class 134786 "TextDocument"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 134786
+      comment "represents a text document."
+      class 310658 "TextPositionList"
+	visibility package stereotype "typedef" explicit_base_type "const std::list<TextPosition>&"
+	cpp_decl "${comment}typedef ${type} ${name};
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl "${comment}typedef ${type} ${name};
+"
+	explicit_switch_type ""
+	
+	oid 310658
+      end
+
+      operation 351234 "TextDocument"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} 
+: content(EMPTY_STRING)${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 351234
+	comment "! Creates a new TextDocument object in uninitialized mode."
+      end
+
+      operation 154882 "TextDocument"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 2
+	  param in name "content" explicit_type "string"
+	  param in name "delimiter" explicit_type "char"
+	    defaultvalue "'$'"
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${v0}, ${t1} ${p1}${v1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}const ${t0} & ${p0}, ${t1} ${p1}${)}
+: content(content), 
+  mDelimiter(${p1}), 
+  mlinenr(1), 
+  mposition(0), 
+  minTemplate(false) ${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 154882
+	comment "! Creates a new TextDocument object in content mode."
+      end
+
+      operation 155010 "~TextDocument"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 155010
+      end
+
+      operation 141570 "loadTemplates"
+	public explicit_return_type "void"
+	nparams 2
+	  param inout name "filename" explicit_type "char"
+	  param in name "delimiter" explicit_type "char"
+	    defaultvalue "'$'"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} * ${p0}${v0}, ${t1} ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} * ${p0}, ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 141570
+	comment "! Loads the Textpositions from a Textdocument from disk.
+/ Initializes this instance with a new text-file.
+/ \\param filename The full path to the input text file.
+/ \\param delimiter The template restricting char e.g. $ in $Template$."
+      end
+
+      operation 265858 "get_mTemplPositions"
+	stereotype "std::list"
+	force_body_gen const cpp_inline public return_type class_ref 134658 // TextPosition
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${stereotype}<${type}> & ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${stereotype}<${type}> & ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return mTemplPositions;
+}
+"
+	cpp_name_spec "templatePositions"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_relation classrelation_ref 141442 // mTemplPositions (<directional composition>)
+	oid 265858
+      end
+
+      operation 358146 "get_mDelimiter"
+	force_body_gen const cpp_inline public explicit_return_type "char"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return mDelimiter;
+}
+"
+	cpp_name_spec "getDelimiter"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 232706 // mDelimiter
+	oid 358146
+      end
+
+      operation 378242 "get_mFilename"
+	force_body_gen const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return mFilename;
+}
+"
+	cpp_name_spec "getFilename"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 232322 // mFilename
+	oid 378242
+      end
+
+      attribute 128258 "content"
+	const_attribute private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} & ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 128258
+	comment "! Holds the textual content of the input data when in content-mode."
+      end
+
+      extra_member 128002 "#pragma warning(disable:4251)"
+	
+	cpp "MSVC_DISABLE_WARNING(4251)    // 4251 std::list<_Ty> needs to have dll-interface suppressed.
+" "" inline
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 128002
+	comment " // 4251 std::list<_Ty> needs to have dll-interface suppressed."
+      end
+
+      classrelation 141442 // mTemplPositions (<directional composition>)
+	relation 141442 *-->
+	  stereotype "std::list"
+	  oid 141442
+	  a role_name "mTemplPositions" private
+	    comment "! Stores the location of templates in the source document."
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${stereotype}<${type}> ${name}${value};
+"
+	    classrelation_ref 141442 // mTemplPositions (<directional composition>)
+	  b parent class_ref 134658 // TextPosition
+	get_oper operation_ref 265858 // get_mTemplPositions
+	oid 141442
+      end
+
+      extra_member 128130 "#pragma warning(default:4251)"
+	
+	cpp "MSVC_ENABLE_WARNING(4251)
+" "" inline
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 128130
+      end
+
+      operation 148354 "init"
+	private explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 148354
+	comment "! Initialize in content mode."
+      end
+
+      operation 351362 "calcPositions"
+	private explicit_return_type "void"
+	nparams 2
+	  param in name "buf" explicit_type "char"
+	  param in name "size" explicit_type "std::streamsize"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} * ${p0}, const ${t1} ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} * ${p0}, const ${t1} ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 351362
+	comment "! Calculates the TextPosition's in a given string.
+/ \\param buf Input buffer with the text data.
+/ \\param size Length of the text data in the input buffer."
+      end
+
+      attribute 246018 "EMPTY_STRING"
+	class_attribute const_attribute private explicit_type "string"
+	init_value "std::string()"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 246018
+	comment "! Empty String representation."
+      end
+
+      attribute 232706 "mDelimiter"
+	private explicit_type "char"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 358146 // get_mDelimiter
+	oid 232706
+	comment "! Holds the char which includes the template definition.
+/ Like in $Template$ the '$'."
+      end
+
+      attribute 232322 "mFilename"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 378242 // get_mFilename
+	oid 232322
+      end
+
+      attribute 224898 "mlinenr"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 224898
+	comment "! Temporary accumulator for template preparation. 
+/ Counts the current line number in the TextDocument."
+      end
+
+      attribute 225666 "mposition"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 225666
+	comment "! Temporary accumulator for template preparation. 
+/ Counts the current column position in the TextDocument."
+      end
+
+      attribute 245890 "mtextposition"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 245890
+	comment "! Temporary accumulator for template preparation. 
+/ Counts the current absolute char position in the TextDocument."
+      end
+
+      attribute 225026 "mstartposition"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 225026
+	comment "! Points to the character position of a template definition."
+      end
+
+      attribute 225282 "mstartlinenr"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 225282
+	comment "! Points to the linenumber of a template definition."
+      end
+
+      attribute 225538 "minTemplate"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 225538
+	comment "! Indicates, whether the document parser is inside a template definition."
+      end
+
+      attribute 225794 "mtemp"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 225794
+	comment "! Temporary template string. Used in template position calculation."
+      end
+
+      classrelation 229378 // <dependency>
+	relation 229378 -_->
+	  stereotype "import"
+	  oid 229378
+	  a package
+	    cpp default "#include in source"
+	    classrelation_ref 229378 // <dependency>
+	  b parent class_ref 276994 // LogHelper
+	oid 229378
+      end
+
+      classrelation 148098 // <dependency>
+	relation 148098 -_->
+	  stereotype "import"
+	  oid 148098
+	  a package
+	    cpp default "#include in source"
+	    classrelation_ref 148098 // <dependency>
+	  b parent class_ref 413826 // debug
+	oid 148098
+      end
+    end
+
+    class 174210 "DocLoader"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 174210
+      operation 174850 "DocLoader"
+	preserve_cpp_body_indent public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}
+	:  valid(false)${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 174850
+      end
+
+      operation 174978 "~DocLoader"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${throw}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 174978
+      end
+
+      operation 175106 "loadFromDisk"
+	preserve_cpp_body_indent public explicit_return_type "bool"
+	nparams 1
+	  param in name "filepath" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 175106
+      end
+
+      operation 175234 "getValid"
+	force_body_gen preserve_cpp_body_indent const cpp_inline public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 154626 // valid
+	oid 175234
+      end
+
+      operation 181762 "getContent"
+	force_body_gen preserve_cpp_body_indent const cpp_inline public explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	cpp_name_spec "get${Name}"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 161154 // content
+	oid 181762
+      end
+
+      attribute 154626 "valid"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 175234 // getValid
+	oid 154626
+      end
+
+      attribute 161154 "content"
+	private explicit_type "string"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 181762 // getContent
+	oid 161154
+      end
+    end
+  end
+
+  deploymentview 134658 "text"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    oid 134658
+    artifact 134658 "TextPosition"
+      stereotype "source"
+      cpp_h "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the declaration of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.h
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+
+#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the implementation of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.cpp
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 134658 // TextPosition
+      end
+      oid 134658
+    end
+
+    artifact 134786 "TextDocument"
+      stereotype "source"
+      cpp_h "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the declaration of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.h
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+
+#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the implementation of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.cpp
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 134786 // TextDocument
+      end
+      oid 134786
+    end
+
+    artifact 174210 "DocLoader"
+      stereotype "source"
+      cpp_h "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the declaration of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.h
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+
+#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the implementation of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.cpp
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 174210 // DocLoader
+      end
+      oid 174210
+    end
+
+    deploymentdiagram 141186 "text"
+      package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+      draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+      oid 141186
+      size A4
+    end
+  end
+
+  classview 266754 "Modifiers"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 173826 // Modifiers
+    oid 134658
+    classdiagram 167298 "TextModifier"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      oid 167298
+      size A4
+    end
+
+    class 200706 "TextModifier"
+      abstract visibility package 
+      cpp_decl "${comment}    MSVC_DISABLE_WARNING(4275)
+${template}class PLATFORM_DECL ${name}${inherit} {
+MSVC_ENABLE_WARNING(4275)
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 200706
+      classrelation 181378 // <dependency>
+	relation 181378 -_->
+	  stereotype "friend"
+	  oid 181378
+	  a package
+	    cpp default "${type}"
+	    classrelation_ref 181378 // <dependency>
+	  b parent class_ref 214274 // TextModifierFactory
+	oid 181378
+      end
+
+      operation 243970 "~TextModifier"
+	cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 243970
+      end
+
+      operation 438274 "transform"
+	abstract const cpp_virtual public explicit_return_type "string"
+	nparams 1
+	  param inout name "rInput" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 209922
+      end
+
+      operation 371714 "getHashCode"
+	const cpp_virtual public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 371714
+	comment "! Returns the hash code for this object.
+/ \\returns A 32-bit signed integer hash code."
+      end
+
+      operation 438402 "getToken"
+	abstract cpp_virtual protected explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 210562
+      end
+
+      classrelation 181506 // <generalisation>
+	relation 181506 ---|>
+	  oid 181506
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 181506 // <generalisation>
+	  b parent class_ref 220802 // noncopyable
+	oid 181506
+      end
+    end
+
+    class 201090 "TmLowerCase"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 201090
+      classrelation 161794 // <generalisation>
+	relation 161794 ---|>
+	  oid 161794
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 161794 // <generalisation>
+	  b parent class_ref 200706 // TextModifier
+	oid 161794
+      end
+
+      attribute 174466 "msToken"
+	class_attribute private explicit_type "string"
+	init_value "\"lc\""
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 174466
+      end
+
+      operation 438530 "transform"
+	const cpp_virtual public explicit_return_type "string"
+	nparams 1
+	  param inout name "rInput" explicit_type "string"
+	constraint "return value;"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 210050
+      end
+
+      operation 223618 "getToken"
+	cpp_virtual protected explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 223618
+      end
+
+      classrelation 188546 // <dependency>
+	relation 188546 -_->
+	  oid 188546
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 188546 // <dependency>
+	  b parent class_ref 227458 // string
+	oid 188546
+      end
+    end
+
+    class 201218 "TmUpperCase"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 201218
+      classrelation 161666 // <generalisation>
+	relation 161666 ---|>
+	  oid 161666
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 161666 // <generalisation>
+	  b parent class_ref 200706 // TextModifier
+	oid 161666
+      end
+
+      attribute 180994 "msToken"
+	class_attribute private explicit_type "string"
+	init_value "\"uc\""
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 180994
+      end
+
+      operation 438658 "transform"
+	const cpp_virtual public explicit_return_type "string"
+	nparams 1
+	  param inout name "rInput" explicit_type "string"
+	constraint "return value;"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 210178
+      end
+
+      operation 243842 "getToken"
+	cpp_virtual protected explicit_return_type "string"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 243842
+      end
+
+      classrelation 188418 // <dependency>
+	relation 188418 -_->
+	  oid 188418
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 188418 // <dependency>
+	  b parent class_ref 227458 // string
+	oid 188418
+      end
+    end
+
+    class 200834 "xxTmCamelCase"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 200834
+      classrelation 161410 // <generalisation>
+	relation 161410 ---|>
+	  oid 161410
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 161410 // <generalisation>
+	  b parent class_ref 200706 // TextModifier
+	oid 161410
+      end
+
+      operation 438786 "transform"
+	cpp_virtual public explicit_return_type "string"
+	nparams 1
+	  param inout name "value" explicit_type "string"
+	constraint "return value;"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 210306
+      end
+    end
+
+    class 200962 "xxTmPascalCase"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 200962
+      classrelation 161538 // <generalisation>
+	relation 161538 ---|>
+	  oid 161538
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 161538 // <generalisation>
+	  b parent class_ref 200706 // TextModifier
+	oid 161538
+      end
+
+      operation 438914 "transform"
+	cpp_virtual public explicit_return_type "string"
+	nparams 1
+	  param inout name "value" explicit_type "string"
+	constraint "return value;"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 210434
+      end
+    end
+
+    class 207746 "xxTmProjectName"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 207746
+      classrelation 168322 // <generalisation>
+	relation 168322 ---|>
+	  oid 168322
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 168322 // <generalisation>
+	  b parent class_ref 200706 // TextModifier
+	oid 168322
+      end
+
+      operation 217090 "transform"
+	cpp_virtual public explicit_return_type "string"
+	nparams 1
+	  param inout name "value" explicit_type "string"
+	constraint "return value;"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 217090
+      end
+    end
+
+    class 214274 "TextModifierFactory"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 214274
+      comment "! Factory that provides TemplateModifiers from modifier-identification-strings."
+      classrelation 181634 // <dependency>
+	relation 181634 -_->
+	  stereotype "import"
+	  oid 181634
+	  a package
+	    cpp default "#include in source"
+	    classrelation_ref 181634 // <dependency>
+	  b parent class_ref 220930 // cout
+	oid 181634
+      end
+
+      operation 230146 "TextModifierFactory"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 230146
+	comment "! Creates a new TemplateModifierFactory object."
+      end
+
+      operation 230274 "~TextModifierFactory"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 230274
+      end
+
+      operation 230402 "TextModifierFactory"
+	stereotype "copy"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "source" type class_ref 214274 // TextModifierFactory
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${)}${volatile}${throw};
+"
+	
+	
+	
+	
+	oid 230402
+	comment "! Prevents copying, no implementation."
+      end
+
+      operation 230530 "operator="
+	private return_type class_ref 214274 // TextModifierFactory
+	nparams 1
+	  param in name "source" type class_ref 214274 // TextModifierFactory
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} & ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 230530
+	comment "! Prevents assignment, no implementation."
+      end
+
+      operation 244354 "printModifiers"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 244354
+	comment "! Print all modifier shortcuts to stdout."
+      end
+
+      operation 439042 "registerType"
+	stereotype "template"
+	public explicit_return_type "void"
+	nparams 0
+	constraint "x=4"
+	cpp_decl "    template<typename T> ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "template<typename T>
+${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 237314
+	comment "! Register a type derived from TemplateModifier to the factory."
+      end
+
+      operation 230658 "registerModifier"
+	public explicit_return_type "bool"
+	nparams 2
+	  param inout name "token" explicit_type "string"
+	  param inout name "modifier" type class_ref 200706 // TextModifier
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, ${t1} * ${p1}${v1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, ${t1} * ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 230658
+	comment "! Make a TemplateModifier with a shortcut known to the factory.
+/ \\param token The shortcut for the TemplateModifier.
+/ \\param modifier The instance of the text-transformer."
+      end
+
+      operation 264834 "getModifier"
+	const public return_type class_ref 200706 // TextModifier
+	nparams 1
+	  param inout name "rIdentifier" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}* const ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type}* const ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 264834
+	comment "! Gets the TemplateModifier for a given shortcut.
+/ \\param rIdentifier The token that identifies the modifier.
+/ \\returns NULL if no modifier is registered with the given shortcut."
+      end
+
+      operation 439170 "registerInternal"
+	private explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 237186
+	comment "! Make all internal modifiers known to the factory."
+      end
+
+      classrelation 174850 // mpmapModifiers (<directional composition>)
+	relation 174850 *-->
+	  stereotype "ptr_map"
+	  oid 174850
+	  a role_name "mpmapModifiers" multiplicity "*" private
+	    comment "! Holds the internal shortcut to modifier dictionary."
+	    cpp default "    ${comment}MSVC_DISABLE_WARNING(4251)
+${static}${mutable}${volatile}${const}${stereotype}<const std::string, ${type}> ${name}${value};
+MSVC_ENABLE_WARNING(4251)
+"
+	    classrelation_ref 174850 // mpmapModifiers (<directional composition>)
+	  b parent class_ref 200706 // TextModifier
+	oid 174850
+      end
+    end
+  end
+
+  deploymentview 173826 "Modifiers"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    oid 173826
+    artifact 200450 "TextModifier"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include <CppStructz/global.h>
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 200706 // TextModifier
+	class_ref 201090 // TmLowerCase
+	class_ref 201218 // TmUpperCase
+	class_ref 200834 // xxTmCamelCase
+	class_ref 200962 // xxTmPascalCase
+	class_ref 207746 // xxTmProjectName
+      end
+      oid 200450
+    end
+
+    artifact 206978 "TextModifierFactory"
+      stereotype "source"
+      cpp_h "#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include <CppStructz/global.h>
+//
+${includes}
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 214274 // TextModifierFactory
+      end
+      oid 206978
+    end
+  end
+end

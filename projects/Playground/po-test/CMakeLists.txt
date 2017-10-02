@@ -107,8 +107,8 @@ set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/${_lyxname}.pot" GENERA
 add_gettext_python(formats lib configure.py)
 #add_gettext_python(layouttranslations lib/layouts *.layout *.inc *.module)
 #add_gettext_python(fs ../FileSystem *.cpp)
-#add_gettext_python(layouttranslations ../../../../HumbugGL *.ui)
-#add_gettext_python(qt4 ../../../../HumbugGL *.ui)
+#add_gettext_python(layouttranslations ../../../../Humbug *.ui)
+#add_gettext_python(qt4 ../../../../Humbug *.ui)
 
 message(STATUS " _py_sources ${_py_sources}")
 

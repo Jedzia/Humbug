@@ -31,7 +31,7 @@
 <preference-set id="Invocations">
 <preference-set id="TemplateOstream">
   <string id="cookieparams"></string>
-  <string relative="path" id="cwd">HumbugGL/src/GUI</string>
+  <string relative="path" id="cwd">Humbug/src/GUI</string>
   <long id="debugger.io-port">9011</long>
   <string id="documentRoot"></string>
   <string id="executable-params"></string>
@@ -1714,7 +1714,7 @@
 <preference-set id="Invocations">
 <preference-set id="Project">
   <string id="cookieparams"></string>
-  <string relative="path" id="cwd">HumbugGL/src/GUI</string>
+  <string relative="path" id="cwd">Humbug/src/GUI</string>
   <long id="debugger.io-port">9011</long>
   <string id="documentRoot"></string>
   <string id="executable-params"></string>
@@ -1735,7 +1735,7 @@
 </preference-set>
 <preference-set id="T1">
   <string id="cookieparams"></string>
-  <string relative="path" id="cwd">HumbugGL/src/GUI</string>
+  <string relative="path" id="cwd">Humbug/src/GUI</string>
   <long id="debugger.io-port">9011</long>
   <string id="documentRoot"></string>
   <string id="executable-params"></string>
@@ -1840,7 +1840,7 @@
 <preference-set id="Invocations">
 <preference-set id="TemplateOstream">
   <string id="cookieparams"></string>
-  <string relative="path" id="cwd">HumbugGL/src/GUI</string>
+  <string relative="path" id="cwd">Humbug/src/GUI</string>
   <long id="debugger.io-port">9011</long>
   <string id="documentRoot"></string>
   <string id="executable-params"></string>

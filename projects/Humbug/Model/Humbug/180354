@@ -1,0 +1,2376 @@
+format 76
+"log" // CppStructz::log
+  revision 11
+  modified_by 2 "root"
+  // class settings
+  //class diagram settings
+  draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+  //use case diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+  //sequence diagram settings
+  show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+  //collaboration diagram settings
+  show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+  //object diagram settings
+   write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+  //component diagram settings
+  package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //deployment diagram settings
+  package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  //state diagram settings
+  package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+  show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+  //activity diagram settings
+  package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+  show_infonote default drawing_language default show_stereotype_properties default
+  
+  cpp_h_dir "CppStructz/log/"
+  cpp_src_dir "CppStructz/log/"
+  cpp_namespace "CPPSTRUCTZ_NAMESPACE::log4csz"
+  oid 180354
+  package_ref 266498 // spi
+
+  package_ref 180610 // helpers
+
+  classview 186882 "log"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    associated_deployment_view deploymentview_ref 187266 // log
+    oid 186882
+    classdiagram 239362 "logger"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      oid 173826
+      size A4
+    end
+
+    class 261378 "Ch"
+      visibility package stereotype "typedef" explicit_base_type "char"
+      cpp_decl "${comment}typedef ${type} ${name};
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}typedef ${type} ${name};
+"
+      explicit_switch_type ""
+      
+      oid 261378
+    end
+
+    class 261250 "LoggerPtr"
+      visibility package stereotype "typedef" explicit_base_type "boost::shared_ptr<Logger>"
+      cpp_decl "class Logger;
+${comment}typedef ${type} ${name};
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}typedef ${type} ${name};
+"
+      explicit_switch_type ""
+      
+      oid 261250
+    end
+
+    class 263170 "LogString_Block"
+      visibility protected stereotype "struct"
+      cpp_decl "// start ${comment}${template}${name}${inherit} {
+${members}
+${inlines}
+// end ${comment}${template}${name}${inherit} {
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}struct ${name} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      oid 263170
+      extra_member 141442 "logchar defs"
+	
+	cpp "#define LOGGER_LOGCHAR_IS_UTF8 1
+#if LOGGER_LOGCHAR_IS_UTF8
+   typedef char logchar;
+#if LOGGER_CHARSET_EBCDIC
+#define LOGGER_STR(str) log4cxx::helpers::Transcoder::decode(str)
+#else   
+#define LOGGER_STR(str) str
+#endif
+#endif
+" ""
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 141442
+      end
+
+      extra_member 141570 "compiler check helper"
+	
+	cpp "/** @addtogroup LoggingMacros Logging macros
+@{
+*/
+
+#if !defined(LOGGER_UNLIKELY)
+#if __GNUC__ >= 3
+/**
+Provides optimization hint to the compiler
+to optimize for the expression being false.
+@param expr boolean expression.
+@returns value of expression.
+*/
+#define LOGGER_UNLIKELY(expr) __builtin_expect(expr, 0)
+#else
+/**
+Provides optimization hint to the compiler
+to optimize for the expression being false.
+@param expr boolean expression.
+@returns value of expression.
+**/
+#define LOGGER_UNLIKELY(expr) expr
+#endif
+#endif
+" "" inline
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 141570
+      end
+    end
+
+    class 263042 "LogString"
+      visibility package stereotype "typedef" explicit_base_type "std::basic_string<logchar>"
+      cpp_decl "${comment}typedef ${type} ${name};
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}typedef ${type} ${name};
+"
+      explicit_switch_type ""
+      
+      oid 263042
+    end
+
+    class 263298 "LevelPtr"
+      visibility package stereotype "typedef" explicit_base_type "boost::shared_ptr<Level>"
+      cpp_decl "class Level;
+${comment}typedef ${type} ${name};
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}typedef ${type} ${name};
+"
+      explicit_switch_type ""
+      
+      oid 263298
+    end
+
+    class 262914 "Level"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 262914
+      operation 460418 "Level"
+	public explicit_return_type ""
+	nparams 3
+	  param in name "level1" explicit_type "int"
+	  param in name "name1" type class_ref 263042 // LogString
+	  param in name "syslogEquivalent1" explicit_type "int"
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} ${p0}, const ${t1} & ${p1}, ${t2} ${p2}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} ${p0}, const ${t1} & ${p1}, ${t2} ${p2}${)}${volatile}${throw} 
+:  level(${p0}), name(${p1}), syslogEquivalent(${p2})  {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 288386
+      end
+
+      operation 460546 "~Level"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 288514
+      end
+
+      operation 460674 "Level"
+	stereotype "copy"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "source" type class_ref 262914 // Level
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${v0}${)}${volatile}${throw};
+"
+	
+	
+	
+	
+	oid 288642
+      end
+
+      operation 460802 "operator="
+	private return_type class_ref 262914 // Level
+	nparams 1
+	  param in name "source" type class_ref 262914 // Level
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} & ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 288770
+      end
+
+      operation 344194 "isGreaterOrEqual"
+	const cpp_virtual public explicit_return_type "bool"
+	nparams 1
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 344194
+      end
+
+      operation 460930 "toString"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "dst" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 288898
+	comment "! Get the name of the level in the current encoding.
+! @param name buffer to which name is appended.
+"
+      end
+
+      operation 313218 "toString"
+	public return_type class_ref 263042 // LogString
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 313218
+	comment "! Get the name of the level in the current encoding.
+! @param name buffer to which name is appended.
+"
+      end
+
+      attribute 201602 "level"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	get_oper operation_ref 334210 // toInt
+	oid 201602
+      end
+
+      attribute 201730 "name"
+	private type class_ref 263042 // LogString
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 201730
+      end
+
+      attribute 201858 "syslogEquivalent"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 201858
+      end
+
+      class 263426 "errornums"
+	visibility package stereotype "enum"
+	cpp_decl "${comment}enum ${name} {
+${items}
+};
+"
+	java_decl "${comment}${@}${visibility}${final}${abstract}enum ${name}${implements} {
+${items};
+${members}}
+"
+	php_decl "${comment}${visibility}final class ${name} {
+${items}}
+"
+	python_2_2 python_decl "class ${name}:
+${docstring}${members}
+"
+	idl_decl "${comment}enum ${name} {
+${items}};
+"
+	explicit_switch_type ""
+	
+	oid 263426
+	attribute 201986 "OFF_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "INT_MAX"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 201986
+	end
+
+	attribute 202114 "FATAL_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "50000"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202114
+	end
+
+	attribute 202242 "ERROR_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "40000"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202242
+	end
+
+	attribute 202370 "WARN_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "30000"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202370
+	end
+
+	attribute 202498 "INFO_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "20000"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202498
+	end
+
+	attribute 202626 "DEBUG_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "10000"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202626
+	end
+
+	attribute 202754 "TRACE_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "5000"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202754
+	end
+
+	attribute 202882 "ALL_INT"
+	  public type class_ref 263426 // errornums
+	  init_value "INT_MIN"
+	  cpp_decl "  ${name}${value},${comment}"
+	  java_decl ""
+	  php_decl ""
+	  python_decl ""
+	  idl_decl ""
+	  oid 202882
+	end
+      end
+
+      operation 326530 "getOff"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 326530
+      end
+
+      operation 326658 "getFatal"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 326658
+      end
+
+      operation 326786 "getError"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 326786
+      end
+
+      operation 326914 "getWarn"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 326914
+      end
+
+      operation 327042 "getInfo"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 327042
+      end
+
+      operation 461058 "getDebug"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 289026
+      end
+
+      operation 327170 "getTrace"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 327170
+      end
+
+      operation 327298 "getAll"
+	class_operation public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 327298
+      end
+
+      operation 334210 "toInt"
+	force_body_gen const cpp_inline public explicit_return_type "int"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual} ${type} ${name}${(}${)}${const}${volatile}${throw};
+"
+	cpp_def "${comment}${inline} ${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  return level;
+}
+"
+	cpp_name_spec "toInt"
+	final 
+	java_name_spec "get${Name}"
+	php_final 
+	php_name_spec "get${Name}"
+	
+	python_name_spec "get${Name}"
+	
+	idl_name_spec "get_${name}"
+	get_of_attribute attribute_ref 201602 // level
+	oid 334210
+      end
+    end
+
+    class 297090 "Hierarchy"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 297090
+      operation 335106 "Hierarchy"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 335106
+      end
+
+      operation 335234 "~Hierarchy"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 335234
+      end
+
+      classrelation 215938 // <generalisation>
+	relation 215938 ---|>
+	  oid 215938
+	  a public
+	    cpp virtual default "${type}"
+	    classrelation_ref 215938 // <generalisation>
+	  b parent class_ref 296834 // LoggerRepository
+	oid 215938
+      end
+
+      operation 334978 "isDisabled"
+	cpp_virtual public explicit_return_type "bool"
+	nparams 1
+	  param in name "level" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 334978
+	comment "! Is the repository disabled for a given level? The answer depends
+/ on the repository threshold and the <code>level</code>
+/ parameter. See also #setThreshold method. "
+      end
+
+      operation 335618 "getRootLogger"
+	const public return_type class_ref 261250 // LoggerPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 335618
+      end
+
+      operation 344450 "setThreshold"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "l" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 344450
+      end
+
+      operation 344578 "setConfigured"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "newValue" explicit_type "bool"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 344578
+      end
+
+      attribute 217730 "configured"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 217730
+      end
+
+      attribute 218114 "root"
+	private type class_ref 261250 // LoggerPtr
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 218114
+      end
+
+      attribute 217858 "thresholdInt"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 217858
+      end
+
+      attribute 217986 "threshold"
+	private type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 217986
+      end
+    end
+
+    class 296962 "LogManager"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 296962
+      operation 335490 "getLoggerRepository"
+	class_operation public return_type class_ref 297218 // LoggerRepositoryPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 335490
+      end
+
+      operation 334850 "getRootLogger"
+	class_operation public return_type class_ref 261250 // LoggerPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 334850
+      end
+    end
+
+    class 260994 "Logger"
+      abstract visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 260994
+      classrelation 202370 // <dependency>
+	relation 202370 -_->
+	  oid 202370
+	  a package
+	    cpp default "#include in header"
+	    classrelation_ref 202370 // <dependency>
+	  b parent class_ref 261634 // LocationInfo
+	oid 202370
+      end
+
+      classrelation 209282 // <dependency>
+	relation 209282 -_->
+	  stereotype "import"
+	  oid 209282
+	  a package
+	    cpp default "#include in header"
+	    classrelation_ref 209282 // <dependency>
+	  b parent class_ref 262274 // CharMessageBuffer
+	oid 209282
+      end
+
+      operation 334338 "Logger"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "p" type class_ref 290306 // Pool
+	  param in name "name1" type class_ref 263042 // LogString
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw} 
+: pool(&p), name(), level(), parent(), /*resourceBundle(),*/
+repository()/*, aai(), mutex(p)*/ {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 334338
+      end
+
+      operation 334466 "~Logger"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 334466
+      end
+
+      operation 334594 "Logger"
+	stereotype "copy"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "source" type class_ref 260994 // Logger
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}${)}${volatile}${throw};
+"
+	
+	
+	
+	
+	oid 334594
+      end
+
+      operation 334722 "operator="
+	private return_type class_ref 260994 // Logger
+	nparams 1
+	  param in name "source" type class_ref 260994 // Logger
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} & ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 334722
+      end
+
+      operation 461186 "getRootLogger"
+	class_operation public return_type class_ref 261250 // LoggerPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 286722
+	comment "! Retrieve the root logger."
+      end
+
+      operation 327426 "getEffectiveLevel"
+	preserve_cpp_body_indent const public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 327426
+	comment "! Starting from this logger, search the logger hierarchy for a
+! non-null level and return it.
+/
+/ <p>The Logger class is designed so that this method executes as
+/ quickly as possible.
+/
+/ @throws RuntimeException if all levels are null in the hierarchy"
+      end
+
+      operation 461314 "isDebugEnabled"
+	public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 288002
+	comment "! Check whether this logger is enabled for the <code>DEBUG</code>
+! Level.
+/ 
+/ <p> This function is intended to lessen the computational cost of
+/ disabled log debug statements.
+/ 
+/ <p> For some <code>logger</code> Logger object, when you write,
+/ <pre>
+/     logger->debug(\"debug message\");
+/ </pre>
+/ 
+/ <p>You incur the cost constructing the message, concatenation in
+/ this case, regardless of whether the message is logged or not.
+/ 
+/ <p>If you are worried about speed, then you should write
+/ <pre>
+/   if(logger->isDebugEnabled()) {
+/     logger->debug(\"debug message\");
+/   }
+/ </pre>
+/ 
+/ <p>This way you will not incur the cost of parameter
+/ construction if debugging is disabled for <code>logger</code>. On
+/ the other hand, if the <code>logger</code> is debug enabled, you
+/ will incur the cost of evaluating whether the logger is debug
+/ enabled twice. Once in <code>isDebugEnabled</code> and once in
+/ the <code>debug</code>.  This is an insignificant overhead
+/ since evaluating a logger takes about 1%% of the time it
+/ takes to actually log.
+/ 
+/ @return bool - <code>true</code> if this logger is debug
+/ enabled, <code>false</code> otherwise."
+      end
+
+      operation 327554 "debug"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "msg" explicit_type "string"
+	  param in name "location" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 327554
+	comment "! Log a message string with the DEBUG level.
+/
+/ <p>This method first checks if this logger is <code>DEBUG</code>
+/ enabled by comparing the level of this logger with the
+/ DEBUG level. If this logger is
+/ <code>DEBUG</code> enabled, it proceeds to call all the
+/ registered appenders in this logger and also higher in the
+/ hierarchy depending on the value of the additivity flag.
+/
+/ @param msg the message string to log.
+/ @param location location of source of logging request."
+      end
+
+      operation 461442 "debug"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "msg" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 287874
+	comment "! Log a message string with the DEBUG level.
+/ 
+/ <p>This method first checks if this logger is <code>DEBUG</code>
+/ enabled by comparing the level of this logger with the
+/ DEBUG level. If this logger is
+/ <code>DEBUG</code> enabled, it proceeds to call all the
+/ registered appenders in this logger and also higher in the
+/ hierarchy depending on the value of the additivity flag.
+/
+/ @param msg the message string to log."
+      end
+
+      operation 461570 "log"
+	public explicit_return_type "void"
+	nparams 3
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	  param in name "message" explicit_type "string"
+	  param in name "location" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 298114
+	comment "! Dispatches the pending log request."
+      end
+
+      operation 304642 "isEnabledFor"
+	const public explicit_return_type "bool"
+	nparams 1
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 304642
+	comment "! Check whether this logger is enabled for a given
+! Level passed as parameter.
+/
+/ See also #isDebugEnabled.
+/
+/ @return bool True if this logger is enabled for <code>level</code>."
+      end
+
+      operation 304898 "forcedLog"
+	public explicit_return_type "void"
+	nparams 3
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	  param in name "message" explicit_type "string"
+	  param in name "location" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 304898
+	comment "! Dispatches the pending log request."
+      end
+
+      operation 305026 "forcedLog"
+	public explicit_return_type "void"
+	nparams 2
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	  param in name "message" explicit_type "string"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${v0}, const ${t1} & ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 305026
+	comment "! Dispatches the pending log request."
+      end
+
+      attribute 210946 "pool"
+	private type class_ref 290306 // Pool
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type}* ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 210946
+	comment "! Reference to memory pool."
+      end
+
+      classrelation 222850 // <dependency>
+	relation 222850 -_->
+	  stereotype "friend"
+	  oid 222850
+	  a protected
+	    cpp default "${type}"
+	    classrelation_ref 222850 // <dependency>
+	  b parent class_ref 297090 // Hierarchy
+	oid 222850
+      end
+
+      operation 344066 "setHierarchy"
+	protected explicit_return_type "void"
+	nparams 1
+	  param in name "repository1" type class_ref 296834 // LoggerRepository
+	multiplicity "*"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} * ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} * ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 344066
+	comment "! Only the Hierarchy class can set the hierarchy of a logger."
+      end
+
+      operation 344322 "setLevel"
+	cpp_virtual protected explicit_return_type "void"
+	nparams 1
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 344322
+	comment "! Set the level of this Logger.
+/ 
+/ <p>As in <pre> &nbsp;&nbsp;&nbsp;logger->setLevel(Level::getDebug()); </pre>
+/ 
+/ <p>Null values are admitted."
+      end
+
+      attribute 210818 "name"
+	protected type class_ref 263042 // LogString
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 210818
+	comment "! The name of this logger."
+      end
+
+      attribute 210690 "level"
+	protected type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 210690
+	comment "! The assigned level of this logger.  The
+/ <code>level</code> variable need not be assigned a value in
+/ which case it is inherited form the hierarchy. "
+      end
+
+      attribute 210562 "parent"
+	protected type class_ref 261250 // LoggerPtr
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 210562
+	comment "! The parent of this logger. 
+/ All loggers have at least one ancestor which is the root logger."
+      end
+
+      attribute 217474 "repository"
+	protected type class_ref 296834 // LoggerRepository
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type}* ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 217474
+      end
+
+      attribute 217602 "additive"
+	protected explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 217602
+      end
+    end
+
+    class 297346 "RootLogger"
+      abstract visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 297346
+      classrelation 222722 // <generalisation>
+	relation 222722 ---|>
+	  oid 222722
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 222722 // <generalisation>
+	  b parent class_ref 260994 // Logger
+	oid 222722
+      end
+
+      classrelation 216066 // <dependency>
+	relation 216066 -_->
+	  oid 216066
+	  a package
+	    cpp default "#include in header"
+	    classrelation_ref 216066 // <dependency>
+	  b parent class_ref 261634 // LocationInfo
+	oid 216066
+      end
+
+      classrelation 216194 // <dependency>
+	relation 216194 -_->
+	  stereotype "import"
+	  oid 216194
+	  a package
+	    cpp default "#include in header"
+	    classrelation_ref 216194 // <dependency>
+	  b parent class_ref 262274 // CharMessageBuffer
+	oid 216194
+      end
+
+      operation 335874 "RootLogger"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "pool" type class_ref 290306 // Pool
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw} 
+: Logger(pool, LOGGER_STR(\"root\")) {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 335874
+      end
+
+      operation 336514 "getEffectiveLevel"
+	preserve_cpp_body_indent public return_type class_ref 263298 // LevelPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}const ${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}const ${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 336514
+	comment "! Starting from this logger, search the logger hierarchy for a
+! non-null level and return it.
+/
+/ <p>The Logger class is designed so that this method executes as
+/ quickly as possible.
+/
+/ @throws RuntimeException if all levels are null in the hierarchy"
+      end
+
+      operation 337538 "setLevel"
+	public explicit_return_type "void"
+	nparams 1
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 337538
+      end
+    end
+
+    class 263554 "logstream_base"
+      abstract visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 263554
+      operation 461698 "logstream_base"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "logger1" type class_ref 261250 // LoggerPtr
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw} 
+: initset((std::ios_base::fmtflags) -1, 1), 
+     initclear((std::ios_base::fmtflags) 0, 0), fillchar(0), fillset(false), logger(logger1), level(level1), location() {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 289666
+      end
+
+      operation 461826 "~logstream_base"
+	cpp_virtual public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 289538
+      end
+
+      operation 461954 "logstream_base"
+	stereotype "copy"
+	private explicit_return_type ""
+	nparams 1
+	  param in name "source" type class_ref 263554 // logstream_base
+	cpp_decl "    ${comment}${inline}${name}${(}${t0} & ${p0}${)}${volatile}${throw};
+"
+	
+	
+	
+	
+	oid 289794
+	comment "! prevent copy constructor."
+      end
+
+      operation 462082 "operator="
+	private return_type class_ref 263554 // logstream_base
+	nparams 1
+	  param in name "source" type class_ref 263554 // logstream_base
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} & ${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 289922
+	comment "! prevent copy assignment."
+      end
+
+      operation 462210 "erase"
+	abstract cpp_virtual public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 297474
+      end
+
+      operation 462338 "log"
+	abstract cpp_virtual protected explicit_return_type "void"
+	nparams 3
+	  param in name "logger" type class_ref 261250 // LoggerPtr
+	  param in name "level" type class_ref 263298 // LevelPtr
+	  param in name "location" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} & ${p0}${v0}, const ${t1} & ${p1}${v1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${abstract};
+"
+	
+	
+	
+	
+	oid 297858
+	comment "! Dispatches the pending log request."
+      end
+
+      operation 462466 "isEnabled"
+	cpp_inline public explicit_return_type "bool"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 289282
+      end
+
+      operation 462594 "set_stream_state"
+	public explicit_return_type "bool"
+	nparams 2
+	  param in name "dest" explicit_type "std::ios_base"
+	  param in name "dstchar" explicit_type "int"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} & ${p0}, ${t1} & ${p1}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} & ${p0}, ${t1} & ${p1}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 297218
+      end
+
+      operation 305538 "setLocation"
+	public explicit_return_type "void"
+	nparams 1
+	  param inout name "newlocation" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 305538
+      end
+
+      operation 462722 "end_message"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 297346
+      end
+
+      operation 305282 "endmsg"
+	class_operation public return_type class_ref 263554 // logstream_base
+	nparams 1
+	  param in name "stream" type class_ref 263554 // logstream_base
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type}& ${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type}& ${class}::${name}${(}${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 305282
+      end
+
+      class 433794 "logstream_ios_base"
+	visibility package 
+	cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+	java_decl ""
+	php_decl ""
+	python_2_2 python_decl ""
+	idl_decl ""
+	explicit_switch_type ""
+	
+	oid 263682
+	classrelation 202626 // <generalisation>
+	  relation 202626 ---|>
+	    oid 202626
+	    a public
+	      cpp default "${type}"
+	      classrelation_ref 202626 // <generalisation>
+	    b parent class_ref 433666 // ios_base
+	  oid 202626
+	end
+
+	operation 462850 "logstream_ios_base"
+	  public explicit_return_type ""
+	  nparams 2
+	    param in name "initval" explicit_type "std::ios_base::fmtflags"
+	    param in name "initsize" explicit_type "int"
+	  cpp_decl "    ${comment}${inline}${name}${(}${t0} ${p0}${v0}, ${t1} ${p1}${)}${volatile}${throw};
+"
+	  cpp_def "${comment}${inline}${class}::${name}${(}${t0} ${p0}, ${t1} ${p1}${)}${throw} {
+  ${body}}
+"
+	  
+	  
+	  
+	  
+	  oid 290050
+	end
+      end
+
+      attribute 203266 "initset"
+	private type class_ref 433794 // logstream_ios_base
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203266
+      end
+
+      attribute 203394 "initclear"
+	private type class_ref 433794 // logstream_ios_base
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203394
+      end
+
+      attribute 203522 "fillchar"
+	private explicit_type "int"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203522
+	comment "! fill character."
+      end
+
+      attribute 203650 "fillset"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203650
+	comment "true if fill character is set."
+      end
+
+      attribute 203138 "enabled"
+	private explicit_type "bool"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203138
+	comment "! true if assigned level was same or higher than level of associated logger."
+      end
+
+      attribute 203778 "logger"
+	private type class_ref 261250 // LoggerPtr
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203778
+	comment "! associated logger."
+      end
+
+      attribute 203906 "level"
+	private type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203906
+	comment "associated level."
+      end
+
+      attribute 204034 "location"
+	private type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 204034
+	comment "! associated location."
+      end
+    end
+
+    class 270466 "manipulator"
+      visibility package stereotype "typedef" base_type class_ref 263554 // logstream_base
+      cpp_decl "${comment}typedef ${type}& (*logstream_manipulator)(logstream_base&);
+
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}typedef ${type} ${name};
+"
+      explicit_switch_type ""
+      
+      oid 270466
+    end
+
+    class 261122 "logstream"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 261122
+      classrelation 202498 // <generalisation>
+	relation 202498 ---|>
+	  oid 202498
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 202498 // <generalisation>
+	  b parent class_ref 263554 // logstream_base
+	oid 202498
+      end
+
+      operation 462978 "logstream"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "logger1" type class_ref 261250 // LoggerPtr
+	  param in name "level1" type class_ref 263298 // LevelPtr
+	cpp_decl "    ${comment}${inline}${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}const ${t0} & ${p0}, const ${t1} & ${p1}${)}${volatile}${throw} 
+: logstream_base(logger1, level1), stream(0) {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 288130
+      end
+
+      operation 463106 "~logstream"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${inline}${virtual}${name}${(}${)}${volatile}${throw};
+"
+	cpp_def "${comment}${inline}${class}::${name}${(}${)}${volatile}${throw} {
+  ${body}}
+"
+	
+	
+	
+	
+	oid 288258
+      end
+
+      operation 463234 "refresh_stream_state"
+	public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 297090
+      end
+
+      operation 463362 "operator std::basic_ostream<Ch>&"
+	public explicit_return_type ""
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 296962
+      end
+
+      operation 305154 "operator<<"
+	public return_type class_ref 261122 // logstream
+	nparams 1
+	  param inout name "manip" explicit_type "logstream_manipulator"
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type}& ${name}${(}${t0} ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type}& ${class}::${name}${(}logstream_base& (*manip)(logstream_base&)${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 305154
+      end
+
+      operation 463490 "operator<<"
+	cpp_inline public return_type class_ref 261122 // logstream
+	nparams 1
+	  param inout name "val" explicit_type "V"
+	cpp_decl "    ${comment}
+template <class V>
+${friend}${static}${inline}${virtual}${type}& ${name}${(}const ${t0} & ${p0}${v0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}
+template <class V>
+${inline}${type}& ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 289154
+	comment "!Template to allow any class with an std::basic_ostream inserter
+/  to be applied to this class.
+"
+      end
+
+      operation 305410 "operator<<"
+	public return_type class_ref 261122 // logstream
+	nparams 1
+	  param inout name "newlocation" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type}& ${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type}& ${class}::${name}${(}const ${t0} & ${p0}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 305410
+      end
+
+      operation 463618 "erase"
+	cpp_virtual public explicit_return_type "void"
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 297730
+      end
+
+      operation 463746 "log"
+	cpp_virtual protected explicit_return_type "void"
+	nparams 3
+	  param in name "logger" type class_ref 261250 // LoggerPtr
+	  param in name "level" type class_ref 263298 // LevelPtr
+	  param in name "location" type class_ref 261634 // LocationInfo
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${t0} & ${p0}${v0}, const ${t1} & ${p1}${v1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${t0} & ${p0}, const ${t1} & ${p1}, const ${t2} & ${p2}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 297986
+	comment "! Dispatches the pending log request."
+      end
+
+      attribute 203010 "stream"
+	private type class_ref 261378 // Ch
+	multiplicity "*"
+	stereotype "std::basic_stringstream"
+	cpp_decl "    ${comment}${static}${mutable}${volatile}${const}${stereotype}<${type}>* ${name}${value};
+"
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl ""
+	oid 203010
+      end
+    end
+
+    class 261890 "Macros"
+      visibility package 
+      cpp_decl "${members}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 261890
+      extra_member 141314 "Logging macros"
+	
+	cpp "/**
+Logs a message to a specified logger with a specified level.
+
+@param logger the logger to be used.
+@param level the level to log.
+@param message the message string to log.
+*/
+#define LOGGER_LOG(logger, level, message) { \\
+        if (logger->isEnabledFor(level)) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(level, oss_.str(oss_ << message), LOGGER_LOCATION); } }
+
+/**
+Logs a message to a specified logger with a specified level.
+
+@param logger the logger to be used.
+@param level the level to log.
+@param message the message string to log in the internal encoding.
+*/
+#define LOGGER_LOGLS(logger, level, message) { \\
+        if (logger->isEnabledFor(level)) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::LogCharMessageBuffer oss_; \\
+           logger->forcedLog(level, oss_.str(oss_ << message), LOGGER_LOCATION); } }
+
+/**
+Logs a message to a specified logger with the DEBUG level.
+
+@param logger the logger to be used.
+@param message the message string to log.
+*/
+#define LOGGER_DEBUG(logger, message) { \\
+        if (LOGGER_UNLIKELY(logger->isDebugEnabled())) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getDebug(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+/**
+Logs a message to a specified logger with the TRACE level.
+
+@param logger the logger to be used.
+@param message the message string to log.
+*/
+#define LOGGER_TRACE(logger, message) { \\
+        if (LOGGER_UNLIKELY(logger->isTraceEnabled())) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getTrace(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+
+/**
+Logs a message to a specified logger with the INFO level.
+
+@param logger the logger to be used.
+@param message the message string to log.
+*/
+#define LOGGER_INFO(logger, message) { \\
+        if (logger->isInfoEnabled()) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getInfo(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+/**
+Logs a message to a specified logger with the WARN level.
+
+@param logger the logger to be used.
+@param message the message string to log.
+*/
+#define LOGGER_WARN(logger, message) { \\
+        if (logger->isWarnEnabled()) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getWarn(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+/**
+Logs a message to a specified logger with the ERROR level.
+
+@param logger the logger to be used.
+@param message the message string to log.
+*/
+#define LOGGER_ERROR(logger, message) { \\
+        if (logger->isErrorEnabled()) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getError(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+/**
+Logs a error if the condition is not true.
+
+@param logger the logger to be used.
+@param condition condition
+@param message the message string to log.
+*/
+#define LOGGER_ASSERT(logger, condition, message) { \\
+        if (!(condition) && logger->isErrorEnabled()) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getError(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+
+/**
+Logs a message to a specified logger with the FATAL level.
+
+@param logger the logger to be used.
+@param message the message string to log.
+*/
+#define LOGGER_FATAL(logger, message) { \\
+        if (logger->isFatalEnabled()) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getFatal(), oss_.str(oss_ << message), LOGGER_LOCATION); }}
+
+/**
+Logs a localized message with no parameter.
+
+@param logger the logger to be used.
+@param level the level to log.
+@param key the key to be searched in the resourceBundle of the logger.
+*/
+#define LOGGER_L7DLOG(logger, level, key) { \\
+        if (logger->isEnabledFor(level)) {\\
+        logger->l7dlog(level, key, LOGGER_LOCATION); }}
+
+/**
+Logs a localized message with one parameter.
+
+@param logger the logger to be used.
+@param level the level to log.
+@param key the key to be searched in the resourceBundle of the logger.
+@param p1 the unique parameter.
+*/
+#define LOGGER_L7DLOG1(logger, level, key, p1) { \\
+        if (logger->isEnabledFor(level)) {\\
+        logger->l7dlog(level, key, LOGGER_LOCATION, p1); }}
+
+/**
+Logs a localized message with two parameters.
+
+@param logger the logger to be used.
+@param level the level to log.
+@param key the key to be searched in the resourceBundle of the logger.
+@param p1 the first parameter.
+@param p2 the second parameter.
+*/
+#define LOGGER_L7DLOG2(logger, level, key, p1, p2) { \\
+        if (logger->isEnabledFor(level)) {\\
+        logger->l7dlog(level, key, LOGGER_LOCATION, p1, p2); }}
+
+/**
+Logs a localized message with three parameters.
+
+@param logger the logger to be used.
+@param level the level to log.
+@param key the key to be searched in the resourceBundle of the logger.
+@param p1 the first parameter.
+@param p2 the second parameter.
+@param p3 the third parameter.
+*/
+#define LOGGER_L7DLOG3(logger, level, key, p1, p2, p3) { \\
+        if (logger->isEnabledFor(level)) {\\
+        logger->l7dlog(level, key, LOGGER_LOCATION, p1, p2, p3); }}
+
+
+" "" inline
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 141314
+      end
+
+      extra_member 148098 "ENDMESSAGE"
+	
+	cpp "#if !defined(LOGGER_ENDMSG)
+#if LOGGER_LOGSTREAM_ADD_NOP
+#define LOGGER_ENDMSG (::CPPSTRUCTZ_NAMESPACE::log4csz::logstream_manipulator) ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream_base::nop >> LOGGER_LOCATION << (::CPPSTRUCTZ_NAMESPACE::log4csz::logstream_manipulator) ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream_base::endmsg
+#else
+#define LOGGER_ENDMSG LOGGER_LOCATION << (::CPPSTRUCTZ_NAMESPACE::log4csz::logstream_manipulator) ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream_base::endmsg
+#endif
+#endif
+
+
+" ""
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 148098
+      end
+
+      extra_member 161154 "doxygen END"
+	
+	cpp "/**@}*/" "" inline
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 161154
+      end
+    end
+
+    class 276994 "LogHelper"
+      visibility package stereotype "struct"
+      cpp_decl "//${comment}${template}struct ${name}${inherit} {
+${members}//};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}struct ${name} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      oid 276994
+      classrelation 209154 // <dependency>
+	relation 209154 -_->
+	  stereotype "import"
+	  oid 209154
+	  a package
+	    cpp default "#include in header"
+	    classrelation_ref 209154 // <dependency>
+	  b parent class_ref 260994 // Logger
+	oid 209154
+      end
+
+      extra_member 154626 "Logging macros"
+	
+	cpp "/**
+Logs a message to a specified logger with the DEBUG level.
+
+@param message the message string to log.
+*/
+#define LOG_DEBUG(message) { \\
+        {::CPPSTRUCTZ_NAMESPACE::log4csz::LoggerPtr logger = ::CPPSTRUCTZ_NAMESPACE::log4csz::Logger::getRootLogger();\\
+        if (LOGGER_UNLIKELY(logger->isDebugEnabled())) {\\
+           ::CPPSTRUCTZ_NAMESPACE::log4csz::helpers::MessageBuffer oss_; \\
+           logger->forcedLog(::CPPSTRUCTZ_NAMESPACE::log4csz::Level::getDebug(), oss_.str(oss_ << message), LOGGER_LOCATION); }}}
+
+" "" inline
+	java ""
+	php ""
+	python ""
+	idl ""
+	oid 154626
+      end
+
+      operation 320002 "dbg"
+	class_operation public return_type class_ref 261122 // logstream
+	nparams 0
+	cpp_decl "  ${comment}${friend}${static}${inline}${virtual}${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${type}& ${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 320002
+      end
+    end
+
+    class 283522 "LogStat"
+      visibility package 
+      cpp_decl "${comment}${template}class PLATFORM_DECL ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      oid 283522
+      operation 319746 "getLogger"
+	class_operation cpp_inline public return_type class_ref 261250 // LoggerPtr
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type} ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type} ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 319746
+      end
+
+      operation 319874 "getDebugStream"
+	class_operation cpp_inline public return_type class_ref 261122 // logstream
+	nparams 0
+	cpp_decl "    ${comment}${friend}${static}${inline}${virtual}${type}& ${name}${(}${)}${const}${volatile}${throw}${abstract};
+"
+	cpp_def "${comment}${inline}${type}& ${class}::${name}${(}${)}${const}${volatile}${throw}${staticnl}{
+  ${body}}
+"
+	
+	
+	
+	
+	oid 319874
+      end
+    end
+
+    class 283778 "GlobalNS"
+      visibility package stereotype "struct"
+      cpp_decl "${comment}${template}struct ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}struct ${name} {
+${members}};
+"
+      explicit_switch_type ""
+      
+      oid 283778
+    end
+  end
+
+  deploymentview 187266 "log"
+    //deployment diagram settings
+    package_name_in_tab default show_context default write_horizontally default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    oid 187266
+    artifact 226562 "Logger"
+      stereotype "source"
+      cpp_h "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the declaration of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.h
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+
+#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+#include \"../global.h\"
+//
+${includes}
+//
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+#endif
+"
+      cpp_src "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the implementation of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.cpp
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}"
+      associated_classes
+	class_ref 261378 // Ch
+	class_ref 261250 // LoggerPtr
+	class_ref 263170 // LogString_Block
+	class_ref 263042 // LogString
+	class_ref 263298 // LevelPtr
+	class_ref 262914 // Level
+	class_ref 296962 // LogManager
+	class_ref 297090 // Hierarchy
+	class_ref 260994 // Logger
+	class_ref 297346 // RootLogger
+	class_ref 263554 // logstream_base
+	class_ref 270466 // manipulator
+	class_ref 261122 // logstream
+	class_ref 261890 // Macros
+      end
+      oid 226562
+    end
+
+    artifact 233346 "LogHelper"
+      stereotype "source"
+      cpp_h "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the declaration of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.h
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+
+#ifndef ${NAMESPACE}_${NAME}_H
+#define ${NAMESPACE}_${NAME}_H
+
+${comment}
+//#include \"../global.h\"
+//
+${includes}
+//
+${declarations}
+${namespace_start}
+${definition}
+${namespace_end}
+
+namespace CPPSTRUCTZ_NAMESPACE {
+//PLATFORM_DECL ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg();
+//PLATFORM_DECL 
+//::CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg = 
+//   ::CPPSTRUCTZ_NAMESPACE::log4csz::LogStat::getDebugStream();
+#ifdef WIN32
+__PURE_APPDOMAIN_GLOBAL extern _CRTDATA2  ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg; /* =
+                                                                                              ::CPPSTRUCTZ_NAMESPACE::log4csz::LogStat::getDebugStream();*/
+#else
+extern  ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg; /* =
+                                                                                              ::CPPSTRUCTZ_NAMESPACE::log4csz::LogStat::getDebugStream();*/
+#endif
+}
+
+#endif
+"
+      cpp_src "/*---------------------------------------------------------*/
+/*!
+ * This file is part of Humbug, the template processor.
+ * License details can be found in the file COPYING.
+ * Copyright (c) 2011, EvePanix. All rights reserved.
+ *
+ * \\brief      This file contains the implementation of
+ *             the ${name} class.
+ * \\folder     $(folder)
+ * \\file       ${name}.cpp
+ * \\date       2011-08-11
+ * \\author     Jedzia.
+ *
+ * modified    2011-08-21, Jedzia
+ */
+/*---------------------------------------------------------*/
+${comment}
+#include \"../stdafx.h\"
+//
+${includes}
+${namespace_start}
+${members}
+${namespace_end}
+
+namespace CPPSTRUCTZ_NAMESPACE {
+/*PLATFORM_DECL CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg()
+{
+    return ::CPPSTRUCTZ_NAMESPACE::log4csz::LogStat::getDebugStream();
+}*/
+
+#ifdef WIN32
+__PURE_APPDOMAIN_GLOBAL /*extern*/ /*_CRTDATA2*/ ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg =
+    ::CPPSTRUCTZ_NAMESPACE::log4csz::LogStat::getDebugStream();
+#else
+ /*extern*/ /*_CRTDATA2*/ ::CPPSTRUCTZ_NAMESPACE::log4csz::logstream& dbg =
+    ::CPPSTRUCTZ_NAMESPACE::log4csz::LogStat::getDebugStream();
+#endif
+}
+"
+      associated_classes
+	class_ref 283522 // LogStat
+	class_ref 276994 // LogHelper
+      end
+      oid 233346
+    end
+  end
+end

@@ -4,7 +4,7 @@
 #include <iostream>
 
 // ZFS headers
-#include <HumbugGLShared/VFS/zfsystem.h>
+#include <HumbugShared/VFS/zfsystem.h>
 
 
 

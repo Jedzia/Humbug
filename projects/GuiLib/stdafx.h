@@ -13,7 +13,7 @@
 #ifdef _DEBUG
 /*inline void _moo_bugzor(const char* ff)
 {
-    std::ofstream myfile ("D:/E/Projects/C++/HumbugGL/build/HumbugGL/src/Debug/test2.txt");
+    std::ofstream myfile ("D:/E/Projects/C++/Humbug/build/Humbug/src/Debug/test2.txt");
     if (myfile.is_open())
     {
         myfile << ff << std::endl;
@@ -93,6 +93,6 @@
 
 //#include "TestClass.h"
 //class __declspec(dllimport) TestClass;
-#include <HumbugGLLib/LogManager.h>
+#include <HumbugLib/LogManager.h>
 
 #endif //STDAFX_8494D9496E234a5997CCB38FA8AD02F3_H

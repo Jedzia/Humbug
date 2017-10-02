@@ -1,11 +1,11 @@
 @ECHO off
-title [HumbugGL] Visual Studio 2008 x64 Command Prompt 
+title [Humbug] Visual Studio 2008 x64 Command Prompt 
 @set builddir=build2008x64
 
 @set PLATFORM=x64
 @set CURDIR=%CD%
 @REM call explorer build
-@REM call explorer projects\HumbugGL
+@REM call explorer projects\Humbug
 @set PATH=%PATH%;%~dp0projects\build\PCLint\MSVC90;%~dp0projects\build\scripts
 
 call %~dp0%config\config.bat
@@ -25,6 +25,6 @@ REM call %comspec% /k ""C:\Programme\Microsoft Visual Studio 8\VC\vcvarsall.bat"
 type %~dp0%config\WelcomeShell.txt
 
 start /B "C:\Program Files\Notepad++\notepad++.exe" "%~dp0\projects\np.session"
-REM start /B "devenv" "HumbugGL.sln"
+REM start /B "devenv" "Humbug.sln"
 
 call %comspec% /U /k ""%~dp0\startcmake.bat"" x64

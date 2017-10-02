@@ -12,7 +12,7 @@
 #include "../Components/MainCanvas.h"
 #include <stdexcept>
 #include "GUI/Visual/Console.h"
-#include <HumbugGLLib/LogManager.h>
+#include <HumbugLib/LogManager.h>
 #include "../../TimingDefs.h"
 #include <SDL_opengl.h>
 

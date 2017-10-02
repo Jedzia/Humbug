@@ -18,6 +18,7 @@ add_subdirectory( FreeGLUT )
 #set(GL3W_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/gl3w/include"  CACHE STRING "OpenGL Extension Wrangler Library Include Directory.")
 #set(GL3W_LIBRARIES "${CMAKE_CURRENT_BINARY_DIR}/gl3w/Debug/dings.lib"  CACHE STRING "OpenGL Extension Wrangler Library Include Directory.")
 
+# maybe do a copy include_directories(${PROJECT_SOURCE_DIR}/third_party/include) for the glcorearb.h
 set(OGLPLUS_DEP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/FreeGLUT/include")
 option(OGLPLUS_NO_EXAMPLES "Don't build examples and textures." On)
 option(OGLPLUS_NO_SCREENSHOTS "Don't make example screenshots for the docs." On)

@@ -1,0 +1,19 @@
+window_sizes 1920 1058 388 886 596 104
+windows_style
+diagrams
+  active  classdiagram_ref 213122 // Project
+    1526 877 100 3 745 0
+end
+show_stereotypes
+selected 
+package_ref 129 // Humbug
+open
+  
+package_ref 253442 // toplevel
+  
+package_ref 206978 // Project
+  deploymentview_ref 226050 // toplevel
+  classview_ref 219778 // Project
+  deploymentview_ref 212994 // Project
+end
+end

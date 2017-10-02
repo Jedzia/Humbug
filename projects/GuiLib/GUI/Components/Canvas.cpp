@@ -39,7 +39,7 @@
 #include <oglplus/all.hpp>
 #include <oglplus/gl.hpp>
 //
-#include <HumbugGLLib/Log.h>
+#include <HumbugLib/Log.h>
 #include <build/cmake/include/debug.h>
 
 namespace gui {
