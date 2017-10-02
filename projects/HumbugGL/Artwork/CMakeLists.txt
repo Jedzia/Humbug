@@ -104,7 +104,7 @@ function(ADD_IMGCONVERSION_TARGET _targetname _imgconv_output_dir _inp_image_sou
 	add_custom_command(
 		OUTPUT "${_out_file_fullpath}"
 		POST_BUILD
-		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS} && touch ${_imgconv_final_output_dir}
+		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS} && cmake -E touch ${_imgconv_final_output_dir}
 		DEPENDS "${_image_source_file}"
 		COMMENT "Convert ${_file_namef} Image to ${_file_name}.${_format}." 
 	)
@@ -202,7 +202,7 @@ function(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 	add_custom_command(
 		OUTPUT "${_in_Mfirstfile_fullpath}"
 		POST_BUILD
-#		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS} && touch ${_imgconv_final_output_dir}
+#		COMMAND ${Build_Image_CMD} ${Build_Image_OPTIONS} ${Build_Image_ARGUMENTS} && cmake -E touch ${_imgconv_final_output_dir}
 		COMMAND ${_out_file_buildcmd}
 		DEPENDS "${_image_source_file}"
 		COMMENT "Converting ${_file_namef} Artbooks to ${_file_name}-*.${_format}." 
@@ -213,7 +213,7 @@ function(ADD_IMGCONVERSION_TARGET_MULTI _targetname _imgconv_output_dir _inp_ima
 	add_custom_command(
 		OUTPUT "${_out_file_fullpath}"
 		POST_BUILD
-		COMMAND ${Montage_Image_CMD} ${Montage_Image_OPTIONS} ${Montage_Image_ARGUMENTS} && touch ${_imgconv_final_output_dir}
+		COMMAND ${Montage_Image_CMD} ${Montage_Image_OPTIONS} ${Montage_Image_ARGUMENTS} && cmake -E touch ${_imgconv_final_output_dir}
 		DEPENDS "${_in_Mfirstfile_fullpath}"
 		COMMENT "Montage ${_file_name}-* Images to ${_file_name}.${_format}." 
 	)
