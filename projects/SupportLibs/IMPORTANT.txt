@@ -1,0 +1,4 @@
+projects/SupportLibs/glew
+projects/SupportLibs/oglplus
+
+need to be manually installed at that state. i am working on submodule fetch
